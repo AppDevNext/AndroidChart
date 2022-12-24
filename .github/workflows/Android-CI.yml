@@ -48,6 +48,14 @@ jobs:
       - uses: gradle/actions/wrapper-validation@v5
       - name: Install Android SDK
         uses: hannesa2/action-android/install-sdk@0.1.16.7
+      - name: Build project
+        run: ./gradlew assembleDebug
+      - name: Deploy test (Don't merge)
+        run: ./gradlew publishMavenPublicationToMavenRepository
+      - name: Run tests
+        run: ./gradlew test
+      - name: Test jitpack publish command
+        run: ./gradlew :MPChartLib:publishToMavenLocal
       - name: Run instrumentation tests
         uses: hannesa2/action-android/emulator-run-cmd@0.1.16.7
         with:
