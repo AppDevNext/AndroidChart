@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PieChart">
+        <attr name="mp_chart_out_value_place_mode" format="enum">
+            <enum name="none" value="0" />
+            <enum name="AVG" value="1" />
+            <enum name="Top_Align" value="2" />
+            <enum name="Simple" value="3" />
+        </attr>
+    </declare-styleable>
+</resources>
