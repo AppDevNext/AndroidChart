@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -9,6 +10,7 @@ import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
+import com.github.mikephil.charting.R;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieEntry;
@@ -16,6 +18,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.PieHighlighter;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.renderer.PieChartRenderer;
+import com.github.mikephil.charting.renderer.PieChartRendererFixCover;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
@@ -28,6 +31,8 @@ import java.util.Locale;
  * @author Philipp Jahoda
  */
 public class PieChart extends PieRadarChartBase<PieData> {
+
+    private String mode;
 
     /**
      * rect object that represents the bounds of the piechart, needed for
@@ -113,13 +118,24 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
     public PieChart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        getAttrs(attrs);
     }
+
+    private void getAttrs(AttributeSet attrs) {
+        if (attrs != null) {
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.PieChart);
+            mode = a.getString(R.styleable.PieChart_mp_chart_out_value_place_mode);
+            a.recycle();
+        }
+        ((PieChartRendererFixCover) mRenderer).setMode(mode);
+    }
+
 
     @Override
     protected void init() {
         super.init();
 
-        mRenderer = new PieChartRenderer(this, mAnimator, mViewPortHandler);
+        mRenderer = new PieChartRendererFixCover(this, mAnimator, mViewPortHandler);
         mXAxis = null;
 
         mHighlighter = new PieHighlighter(this);
