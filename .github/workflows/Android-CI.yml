@@ -19,11 +19,11 @@ jobs:
         abi: [ x86_64 ]
         java_version: [ 17 ]
         include:
-          - os: [ ARM64 ]
-            api: [ 34 ]
-            tag: [ google_apis ]
-            abi: [ arm64-v8a ]
-            java_version: [ 17 ]
+          - os: ARM64
+            api: 34
+            tag: google_apis
+            abi: arm64-v8a
+            java_version: 17
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.4
