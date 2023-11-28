@@ -18,6 +18,12 @@ jobs:
         tag: [ default ]
         abi: [ x86_64 ]
         java_version: [ 17 ]
+        include:
+          - os: [ ARM64 ]
+            api: [ 34 ]
+            tag: [ google_apis ]
+            abi: [ arm64-v8a ]
+            java_version: [ 17 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.4
@@ -62,7 +68,7 @@ jobs:
           CLASSIC_TOKEN: ${{ secrets.CLASSIC_TOKEN }}
         run: |
           ls -ls MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
-          cp MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator\(AVD\)\ -\ 9/* screenshotsToCompare
+          cp MPChartExample/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator\(AVD\)\ -\ 14/* screenshotsToCompare
           ./screenShotCompare.sh
       - name: Archive screenshots diffs
         if: ${{ always() }}
