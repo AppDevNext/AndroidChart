@@ -47,6 +47,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
         // disable description text
         binding.chart1.description.isEnabled = false
+        binding.chart1.legend?.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
