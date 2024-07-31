@@ -20,6 +20,7 @@ import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.LimitLine
 import info.appdev.charting.components.LimitLine.LimitLabelPosition
 import info.appdev.charting.components.LimitRange
+import info.appdev.charting.components.XAxis
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
@@ -47,7 +48,8 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
         // disable description text
         binding.chart1.description.isEnabled = false
-        binding.chart1.legend?.isEnabled = false
+        binding.chart1.legend.isEnabled = false
+        binding.chart1.xAxis.position = XAxis.XAxisPosition.BOTTOM
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
