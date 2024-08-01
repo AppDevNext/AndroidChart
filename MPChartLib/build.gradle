@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'kotlin-android'
     id "com.vanniktech.maven.publish" version "0.29.0"
+    id 'org.jetbrains.kotlin.android'
 }
 
 ext {
@@ -47,6 +48,7 @@ android {
 
 dependencies {
     implementation 'androidx.annotation:annotation:1.8.1'
+    implementation 'androidx.core:core-ktx:1.9.0'
     testImplementation 'junit:junit:4.13.2'
 }
 
