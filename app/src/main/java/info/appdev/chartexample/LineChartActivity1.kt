@@ -17,6 +17,7 @@ import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.highlight.Highlight
@@ -48,6 +49,8 @@ class LineChartActivity1 : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
         // disable description text
         binding.chart1.description.isEnabled = false
+        binding.chart1.legend.isEnabled = false
+        binding.chart1.xAxis.position = XAxis.XAxisPosition.BOTTOM
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
