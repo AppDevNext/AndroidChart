@@ -291,10 +291,10 @@ public class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                     float x = positions[j];
                     float y = positions[j + 1];
 
-                    if (!mViewPortHandler.isInBoundsRight(x))
+                    if (!viewPortHandler.isInBoundsRight(x))
                         break;
 
-                    if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
+                    if (!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y))
                         continue;
 
                     CandleEntry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);

@@ -68,15 +68,15 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 				mBarShadowRectBuffer.top = x - barWidthHalf;
 				mBarShadowRectBuffer.bottom = x + barWidthHalf;
 				trans.rectValueToPixel(mBarShadowRectBuffer);
-				if (!mViewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
+				if (!viewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
 					i++;
 					continue;
 				}
-				if (!mViewPortHandler.isInBoundsBottom(mBarShadowRectBuffer.top)) {
+				if (!viewPortHandler.isInBoundsBottom(mBarShadowRectBuffer.top)) {
 					break;
 				}
-				mBarShadowRectBuffer.left = mViewPortHandler.contentLeft();
-				mBarShadowRectBuffer.right = mViewPortHandler.contentRight();
+				mBarShadowRectBuffer.left = viewPortHandler.contentLeft();
+				mBarShadowRectBuffer.right = viewPortHandler.contentRight();
 
 				if (roundedShadowRadius > 0) {
 					c.drawRoundRect(barRect, roundedShadowRadius, roundedShadowRadius, shadowPaint);
@@ -98,23 +98,23 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 		// if multiple colors has been assigned to Bar Chart
 		if (dataSet.getColors().size() > 1) {
 			for (int j = 0; j < buffer.size(); j += 4) {
-				if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
+				if (!viewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
 					continue;
 				}
 
-				if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
+				if (!viewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
 					break;
 				}
 
 				if (chart.isDrawBarShadowEnabled()) {
 					if (roundedShadowRadius > 0) {
-						c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
+						c.drawRoundRect(new RectF(buffer.buffer[j], viewPortHandler.contentTop(),
 								buffer.buffer[j + 2],
-								mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
+								viewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
 					} else {
-						c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
+						c.drawRect(buffer.buffer[j], viewPortHandler.contentTop(),
 								buffer.buffer[j + 2],
-								mViewPortHandler.contentBottom(), shadowPaint);
+								viewPortHandler.contentBottom(), shadowPaint);
 					}
 				}
 
@@ -133,19 +133,19 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 			mRenderPaint.setColor(dataSet.getColor());
 
 			for (int j = 0; j < buffer.size(); j += 4) {
-				if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
+				if (!viewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
 					continue;
 				}
 
-				if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
+				if (!viewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
 					break;
 				}
 
 				if (chart.isDrawBarShadowEnabled()) {
 					if (roundedShadowRadius > 0) {
-						c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
+						c.drawRoundRect(new RectF(buffer.buffer[j], viewPortHandler.contentTop(),
 								buffer.buffer[j + 2],
-								mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
+								viewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
 					} else {
 						c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
 								buffer.buffer[j + 3], mRenderPaint);
@@ -169,12 +169,12 @@ public class RoundedHorizontalBarChartRenderer extends HorizontalBarChartRendere
 
 		int j = 0;
 		while (j < buffer.size()) {
-			if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
+			if (!viewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) {
 				j += 4;
 				continue;
 			}
 
-			if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
+			if (!viewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) {
 				break;
 			}
 

@@ -52,7 +52,7 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         if (dataSet.getEntryCount() < 1)
             return;
 
-        ViewPortHandler viewPortHandler = mViewPortHandler;
+        ViewPortHandler viewPortHandlerLocal = viewPortHandler;
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
 
@@ -77,16 +77,16 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
             trans.pointValuesToPixel(mPixelBuffer);
 
-            if (!viewPortHandler.isInBoundsRight(mPixelBuffer[0]))
+            if (!viewPortHandlerLocal.isInBoundsRight(mPixelBuffer[0]))
                 break;
 
-            if (!viewPortHandler.isInBoundsLeft(mPixelBuffer[0])
-                    || !viewPortHandler.isInBoundsY(mPixelBuffer[1]))
+            if (!viewPortHandlerLocal.isInBoundsLeft(mPixelBuffer[0])
+                    || !viewPortHandlerLocal.isInBoundsY(mPixelBuffer[1]))
                 continue;
 
             mRenderPaint.setColor(dataSet.getColor(i / 2));
             renderer.renderShape(
-                    c, dataSet, mViewPortHandler,
+                    c, dataSet, viewPortHandlerLocal,
                     mPixelBuffer[0], mPixelBuffer[1],
                     mRenderPaint);
         }
@@ -128,12 +128,12 @@ public class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
                 for (int j = 0; j < positions.length; j += 2) {
 
-                    if (!mViewPortHandler.isInBoundsRight(positions[j]))
+                    if (!viewPortHandler.isInBoundsRight(positions[j]))
                         break;
 
                     // make sure the lines don't do shitty things outside bounds
-                    if ((!mViewPortHandler.isInBoundsLeft(positions[j])
-                            || !mViewPortHandler.isInBoundsY(positions[j + 1])))
+                    if ((!viewPortHandler.isInBoundsLeft(positions[j])
+                            || !viewPortHandler.isInBoundsY(positions[j + 1])))
                         continue;
 
                     Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);

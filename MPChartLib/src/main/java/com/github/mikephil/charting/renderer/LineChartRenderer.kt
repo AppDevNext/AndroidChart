@@ -55,8 +55,8 @@ class LineChartRenderer(
     }
 
     override fun drawData(c: Canvas) {
-        val width = mViewPortHandler.chartWidth.toInt()
-        val height = mViewPortHandler.chartHeight.toInt()
+        val width = viewPortHandler.chartWidth.toInt()
+        val height = viewPortHandler.chartHeight.toInt()
 
         var drawBitmapLocal = if (drawBitmap == null) null else drawBitmap!!.get()
 
@@ -321,16 +321,16 @@ class LineChartRenderer(
 
                 trans!!.pointValuesToPixel(mLineBuffer)
 
-                if (!mViewPortHandler.isInBoundsRight(firstCoordinateX)) break
+                if (!viewPortHandler.isInBoundsRight(firstCoordinateX)) break
 
                 // make sure the lines don't do shitty things outside
                 // bounds
-                if (!mViewPortHandler.isInBoundsLeft(lastCoordinateX) || !mViewPortHandler.isInBoundsTop(
+                if (!viewPortHandler.isInBoundsLeft(lastCoordinateX) || !viewPortHandler.isInBoundsTop(
                         max(
                             firstCoordinateY.toDouble(),
                             lastCoordinateY.toDouble()
                         ).toFloat()
-                    ) || !mViewPortHandler.isInBoundsBottom(
+                    ) || !viewPortHandler.isInBoundsBottom(
                         min(firstCoordinateY.toDouble(), lastCoordinateY.toDouble()).toFloat()
                     )
                 ) continue
@@ -528,9 +528,9 @@ class LineChartRenderer(
                     val x = positions[j]
                     val y = positions[j + 1]
 
-                    if (!mViewPortHandler.isInBoundsRight(x)) break
+                    if (!viewPortHandler.isInBoundsRight(x)) break
 
-                    if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y)) {
+                    if (!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y)) {
                         j += 2
                         continue
                     }
@@ -638,10 +638,10 @@ class LineChartRenderer(
 
                 trans!!.pointValuesToPixel(mCirclesBuffer)
 
-                if (!mViewPortHandler.isInBoundsRight(mCirclesBuffer[0])) break
+                if (!viewPortHandler.isInBoundsRight(mCirclesBuffer[0])) break
 
-                if (!mViewPortHandler.isInBoundsLeft(mCirclesBuffer[0]) ||
-                    !mViewPortHandler.isInBoundsY(mCirclesBuffer[1])
+                if (!viewPortHandler.isInBoundsLeft(mCirclesBuffer[0]) ||
+                    !viewPortHandler.isInBoundsY(mCirclesBuffer[1])
                 ) continue
 
                 val circleBitmap = imageCache.getBitmap(j)

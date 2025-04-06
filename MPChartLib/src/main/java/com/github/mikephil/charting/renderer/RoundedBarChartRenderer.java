@@ -68,15 +68,15 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
 				mBarShadowRectBuffer.left = x - barWidthHalf;
 				mBarShadowRectBuffer.right = x + barWidthHalf;
 				trans.rectValueToPixel(mBarShadowRectBuffer);
-				if (!mViewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right)) {
+				if (!viewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right)) {
 					i++;
 					continue;
 				}
-                if (!mViewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left)) {
+                if (!viewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left)) {
                     break;
                 }
-				mBarShadowRectBuffer.top = mViewPortHandler.contentTop();
-				mBarShadowRectBuffer.bottom = mViewPortHandler.contentBottom();
+				mBarShadowRectBuffer.top = viewPortHandler.contentTop();
+				mBarShadowRectBuffer.bottom = viewPortHandler.contentBottom();
 
 
 				if (roundedShadowRadius > 0) {
@@ -101,23 +101,23 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
 
 			for (int j = 0; j < buffer.size(); j += 4) {
 
-                if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
+                if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
                     continue;
                 }
 
-                if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j])) {
+                if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
                     break;
                 }
 
 				if (chart.isDrawBarShadowEnabled()) {
                     if (roundedShadowRadius > 0) {
-                        c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
+                        c.drawRoundRect(new RectF(buffer.buffer[j], viewPortHandler.contentTop(),
                                 buffer.buffer[j + 2],
-                                mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
+                                viewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
                     } else {
-                        c.drawRect(buffer.buffer[j], mViewPortHandler.contentTop(),
+                        c.drawRect(buffer.buffer[j], viewPortHandler.contentTop(),
                                 buffer.buffer[j + 2],
-                                mViewPortHandler.contentBottom(), shadowPaint);
+                                viewPortHandler.contentBottom(), shadowPaint);
                     }
 				}
 
@@ -138,19 +138,19 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
 
 			for (int j = 0; j < buffer.size(); j += 4) {
 
-                if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
+                if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
                     continue;
                 }
 
-                if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j])) {
+                if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
                     break;
                 }
 
 				if (chart.isDrawBarShadowEnabled()) {
                     if (roundedShadowRadius > 0) {
-                        c.drawRoundRect(new RectF(buffer.buffer[j], mViewPortHandler.contentTop(),
+                        c.drawRoundRect(new RectF(buffer.buffer[j], viewPortHandler.contentTop(),
                                 buffer.buffer[j + 2],
-                                mViewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
+                                viewPortHandler.contentBottom()), roundedShadowRadius, roundedShadowRadius, shadowPaint);
                     } else {
                         c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                                 buffer.buffer[j + 3], mRenderPaint);
@@ -176,12 +176,12 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
 		int j = 0;
 		while (j < buffer.size()) {
 
-			if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
+			if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
 				j += 4;
 				continue;
 			}
 
-            if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j])) {
+            if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
                 break;
             }
 

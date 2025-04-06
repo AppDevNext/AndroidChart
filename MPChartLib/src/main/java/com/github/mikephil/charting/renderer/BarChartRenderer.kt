@@ -132,17 +132,17 @@ open class BarChartRenderer(
 
                 trans!!.rectValueToPixel(mBarShadowRectBuffer)
 
-                if (!mViewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right)) {
+                if (!viewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right)) {
                     i++
                     continue
                 }
 
-                if (!mViewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left)) {
+                if (!viewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left)) {
                     break
                 }
 
-                mBarShadowRectBuffer.top = mViewPortHandler.contentTop()
-                mBarShadowRectBuffer.bottom = mViewPortHandler.contentBottom()
+                mBarShadowRectBuffer.top = viewPortHandler.contentTop()
+                mBarShadowRectBuffer.bottom = viewPortHandler.contentBottom()
 
                 if (mDrawRoundedBars) {
                     c.drawRoundRect(mBarShadowRectBuffer, mRoundedBarRadius, mRoundedBarRadius, shadowPaint)
@@ -175,13 +175,13 @@ open class BarChartRenderer(
         var j = 0
         var pos = 0
         while (j < buffer.size()) {
-            if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
+            if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
                 j += 4
                 pos++
                 continue
             }
 
-            if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j])) {
+            if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
                 break
             }
 
@@ -300,12 +300,12 @@ open class BarChartRenderer(
                     while (j < buffer!!.buffer.size * mAnimator.phaseX) {
                         val x = (buffer.buffer[j] + buffer.buffer[j + 2]) / 2f
 
-                        if (!mViewPortHandler.isInBoundsRight(x)) {
+                        if (!viewPortHandler.isInBoundsRight(x)) {
                             break
                         }
 
-                        if (!mViewPortHandler.isInBoundsY(buffer.buffer[j + 1])
-                            || !mViewPortHandler.isInBoundsLeft(x)
+                        if (!viewPortHandler.isInBoundsY(buffer.buffer[j + 1])
+                            || !viewPortHandler.isInBoundsLeft(x)
                         ) {
                             j += 4
                             continue
@@ -362,12 +362,12 @@ open class BarChartRenderer(
                         // non-stacked
                         // in between
                         if (vals == null) {
-                            if (!mViewPortHandler.isInBoundsRight(x)) {
+                            if (!viewPortHandler.isInBoundsRight(x)) {
                                 break
                             }
 
-                            if (!mViewPortHandler.isInBoundsY(buffer.buffer[bufferIndex + 1])
-                                || !mViewPortHandler.isInBoundsLeft(x)
+                            if (!viewPortHandler.isInBoundsY(buffer.buffer[bufferIndex + 1])
+                                || !viewPortHandler.isInBoundsLeft(x)
                             ) {
                                 continue
                             }
@@ -443,12 +443,12 @@ open class BarChartRenderer(
                                 val y = (transformed[k + 1]
                                         + (if (drawBelow) negOffset else posOffset))
 
-                                if (!mViewPortHandler.isInBoundsRight(x)) {
+                                if (!viewPortHandler.isInBoundsRight(x)) {
                                     break
                                 }
 
-                                if (!mViewPortHandler.isInBoundsY(y)
-                                    || !mViewPortHandler.isInBoundsLeft(x)
+                                if (!viewPortHandler.isInBoundsY(y)
+                                    || !viewPortHandler.isInBoundsLeft(x)
                                 ) {
                                     k += 2
                                     continue

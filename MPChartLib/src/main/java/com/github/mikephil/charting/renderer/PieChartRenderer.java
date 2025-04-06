@@ -16,7 +16,6 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -146,8 +145,8 @@ public class PieChartRenderer extends DataRenderer {
     @Override
     public void drawData(Canvas c) {
 
-        int width = (int) mViewPortHandler.getChartWidth();
-        int height = (int) mViewPortHandler.getChartHeight();
+        int width = (int) viewPortHandler.getChartWidth();
+        int height = (int) viewPortHandler.getChartHeight();
 
         Bitmap drawBitmap = mDrawBitmap == null ? null : mDrawBitmap.get();
 
@@ -228,7 +227,7 @@ public class PieChartRenderer extends DataRenderer {
         if (!dataSet.isAutomaticallyDisableSliceSpacingEnabled())
             return dataSet.getSliceSpace();
 
-        float spaceSizeRatio = dataSet.getSliceSpace() / mViewPortHandler.getSmallestContentExtension();
+        float spaceSizeRatio = dataSet.getSliceSpace() / viewPortHandler.getSmallestContentExtension();
         float minValueRatio = dataSet.getYMin() / mChart.getData().getYValueSum() * 2;
 
         float sliceSpace = spaceSizeRatio > minValueRatio ? 0f : dataSet.getSliceSpace();

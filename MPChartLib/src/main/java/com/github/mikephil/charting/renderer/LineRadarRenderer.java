@@ -32,10 +32,10 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
             int save = c.save();
             c.clipPath(filledPath);
 
-            drawable.setBounds((int) mViewPortHandler.contentLeft(),
-                    (int) mViewPortHandler.contentTop(),
-                    (int) mViewPortHandler.contentRight(),
-                    (int) mViewPortHandler.contentBottom());
+            drawable.setBounds((int) viewPortHandler.contentLeft(),
+                    (int) viewPortHandler.contentTop(),
+                    (int) viewPortHandler.contentRight(),
+                    (int) viewPortHandler.contentBottom());
             drawable.draw(c);
 
             c.restoreToCount(save);
