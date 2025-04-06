@@ -17,12 +17,13 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.Utils.init
 import com.github.mikephil.charting.utils.ViewPortHandler
 import java.lang.ref.WeakReference
 import kotlin.math.max
 import kotlin.math.min
 
-class LineChartRenderer(
+open class LineChartRenderer(
     @JvmField var chart: LineDataProvider, animator: ChartAnimator?,
     viewPortHandler: ViewPortHandler?
 ) : LineRadarRenderer(animator, viewPortHandler) {
@@ -38,8 +39,7 @@ class LineChartRenderer(
     protected var drawBitmap: WeakReference<Bitmap>? = null
 
     /**
-     * on this canvas, the paths are rendered, it is initialized with the
-     * pathBitmap
+     * on this canvas, the paths are rendered, it is initialized with the pathBitmap
      */
     protected var bitmapCanvas: Canvas? = null
 
@@ -78,14 +78,14 @@ class LineChartRenderer(
             if (set.isVisible) drawDataSet(c, set)
         }
 
-        c.drawBitmap(drawBitmapLocal, 0f, 0f, mRenderPaint)
+        c.drawBitmap(drawBitmapLocal, 0f, 0f, paintRender)
     }
 
-    protected fun drawDataSet(c: Canvas?, dataSet: ILineDataSet) {
+    protected fun drawDataSet(c: Canvas, dataSet: ILineDataSet) {
         if (dataSet.entryCount < 1) return
 
-        mRenderPaint.strokeWidth = dataSet.lineWidth
-        mRenderPaint.setPathEffect(dataSet.dashPathEffect)
+        paintRender.strokeWidth = dataSet.lineWidth
+        paintRender.setPathEffect(dataSet.dashPathEffect)
 
         when (dataSet.mode) {
             LineDataSet.Mode.LINEAR, LineDataSet.Mode.STEPPED -> drawLinear(c, dataSet)
@@ -94,7 +94,7 @@ class LineChartRenderer(
             else -> drawLinear(c, dataSet)
         }
 
-        mRenderPaint.setPathEffect(null)
+        paintRender.setPathEffect(null)
     }
 
     protected fun drawHorizontalBezier(dataSet: ILineDataSet) {
@@ -133,18 +133,20 @@ class LineChartRenderer(
             cubicFillPath.reset()
             cubicFillPath.addPath(cubicPath)
             // create a new path, this is bad for performance
-            drawCubicFill(bitmapCanvas, dataSet, cubicFillPath, trans!!, mXBounds)
+            bitmapCanvas?.let {
+                drawCubicFill(it, dataSet, cubicFillPath, trans!!, mXBounds)
+            }
         }
 
-        mRenderPaint.color = dataSet.color
+        paintRender.color = dataSet.color
 
-        mRenderPaint.style = Paint.Style.STROKE
+        paintRender.style = Paint.Style.STROKE
 
         trans!!.pathValueToPixel(cubicPath)
 
-        bitmapCanvas!!.drawPath(cubicPath, mRenderPaint)
+        bitmapCanvas!!.drawPath(cubicPath, paintRender)
 
-        mRenderPaint.setPathEffect(null)
+        paintRender.setPathEffect(null)
     }
 
     protected fun drawCubicBezier(dataSet: ILineDataSet) {
@@ -208,21 +210,23 @@ class LineChartRenderer(
             cubicFillPath.reset()
             cubicFillPath.addPath(cubicPath)
 
-            drawCubicFill(bitmapCanvas, dataSet, cubicFillPath, trans!!, mXBounds)
+            bitmapCanvas?.let {
+                drawCubicFill(it, dataSet, cubicFillPath, trans!!, mXBounds)
+            }
         }
 
-        mRenderPaint.color = dataSet.color
+        paintRender.color = dataSet.color
 
-        mRenderPaint.style = Paint.Style.STROKE
+        paintRender.style = Paint.Style.STROKE
 
         trans!!.pathValueToPixel(cubicPath)
 
-        bitmapCanvas!!.drawPath(cubicPath, mRenderPaint)
+        bitmapCanvas!!.drawPath(cubicPath, paintRender)
 
-        mRenderPaint.setPathEffect(null)
+        paintRender.setPathEffect(null)
     }
 
-    protected fun drawCubicFill(c: Canvas?, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
+    protected fun drawCubicFill(c: Canvas, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
         val fillMin = dataSet.fillFormatter
             .getFillLinePosition(dataSet, chart)
 
@@ -248,7 +252,7 @@ class LineChartRenderer(
      * @param c
      * @param dataSet
      */
-    protected fun drawLinear(c: Canvas?, dataSet: ILineDataSet) {
+    protected fun drawLinear(c: Canvas, dataSet: ILineDataSet) {
         val entryCount = dataSet.entryCount
 
         val isDrawSteppedEnabled = dataSet.isDrawSteppedEnabled
@@ -258,7 +262,7 @@ class LineChartRenderer(
 
         val phaseY = mAnimator.phaseY
 
-        mRenderPaint.style = Paint.Style.STROKE
+        paintRender.style = Paint.Style.STROKE
 
         // if the data-set is dashed, draw on bitmap-canvas
         val canvas: Canvas? = if (dataSet.isDashedLineEnabled) {
@@ -336,9 +340,9 @@ class LineChartRenderer(
                 ) continue
 
                 // get the color that is set for this line-segment
-                mRenderPaint.color = dataSet.getColor(j)
+                paintRender.color = dataSet.getColor(j)
 
-                canvas!!.drawLines(mLineBuffer, 0, pointsPerEntryPair * 2, mRenderPaint)
+                canvas!!.drawLines(mLineBuffer, 0, pointsPerEntryPair * 2, paintRender)
             }
         } else { // only one color per dataset
 
@@ -378,14 +382,14 @@ class LineChartRenderer(
 
                     val size = (max(((mXBounds.range + 1) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2).toInt()
 
-                    mRenderPaint.color = dataSet.color
+                    paintRender.color = dataSet.color
 
-                    canvas!!.drawLines(mLineBuffer, 0, size, mRenderPaint)
+                    canvas!!.drawLines(mLineBuffer, 0, size, paintRender)
                 }
             }
         }
 
-        mRenderPaint.setPathEffect(null)
+        paintRender.setPathEffect(null)
     }
 
     protected var mGenerateFilledPathBuffer: Path = Path()
@@ -398,7 +402,7 @@ class LineChartRenderer(
      * @param trans
      * @param bounds
      */
-    protected fun drawLinearFill(c: Canvas?, dataSet: ILineDataSet, trans: Transformer, bounds: XBounds) {
+    protected fun drawLinearFill(c: Canvas, dataSet: ILineDataSet, trans: Transformer, bounds: XBounds) {
         val filled = mGenerateFilledPathBuffer
 
         val startingIndex = bounds.min
@@ -586,7 +590,7 @@ class LineChartRenderer(
     }
 
     protected fun drawCircles(c: Canvas) {
-        mRenderPaint.style = Paint.Style.FILL
+        paintRender.style = Paint.Style.FILL
 
         val phaseY = mAnimator.phaseY
 
@@ -756,7 +760,7 @@ class LineChartRenderer(
 
                 val canvas = Canvas(circleBitmap)
                 circleBitmaps!![i] = circleBitmap
-                mRenderPaint.color = set.getCircleColor(i)
+                paintRender.color = set.getCircleColor(i)
 
                 if (drawTransparentCircleHole) {
                     // Begin path for circle with hole
@@ -778,13 +782,13 @@ class LineChartRenderer(
                     )
 
                     // Fill in-between
-                    canvas.drawPath(mCirclePathBuffer, mRenderPaint)
+                    canvas.drawPath(mCirclePathBuffer, paintRender)
                 } else {
                     canvas.drawCircle(
                         circleRadius,
                         circleRadius,
                         circleRadius,
-                        mRenderPaint
+                        paintRender
                     )
 
                     if (drawCircleHole) {
