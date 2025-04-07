@@ -26,12 +26,12 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     /**
      * List representing all colors that are used for this DataSet
      */
-    protected List<Integer> mColors = null;
+    protected List<Integer> mColors;
 
     /**
      * List representing all colors that are used for drawing the actual values for this DataSet
      */
-    protected List<Integer> mValueColors = null;
+    protected List<Integer> mValueColors;
 
     /**
      * label that describes the DataSet or the data the DataSet represents
@@ -140,10 +140,6 @@ public abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     public int getColor(int index) {
         return mColors.get(index % mColors.size());
     }
-
-    /**
-     * ###### ###### COLOR SETTING RELATED METHODS ##### ######
-     */
 
     /**
      * Sets the colors that should be used fore this DataSet. Colors are reused

@@ -588,7 +588,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     /**
      * Returns true if the current touch situation should be interpreted as inverted, false if not.
      *
-     * @return
      */
     private boolean inverted() {
         return (mClosestDataSetToTouch == null && mChart.isAnyAxisInverted()) || (mClosestDataSetToTouch != null
@@ -596,14 +595,7 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     }
 
     /**
-     * ################ ################ ################ ################
-     */
-    /** GETTERS AND GESTURE RECOGNITION BELOW */
-
-    /**
      * returns the matrix object the listener holds
-     *
-     * @return
      */
     public Matrix getMatrix() {
         return mMatrix;
@@ -613,7 +605,6 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
      * Sets the minimum distance that will be interpreted as a "drag" by the chart in dp.
      * Default: 3dp
      *
-     * @param dragTriggerDistance
      */
     public void setDragTriggerDist(float dragTriggerDistance) {
         this.mDragTriggerDist = Utils.convertDpToPixel(dragTriggerDistance);

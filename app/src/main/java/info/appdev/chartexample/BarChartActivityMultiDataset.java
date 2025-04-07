@@ -211,7 +211,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             }
             case R.id.actionToggleValues: {
                 for (IBarDataSet set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
+                    set.setDrawValues(!set.isDrawIconsEnabled());
 
                 chart.invalidate();
                 break;

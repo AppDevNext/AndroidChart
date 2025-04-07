@@ -182,7 +182,7 @@ class DataTools {
             lineDataSet01.enableDashedLine(10f, 5f, 0f)
 
             // black lines and points
-            lineDataSet01.color = Color.BLACK
+            lineDataSet01.setColor(Color.BLACK)
             lineDataSet01.setCircleColor(Color.BLACK)
 
             // line thickness and point size
@@ -193,9 +193,9 @@ class DataTools {
             lineDataSet01.setDrawCircleHole(false)
 
             // customize legend entry
-            lineDataSet01.formLineWidth = 1f
-            lineDataSet01.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-            lineDataSet01.formSize = 15f
+            lineDataSet01.setFormLineWidth(1f)
+            lineDataSet01.setFormLineDashEffect(DashPathEffect(floatArrayOf(10f, 5f), 0f))
+            lineDataSet01.setFormSize(15f)
 
             // text size of values
             lineDataSet01.valueTextSize = 9f

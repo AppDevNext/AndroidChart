@@ -252,7 +252,7 @@ public class CombinedChartActivity extends DemoBase {
             case R.id.actionToggleLineValues: {
                 for (IDataSet set : chart.getData().getDataSets()) {
                     if (set instanceof LineDataSet)
-                        set.setDrawValues(!set.isDrawValuesEnabled());
+                        set.setDrawValues(!set.isDrawIconsEnabled());
                 }
 
                 chart.invalidate();
@@ -261,7 +261,7 @@ public class CombinedChartActivity extends DemoBase {
             case R.id.actionToggleBarValues: {
                 for (IDataSet set : chart.getData().getDataSets()) {
                     if (set instanceof BarDataSet)
-                        set.setDrawValues(!set.isDrawValuesEnabled());
+                        set.setDrawValues(!set.isDrawIconsEnabled());
                 }
 
                 chart.invalidate();
