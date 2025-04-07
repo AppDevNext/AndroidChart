@@ -5,6 +5,7 @@ import com.github.mikephil.charting.utils.ObjectPool.Poolable
 import org.junit.Assert
 import org.junit.Test
 
+@Suppress("UNCHECKED_CAST")
 class ObjectPoolTest {
     internal class TestPoolable private constructor(var foo: Int, var bar: Int) : Poolable() {
         override fun instantiate(): Poolable {
