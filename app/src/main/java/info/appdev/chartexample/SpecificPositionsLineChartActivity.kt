@@ -272,9 +272,9 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         set11.setDrawCircleHole(false)
         set11.valueTextSize = 9f
         set11.setDrawFilled(true)
-        set11.setFormLineWidth(1f)
-        set11.setFormLineDashEffect(DashPathEffect(floatArrayOf(10f, 5f), 0f))
-        set11.setFormSize(15f)
+        set11.formLineWidth = 1f
+        set11.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+        set11.formSize = 15f
         if (Utils.getSDKInt() >= 18) {
             // fill drawable only supported on api level 18 and above
             val drawable = ContextCompat.getDrawable(this, R.drawable.fade_blue)

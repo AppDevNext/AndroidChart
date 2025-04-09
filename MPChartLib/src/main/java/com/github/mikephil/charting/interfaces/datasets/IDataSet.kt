@@ -196,11 +196,7 @@ interface IDataSet<T : Entry> {
      * Returns the label string that describes the DataSet.
      *
      */
-    /**
-     * Sets the label string that describes the DataSet.
-     *
-     */
-    var label: String?
+    var label: String
 
     /**
      * Returns the axis this DataSet should be plotted against.
@@ -210,7 +206,7 @@ interface IDataSet<T : Entry> {
      * RIGHT). Default: LEFT
      *
      */
-    var axisDependency: AxisDependency?
+    var axisDependency: AxisDependency
 
     /**
      * returns all the colors that are set for this DataSet
@@ -267,7 +263,7 @@ interface IDataSet<T : Entry> {
      * Sets a list of colors to be used as the colors for the drawn values.
      *
      */
-    fun setValueTextColors(colors: List<Int?>?)
+    fun setValueTextColors(colors: MutableList<Int>)
 
     /**
      * Returns only the first color of all colors that are set to be used for the values.
