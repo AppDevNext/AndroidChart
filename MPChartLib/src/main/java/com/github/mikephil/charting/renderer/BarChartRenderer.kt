@@ -69,7 +69,8 @@ open class BarChartRenderer(
     }
 
     override fun drawData(c: Canvas) {
-        initBuffers()
+        if (barBuffers.size == 0 && chart.barData.dataSets.size > 0)
+            initBuffers()
 
         val barData = chart.barData
 
