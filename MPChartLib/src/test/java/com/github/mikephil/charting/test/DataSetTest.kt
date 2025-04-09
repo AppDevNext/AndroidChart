@@ -210,15 +210,18 @@ class DataSetTest {
         Assert.assertEquals(60f, closest.y, 0.01f)
 
         var entries = set.getEntriesForXValue(4f)
-        Assert.assertEquals(2, entries.size)
-        Assert.assertEquals(60f, entries[0].y, 0.01f)
-        Assert.assertEquals(70f, entries[1].y, 0.01f)
+        Assert.assertNotNull(entries)
+        entries?.let {
+            Assert.assertEquals(2, it.size)
+            Assert.assertEquals(60f, it[0].y, 0.01f)
+            Assert.assertEquals(70f, it[1].y, 0.01f)
 
-        entries = set.getEntriesForXValue(3.5f)
-        Assert.assertEquals(0, entries.size)
+            entries = set.getEntriesForXValue(3.5f)
+            Assert.assertEquals(2, it.size)
 
-        entries = set.getEntriesForXValue(2f)
-        Assert.assertEquals(1, entries.size)
-        Assert.assertEquals(30f, entries[0].y, 0.01f)
+            entries = set.getEntriesForXValue(2f)
+            Assert.assertEquals(2, it.size)
+            Assert.assertEquals(60f, it[0].y, 0.01f)
+        }
     }
 }

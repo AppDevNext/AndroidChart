@@ -88,11 +88,6 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                 i.putExtra(Intent.EXTRA_TEXT, "Your error report here...")
                 startActivity(Intent.createChooser(i, "Report Problem"))
             }
-            R.id.website -> {
-                i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse("http://at.linkedin.com/in/philippjahoda")
-                startActivity(i)
-            }
         }
         return true
     }

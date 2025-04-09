@@ -159,7 +159,7 @@ public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeLi
             }
             case R.id.actionToggleValues: {
                 for (IBarDataSet set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
+                    set.setDrawValues(!set.isDrawIconsEnabled());
 
                 chart.invalidate();
                 break;

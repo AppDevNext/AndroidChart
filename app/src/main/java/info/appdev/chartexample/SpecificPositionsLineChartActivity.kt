@@ -265,7 +265,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         // set the line to be drawn like this "- - - - - -"
         set11.enableDashedLine(10f, 5f, 0f)
         set11.enableDashedHighlightLine(10f, 5f, 0f)
-        set11.color = Color.BLACK
+        set11.setColor(Color.BLACK)
         set11.setCircleColor(Color.BLACK)
         set11.lineWidth = 1f
         set11.circleRadius = 3f

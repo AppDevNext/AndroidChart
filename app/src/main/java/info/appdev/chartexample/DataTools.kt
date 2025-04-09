@@ -182,7 +182,7 @@ class DataTools {
             lineDataSet01.enableDashedLine(10f, 5f, 0f)
 
             // black lines and points
-            lineDataSet01.color = Color.BLACK
+            lineDataSet01.setColor(Color.BLACK)
             lineDataSet01.setCircleColor(Color.BLACK)
 
             // line thickness and point size

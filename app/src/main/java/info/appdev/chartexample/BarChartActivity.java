@@ -218,7 +218,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             }
             case R.id.actionToggleValues: {
                 for (IDataSet set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
+                    set.setDrawValues(!set.isDrawIconsEnabled());
 
                 chart.invalidate();
                 break;

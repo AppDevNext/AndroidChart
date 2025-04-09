@@ -28,10 +28,11 @@ open class BarChartRenderer(
     protected var barRect: RectF = RectF()
 
     @JvmField
-    protected var barBuffers: Array<BarBuffer?>? = null
+    protected var barBuffers: MutableList<BarBuffer> = mutableListOf()
 
     @JvmField
     protected var shadowPaint: Paint
+
     @JvmField
     protected var barBorderPaint: Paint
 
@@ -55,21 +56,21 @@ open class BarChartRenderer(
 
     override fun initBuffers() {
         val barData = chart.barData
-        barBuffers = arrayOfNulls(barData.dataSetCount)
+        barBuffers.clear()
 
-        for (i in barBuffers!!.indices) {
-            val set = barData.getDataSetByIndex(i)
-            barBuffers!![i] = BarBuffer(
-                set.entryCount * 4 * (if (set.isStacked) set.stackSize else 1),
-                barData.dataSetCount, set.isStacked
+        barData.dataSets.forEach {
+            barBuffers.add(
+                BarBuffer(
+                    it.entryCount * 4 * (if (it.isStacked) it.stackSize else 1),
+                    barData.dataSetCount, it.isStacked
+                )
             )
         }
     }
 
     override fun drawData(c: Canvas) {
-        if (barBuffers == null) {
+        if (barBuffers.size == 0 && chart.barData.dataSets.size > 0)
             initBuffers()
-        }
 
         val barData = chart.barData
 
@@ -85,11 +86,11 @@ open class BarChartRenderer(
     private val mBarShadowRectBuffer = RectF()
 
     init {
-        mHighlightPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        mHighlightPaint.style = Paint.Style.FILL
-        mHighlightPaint.color = Color.rgb(0, 0, 0)
+        paintHighlight = Paint(Paint.ANTI_ALIAS_FLAG)
+        paintHighlight.style = Paint.Style.FILL
+        paintHighlight.color = Color.rgb(0, 0, 0)
         // set alpha after color
-        mHighlightPaint.alpha = 120
+        paintHighlight.alpha = 120
 
         shadowPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         shadowPaint.style = Paint.Style.FILL
@@ -132,17 +133,17 @@ open class BarChartRenderer(
 
                 trans!!.rectValueToPixel(mBarShadowRectBuffer)
 
-                if (!mViewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right)) {
+                if (!viewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right)) {
                     i++
                     continue
                 }
 
-                if (!mViewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left)) {
+                if (!viewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left)) {
                     break
                 }
 
-                mBarShadowRectBuffer.top = mViewPortHandler.contentTop()
-                mBarShadowRectBuffer.bottom = mViewPortHandler.contentBottom()
+                mBarShadowRectBuffer.top = viewPortHandler.contentTop()
+                mBarShadowRectBuffer.bottom = viewPortHandler.contentBottom()
 
                 if (mDrawRoundedBars) {
                     c.drawRoundRect(mBarShadowRectBuffer, mRoundedBarRadius, mRoundedBarRadius, shadowPaint)
@@ -154,13 +155,13 @@ open class BarChartRenderer(
         }
 
         // initialize the buffer
-        val buffer = barBuffers!![index]
-        buffer!!.setPhases(phaseX, phaseY)
-        buffer.setDataSet(index)
-        buffer.setInverted(chart.isInverted(dataSet.axisDependency))
-        buffer.setBarWidth(chart.barData.barWidth)
-
-        buffer.feed(dataSet)
+        val buffer = barBuffers[index].apply {
+            setPhases(phaseX, phaseY)
+            setDataSet(index)
+            setInverted(chart.isInverted(dataSet.axisDependency))
+            setBarWidth(chart.barData.barWidth)
+            feed(dataSet)
+        }
 
         trans!!.pointValuesToPixel(buffer.buffer)
 
@@ -169,32 +170,32 @@ open class BarChartRenderer(
         val isInverted = chart.isInverted(dataSet.axisDependency)
 
         if (isSingleColor) {
-            mRenderPaint.color = dataSet.color
+            paintRender.color = dataSet.color
         }
 
         var j = 0
         var pos = 0
         while (j < buffer.size()) {
-            if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
+            if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
                 j += 4
                 pos++
                 continue
             }
 
-            if (!mViewPortHandler.isInBoundsRight(buffer.buffer[j])) {
+            if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
                 break
             }
 
             if (!isSingleColor) {
                 // Set the color for the currently drawn value. If the index
                 // is out of bounds, reuse colors.
-                mRenderPaint.color = dataSet.getColor(pos)
+                paintRender.color = dataSet.getColor(pos)
             }
 
             if (isCustomFill) {
                 dataSet.getFill(pos)
                     .fillRect(
-                        c, mRenderPaint,
+                        c, paintRender,
                         buffer.buffer[j],
                         buffer.buffer[j + 1],
                         buffer.buffer[j + 2],
@@ -208,12 +209,12 @@ open class BarChartRenderer(
                         RectF(
                             buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                             buffer.buffer[j + 3]
-                        ), mRoundedBarRadius, mRoundedBarRadius, mRenderPaint
+                        ), mRoundedBarRadius, mRoundedBarRadius, paintRender
                     )
                 } else {
                     c.drawRect(
                         buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], mRenderPaint
+                        buffer.buffer[j + 3], paintRender
                     )
                 }
             }
@@ -276,7 +277,7 @@ open class BarChartRenderer(
 
                 // calculate the correct offset depending on the draw position of
                 // the value
-                val valueTextHeight = Utils.calcTextHeight(mValuePaint, "8").toFloat()
+                val valueTextHeight = Utils.calcTextHeight(paintValues, "8").toFloat()
                 posOffset = (if (drawValueAboveBar) -valueOffsetPlus else valueTextHeight + valueOffsetPlus)
                 negOffset = (if (drawValueAboveBar) valueTextHeight + valueOffsetPlus else -valueOffsetPlus)
 
@@ -286,7 +287,7 @@ open class BarChartRenderer(
                 }
 
                 // get the buffer
-                val buffer = barBuffers!![i]
+                val buffer = barBuffers[i]
 
                 val phaseY = mAnimator.phaseY
 
@@ -297,15 +298,15 @@ open class BarChartRenderer(
                 // if only single values are drawn (sum)
                 if (!dataSet.isStacked) {
                     var j = 0
-                    while (j < buffer!!.buffer.size * mAnimator.phaseX) {
+                    while (j < buffer.buffer.size * mAnimator.phaseX) {
                         val x = (buffer.buffer[j] + buffer.buffer[j + 2]) / 2f
 
-                        if (!mViewPortHandler.isInBoundsRight(x)) {
+                        if (!viewPortHandler.isInBoundsRight(x)) {
                             break
                         }
 
-                        if (!mViewPortHandler.isInBoundsY(buffer.buffer[j + 1])
-                            || !mViewPortHandler.isInBoundsLeft(x)
+                        if (!viewPortHandler.isInBoundsY(buffer.buffer[j + 1])
+                            || !viewPortHandler.isInBoundsLeft(x)
                         ) {
                             j += 4
                             continue
@@ -354,7 +355,7 @@ open class BarChartRenderer(
                         val entry = dataSet.getEntryForIndex(index)
 
                         val vals = entry.yVals
-                        val x = (buffer!!.buffer[bufferIndex] + buffer.buffer[bufferIndex + 2]) / 2f
+                        val x = (buffer.buffer[bufferIndex] + buffer.buffer[bufferIndex + 2]) / 2f
 
                         val color = dataSet.getValueTextColor(index)
 
@@ -362,12 +363,12 @@ open class BarChartRenderer(
                         // non-stacked
                         // in between
                         if (vals == null) {
-                            if (!mViewPortHandler.isInBoundsRight(x)) {
+                            if (!viewPortHandler.isInBoundsRight(x)) {
                                 break
                             }
 
-                            if (!mViewPortHandler.isInBoundsY(buffer.buffer[bufferIndex + 1])
-                                || !mViewPortHandler.isInBoundsLeft(x)
+                            if (!viewPortHandler.isInBoundsY(buffer.buffer[bufferIndex + 1])
+                                || !viewPortHandler.isInBoundsLeft(x)
                             ) {
                                 continue
                             }
@@ -443,12 +444,12 @@ open class BarChartRenderer(
                                 val y = (transformed[k + 1]
                                         + (if (drawBelow) negOffset else posOffset))
 
-                                if (!mViewPortHandler.isInBoundsRight(x)) {
+                                if (!viewPortHandler.isInBoundsRight(x)) {
                                     break
                                 }
 
-                                if (!mViewPortHandler.isInBoundsY(y)
-                                    || !mViewPortHandler.isInBoundsLeft(x)
+                                if (!viewPortHandler.isInBoundsY(y)
+                                    || !viewPortHandler.isInBoundsLeft(x)
                                 ) {
                                     k += 2
                                     continue
@@ -511,8 +512,8 @@ open class BarChartRenderer(
 
             val trans = chart.getTransformer(set.axisDependency)
 
-            mHighlightPaint.color = set.highLightColor
-            mHighlightPaint.alpha = set.highLightAlpha
+            paintHighlight.color = set.highLightColor
+            paintHighlight.alpha = set.highLightAlpha
 
             val isStack = if (high.stackIndex >= 0 && e.isStacked) true else false
 
@@ -539,9 +540,9 @@ open class BarChartRenderer(
             setHighlightDrawPos(high, barRect)
 
             if (mDrawRoundedBars) {
-                c.drawRoundRect(RectF(barRect), mRoundedBarRadius, mRoundedBarRadius, mHighlightPaint)
+                c.drawRoundRect(RectF(barRect), mRoundedBarRadius, mRoundedBarRadius, paintHighlight)
             } else {
-                c.drawRect(barRect, mHighlightPaint)
+                c.drawRect(barRect, paintHighlight)
             }
         }
     }

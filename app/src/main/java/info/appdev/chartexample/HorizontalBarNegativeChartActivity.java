@@ -176,7 +176,7 @@ public class HorizontalBarNegativeChartActivity extends DemoBase implements OnSe
                         .getDataSets();
 
                 for (IBarDataSet iSet : sets) {
-                    iSet.setDrawValues(!iSet.isDrawValuesEnabled());
+                    iSet.setDrawValues(!iSet.isDrawIconsEnabled());
                 }
 
                 chart.invalidate();
@@ -275,8 +275,7 @@ public class HorizontalBarNegativeChartActivity extends DemoBase implements OnSe
         RectF bounds = mOnValueSelectedRectF;
         chart.getBarBounds((BarEntry) e, bounds);
 
-        MPPointF position = chart.getPosition(e, chart.getData().getDataSetByIndex(h.getDataSetIndex())
-                .getAxisDependency());
+        MPPointF position = chart.getPosition(e, chart.getData().getDataSetByIndex(h.getDataSetIndex()).getAxisDependency());
 
         Log.i("bounds", bounds.toString());
         Log.i("position", position.toString());
