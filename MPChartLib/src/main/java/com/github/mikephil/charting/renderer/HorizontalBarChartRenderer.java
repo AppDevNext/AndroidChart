@@ -42,12 +42,12 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 	public void initBuffers() {
 
 		BarData barData = chart.getBarData();
-		barBuffers = new HorizontalBarBuffer[barData.getDataSetCount()];
+//		barBuffers = new HorizontalBarBuffer[barData.getDataSetCount()];
 
-		for (int i = 0; i < barBuffers.length; i++) {
+		for (int i = 0; i < barData.getDataSetCount(); i++) {
 			IBarDataSet set = barData.getDataSetByIndex(i);
-			barBuffers[i] = new HorizontalBarBuffer(set.getEntryCount() * 4 * (set.isStacked() ? set.getStackSize() : 1),
-					barData.getDataSetCount(), set.isStacked());
+			barBuffers.add(new HorizontalBarBuffer(set.getEntryCount() * 4 * (set.isStacked() ? set.getStackSize() : 1),
+					barData.getDataSetCount(), set.isStacked()));
 		}
 	}
 
@@ -105,7 +105,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 		}
 
 		// initialize the buffer
-		BarBuffer buffer = barBuffers[index];
+		BarBuffer buffer = barBuffers.get(index);
 		buffer.setPhases(phaseX, phaseY);
 		buffer.setDataSet(index);
 		buffer.setInverted(chart.isInverted(dataSet.getAxisDependency()));
@@ -192,7 +192,7 @@ public class HorizontalBarChartRenderer extends BarChartRenderer {
 				IValueFormatter formatter = dataSet.getValueFormatter();
 
 				// get the buffer
-				BarBuffer buffer = barBuffers[i];
+				BarBuffer buffer = barBuffers.get(i);
 
 				final float phaseY = mAnimator.getPhaseY();
 
