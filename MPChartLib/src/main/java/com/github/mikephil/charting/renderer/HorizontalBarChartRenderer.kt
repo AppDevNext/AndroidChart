@@ -104,9 +104,9 @@ open class HorizontalBarChartRenderer(
 
         buffer.feed(dataSet)
 
-        trans!!.pointValuesToPixel(buffer.buffer)
+        trans!!.pointValuesToPixel(buffer.buffer.toFloatArray())
 
-        val isCustomFill = dataSet.fills != null && dataSet.fills.isNotEmpty()
+        val isCustomFill = dataSet.fills != null && !dataSet.fills.isEmpty()
         val isSingleColor = dataSet.colors.size == 1
         val isInverted = chart.isInverted(dataSet.axisDependency)
 

@@ -79,13 +79,13 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
             }
         }
 
-        val buffer = barBuffers!![index]!!
+        val buffer = barBuffers[index]!!
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
         buffer.setInverted(chart.isInverted(dataSet.axisDependency))
         buffer.setBarWidth(chart.barData.barWidth)
         buffer.feed(dataSet)
-        trans!!.pointValuesToPixel(buffer.buffer)
+        trans!!.pointValuesToPixel(buffer.buffer.toFloatArray())
 
         // if multiple colors has been assigned to Bar Chart
         if (dataSet.colors.size > 1) {
