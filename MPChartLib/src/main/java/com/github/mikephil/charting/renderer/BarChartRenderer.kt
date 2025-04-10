@@ -64,7 +64,6 @@ open class BarChartRenderer(
             Timber.d("$i ${barBuffers!!.size}")
             barBuffers.add(
                 BarBuffer(
-                    it.entryCount * 4 * (if (it.isStacked) it.stackSize else 1),
                     barData.dataSetCount, it.isStacked
                 )
             )
@@ -167,7 +166,7 @@ open class BarChartRenderer(
             setBarWidth(chart.barData.barWidth)
             feed(dataSet)
         }
-        trans!!.pointValuesToPixel(buffer.buffer)
+        trans!!.pointValuesToPixel(buffer.buffer.toFloatArray())
 
         val isCustomFill = dataSet.fills != null && dataSet.fills.isNotEmpty()
         val isSingleColor = dataSet.colors.size == 1
