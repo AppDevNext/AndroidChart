@@ -28,10 +28,11 @@ open class BarChartRenderer(
     protected var barRect: RectF = RectF()
 
     @JvmField
-    protected var barBuffers: Array<BarBuffer?>? = null
+    protected var barBuffers: MutableList<BarBuffer?> = mutableListOf()
 
     @JvmField
     protected var shadowPaint: Paint
+
     @JvmField
     protected var barBorderPaint: Paint
 
@@ -55,19 +56,19 @@ open class BarChartRenderer(
 
     override fun initBuffers() {
         val barData = chart.barData
-        barBuffers = arrayOfNulls(barData.dataSetCount)
+        barBuffers = mutableListOf()
 
-        for (i in barBuffers!!.indices) {
-            val set = barData.getDataSetByIndex(i)
-            barBuffers!![i] = BarBuffer(
-                set.entryCount * 4 * (if (set.isStacked) set.stackSize else 1),
-                barData.dataSetCount, set.isStacked
+        barData.dataSets.forEach {
+            barBuffers.add(
+                BarBuffer(
+                    barData.dataSetCount, it.isStacked
+                )
             )
         }
     }
 
     override fun drawData(c: Canvas) {
-        if (barBuffers == null) {
+        if (barBuffers.size == 0) {
             initBuffers()
         }
 
@@ -154,7 +155,7 @@ open class BarChartRenderer(
         }
 
         // initialize the buffer
-        val buffer = barBuffers!![index]
+        val buffer = barBuffers[index]
         buffer!!.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
         buffer.setInverted(chart.isInverted(dataSet.axisDependency))
@@ -162,7 +163,7 @@ open class BarChartRenderer(
 
         buffer.feed(dataSet)
 
-        trans!!.pointValuesToPixel(buffer.buffer)
+        trans!!.pointValuesToPixel(buffer.buffer.toFloatArray())
 
         val isCustomFill = dataSet.fills != null && dataSet.fills.isNotEmpty()
         val isSingleColor = dataSet.colors.size == 1
@@ -286,7 +287,7 @@ open class BarChartRenderer(
                 }
 
                 // get the buffer
-                val buffer = barBuffers!![i]
+                val buffer = barBuffers[i]
 
                 val phaseY = mAnimator.phaseY
 

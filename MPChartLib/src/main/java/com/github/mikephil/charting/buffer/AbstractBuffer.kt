@@ -5,14 +5,14 @@ package com.github.mikephil.charting.buffer
  *
  * @param <T> The data the buffer accepts to be fed with.
 </T> */
-abstract class AbstractBuffer<T>(size: Int) {
+abstract class AbstractBuffer<T> {
     /** index in the buffer  */
     @JvmField
     protected var index: Int = 0
 
     /** float-buffer that holds the data points to draw, order: x,y,x,y,...  */
     @JvmField
-    val buffer: FloatArray
+    val buffer: MutableList<Float> = mutableListOf()
 
     /** animation phase x-axis  */
     @JvmField
@@ -35,7 +35,6 @@ abstract class AbstractBuffer<T>(size: Int) {
      */
     init {
         index = 0
-        buffer = FloatArray(size)
     }
 
     /** limits the drawing on the x-axis  */
