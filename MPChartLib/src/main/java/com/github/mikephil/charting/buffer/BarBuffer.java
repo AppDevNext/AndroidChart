@@ -7,16 +7,16 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
     protected int mDataSetIndex = 0;
-    protected int mDataSetCount = 1;
-    protected boolean mContainsStacks = false;
+	protected int mDataSetCount;
+    protected boolean mContainsStacks;
     protected boolean mInverted = false;
 
     /** width of the bar on the x-axis, in values (not pixels) */
     protected float mBarWidth = 1f;
 
-    public BarBuffer(int size, int dataSetCount, boolean containsStacks) {
-        super(size);
-        this.mDataSetCount = dataSetCount;
+    public BarBuffer(int dataSetCount, boolean containsStacks) {
+        super();
+		this.mDataSetCount = dataSetCount;
         this.mContainsStacks = containsStacks;
     }
 
@@ -33,11 +33,10 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
     }
 
     protected void addBar(float left, float top, float right, float bottom) {
-
-        buffer[index++] = left;
-        buffer[index++] = top;
-        buffer[index++] = right;
-        buffer[index++] = bottom;
+        buffer.add(left);
+        buffer.add(top);
+        buffer.add(right);
+        buffer.add(bottom);
     }
 
     @Override
@@ -83,45 +82,43 @@ public class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
                 float posY = 0f;
                 float negY = -e.getNegativeSum();
-                float yStart = 0f;
+                float yStart;
 
                 // fill the stack
-                for (int k = 0; k < vals.length; k++) {
+				for (float value : vals) {
 
-                    float value = vals[k];
+					if (value == 0.0f && (posY == 0.0f || negY == 0.0f)) {
+						// Take care of the situation of a 0.0 value, which overlaps a non-zero bar
+						y = value;
+						yStart = y;
+					} else if (value >= 0.0f) {
+						y = posY;
+						yStart = posY + value;
+						posY = yStart;
+					} else {
+						y = negY;
+						yStart = negY + Math.abs(value);
+						negY += Math.abs(value);
+					}
 
-                    if (value == 0.0f && (posY == 0.0f || negY == 0.0f)) {
-                        // Take care of the situation of a 0.0 value, which overlaps a non-zero bar
-                        y = value;
-                        yStart = y;
-                    } else if (value >= 0.0f) {
-                        y = posY;
-                        yStart = posY + value;
-                        posY = yStart;
-                    } else {
-                        y = negY;
-                        yStart = negY + Math.abs(value);
-                        negY += Math.abs(value);
-                    }
+					float left = x - barWidthHalf;
+					float right = x + barWidthHalf;
+					float bottom, top;
 
-                    float left = x - barWidthHalf;
-                    float right = x + barWidthHalf;
-                    float bottom, top;
+					if (mInverted) {
+						bottom = Math.max(y, yStart);
+						top = Math.min(y, yStart);
+					} else {
+						top = Math.max(y, yStart);
+						bottom = Math.min(y, yStart);
+					}
 
-                    if (mInverted) {
-                        bottom = y >= yStart ? y : yStart;
-                        top = y <= yStart ? y : yStart;
-                    } else {
-                        top = y >= yStart ? y : yStart;
-                        bottom = y <= yStart ? y : yStart;
-                    }
+					// multiply the height of the rect with the phase
+					top *= phaseY;
+					bottom *= phaseY;
 
-                    // multiply the height of the rect with the phase
-                    top *= phaseY;
-                    bottom *= phaseY;
-
-                    addBar(left, top, right, bottom);
-                }
+					addBar(left, top, right, bottom);
+				}
             }
         }
 

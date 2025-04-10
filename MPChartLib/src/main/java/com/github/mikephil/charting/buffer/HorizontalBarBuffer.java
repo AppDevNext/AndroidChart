@@ -7,7 +7,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 public class HorizontalBarBuffer extends BarBuffer {
 
     public HorizontalBarBuffer(int size, int dataSetCount, boolean containsStacks) {
-        super(size, dataSetCount, containsStacks);
+        super(dataSetCount, containsStacks);
     }
 
     @Override
