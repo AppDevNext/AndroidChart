@@ -45,6 +45,16 @@ public abstract class AxisRenderer extends Renderer {
      */
     protected Paint mLimitLinePaint;
 
+    /**
+     * paint used for the limit ranges
+     */
+    protected Paint mLimitRangePaint;
+
+    /**
+     * paint used for the limit range fill
+     */
+    protected Paint mLimitRangePaintFill;
+
     public AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans, AxisBase axis) {
         super(viewPortHandler);
 
@@ -68,6 +78,12 @@ public abstract class AxisRenderer extends Renderer {
 
             mLimitLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             mLimitLinePaint.setStyle(Paint.Style.STROKE);
+
+            mLimitRangePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            mLimitRangePaint.setStyle(Paint.Style.STROKE);
+
+            mLimitRangePaintFill = new Paint(Paint.ANTI_ALIAS_FLAG);
+            mLimitRangePaintFill.setStyle(Style.FILL);
         }
     }
 

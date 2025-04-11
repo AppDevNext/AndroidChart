@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 
 import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.LimitRange;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
@@ -279,6 +280,7 @@ public class YAxisRenderer extends AxisRenderer {
     }
 
     protected Path mRenderLimitLines = new Path();
+    protected Path mRenderLimitRanges = new Path();
     protected float[] mRenderLimitLinesBuffer = new float[2];
     protected RectF mLimitLineClippingRect = new RectF();
     /**
@@ -378,5 +380,124 @@ public class YAxisRenderer extends AxisRenderer {
 
             c.restoreToCount(clipRestoreCount);
         }
+
+        // Now the ranges
+
+        List<LimitRange> limitRanges = mYAxis.getLimitRanges();
+
+        if (limitRanges == null || limitRanges.size() <= 0)
+            return;
+
+        float[] ptsr = new float[2];
+        ptsr[0] = 0;
+        ptsr[1] = 0;
+        float[] ptsr2 = new float[2];
+        ptsr2[0] = 0;
+        ptsr2[1] = 0;
+        Path limitRangePath = mRenderLimitRanges;
+        Path limitRangePathFill = mRenderLimitRanges;
+        limitRangePath.reset();
+        limitRangePathFill.reset();
+
+        for (int i = 0; i < limitRanges.size(); i++) {
+
+            LimitRange l = limitRanges.get(i);
+
+            if (!l.isEnabled())
+                continue;
+
+            int clipRestoreCount = c.save();
+            mLimitLineClippingRect.set(mViewPortHandler.getContentRect());
+            mLimitLineClippingRect.inset(0.f, -l.getLineWidth());
+            c.clipRect(mLimitLineClippingRect);
+
+            mLimitRangePaint.setStyle(Paint.Style.STROKE);
+            mLimitRangePaint.setColor(l.getLineColor());
+            mLimitRangePaint.setStrokeWidth(l.getLineWidth());
+            mLimitRangePaint.setPathEffect(l.getDashPathEffect());
+
+            mLimitRangePaintFill.setStyle(Paint.Style.FILL);
+            mLimitRangePaintFill.setColor(l.getRangeColor());
+
+            ptsr[1] = l.getLimit().getHigh();
+            ptsr2[1] = l.getLimit().getLow();
+
+            mTrans.pointValuesToPixel(ptsr);
+            mTrans.pointValuesToPixel(ptsr2);
+
+            limitRangePathFill.moveTo(mViewPortHandler.contentLeft(), ptsr[1]);
+            limitRangePathFill.addRect(
+                    mViewPortHandler.contentLeft(),
+                    ptsr[1],
+                    mViewPortHandler.contentRight(),
+                    ptsr2[1],
+                    Path.Direction.CW
+            );
+            c.drawPath(limitRangePathFill, mLimitRangePaintFill);
+            limitRangePathFill.reset();
+
+            if(l.getLineWidth() > 0) {
+                limitRangePath.moveTo(mViewPortHandler.contentLeft(), ptsr[1]);
+                limitRangePath.lineTo(mViewPortHandler.contentRight(), ptsr[1]);
+                c.drawPath(limitRangePath, mLimitRangePaint);
+
+                limitRangePath.moveTo(mViewPortHandler.contentLeft(), ptsr2[1]);
+                limitRangePath.lineTo(mViewPortHandler.contentRight(), ptsr2[1]);
+                c.drawPath(limitRangePath, mLimitRangePaint);
+            }
+
+            limitRangePath.reset();
+
+            String label = l.getLabel();
+
+            // if drawing the limit-value label is enabled
+            if (label != null && !label.equals("")) {
+
+                mLimitRangePaint.setStyle(l.getTextStyle());
+                mLimitRangePaint.setPathEffect(null);
+                mLimitRangePaint.setColor(l.getTextColor());
+                mLimitRangePaint.setTypeface(l.getTypeface());
+                mLimitRangePaint.setStrokeWidth(0.5f);
+                mLimitRangePaint.setTextSize(l.getTextSize());
+
+                final float labelLineHeight = Utils.calcTextHeight(mLimitRangePaint, label);
+                float xOffset = Utils.convertDpToPixel(4f) + l.getXOffset();
+                float yOffset = l.getLineWidth() + labelLineHeight + l.getYOffset();
+
+                final LimitLine.LimitLabelPosition position = l.getLabelPosition();
+
+                if (position == LimitLine.LimitLabelPosition.RIGHT_TOP) {
+
+                    mLimitRangePaint.setTextAlign(Align.RIGHT);
+                    c.drawText(label,
+                            mViewPortHandler.contentRight() - xOffset,
+                            ptsr[1] - yOffset + labelLineHeight, mLimitRangePaint);
+
+                } else if (position == LimitLine.LimitLabelPosition.RIGHT_BOTTOM) {
+
+                    mLimitRangePaint.setTextAlign(Align.RIGHT);
+                    c.drawText(label,
+                            mViewPortHandler.contentRight() - xOffset,
+                            ptsr[1] + yOffset, mLimitRangePaint);
+
+                } else if (position == LimitLine.LimitLabelPosition.LEFT_TOP) {
+
+                    mLimitRangePaint.setTextAlign(Align.LEFT);
+                    c.drawText(label,
+                            mViewPortHandler.contentLeft() + xOffset,
+                            ptsr[1] - yOffset + labelLineHeight, mLimitRangePaint);
+
+                } else {
+
+                    mLimitRangePaint.setTextAlign(Align.LEFT);
+                    c.drawText(label,
+                            mViewPortHandler.offsetLeft() + xOffset,
+                            ptsr[1] + yOffset, mLimitRangePaint);
+                }
+            }
+
+            c.restoreToCount(clipRestoreCount);
+        }
+
     }
 }
