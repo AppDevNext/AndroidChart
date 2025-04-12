@@ -185,10 +185,12 @@ open class BarChartRenderer(
             if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
                 j += 4
                 pos++
+                Timber.d("continue 1")
                 continue
             }
 
             if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
+                Timber.d("break")
                 break
             }
 
