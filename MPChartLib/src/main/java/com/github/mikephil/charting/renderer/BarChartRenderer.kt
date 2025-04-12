@@ -80,7 +80,6 @@ open class BarChartRenderer(
 
         for (i in 0..<barData.dataSetCount) {
             val set = barData.getDataSetByIndex(i)
-            Timber.d("$i ${barData.dataSetCount} ${set.isVisible}")
             if (set.isVisible) {
                 drawDataSet(c, set, i)
             }
