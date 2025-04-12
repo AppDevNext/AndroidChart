@@ -179,7 +179,10 @@ open class BarChartRenderer(
 
         var j = 0
         var pos = 0
+        var cnt = -1
         while (j < buffer.size()) {
+            cnt++
+            Timber.d("buffer #${j} $cnt")
             if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
                 j += 4
                 pos++
