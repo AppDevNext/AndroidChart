@@ -60,11 +60,11 @@ open class BarChartRenderer(
         val barData = chart.barData
         barBuffers = mutableListOf()
 
-        barData.dataSets.forEach {
-            Timber.d("$i ${barBuffers!!.size}")
+        barData.dataSets.forEachIndexed { index, iBarDataSet ->
+            Timber.d("$index ${barBuffers.size}")
             barBuffers.add(
                 BarBuffer(
-                    barData.dataSetCount, it.isStacked
+                    barData.dataSetCount, iBarDataSet.isStacked
                 )
             )
         }
