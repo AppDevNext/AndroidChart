@@ -14,6 +14,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.min
 
@@ -60,6 +61,7 @@ open class BarChartRenderer(
         barBuffers = mutableListOf()
 
         barData.dataSets.forEach {
+            Timber.d("$i ${barBuffers!!.size}")
             barBuffers.add(
                 BarBuffer(
                     it.entryCount * 4 * (if (it.isStacked) it.stackSize else 1),
@@ -78,7 +80,7 @@ open class BarChartRenderer(
 
         for (i in 0..<barData.dataSetCount) {
             val set = barData.getDataSetByIndex(i)
-
+            Timber.d("$i ${barData.dataSetCount} ${set.isVisible}")
             if (set.isVisible) {
                 drawDataSet(c, set, i)
             }
@@ -112,6 +114,7 @@ open class BarChartRenderer(
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
 
+        Timber.d("shadow=${chart.isDrawBarShadowEnabled}")
         // draw the bar shadow before the values
         if (chart.isDrawBarShadowEnabled) {
             shadowPaint.color = dataSet.barShadowColor
@@ -125,6 +128,7 @@ open class BarChartRenderer(
             var i = 0
             val count = min((ceil(((dataSet.entryCount).toFloat() * phaseX).toDouble())).toInt().toDouble(), dataSet.entryCount.toDouble()).toInt()
             while (i < count) {
+                Timber.d("$i")
                 val e = dataSet.getEntryForIndex(i)
 
                 x = e.x
