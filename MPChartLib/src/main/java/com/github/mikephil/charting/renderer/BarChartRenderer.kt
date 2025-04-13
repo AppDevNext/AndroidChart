@@ -159,6 +159,7 @@ open class BarChartRenderer(
         }
 
         // initialize the buffer
+        Timber.d("Init buffer index=$index size=${barBuffers!!.size} ${barBuffers!![index]}")
         val buffer = barBuffers[index]!!.apply {
             setPhases(phaseX, phaseY)
             setDataSet(index)
@@ -181,7 +182,7 @@ open class BarChartRenderer(
         var cnt = -1
         while (j < buffer.size()) {
             cnt++
-            Timber.d("buffer #${j} $cnt ${buffer.buffer[j + 2]} ${viewPortHandler.contentRect}")
+            Timber.d("buffer #${j} $cnt buf=${buffer.buffer[j + 2]} ${viewPortHandler.contentRect}")
             if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
                 j += 4
                 pos++
