@@ -86,7 +86,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
         buffer.setInverted(chart.isInverted(dataSet.axisDependency))
         buffer.setBarWidth(chart.barData.barWidth)
         buffer.feed(dataSet)
-        trans!!.pointValuesToPixel(buffer.buffer)
+        trans!!.pointValuesToPixel(buffer.buffer.toFloatArray())
 
         // if multiple colors has been assigned to Bar Chart
         if (dataSet.colors.size > 1) {
