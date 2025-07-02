@@ -72,7 +72,8 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             data.addDataSet(set);
         }
 
-        int lastDataSetIndex = data.getDataSetCount() - 1; // add data only to the last
+        // int lastDataSetIndex = data.getDataSetCount() - 1; // add data only to the last
+        int lastDataSetIndex = 0;
         ILineDataSet lastSet = data.getDataSetByIndex(lastDataSetIndex);
 
         int cycleValue = (int) (lastSet.getEntryCount() % 100.0);
@@ -139,7 +140,8 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
             int color = colors[count % colors.length];
 
-            set.setColor(color);
+//            set.setColor(color);
+            set.setColor(color, 0);
             set.setCircleColor(color);
             set.setHighLightColor(color);
             set.setValueTextSize(10f);
@@ -169,6 +171,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
         LineDataSet set = new LineDataSet(null, "DataSet 1");
         set.setLineWidth(2.5f);
+        set.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         set.setCircleRadius(4.5f);
         set.setColor(Color.rgb(240, 99, 99));
         set.setCircleColor(Color.rgb(240, 99, 99));
