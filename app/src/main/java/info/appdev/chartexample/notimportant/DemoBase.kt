@@ -57,6 +57,7 @@ abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissio
     private val backPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             overridePendingTransition(R.anim.move_left_in_activity, R.anim.move_right_out_activity)
+            isEnabled = false
             onBackPressedDispatcher.onBackPressed()
         }
     }
