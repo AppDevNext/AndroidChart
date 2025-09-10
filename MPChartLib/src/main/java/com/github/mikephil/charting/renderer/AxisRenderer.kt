@@ -211,7 +211,7 @@ abstract class AxisRenderer(
         }
 
         // set decimals
-        if (interval < 1) {
+        if (interval > 0 && interval < 1) {
             axis.mDecimals = ceil(-log10(interval)).toInt()
         } else {
             axis.mDecimals = 0
