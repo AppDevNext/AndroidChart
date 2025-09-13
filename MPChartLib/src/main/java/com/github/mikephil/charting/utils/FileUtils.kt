@@ -34,7 +34,7 @@ object FileUtils {
         // Get the text file
         val file = File(sdcard, path)
 
-        val entries: MutableList<Entry?> = ArrayList<Entry?>()
+        val entries: MutableList<Entry?> = ArrayList()
 
         try {
             val br = BufferedReader(FileReader(file))
@@ -99,7 +99,7 @@ object FileUtils {
      */
     @JvmStatic
     fun loadEntriesFromAssets(am: AssetManager, path: String): MutableList<Entry?> {
-        val entries: MutableList<Entry?> = ArrayList<Entry?>()
+        val entries: MutableList<Entry?> = ArrayList()
 
         var reader: BufferedReader? = null
         try {
@@ -211,7 +211,7 @@ object FileUtils {
 
     @JvmStatic
     fun loadBarEntriesFromAssets(am: AssetManager, path: String): MutableList<BarEntry?> {
-        val entries: MutableList<BarEntry?> = ArrayList<BarEntry?>()
+        val entries: MutableList<BarEntry?> = ArrayList()
 
         var reader: BufferedReader? = null
         try {

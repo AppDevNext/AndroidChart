@@ -1,8 +1,6 @@
 package com.github.mikephil.charting.charts
 
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
-import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
@@ -14,9 +12,7 @@ import com.github.mikephil.charting.components.Legend.LegendOrientation
 import com.github.mikephil.charting.components.Legend.LegendVerticalAlignment
 import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
-import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
@@ -98,12 +94,12 @@ abstract class PieRadarChartBase<E : Entry, D: IDataSet<E>, T : ChartData<E, D>>
     }
 
     override val maxVisibleCount: Int
-        get() = mData!!.entryCount
+        get() = mData?.entryCount ?: 0
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         // use the pie- and radarchart listener own listener
-        if (mTouchEnabled && mChartTouchListener != null) return mChartTouchListener!!.onTouch(this, event)
-        else return super.onTouchEvent(event)
+        return if (mTouchEnabled && mChartTouchListener != null) mChartTouchListener?.onTouch(this, event) == true
+        else super.onTouchEvent(event)
     }
 
     override fun computeScroll() {
@@ -115,7 +111,7 @@ abstract class PieRadarChartBase<E : Entry, D: IDataSet<E>, T : ChartData<E, D>>
 
         calcMinMax()
 
-        if (legend != null) legendRenderer?.computeLegend(mData!!)
+        legendRenderer.computeLegend(mData!!)
 
         calculateOffsets()
     }
@@ -126,20 +122,20 @@ abstract class PieRadarChartBase<E : Entry, D: IDataSet<E>, T : ChartData<E, D>>
         var legendBottom = 0f
         var legendTop = 0f
 
-        if (legend != null && legend!!.isEnabled && !legend!!.isDrawInsideEnabled) {
+        if (legend.isEnabled && !legend.isDrawInsideEnabled) {
             val fullLegendWidth = min(
-                legend!!.mNeededWidth,
-                viewPortHandler.chartWidth * legend!!.maxSizePercent
+                legend.mNeededWidth,
+                viewPortHandler.chartWidth * legend.maxSizePercent
             )
 
-            when (legend!!.orientation) {
+            when (legend.orientation) {
                 LegendOrientation.VERTICAL -> {
                     var xLegendOffset = 0f
 
-                    if (legend!!.horizontalAlignment == LegendHorizontalAlignment.LEFT
-                        || legend!!.horizontalAlignment == LegendHorizontalAlignment.RIGHT
+                    if (legend.horizontalAlignment == LegendHorizontalAlignment.LEFT
+                        || legend.horizontalAlignment == LegendHorizontalAlignment.RIGHT
                     ) {
-                        if (legend!!.verticalAlignment == LegendVerticalAlignment.CENTER) {
+                        if (legend.verticalAlignment == LegendVerticalAlignment.CENTER) {
                             // this is the space between the legend and the chart
                             val spacing = Utils.convertDpToPixel(13f)
 
@@ -149,11 +145,11 @@ abstract class PieRadarChartBase<E : Entry, D: IDataSet<E>, T : ChartData<E, D>>
                             val spacing = Utils.convertDpToPixel(8f)
 
                             val legendWidth = fullLegendWidth + spacing
-                            val legendHeight = legend!!.mNeededHeight + legend!!.mTextHeightMax
+                            val legendHeight = legend.mNeededHeight + legend.mTextHeightMax
 
                             val center = center
 
-                            val bottomX = if (legend!!.horizontalAlignment ==
+                            val bottomX = if (legend.horizontalAlignment ==
                                 LegendHorizontalAlignment.RIGHT
                             )
                                 width - legendWidth + 15f
@@ -182,32 +178,30 @@ abstract class PieRadarChartBase<E : Entry, D: IDataSet<E>, T : ChartData<E, D>>
                         }
                     }
 
-                    when (legend!!.horizontalAlignment) {
+                    when (legend.horizontalAlignment) {
                         LegendHorizontalAlignment.LEFT -> legendLeft = xLegendOffset
                         LegendHorizontalAlignment.RIGHT -> legendRight = xLegendOffset
-                        LegendHorizontalAlignment.CENTER -> when (legend!!.verticalAlignment) {
+                        LegendHorizontalAlignment.CENTER -> when (legend.verticalAlignment) {
                             LegendVerticalAlignment.TOP -> legendTop = min(
-                                legend!!.mNeededHeight,
-                                viewPortHandler.chartHeight * legend!!.maxSizePercent
+                                legend.mNeededHeight,
+                                viewPortHandler.chartHeight * legend.maxSizePercent
                             )
 
                             LegendVerticalAlignment.BOTTOM -> legendBottom = min(
-                                legend!!.mNeededHeight,
-                                viewPortHandler.chartHeight * legend!!.maxSizePercent
+                                legend.mNeededHeight,
+                                viewPortHandler.chartHeight * legend.maxSizePercent
                             )
 
                             else -> {}
                         }
-
-                        else -> {}
                     }
                 }
 
                 LegendOrientation.HORIZONTAL -> {
-                    var yLegendOffset = 0f
+                    var yLegendOffset: Float
 
-                    if (legend!!.verticalAlignment == LegendVerticalAlignment.TOP ||
-                        legend!!.verticalAlignment == LegendVerticalAlignment.BOTTOM
+                    if (legend.verticalAlignment == LegendVerticalAlignment.TOP ||
+                        legend.verticalAlignment == LegendVerticalAlignment.BOTTOM
                     ) {
                         // It's possible that we do not need this offset anymore as it
                         //   is available through the extraOffsets, but changing it can mean
@@ -216,11 +210,11 @@ abstract class PieRadarChartBase<E : Entry, D: IDataSet<E>, T : ChartData<E, D>>
                         val yOffset = this.requiredLegendOffset
 
                         yLegendOffset = min(
-                            legend!!.mNeededHeight + yOffset,
-                            viewPortHandler.chartHeight * legend!!.maxSizePercent
+                            legend.mNeededHeight + yOffset,
+                            viewPortHandler.chartHeight * legend.maxSizePercent
                         )
 
-                        when (legend!!.verticalAlignment) {
+                        when (legend.verticalAlignment) {
                             LegendVerticalAlignment.TOP -> legendTop = yLegendOffset
                             LegendVerticalAlignment.BOTTOM -> legendBottom = yLegendOffset
                             else -> {}
@@ -275,7 +269,7 @@ abstract class PieRadarChartBase<E : Entry, D: IDataSet<E>, T : ChartData<E, D>>
     fun getAngleForPoint(x: Float, y: Float): Float {
         val c = centerOffsets
 
-        val tx = (x - c!!.x).toDouble()
+        val tx = (x - c.x).toDouble()
         val ty = (y - c.y).toDouble()
         val length = sqrt(tx * tx + ty * ty)
         val r = acos(ty / length)
@@ -327,21 +321,18 @@ abstract class PieRadarChartBase<E : Entry, D: IDataSet<E>, T : ChartData<E, D>>
     fun distanceToCenter(x: Float, y: Float): Float {
         val c = centerOffsets
 
-        var dist = 0f
+        var dist: Float
 
-        var xDist = 0f
-        var yDist = 0f
-
-        if (x > c!!.x) {
-            xDist = x - c.x
+        val xDist = if (x > c.x) {
+            x - c.x
         } else {
-            xDist = c.x - x
+            c.x - x
         }
 
-        if (y > c.y) {
-            yDist = y - c.y
+        val yDist = if (y > c.y) {
+            y - c.y
         } else {
-            yDist = c.y - y
+            c.y - y
         }
 
         // pythagoras

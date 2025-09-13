@@ -137,9 +137,9 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
     override fun renderAxisLabels(c: Canvas) {
         if (!yAxis.isEnabled || !yAxis.isDrawLabelsEnabled) return
 
-        paintAxisLabels!!.setTypeface(yAxis.typeface)
-        paintAxisLabels!!.textSize = yAxis.textSize
-        paintAxisLabels!!.color = yAxis.textColor
+        paintAxisLabels.setTypeface(yAxis.typeface)
+        paintAxisLabels.textSize = yAxis.textSize
+        paintAxisLabels.color = yAxis.textColor
 
         val center = chart.centerOffsets
         val pOut = MPPointF.getInstance(0f, 0f)
@@ -160,7 +160,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
             val label = yAxis.getFormattedLabel(j)
 
-            c.drawText(label, pOut.x + xOffset, pOut.y, paintAxisLabels!!)
+            c.drawText(label, pOut.x + xOffset, pOut.y, paintAxisLabels)
         }
         MPPointF.recycleInstance(center)
         MPPointF.recycleInstance(pOut)
@@ -182,9 +182,9 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
             if (!l.isEnabled) continue
 
-            limitLinePaint!!.color = l.lineColor
-            limitLinePaint!!.setPathEffect(l.dashPathEffect)
-            limitLinePaint!!.strokeWidth = l.lineWidth
+            limitLinePaint.color = l.lineColor
+            limitLinePaint.setPathEffect(l.dashPathEffect)
+            limitLinePaint.strokeWidth = l.lineWidth
 
             val r = (l.limit - chart.yChartMin) * factor
 
@@ -192,7 +192,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
             limitPath.reset()
 
 
-            for (j in 0..<(chart.data!!.maxEntryCountSet?.entryCount ?: 0)) {
+            for (j in 0..<(chart.data?.maxEntryCountSet?.entryCount ?: 0)) {
                 Utils.getPosition(center, r, sliceAngle * j + chart.rotationAngle, pOut)
 
                 if (j == 0) limitPath.moveTo(pOut.x, pOut.y)
@@ -200,7 +200,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
             }
             limitPath.close()
 
-            c.drawPath(limitPath, limitLinePaint!!)
+            c.drawPath(limitPath, limitLinePaint)
         }
         MPPointF.recycleInstance(center)
         MPPointF.recycleInstance(pOut)

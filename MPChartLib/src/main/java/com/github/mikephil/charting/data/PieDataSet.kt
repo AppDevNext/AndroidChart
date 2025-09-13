@@ -37,7 +37,7 @@ open class PieDataSet(yVals: MutableList<PieEntry>, label: String) : DataSet<Pie
     }
 
     protected fun copy(pieDataSet: PieDataSet) {
-        super.copy((pieDataSet as BaseDataSet<*>?)!!)
+        super.copy(pieDataSet)
     }
 
     override fun calcMinMax(e: PieEntry) {

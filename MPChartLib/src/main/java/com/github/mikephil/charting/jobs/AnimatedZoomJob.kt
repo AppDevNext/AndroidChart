@@ -80,7 +80,7 @@ open class AnimatedZoomJob @SuppressLint("NewApi") constructor(
     override fun onAnimationStart(animation: Animator) {
     }
 
-    override fun instantiate(): AnimatedZoomJob? {
+    override fun instantiate(): AnimatedZoomJob {
         return AnimatedZoomJob(ViewPortHandler(), null, null, YAxis(), 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0)
     }
 

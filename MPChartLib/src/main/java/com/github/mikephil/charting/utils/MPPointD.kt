@@ -37,7 +37,7 @@ class MPPointD private constructor(var x: Double, var y: Double) : Poolable<MPPo
             pool.recycle(instance)
         }
 
-        fun recycleInstances(instances: MutableList<MPPointD?>) {
+        fun recycleInstances(instances: MutableList<MPPointD>) {
             pool.recycle(instances)
         }
     }

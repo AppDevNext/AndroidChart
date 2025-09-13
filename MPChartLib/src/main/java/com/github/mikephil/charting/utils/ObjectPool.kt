@@ -15,7 +15,7 @@ import com.github.mikephil.charting.utils.ObjectPool.Poolable
  *
  * Created by Tony Patino on 6/20/16.
  */
-class ObjectPool<T : Poolable<T>?> private constructor(withCapacity: Int, `object`: T?) {
+class ObjectPool<T : Poolable<T>> private constructor(withCapacity: Int, `object`: T?) {
     /**
      * Returns the id of the given pool instance.
      *
@@ -24,8 +24,7 @@ class ObjectPool<T : Poolable<T>?> private constructor(withCapacity: Int, `objec
     var poolId: Int = 0
         private set
     private var desiredCapacity: Int
-    private var objects: Array<T?>
-    private var objectsPointer: Int
+    private val objects = ArrayList<T>(withCapacity)
     private val modelObject: T?
     private var replenishPercentage: Float
 
@@ -33,8 +32,6 @@ class ObjectPool<T : Poolable<T>?> private constructor(withCapacity: Int, `objec
     init {
         require(withCapacity > 0) { "Object Pool must be instantiated with a capacity greater than 0!" }
         this.desiredCapacity = withCapacity
-        this.objects = arrayOfNulls(this.desiredCapacity)
-        this.objectsPointer = 0
         this.modelObject = `object`
         this.replenishPercentage = 1.0f
         this.refillPool()
@@ -69,10 +66,11 @@ class ObjectPool<T : Poolable<T>?> private constructor(withCapacity: Int, `objec
             portionOfCapacity = desiredCapacity
         }
 
-        for (i in 0..<portionOfCapacity) {
-            this.objects[i] = modelObject!!.instantiate()
+        this.objects.clear()
+
+        repeat(portionOfCapacity + 1) {
+            this.objects.add(modelObject!!.instantiate())
         }
-        objectsPointer = portionOfCapacity - 1
     }
 
     /**
@@ -84,14 +82,12 @@ class ObjectPool<T : Poolable<T>?> private constructor(withCapacity: Int, `objec
      */
     @Synchronized
     fun get(): T {
-        if (this.objectsPointer == -1 && this.replenishPercentage > 0.0f) {
+        if (objects.isEmpty() && this.replenishPercentage > 0.0f) {
             this.refillPool()
         }
 
-        val result = objects[this.objectsPointer]
-        objects[this.objectsPointer] = null
-        result!!.currentOwnerId = Poolable.Companion.NO_OWNER
-        this.objectsPointer--
+        val result = objects.removeAt(objects.lastIndex)
+        result.currentOwnerId = Poolable.Companion.NO_OWNER
 
         return result
     }
@@ -103,19 +99,18 @@ class ObjectPool<T : Poolable<T>?> private constructor(withCapacity: Int, `objec
      * @param object An object of type T to recycle
      */
     @Synchronized
-    fun recycle(`object`: T?) {
-        if (`object`!!.currentOwnerId != Poolable.Companion.NO_OWNER) {
+    fun recycle(`object`: T) {
+        if (`object`.currentOwnerId != Poolable.Companion.NO_OWNER) {
             require(`object`.currentOwnerId != this.poolId) { "The object passed is already stored in this pool!" }
             throw IllegalArgumentException("The object to recycle already belongs to poolId " + `object`.currentOwnerId + ".  Object cannot belong to two different pool instances simultaneously!")
         }
 
-        this.objectsPointer++
-        if (this.objectsPointer >= objects.size) {
-            this.resizePool()
-        }
-
         `object`.currentOwnerId = this.poolId
-        objects[this.objectsPointer] = `object`
+        objects.add(`object`)
+
+        if (objects.size > desiredCapacity) {
+            resizePool()
+        }
     }
 
     /**
@@ -125,33 +120,27 @@ class ObjectPool<T : Poolable<T>?> private constructor(withCapacity: Int, `objec
      * @param objects A list of objects of type T to recycle
      */
     @Synchronized
-    fun recycle(objects: MutableList<T?>) {
-        while (objects.size + this.objectsPointer + 1 > this.desiredCapacity) {
-            this.resizePool()
-        }
+    fun recycle(objects: MutableList<T>) {
         val objectsListSize = objects.size
+
+        while (objectsListSize + this.objects.size > this.desiredCapacity) {
+            resizePool()
+        }
 
         // Not relying on recycle(T object) because this is more performant.
         for (i in 0..<objectsListSize) {
-            val `object` = objects.get(i)
-            if (`object`!!.currentOwnerId != Poolable.Companion.NO_OWNER) {
+            val `object` = objects[i]
+            if (`object`.currentOwnerId != Poolable.Companion.NO_OWNER) {
                 require(`object`.currentOwnerId != this.poolId) { "The object passed is already stored in this pool!" }
                 throw IllegalArgumentException("The object to recycle already belongs to poolId " + `object`.currentOwnerId + ".  Object cannot belong to two different pool instances simultaneously!")
             }
             `object`.currentOwnerId = this.poolId
-            this.objects[this.objectsPointer + 1 + i] = `object`
+            this.objects.add(`object`)
         }
-        this.objectsPointer += objectsListSize
     }
 
     private fun resizePool() {
-        val oldCapacity = this.desiredCapacity
         this.desiredCapacity *= 2
-        val temp: Array<T?> = arrayOfNulls(this.desiredCapacity)
-        for (i in 0..<oldCapacity) {
-            temp[i] = this.objects[i]
-        }
-        this.objects = temp
     }
 
     val poolCapacity: Int
@@ -162,7 +151,7 @@ class ObjectPool<T : Poolable<T>?> private constructor(withCapacity: Int, `objec
          *
          * @return The capacity of the pool.
          */
-        get() = this.objects.size
+        get() = this.desiredCapacity
 
     val poolCount: Int
         /**
@@ -170,13 +159,13 @@ class ObjectPool<T : Poolable<T>?> private constructor(withCapacity: Int, `objec
          *
          * @return The number of objects remaining in the pool.
          */
-        get() = this.objectsPointer + 1
+        get() = objects.size
 
 
-    abstract class Poolable<T : Poolable<T>?> {
+    abstract class Poolable<T : Poolable<T>> {
         var currentOwnerId: Int = NO_OWNER
 
-        abstract fun instantiate(): T?
+        abstract fun instantiate(): T
 
         companion object {
             var NO_OWNER: Int = -1

@@ -137,7 +137,7 @@ class CandleEntry : Entry {
          */
         get() = abs(this.open - this.close)
 
-    public override fun copy(): CandleEntry {
+    override fun copy(): CandleEntry {
         val c = CandleEntry(
             x, this.high, this.low, this.open,
             this.close, data

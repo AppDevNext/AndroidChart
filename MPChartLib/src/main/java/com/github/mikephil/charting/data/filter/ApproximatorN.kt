@@ -126,7 +126,7 @@ class ApproximatorN {
 
             while (!queue.isEmpty()) {
                 val midIndex = min + (max - min) / 2
-                val midLine = queue.get(midIndex)
+                val midLine = queue[midIndex]
 
                 if (midLine.equals(line)) {
                     return midIndex

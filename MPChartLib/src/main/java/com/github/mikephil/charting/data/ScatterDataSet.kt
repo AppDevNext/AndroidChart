@@ -47,7 +47,7 @@ open class ScatterDataSet(yVals: MutableList<Entry>, label: String) : LineScatte
     }
 
     protected fun copy(scatterDataSet: ScatterDataSet) {
-        super.copy((scatterDataSet as BaseDataSet<*>?)!!)
+        super.copy(scatterDataSet)
         scatterDataSet.scatterShapeSize = scatterShapeSize
         scatterDataSet.shapeRenderer = shapeRenderer
         scatterDataSet.scatterShapeHoleRadius = scatterShapeHoleRadius

@@ -10,9 +10,10 @@ import kotlin.math.abs
  */
 open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>(chart) {
     override fun getClosestHighlight(index: Int, x: Float, y: Float): Highlight? {
+        val chart = mChart ?: return null
         val highlights = getHighlightsAtIndex(index)
 
-        val distanceToCenter = mChart!!.distanceToCenter(x, y) / mChart!!.factor
+        val distanceToCenter = chart.distanceToCenter(x, y) / chart.factor
 
         var closest: Highlight? = null
         var distance = Float.Companion.MAX_VALUE
@@ -42,22 +43,25 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
     protected fun getHighlightsAtIndex(index: Int): MutableList<Highlight> {
         mHighlightBuffer.clear()
 
-        val phaseX = mChart!!.animator.phaseX
-        val phaseY = mChart!!.animator.phaseY
-        val sliceangle = mChart!!.sliceAngle
-        val factor = mChart!!.factor
+        val chart = mChart ?: return mutableListOf()
+
+        val phaseX = chart.animator.phaseX
+        val phaseY = chart.animator.phaseY
+        val sliceangle = chart.sliceAngle
+        val factor = chart.factor
 
         val pOut: MPPointF = MPPointF.Companion.getInstance(0f, 0f)
-        for (i in 0..<mChart!!.data!!.dataSetCount) {
-            val dataSet = mChart!!.data!!.getDataSetByIndex(i)
+        val chartData = chart.data ?: return mutableListOf()
+        for (i in 0..<chartData.dataSetCount) {
+            val dataSet = chartData.getDataSetByIndex(i)
 
-            val entry = dataSet!!.getEntryForIndex(index)
+            val entry = dataSet.getEntryForIndex(index)
 
-            val y = (entry!!.y - mChart!!.yChartMin)
+            val y = (entry.y - chart.yChartMin)
 
             Utils.getPosition(
-                mChart!!.centerOffsets!!, y * factor * phaseY,
-                sliceangle * index * phaseX + mChart!!.rotationAngle, pOut
+                chart.centerOffsets, y * factor * phaseY,
+                sliceangle * index * phaseX + chart.rotationAngle, pOut
             )
 
             mHighlightBuffer.add(Highlight(index.toFloat(), entry.y, pOut.x, pOut.y, i, dataSet.axisDependency))

@@ -220,7 +220,7 @@ open class YAxisRendererHorizontalBarChart(
     override fun renderLimitLines(c: Canvas) {
         val limitLines = yAxis.limitLines
 
-        if (limitLines == null || limitLines.size <= 0) return
+        if (limitLines.isEmpty()) return
 
         val pts = renderLimitLinesBuffer
         pts[0] = 0f

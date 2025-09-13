@@ -1,7 +1,6 @@
 package com.github.mikephil.charting.charts
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -157,9 +156,9 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
     /**
      * paint object for the (by default) lightgrey background of the grid
      */
-    protected var mGridBackgroundPaint: Paint? = null
+    protected var mGridBackgroundPaint: Paint = Paint()
 
-    protected var mBorderPaint: Paint? = null
+    protected val mBorderPaint: Paint = Paint()
 
     /**
      * flag indicating if the grid background should be drawn or not
@@ -230,20 +229,20 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
     /**
      * the object representing the labels on the left y-axis
      */
-    protected var mAxisLeft: YAxis? = null
+    protected val mAxisLeft: YAxis = YAxis(AxisDependency.LEFT)
 
     /**
      * the object representing the labels on the right y-axis
      */
-    protected var mAxisRight: YAxis? = null
+    protected val mAxisRight: YAxis = YAxis(AxisDependency.RIGHT)
 
-    protected var mAxisRendererLeft: YAxisRenderer? = null
-    protected var mAxisRendererRight: YAxisRenderer? = null
+    protected var mLeftAxisTransformer: Transformer = Transformer(viewPortHandler)
+    protected var mRightAxisTransformer: Transformer = Transformer(viewPortHandler)
 
-    protected var mLeftAxisTransformer: Transformer? = null
-    protected var mRightAxisTransformer: Transformer? = null
+    protected var mAxisRendererLeft: YAxisRenderer = YAxisRenderer(viewPortHandler, mAxisLeft, mLeftAxisTransformer)
+    protected var mAxisRendererRight: YAxisRenderer = YAxisRenderer(viewPortHandler, mAxisRight, mRightAxisTransformer)
 
-    protected var mXAxisRenderer: XAxisRenderer? = null
+    protected var mXAxisRenderer: XAxisRenderer = XAxisRenderer(viewPortHandler, mXAxis, mLeftAxisTransformer)
 
     // /** the approximator object used for data filtering */
     // private Approximator mApproximator;
@@ -256,38 +255,25 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
     override fun init() {
         super.init()
 
-        mAxisLeft = YAxis(AxisDependency.LEFT)
-        mAxisRight = YAxis(AxisDependency.RIGHT)
-
-        mLeftAxisTransformer = Transformer(viewPortHandler)
-        mRightAxisTransformer = Transformer(viewPortHandler)
-
-        mAxisRendererLeft = YAxisRenderer(viewPortHandler, mAxisLeft!!, mLeftAxisTransformer)
-        mAxisRendererRight = YAxisRenderer(viewPortHandler, mAxisRight!!, mRightAxisTransformer)
-
-        mXAxisRenderer = XAxisRenderer(viewPortHandler, mXAxis!!, mLeftAxisTransformer)
-
         setHighlighter(ChartHighlighter(this))
 
         mChartTouchListener = BarLineChartTouchListener(this, viewPortHandler.matrixTouch, 3f)
 
-        mGridBackgroundPaint = Paint()
-        mGridBackgroundPaint!!.style = Paint.Style.FILL
+        mGridBackgroundPaint.style = Paint.Style.FILL
         // mGridBackgroundPaint.setColor(Color.WHITE);
-        mGridBackgroundPaint!!.setColor(Color.rgb(240, 240, 240)) // light
+        mGridBackgroundPaint.setColor(Color.rgb(240, 240, 240)) // light
 
         // grey
-        mBorderPaint = Paint()
-        mBorderPaint!!.style = Paint.Style.STROKE
-        mBorderPaint!!.setColor(Color.BLACK)
-        mBorderPaint!!.strokeWidth = Utils.convertDpToPixel(1f)
+        mBorderPaint.style = Paint.Style.STROKE
+        mBorderPaint.setColor(Color.BLACK)
+        mBorderPaint.strokeWidth = Utils.convertDpToPixel(1f)
     }
 
     // for performance tracking
     private var totalTime: Long = 0
     private var drawCycles: Long = 0
 
-    protected override fun onDraw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         if (mData == null) return
@@ -301,11 +287,11 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
             autoScale()
         }
 
-        if (mAxisLeft!!.isEnabled) mAxisRendererLeft!!.computeAxis(mAxisLeft!!.mAxisMinimum, mAxisLeft!!.mAxisMaximum, mAxisLeft!!.isInverted)
+        if (mAxisLeft.isEnabled) mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum, mAxisLeft.isInverted)
 
-        if (mAxisRight!!.isEnabled) mAxisRendererRight!!.computeAxis(mAxisRight!!.mAxisMinimum, mAxisRight!!.mAxisMaximum, mAxisRight!!.isInverted)
+        if (mAxisRight.isEnabled) mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum, mAxisRight.isInverted)
 
-        if (mXAxis!!.isEnabled) mXAxisRenderer!!.computeAxis(mXAxis!!.mAxisMinimum, mXAxis!!.mAxisMaximum, false)
+        if (mXAxis.isEnabled) mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
 
         // Y-axis labels could have changed in size affecting the offsets
         if (this.isAutoScaleMinMaxEnabled) {
@@ -313,21 +299,21 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
             viewPortHandler.refresh(viewPortHandler.matrixTouch, this, false)
         }
 
-        mXAxisRenderer!!.renderAxisLine(canvas)
-        mAxisRendererLeft!!.renderAxisLine(canvas)
-        mAxisRendererRight!!.renderAxisLine(canvas)
+        mXAxisRenderer.renderAxisLine(canvas)
+        mAxisRendererLeft.renderAxisLine(canvas)
+        mAxisRendererRight.renderAxisLine(canvas)
 
-        if (mXAxis!!.isDrawGridLinesBehindDataEnabled) mXAxisRenderer!!.renderGridLines(canvas)
+        if (mXAxis.isDrawGridLinesBehindDataEnabled) mXAxisRenderer.renderGridLines(canvas)
 
-        if (mAxisLeft!!.isDrawGridLinesBehindDataEnabled) mAxisRendererLeft!!.renderGridLines(canvas)
+        if (mAxisLeft.isDrawGridLinesBehindDataEnabled) mAxisRendererLeft.renderGridLines(canvas)
 
-        if (mAxisRight!!.isDrawGridLinesBehindDataEnabled) mAxisRendererRight!!.renderGridLines(canvas)
+        if (mAxisRight.isDrawGridLinesBehindDataEnabled) mAxisRendererRight.renderGridLines(canvas)
 
-        if (mXAxis!!.isEnabled && mXAxis!!.isDrawLimitLinesBehindDataEnabled) mXAxisRenderer!!.renderLimitLines(canvas)
+        if (mXAxis.isEnabled && mXAxis.isDrawLimitLinesBehindDataEnabled) mXAxisRenderer.renderLimitLines(canvas)
 
-        if (mAxisLeft!!.isEnabled && mAxisLeft!!.isDrawLimitLinesBehindDataEnabled) mAxisRendererLeft!!.renderLimitLines(canvas)
+        if (mAxisLeft.isEnabled && mAxisLeft.isDrawLimitLinesBehindDataEnabled) mAxisRendererLeft.renderLimitLines(canvas)
 
-        if (mAxisRight!!.isEnabled && mAxisRight!!.isDrawLimitLinesBehindDataEnabled) mAxisRendererRight!!.renderLimitLines(canvas)
+        if (mAxisRight.isEnabled && mAxisRight.isDrawLimitLinesBehindDataEnabled) mAxisRendererRight.renderLimitLines(canvas)
 
         var clipRestoreCount = canvas.save()
 
@@ -338,11 +324,11 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
 
         mRenderer?.drawData(canvas)
 
-        if (!mXAxis!!.isDrawGridLinesBehindDataEnabled) mXAxisRenderer!!.renderGridLines(canvas)
+        if (!mXAxis.isDrawGridLinesBehindDataEnabled) mXAxisRenderer.renderGridLines(canvas)
 
-        if (!mAxisLeft!!.isDrawGridLinesBehindDataEnabled) mAxisRendererLeft!!.renderGridLines(canvas)
+        if (!mAxisLeft.isDrawGridLinesBehindDataEnabled) mAxisRendererLeft.renderGridLines(canvas)
 
-        if (!mAxisRight!!.isDrawGridLinesBehindDataEnabled) mAxisRendererRight!!.renderGridLines(canvas)
+        if (!mAxisRight.isDrawGridLinesBehindDataEnabled) mAxisRendererRight.renderGridLines(canvas)
 
         // if highlighting is enabled
         if (valuesToHighlight()) mRenderer?.drawHighlighted(canvas, highlighted!!)
@@ -352,15 +338,15 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
 
         mRenderer?.drawExtras(canvas)
 
-        if (mXAxis!!.isEnabled && !mXAxis!!.isDrawLimitLinesBehindDataEnabled) mXAxisRenderer!!.renderLimitLines(canvas)
+        if (mXAxis.isEnabled && !mXAxis.isDrawLimitLinesBehindDataEnabled) mXAxisRenderer.renderLimitLines(canvas)
 
-        if (mAxisLeft!!.isEnabled && !mAxisLeft!!.isDrawLimitLinesBehindDataEnabled) mAxisRendererLeft!!.renderLimitLines(canvas)
+        if (mAxisLeft.isEnabled && !mAxisLeft.isDrawLimitLinesBehindDataEnabled) mAxisRendererLeft.renderLimitLines(canvas)
 
-        if (mAxisRight!!.isEnabled && !mAxisRight!!.isDrawLimitLinesBehindDataEnabled) mAxisRendererRight!!.renderLimitLines(canvas)
+        if (mAxisRight.isEnabled && !mAxisRight.isDrawLimitLinesBehindDataEnabled) mAxisRendererRight.renderLimitLines(canvas)
 
-        mXAxisRenderer!!.renderAxisLabels(canvas)
-        mAxisRendererLeft!!.renderAxisLabels(canvas)
-        mAxisRendererRight!!.renderAxisLabels(canvas)
+        mXAxisRenderer.renderAxisLabels(canvas)
+        mAxisRendererLeft.renderAxisLabels(canvas)
+        mAxisRendererRight.renderAxisLabels(canvas)
 
         if (this.isClipValuesToContentEnabled) {
             clipRestoreCount = canvas.save()
@@ -373,7 +359,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
             mRenderer?.drawValues(canvas)
         }
 
-        legendRenderer?.renderLegend(canvas)
+        legendRenderer.renderLegend(canvas)
 
         drawDescription(canvas)
 
@@ -401,27 +387,27 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
 
     protected open fun prepareValuePxMatrix() {
         if (isLogEnabled) Log.i(
-            LOG_TAG, ("Preparing Value-Px Matrix, xmin: " + mXAxis!!.mAxisMinimum + ", xmax: "
-                    + mXAxis!!.mAxisMaximum + ", xdelta: " + mXAxis!!.mAxisRange)
+            LOG_TAG, ("Preparing Value-Px Matrix, xmin: " + mXAxis.mAxisMinimum + ", xmax: "
+                    + mXAxis.mAxisMaximum + ", xdelta: " + mXAxis.mAxisRange)
         )
 
-        mRightAxisTransformer!!.prepareMatrixValuePx(
-            mXAxis!!.mAxisMinimum,
-            mXAxis!!.mAxisRange,
-            mAxisRight!!.mAxisRange,
-            mAxisRight!!.mAxisMinimum
+        mRightAxisTransformer.prepareMatrixValuePx(
+            mXAxis.mAxisMinimum,
+            mXAxis.mAxisRange,
+            mAxisRight.mAxisRange,
+            mAxisRight.mAxisMinimum
         )
-        mLeftAxisTransformer!!.prepareMatrixValuePx(
-            mXAxis!!.mAxisMinimum,
-            mXAxis!!.mAxisRange,
-            mAxisLeft!!.mAxisRange,
-            mAxisLeft!!.mAxisMinimum
+        mLeftAxisTransformer.prepareMatrixValuePx(
+            mXAxis.mAxisMinimum,
+            mXAxis.mAxisRange,
+            mAxisLeft.mAxisRange,
+            mAxisLeft.mAxisMinimum
         )
     }
 
     protected fun prepareOffsetMatrix() {
-        mRightAxisTransformer!!.prepareMatrixOffset(mAxisRight!!.isInverted)
-        mLeftAxisTransformer!!.prepareMatrixOffset(mAxisLeft!!.isInverted)
+        mRightAxisTransformer.prepareMatrixOffset(mAxisRight.isInverted)
+        mLeftAxisTransformer.prepareMatrixOffset(mAxisLeft.isInverted)
     }
 
     override fun notifyDataSetChanged() {
@@ -432,15 +418,15 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
             if (isLogEnabled) Log.i(LOG_TAG, "Preparing...")
         }
 
-        if (mRenderer != null) mRenderer!!.initBuffers()
+        mRenderer?.initBuffers()
 
         calcMinMax()
 
-        mAxisRendererLeft!!.computeAxis(mAxisLeft!!.mAxisMinimum, mAxisLeft!!.mAxisMaximum, mAxisLeft!!.isInverted)
-        mAxisRendererRight!!.computeAxis(mAxisRight!!.mAxisMinimum, mAxisRight!!.mAxisMaximum, mAxisRight!!.isInverted)
-        mXAxisRenderer!!.computeAxis(mXAxis!!.mAxisMinimum, mXAxis!!.mAxisMaximum, false)
+        mAxisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum, mAxisLeft.isInverted)
+        mAxisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum, mAxisRight.isInverted)
+        mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
 
-        if (legend != null) legendRenderer?.computeLegend(mData!!)
+        legendRenderer.computeLegend(mData!!)
 
         calculateOffsets()
     }
@@ -452,17 +438,19 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
         val fromX = lowestVisibleX
         val toX = highestVisibleX
 
-        mData!!.calcMinMaxY(fromX, toX)
+        mData?.calcMinMaxY(fromX, toX)
 
         calcMinMax()
     }
 
     override fun calcMinMax() {
-        mXAxis?.calculate(mData!!.xMin, mData!!.xMax)
+        mData?.let { mData ->
+            mXAxis.calculate(mData.xMin, mData.xMax)
 
-        // calculate axis range (min / max) according to provided data
-        mAxisLeft!!.calculate(mData!!.getYMin(AxisDependency.LEFT), mData!!.getYMax(AxisDependency.LEFT))
-        mAxisRight!!.calculate(mData!!.getYMin(AxisDependency.RIGHT), mData!!.getYMax(AxisDependency.RIGHT))
+            // calculate axis range (min / max) according to provided data
+            mAxisLeft.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT))
+            mAxisRight.calculate(mData.getYMin(AxisDependency.RIGHT), mData.getYMax(AxisDependency.RIGHT))
+        }
     }
 
     protected open fun calculateLegendOffsets(offsets: RectF) {
@@ -471,47 +459,46 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
         offsets.top = 0f
         offsets.bottom = 0f
 
-        if (legend == null || !legend!!.isEnabled || legend!!.isDrawInsideEnabled) return
+        if (!legend.isEnabled || legend.isDrawInsideEnabled) return
 
-        when (legend!!.orientation) {
-            LegendOrientation.VERTICAL -> when (legend!!.horizontalAlignment) {
+        when (legend.orientation) {
+            LegendOrientation.VERTICAL -> when (legend.horizontalAlignment) {
                 LegendHorizontalAlignment.LEFT -> offsets.left += min(
-                    legend!!.mNeededWidth,
-                    viewPortHandler.chartWidth * legend!!.maxSizePercent
-                ) + legend!!.xOffset
+                    legend.mNeededWidth,
+                    viewPortHandler.chartWidth * legend.maxSizePercent
+                ) + legend.xOffset
 
                 LegendHorizontalAlignment.RIGHT -> offsets.right += min(
-                    legend!!.mNeededWidth,
-                    viewPortHandler.chartWidth * legend!!.maxSizePercent
-                ) + legend!!.xOffset
+                    legend.mNeededWidth,
+                    viewPortHandler.chartWidth * legend.maxSizePercent
+                ) + legend.xOffset
 
-                LegendHorizontalAlignment.CENTER -> when (legend!!.verticalAlignment) {
+                LegendHorizontalAlignment.CENTER -> when (legend.verticalAlignment) {
                     LegendVerticalAlignment.TOP -> offsets.top += min(
-                        legend!!.mNeededHeight,
-                        viewPortHandler.chartHeight * legend!!.maxSizePercent
-                    ) + legend!!.yOffset
+                        legend.mNeededHeight,
+                        viewPortHandler.chartHeight * legend.maxSizePercent
+                    ) + legend.yOffset
 
                     LegendVerticalAlignment.BOTTOM -> offsets.bottom += min(
-                        legend!!.mNeededHeight,
-                        viewPortHandler.chartHeight * legend!!.maxSizePercent
-                    ) + legend!!.yOffset
+                        legend.mNeededHeight,
+                        viewPortHandler.chartHeight * legend.maxSizePercent
+                    ) + legend.yOffset
 
                     else -> {}
                 }
-                else -> {}
             }
 
-            LegendOrientation.HORIZONTAL -> when (legend!!.verticalAlignment) {
+            LegendOrientation.HORIZONTAL -> when (legend.verticalAlignment) {
                 LegendVerticalAlignment.TOP -> offsets.top += min(
-                    legend!!.mNeededHeight,
-                    viewPortHandler.chartHeight * legend!!.maxSizePercent
-                ) + legend!!.yOffset
+                    legend.mNeededHeight,
+                    viewPortHandler.chartHeight * legend.maxSizePercent
+                ) + legend.yOffset
 
 
                 LegendVerticalAlignment.BOTTOM -> offsets.bottom += min(
-                    legend!!.mNeededHeight,
-                    viewPortHandler.chartHeight * legend!!.maxSizePercent
-                ) + legend!!.yOffset
+                    legend.mNeededHeight,
+                    viewPortHandler.chartHeight * legend.maxSizePercent
+                ) + legend.yOffset
 
 
                 else -> {}
@@ -536,31 +523,36 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
             offsetBottom += mOffsetsBuffer.bottom
 
             // offsets for y-labels
-            if (mAxisLeft!!.needsOffset()) {
-                offsetLeft += mAxisLeft!!.getRequiredWidthSpace(
-                    mAxisRendererLeft!!
+            if (mAxisLeft.needsOffset()) {
+                offsetLeft += mAxisLeft.getRequiredWidthSpace(
+                    mAxisRendererLeft
                         .paintAxisLabels
                 )
             }
 
-            if (mAxisRight!!.needsOffset()) {
-                offsetRight += mAxisRight!!.getRequiredWidthSpace(
-                    mAxisRendererRight!!
+            if (mAxisRight.needsOffset()) {
+                offsetRight += mAxisRight.getRequiredWidthSpace(
+                    mAxisRendererRight
                         .paintAxisLabels
                 )
             }
 
-            if (mXAxis!!.isEnabled && mXAxis!!.isDrawLabelsEnabled) {
-                val xLabelHeight = mXAxis!!.mLabelHeight + mXAxis!!.yOffset
+            if (mXAxis.isEnabled && mXAxis.isDrawLabelsEnabled) {
+                val xLabelHeight = mXAxis.mLabelHeight + mXAxis.yOffset
 
                 // offsets for x-labels
-                if (mXAxis!!.position == XAxisPosition.BOTTOM) {
-                    offsetBottom += xLabelHeight
-                } else if (mXAxis!!.position == XAxisPosition.TOP) {
-                    offsetTop += xLabelHeight
-                } else if (mXAxis!!.position == XAxisPosition.BOTH_SIDED) {
-                    offsetBottom += xLabelHeight
-                    offsetTop += xLabelHeight
+                when (mXAxis.position) {
+                    XAxisPosition.BOTTOM -> {
+                        offsetBottom += xLabelHeight
+                    }
+                    XAxisPosition.TOP -> {
+                        offsetTop += xLabelHeight
+                    }
+                    XAxisPosition.BOTH_SIDED -> {
+                        offsetBottom += xLabelHeight
+                        offsetTop += xLabelHeight
+                    }
+                    else -> {}
                 }
             }
 
@@ -598,11 +590,11 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
         if (mDrawGridBackground) {
             // draw the grid background
 
-            c.drawRect(viewPortHandler.contentRect, mGridBackgroundPaint!!)
+            c.drawRect(viewPortHandler.contentRect, mGridBackgroundPaint)
         }
 
         if (this.isDrawBordersEnabled) {
-            c.drawRect(viewPortHandler.contentRect, mBorderPaint!!)
+            c.drawRect(viewPortHandler.contentRect, mBorderPaint)
         }
     }
 
@@ -614,8 +606,8 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @return
      */
     override fun getTransformer(axis: AxisDependency?): Transformer {
-        return if (axis == AxisDependency.LEFT) mLeftAxisTransformer!!
-        else mRightAxisTransformer!!
+        return if (axis == AxisDependency.LEFT) mLeftAxisTransformer
+        else mRightAxisTransformer
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -625,11 +617,11 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
 
         // check if touch gestures are enabled
         return if (!mTouchEnabled) false
-        else mChartTouchListener!!.onTouch(this, event)
+        else mChartTouchListener?.onTouch(this, event) == true
     }
 
     override fun computeScroll() {
-        if (mChartTouchListener is BarLineChartTouchListener) (mChartTouchListener as BarLineChartTouchListener).computeScroll()
+        (mChartTouchListener as? BarLineChartTouchListener)?.computeScroll()
     }
 
     /**
@@ -736,7 +728,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
         val center = centerOffsets
 
         val save = mZoomMatrixBuffer
-        viewPortHandler.zoom(scaleX, scaleY, center!!.x, -center.y, save)
+        viewPortHandler.zoom(scaleX, scaleY, center.x, -center.y, save)
         viewPortHandler.refresh(save, this, false)
     }
 
@@ -757,7 +749,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
         val origin = getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentTop(), axis)
 
         val job: Runnable = AnimatedZoomJob.Companion.getInstance(
-            viewPortHandler, this, getTransformer(axis), getAxis(axis), mXAxis!!
+            viewPortHandler, this, getTransformer(axis), getAxis(axis), mXAxis
                 .mAxisRange, scaleX, scaleY, viewPortHandler.scaleX, viewPortHandler.scaleY,
             xValue, yValue, origin.x.toFloat(), origin.y.toFloat(), duration
         )
@@ -802,7 +794,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @param maxXRange The maximum visible range of x-values.
      */
     open fun setVisibleXRangeMaximum(maxXRange: Float) {
-        val xScale = mXAxis!!.mAxisRange / (maxXRange)
+        val xScale = mXAxis.mAxisRange / (maxXRange)
         viewPortHandler.setMinimumScaleX(xScale)
     }
 
@@ -815,7 +807,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @param minXRange The minimum visible range of x-values.
      */
     open fun setVisibleXRangeMinimum(minXRange: Float) {
-        val xScale = mXAxis!!.mAxisRange / (minXRange)
+        val xScale = mXAxis.mAxisRange / (minXRange)
         viewPortHandler.setMaximumScaleX(xScale)
     }
 
@@ -828,8 +820,8 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @param maxXRange
      */
     open fun setVisibleXRange(minXRange: Float, maxXRange: Float) {
-        val minScale = mXAxis!!.mAxisRange / minXRange
-        val maxScale = mXAxis!!.mAxisRange / maxXRange
+        val minScale = mXAxis.mAxisRange / minXRange
+        val maxScale = mXAxis.mAxisRange / maxXRange
         viewPortHandler.setMinMaxScaleX(minScale, maxScale)
     }
 
@@ -915,7 +907,6 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @param axis
      * @param duration the duration of the animation in milliseconds
      */
-    @TargetApi(11)
     fun moveViewToAnimated(xValue: Float, yValue: Float, axis: AxisDependency?, duration: Long) {
         val bounds = getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentTop(), axis)
 
@@ -1046,8 +1037,8 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @return
      */
     protected fun getAxisRange(axis: AxisDependency?): Float {
-        if (axis == AxisDependency.LEFT) return mAxisLeft!!.mAxisRange
-        else return mAxisRight!!.mAxisRange
+        return if (axis == AxisDependency.LEFT) mAxisLeft.mAxisRange
+        else mAxisRight.mAxisRange
     }
 
     /**
@@ -1069,15 +1060,14 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @param e
      * @return
      */
-    open fun getPosition(e: Entry, axis: AxisDependency?): MPPointF? {
-        if (e == null) return null
+    open fun getPosition(e: Entry, axis: AxisDependency?): MPPointF {
 
         mGetPositionBuffer[0] = e.x
         mGetPositionBuffer[1] = e.y
 
         getTransformer(axis).pointValuesToPixel(mGetPositionBuffer)
 
-        return MPPointF.Companion.getInstance(mGetPositionBuffer[0], mGetPositionBuffer[1])
+        return MPPointF.getInstance(mGetPositionBuffer[0], mGetPositionBuffer[1])
     }
 
     /**
@@ -1100,7 +1090,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @param color
      */
     fun setGridBackgroundColor(color: Int) {
-        mGridBackgroundPaint!!.setColor(color)
+        mGridBackgroundPaint.setColor(color)
     }
 
     var isDragEnabled: Boolean
@@ -1178,7 +1168,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @param width
      */
     fun setBorderWidth(width: Float) {
-        mBorderPaint!!.setStrokeWidth(Utils.convertDpToPixel(width))
+        mBorderPaint.strokeWidth = Utils.convertDpToPixel(width)
     }
 
     /**
@@ -1187,7 +1177,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @param color
      */
     fun setBorderColor(color: Int) {
-        mBorderPaint!!.setColor(color)
+        mBorderPaint.setColor(color)
     }
 
     /**
@@ -1234,7 +1224,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
     fun getEntryByTouchPoint(x: Float, y: Float): Entry? {
         val h = getHighlightByTouchPoint(x, y)
         if (h != null) {
-            return mData!!.getEntryForHighlight(h)
+            return mData?.getEntryForHighlight(h)
         }
         return null
     }
@@ -1249,7 +1239,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
     fun getDataSetByTouchPoint(x: Float, y: Float): IBarLineScatterCandleBubbleDataSet<*>? {
         val h = getHighlightByTouchPoint(x, y)
         if (h != null) {
-            return mData!!.getDataSetByIndex(h.dataSetIndex)
+            return mData?.getDataSetByIndex(h.dataSetIndex)
         }
         return null
     }
@@ -1271,7 +1261,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentBottom(), posForGetLowestVisibleX
             )
-            val result = max(mXAxis!!.mAxisMinimum.toDouble(), posForGetLowestVisibleX.x).toFloat()
+            val result = max(mXAxis.mAxisMinimum.toDouble(), posForGetLowestVisibleX.x).toFloat()
             return result
         }
 
@@ -1292,7 +1282,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
                 viewPortHandler.contentRight(),
                 viewPortHandler.contentBottom(), posForGetHighestVisibleX
             )
-            val result = min(mXAxis!!.mAxisMaximum.toDouble(), posForGetHighestVisibleX.x).toFloat()
+            val result = min(mXAxis.mAxisMaximum.toDouble(), posForGetHighestVisibleX.x).toFloat()
             return result
         }
 
@@ -1333,7 +1323,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
          *
          * @return
          */
-        get() = mAxisLeft!!
+        get() = mAxisLeft
 
     val axisRight: YAxis
         /**
@@ -1342,7 +1332,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
          *
          * @return
          */
-        get() = mAxisRight!!
+        get() = mAxisRight
 
     /**
      * Returns the y-axis object to the corresponding AxisDependency. In the
@@ -1352,8 +1342,8 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @return
      */
     fun getAxis(axis: AxisDependency?): YAxis {
-        return if (axis == AxisDependency.LEFT) mAxisLeft!!
-        else mAxisRight!!
+        return if (axis == AxisDependency.LEFT) mAxisLeft
+        else mAxisRight
     }
 
     override fun isInverted(axis: AxisDependency?): Boolean {
@@ -1400,7 +1390,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
     }
 
     val rendererXAxis: XAxisRenderer
-        get() = mXAxisRenderer!!
+        get() = mXAxisRenderer
 
     /**
      * Sets a custom XAxisRenderer and overrides the existing (default) one.
@@ -1412,7 +1402,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
     }
 
     var rendererLeftYAxis: YAxisRenderer
-        get() = mAxisRendererLeft!!
+        get() = mAxisRendererLeft
         /**
          * Sets a custom axis renderer for the left axis and overwrites the existing one.
          *
@@ -1423,7 +1413,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
         }
 
     var rendererRightYAxis: YAxisRenderer
-        get() = mAxisRendererRight!!
+        get() = mAxisRendererRight
         /**
          * Sets a custom axis renderer for the right acis and overwrites the existing one.
          *
@@ -1434,10 +1424,10 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
         }
 
     override val yChartMax: Float
-        get() = max(mAxisLeft!!.mAxisMaximum, mAxisRight!!.mAxisMaximum)
+        get() = max(mAxisLeft.mAxisMaximum, mAxisRight.mAxisMaximum)
 
     override val yChartMin: Float
-        get() = min(mAxisLeft!!.mAxisMinimum, mAxisRight!!.mAxisMinimum)
+        get() = min(mAxisLeft.mAxisMinimum, mAxisRight.mAxisMinimum)
 
     val isAnyAxisInverted: Boolean
         /**
@@ -1446,8 +1436,8 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
          * @return
          */
         get() {
-            if (mAxisLeft!!.isInverted) return true
-            if (mAxisRight!!.isInverted) return true
+            if (mAxisLeft.isInverted) return true
+            if (mAxisRight.isInverted) return true
             return false
         }
 
@@ -1504,8 +1494,8 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @param color
      */
     fun setTextColor(color: Int) {
-        mAxisRendererLeft!!.setTextColor(color)
-        mAxisRendererRight!!.setTextColor(color)
-        mXAxisRenderer!!.setTextColor(color)
+        mAxisRendererLeft.setTextColor(color)
+        mAxisRendererRight.setTextColor(color)
+        mXAxisRenderer.setTextColor(color)
     }
 }

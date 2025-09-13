@@ -23,7 +23,7 @@ abstract class BarLineScatterCandleBubbleDataSet<T : Entry>
     override var highLightColor: Int = Color.rgb(255, 187, 115)
 
     protected fun copy(barLineScatterCandleBubbleDataSet: BarLineScatterCandleBubbleDataSet<*>) {
-        super.copy((barLineScatterCandleBubbleDataSet as BaseDataSet<*>?)!!)
+        super.copy(barLineScatterCandleBubbleDataSet)
         barLineScatterCandleBubbleDataSet.highLightColor = this.highLightColor
     }
 }

@@ -1,7 +1,6 @@
 package com.github.mikephil.charting.data
 
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet
-import com.github.mikephil.charting.utils.Utils
 
 open class BubbleDataSet(yVals: MutableList<BubbleEntry>, label: String) : BarLineScatterCandleBubbleDataSet<BubbleEntry>(yVals, label), IBubbleDataSet {
     protected var mMaxSize: Float = 0f

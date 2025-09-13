@@ -19,7 +19,7 @@ class RadarEntry : Entry {
          */
         get() = y
 
-    public override fun copy(): RadarEntry {
+    override fun copy(): RadarEntry {
         val e = RadarEntry(y, data)
         return e
     }

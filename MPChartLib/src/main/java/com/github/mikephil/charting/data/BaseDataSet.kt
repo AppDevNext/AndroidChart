@@ -226,7 +226,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
      */
     override fun getIndexInEntries(xIndex: Int): Int {
         for (i in 0..<entryCount) {
-            if (xIndex.toFloat() == getEntryForIndex(i)!!.x) return i
+            if (xIndex.toFloat() == getEntryForIndex(i).x) return i
         }
 
         return -1

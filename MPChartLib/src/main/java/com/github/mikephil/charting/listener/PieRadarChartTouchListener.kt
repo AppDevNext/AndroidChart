@@ -138,7 +138,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*, *, *>) : ChartTouch
         var i = 0
         var count = _velocitySamples.size
         while (i < count - 2) {
-            if (currentTime - _velocitySamples.get(i).time > 1000) {
+            if (currentTime - _velocitySamples[i].time > 1000) {
                 _velocitySamples.removeAt(0)
                 i--
                 count--

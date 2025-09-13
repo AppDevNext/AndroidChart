@@ -100,7 +100,7 @@ abstract class LineRadarDataSet<T : Entry>(yVals: MutableList<T>, label: String)
         get() = mDrawFilled
 
     protected fun copy(lineRadarDataSet: LineRadarDataSet<*>) {
-        super.copy((lineRadarDataSet as BaseDataSet<*>?)!!)
+        super.copy(lineRadarDataSet)
         lineRadarDataSet.mDrawFilled = mDrawFilled
         lineRadarDataSet.mFillAlpha = mFillAlpha
         lineRadarDataSet.mFillColor = mFillColor

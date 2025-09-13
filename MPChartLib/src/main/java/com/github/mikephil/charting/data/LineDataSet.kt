@@ -10,7 +10,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.Utils
 
-class LineDataSet(yVals: MutableList<Entry>, label: String) : LineRadarDataSet<Entry>(yVals, label), ILineDataSet {
+open class LineDataSet(yVals: MutableList<Entry>, label: String) : LineRadarDataSet<Entry>(yVals, label), ILineDataSet {
     /**
      * Drawing mode for this line dataset
      */
@@ -95,7 +95,7 @@ class LineDataSet(yVals: MutableList<Entry>, label: String) : LineRadarDataSet<E
     }
 
     protected fun copy(lineDataSet: LineDataSet) {
-        super.copy((lineDataSet as BaseDataSet<*>?)!!)
+        super.copy(lineDataSet)
         lineDataSet.circleColors = this.circleColors
         lineDataSet.mCircleHoleColor = mCircleHoleColor
         lineDataSet.mCircleHoleRadius = mCircleHoleRadius
@@ -340,8 +340,7 @@ class LineDataSet(yVals: MutableList<Entry>, label: String) : LineRadarDataSet<E
      * @param formatter
      */
     fun setFillFormatter(formatter: IFillFormatter?) {
-        if (formatter == null) mFillFormatter = DefaultFillFormatter()
-        else mFillFormatter = formatter
+        mFillFormatter = formatter ?: DefaultFillFormatter()
     }
 
     override val fillFormatter: IFillFormatter

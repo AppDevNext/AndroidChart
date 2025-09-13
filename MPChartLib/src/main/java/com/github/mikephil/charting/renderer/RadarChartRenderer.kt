@@ -118,6 +118,7 @@ open class RadarChartRenderer(
         val phaseY = animator.phaseY
 
         val sliceangle = chart.sliceAngle
+        val chartData = chart.data ?: return
 
         // calculate the factor that is needed for transforming the value to
         // pixels
@@ -129,8 +130,8 @@ open class RadarChartRenderer(
 
         val yoffset = Utils.convertDpToPixel(5f)
 
-        for (i in 0..<chart.data!!.dataSetCount) {
-            val dataSet = chart.data!!.getDataSetByIndex(i)
+        for (i in 0..<chartData.dataSetCount) {
+            val dataSet = chartData.getDataSetByIndex(i)
             if (dataSet.entryCount == 0) {
                 continue
             }
@@ -168,26 +169,28 @@ open class RadarChartRenderer(
                     )
                 }
 
-                if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                if (dataSet.isDrawIconsEnabled) {
                     val icon = entry.icon
 
-                    Utils.getPosition(
-                        center,
-                        (entry.y) * factor * phaseY + iconsOffset.y,
-                        sliceangle * j * phaseX + chart.rotationAngle,
-                        pIcon
-                    )
+                    icon?.let {
+                        Utils.getPosition(
+                            center,
+                            (entry.y) * factor * phaseY + iconsOffset.y,
+                            sliceangle * j * phaseX + chart.rotationAngle,
+                            pIcon
+                        )
 
-                    pIcon.y += iconsOffset.x
+                        pIcon.y += iconsOffset.x
 
-                    Utils.drawImage(
-                        c,
-                        icon,
-                        pIcon.x.toInt(),
-                        pIcon.y.toInt(),
-                        icon!!.intrinsicWidth,
-                        icon.intrinsicHeight
-                    )
+                        Utils.drawImage(
+                            c,
+                            icon,
+                            pIcon.x.toInt(),
+                            pIcon.y.toInt(),
+                            icon.intrinsicWidth,
+                            icon.intrinsicHeight
+                        )
+                    }
                 }
             }
 
@@ -205,6 +208,7 @@ open class RadarChartRenderer(
 
     protected fun drawWeb(c: Canvas) {
         val sliceangle = chart.sliceAngle
+        val chartData = chart.data ?: return
 
         // calculate the factor that is needed for transforming the value to
         // pixels
@@ -219,7 +223,7 @@ open class RadarChartRenderer(
         webPaint.alpha = chart.webAlpha
 
         val xIncrements = 1 + chart.skipWebLineCount
-        val maxEntryCount = chart.data!!.maxEntryCountSet?.entryCount ?: return
+        val maxEntryCount = chart.data?.maxEntryCountSet?.entryCount ?: return
 
         val p = MPPointF.getInstance(0f, 0f)
         var i = 0
@@ -250,7 +254,7 @@ open class RadarChartRenderer(
                 innerArea.rewind()
                 paint.color = chart.layerColorList[j]
             }
-            for (i in 0..<chart.data!!.entryCount) {
+            for (i in 0..<chartData.entryCount) {
                 val r = (chart.yAxis.mEntries[j] - chart.yChartMin) * factor
 
                 Utils.getPosition(center, r, sliceangle * i + rotationangle, p1out)
@@ -296,9 +300,9 @@ open class RadarChartRenderer(
         val radarData = chart.data
 
         for (high in indices) {
-            val set = radarData!!.getDataSetByIndex(high.dataSetIndex)
+            val set = radarData?.getDataSetByIndex(high.dataSetIndex)
 
-            if (!set.isHighlightEnabled) continue
+            if (set == null || !set.isHighlightEnabled) continue
 
             val e = set.getEntryForIndex(high.x.toInt())
 

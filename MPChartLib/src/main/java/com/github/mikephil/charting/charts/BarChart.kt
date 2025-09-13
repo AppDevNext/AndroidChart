@@ -65,15 +65,17 @@ open class BarChart : BarLineChartBase<BarEntry, IBarDataSet, BarData>, BarDataP
     }
 
     override fun calcMinMax() {
-        if (mFitBars) {
-            mXAxis?.calculate(mData!!.xMin - mData!!.barWidth / 2f, mData!!.xMax + mData!!.barWidth / 2f)
-        } else {
-            mXAxis?.calculate(mData!!.xMin, mData!!.xMax)
-        }
+        mData?.let { data ->
+            if (mFitBars) {
+                mXAxis.calculate(data.xMin - data.barWidth / 2f, data.xMax + data.barWidth / 2f)
+            } else {
+                mXAxis.calculate(data.xMin, data.xMax)
+            }
 
-        // calculate axis range (min / max) according to provided data
-        mAxisLeft?.calculate(mData!!.getYMin(AxisDependency.LEFT), mData!!.getYMax(AxisDependency.LEFT))
-        mAxisRight?.calculate(mData!!.getYMin(AxisDependency.RIGHT), mData!!.getYMax(AxisDependency.RIGHT))
+            // calculate axis range (min / max) according to provided data
+            mAxisLeft.calculate(data.getYMin(AxisDependency.LEFT), data.getYMax(AxisDependency.LEFT))
+            mAxisRight.calculate(data.getYMin(AxisDependency.RIGHT), data.getYMax(AxisDependency.RIGHT))
+        }
     }
 
     /**
@@ -86,7 +88,7 @@ open class BarChart : BarLineChartBase<BarEntry, IBarDataSet, BarData>, BarDataP
      */
     override fun getHighlightByTouchPoint(x: Float, y: Float): Highlight? {
         if (mData == null) {
-            Log.e(Chart.Companion.LOG_TAG, "Can't select by touch. No data set.")
+            Log.e(LOG_TAG, "Can't select by touch. No data set.")
             return null
         } else {
             val h = highlighter?.getHighlight(x, y)
@@ -121,7 +123,7 @@ open class BarChart : BarLineChartBase<BarEntry, IBarDataSet, BarData>, BarDataP
      * @param barEntry
      */
     open fun getBarBounds(barEntry: BarEntry, outputRect: RectF) {
-        val set = mData!!.getDataSetForEntry(barEntry)
+        val set = mData?.getDataSetForEntry(barEntry)
 
         if (set == null) {
             outputRect.set(Float.Companion.MIN_VALUE, Float.Companion.MIN_VALUE, Float.Companion.MIN_VALUE, Float.Companion.MIN_VALUE)
@@ -131,7 +133,7 @@ open class BarChart : BarLineChartBase<BarEntry, IBarDataSet, BarData>, BarDataP
         val y = barEntry.y
         val x = barEntry.x
 
-        val barWidth = mData!!.barWidth
+        val barWidth = mData?.barWidth ?: return
 
         val left = x - barWidth / 2f
         val right = x + barWidth / 2f
@@ -257,12 +259,12 @@ open class BarChart : BarLineChartBase<BarEntry, IBarDataSet, BarData>, BarDataP
 
             // Find the min and max index
             val yAxisValueFormatter = axisLeft.valueFormatter
-            val minVal = yAxisValueFormatter!!.getFormattedValue(barData.yMin, null)
+            val minVal = yAxisValueFormatter.getFormattedValue(barData.yMin, null)
             val maxVal = yAxisValueFormatter.getFormattedValue(barData.yMax, null)
 
             // Data range...
             val xAxisValueFormatter = xAxis.valueFormatter
-            val minRange = xAxisValueFormatter!!.getFormattedValue(barData.xMin, null)
+            val minRange = xAxisValueFormatter.getFormattedValue(barData.xMin, null)
             val maxRange = xAxisValueFormatter.getFormattedValue(barData.xMax, null)
 
             val entries = if (entryCount == 1) "entry" else "entries"

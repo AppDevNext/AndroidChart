@@ -18,7 +18,7 @@ import kotlin.math.min
  *
  * @author Philipp Jahoda
  */
-class YAxis : AxisBase {
+open class YAxis : AxisBase {
     /**
      * returns true if drawing the bottom y-axis label entry is enabled
      *
@@ -279,7 +279,7 @@ class YAxis : AxisBase {
      * @return
      */
     fun getRequiredWidthSpace(p: Paint): Float {
-        p.setTextSize(mTextSize)
+        p.textSize = mTextSize
 
         val label = getLongestLabel(p)
         var width = Utils.calcTextWidth(p, label).toFloat() + xOffset * 2f
@@ -303,7 +303,7 @@ class YAxis : AxisBase {
      * @return
      */
     fun getRequiredHeightSpace(p: Paint): Float {
-        p.setTextSize(mTextSize)
+        p.textSize = mTextSize
 
         val label = getLongestLabel(p)
         return Utils.calcTextHeight(p, label).toFloat() + yOffset * 2f
@@ -315,8 +315,7 @@ class YAxis : AxisBase {
      * @return
      */
     fun needsOffset(): Boolean {
-        if (isEnabled && isDrawLabelsEnabled && this.labelPosition == YAxisLabelPosition.OUTSIDE_CHART) return true
-        else return false
+        return isEnabled && isDrawLabelsEnabled && this.labelPosition == YAxisLabelPosition.OUTSIDE_CHART
     }
 
 

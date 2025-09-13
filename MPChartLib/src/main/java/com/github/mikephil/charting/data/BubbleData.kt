@@ -18,7 +18,7 @@ class BubbleData : BarLineScatterCandleBubbleData<BubbleEntry, IBubbleDataSet> {
      */
     fun setHighlightCircleWidth(width: Float) {
         for (set in dataSets) {
-            set?.highlightCircleWidth = width
+            set.highlightCircleWidth = width
         }
     }
 }

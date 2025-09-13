@@ -68,7 +68,7 @@ class BubbleEntry : Entry {
         this.size = size
     }
 
-    public override fun copy(): BubbleEntry {
+    override fun copy(): BubbleEntry {
         val c = BubbleEntry(x, y, this.size, data)
         return c
     }

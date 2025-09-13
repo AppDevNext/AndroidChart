@@ -53,7 +53,7 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
             pixelBuffer[0] = e.x
             pixelBuffer[1] = e.y * phaseY
 
-            trans!!.pointValuesToPixel(pixelBuffer)
+            trans.pointValuesToPixel(pixelBuffer)
 
             if (!viewPortHandler.isInBoundsRight(pixelBuffer[0])) break
 
@@ -91,7 +91,7 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
 
                 xBounds[chart] = dataSet
 
-                val positions = chart.getTransformer(dataSet.axisDependency)!!.generateTransformedValuesScatter(
+                val positions = chart.getTransformer(dataSet.axisDependency).generateTransformedValuesScatter(
                     dataSet,
                     animator.phaseX, animator.phaseY, xBounds.min, xBounds.max
                 )
@@ -129,17 +129,19 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
                         )
                     }
 
-                    if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                    if (dataSet.isDrawIconsEnabled) {
                         val icon = entry.icon
 
-                        Utils.drawImage(
-                            c,
-                            icon,
-                            (positions[j] + iconsOffset.x).toInt(),
-                            (positions[j + 1] + iconsOffset.y).toInt(),
-                            icon!!.intrinsicWidth,
-                            icon.intrinsicHeight
-                        )
+                        icon?.let {
+                            Utils.drawImage(
+                                c,
+                                icon,
+                                (positions[j] + iconsOffset.x).toInt(),
+                                (positions[j + 1] + iconsOffset.y).toInt(),
+                                icon.intrinsicWidth,
+                                icon.intrinsicHeight
+                            )
+                        }
                     }
                     j += 2
                 }
@@ -164,7 +166,7 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
 
             if (!isInBoundsX(e, set)) continue
 
-            val pix = chart.getTransformer(set.axisDependency)!!.getPixelForValues(
+            val pix = chart.getTransformer(set.axisDependency).getPixelForValues(
                 e.x, e.y * animator
                     .phaseY
             )

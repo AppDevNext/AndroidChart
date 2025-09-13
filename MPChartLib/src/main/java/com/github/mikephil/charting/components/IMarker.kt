@@ -11,7 +11,7 @@ interface IMarker {
      * By returning x: -(width / 2) you will center the IMarker horizontally.
      * By returning y: -(height / 2) you will center the IMarker vertically.
      */
-    val offset: MPPointF?
+    val offset: MPPointF
 
     /**
      * @return The offset for drawing at the specific `point`. This allows conditional adjusting of the Marker position.

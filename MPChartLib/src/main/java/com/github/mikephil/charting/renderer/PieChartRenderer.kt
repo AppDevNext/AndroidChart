@@ -7,7 +7,6 @@ import android.graphics.Paint
 import android.graphics.Paint.Align
 import android.graphics.Path
 import android.graphics.RectF
-import android.os.Build
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -32,6 +31,7 @@ import kotlin.math.sqrt
 import kotlin.math.tan
 import androidx.core.graphics.withSave
 import com.github.mikephil.charting.data.PieData
+import androidx.core.graphics.createBitmap
 
 open class PieChartRenderer(
     protected var chart: PieChart, animator: ChartAnimator,
@@ -87,16 +87,13 @@ open class PieChartRenderer(
         val width = viewPortHandler.chartWidth.toInt()
         val height = viewPortHandler.chartHeight.toInt()
 
-        var drawBitmap = if (mDrawBitmap == null)
-            null
-        else
-            mDrawBitmap!!.get()
+        var drawBitmap = mDrawBitmap?.get()
 
         if (drawBitmap == null || (drawBitmap.width != width)
             || (drawBitmap.height != height)
         ) {
             if (width > 0 && height > 0) {
-                drawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444)
+                drawBitmap = createBitmap(width, height, Bitmap.Config.ARGB_4444)
                 mDrawBitmap = WeakReference(drawBitmap)
                 bitmapCanvas = Canvas(drawBitmap)
             } else return
@@ -104,9 +101,9 @@ open class PieChartRenderer(
 
         drawBitmap.eraseColor(Color.TRANSPARENT)
 
-        val pieData = chart.data
+        val pieData = chart.data ?: return
 
-        for (set in pieData!!.dataSets) {
+        for (set in pieData.dataSets) {
             if (set.isVisible && set.entryCount > 0) drawDataSet(c, set)
         }
     }
@@ -350,11 +347,11 @@ open class PieChartRenderer(
 
             mPathBuffer.close()
 
-            bitmapCanvas!!.drawPath(mPathBuffer, paintRender)
+            bitmapCanvas?.drawPath(mPathBuffer, paintRender)
 
             // Draw rounded corner path with paint object slice with the given radius
             if (roundedCornerRadius > 0) {
-                bitmapCanvas!!.drawPath(mPathBuffer, roundedCornerPaint)
+                bitmapCanvas?.drawPath(mPathBuffer, roundedCornerPaint)
             }
 
             angle += sliceAngle * phaseX
@@ -391,9 +388,9 @@ open class PieChartRenderer(
         val labelRadius = radius - labelRadiusOffset
 
         val data = chart.data
-        val dataSets = data!!.dataSets
+        val dataSets = data?.dataSets ?: return
 
-        val yValueSum = (data as PieData).yValueSum
+        val yValueSum = data.yValueSum
 
         val drawEntryLabels = chart.isDrawEntryLabelsEnabled
 
@@ -577,26 +574,28 @@ open class PieChartRenderer(
                             if (j < data.entryCount && entryLabel != null) {
                                 drawEntryLabel(this, entryLabel, x, y + lineHeight / 2f)
                             }
-                        } else if (drawYInside) {
+                        } else {
                             drawValue(this, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j))
                         }
                     }
 
-                    if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                    if (dataSet.isDrawIconsEnabled) {
                         val icon = entry.icon
 
-                        val x = (labelRadius + iconsOffset.y) * sliceXBase + center.x
-                        var y = (labelRadius + iconsOffset.y) * sliceYBase + center.y
-                        y += iconsOffset.x
+                        icon?.let {
+                            val x = (labelRadius + iconsOffset.y) * sliceXBase + center.x
+                            var y = (labelRadius + iconsOffset.y) * sliceYBase + center.y
+                            y += iconsOffset.x
 
-                        Utils.drawImage(
-                            this,
-                            icon,
-                            x.toInt(),
-                            y.toInt(),
-                            icon!!.intrinsicWidth,
-                            icon.intrinsicHeight
-                        )
+                            Utils.drawImage(
+                                this,
+                                icon,
+                                x.toInt(),
+                                y.toInt(),
+                                icon.intrinsicWidth,
+                                icon.intrinsicHeight
+                            )
+                        }
                     }
 
                     xIndex++
@@ -622,7 +621,7 @@ open class PieChartRenderer(
 
     override fun drawExtras(c: Canvas) {
         drawHole(c)
-        c.drawBitmap(mDrawBitmap!!.get()!!, 0f, 0f, null)
+        mDrawBitmap?.get()?.let { c.drawBitmap(it, 0f, 0f, null) }
         drawCenterText(c)
     }
 
@@ -640,7 +639,7 @@ open class PieChartRenderer(
 
             if (Color.alpha(paintHole.color) > 0) {
                 // draw the hole-circle
-                bitmapCanvas!!.drawCircle(
+                bitmapCanvas?.drawCircle(
                     center.x, center.y,
                     holeRadius, paintHole
                 )
@@ -659,7 +658,7 @@ open class PieChartRenderer(
                 mHoleCirclePath.reset()
                 mHoleCirclePath.addCircle(center.x, center.y, secondHoleRadius, Path.Direction.CW)
                 mHoleCirclePath.addCircle(center.x, center.y, holeRadius, Path.Direction.CCW)
-                bitmapCanvas!!.drawPath(mHoleCirclePath, paintTransparentCircle)
+                bitmapCanvas?.drawPath(mHoleCirclePath, paintTransparentCircle)
 
                 // reset alpha
                 paintTransparentCircle.alpha = alpha
@@ -723,20 +722,18 @@ open class PieChartRenderer(
             }
 
             //float layoutWidth = Utils.getStaticLayoutMaxWidth(mCenterTextLayout);
-            val layoutHeight = centerTextLayout!!.height.toFloat()
+            val layoutHeight = centerTextLayout?.height?.toFloat() ?: 0f
 
-            c.save()
-            if (Build.VERSION.SDK_INT >= 18) {
+            c.withSave {
                 val path = mDrawCenterTextPathBuffer
                 path.reset()
                 path.addOval(holeRect, Path.Direction.CW)
-                c.clipPath(path)
+                clipPath(path)
+
+                translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2f)
+                centerTextLayout?.draw(this)
+
             }
-
-            c.translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2f)
-            centerTextLayout!!.draw(c)
-
-            c.restore()
 
             MPPointF.recycleInstance(center)
             MPPointF.recycleInstance(offset)
@@ -951,7 +948,7 @@ open class PieChartRenderer(
 
             mPathBuffer.close()
 
-            bitmapCanvas!!.drawPath(mPathBuffer, paintRender)
+            bitmapCanvas?.drawPath(mPathBuffer, paintRender)
         }
 
         MPPointF.recycleInstance(center)
@@ -998,7 +995,7 @@ open class PieChartRenderer(
                         * sin(v) + center.y).toFloat()
 
                 paintRender.color = dataSet.getColor(j)
-                bitmapCanvas!!.drawCircle(x, y, circleRadius, paintRender)
+                bitmapCanvas?.drawCircle(x, y, circleRadius, paintRender)
             }
 
             angle += sliceAngle * phaseX
@@ -1010,12 +1007,10 @@ open class PieChartRenderer(
      * Releases the drawing bitmap. This should be called when .
      */
     fun releaseBitmap() {
-        if (bitmapCanvas != null) {
-            bitmapCanvas!!.setBitmap(null)
-            bitmapCanvas = null
-        }
+        bitmapCanvas?.setBitmap(null)
+        bitmapCanvas = null
         if (mDrawBitmap != null) {
-            val drawBitmap = mDrawBitmap!!.get()
+            val drawBitmap = mDrawBitmap?.get()
             drawBitmap?.recycle()
             mDrawBitmap?.clear()
             mDrawBitmap = null

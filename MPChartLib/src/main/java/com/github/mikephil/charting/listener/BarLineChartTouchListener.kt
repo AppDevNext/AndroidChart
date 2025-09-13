@@ -9,9 +9,6 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import com.github.mikephil.charting.charts.BarLineChartBase
 import com.github.mikephil.charting.charts.HorizontalBarChart
-import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
@@ -104,13 +101,11 @@ class BarLineChartTouchListener(
         if (mVelocityTracker == null) {
             mVelocityTracker = VelocityTracker.obtain()
         }
-        mVelocityTracker!!.addMovement(event)
+        mVelocityTracker?.addMovement(event)
 
         if (event.actionMasked == MotionEvent.ACTION_CANCEL) {
-            if (mVelocityTracker != null) {
-                mVelocityTracker!!.recycle()
-                mVelocityTracker = null
-            }
+            mVelocityTracker?.recycle()
+            mVelocityTracker = null
         }
 
         if (touchMode == NONE || mChart.isFlingEnabled) {
@@ -206,9 +201,9 @@ class BarLineChartTouchListener(
             MotionEvent.ACTION_UP -> {
                 val velocityTracker = mVelocityTracker
                 val pointerId = event.getPointerId(0)
-                velocityTracker!!.computeCurrentVelocity(1000, Utils.maximumFlingVelocity.toFloat())
-                val velocityY = velocityTracker.getYVelocity(pointerId)
-                val velocityX = velocityTracker.getXVelocity(pointerId)
+                velocityTracker?.computeCurrentVelocity(1000, Utils.maximumFlingVelocity.toFloat())
+                val velocityY = velocityTracker?.getYVelocity(pointerId) ?: 0f
+                val velocityX = velocityTracker?.getXVelocity(pointerId) ?: 0f
 
                 if (abs(velocityX.toDouble()) > Utils.minimumFlingVelocity ||
                     abs(velocityY.toDouble()) > Utils.minimumFlingVelocity
@@ -248,7 +243,7 @@ class BarLineChartTouchListener(
             }
 
             MotionEvent.ACTION_POINTER_UP -> {
-                Utils.velocityTrackerPointerUpCleanUpIfNecessary(event, mVelocityTracker!!)
+                mVelocityTracker?.let { Utils.velocityTrackerPointerUpCleanUpIfNecessary(event, it) }
 
                 touchMode = POST_ZOOM
             }
@@ -468,10 +463,9 @@ class BarLineChartTouchListener(
         val vph = mChart.viewPortHandler
 
         val xTrans = x - vph.offsetLeft()
-        var yTrans = 0f
 
         // check if axis is inverted
-        yTrans = if (inverted()) {
+        val yTrans = if (inverted()) {
             -(y - vph.offsetTop())
         } else {
             -(mChart.measuredHeight - y - vph.offsetBottom())

@@ -18,7 +18,7 @@ import androidx.core.graphics.withTranslation
  * @author Philipp Jahoda
  */
 open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(context), IMarker {
-    private var mOffset: MPPointF? = MPPointF()
+    private var mOffset: MPPointF = MPPointF()
     private val mOffset2 = MPPointF()
     private var mWeakChart: WeakReference<Chart<*, *, *>?>? = null
 
@@ -48,29 +48,25 @@ open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(c
     }
 
     fun setOffset(offset: MPPointF?) {
-        mOffset = offset
-
-        if (mOffset == null) {
-            mOffset = MPPointF()
-        }
+        mOffset = offset ?: MPPointF()
     }
 
     fun setOffset(offsetX: Float, offsetY: Float) {
-        mOffset!!.x = offsetX
-        mOffset!!.y = offsetY
+        mOffset.x = offsetX
+        mOffset.y = offsetY
     }
 
-    override val offset: MPPointF?
+    override val offset: MPPointF
         get() = mOffset
 
     var chartView: Chart<*, *, *>?
-        get() = if (mWeakChart == null) null else mWeakChart!!.get()
+        get() = mWeakChart?.get()
         set(chart) {
             mWeakChart = WeakReference<Chart<*, *, *>?>(chart)
         }
 
     override fun getOffsetForDrawingAtPoint(posX: Float, posY: Float): MPPointF {
-        val offset = offset!!
+        val offset = offset
         mOffset2.x = offset.x
         mOffset2.y = offset.y
 

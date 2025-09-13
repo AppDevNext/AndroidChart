@@ -299,49 +299,47 @@ abstract class DataSet<T : Entry>(
             }
         }
 
-        if (closest != -1) {
-            val closestEntry: Entry? = mEntries[closest]
-            if (closestEntry != null) {
-                val closestXValue = closestEntry.x
-                if (rounding == Rounding.UP) {
-                    // If rounding up, and found x-value is lower than specified x, and we can go upper...
-                    if (closestXValue < xValue && closest < mEntries.size - 1) {
-                        ++closest
+        val closestEntry: Entry? = mEntries[closest]
+        if (closestEntry != null) {
+            val closestXValue = closestEntry.x
+            if (rounding == Rounding.UP) {
+                // If rounding up, and found x-value is lower than specified x, and we can go upper...
+                if (closestXValue < xValue && closest < mEntries.size - 1) {
+                    ++closest
+                }
+            } else if (rounding == Rounding.DOWN) {
+                // If rounding down, and found x-value is upper than specified x, and we can go lower...
+                if (closestXValue > xValue && closest > 0) {
+                    --closest
+                }
+            }
+
+            // Search by closest to y-value
+            if (!closestToY.isNaN()) {
+                while (closest > 0 && mEntries[closest - 1].x == closestXValue) closest -= 1
+
+                var closestYValue = closestEntry.y
+                var closestYIndex = closest
+
+                while (true) {
+                    closest += 1
+                    if (closest >= mEntries.size) break
+
+                    val value: Entry? = mEntries[closest]
+
+                    if (value == null) {
+                        continue
                     }
-                } else if (rounding == Rounding.DOWN) {
-                    // If rounding down, and found x-value is upper than specified x, and we can go lower...
-                    if (closestXValue > xValue && closest > 0) {
-                        --closest
+
+                    if (value.x != closestXValue) break
+
+                    if (abs(value.y - closestToY) <= abs(closestYValue - closestToY)) {
+                        closestYValue = closestToY
+                        closestYIndex = closest
                     }
                 }
 
-                // Search by closest to y-value
-                if (!closestToY.isNaN()) {
-                    while (closest > 0 && mEntries[closest - 1].x == closestXValue) closest -= 1
-
-                    var closestYValue = closestEntry.y
-                    var closestYIndex = closest
-
-                    while (true) {
-                        closest += 1
-                        if (closest >= mEntries.size) break
-
-                        val value: Entry? = mEntries[closest]
-
-                        if (value == null) {
-                            continue
-                        }
-
-                        if (value.x != closestXValue) break
-
-                        if (abs(value.y - closestToY) <= abs(closestYValue - closestToY)) {
-                            closestYValue = closestToY
-                            closestYIndex = closest
-                        }
-                    }
-
-                    closest = closestYIndex
-                }
+                closest = closestYIndex
             }
         }
         return closest

@@ -22,7 +22,7 @@ class Description : ComponentBase() {
     /**
      * the text used in the description
      */
-    var text: String? = "Description Label"
+    var text: String = "Description Label"
 
     /**
      * Returns the customized position of the description, or null if none set.

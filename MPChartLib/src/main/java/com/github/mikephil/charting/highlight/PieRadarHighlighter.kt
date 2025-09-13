@@ -13,27 +13,29 @@ abstract class PieRadarHighlighter<T : PieRadarChartBase<*, *, *>?>(protected va
     protected var mHighlightBuffer: MutableList<Highlight> = ArrayList()
 
     override fun getHighlight(x: Float, y: Float): Highlight? {
-        val touchDistanceToCenter = mChart!!.distanceToCenter(x, y)
+        val chart = mChart ?: return null
+
+        val touchDistanceToCenter = chart.distanceToCenter(x, y)
 
         // check if a slice was touched
-        if (touchDistanceToCenter > mChart!!.radius) {
+        if (touchDistanceToCenter > chart.radius) {
             // if no slice was touched, highlight nothing
 
             return null
         } else {
-            var angle = mChart!!.getAngleForPoint(x, y)
+            var angle = chart.getAngleForPoint(x, y)
 
             if (mChart is PieChart) {
-                angle /= mChart!!.animator.phaseY
+                angle /= chart.animator.phaseY
             }
 
-            val index = mChart!!.getIndexForAngle(angle)
+            val index = chart.getIndexForAngle(angle)
 
             // check if the index could be found
-            if (index < 0 || index >= mChart!!.data!!.maxEntryCountSet!!.entryCount) {
-                return null
+            return if (index < 0 || chart.data?.maxEntryCountSet?.entryCount?.let { it >= index } == true) {
+                null
             } else {
-                return getClosestHighlight(index, x, y)
+                getClosestHighlight(index, x, y)
             }
         }
     }

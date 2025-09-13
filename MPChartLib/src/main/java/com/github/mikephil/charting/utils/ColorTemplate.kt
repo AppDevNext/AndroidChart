@@ -100,7 +100,7 @@ object ColorTemplate {
      * @return
      */
     fun createColors(r: Resources, colors: IntArray): MutableList<Int?> {
-        val result: MutableList<Int?> = ArrayList<Int?>()
+        val result: MutableList<Int?> = ArrayList()
 
         for (i in colors) {
             result.add(r.getColor(i))

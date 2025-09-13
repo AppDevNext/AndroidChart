@@ -1,11 +1,9 @@
 package com.github.mikephil.charting.highlight
 
 import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.DataSet.Rounding
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.dataprovider.CombinedDataProvider
-import com.github.mikephil.charting.interfaces.datasets.IDataSet
 
 /**
  * Created by Philipp Jahoda on 12/09/15.
@@ -20,14 +18,14 @@ open class CombinedHighlighter(chart: CombinedDataProvider?, barChart: BarDataPr
     override fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight> {
         mHighlightBuffer.clear()
 
-        val dataObjects = mChart!!.combinedData!!.allData
+        val dataObjects = mChart?.combinedData?.allData ?: return mutableListOf()
 
         for (i in dataObjects.indices) {
-            val dataObject = dataObjects.get(i)
+            val dataObject = dataObjects[i]
 
             // in case of BarData, let the BarHighlighter take over
             if (barHighlighter != null && dataObject is BarData) {
-                val high = barHighlighter!!.getHighlight(x, y)
+                val high = barHighlighter?.getHighlight(x, y)
 
                 if (high != null) {
                     high.dataIndex = i
@@ -40,7 +38,7 @@ open class CombinedHighlighter(chart: CombinedDataProvider?, barChart: BarDataPr
                     val dataSet = dataObjects[i].getDataSetByIndex(j)
 
                     // don't include datasets that cannot be highlighted
-                    if (!dataSet!!.isHighlightEnabled) {
+                    if (!dataSet.isHighlightEnabled) {
                         j++
                         continue
                     }

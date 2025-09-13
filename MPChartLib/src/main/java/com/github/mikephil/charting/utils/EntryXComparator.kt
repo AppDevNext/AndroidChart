@@ -10,10 +10,10 @@ class EntryXComparator : Comparator<Entry> {
     override fun compare(entry1: Entry, entry2: Entry): Int {
         val diff = entry1.x - entry2.x
 
-        if (diff == 0f) return 0
+        return if (diff == 0f) 0
         else {
-            if (diff > 0f) return 1
-            else return -1
+            if (diff > 0f) 1
+            else -1
         }
     }
 }

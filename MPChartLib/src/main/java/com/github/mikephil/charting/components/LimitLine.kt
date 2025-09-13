@@ -166,5 +166,5 @@ class LimitLine : ComponentBase {
          *
          * @return
          */
-        get() = if (this.dashPathEffect == null) false else true
+        get() = this.dashPathEffect != null
 }

@@ -23,7 +23,7 @@ import kotlin.math.min
  *
  * @author Philipp Jahoda
  */
-class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
+open class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
     /**
      * width of the main web lines
      */
@@ -87,12 +87,12 @@ class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
     /**
      * the object reprsenting the y-axis labels
      */
-    private var mYAxis: YAxis? = null
+    private val mYAxis: YAxis = YAxis(AxisDependency.LEFT)
 
     private var colorList: MutableList<Int> = arrayListOf()
 
-    protected var mYAxisRenderer: YAxisRendererRadarChart? = null
-    protected var mXAxisRenderer: XAxisRendererRadarChart? = null
+    protected val mYAxisRenderer: YAxisRendererRadarChart = YAxisRendererRadarChart(viewPortHandler, mYAxis, this)
+    protected val mXAxisRenderer: XAxisRendererRadarChart = XAxisRendererRadarChart(viewPortHandler, mXAxis, this)
 
     constructor(context: Context) : super(context)
 
@@ -103,15 +103,12 @@ class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
     override fun init() {
         super.init()
 
-        mYAxis = YAxis(AxisDependency.LEFT)
-        mYAxis!!.labelXOffset = 10f
+        mYAxis.labelXOffset = 10f
 
         mWebLineWidth = Utils.convertDpToPixel(1.5f)
         mInnerWebLineWidth = Utils.convertDpToPixel(0.75f)
 
         mRenderer = RadarChartRenderer(this, mAnimator, viewPortHandler)
-        mYAxisRenderer = YAxisRendererRadarChart(viewPortHandler, mYAxis!!, this)
-        mXAxisRenderer = XAxisRendererRadarChart(viewPortHandler, mXAxis!!, this)
 
         highlighter = RadarHighlighter(this)
     }
@@ -119,8 +116,10 @@ class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
     override fun calcMinMax() {
         super.calcMinMax()
 
-        mYAxis!!.calculate(mData!!.getYMin(AxisDependency.LEFT), mData!!.getYMax(AxisDependency.LEFT))
-        mXAxis!!.calculate(0f, mData!!.maxEntryCountSet!!.entryCount.toFloat())
+        mData?.let { mData ->
+            mYAxis.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT))
+            mXAxis.calculate(0f, mData.maxEntryCountSet?.entryCount?.toFloat() ?: 0f)
+        }
     }
 
     override fun notifyDataSetChanged() {
@@ -128,40 +127,40 @@ class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
 
         calcMinMax()
 
-        mYAxisRenderer!!.computeAxis(mYAxis!!.mAxisMinimum, mYAxis!!.mAxisMaximum, mYAxis!!.isInverted)
-        mXAxisRenderer!!.computeAxis(mXAxis!!.mAxisMinimum, mXAxis!!.mAxisMaximum, false)
+        mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted)
+        mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
 
-        if (legend != null && !legend!!.isLegendCustom) legendRenderer!!.computeLegend(mData!!)
+        if (!legend.isLegendCustom) legendRenderer.computeLegend(mData!!)
 
         calculateOffsets()
     }
 
-    protected override fun onDraw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         if (mData == null) return
 
         //        if (mYAxis.isEnabled())
 //            mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
-        if (mXAxis!!.isEnabled) mXAxisRenderer!!.computeAxis(mXAxis!!.mAxisMinimum, mXAxis!!.mAxisMaximum, false)
+        if (mXAxis.isEnabled) mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
 
-        mXAxisRenderer!!.renderAxisLabels(canvas)
+        mXAxisRenderer.renderAxisLabels(canvas)
 
-        if (mDrawWeb) mRenderer!!.drawExtras(canvas)
+        if (mDrawWeb) mRenderer?.drawExtras(canvas)
 
-        if (mYAxis!!.isEnabled && mYAxis!!.isDrawLimitLinesBehindDataEnabled) mYAxisRenderer!!.renderLimitLines(canvas)
+        if (mYAxis.isEnabled && mYAxis.isDrawLimitLinesBehindDataEnabled) mYAxisRenderer.renderLimitLines(canvas)
 
-        mRenderer!!.drawData(canvas)
+        mRenderer?.drawData(canvas)
 
-        if (valuesToHighlight()) mRenderer!!.drawHighlighted(canvas, highlighted!!)
+        if (valuesToHighlight()) mRenderer?.drawHighlighted(canvas, highlighted!!)
 
-        if (mYAxis!!.isEnabled && !mYAxis!!.isDrawLimitLinesBehindDataEnabled) mYAxisRenderer!!.renderLimitLines(canvas)
+        if (mYAxis.isEnabled && !mYAxis.isDrawLimitLinesBehindDataEnabled) mYAxisRenderer.renderLimitLines(canvas)
 
-        mYAxisRenderer!!.renderAxisLabels(canvas)
+        mYAxisRenderer.renderAxisLabels(canvas)
 
-        mRenderer!!.drawValues(canvas)
+        mRenderer?.drawValues(canvas)
 
-        legendRenderer!!.renderLegend(canvas)
+        legendRenderer.renderLegend(canvas)
 
         drawDescription(canvas)
 
@@ -176,7 +175,7 @@ class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
          */
         get() {
             val content = viewPortHandler.contentRect
-            return min(content.width() / 2f, content.height() / 2f) / mYAxis!!.mAxisRange
+            return min(content.width() / 2f, content.height() / 2f) / mYAxis.mAxisRange
         }
 
     val sliceAngle: Float
@@ -185,7 +184,7 @@ class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
          *
          * @return
          */
-        get() = 360f / mData!!.maxEntryCountSet!!.entryCount.toFloat()
+        get() = 360f / (mData?.maxEntryCountSet?.entryCount?.toFloat() ?: 1f)
 
 
     val isCustomLayerColorEnable: Boolean
@@ -212,7 +211,7 @@ class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
 
         val sliceangle = this.sliceAngle
 
-        val max = mData!!.maxEntryCountSet!!.entryCount
+        val max = mData?.maxEntryCountSet?.entryCount ?: return -1
 
         var index = 0
 
@@ -234,7 +233,7 @@ class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
          *
          * @return
          */
-        get() = mYAxis!!
+        get() = mYAxis
 
     var webLineWidth: Float
         get() = mWebLineWidth
@@ -287,10 +286,10 @@ class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
         }
 
     override val requiredLegendOffset: Float
-        get() = legendRenderer!!.labelPaint.textSize * 4f
+        get() = legendRenderer.labelPaint.textSize * 4f
 
     override val requiredBaseOffset: Float
-        get() = if (mXAxis!!.isEnabled && mXAxis!!.isDrawLabelsEnabled) mXAxis!!.mLabelWidth.toFloat() else Utils.convertDpToPixel(10f)
+        get() = if (mXAxis.isEnabled && mXAxis.isDrawLabelsEnabled) mXAxis.mLabelWidth.toFloat() else Utils.convertDpToPixel(10f)
 
     override val radius: Float
         get() {
@@ -302,13 +301,13 @@ class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
      * Returns the maximum value this chart can display on it's y-axis.
      */
     override val yChartMax: Float
-        get() = mYAxis!!.mAxisMaximum
+        get() = mYAxis.mAxisMaximum
 
     /**
      * Returns the minimum value this chart can display on it's y-axis.
      */
     override val yChartMin: Float
-        get() = mYAxis!!.mAxisMinimum
+        get() = mYAxis.mAxisMinimum
 
     val yRange: Float
         /**
@@ -316,7 +315,7 @@ class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> {
          *
          * @return
          */
-        get() = mYAxis!!.mAxisRange
+        get() = mYAxis.mAxisRange
 
     override val accessibilityDescription: String?
         get() = "This is a Radar chart"

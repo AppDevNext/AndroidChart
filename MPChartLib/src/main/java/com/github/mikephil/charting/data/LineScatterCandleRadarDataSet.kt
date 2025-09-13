@@ -90,10 +90,10 @@ abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>, l
          *
          * @return
          */
-        get() = if (this.dashPathEffectHighlight == null) false else true
+        get() = this.dashPathEffectHighlight != null
 
     protected fun copy(lineScatterCandleRadarDataSet: LineScatterCandleRadarDataSet<*>) {
-        super.copy((lineScatterCandleRadarDataSet as BaseDataSet<*>?)!!)
+        super.copy(lineScatterCandleRadarDataSet)
         lineScatterCandleRadarDataSet.isHorizontalHighlightIndicatorEnabled = this.isHorizontalHighlightIndicatorEnabled
         lineScatterCandleRadarDataSet.isVerticalHighlightIndicatorEnabled = this.isVerticalHighlightIndicatorEnabled
         lineScatterCandleRadarDataSet.mHighlightLineWidth = mHighlightLineWidth

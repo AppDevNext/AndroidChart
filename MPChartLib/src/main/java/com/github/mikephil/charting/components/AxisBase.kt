@@ -529,15 +529,15 @@ abstract class AxisBase : ComponentBase() {
          * @return
          */
         get() {
-            var longest: String? = ""
+            var longest = ""
 
             for (i in mEntries.indices) {
                 val text = getFormattedLabel(i)
 
-                if (text != null && longest!!.length < text.length) longest = text
+                if (longest.length < text.length) longest = text
             }
 
-            return longest!!
+            return longest
         }
 
     /**
@@ -551,20 +551,18 @@ abstract class AxisBase : ComponentBase() {
         if (p == null) {
             return this.longestLabel
         }
-        var longest: String? = ""
+        var longest = ""
         val max = 0f
 
         for (i in mEntries.indices) {
             val text = getFormattedLabel(i)
-            if (text != null) {
-                val width = p.measureText(text)
-                if (max < width) {
-                    longest = text
-                }
+            val width = p.measureText(text)
+            if (max < width) {
+                longest = text
             }
         }
 
-        return longest!!
+        return longest
     }
 
     fun getFormattedLabel(index: Int): String {

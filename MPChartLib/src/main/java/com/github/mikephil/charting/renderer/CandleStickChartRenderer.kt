@@ -47,7 +47,7 @@ open class CandleStickChartRenderer(
         for (j in xBounds.min..xBounds.range + xBounds.min) {
             // get the entry
 
-            val e = dataSet.getEntryForIndex(j) ?: continue
+            val e = dataSet.getEntryForIndex(j)
 
             val xPos = e.x
 
@@ -80,7 +80,7 @@ open class CandleStickChartRenderer(
                     shadowBuffers[7] = shadowBuffers[3]
                 }
 
-                trans!!.pointValuesToPixel(shadowBuffers)
+                trans.pointValuesToPixel(shadowBuffers)
 
                 // draw the shadows
                 if (dataSet.shadowColorSameAsCandle) {
@@ -165,7 +165,7 @@ open class CandleStickChartRenderer(
                 closeBuffers[2] = xPos
                 closeBuffers[3] = close * phaseY
 
-                trans!!.pointValuesToPixel(rangeBuffers)
+                trans.pointValuesToPixel(rangeBuffers)
                 trans.pointValuesToPixel(openBuffers)
                 trans.pointValuesToPixel(closeBuffers)
 
@@ -224,7 +224,7 @@ open class CandleStickChartRenderer(
 
                 xBounds[chart] = dataSet
 
-                val positions = trans!!.generateTransformedValuesCandle(
+                val positions = trans.generateTransformedValuesCandle(
                     dataSet, animator.phaseX, animator.phaseY, xBounds.min, xBounds.max
                 )
 
@@ -246,7 +246,7 @@ open class CandleStickChartRenderer(
                         continue
                     }
 
-                    val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min) ?: continue
+                    val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
 
                     if (dataSet.isDrawValuesEnabled) {
                         drawValue(
@@ -290,7 +290,7 @@ open class CandleStickChartRenderer(
         for (high in indices) {
             val set = candleData.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled) continue
+            if (!set.isHighlightEnabled) continue
 
             val e = set.getEntryForXValue(high.x, high.y) ?: continue
 
@@ -300,7 +300,7 @@ open class CandleStickChartRenderer(
             val highValue = e.high * animator.phaseY
             val y = (lowValue + highValue) / 2f
 
-            val pix = chart.getTransformer(set.axisDependency)!!.getPixelForValues(e.x, y)
+            val pix = chart.getTransformer(set.axisDependency).getPixelForValues(e.x, y)
 
             high.setDraw(pix.x.toFloat(), pix.y.toFloat())
 

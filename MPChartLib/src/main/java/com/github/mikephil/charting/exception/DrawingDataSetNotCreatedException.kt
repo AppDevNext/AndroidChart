@@ -1,6 +1,8 @@
 package com.github.mikephil.charting.exception
 
 object DrawingDataSetNotCreatedException : RuntimeException() {
+    private fun readResolve(): Any = DrawingDataSetNotCreatedException
+
     /**
      *
      */

@@ -42,8 +42,8 @@ class BarData : BarLineScatterCandleBubbleData<BarEntry, IBarDataSet> {
             throw RuntimeException("BarData needs to hold at least 2 BarDataSets to allow grouping.")
         }
 
-        val max = maxEntryCountSet
-        val maxEntryCount = max!!.entryCount
+        val max = maxEntryCountSet ?: return
+        val maxEntryCount = max.entryCount
 
         val groupSpaceWidthHalf = groupSpace / 2f
         val barSpaceHalf = barSpace / 2f
