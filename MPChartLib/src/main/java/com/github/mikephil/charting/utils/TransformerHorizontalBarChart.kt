@@ -1,37 +1,31 @@
-
-package com.github.mikephil.charting.utils;
+package com.github.mikephil.charting.utils
 
 /**
  * Transformer class for the HorizontalBarChart.
- * 
+ *
  * @author Philipp Jahoda
  */
-public class TransformerHorizontalBarChart extends Transformer {
-
-    public TransformerHorizontalBarChart(ViewPortHandler viewPortHandler) {
-        super(viewPortHandler);
-    }
-
+class TransformerHorizontalBarChart(viewPortHandler: ViewPortHandler) : Transformer(viewPortHandler) {
     /**
      * Prepares the matrix that contains all offsets.
-     * 
+     *
      * @param inverted
      */
-    public void prepareMatrixOffset(boolean inverted) {
-
-        mMatrixOffset.reset();
+    override fun prepareMatrixOffset(inverted: Boolean) {
+        offsetMatrix.reset()
 
         // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-
-        if (!inverted)
-            mMatrixOffset.postTranslate(mViewPortHandler.offsetLeft(),
-                    mViewPortHandler.getChartHeight() - mViewPortHandler.offsetBottom());
+        if (!inverted) offsetMatrix.postTranslate(
+            mViewPortHandler.offsetLeft(),
+            mViewPortHandler.chartHeight - mViewPortHandler.offsetBottom()
+        )
         else {
-            mMatrixOffset
-                    .setTranslate(
-                            -(mViewPortHandler.getChartWidth() - mViewPortHandler.offsetRight()),
-                            mViewPortHandler.getChartHeight() - mViewPortHandler.offsetBottom());
-            mMatrixOffset.postScale(-1.0f, 1.0f);
+            offsetMatrix
+                .setTranslate(
+                    -(mViewPortHandler.chartWidth - mViewPortHandler.offsetRight()),
+                    mViewPortHandler.chartHeight - mViewPortHandler.offsetBottom()
+                )
+            offsetMatrix.postScale(-1.0f, 1.0f)
         }
 
         // mMatrixOffset.set(offset);

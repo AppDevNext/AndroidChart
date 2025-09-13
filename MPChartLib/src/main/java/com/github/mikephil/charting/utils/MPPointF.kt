@@ -1,76 +1,22 @@
-package com.github.mikephil.charting.utils;
+package com.github.mikephil.charting.utils
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.List;
+import android.os.Parcel
+import android.os.Parcelable
+import com.github.mikephil.charting.utils.ObjectPool.Poolable
 
 /**
  * Created by Tony Patino on 6/24/16.
  */
-public class MPPointF extends ObjectPool.Poolable {
+class MPPointF : Poolable<MPPointF> {
+    var x: Float = 0f
+    var y: Float = 0f
 
-    private static ObjectPool<MPPointF> pool;
+    constructor()
 
-    public float x;
-    public float y;
-
-    static {
-        pool = ObjectPool.create(32, new MPPointF(0,0));
-        pool.setReplenishPercentage(0.5f);
+    constructor(x: Float, y: Float) {
+        this.x = x
+        this.y = y
     }
-
-    public MPPointF() {
-    }
-
-    public MPPointF(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public static MPPointF getInstance(float x, float y) {
-        MPPointF result = pool.get();
-        result.x = x;
-        result.y = y;
-        return result;
-    }
-
-    public static MPPointF getInstance() {
-        return pool.get();
-    }
-
-    public static MPPointF getInstance(MPPointF copy) {
-        MPPointF result = pool.get();
-        result.x = copy.x;
-        result.y = copy.y;
-        return result;
-    }
-
-    public static void recycleInstance(MPPointF instance){
-        pool.recycle(instance);
-    }
-
-    public static void recycleInstances(List<MPPointF> instances){
-        pool.recycle(instances);
-    }
-
-    public static final Parcelable.Creator<MPPointF> CREATOR = new Parcelable.Creator<MPPointF>() {
-        /**
-         * Return a new point from the data in the specified parcel.
-         */
-        public MPPointF createFromParcel(Parcel in) {
-            MPPointF r = new MPPointF(0,0);
-            r.my_readFromParcel(in);
-            return r;
-        }
-
-        /**
-         * Return an array of rectangles of the specified size.
-         */
-        public MPPointF[] newArray(int size) {
-            return new MPPointF[size];
-        }
-    };
 
     /**
      * Set the point's coordinates from the data stored in the specified
@@ -79,21 +25,64 @@ public class MPPointF extends ObjectPool.Poolable {
      *
      * @param in The parcel to read the point's coordinates from
      */
-    public void my_readFromParcel(Parcel in) {
-        x = in.readFloat();
-        y = in.readFloat();
+    fun my_readFromParcel(`in`: Parcel) {
+        x = `in`.readFloat()
+        y = `in`.readFloat()
     }
 
-    public float getX(){
-        return this.x;
+    override fun instantiate(): MPPointF {
+        return MPPointF(0f, 0f)
     }
 
-    public float getY(){
-        return this.y;
-    }
+    companion object {
+        private var pool: ObjectPool<MPPointF> = ObjectPool.Companion.create(32, MPPointF(0f, 0f))
 
-    @Override
-    protected ObjectPool.Poolable instantiate() {
-        return new MPPointF(0,0);
+        init {
+            pool.setReplenishPercentage(0.5f)
+        }
+
+        fun getInstance(x: Float, y: Float): MPPointF {
+            val result: MPPointF = pool.get()
+            result.x = x
+            result.y = y
+            return result
+        }
+
+        val instance: MPPointF
+            get() = pool.get()
+
+        fun getInstance(copy: MPPointF): MPPointF {
+            val result: MPPointF = pool.get()
+            result.x = copy.x
+            result.y = copy.y
+            return result
+        }
+
+        @JvmStatic
+        fun recycleInstance(instance: MPPointF) {
+            pool.recycle(instance)
+        }
+
+        fun recycleInstances(instances: MutableList<MPPointF?>) {
+            pool.recycle(instances)
+        }
+
+        val CREATOR: Parcelable.Creator<MPPointF?> = object : Parcelable.Creator<MPPointF?> {
+            /**
+             * Return a new point from the data in the specified parcel.
+             */
+            override fun createFromParcel(`in`: Parcel): MPPointF {
+                val r = MPPointF(0f, 0f)
+                r.my_readFromParcel(`in`)
+                return r
+            }
+
+            /**
+             * Return an array of rectangles of the specified size.
+             */
+            override fun newArray(size: Int): Array<MPPointF?> {
+                return arrayOfNulls<MPPointF>(size)
+            }
+        }
     }
 }

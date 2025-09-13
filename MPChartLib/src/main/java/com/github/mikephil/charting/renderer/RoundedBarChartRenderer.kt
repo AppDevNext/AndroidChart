@@ -15,7 +15,7 @@ import kotlin.math.min
 
 /** @noinspection unused
  */
-class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
+class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     BarChartRenderer(chart, animator, viewPortHandler) {
     private val mBarShadowRectBuffer = RectF()
     private val mRadius = 20f
@@ -47,7 +47,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
 
         if (chart.isDrawBarShadowEnabled) {
             shadowPaint.color = dataSet.barShadowColor
-            val barData = chart.barData
+            val barData = chart.barData ?: return
             val barWidth = barData.barWidth
             val barWidthHalf = barWidth / 2.0f
             var x: Float
@@ -79,11 +79,11 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
             }
         }
 
-        val buffer = barBuffers!![index]!!
+        val buffer = barBuffers[index]!!
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
         buffer.setInverted(chart.isInverted(dataSet.axisDependency))
-        buffer.setBarWidth(chart.barData.barWidth)
+        buffer.setBarWidth(chart.barData!!.barWidth)
         buffer.feed(dataSet)
         trans!!.pointValuesToPixel(buffer.buffer)
 
@@ -261,15 +261,15 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
         val barData = chart.barData
 
         for (high in indices) {
-            val set = barData.getDataSetByIndex(high.dataSetIndex)
+            val set = barData?.getDataSetByIndex(high.dataSetIndex) ?: continue
 
-            if (set == null || !set.isHighlightEnabled) {
+            if (!set.isHighlightEnabled) {
                 continue
             }
 
             val e = set.getEntryForXValue(high.x, high.y)
 
-            if (!isInBoundsX(e, set)) {
+            if (!isInBoundsX(e, set) || e == null) {
                 continue
             }
 

@@ -1,23 +1,20 @@
-package com.github.mikephil.charting.renderer;
+package com.github.mikephil.charting.renderer
 
-import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.github.mikephil.charting.animation.ChartAnimator
+import com.github.mikephil.charting.data.DataSet.Rounding
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider
+import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
+import com.github.mikephil.charting.interfaces.datasets.IDataSet
+import com.github.mikephil.charting.utils.ViewPortHandler
+import kotlin.math.max
+import kotlin.math.min
 
-public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
-
+abstract class BarLineScatterCandleBubbleRenderer(animator: ChartAnimator, viewPortHandler: ViewPortHandler) : DataRenderer(animator, viewPortHandler) {
     /**
      * buffer for storing the current minimum and maximum visible x
      */
-    protected XBounds xBounds = new XBounds();
-
-    public BarLineScatterCandleBubbleRenderer(ChartAnimator animator, ViewPortHandler viewPortHandler) {
-        super(animator, viewPortHandler);
-    }
+    protected var xBounds: XBounds = XBounds()
 
     /**
      * Returns true if the DataSet values should be drawn, false if not.
@@ -25,8 +22,8 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
      * @param set
      * @return
      */
-    protected boolean shouldDrawValues(IDataSet set) {
-        return set.isVisible() && (set.isDrawValuesEnabled() || set.isDrawIconsEnabled());
+    protected fun shouldDrawValues(set: IDataSet<*>): Boolean {
+        return set.isVisible && (set.isDrawValuesEnabled || set.isDrawIconsEnabled)
     }
 
     /**
@@ -36,39 +33,36 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
      * @param set
      * @return
      */
-    protected boolean isInBoundsX(Entry e, IBarLineScatterCandleBubbleDataSet set) {
+    protected fun <T : Entry> isInBoundsX(e: T?, set: IBarLineScatterCandleBubbleDataSet<T>): Boolean {
+        if (e == null) return false
 
-        if (e == null)
-            return false;
+        val entryIndex = set.getEntryIndex(e).toFloat()
 
-        float entryIndex = set.getEntryIndex(e);
-
-        if (e == null || entryIndex >= set.getEntryCount() * animator.getPhaseX()) {
-            return false;
+        if (entryIndex >= set.entryCount * animator.phaseX) {
+            return false
         } else {
-            return true;
+            return true
         }
     }
 
     /**
      * Class representing the bounds of the current viewport in terms of indices in the values array of a DataSet.
      */
-    protected class XBounds {
-
+    protected inner class XBounds {
         /**
          * minimum visible entry index
          */
-        public int min;
+        var min: Int = 0
 
         /**
          * maximum visible entry index
          */
-        public int max;
+        var max: Int = 0
 
         /**
          * range of visible entry indices
          */
-        public int range;
+        var range: Int = 0
 
         /**
          * Calculates the minimum and maximum x values as well as the range between them.
@@ -76,18 +70,18 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
          * @param chart
          * @param dataSet
          */
-        public void set(BarLineScatterCandleBubbleDataProvider chart, IBarLineScatterCandleBubbleDataSet dataSet) {
-            float phaseX = Math.max(0.f, Math.min(1.f, animator.getPhaseX()));
+        operator fun <T : Entry> set(chart: BarLineScatterCandleBubbleDataProvider, dataSet: IBarLineScatterCandleBubbleDataSet<T>) {
+            val phaseX = max(0f, min(1f, animator.phaseX))
 
-            float low = chart.getLowestVisibleX();
-            float high = chart.getHighestVisibleX();
+            val low = chart.lowestVisibleX
+            val high = chart.highestVisibleX
 
-            Entry entryFrom = dataSet.getEntryForXValue(low, Float.NaN, DataSet.Rounding.DOWN);
-            Entry entryTo = dataSet.getEntryForXValue(high, Float.NaN, DataSet.Rounding.UP);
+            val entryFrom = dataSet.getEntryForXValue(low, Float.Companion.NaN, Rounding.DOWN)
+            val entryTo = dataSet.getEntryForXValue(high, Float.Companion.NaN, Rounding.UP)
 
-            min = entryFrom == null ? 0 : dataSet.getEntryIndex(entryFrom);
-            max = entryTo == null ? 0 : dataSet.getEntryIndex(entryTo);
-            range = (int) ((max - min) * phaseX);
+            min = if (entryFrom == null) 0 else dataSet.getEntryIndex(entryFrom)
+            max = if (entryTo == null) 0 else dataSet.getEntryIndex(entryTo)
+            range = ((max - min) * phaseX).toInt()
         }
     }
 }

@@ -167,7 +167,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
     }
 
     override fun renderLimitLines(c: Canvas) {
-        val limitLines = yAxis.limitLines ?: return
+        val limitLines = yAxis.limitLines
 
         val sliceAngle = chart.sliceAngle
 
@@ -192,7 +192,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
             limitPath.reset()
 
 
-            for (j in 0..<chart.data!!.maxEntryCountSet.entryCount) {
+            for (j in 0..<(chart.data!!.maxEntryCountSet?.entryCount ?: 0)) {
                 Utils.getPosition(center, r, sliceAngle * j + chart.rotationAngle, pOut)
 
                 if (j == 0) limitPath.moveTo(pOut.x, pOut.y)

@@ -1,8 +1,7 @@
+package com.github.mikephil.charting.data
 
-package com.github.mikephil.charting.data;
-
-import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
+import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 
 /**
  * Subclass of Entry that holds a value for one entry in a BubbleChart. Bubble
@@ -12,80 +11,65 @@ import android.graphics.drawable.Drawable;
  * @author Philipp Jahoda
  */
 @SuppressLint("ParcelCreator")
-public class BubbleEntry extends Entry {
-
-    /** size value */
-    private float mSize = 0f;
-
-    /**
-     * Constructor.
-     *
-     * @param x The value on the x-axis.
-     * @param y The value on the y-axis.
-     * @param size The size of the bubble.
-     */
-    public BubbleEntry(float x, float y, float size) {
-        super(x, y);
-        this.mSize = size;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param x The value on the x-axis.
-     * @param y The value on the y-axis.
-     * @param size The size of the bubble.
-     * @param data Spot for additional data this Entry represents.
-     */
-    public BubbleEntry(float x, float y, float size, Object data) {
-        super(x, y, data);
-        this.mSize = size;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param x The value on the x-axis.
-     * @param y The value on the y-axis.
-     * @param size The size of the bubble.
-     * @param icon Icon image
-     */
-    public BubbleEntry(float x, float y, float size, Drawable icon) {
-        super(x, y, icon);
-        this.mSize = size;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param x The value on the x-axis.
-     * @param y The value on the y-axis.
-     * @param size The size of the bubble.
-     * @param icon Icon image
-     * @param data Spot for additional data this Entry represents.
-     */
-    public BubbleEntry(float x, float y, float size, Drawable icon, Object data) {
-        super(x, y, icon, data);
-        this.mSize = size;
-    }
-
-    public BubbleEntry copy() {
-
-        BubbleEntry c = new BubbleEntry(getX(), getY(), mSize, getData());
-        return c;
-    }
-
+class BubbleEntry : Entry {
     /**
      * Returns the size of this entry (the size of the bubble).
      *
      * @return
      */
-    public float getSize() {
-        return mSize;
+    /** size value  */
+    var size: Float = 0f
+
+    /**
+     * Constructor.
+     *
+     * @param x The value on the x-axis.
+     * @param y The value on the y-axis.
+     * @param size The size of the bubble.
+     */
+    constructor(x: Float, y: Float, size: Float) : super(x, y) {
+        this.size = size
     }
 
-    public void setSize(float size) {
-        this.mSize = size;
+    /**
+     * Constructor.
+     *
+     * @param x The value on the x-axis.
+     * @param y The value on the y-axis.
+     * @param size The size of the bubble.
+     * @param data Spot for additional data this Entry represents.
+     */
+    constructor(x: Float, y: Float, size: Float, data: Any?) : super(x, y, data) {
+        this.size = size
     }
 
+    /**
+     * Constructor.
+     *
+     * @param x The value on the x-axis.
+     * @param y The value on the y-axis.
+     * @param size The size of the bubble.
+     * @param icon Icon image
+     */
+    constructor(x: Float, y: Float, size: Float, icon: Drawable?) : super(x, y, icon) {
+        this.size = size
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param x The value on the x-axis.
+     * @param y The value on the y-axis.
+     * @param size The size of the bubble.
+     * @param icon Icon image
+     * @param data Spot for additional data this Entry represents.
+     */
+    constructor(x: Float, y: Float, size: Float, icon: Drawable?, data: Any?) : super(x, y, icon, data) {
+        this.size = size
+    }
+
+    public override fun copy(): BubbleEntry {
+        val c = BubbleEntry(x, y, this.size, data)
+        return c
+    }
 }

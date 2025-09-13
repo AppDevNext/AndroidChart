@@ -1,40 +1,29 @@
+package com.github.mikephil.charting.data
 
-package com.github.mikephil.charting.data;
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet
 
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
+class ScatterData : BarLineScatterCandleBubbleData<Entry, IScatterDataSet> {
+    constructor() : super()
 
-import java.util.List;
+    constructor(dataSets: MutableList<IScatterDataSet>) : super(dataSets)
 
-public class ScatterData extends BarLineScatterCandleBubbleData<IScatterDataSet> {
+    constructor(vararg dataSets: IScatterDataSet) : super(*dataSets)
 
-    public ScatterData() {
-        super();
-    }
+    val greatestShapeSize: Float
+        /**
+         * Returns the maximum shape-size across all DataSets.
+         *
+         * @return
+         */
+        get() {
+            var max = 0f
 
-    public ScatterData(List<IScatterDataSet> dataSets) {
-        super(dataSets);
-    }
+            for (set in dataSets) {
+                val size = set.scatterShapeSize
 
-    public ScatterData(IScatterDataSet... dataSets) {
-        super(dataSets);
-    }
+                if (size > max) max = size
+            }
 
-    /**
-     * Returns the maximum shape-size across all DataSets.
-     *
-     * @return
-     */
-    public float getGreatestShapeSize() {
-
-        float max = 0f;
-
-        for (IScatterDataSet set : mDataSets) {
-            float size = set.getScatterShapeSize();
-
-            if (size > max)
-                max = size;
+            return max
         }
-
-        return max;
-    }
 }

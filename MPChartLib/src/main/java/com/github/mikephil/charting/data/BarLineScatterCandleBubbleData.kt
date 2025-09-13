@@ -1,27 +1,17 @@
+package com.github.mikephil.charting.data
 
-package com.github.mikephil.charting.data;
-
-import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet;
-
-import java.util.List;
+import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 
 /**
  * Baseclass for all Line, Bar, Scatter, Candle and Bubble data.
- * 
+ *
  * @author Philipp Jahoda
  */
-public abstract class BarLineScatterCandleBubbleData<T extends IBarLineScatterCandleBubbleDataSet<? extends Entry>>
-        extends ChartData<T> {
-    
-    public BarLineScatterCandleBubbleData() {
-        super();
-    }
+abstract class BarLineScatterCandleBubbleData<E: Entry, T : IBarLineScatterCandleBubbleDataSet<E>>
+    : ChartData<E, T> {
+    constructor() : super()
 
-    public BarLineScatterCandleBubbleData(T... sets) {
-        super(sets);
-    }
+    constructor(vararg sets: T) : super(*sets)
 
-    public BarLineScatterCandleBubbleData(List<T> sets) {
-        super(sets);
-    }
+    constructor(sets: MutableList<T>) : super(sets)
 }

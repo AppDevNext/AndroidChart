@@ -1,134 +1,114 @@
+package com.github.mikephil.charting.data
 
-package com.github.mikephil.charting.data;
-
-import android.graphics.Paint;
-
-import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.graphics.Paint
+import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet
+import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.utils.Utils
 
 /**
  * DataSet for the CandleStickChart.
  *
  * @author Philipp Jahoda
  */
-public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> implements ICandleDataSet {
-
+class CandleDataSet(yVals: MutableList<CandleEntry>, label: String) : LineScatterCandleRadarDataSet<CandleEntry>(yVals, label), ICandleDataSet {
     /**
      * the width of the shadow of the candle
      */
-    private float mShadowWidth = 3f;
+    private var mShadowWidth = 3f
 
     /**
      * should the candle bars show?
      * when false, only "ticks" will show
-     * <p/>
+     *
+     *
      * - default: true
      */
-    private boolean mShowCandleBar = true;
+    private var mShowCandleBar = true
 
     /**
      * the space between the candle entries, default 0.1f (10%)
      */
-    private float mBarSpace = 0.1f;
+    private var mBarSpace = 0.1f
 
     /**
      * use candle color for the shadow
      */
-    private boolean mShadowColorSameAsCandle = false;
+    private var mShadowColorSameAsCandle = false
 
     /**
      * paint style when open < close
      * increasing candlesticks are traditionally hollow
      */
-    protected Paint.Style mIncreasingPaintStyle = Paint.Style.STROKE;
+    protected var mIncreasingPaintStyle: Paint.Style? = Paint.Style.STROKE
 
     /**
      * paint style when open > close
      * descreasing candlesticks are traditionally filled
      */
-    protected Paint.Style mDecreasingPaintStyle = Paint.Style.FILL;
+    protected var mDecreasingPaintStyle: Paint.Style? = Paint.Style.FILL
 
     /**
      * color for open == close
      */
-    protected int mNeutralColor = ColorTemplate.COLOR_SKIP;
+    protected var mNeutralColor: Int = ColorTemplate.COLOR_SKIP
 
     /**
      * color for open < close
      */
-    protected int mIncreasingColor = ColorTemplate.COLOR_SKIP;
+    protected var mIncreasingColor: Int = ColorTemplate.COLOR_SKIP
 
     /**
      * color for open > close
      */
-    protected int mDecreasingColor = ColorTemplate.COLOR_SKIP;
+    protected var mDecreasingColor: Int = ColorTemplate.COLOR_SKIP
 
     /**
      * shadow line color, set -1 for backward compatibility and uses default
      * color
      */
-    protected int mShadowColor = ColorTemplate.COLOR_SKIP;
+    protected var mShadowColor: Int = ColorTemplate.COLOR_SKIP
 
-    public CandleDataSet(List<CandleEntry> yVals, String label) {
-        super(yVals, label);
-    }
-
-    @Override
-    public DataSet<CandleEntry> copy() {
-        List<CandleEntry> entries = new ArrayList<CandleEntry>();
-        for (int i = 0; i < mEntries.size(); i++) {
-            entries.add(mEntries.get(i).copy());
+    override fun copy(): DataSet<CandleEntry> {
+        val entries: MutableList<CandleEntry> = ArrayList()
+        for (i in mEntries.indices) {
+            entries.add(mEntries[i].copy())
         }
-        CandleDataSet copied = new CandleDataSet(entries, getLabel());
-        copy(copied);
-        return copied;
+        val copied = CandleDataSet(entries, label)
+        copy(copied)
+        return copied
     }
 
-    protected void copy(CandleDataSet candleDataSet) {
-        super.copy((BaseDataSet<?>) candleDataSet);
-        candleDataSet.mShadowWidth = mShadowWidth;
-        candleDataSet.mShowCandleBar = mShowCandleBar;
-        candleDataSet.mBarSpace = mBarSpace;
-        candleDataSet.mShadowColorSameAsCandle = mShadowColorSameAsCandle;
-        candleDataSet.mHighLightColor = mHighLightColor;
-        candleDataSet.mIncreasingPaintStyle = mIncreasingPaintStyle;
-        candleDataSet.mDecreasingPaintStyle = mDecreasingPaintStyle;
-        candleDataSet.mNeutralColor = mNeutralColor;
-        candleDataSet.mIncreasingColor = mIncreasingColor;
-        candleDataSet.mDecreasingColor = mDecreasingColor;
-        candleDataSet.mShadowColor = mShadowColor;
+    protected fun copy(candleDataSet: CandleDataSet) {
+        super.copy((candleDataSet as BaseDataSet<*>?)!!)
+        candleDataSet.mShadowWidth = mShadowWidth
+        candleDataSet.mShowCandleBar = mShowCandleBar
+        candleDataSet.mBarSpace = mBarSpace
+        candleDataSet.mShadowColorSameAsCandle = mShadowColorSameAsCandle
+        candleDataSet.highLightColor = highLightColor
+        candleDataSet.mIncreasingPaintStyle = mIncreasingPaintStyle
+        candleDataSet.mDecreasingPaintStyle = mDecreasingPaintStyle
+        candleDataSet.mNeutralColor = mNeutralColor
+        candleDataSet.mIncreasingColor = mIncreasingColor
+        candleDataSet.mDecreasingColor = mDecreasingColor
+        candleDataSet.mShadowColor = mShadowColor
     }
 
-    @Override
-    protected void calcMinMax(CandleEntry e) {
+    override fun calcMinMax(e: CandleEntry) {
+        if (e.low < mYMin) mYMin = e.low
 
-        if (e.getLow() < mYMin)
-            mYMin = e.getLow();
+        if (e.high > mYMax) mYMax = e.high
 
-        if (e.getHigh() > mYMax)
-            mYMax = e.getHigh();
-
-        calcMinMaxX(e);
+        calcMinMaxX(e)
     }
 
-    @Override
-    protected void calcMinMaxY(CandleEntry e) {
+    override fun calcMinMaxY(e: CandleEntry) {
+        if (e.high < mYMin) mYMin = e.high
 
-        if (e.getHigh() < mYMin)
-            mYMin = e.getHigh();
+        if (e.high > mYMax) mYMax = e.high
 
-        if (e.getHigh() > mYMax)
-            mYMax = e.getHigh();
+        if (e.low < mYMin) mYMin = e.low
 
-        if (e.getLow() < mYMin)
-            mYMin = e.getLow();
-
-        if (e.getLow() > mYMax)
-            mYMax = e.getLow();
+        if (e.low > mYMax) mYMax = e.low
     }
 
     /**
@@ -137,48 +117,40 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
      *
      * @param space
      */
-    public void setBarSpace(float space) {
+    fun setBarSpace(space: Float) {
+        var space = space
+        if (space < 0f) space = 0f
+        if (space > 0.45f) space = 0.45f
 
-        if (space < 0f)
-            space = 0f;
-        if (space > 0.45f)
-            space = 0.45f;
-
-        mBarSpace = space;
+        mBarSpace = space
     }
 
-    @Override
-    public float getBarSpace() {
-        return mBarSpace;
-    }
+    override val barSpace: Float
+        get() = mBarSpace
 
     /**
      * Sets the width of the candle-shadow-line in pixels. Default 3f.
      *
      * @param width
      */
-    public void setShadowWidth(float width) {
-        mShadowWidth = Utils.convertDpToPixel(width);
+    fun setShadowWidth(width: Float) {
+        mShadowWidth = Utils.convertDpToPixel(width)
     }
 
-    @Override
-    public float getShadowWidth() {
-        return mShadowWidth;
-    }
+    override val shadowWidth: Float
+        get() = mShadowWidth
 
     /**
      * Sets whether the candle bars should show?
      *
      * @param showCandleBar
      */
-    public void setShowCandleBar(boolean showCandleBar) {
-        mShowCandleBar = showCandleBar;
+    fun setShowCandleBar(showCandleBar: Boolean) {
+        mShowCandleBar = showCandleBar
     }
 
-    @Override
-    public boolean getShowCandleBar() {
-        return mShowCandleBar;
-    }
+    override val showCandleBar: Boolean
+        get() = mShowCandleBar
 
     // TODO
     /**
@@ -189,23 +161,19 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
      *
      * @author Mesrop
      */
-
-    /** BELOW THIS COLOR HANDLING */
-
+    /** BELOW THIS COLOR HANDLING  */
     /**
      * Sets the one and ONLY color that should be used for this DataSet when
      * open == close.
      *
      * @param color
      */
-    public void setNeutralColor(int color) {
-        mNeutralColor = color;
+    fun setNeutralColor(color: Int) {
+        mNeutralColor = color
     }
 
-    @Override
-    public int getNeutralColor() {
-        return mNeutralColor;
-    }
+    override val neutralColor: Int
+        get() = mNeutralColor
 
     /**
      * Sets the one and ONLY color that should be used for this DataSet when
@@ -213,14 +181,12 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
      *
      * @param color
      */
-    public void setIncreasingColor(int color) {
-        mIncreasingColor = color;
+    fun setIncreasingColor(color: Int) {
+        mIncreasingColor = color
     }
 
-    @Override
-    public int getIncreasingColor() {
-        return mIncreasingColor;
-    }
+    override val increasingColor: Int
+        get() = mIncreasingColor
 
     /**
      * Sets the one and ONLY color that should be used for this DataSet when
@@ -228,68 +194,58 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
      *
      * @param color
      */
-    public void setDecreasingColor(int color) {
-        mDecreasingColor = color;
+    fun setDecreasingColor(color: Int) {
+        mDecreasingColor = color
     }
 
-    @Override
-    public int getDecreasingColor() {
-        return mDecreasingColor;
-    }
+    override val decreasingColor: Int
+        get() = mDecreasingColor
 
-    @Override
-    public Paint.Style getIncreasingPaintStyle() {
-        return mIncreasingPaintStyle;
-    }
+    override val increasingPaintStyle: Paint.Style?
+        get() = mIncreasingPaintStyle
 
     /**
      * Sets paint style when open < close
      *
      * @param paintStyle
      */
-    public void setIncreasingPaintStyle(Paint.Style paintStyle) {
-        this.mIncreasingPaintStyle = paintStyle;
+    fun setIncreasingPaintStyle(paintStyle: Paint.Style?) {
+        this.mIncreasingPaintStyle = paintStyle
     }
 
-    @Override
-    public Paint.Style getDecreasingPaintStyle() {
-        return mDecreasingPaintStyle;
-    }
+    override val decreasingPaintStyle: Paint.Style?
+        get() = mDecreasingPaintStyle
 
     /**
      * Sets paint style when open > close
      *
      * @param decreasingPaintStyle
      */
-    public void setDecreasingPaintStyle(Paint.Style decreasingPaintStyle) {
-        this.mDecreasingPaintStyle = decreasingPaintStyle;
+    fun setDecreasingPaintStyle(decreasingPaintStyle: Paint.Style?) {
+        this.mDecreasingPaintStyle = decreasingPaintStyle
     }
 
-    @Override
-    public int getShadowColor() {
-        return mShadowColor;
-    }
+    override val shadowColor: Int
+        get() = mShadowColor
 
     /**
      * Sets shadow color for all entries
      *
      * @param shadowColor
      */
-    public void setShadowColor(int shadowColor) {
-        this.mShadowColor = shadowColor;
+    fun setShadowColor(shadowColor: Int) {
+        this.mShadowColor = shadowColor
     }
 
-    @Override
-    public boolean getShadowColorSameAsCandle() {
-        return mShadowColorSameAsCandle;
-    }
+    override val shadowColorSameAsCandle: Boolean
+        get() = mShadowColorSameAsCandle
 
     /**
      * Sets shadow color to be the same color as the candle color
      *
      * @param shadowColorSameAsCandle
      */
-    public void setShadowColorSameAsCandle(boolean shadowColorSameAsCandle) {
-        this.mShadowColorSameAsCandle = shadowColorSameAsCandle;
+    fun setShadowColorSameAsCandle(shadowColorSameAsCandle: Boolean) {
+        this.mShadowColorSameAsCandle = shadowColorSameAsCandle
     }
 }

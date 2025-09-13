@@ -1,9 +1,7 @@
+package com.github.mikephil.charting.data
 
-package com.github.mikephil.charting.data;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable
+import kotlin.math.abs
 
 /**
  * The DataSet class represents one group or type of entries (Entry) in the
@@ -13,32 +11,31 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements Serializable {
-
+abstract class DataSet<T : Entry>(
     /**
      * the entries that this DataSet represents / holds together
      */
-    protected List<T> mEntries;
-
+    protected var mEntries: MutableList<T>, label: String
+) : BaseDataSet<T>(label), Serializable {
     /**
      * maximum y-value in the value array
      */
-    protected float mYMax = -Float.MAX_VALUE;
+    protected var mYMax: Float = -Float.MAX_VALUE
 
     /**
      * minimum y-value in the value array
      */
-    protected float mYMin = Float.MAX_VALUE;
+    protected var mYMin: Float = Float.MAX_VALUE
 
     /**
      * maximum x-value in the value array
      */
-    protected float mXMax = -Float.MAX_VALUE;
+    protected var mXMax: Float = -Float.Companion.MAX_VALUE
 
     /**
      * minimum x-value in the value array
      */
-    protected float mXMin = Float.MAX_VALUE;
+    protected var mXMin: Float = Float.Companion.MAX_VALUE
 
 
     /**
@@ -46,52 +43,41 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
      * label that describes the DataSet can be specified. The label can also be
      * used to retrieve the DataSet from a ChartData object.
      *
-     * @param entries
+     * @param mEntries
      * @param label
      */
-    public DataSet(List<T> entries, String label) {
-        super(label);
-        this.mEntries = entries;
-
-        if (mEntries == null)
-            mEntries = new ArrayList<T>();
-
-        calcMinMax();
+    init {
+        calcMinMax()
     }
 
-    @Override
-    public void calcMinMax() {
+    override fun calcMinMax() {
+        mYMax = -Float.Companion.MAX_VALUE
+        mYMin = Float.Companion.MAX_VALUE
+        mXMax = -Float.Companion.MAX_VALUE
+        mXMin = Float.Companion.MAX_VALUE
 
-        mYMax = -Float.MAX_VALUE;
-        mYMin = Float.MAX_VALUE;
-        mXMax = -Float.MAX_VALUE;
-        mXMin = Float.MAX_VALUE;
+        if (mEntries.isEmpty()) return
 
-        if (mEntries == null || mEntries.isEmpty())
-            return;
-
-        for (T e : mEntries) {
-            calcMinMax(e);
+        for (e in mEntries) {
+            calcMinMax(e)
         }
     }
 
-    @Override
-    public void calcMinMaxY(float fromX, float toX) {
-        mYMax = -Float.MAX_VALUE;
-        mYMin = Float.MAX_VALUE;
+    override fun calcMinMaxY(fromX: Float, toX: Float) {
+        mYMax = -Float.Companion.MAX_VALUE
+        mYMin = Float.Companion.MAX_VALUE
 
-        if (mEntries == null || mEntries.isEmpty())
-            return;
+        if (mEntries.isEmpty()) return
 
-        int indexFrom = getEntryIndex(fromX, Float.NaN, Rounding.DOWN);
-        int indexTo = getEntryIndex(toX, Float.NaN, Rounding.UP);
+        val indexFrom = getEntryIndex(fromX, Float.Companion.NaN, Rounding.DOWN)
+        val indexTo = getEntryIndex(toX, Float.Companion.NaN, Rounding.UP)
 
-        if (indexTo < indexFrom) return;
+        if (indexTo < indexFrom) return
 
-        for (int i = indexFrom; i <= indexTo; i++) {
-
+        for (i in indexFrom..indexTo) {
             // only recalculate y
-            calcMinMaxY(mEntries.get(i));
+
+            calcMinMaxY(mEntries[i])
         }
     }
 
@@ -100,102 +86,85 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
      *
      * @param e
      */
-    protected void calcMinMax(T e) {
+    protected open fun calcMinMax(e: T) {
+        calcMinMaxX(e)
 
-        if (e == null)
-            return;
-
-        calcMinMaxX(e);
-
-        calcMinMaxY(e);
+        calcMinMaxY(e)
     }
 
-    protected void calcMinMaxX(T e) {
+    protected fun calcMinMaxX(e: T) {
+        if (e.x < mXMin) mXMin = e.x
 
-        if (e.getX() < mXMin)
-            mXMin = e.getX();
-
-        if (e.getX() > mXMax)
-            mXMax = e.getX();
+        if (e.x > mXMax) mXMax = e.x
     }
 
-    protected void calcMinMaxY(T e) {
+    protected open fun calcMinMaxY(e: T) {
+        if (e.y < mYMin) mYMin = e.y
 
-        if (e.getY() < mYMin)
-            mYMin = e.getY();
-
-        if (e.getY() > mYMax)
-            mYMax = e.getY();
+        if (e.y > mYMax) mYMax = e.y
     }
 
-    @Override
-    public int getEntryCount() {
-        return mEntries.size();
-    }
+    override val entryCount: Int
+        get() = mEntries.size
 
-    /**
-     * This method is deprecated.
-     * Use getEntries() instead.
-     *
-     * @return
-     */
-    @Deprecated
-    public List<T> getValues() {
-        return mEntries;
-    }
+    @get:Deprecated("")
+    @set:Deprecated("")
+    var values: MutableList<T>
+        /**
+         * This method is deprecated.
+         * Use getEntries() instead.
+         *
+         * @return
+         */
+        get() = mEntries
+        /**
+         * This method is deprecated.
+         * Use setEntries(...) instead.
+         *
+         * @param values
+         */
+        set(values) {
+            this.entries = values
+        }
 
-    /**
-     * Returns the array of entries that this DataSet represents.
-     *
-     * @return
-     */
-    public List<T> getEntries() {
-        return mEntries;
-    }
-
-    /**
-     * This method is deprecated.
-     * Use setEntries(...) instead.
-     *
-     * @param values
-     */
-    @Deprecated
-    public void setValues(List<T> values) {
-        setEntries(values);
-    }
-
-    /**
-     * Sets the array of entries that this DataSet represents, and calls notifyDataSetChanged()
-     *
-     * @return
-     */
-    public void setEntries(List<T> entries) {
-        mEntries = entries;
-        notifyDataSetChanged();
-    }
+    var entries: MutableList<T>
+        /**
+         * Returns the array of entries that this DataSet represents.
+         *
+         * @return
+         */
+        get() = mEntries
+        /**
+         * Sets the array of entries that this DataSet represents, and calls notifyDataSetChanged()
+         *
+         * @return
+         */
+        set(entries) {
+            mEntries = entries
+            notifyDataSetChanged()
+        }
 
     /**
      * Provides an exact copy of the DataSet this method is used on.
      *
      * @return
      */
-    public abstract DataSet<T> copy();
+    abstract fun copy(): DataSet<T>
 
     /**
      * @param dataSet
      */
-    protected void copy(DataSet dataSet) {
-        super.copy(dataSet);
+    protected fun copy(dataSet: DataSet<*>) {
+        super.copy(dataSet)
     }
 
-    @Override
-    public String toString() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(toSimpleString());
-        for (int i = 0; i < mEntries.size(); i++) {
-            buffer.append(mEntries.get(i).toString() + " ");
+    override fun toString(): String {
+        val buffer = StringBuffer()
+        buffer.append(toSimpleString())
+        for (i in mEntries.indices) {
+            buffer.append(mEntries[i].toString() + " ")
         }
-        return buffer.toString();
+        return buffer.toString()
     }
 
     /**
@@ -204,270 +173,223 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
      *
      * @return
      */
-    public String toSimpleString() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("DataSet, label: " + (getLabel() == null ? "" : getLabel()) + ", entries: " + mEntries.size() +
-                "\n");
-        return buffer.toString();
+    fun toSimpleString(): String {
+        val buffer = StringBuffer()
+        buffer.append(
+            "DataSet, label: " + (label) + ", entries: " + mEntries.size +
+                    "\n"
+        )
+        return buffer.toString()
     }
 
-    @Override
-    public float getYMin() {
-        return mYMin;
-    }
+    override val yMin: Float
+        get() = mYMin
 
-    @Override
-    public float getYMax() {
-        return mYMax;
-    }
+    override val yMax: Float
+        get() = mYMax
 
-    @Override
-    public float getXMin() {
-        return mXMin;
-    }
+    override val xMin: Float
+        get() = mXMin
 
-    @Override
-    public float getXMax() {
-        return mXMax;
-    }
+    override val xMax: Float
+        get() = mXMax
 
-    @Override
-    public void addEntryOrdered(T e) {
+    override fun addEntryOrdered(e: T) {
+        calcMinMax(e)
 
-        if (e == null)
-            return;
-
-        if (mEntries == null) {
-            mEntries = new ArrayList<T>();
-        }
-
-        calcMinMax(e);
-
-        if (mEntries.size() > 0 && mEntries.get(mEntries.size() - 1).getX() > e.getX()) {
-            int closestIndex = getEntryIndex(e.getX(), e.getY(), Rounding.UP);
-            mEntries.add(closestIndex, e);
+        if (mEntries.isNotEmpty() && mEntries[mEntries.size - 1].x > e.x) {
+            val closestIndex = getEntryIndex(e.x, e.y, Rounding.UP)
+            mEntries.add(closestIndex, e)
         } else {
-            mEntries.add(e);
+            mEntries.add(e)
         }
     }
 
-    @Override
-    public void clear() {
-        mEntries.clear();
-        notifyDataSetChanged();
+    override fun clear() {
+        mEntries.clear()
+        notifyDataSetChanged()
     }
 
-    @Override
-    public boolean addEntry(T e) {
+    override fun addEntry(e: T): Boolean {
 
-        if (e == null)
-            return false;
+        val values = this.entries
 
-        List<T> values = getEntries();
-        if (values == null) {
-            values = new ArrayList<>();
-        }
-
-        calcMinMax(e);
+        calcMinMax(e)
 
         // add the entry
-        return values.add(e);
+        return values.add(e)
     }
 
-    @Override
-    public boolean removeEntry(T e) {
-
-        if (e == null)
-            return false;
-
-        if (mEntries == null)
-            return false;
+    override fun removeEntry(e: T?): Boolean {
+        if (e == null) return false
 
         // remove the entry
-        boolean removed = mEntries.remove(e);
+        val removed = mEntries.remove(e)
 
         if (removed) {
-            calcMinMax();
+            calcMinMax()
         }
 
-        return removed;
+        return removed
     }
 
-    @Override
-    public int getEntryIndex(Entry e) {
-        return mEntries.indexOf(e);
+    override fun getEntryIndex(e: Entry): Int {
+        return mEntries.indexOf(e)
     }
 
-    @Override
-    public T getEntryForXValue(float xValue, float closestToY, Rounding rounding) {
-
-        int index = getEntryIndex(xValue, closestToY, rounding);
-        if (index > -1)
-            return mEntries.get(index);
-        return null;
+    override fun getEntryForXValue(xValue: Float, closestToY: Float, rounding: Rounding?): T? {
+        val index = getEntryIndex(xValue, closestToY, rounding)
+        if (index > -1) return mEntries[index]
+        return null
     }
 
-    @Override
-    public T getEntryForXValue(float xValue, float closestToY) {
-        return getEntryForXValue(xValue, closestToY, Rounding.CLOSEST);
+    override fun getEntryForXValue(xValue: Float, closestToY: Float): T? {
+        return getEntryForXValue(xValue, closestToY, Rounding.CLOSEST)
     }
 
-    @Override
-    public T getEntryForIndex(int index) {
-        if (index < 0)
-            return null;
-        if (index >= mEntries.size())
-            return null;
-        return mEntries.get(index);
+    override fun getEntryForIndex(index: Int): T {
+        if (index < 0) throw ArrayIndexOutOfBoundsException(index)
+        if (index >= mEntries.size) throw ArrayIndexOutOfBoundsException(index)
+        return mEntries[index]
     }
 
-    @Override
-    public int getEntryIndex(float xValue, float closestToY, Rounding rounding) {
+    override fun getEntryIndex(xValue: Float, closestToY: Float, rounding: Rounding?): Int {
+        if (mEntries.isEmpty()) return -1
 
-        if (mEntries == null || mEntries.isEmpty())
-            return -1;
-
-        int low = 0;
-        int high = mEntries.size() - 1;
-        int closest = high;
+        var low = 0
+        var high = mEntries.size - 1
+        var closest = high
 
         while (low < high) {
-            int m = low + (high - low) / 2;
+            val m = low + (high - low) / 2
 
-            Entry currentEntry = mEntries.get(m);
+            val currentEntry: Entry? = mEntries[m]
 
             if (currentEntry != null) {
-                Entry nextEntry = mEntries.get(m + 1);
+                val nextEntry: Entry? = mEntries[m + 1]
 
                 if (nextEntry != null) {
-                    final float d1 = currentEntry.getX() - xValue,
-                                d2 = nextEntry.getX() - xValue,
-                                ad1 = Math.abs(d1),
-                                ad2 = Math.abs(d2);
+                    val d1 = currentEntry.x - xValue
+                    val d2 = nextEntry.x - xValue
+                    val ad1 = abs(d1)
+                    val ad2 = abs(d2)
 
                     if (ad2 < ad1) {
                         // [m + 1] is closer to xValue
                         // Search in an higher place
-                        low = m + 1;
+                        low = m + 1
                     } else if (ad1 < ad2) {
                         // [m] is closer to xValue
                         // Search in a lower place
-                        high = m;
+                        high = m
                     } else {
                         // We have multiple sequential x-value with same distance
 
                         if (d1 >= 0.0) {
                             // Search in a lower place
-                            high = m;
+                            high = m
                         } else if (d1 < 0.0) {
                             // Search in an higher place
-                            low = m + 1;
+                            low = m + 1
                         }
                     }
 
-                    closest = high;
+                    closest = high
                 }
             }
         }
 
         if (closest != -1) {
-            Entry closestEntry = mEntries.get(closest);
+            val closestEntry: Entry? = mEntries[closest]
             if (closestEntry != null) {
-                float closestXValue = closestEntry.getX();
+                val closestXValue = closestEntry.x
                 if (rounding == Rounding.UP) {
                     // If rounding up, and found x-value is lower than specified x, and we can go upper...
-                    if (closestXValue < xValue && closest < mEntries.size() - 1) {
-                        ++closest;
+                    if (closestXValue < xValue && closest < mEntries.size - 1) {
+                        ++closest
                     }
                 } else if (rounding == Rounding.DOWN) {
                     // If rounding down, and found x-value is upper than specified x, and we can go lower...
                     if (closestXValue > xValue && closest > 0) {
-                        --closest;
+                        --closest
                     }
                 }
 
                 // Search by closest to y-value
-                if (!Float.isNaN(closestToY)) {
-                    while (closest > 0 && mEntries.get(closest - 1).getX() == closestXValue)
-                        closest -= 1;
+                if (!closestToY.isNaN()) {
+                    while (closest > 0 && mEntries[closest - 1].x == closestXValue) closest -= 1
 
-                    float closestYValue = closestEntry.getY();
-                    int closestYIndex = closest;
+                    var closestYValue = closestEntry.y
+                    var closestYIndex = closest
 
                     while (true) {
-                        closest += 1;
-                        if (closest >= mEntries.size())
-                            break;
+                        closest += 1
+                        if (closest >= mEntries.size) break
 
-                        final Entry value = mEntries.get(closest);
+                        val value: Entry? = mEntries[closest]
 
                         if (value == null) {
-                            continue;
+                            continue
                         }
 
-                        if (value.getX() != closestXValue)
-                            break;
+                        if (value.x != closestXValue) break
 
-                        if (Math.abs(value.getY() - closestToY) <= Math.abs(closestYValue - closestToY)) {
-                            closestYValue = closestToY;
-                            closestYIndex = closest;
+                        if (abs(value.y - closestToY) <= abs(closestYValue - closestToY)) {
+                            closestYValue = closestToY
+                            closestYIndex = closest
                         }
                     }
 
-                    closest = closestYIndex;
+                    closest = closestYIndex
                 }
             }
         }
-        return closest;
+        return closest
     }
 
-    @Override
-    public List<T> getEntriesForXValue(float xValue) {
+    override fun getEntriesForXValue(xValue: Float): MutableList<T> {
+        val entries: MutableList<T> = ArrayList()
 
-        List<T> entries = new ArrayList<T>();
-
-        int low = 0;
-        int high = mEntries.size() - 1;
+        var low = 0
+        var high = mEntries.size - 1
 
         while (low <= high) {
-            int m = (high + low) / 2;
-            T entry = mEntries.get(m);
+            var m = (high + low) / 2
+            var entry = mEntries[m]
 
             // if we have a match
-            if (xValue == entry.getX()) {
-                while (m > 0 && mEntries.get(m - 1).getX() == xValue)
-                    m--;
+            if (xValue == entry.x) {
+                while (m > 0 && mEntries[m - 1].x == xValue) m--
 
-                high = mEntries.size();
+                high = mEntries.size
 
                 // loop over all "equal" entries
-                for (; m < high; m++) {
-                    entry = mEntries.get(m);
-                    if (entry.getX() == xValue) {
-                        entries.add(entry);
+                while (m < high) {
+                    entry = mEntries[m]
+                    if (entry.x == xValue) {
+                        entries.add(entry)
                     } else {
-                        break;
+                        break
                     }
+                    m++
                 }
 
-                break;
+                break
             } else {
-                if (xValue > entry.getX())
-                    low = m + 1;
-                else
-                    high = m - 1;
+                if (xValue > entry.x) low = m + 1
+                else high = m - 1
             }
         }
 
-        return entries;
+        return entries
     }
 
     /**
      * Determines how to round DataSet index values for
-     * {@link DataSet#getEntryIndex(float, float, Rounding)} DataSet.getEntryIndex()}
+     * [DataSet.getEntryIndex] DataSet.getEntryIndex()}
      * when an exact x-index is not found.
      */
-    public enum Rounding {
+    enum class Rounding {
         UP,
         DOWN,
         CLOSEST,

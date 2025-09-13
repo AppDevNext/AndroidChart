@@ -1,54 +1,58 @@
-package com.github.mikephil.charting.components;
+package com.github.mikephil.charting.components
 
-import android.graphics.Paint;
-
-import com.github.mikephil.charting.utils.MPPointF;
-import com.github.mikephil.charting.utils.Utils;
+import android.graphics.Paint.Align
+import com.github.mikephil.charting.utils.MPPointF
+import com.github.mikephil.charting.utils.Utils
 
 /**
  * Created by Philipp Jahoda on 17/09/16.
  */
-public class Description extends ComponentBase {
-
+class Description : ComponentBase() {
     /**
-     * the text used in the description
+     * Returns the description text.
+     *
+     * @return
      */
-    private String text = "Description Label";
-
-    /**
-     * the custom position of the description text
-     */
-    private MPPointF mPosition;
-
-    /**
-     * the alignment of the description text
-     */
-    private Paint.Align mTextAlign = Paint.Align.RIGHT;
-
-    public Description() {
-        super();
-
-        // default size
-        mTextSize = Utils.convertDpToPixel(8f);
-    }
-
     /**
      * Sets the text to be shown as the description.
      * Never set this to null as this will cause nullpointer exception when drawing with Android Canvas.
      *
      * @param text
      */
-    public void setText(String text) {
-        this.text = text;
-    }
+    /**
+     * the text used in the description
+     */
+    var text: String? = "Description Label"
 
     /**
-     * Returns the description text.
+     * Returns the customized position of the description, or null if none set.
      *
      * @return
      */
-    public String getText() {
-        return text;
+    /**
+     * the custom position of the description text
+     */
+    var position: MPPointF? = null
+        private set
+
+    /**
+     * Returns the text alignment of the description.
+     *
+     * @return
+     */
+    /**
+     * Sets the text alignment of the description text. Default RIGHT.
+     *
+     * @param align
+     */
+    /**
+     * the alignment of the description text
+     */
+    var textAlign: Align? = Align.RIGHT
+
+    init {
+        // default size
+        mTextSize = Utils.convertDpToPixel(8f)
     }
 
     /**
@@ -57,39 +61,12 @@ public class Description extends ComponentBase {
      * @param x - xcoordinate
      * @param y - ycoordinate
      */
-    public void setPosition(float x, float y) {
-        if (mPosition == null) {
-            mPosition = MPPointF.getInstance(x, y);
+    fun setPosition(x: Float, y: Float) {
+        if (this.position == null) {
+            this.position = MPPointF.Companion.getInstance(x, y)
         } else {
-            mPosition.x = x;
-            mPosition.y = y;
+            position!!.x = x
+            position!!.y = y
         }
-    }
-
-    /**
-     * Returns the customized position of the description, or null if none set.
-     *
-     * @return
-     */
-    public MPPointF getPosition() {
-        return mPosition;
-    }
-
-    /**
-     * Sets the text alignment of the description text. Default RIGHT.
-     *
-     * @param align
-     */
-    public void setTextAlign(Paint.Align align) {
-        this.mTextAlign = align;
-    }
-
-    /**
-     * Returns the text alignment of the description.
-     *
-     * @return
-     */
-    public Paint.Align getTextAlign() {
-        return mTextAlign;
     }
 }

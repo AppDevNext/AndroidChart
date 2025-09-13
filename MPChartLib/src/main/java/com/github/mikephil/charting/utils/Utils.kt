@@ -1,27 +1,49 @@
+package com.github.mikephil.charting.utils
 
-package com.github.mikephil.charting.utils;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.VelocityTracker;
-import android.view.View;
-import android.view.ViewConfiguration;
-
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-
-import java.util.List;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Resources
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Paint.Align
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
+import android.os.Build
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
+import android.util.DisplayMetrics
+import android.util.Log
+import android.view.MotionEvent
+import android.view.VelocityTracker
+import android.view.View
+import android.view.ViewConfiguration
+import com.github.mikephil.charting.formatter.DefaultValueFormatter
+import com.github.mikephil.charting.formatter.IValueFormatter
+import kotlin.Array
+import kotlin.Boolean
+import kotlin.Char
+import kotlin.CharArray
+import kotlin.Deprecated
+import kotlin.Int
+import kotlin.IntArray
+import kotlin.String
+import kotlin.Suppress
+import kotlin.arrayOfNulls
+import kotlin.code
+import kotlin.collections.MutableList
+import kotlin.collections.indices
+import kotlin.intArrayOf
+import kotlin.math.abs
+import kotlin.math.ceil
+import kotlin.math.cos
+import kotlin.math.log10
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.pow
+import kotlin.math.roundToInt
+import kotlin.math.sin
+import androidx.core.graphics.withTranslation
 
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
@@ -31,43 +53,43 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-@SuppressWarnings("JavaDoc")
-public abstract class Utils {
+object Utils {
+    private var mMetrics: DisplayMetrics? = null
+    var minimumFlingVelocity: Int = 50
+        private set
+    var maximumFlingVelocity: Int = 8000
+        private set
+    val DEG2RAD: Double = (Math.PI / 180.0)
+    val FDEG2RAD: Float = (Math.PI.toFloat() / 180f)
 
-    private static DisplayMetrics mMetrics;
-    private static int mMinimumFlingVelocity = 50;
-    private static int mMaximumFlingVelocity = 8000;
-    public final static double DEG2RAD = (Math.PI / 180.0);
-    public final static float FDEG2RAD = ((float) Math.PI / 180.f);
+    @Suppress("unused")
+    val DOUBLE_EPSILON: Double = java.lang.Double.longBitsToDouble(1)
 
-    @SuppressWarnings("unused")
-    public final static double DOUBLE_EPSILON = Double.longBitsToDouble(1);
-
-    @SuppressWarnings("unused")
-    public final static float FLOAT_EPSILON = Float.intBitsToFloat(1);
+    @Suppress("unused")
+    val FLOAT_EPSILON: Float = java.lang.Float.intBitsToFloat(1)
 
     /**
      * initialize method, called inside the Chart.init() method.
      */
-    @SuppressWarnings("deprecation")
-    public static void init(Context context) {
-
+    @Suppress("deprecation")
+    fun init(context: Context?) {
         if (context == null) {
             // noinspection deprecation
-            mMinimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity();
+            minimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity()
             // noinspection deprecation
-            mMaximumFlingVelocity = ViewConfiguration.getMaximumFlingVelocity();
+            maximumFlingVelocity = ViewConfiguration.getMaximumFlingVelocity()
 
-            Log.e("MPChartLib-Utils"
-                    , "Utils.init(...) PROVIDED CONTEXT OBJECT IS NULL");
-
+            Log.e(
+                "MPChartLib-Utils",
+                "Utils.init(...) PROVIDED CONTEXT OBJECT IS NULL"
+            )
         } else {
-            ViewConfiguration viewConfiguration = ViewConfiguration.get(context);
-            mMinimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
-            mMaximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
+            val viewConfiguration = ViewConfiguration.get(context)
+            minimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity()
+            maximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity()
 
-            Resources res = context.getResources();
-            mMetrics = res.getDisplayMetrics();
+            val res = context.getResources()
+            mMetrics = res.getDisplayMetrics()
         }
     }
 
@@ -77,15 +99,14 @@ public abstract class Utils {
      *
      * @param res
      */
-    @Deprecated
-    public static void init(Resources res) {
-
-        mMetrics = res.getDisplayMetrics();
+    @Deprecated("")
+    fun init(res: Resources) {
+        mMetrics = res.getDisplayMetrics()
 
         // noinspection deprecation
-        mMinimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity();
+        minimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity()
         // noinspection deprecation
-        mMaximumFlingVelocity = ViewConfiguration.getMaximumFlingVelocity();
+        maximumFlingVelocity = ViewConfiguration.getMaximumFlingVelocity()
     }
 
     /**
@@ -93,22 +114,23 @@ public abstract class Utils {
      * density. NEEDS UTILS TO BE INITIALIZED BEFORE USAGE.
      *
      * @param dp A value in dp (density independent pixels) unit. Which we need
-     *           to convert into pixels
+     * to convert into pixels
      * @return A float value to represent px equivalent to dp depending on
      * device density
      */
-    public static float convertDpToPixel(float dp) {
-
+    @JvmStatic
+    fun convertDpToPixel(dp: Float): Float {
         if (mMetrics == null) {
-
-            Log.e("MPChartLib-Utils",
-                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before" +
-                            " calling Utils.convertDpToPixel(...). Otherwise conversion does not " +
-                            "take place.");
-            return dp;
+            Log.e(
+                "MPChartLib-Utils",
+                "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before" +
+                        " calling Utils.convertDpToPixel(...). Otherwise conversion does not " +
+                        "take place."
+            )
+            return dp
         }
 
-        return dp * mMetrics.density;
+        return dp * mMetrics!!.density
     }
 
     /**
@@ -118,18 +140,18 @@ public abstract class Utils {
      * @param px A value in px (pixels) unit. Which we need to convert into db
      * @return A float value to represent dp equivalent to px value
      */
-    public static float convertPixelsToDp(float px) {
-
+    fun convertPixelsToDp(px: Float): Float {
         if (mMetrics == null) {
-
-            Log.e("MPChartLib-Utils",
-                    "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before" +
-                            " calling Utils.convertPixelsToDp(...). Otherwise conversion does not" +
-                            " take place.");
-            return px;
+            Log.e(
+                "MPChartLib-Utils",
+                "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before" +
+                        " calling Utils.convertPixelsToDp(...). Otherwise conversion does not" +
+                        " take place."
+            )
+            return px
         }
 
-        return px / mMetrics.density;
+        return px / mMetrics!!.density
     }
 
     /**
@@ -140,11 +162,12 @@ public abstract class Utils {
      * @param demoText
      * @return
      */
-    public static int calcTextWidth(Paint paint, String demoText) {
-        return (int) paint.measureText(demoText);
+    fun calcTextWidth(paint: Paint, demoText: String?): Int {
+        return paint.measureText(demoText).toInt()
     }
 
-    private static final Rect mCalcTextHeightRect = new Rect();
+    private val mCalcTextHeightRect = Rect()
+
     /**
      * calculates the approximate height of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
@@ -153,32 +176,31 @@ public abstract class Utils {
      * @param demoText
      * @return
      */
-    public static int calcTextHeight(Paint paint, String demoText) {
-
-        Rect r = mCalcTextHeightRect;
-        r.set(0,0,0,0);
-        paint.getTextBounds(demoText, 0, demoText.length(), r);
-        return r.height();
+    fun calcTextHeight(paint: Paint, demoText: String): Int {
+        val r = mCalcTextHeightRect
+        r.set(0, 0, 0, 0)
+        paint.getTextBounds(demoText, 0, demoText.length, r)
+        return r.height()
     }
 
-    private static final Paint.FontMetrics mFontMetrics = new Paint.FontMetrics();
+    private val mFontMetrics = Paint.FontMetrics()
 
-    public static float getLineHeight(Paint paint) {
-        return getLineHeight(paint, mFontMetrics);
+    fun getLineHeight(paint: Paint): Float {
+        return getLineHeight(paint, mFontMetrics)
     }
 
-    public static float getLineHeight(Paint paint, Paint.FontMetrics fontMetrics){
-        paint.getFontMetrics(fontMetrics);
-        return fontMetrics.descent - fontMetrics.ascent;
+    fun getLineHeight(paint: Paint, fontMetrics: Paint.FontMetrics): Float {
+        paint.getFontMetrics(fontMetrics)
+        return fontMetrics.descent - fontMetrics.ascent
     }
 
-    public static float getLineSpacing(Paint paint) {
-        return getLineSpacing(paint, mFontMetrics);
+    fun getLineSpacing(paint: Paint): Float {
+        return getLineSpacing(paint, mFontMetrics)
     }
 
-    public static float getLineSpacing(Paint paint, Paint.FontMetrics fontMetrics){
-        paint.getFontMetrics(fontMetrics);
-        return fontMetrics.ascent - fontMetrics.top + fontMetrics.bottom;
+    fun getLineSpacing(paint: Paint, fontMetrics: Paint.FontMetrics): Float {
+        paint.getFontMetrics(fontMetrics)
+        return fontMetrics.ascent - fontMetrics.top + fontMetrics.bottom
     }
 
     /**
@@ -190,14 +212,14 @@ public abstract class Utils {
      * @param demoText
      * @return A Recyclable FSize instance
      */
-    public static FSize calcTextSize(Paint paint, String demoText) {
-
-        FSize result = FSize.getInstance(0,0);
-        calcTextSize(paint, demoText, result);
-        return result;
+    fun calcTextSize(paint: Paint, demoText: String): FSize {
+        val result: FSize = FSize.Companion.getInstance(0f, 0f)
+        calcTextSize(paint, demoText, result)
+        return result
     }
 
-    private static final Rect mCalcTextSizeRect = new Rect();
+    private val mCalcTextSizeRect = Rect()
+
     /**
      * calculates the approximate size of a text, depending on a demo text
      * avoid repeated calls (e.g. inside drawing methods)
@@ -206,14 +228,12 @@ public abstract class Utils {
      * @param demoText
      * @param outputFSize An output variable, modified by the function.
      */
-    public static void calcTextSize(Paint paint, String demoText, FSize outputFSize) {
-
-        Rect r = mCalcTextSizeRect;
-        r.set(0,0,0,0);
-        paint.getTextBounds(demoText, 0, demoText.length(), r);
-        outputFSize.width = r.width();
-        outputFSize.height = r.height();
-
+    fun calcTextSize(paint: Paint, demoText: String, outputFSize: FSize) {
+        val r = mCalcTextSizeRect
+        r.set(0, 0, 0, 0)
+        paint.getTextBounds(demoText, 0, demoText.length, r)
+        outputFSize.width = r.width().toFloat()
+        outputFSize.height = r.height().toFloat()
     }
 
 
@@ -221,34 +241,15 @@ public abstract class Utils {
      * Math.pow(...) is very expensive, so avoid calling it and create it
      * yourself.
      */
-    private static final int[] POW_10 = {
-            1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
-    };
+    private val POW_10 = intArrayOf(
+        1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
+    )
 
-    private static final IValueFormatter mDefaultValueFormatter = generateDefaultValueFormatter();
+    /** - returns: The default value formatter used for all chart components that needs a default */
+    val defaultValueFormatter: IValueFormatter = generateDefaultValueFormatter()
 
-    private static IValueFormatter generateDefaultValueFormatter() {
-        return new DefaultValueFormatter(1);
-    }
-
-    /// - returns: The default value formatter used for all chart components that needs a default
-    public static IValueFormatter getDefaultValueFormatter()
-    {
-        return mDefaultValueFormatter;
-    }
-
-    /**
-     * Formats the given number to the given number of decimals, and returns the
-     * number as a string, maximum 35 characters. If thousands are separated, the separating
-     * character is a dot (".").
-     *
-     * @param number
-     * @param digitCount
-     * @param separateThousands set this to true to separate thousands values
-     * @return
-     */
-    public static String formatNumber(float number, int digitCount, boolean separateThousands) {
-        return formatNumber(number, digitCount, separateThousands, '.');
+    private fun generateDefaultValueFormatter(): IValueFormatter {
+        return DefaultValueFormatter(1)
     }
 
     /**
@@ -261,60 +262,70 @@ public abstract class Utils {
      * @param separateChar      a caracter to be paced between the "thousands"
      * @return
      */
-    public static String formatNumber(float number, int digitCount, boolean separateThousands,
-                                      char separateChar) {
+    /**
+     * Formats the given number to the given number of decimals, and returns the
+     * number as a string, maximum 35 characters. If thousands are separated, the separating
+     * character is a dot (".").
+     *
+     * @param number
+     * @param digitCount
+     * @param separateThousands set this to true to separate thousands values
+     * @return
+     */
+    @JvmOverloads
+    fun formatNumber(
+        number: Float, digitCount: Int, separateThousands: Boolean,
+        separateChar: Char = '.'
+    ): String {
+        var number = number
+        var digitCount = digitCount
+        val out = CharArray(35)
 
-        char[] out = new char[35];
-
-        boolean neg = false;
-        if (number == 0) {
-            return "0";
+        var neg = false
+        if (number == 0f) {
+            return "0"
         }
 
-        boolean zero = number < 1 && number > -1;
+        val zero = number < 1 && number > -1
 
         if (number < 0) {
-            neg = true;
-            number = -number;
+            neg = true
+            number = -number
         }
 
-        if (digitCount > POW_10.length) {
-            digitCount = POW_10.length - 1;
+        if (digitCount > POW_10.size) {
+            digitCount = POW_10.size - 1
         }
 
-        number *= POW_10[digitCount];
-        long lval = Math.round(number);
-        int ind = out.length - 1;
-        int charCount = 0;
-        boolean decimalPointAdded = false;
+        number *= POW_10[digitCount].toFloat()
+        var lval = Math.round(number).toLong()
+        var ind = out.size - 1
+        var charCount = 0
+        var decimalPointAdded = false
 
-        while (lval != 0 || charCount < (digitCount + 1)) {
-            int digit = (int) (lval % 10);
-            lval = lval / 10;
-            out[ind--] = (char) (digit + '0');
-            charCount++;
+        while (lval != 0L || charCount < (digitCount + 1)) {
+            val digit = (lval % 10).toInt()
+            lval = lval / 10
+            out[ind--] = (digit + '0'.code).toChar()
+            charCount++
 
             // add decimal point
             if (charCount == digitCount) {
-                out[ind--] = ',';
-                charCount++;
-                decimalPointAdded = true;
+                out[ind--] = ','
+                charCount++
+                decimalPointAdded = true
 
                 // add thousand separators
-            } else if (separateThousands && lval != 0 && charCount > digitCount) {
-
+            } else if (separateThousands && lval != 0L && charCount > digitCount) {
                 if (decimalPointAdded) {
-
                     if ((charCount - digitCount) % 4 == 0) {
-                        out[ind--] = separateChar;
-                        charCount++;
+                        out[ind--] = separateChar
+                        charCount++
                     }
-
                 } else {
-
                     if ((charCount - digitCount) % 4 == 3) {
-                        out[ind--] = separateChar;
-                        charCount++;
+                        out[ind--] = separateChar
+                        charCount++
                     }
                 }
             }
@@ -322,20 +333,20 @@ public abstract class Utils {
 
         // if number around zero (between 1 and -1)
         if (zero) {
-            out[ind--] = '0';
-            charCount += 1;
+            out[ind--] = '0'
+            charCount += 1
         }
 
         // if the number is negative
         if (neg) {
-            out[ind--] = '-';
-            charCount += 1;
+            out[ind--] = '-'
+            charCount += 1
         }
 
-        int start = out.length - charCount;
+        val start = out.size - charCount
 
         // use this instead of "new String(...)" because of issue < Android 4.0
-        return String.valueOf(out, start, out.length - start);
+        return String(out, start, out.size - start)
     }
 
     /**
@@ -344,17 +355,14 @@ public abstract class Utils {
      * @param number
      * @return
      */
-    public static float roundToNextSignificant(double number) {
-        if (Double.isInfinite(number) ||
-            Double.isNaN(number) ||
-            number == 0.0)
-            return 0;
+    fun roundToNextSignificant(number: Double): Float {
+        if (number.isInfinite() || number.isNaN() || number == 0.0) return 0f
 
-        final float d = (float) Math.ceil((float) Math.log10(number < 0 ? -number : number));
-        final int pw = 1 - (int) d;
-        final float magnitude = (float) Math.pow(10, pw);
-        final long shifted = Math.round(number * magnitude);
-        return shifted / magnitude;
+        val d = ceil(log10(if (number < 0) -number else number).toFloat().toDouble()).toFloat()
+        val pw = 1 - d.toInt()
+        val magnitude = 10.0.pow(pw.toDouble()).toFloat()
+        val shifted = (number * magnitude).roundToInt()
+        return shifted / magnitude
     }
 
     /**
@@ -364,14 +372,12 @@ public abstract class Utils {
      * @param number
      * @return
      */
-    public static int getDecimals(float number) {
+    fun getDecimals(number: Float): Int {
+        val i = roundToNextSignificant(number.toDouble())
 
-        float i = roundToNextSignificant(number);
+        if (i.isInfinite()) return 0
 
-        if (Float.isInfinite(i))
-            return 0;
-
-        return (int) Math.ceil(-Math.log10(i)) + 2;
+        return ceil(-log10(i.toDouble())).toInt() + 2
     }
 
     /**
@@ -380,19 +386,18 @@ public abstract class Utils {
      * @param integers
      * @return
      */
-    public static int[] convertIntegers(List<Integer> integers) {
+    fun convertIntegers(integers: MutableList<Int?>): IntArray {
+        val ret = IntArray(integers.size)
 
-        int[] ret = new int[integers.size()];
+        copyIntegers(integers, ret)
 
-        copyIntegers(integers, ret);
-
-        return ret;
+        return ret
     }
 
-    public static void copyIntegers(List<Integer> from, int[] to){
-        int count = Math.min(to.length, from.size());
-        for(int i = 0 ; i < count ; i++){
-            to[i] = from.get(i);
+    fun copyIntegers(from: MutableList<Int?>, to: IntArray) {
+        val count = min(to.size, from.size)
+        for (i in 0..<count) {
+            to[i] = from[i]!!
         }
     }
 
@@ -402,15 +407,14 @@ public abstract class Utils {
      * @param strings
      * @return
      */
-    public static String[] convertStrings(List<String> strings) {
+    fun convertStrings(strings: MutableList<String?>): Array<String?> {
+        val ret = arrayOfNulls<String>(strings.size)
 
-        String[] ret = new String[strings.size()];
-
-        for (int i = 0; i < ret.length; i++) {
-            ret[i] = strings.get(i);
+        for (i in ret.indices) {
+            ret[i] = strings.get(i)
         }
 
-        return ret;
+        return ret
     }
 
     /**
@@ -420,13 +424,15 @@ public abstract class Utils {
      * @param d
      * @return
      */
-    public static double nextUp(double d) {
-        if (d == Double.POSITIVE_INFINITY)
-            return d;
+    fun nextUp(d: Double): Double {
+        var d = d
+        if (d == Double.Companion.POSITIVE_INFINITY) return d
         else {
-            d += 0.0d;
-            return Double.longBitsToDouble(Double.doubleToRawLongBits(d) +
-                    ((d >= 0.0d) ? +1L : -1L));
+            d += 0.0
+            return java.lang.Double.longBitsToDouble(
+                java.lang.Double.doubleToRawLongBits(d) +
+                        (if (d >= 0.0) +1L else -1L)
+            )
         }
     }
 
@@ -440,41 +446,47 @@ public abstract class Utils {
      * @param angle  in degrees, converted to radians internally
      * @return
      */
-    public static MPPointF getPosition(MPPointF center, float dist, float angle) {
-
-        MPPointF p = MPPointF.getInstance(0,0);
-        getPosition(center, dist, angle, p);
-        return p;
+    fun getPosition(center: MPPointF, dist: Float, angle: Float): MPPointF {
+        val p: MPPointF = MPPointF.Companion.getInstance(0f, 0f)
+        getPosition(center, dist, angle, p)
+        return p
     }
 
-    public static void getPosition(MPPointF center, float dist, float angle, MPPointF outputPoint){
-        outputPoint.x = (float) (center.x + dist * Math.cos(Math.toRadians(angle)));
-        outputPoint.y = (float) (center.y + dist * Math.sin(Math.toRadians(angle)));
+    fun getPosition(center: MPPointF, dist: Float, angle: Float, outputPoint: MPPointF) {
+        outputPoint.x = (center.x + dist * cos(Math.toRadians(angle.toDouble()))).toFloat()
+        outputPoint.y = (center.y + dist * sin(Math.toRadians(angle.toDouble()))).toFloat()
     }
 
-    public static void velocityTrackerPointerUpCleanUpIfNecessary(MotionEvent ev,
-                                                                  VelocityTracker tracker) {
-
+    fun velocityTrackerPointerUpCleanUpIfNecessary(
+        ev: MotionEvent,
+        tracker: VelocityTracker
+    ) {
         // Check the dot product of current velocities.
         // If the pointer that left was opposing another velocity vector, clear.
-        tracker.computeCurrentVelocity(1000, mMaximumFlingVelocity);
-        final int upIndex = ev.getActionIndex();
-        final int id1 = ev.getPointerId(upIndex);
-        final float x1 = tracker.getXVelocity(id1);
-        final float y1 = tracker.getYVelocity(id1);
-        for (int i = 0, count = ev.getPointerCount(); i < count; i++) {
-            if (i == upIndex)
-                continue;
 
-            final int id2 = ev.getPointerId(i);
-            final float x = x1 * tracker.getXVelocity(id2);
-            final float y = y1 * tracker.getYVelocity(id2);
-
-            final float dot = x + y;
-            if (dot < 0) {
-                tracker.clear();
-                break;
+        tracker.computeCurrentVelocity(1000, maximumFlingVelocity.toFloat())
+        val upIndex = ev.actionIndex
+        val id1 = ev.getPointerId(upIndex)
+        val x1 = tracker.getXVelocity(id1)
+        val y1 = tracker.getYVelocity(id1)
+        var i = 0
+        val count = ev.pointerCount
+        while (i < count) {
+            if (i == upIndex) {
+                i++
+                continue
             }
+
+            val id2 = ev.getPointerId(i)
+            val x = x1 * tracker.getXVelocity(id2)
+            val y = y1 * tracker.getYVelocity(id2)
+
+            val dot = x + y
+            if (dot < 0) {
+                tracker.clear()
+                break
+            }
+            i++
         }
     }
 
@@ -485,213 +497,209 @@ public abstract class Utils {
      * @param view
      */
     @SuppressLint("NewApi")
-    public static void postInvalidateOnAnimation(View view) {
-        view.postInvalidateOnAnimation();
-    }
-
-    public static int getMinimumFlingVelocity() {
-        return mMinimumFlingVelocity;
-    }
-
-    public static int getMaximumFlingVelocity() {
-        return mMaximumFlingVelocity;
+    fun postInvalidateOnAnimation(view: View) {
+        view.postInvalidateOnAnimation()
     }
 
     /**
      * returns an angle between 0.f < 360.f (not less than zero, less than 360)
      */
-    public static float getNormalizedAngle(float angle) {
-        while (angle < 0.f)
-            angle += 360.f;
+    fun getNormalizedAngle(angle: Float): Float {
+        var angle = angle
+        while (angle < 0f) angle += 360f
 
-        return angle % 360.f;
+        return angle % 360f
     }
 
-    private static final Rect mDrawableBoundsCache = new Rect();
+    private val mDrawableBoundsCache = Rect()
 
-    public static void drawImage(Canvas canvas,
-                                 Drawable drawable,
-                                 int x, int y,
-                                 int width, int height) {
+    fun drawImage(
+        canvas: Canvas,
+        drawable: Drawable?,
+        x: Int, y: Int,
+        width: Int, height: Int
+    ) {
+        val drawOffset: MPPointF = MPPointF.instance
+        drawOffset.x = (x - (width / 2)).toFloat()
+        drawOffset.y = (y - (height / 2)).toFloat()
 
-        MPPointF drawOffset = MPPointF.getInstance();
-        drawOffset.x = x - (width / 2);
-        drawOffset.y = y - (height / 2);
+        drawable?.copyBounds(mDrawableBoundsCache)
+        drawable?.setBounds(
+            mDrawableBoundsCache.left,
+            mDrawableBoundsCache.top,
+            mDrawableBoundsCache.left + width,
+            mDrawableBoundsCache.top + width
+        )
 
-        drawable.copyBounds(mDrawableBoundsCache);
-        drawable.setBounds(
-                mDrawableBoundsCache.left,
-                mDrawableBoundsCache.top,
-                mDrawableBoundsCache.left + width,
-                mDrawableBoundsCache.top + width);
-
-        int saveId = canvas.save();
-        // translate to the correct position and draw
-        canvas.translate(drawOffset.x, drawOffset.y);
-        drawable.draw(canvas);
-        canvas.restoreToCount(saveId);
+        canvas.withTranslation(drawOffset.x, drawOffset.y) {
+            // translate to the correct position and draw
+            drawable?.draw(canvas)
+        }
     }
 
-    private static final Rect mDrawTextRectBuffer = new Rect();
-    private static final Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
+    private val mDrawTextRectBuffer = Rect()
+    private val mFontMetricsBuffer = Paint.FontMetrics()
 
-    public static void drawXAxisValue(Canvas c, String text, float x, float y,
-                                      Paint paint,
-                                      MPPointF anchor, float angleDegrees) {
+    fun drawXAxisValue(
+        c: Canvas?, text: String, x: Float, y: Float,
+        paint: Paint,
+        anchor: MPPointF, angleDegrees: Float
+    ) {
+        var drawOffsetX = 0f
+        var drawOffsetY = 0f
 
-        float drawOffsetX = 0.f;
-        float drawOffsetY = 0.f;
-
-        final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
-        paint.getTextBounds(text, 0, text.length(), mDrawTextRectBuffer);
+        val lineHeight = paint.getFontMetrics(mFontMetricsBuffer)
+        paint.getTextBounds(text, 0, text.length, mDrawTextRectBuffer)
 
         // Android sometimes has pre-padding
-        drawOffsetX -= mDrawTextRectBuffer.left;
+        drawOffsetX -= mDrawTextRectBuffer.left.toFloat()
 
         // Android does not snap the bounds to line boundaries,
         //  and draws from bottom to top.
         // And we want to normalize it.
-        drawOffsetY -= mFontMetricsBuffer.ascent;
+        drawOffsetY -= mFontMetricsBuffer.ascent
 
         // To have a consistent point of reference, we always draw left-aligned
-        Paint.Align originalTextAlign = paint.getTextAlign();
-        paint.setTextAlign(Paint.Align.LEFT);
+        val originalTextAlign = paint.getTextAlign()
+        paint.setTextAlign(Align.LEFT)
 
-        if (angleDegrees != 0.f) {
-
+        if (angleDegrees != 0f) {
             // Move the text drawing rect in a way that it always rotates around its center
-            drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f;
-            drawOffsetY -= lineHeight * 0.5f;
 
-            float translateX = x;
-            float translateY = y;
+            drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f
+            drawOffsetY -= lineHeight * 0.5f
+
+            var translateX = x
+            var translateY = y
 
             // Move the "outer" rect relative to the anchor, assuming its centered
             if (anchor.x != 0.5f || anchor.y != 0.5f) {
-                final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
-                        mDrawTextRectBuffer.width(),
-                        lineHeight,
-                        angleDegrees);
+                val rotatedSize = getSizeOfRotatedRectangleByDegrees(
+                    mDrawTextRectBuffer.width().toFloat(),
+                    lineHeight,
+                    angleDegrees
+                )
 
-                translateX -= rotatedSize.width * (anchor.x - 0.5f);
-                translateY -= rotatedSize.height * (anchor.y - 0.5f);
-                FSize.recycleInstance(rotatedSize);
+                translateX -= rotatedSize.width * (anchor.x - 0.5f)
+                translateY -= rotatedSize.height * (anchor.y - 0.5f)
+                FSize.Companion.recycleInstance(rotatedSize)
             }
 
-            c.save();
-            c.translate(translateX, translateY);
-            c.rotate(angleDegrees);
+            c?.withTranslation(translateX, translateY) {
+                rotate(angleDegrees)
 
-            c.drawText(text, drawOffsetX, drawOffsetY, paint);
+                drawText(text, drawOffsetX, drawOffsetY, paint)
 
-            c.restore();
+            }
         } else {
-            if (anchor.x != 0.f || anchor.y != 0.f) {
-
-                drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x;
-                drawOffsetY -= lineHeight * anchor.y;
+            if (anchor.x != 0f || anchor.y != 0f) {
+                drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x
+                drawOffsetY -= lineHeight * anchor.y
             }
 
-            drawOffsetX += x;
-            drawOffsetY += y;
+            drawOffsetX += x
+            drawOffsetY += y
 
-            c.drawText(text, drawOffsetX, drawOffsetY, paint);
+            c?.drawText(text, drawOffsetX, drawOffsetY, paint)
         }
 
-        paint.setTextAlign(originalTextAlign);
+        paint.textAlign = originalTextAlign
     }
 
-    public static void drawMultilineText(Canvas c, StaticLayout textLayout,
-                                         float x, float y,
-                                         TextPaint paint,
-                                         MPPointF anchor, float angleDegrees) {
+    fun drawMultilineText(
+        c: Canvas, textLayout: StaticLayout,
+        x: Float, y: Float,
+        paint: TextPaint,
+        anchor: MPPointF, angleDegrees: Float
+    ) {
+        var drawOffsetX = 0f
+        var drawOffsetY = 0f
+        val drawWidth: Float
+        val drawHeight: Float
 
-        float drawOffsetX = 0.f;
-        float drawOffsetY = 0.f;
-        float drawWidth;
-        float drawHeight;
+        val lineHeight = paint.getFontMetrics(mFontMetricsBuffer)
 
-        final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
-
-        drawWidth = textLayout.getWidth();
-        drawHeight = textLayout.getLineCount() * lineHeight;
+        drawWidth = textLayout.getWidth().toFloat()
+        drawHeight = textLayout.getLineCount() * lineHeight
 
         // Android sometimes has pre-padding
-        drawOffsetX -= mDrawTextRectBuffer.left;
+        drawOffsetX -= mDrawTextRectBuffer.left.toFloat()
 
         // Android does not snap the bounds to line boundaries,
         //  and draws from bottom to top.
         // And we want to normalize it.
-        drawOffsetY += drawHeight;
+        drawOffsetY += drawHeight
 
         // To have a consistent point of reference, we always draw left-aligned
-        Paint.Align originalTextAlign = paint.getTextAlign();
-        paint.setTextAlign(Paint.Align.LEFT);
+        val originalTextAlign = paint.getTextAlign()
+        paint.setTextAlign(Align.LEFT)
 
-        if (angleDegrees != 0.f) {
-
+        if (angleDegrees != 0f) {
             // Move the text drawing rect in a way that it always rotates around its center
-            drawOffsetX -= drawWidth * 0.5f;
-            drawOffsetY -= drawHeight * 0.5f;
 
-            float translateX = x;
-            float translateY = y;
+            drawOffsetX -= drawWidth * 0.5f
+            drawOffsetY -= drawHeight * 0.5f
+
+            var translateX = x
+            var translateY = y
 
             // Move the "outer" rect relative to the anchor, assuming its centered
             if (anchor.x != 0.5f || anchor.y != 0.5f) {
-                final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
-                        drawWidth,
-                        drawHeight,
-                        angleDegrees);
+                val rotatedSize = getSizeOfRotatedRectangleByDegrees(
+                    drawWidth,
+                    drawHeight,
+                    angleDegrees
+                )
 
-                translateX -= rotatedSize.width * (anchor.x - 0.5f);
-                translateY -= rotatedSize.height * (anchor.y - 0.5f);
-                FSize.recycleInstance(rotatedSize);
+                translateX -= rotatedSize.width * (anchor.x - 0.5f)
+                translateY -= rotatedSize.height * (anchor.y - 0.5f)
+                FSize.Companion.recycleInstance(rotatedSize)
             }
 
-            c.save();
-            c.translate(translateX, translateY);
-            c.rotate(angleDegrees);
+            c.save()
+            c.translate(translateX, translateY)
+            c.rotate(angleDegrees)
 
-            c.translate(drawOffsetX, drawOffsetY);
-            textLayout.draw(c);
+            c.translate(drawOffsetX, drawOffsetY)
+            textLayout.draw(c)
 
-            c.restore();
+            c.restore()
         } else {
-            if (anchor.x != 0.f || anchor.y != 0.f) {
-
-                drawOffsetX -= drawWidth * anchor.x;
-                drawOffsetY -= drawHeight * anchor.y;
+            if (anchor.x != 0f || anchor.y != 0f) {
+                drawOffsetX -= drawWidth * anchor.x
+                drawOffsetY -= drawHeight * anchor.y
             }
 
-            drawOffsetX += x;
-            drawOffsetY += y;
+            drawOffsetX += x
+            drawOffsetY += y
 
-            c.save();
+            c.save()
 
-            c.translate(drawOffsetX, drawOffsetY);
-            textLayout.draw(c);
+            c.translate(drawOffsetX, drawOffsetY)
+            textLayout.draw(c)
 
-            c.restore();
+            c.restore()
         }
 
-        paint.setTextAlign(originalTextAlign);
+        paint.setTextAlign(originalTextAlign)
     }
 
-    public static void drawMultilineText(Canvas c, String text,
-                                         float x, float y,
-                                         TextPaint paint,
-                                         FSize constrainedToSize,
-                                         MPPointF anchor, float angleDegrees) {
+    fun drawMultilineText(
+        c: Canvas, text: String,
+        x: Float, y: Float,
+        paint: TextPaint,
+        constrainedToSize: FSize,
+        anchor: MPPointF, angleDegrees: Float
+    ) {
+        val textLayout = StaticLayout(
+            text, 0, text.length,
+            paint,
+            max(ceil(constrainedToSize.width.toDouble()), 1.0).toInt(),
+            Layout.Alignment.ALIGN_NORMAL, 1f, 0f, false
+        )
 
-        StaticLayout textLayout = new StaticLayout(
-                text, 0, text.length(),
-                paint,
-                (int) Math.max(Math.ceil(constrainedToSize.width), 1.f),
-                Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
 
-
-        drawMultilineText(c, textLayout, x, y, paint, anchor, angleDegrees);
+        drawMultilineText(c, textLayout, x, y, paint, anchor, angleDegrees)
     }
 
     /**
@@ -702,10 +710,12 @@ public abstract class Utils {
      * @param degrees
      * @return A Recyclable FSize instance
      */
-    public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees) {
-        final float radians = degrees * FDEG2RAD;
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
-                radians);
+    fun getSizeOfRotatedRectangleByDegrees(rectangleSize: FSize, degrees: Float): FSize {
+        val radians = degrees * FDEG2RAD
+        return getSizeOfRotatedRectangleByRadians(
+            rectangleSize.width, rectangleSize.height,
+            radians
+        )
     }
 
     /**
@@ -716,9 +726,11 @@ public abstract class Utils {
      * @param radians
      * @return A Recyclable FSize instance
      */
-    public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians) {
-        return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
-                radians);
+    fun getSizeOfRotatedRectangleByRadians(rectangleSize: FSize, radians: Float): FSize {
+        return getSizeOfRotatedRectangleByRadians(
+            rectangleSize.width, rectangleSize.height,
+            radians
+        )
     }
 
     /**
@@ -730,10 +742,9 @@ public abstract class Utils {
      * @param degrees
      * @return A Recyclable FSize instance
      */
-    public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float
-            rectangleHeight, float degrees) {
-        final float radians = degrees * FDEG2RAD;
-        return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians);
+    fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: Float, rectangleHeight: Float, degrees: Float): FSize {
+        val radians = degrees * FDEG2RAD
+        return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians)
     }
 
     /**
@@ -745,17 +756,13 @@ public abstract class Utils {
      * @param radians
      * @return A Recyclable FSize instance
      */
-    public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float
-            rectangleHeight, float radians) {
-        return FSize.getInstance(
-                Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight *
-                        (float) Math.sin(radians)),
-                Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight *
-                        (float) Math.cos(radians))
-        );
+    fun getSizeOfRotatedRectangleByRadians(rectangleWidth: Float, rectangleHeight: Float, radians: Float): FSize {
+        return FSize.Companion.getInstance(
+            abs(rectangleWidth * cos(radians.toDouble()).toFloat()) + abs(rectangleHeight * sin(radians.toDouble()).toFloat()),
+            abs(rectangleWidth * sin(radians.toDouble()).toFloat()) + abs(rectangleHeight * cos(radians.toDouble()).toFloat())
+        )
     }
 
-    public static int getSDKInt() {
-        return android.os.Build.VERSION.SDK_INT;
-    }
+    val sDKInt: Int
+        get() = Build.VERSION.SDK_INT
 }

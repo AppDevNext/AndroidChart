@@ -24,11 +24,10 @@ import kotlin.math.sqrt
  */
 @Suppress("MemberVisibilityCanBePrivate")
 class BarLineChartTouchListener(
-    chart: BarLineChartBase<out BarLineScatterCandleBubbleData<out IBarLineScatterCandleBubbleDataSet<out Entry>?>?>,
+    chart: BarLineChartBase<*, *, *>,
     touchMatrix: Matrix,
     dragTriggerDistance: Float
-) :
-    ChartTouchListener<BarLineChartBase<out BarLineScatterCandleBubbleData<out IBarLineScatterCandleBubbleDataSet<out Entry>?>?>?>(chart) {
+) : ChartTouchListener<BarLineChartBase<*, *, *>>(chart) {
     /**
      * returns the matrix object the listener holds
      *
@@ -114,11 +113,11 @@ class BarLineChartTouchListener(
             }
         }
 
-        if (mTouchMode == NONE || mChart!!.isFlingEnabled) {
-            mGestureDetector.onTouchEvent(event)
+        if (touchMode == NONE || mChart.isFlingEnabled) {
+            mGestureDetector?.onTouchEvent(event)
         }
 
-        if (!mChart!!.isDragEnabled && (!mChart!!.isScaleXEnabled && !mChart!!.isScaleYEnabled)) return true
+        if (!mChart.isDragEnabled && (!mChart.isScaleXEnabled && !mChart.isScaleYEnabled)) return true
 
         // Handle touch events here...
         when (event.action and MotionEvent.ACTION_MASK) {
@@ -131,7 +130,7 @@ class BarLineChartTouchListener(
             }
 
             MotionEvent.ACTION_POINTER_DOWN -> if (event.pointerCount >= 2) {
-                mChart!!.disableScroll()
+                mChart.disableScroll()
 
                 saveTouchStart(event)
 
@@ -145,11 +144,11 @@ class BarLineChartTouchListener(
                 savedDist = spacing(event)
 
                 if (savedDist > 10f) {
-                    mTouchMode = if (mChart!!.isPinchZoomEnabled) {
+                    touchMode = if (mChart.isPinchZoomEnabled) {
                         PINCH_ZOOM
                     } else {
-                        if (mChart!!.isScaleXEnabled != mChart!!.isScaleYEnabled) {
-                            if (mChart!!.isScaleXEnabled) X_ZOOM else Y_ZOOM
+                        if (mChart.isScaleXEnabled != mChart.isScaleYEnabled) {
+                            if (mChart.isScaleXEnabled) X_ZOOM else Y_ZOOM
                         } else {
                             if (savedXDist > savedYDist) X_ZOOM else Y_ZOOM
                         }
@@ -160,18 +159,18 @@ class BarLineChartTouchListener(
                 midPoint(touchPointCenter, event)
             }
 
-            MotionEvent.ACTION_MOVE -> if (mTouchMode == DRAG) {
-                mChart!!.disableScroll()
+            MotionEvent.ACTION_MOVE -> if (touchMode == DRAG) {
+                mChart.disableScroll()
 
-                val x = if (mChart!!.isDragXEnabled) event.x - touchStartPoint.x else 0f
-                val y = if (mChart!!.isDragYEnabled) event.y - touchStartPoint.y else 0f
+                val x = if (mChart.isDragXEnabled) event.x - touchStartPoint.x else 0f
+                val y = if (mChart.isDragYEnabled) event.y - touchStartPoint.y else 0f
 
                 performDrag(event, x, y)
-            } else if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM) {
-                mChart!!.disableScroll()
+            } else if (touchMode == X_ZOOM || touchMode == Y_ZOOM || touchMode == PINCH_ZOOM) {
+                mChart.disableScroll()
 
-                if (mChart!!.isScaleXEnabled || mChart!!.isScaleYEnabled) performZoom(event)
-            } else if (mTouchMode == NONE
+                if (mChart.isScaleXEnabled || mChart.isScaleYEnabled) performZoom(event)
+            } else if (touchMode == NONE
                 && abs(
                     distance(
                         event.x, touchStartPoint.x, event.y,
@@ -179,26 +178,26 @@ class BarLineChartTouchListener(
                     ).toDouble()
                 ) > dragTriggerDist
             ) {
-                if (mChart!!.isDragEnabled) {
-                    val shouldPan = !mChart!!.isFullyZoomedOut ||
-                            !mChart!!.hasNoDragOffset()
+                if (mChart.isDragEnabled) {
+                    val shouldPan = !mChart.isFullyZoomedOut ||
+                            !mChart.hasNoDragOffset()
 
                     if (shouldPan) {
                         val distanceX = abs((event.x - touchStartPoint.x).toDouble()).toFloat()
                         val distanceY = abs((event.y - touchStartPoint.y).toDouble()).toFloat()
 
                         // Disable dragging in a direction that's disallowed
-                        if ((mChart!!.isDragXEnabled || distanceY >= distanceX) &&
-                            (mChart!!.isDragYEnabled || distanceY <= distanceX)
+                        if ((mChart.isDragXEnabled || distanceY >= distanceX) &&
+                            (mChart.isDragYEnabled || distanceY <= distanceX)
                         ) {
-                            mLastGesture = ChartGesture.DRAG
-                            mTouchMode = DRAG
+                            lastGesture = ChartGesture.DRAG
+                            touchMode = DRAG
                         }
                     } else {
-                        if (mChart!!.isHighlightPerDragEnabled) {
-                            mLastGesture = ChartGesture.DRAG
+                        if (mChart.isHighlightPerDragEnabled) {
+                            lastGesture = ChartGesture.DRAG
 
-                            if (mChart!!.isHighlightPerDragEnabled) performHighlightDrag(event)
+                            if (mChart.isHighlightPerDragEnabled) performHighlightDrag(event)
                         }
                     }
                 }
@@ -207,14 +206,14 @@ class BarLineChartTouchListener(
             MotionEvent.ACTION_UP -> {
                 val velocityTracker = mVelocityTracker
                 val pointerId = event.getPointerId(0)
-                velocityTracker!!.computeCurrentVelocity(1000, Utils.getMaximumFlingVelocity().toFloat())
+                velocityTracker!!.computeCurrentVelocity(1000, Utils.maximumFlingVelocity.toFloat())
                 val velocityY = velocityTracker.getYVelocity(pointerId)
                 val velocityX = velocityTracker.getXVelocity(pointerId)
 
-                if (abs(velocityX.toDouble()) > Utils.getMinimumFlingVelocity() ||
-                    abs(velocityY.toDouble()) > Utils.getMinimumFlingVelocity()
+                if (abs(velocityX.toDouble()) > Utils.minimumFlingVelocity ||
+                    abs(velocityY.toDouble()) > Utils.minimumFlingVelocity
                 ) {
-                    if (mTouchMode == DRAG && mChart!!.isDragDecelerationEnabled) {
+                    if (touchMode == DRAG && mChart.isDragDecelerationEnabled) {
                         stopDeceleration()
 
                         mDecelerationLastTime = AnimationUtils.currentAnimationTimeMillis()
@@ -230,17 +229,17 @@ class BarLineChartTouchListener(
                     }
                 }
 
-                if (mTouchMode == X_ZOOM || mTouchMode == Y_ZOOM || mTouchMode == PINCH_ZOOM || mTouchMode == POST_ZOOM) {
+                if (touchMode == X_ZOOM || touchMode == Y_ZOOM || touchMode == PINCH_ZOOM || touchMode == POST_ZOOM) {
                     // Range might have changed, which means that Y-axis labels
                     // could have changed in size, affecting Y-axis size.
                     // So we need to recalculate offsets.
 
-                    mChart!!.calculateOffsets()
-                    mChart!!.postInvalidate()
+                    mChart.calculateOffsets()
+                    mChart.postInvalidate()
                 }
 
-                mTouchMode = NONE
-                mChart!!.enableScroll()
+                touchMode = NONE
+                mChart.enableScroll()
 
                 mVelocityTracker?.recycle()
                 mVelocityTracker = null
@@ -249,19 +248,19 @@ class BarLineChartTouchListener(
             }
 
             MotionEvent.ACTION_POINTER_UP -> {
-                Utils.velocityTrackerPointerUpCleanUpIfNecessary(event, mVelocityTracker)
+                Utils.velocityTrackerPointerUpCleanUpIfNecessary(event, mVelocityTracker!!)
 
-                mTouchMode = POST_ZOOM
+                touchMode = POST_ZOOM
             }
 
             MotionEvent.ACTION_CANCEL -> {
-                mTouchMode = NONE
+                touchMode = NONE
                 endAction(event)
             }
         }
 
         // perform the transformation, update the chart
-        matrix = mChart!!.viewPortHandler.refresh(matrix, mChart!!, true)
+        matrix = mChart.viewPortHandler.refresh(matrix, mChart, true)
 
         return true // indicate event was handled
     }
@@ -277,7 +276,7 @@ class BarLineChartTouchListener(
         touchStartPoint.x = event.x
         touchStartPoint.y = event.y
 
-        mClosestDataSetToTouch = mChart!!.getDataSetByTouchPoint(event.x, event.y)
+        mClosestDataSetToTouch = mChart.getDataSetByTouchPoint(event.x, event.y)
     }
 
     /**
@@ -288,11 +287,11 @@ class BarLineChartTouchListener(
     private fun performDrag(event: MotionEvent, distanceX: Float, distanceY: Float) {
         var distanceXLocal = distanceX
         var distanceYLocal = distanceY
-        mLastGesture = ChartGesture.DRAG
+        lastGesture = ChartGesture.DRAG
 
         matrix.set(savedMatrix)
 
-        val l = mChart!!.onChartGestureListener
+        val l = mChart.onChartGestureListener
 
         // check if axis is inverted
         if (inverted()) {
@@ -318,7 +317,7 @@ class BarLineChartTouchListener(
     private fun performZoom(event: MotionEvent) {
         if (event.pointerCount >= 2) { // two finger zoom
 
-            val l = mChart!!.onChartGestureListener
+            val l = mChart.onChartGestureListener
 
             // get the distance between the pointers of the touch event
             val totalDist = spacing(event)
@@ -327,11 +326,11 @@ class BarLineChartTouchListener(
                 // get the translation
 
                 val t = getTrans(touchPointCenter.x, touchPointCenter.y)
-                val h = mChart!!.viewPortHandler
+                val h = mChart.viewPortHandler
 
                 // take actions depending on the activated touch mode
-                if (mTouchMode == PINCH_ZOOM) {
-                    mLastGesture = ChartGesture.PINCH_ZOOM
+                if (touchMode == PINCH_ZOOM) {
+                    lastGesture = ChartGesture.PINCH_ZOOM
 
                     val scale = totalDist / savedDist // total scale
 
@@ -341,8 +340,8 @@ class BarLineChartTouchListener(
 
                     val canZoomMoreY = if (isZoomingOut) h.canZoomOutMoreY() else h.canZoomInMoreY()
 
-                    val scaleX = if (mChart!!.isScaleXEnabled) scale else 1f
-                    val scaleY = if (mChart!!.isScaleYEnabled) scale else 1f
+                    val scaleX = if (mChart.isScaleXEnabled) scale else 1f
+                    val scaleY = if (mChart.isScaleYEnabled) scale else 1f
 
                     if (canZoomMoreY || canZoomMoreX) {
                         matrix.set(savedMatrix)
@@ -350,8 +349,8 @@ class BarLineChartTouchListener(
 
                         l?.onChartScale(event, scaleX, scaleY)
                     }
-                } else if (mTouchMode == X_ZOOM && mChart!!.isScaleXEnabled) {
-                    mLastGesture = ChartGesture.X_ZOOM
+                } else if (touchMode == X_ZOOM && mChart.isScaleXEnabled) {
+                    lastGesture = ChartGesture.X_ZOOM
 
                     val xDist = getXDist(event)
                     val scaleX = xDist / savedXDist // x-axis scale
@@ -365,8 +364,8 @@ class BarLineChartTouchListener(
 
                         l?.onChartScale(event, scaleX, 1f)
                     }
-                } else if (mTouchMode == Y_ZOOM && mChart!!.isScaleYEnabled) {
-                    mLastGesture = ChartGesture.Y_ZOOM
+                } else if (touchMode == Y_ZOOM && mChart.isScaleYEnabled) {
+                    lastGesture = ChartGesture.Y_ZOOM
 
                     val yDist = getYDist(event)
                     val scaleY = yDist / savedYDist // y-axis scale
@@ -394,7 +393,7 @@ class BarLineChartTouchListener(
      * @return
      */
     private fun getLimitedScaleX(scaleX: Float, t: MPPointF): Float {
-        val h = mChart!!.viewPortHandler
+        val h = mChart.viewPortHandler
         tempMatrix.set(savedMatrix)
         tempMatrix.postScale(scaleX, 1f, t.x, t.y)
 
@@ -421,7 +420,7 @@ class BarLineChartTouchListener(
      * @return
      */
     private fun getLimitedScaleY(scaleY: Float, t: MPPointF): Float {
-        val h = mChart!!.viewPortHandler
+        val h = mChart.viewPortHandler
         tempMatrix.set(savedMatrix)
         tempMatrix.postScale(1f, scaleY, t.x, t.y)
 
@@ -447,11 +446,11 @@ class BarLineChartTouchListener(
      * @param e
      */
     private fun performHighlightDrag(e: MotionEvent) {
-        val h = mChart!!.getHighlightByTouchPoint(e.x, e.y)
+        val h = mChart.getHighlightByTouchPoint(e.x, e.y)
 
         if (h != null && !h.equalTo(mLastHighlighted)) {
             mLastHighlighted = h
-            mChart!!.highlightValue(h, true)
+            mChart.highlightValue(h, true)
         }
     }
 
@@ -466,7 +465,7 @@ class BarLineChartTouchListener(
      * @return
      */
     fun getTrans(x: Float, y: Float): MPPointF {
-        val vph = mChart!!.viewPortHandler
+        val vph = mChart.viewPortHandler
 
         val xTrans = x - vph.offsetLeft()
         var yTrans = 0f
@@ -475,7 +474,7 @@ class BarLineChartTouchListener(
         yTrans = if (inverted()) {
             -(y - vph.offsetTop())
         } else {
-            -(mChart!!.measuredHeight - y - vph.offsetBottom())
+            -(mChart.measuredHeight - y - vph.offsetBottom())
         }
 
         return MPPointF.getInstance(xTrans, yTrans)
@@ -487,8 +486,8 @@ class BarLineChartTouchListener(
      * @return
      */
     private fun inverted(): Boolean {
-        return (mClosestDataSetToTouch == null && mChart!!.isAnyAxisInverted) || (mClosestDataSetToTouch != null
-                && mChart!!.isInverted(mClosestDataSetToTouch!!.axisDependency))
+        return (mClosestDataSetToTouch == null && mChart.isAnyAxisInverted) || (mClosestDataSetToTouch != null
+                && mChart.isInverted(mClosestDataSetToTouch!!.axisDependency))
     }
 
     /**
@@ -507,22 +506,22 @@ class BarLineChartTouchListener(
     }
 
     override fun onDoubleTap(e: MotionEvent): Boolean {
-        mLastGesture = ChartGesture.DOUBLE_TAP
+        lastGesture = ChartGesture.DOUBLE_TAP
 
-        val l = mChart!!.onChartGestureListener
+        val l = mChart.onChartGestureListener
 
         l?.onChartDoubleTapped(e)
 
         // check if double-tap zooming is enabled
-        if (mChart!!.isDoubleTapToZoomEnabled && mChart!!.data!!.entryCount > 0) {
+        if (mChart.isDoubleTapToZoomEnabled && mChart.data!!.entryCount > 0) {
             val trans = getTrans(e.x, e.y)
 
-            val scaleX = if (mChart!!.isScaleXEnabled) 1.4f else 1f
-            val scaleY = if (mChart!!.isScaleYEnabled) 1.4f else 1f
+            val scaleX = if (mChart.isScaleXEnabled) 1.4f else 1f
+            val scaleY = if (mChart.isScaleYEnabled) 1.4f else 1f
 
-            mChart!!.zoom(scaleX, scaleY, trans.x, trans.y)
+            mChart.zoom(scaleX, scaleY, trans.x, trans.y)
 
-            if (mChart!!.isLogEnabled) Log.i(
+            if (mChart.isLogEnabled) Log.i(
                 "BarlineChartTouch", ("Double-Tap, Zooming In, x: " + trans.x + ", y: "
                         + trans.y)
             )
@@ -536,34 +535,34 @@ class BarLineChartTouchListener(
     }
 
     override fun onLongPress(e: MotionEvent) {
-        mLastGesture = ChartGesture.LONG_PRESS
+        lastGesture = ChartGesture.LONG_PRESS
 
-        val l = mChart!!.onChartGestureListener
+        val l = mChart.onChartGestureListener
 
         l?.onChartLongPressed(e)
     }
 
     override fun onSingleTapUp(e: MotionEvent): Boolean {
-        mLastGesture = ChartGesture.SINGLE_TAP
+        lastGesture = ChartGesture.SINGLE_TAP
 
-        val l = mChart!!.onChartGestureListener
+        val l = mChart.onChartGestureListener
 
         l?.onChartSingleTapped(e)
 
-        if (!mChart!!.isHighlightPerTapEnabled) {
+        if (!mChart.isHighlightPerTapEnabled) {
             return false
         }
 
-        val h = mChart!!.getHighlightByTouchPoint(e.x, e.y)
+        val h = mChart.getHighlightByTouchPoint(e.x, e.y)
         performHighlight(h, e)
 
         return super.onSingleTapUp(e)
     }
 
     override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
-        mLastGesture = ChartGesture.FLING
+        lastGesture = ChartGesture.FLING
 
-        val l = mChart!!.onChartGestureListener
+        val l = mChart.onChartGestureListener
 
         l?.onChartFling(e1, e2, velocityX, velocityY)
 
@@ -581,8 +580,8 @@ class BarLineChartTouchListener(
 
         val currentTime = AnimationUtils.currentAnimationTimeMillis()
 
-        mDecelerationVelocity.x *= mChart!!.dragDecelerationFrictionCoef
-        mDecelerationVelocity.y *= mChart!!.dragDecelerationFrictionCoef
+        mDecelerationVelocity.x *= mChart.dragDecelerationFrictionCoef
+        mDecelerationVelocity.y *= mChart.dragDecelerationFrictionCoef
 
         val timeInterval = (currentTime - mDecelerationLastTime).toFloat() / 1000f
 
@@ -597,13 +596,13 @@ class BarLineChartTouchListener(
             mDecelerationCurrentPoint.y, 0
         )
 
-        val dragDistanceX = if (mChart!!.isDragXEnabled) mDecelerationCurrentPoint.x - touchStartPoint.x else 0f
-        val dragDistanceY = if (mChart!!.isDragYEnabled) mDecelerationCurrentPoint.y - touchStartPoint.y else 0f
+        val dragDistanceX = if (mChart.isDragXEnabled) mDecelerationCurrentPoint.x - touchStartPoint.x else 0f
+        val dragDistanceY = if (mChart.isDragYEnabled) mDecelerationCurrentPoint.y - touchStartPoint.y else 0f
 
         performDrag(event, dragDistanceX, dragDistanceY)
 
         event.recycle()
-        matrix = mChart!!.viewPortHandler.refresh(matrix, mChart!!, false)
+        matrix = mChart.viewPortHandler.refresh(matrix, mChart, false)
 
         mDecelerationLastTime = currentTime
 
@@ -612,8 +611,8 @@ class BarLineChartTouchListener(
             // Range might have changed, which means that Y-axis labels
             // could have changed in size, affecting Y-axis size.
             // So we need to recalculate offsets.
-            mChart!!.calculateOffsets()
-            mChart!!.postInvalidate()
+            mChart.calculateOffsets()
+            mChart.postInvalidate()
 
             stopDeceleration()
         }

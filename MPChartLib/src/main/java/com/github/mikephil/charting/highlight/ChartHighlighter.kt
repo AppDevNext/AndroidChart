@@ -1,45 +1,36 @@
-package com.github.mikephil.charting.highlight;
+package com.github.mikephil.charting.highlight
 
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.utils.MPPointD;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.github.mikephil.charting.components.YAxis.AxisDependency
+import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData
+import com.github.mikephil.charting.data.DataSet.Rounding
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider
+import com.github.mikephil.charting.interfaces.datasets.IDataSet
+import com.github.mikephil.charting.utils.MPPointD
+import kotlin.math.abs
+import kotlin.math.hypot
 
 /**
  * Created by Philipp Jahoda on 21/07/15.
  */
-public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> implements IHighlighter
-{
-
+open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider?>(
     /**
      * instance of the data-provider
      */
-    protected T mChart;
-
+    protected var mChart: T?
+) : IHighlighter {
     /**
      * buffer for storing previously highlighted values
      */
-    protected List<Highlight> mHighlightBuffer = new ArrayList<Highlight>();
+    protected var mHighlightBuffer: MutableList<Highlight> = ArrayList<Highlight>()
 
-    public ChartHighlighter(T chart) {
-        this.mChart = chart;
-    }
+    override fun getHighlight(x: Float, y: Float): Highlight? {
+        val pos = getValsForTouch(x, y)
+        val xVal = pos.x.toFloat()
+        MPPointD.Companion.recycleInstance(pos)
 
-    @Override
-    public Highlight getHighlight(float x, float y) {
-
-        MPPointD pos = getValsForTouch(x, y);
-        float xVal = (float) pos.x;
-        MPPointD.recycleInstance(pos);
-
-        Highlight high = getHighlightForX(xVal, x, y);
-        return high;
+        val high = getHighlightForX(xVal, x, y)
+        return high
     }
 
     /**
@@ -50,11 +41,11 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param y
      * @return
      */
-    protected MPPointD getValsForTouch(float x, float y) {
-
+    protected fun getValsForTouch(x: Float, y: Float): MPPointD {
         // take any transformer to determine the x-axis value
-        MPPointD pos = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, y);
-        return pos;
+
+        val pos = mChart!!.getTransformer(AxisDependency.LEFT)!!.getValuesByTouchPoint(x, y)
+        return pos
     }
 
     /**
@@ -65,22 +56,21 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param y
      * @return
      */
-    protected Highlight getHighlightForX(float xVal, float x, float y) {
+    protected fun getHighlightForX(xVal: Float, x: Float, y: Float): Highlight? {
+        val closestValues = getHighlightsAtXValue(xVal, x, y)
 
-        List<Highlight> closestValues = getHighlightsAtXValue(xVal, x, y);
-
-        if(closestValues.isEmpty()) {
-            return null;
+        if (closestValues.isEmpty()) {
+            return null
         }
 
-        float leftAxisMinDist = getMinimumDistance(closestValues, y, YAxis.AxisDependency.LEFT);
-        float rightAxisMinDist = getMinimumDistance(closestValues, y, YAxis.AxisDependency.RIGHT);
+        val leftAxisMinDist = getMinimumDistance(closestValues, y, AxisDependency.LEFT)
+        val rightAxisMinDist = getMinimumDistance(closestValues, y, AxisDependency.RIGHT)
 
-        YAxis.AxisDependency axis = leftAxisMinDist < rightAxisMinDist ? YAxis.AxisDependency.LEFT : YAxis.AxisDependency.RIGHT;
+        val axis = if (leftAxisMinDist < rightAxisMinDist) AxisDependency.LEFT else AxisDependency.RIGHT
 
-        Highlight detail = getClosestHighlightByPixel(closestValues, x, y, axis, mChart.getMaxHighlightDistance());
+        val detail = getClosestHighlightByPixel(closestValues, x, y, axis, mChart!!.maxHighlightDistance)
 
-        return detail;
+        return detail
     }
 
     /**
@@ -92,28 +82,25 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param axis
      * @return
      */
-    protected float getMinimumDistance(List<Highlight> closestValues, float pos, YAxis.AxisDependency axis) {
+    protected fun getMinimumDistance(closestValues: MutableList<Highlight>, pos: Float, axis: AxisDependency?): Float {
+        var distance = Float.Companion.MAX_VALUE
 
-        float distance = Float.MAX_VALUE;
+        for (i in closestValues.indices) {
+            val high = closestValues.get(i)
 
-        for (int i = 0; i < closestValues.size(); i++) {
-
-            Highlight high = closestValues.get(i);
-
-            if (high.getAxis() == axis) {
-
-                float tempDistance = Math.abs(getHighlightPos(high) - pos);
+            if (high.axis == axis) {
+                val tempDistance = abs(getHighlightPos(high) - pos)
                 if (tempDistance < distance) {
-                    distance = tempDistance;
+                    distance = tempDistance
                 }
             }
         }
 
-        return distance;
+        return distance
     }
 
-    protected float getHighlightPos(Highlight h) {
-        return h.getYPx();
+    protected fun getHighlightPos(h: Highlight): Float {
+        return h.yPx
     }
 
     /**
@@ -125,27 +112,29 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param y    touch position
      * @return
      */
-    protected List<Highlight> getHighlightsAtXValue(float xVal, float x, float y) {
+    protected open fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight> {
+        mHighlightBuffer.clear()
 
-        mHighlightBuffer.clear();
+        val data = this.data
 
-        BarLineScatterCandleBubbleData data = getData();
+        if (data == null) return mHighlightBuffer
 
-        if (data == null)
-            return mHighlightBuffer;
-
-        for (int i = 0, dataSetCount = data.getDataSetCount(); i < dataSetCount; i++) {
-
-            IDataSet dataSet = data.getDataSetByIndex(i);
+        var i = 0
+        val dataSetCount = data.dataSetCount
+        while (i < dataSetCount) {
+            val dataSet = data.getDataSetByIndex(i)
 
             // don't include DataSets that cannot be highlighted
-            if (!dataSet.isHighlightEnabled())
-                continue;
+            if (!dataSet!!.isHighlightEnabled) {
+                i++
+                continue
+            }
 
-            mHighlightBuffer.addAll(buildHighlights(dataSet, i, xVal, DataSet.Rounding.CLOSEST));
+            mHighlightBuffer.addAll(buildHighlights(dataSet, i, xVal, Rounding.CLOSEST))
+            i++
         }
 
-        return mHighlightBuffer;
+        return mHighlightBuffer
     }
 
     /**
@@ -157,36 +146,35 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param rounding
      * @return
      */
-    protected List<Highlight> buildHighlights(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
+    protected open fun buildHighlights(set: IDataSet<*>, dataSetIndex: Int, xVal: Float, rounding: Rounding?): MutableList<Highlight> {
+        val highlights = ArrayList<Highlight>()
 
-        ArrayList<Highlight> highlights = new ArrayList<>();
-
-        //noinspection unchecked
-        List<Entry> entries = set.getEntriesForXValue(xVal);
-        if (entries.size() == 0) {
+        var entries = set.getEntriesForXValue(xVal)
+        if (entries.isEmpty()) {
             // Try to find closest x-value and take all entries for that x-value
-            final Entry closest = set.getEntryForXValue(xVal, Float.NaN, rounding);
-            if (closest != null)
-            {
-                //noinspection unchecked
-                entries = set.getEntriesForXValue(closest.getX());
+            val closest: Entry? = set.getEntryForXValue(xVal, Float.Companion.NaN, rounding)
+            if (closest != null) {
+                entries = set.getEntriesForXValue(closest.x)
             }
         }
 
-        if (entries.size() == 0)
-            return highlights;
+        if (entries.isEmpty()) return highlights
 
-        for (Entry e : entries) {
-            MPPointD pixels = mChart.getTransformer(
-                    set.getAxisDependency()).getPixelForValues(e.getX(), e.getY());
+        for (e in entries) {
+            val pixels = mChart!!.getTransformer(
+                set.axisDependency
+            )!!.getPixelForValues(e.x, e.y)
 
-            highlights.add(new Highlight(
-                    e.getX(), e.getY(),
-                    (float) pixels.x, (float) pixels.y,
-                    dataSetIndex, set.getAxisDependency()));
+            highlights.add(
+                Highlight(
+                    e.x, e.y,
+                    pixels.x.toFloat(), pixels.y.toFloat(),
+                    dataSetIndex, set.axisDependency
+                )
+            )
         }
 
-        return highlights;
+        return highlights
     }
 
     /**
@@ -194,35 +182,34 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * y-axis.
      *
      * @param closestValues        contains two Highlight objects per DataSet closest to the selected x-position (determined by
-     *                             rounding up an down)
+     * rounding up an down)
      * @param x
      * @param y
      * @param axis                 the closest axis
      * @param minSelectionDistance
      * @return
      */
-    public Highlight getClosestHighlightByPixel(List<Highlight> closestValues, float x, float y,
-                                                YAxis.AxisDependency axis, float minSelectionDistance) {
+    fun getClosestHighlightByPixel(
+        closestValues: MutableList<Highlight>, x: Float, y: Float,
+        axis: AxisDependency?, minSelectionDistance: Float
+    ): Highlight? {
+        var closest: Highlight? = null
+        var distance = minSelectionDistance
 
-        Highlight closest = null;
-        float distance = minSelectionDistance;
+        for (i in closestValues.indices) {
+            val high = closestValues[i]
 
-        for (int i = 0; i < closestValues.size(); i++) {
-
-            Highlight high = closestValues.get(i);
-
-            if (axis == null || high.getAxis() == axis) {
-
-                float cDistance = getDistance(x, y, high.getXPx(), high.getYPx());
+            if (axis == null || high.axis == axis) {
+                val cDistance = getDistance(x, y, high.xPx, high.yPx)
 
                 if (cDistance < distance) {
-                    closest = high;
-                    distance = cDistance;
+                    closest = high
+                    distance = cDistance
                 }
             }
         }
 
-        return closest;
+        return closest
     }
 
     /**
@@ -234,13 +221,12 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
      * @param y2
      * @return
      */
-    protected float getDistance(float x1, float y1, float x2, float y2) {
+    protected open fun getDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
         //return Math.abs(y1 - y2);
         //return Math.abs(x1 - x2);
-        return (float) Math.hypot(x1 - x2, y1 - y2);
+        return hypot((x1 - x2).toDouble(), (y1 - y2).toDouble()).toFloat()
     }
 
-    protected BarLineScatterCandleBubbleData getData() {
-        return mChart.getData();
-    }
+    protected open val data
+        get() = mChart!!.data
 }

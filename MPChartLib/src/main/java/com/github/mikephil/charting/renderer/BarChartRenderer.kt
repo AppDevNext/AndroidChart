@@ -19,8 +19,8 @@ import kotlin.math.min
 
 open class BarChartRenderer(
     @JvmField var chart: BarDataProvider,
-    animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler,
 ) : BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
     /**
      * the rect object that is used for drawing the bars
@@ -48,8 +48,8 @@ open class BarChartRenderer(
     private var roundedBarRadius = 0f
 
     constructor(
-        chart: BarDataProvider, animator: ChartAnimator?,
-        viewPortHandler: ViewPortHandler?, mDrawRoundedBars: Boolean, mRoundedBarRadius: Float
+        chart: BarDataProvider, animator: ChartAnimator,
+        viewPortHandler: ViewPortHandler, mDrawRoundedBars: Boolean, mRoundedBarRadius: Float
     ) : this(chart, animator, viewPortHandler) {
         this.drawRoundedBars = mDrawRoundedBars
         this.roundedBarRadius = mRoundedBarRadius
@@ -59,7 +59,7 @@ open class BarChartRenderer(
         val barData = chart.barData
         barBuffers = mutableListOf()
 
-        barData.dataSets.forEach {
+        barData?.dataSets?.forEach {
             barBuffers.add(
                 BarBuffer(
                     it.entryCount * 4 * (if (it.isStacked) it.stackSize else 1),
@@ -70,14 +70,14 @@ open class BarChartRenderer(
     }
 
     override fun drawData(c: Canvas) {
-        if (barBuffers.size == 0) {
+        if (barBuffers.isEmpty()) {
             initBuffers()
         }
 
-        val barData = chart.barData
+        val barData = chart.barData ?: return
 
         for (i in 0..<barData.dataSetCount) {
-            val set = barData.getDataSetByIndex(i)
+            val set = barData.getDataSetByIndex(i) ?: continue
 
             if (set.isVisible) {
                 drawDataSet(c, set, i)
@@ -112,12 +112,11 @@ open class BarChartRenderer(
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
 
+        val barData = chart.barData
+
         // draw the bar shadow before the values
-        if (chart.isDrawBarShadowEnabled) {
+        if (chart.isDrawBarShadowEnabled && barData != null) {
             shadowPaint.color = dataSet.barShadowColor
-
-            val barData = chart.barData
-
             val barWidth = barData.barWidth
             val barWidthHalf = barWidth / 2.0f
             var x: Float
@@ -125,7 +124,7 @@ open class BarChartRenderer(
             var i = 0
             val count = min((ceil(((dataSet.entryCount).toFloat() * phaseX).toDouble())).toInt().toDouble(), dataSet.entryCount.toDouble()).toInt()
             while (i < count) {
-                val e = dataSet.getEntryForIndex(i)
+                val e = dataSet.getEntryForIndex(i) ?: continue
 
                 x = e.x
 
@@ -160,12 +159,12 @@ open class BarChartRenderer(
             setPhases(phaseX, phaseY)
             setDataSet(index)
             setInverted(chart.isInverted(dataSet.axisDependency))
-            setBarWidth(chart.barData.barWidth)
+            barData?.let { setBarWidth(it.barWidth) }
             feed(dataSet)
         }
         trans!!.pointValuesToPixel(buffer.buffer)
 
-        val isCustomFill = dataSet.fills != null && dataSet.fills.isNotEmpty()
+        val isCustomFill = !dataSet.fills.isNullOrEmpty()
         val isSingleColor = dataSet.colors.size == 1
         val isInverted = chart.isInverted(dataSet.axisDependency)
 
@@ -193,8 +192,7 @@ open class BarChartRenderer(
             }
 
             if (isCustomFill) {
-                dataSet.getFill(pos)
-                    .fillRect(
+                dataSet.getFill(pos)?.fillRect(
                         c, paintRender,
                         buffer.buffer[j],
                         buffer.buffer[j + 1],
@@ -254,14 +252,15 @@ open class BarChartRenderer(
         // if values are drawn
 
         if (isDrawingValuesAllowed(chart)) {
-            val dataSets = chart.barData.dataSets
+            val barData = chart.barData ?: return
+            val dataSets = barData.dataSets
 
             val valueOffsetPlus = Utils.convertDpToPixel(4.5f)
             var posOffset: Float
             var negOffset: Float
             val drawValueAboveBar = chart.isDrawValueAboveBarEnabled
 
-            for (i in 0..<chart.barData.dataSetCount) {
+            for (i in 0..<barData.dataSetCount) {
                 val dataSet = dataSets[i]
                 if (dataSet.entryCount == 0) {
                     continue
@@ -312,7 +311,7 @@ open class BarChartRenderer(
                             continue
                         }
 
-                        val entry = dataSet.getEntryForIndex(j / 4)
+                        val entry = dataSet.getEntryForIndex(j / 4) ?: continue
                         val `val` = entry.y
 
                         if (dataSet.isDrawValuesEnabled) {
@@ -352,7 +351,7 @@ open class BarChartRenderer(
                     var index = 0
 
                     while (index < dataSet.entryCount * animator.phaseX) {
-                        val entry = dataSet.getEntryForIndex(index)
+                        val entry = dataSet.getEntryForIndex(index) ?: continue
 
                         val vals = entry.yVals
                         val x = (buffer!!.buffer[bufferIndex] + buffer.buffer[bufferIndex + 2]) / 2f
@@ -495,7 +494,7 @@ open class BarChartRenderer(
     }
 
     override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
-        val barData = chart.barData
+        val barData = chart.barData ?: return
 
         for (high in indices) {
             val set = barData.getDataSetByIndex(high.dataSetIndex)
@@ -506,7 +505,7 @@ open class BarChartRenderer(
 
             val e = set.getEntryForXValue(high.x, high.y)
 
-            if (!isInBoundsX(e, set)) {
+            if (!isInBoundsX(e, set) || e == null) {
                 continue
             }
 

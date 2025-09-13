@@ -18,14 +18,14 @@ import kotlin.math.sqrt
 @Suppress("MemberVisibilityCanBePrivate")
 open class BubbleChartRenderer(
     @JvmField
-    var chart: BubbleDataProvider, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    var chart: BubbleDataProvider, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
     override fun initBuffers() {
     }
 
     override fun drawData(c: Canvas) {
-        val bubbleData = chart.bubbleData
+        val bubbleData = chart.bubbleData ?: return
 
         for (set in bubbleData.dataSets) {
             if (set.isVisible) drawDataSet(c, set)
@@ -63,7 +63,7 @@ open class BubbleChartRenderer(
         val referenceSize = min(maxBubbleHeight.toDouble(), maxBubbleWidth.toDouble()).toFloat()
 
         for (j in xBounds.min..xBounds.range + xBounds.min) {
-            val entry = dataSet.getEntryForIndex(j)
+            val entry = dataSet.getEntryForIndex(j) ?: continue
 
             pointBuffer[0] = entry.x
             pointBuffer[1] = (entry.y) * phaseY
@@ -142,7 +142,7 @@ open class BubbleChartRenderer(
                             continue
                         }
 
-                        val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
+                        val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min) ?: continue
 
                         if (dataSet.isDrawValuesEnabled) {
                             drawValue(
@@ -185,7 +185,7 @@ open class BubbleChartRenderer(
     }
 
     override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
-        val bubbleData = chart.bubbleData
+        val bubbleData = chart.bubbleData ?: return
 
         val phaseY = animator.phaseY
 
@@ -194,7 +194,7 @@ open class BubbleChartRenderer(
 
             if (set == null || !set.isHighlightEnabled) continue
 
-            val entry = set.getEntryForXValue(high.x, high.y)
+            val entry = set.getEntryForXValue(high.x, high.y) ?: continue
 
             if (entry.y != high.y) continue
 

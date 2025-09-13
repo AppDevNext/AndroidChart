@@ -199,14 +199,14 @@ public class PieChartRoundedActivity extends DemoBase implements OnSeekBarChange
             }
             case R.id.actionToggleValues: {
                 for (IDataSet<?> set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
+                    set.setDrawValues(!set.isDrawValuesEnabled);
 
                 chart.invalidate();
                 break;
             }
             case R.id.actionToggleIcons: {
                 for (IDataSet<?> set : chart.getData().getDataSets())
-                    set.setDrawIcons(!set.isDrawIconsEnabled());
+                    set.setDrawIcons(!set.isDrawIconsEnabled);
 
                 chart.invalidate();
                 break;

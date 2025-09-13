@@ -1,47 +1,29 @@
+package com.github.mikephil.charting.data
 
-package com.github.mikephil.charting.data;
-
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-
-import java.util.List;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 
 /**
  * Data object that represents all data for the BarChart.
  *
  * @author Philipp Jahoda
  */
-public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
-
-    /**
-     * the width of the bars on the x-axis, in values (not pixels)
-     */
-    private float mBarWidth = 0.85f;
-
-    public BarData() {
-        super();
-    }
-
-    public BarData(IBarDataSet... dataSets) {
-        super(dataSets);
-    }
-
-    public BarData(List<IBarDataSet> dataSets) {
-        super(dataSets);
-    }
-
+class BarData : BarLineScatterCandleBubbleData<BarEntry, IBarDataSet> {
     /**
      * Sets the width each bar should have on the x-axis (in values, not pixels).
      * Default 0.85f
      *
-     * @param mBarWidth
+     * @param this.barWidth
      */
-    public void setBarWidth(float mBarWidth) {
-        this.mBarWidth = mBarWidth;
-    }
+    /**
+     * the width of the bars on the x-axis, in values (not pixels)
+     */
+    var barWidth: Float = 0.85f
 
-    public float getBarWidth() {
-        return mBarWidth;
-    }
+    constructor() : super()
+
+    constructor(vararg dataSets: IBarDataSet) : super(*dataSets)
+
+    constructor(dataSets: MutableList<IBarDataSet>) : super(dataSets)
 
     /**
      * Groups all BarDataSet objects this data object holds together by modifying the x-value of their entries.
@@ -53,57 +35,52 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
      * @param groupSpace the space between groups of bars in values (not pixels) e.g. 0.8f for bar width 1f
      * @param barSpace   the space between individual bars in values (not pixels) e.g. 0.1f for bar width 1f
      */
-    public void groupBars(float fromX, float groupSpace, float barSpace) {
-
-        int setCount = mDataSets.size();
+    fun groupBars(fromX: Float, groupSpace: Float, barSpace: Float) {
+        var fromX = fromX
+        val setCount = dataSets.size
         if (setCount <= 1) {
-            throw new RuntimeException("BarData needs to hold at least 2 BarDataSets to allow grouping.");
+            throw RuntimeException("BarData needs to hold at least 2 BarDataSets to allow grouping.")
         }
 
-        IBarDataSet max = getMaxEntryCountSet();
-        int maxEntryCount = max.getEntryCount();
+        val max = maxEntryCountSet
+        val maxEntryCount = max!!.entryCount
 
-        float groupSpaceWidthHalf = groupSpace / 2f;
-        float barSpaceHalf = barSpace / 2f;
-        float barWidthHalf = mBarWidth / 2f;
+        val groupSpaceWidthHalf = groupSpace / 2f
+        val barSpaceHalf = barSpace / 2f
+        val barWidthHalf = this.barWidth / 2f
 
-        float interval = getGroupWidth(groupSpace, barSpace);
+        val interval = getGroupWidth(groupSpace, barSpace)
 
-        for (int i = 0; i < maxEntryCount; i++) {
+        for (i in 0..<maxEntryCount) {
+            val start = fromX
+            fromX += groupSpaceWidthHalf
 
-            float start = fromX;
-            fromX += groupSpaceWidthHalf;
+            for (set in dataSets) {
+                fromX += barSpaceHalf
+                fromX += barWidthHalf
 
-            for (IBarDataSet set : mDataSets) {
+                if (i < set.entryCount) {
+                    val entry = set.getEntryForIndex(i)
 
-                fromX += barSpaceHalf;
-                fromX += barWidthHalf;
-
-                if (i < set.getEntryCount()) {
-
-                    BarEntry entry = set.getEntryForIndex(i);
-
-                    if (entry != null) {
-                        entry.setX(fromX);
-                    }
+                    entry.x = fromX
                 }
 
-                fromX += barWidthHalf;
-                fromX += barSpaceHalf;
+                fromX += barWidthHalf
+                fromX += barSpaceHalf
             }
 
-            fromX += groupSpaceWidthHalf;
-            float end = fromX;
-            float innerInterval = end - start;
-            float diff = interval - innerInterval;
+            fromX += groupSpaceWidthHalf
+            val end = fromX
+            val innerInterval = end - start
+            val diff = interval - innerInterval
 
             // correct rounding errors
             if (diff > 0 || diff < 0) {
-                fromX += diff;
+                fromX += diff
             }
         }
 
-        notifyDataChanged();
+        notifyDataChanged()
     }
 
     /**
@@ -113,7 +90,7 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
      * @param barSpace
      * @return
      */
-    public float getGroupWidth(float groupSpace, float barSpace) {
-        return mDataSets.size() * (mBarWidth + barSpace) + groupSpace;
+    fun getGroupWidth(groupSpace: Float, barSpace: Float): Float {
+        return dataSets.size * (this.barWidth + barSpace) + groupSpace
     }
 }

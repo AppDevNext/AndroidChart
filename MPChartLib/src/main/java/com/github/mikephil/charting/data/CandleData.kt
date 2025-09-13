@@ -1,21 +1,11 @@
-package com.github.mikephil.charting.data;
+package com.github.mikephil.charting.data
 
-import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet
 
-import java.util.ArrayList;
-import java.util.List;
+class CandleData : BarLineScatterCandleBubbleData<CandleEntry, ICandleDataSet> {
+    constructor() : super()
 
-public class CandleData extends BarLineScatterCandleBubbleData<ICandleDataSet> {
+    constructor(dataSets: MutableList<ICandleDataSet>) : super(dataSets)
 
-    public CandleData() {
-        super();
-    }
-
-    public CandleData(List<ICandleDataSet> dataSets) {
-        super(dataSets);
-    }
-
-    public CandleData(ICandleDataSet... dataSets) {
-        super(dataSets);
-    }
+    constructor(vararg dataSets: ICandleDataSet) : super(*dataSets)
 }

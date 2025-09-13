@@ -1,18 +1,15 @@
-package com.github.mikephil.charting.renderer.scatter;
+package com.github.mikephil.charting.renderer.scatter
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
-import com.github.mikephil.charting.utils.ViewPortHandler;
+import android.graphics.Canvas
+import android.graphics.Paint
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet
+import com.github.mikephil.charting.utils.ViewPortHandler
 
 /**
  * Created by wajdic on 15/06/2016.
  * Created at Time 09:07
  */
-public interface IShapeRenderer
-{
-
+interface IShapeRenderer {
     /**
      * Renders the provided ScatterDataSet with a shape.
      *
@@ -23,6 +20,8 @@ public interface IShapeRenderer
      * @param posY            Position to draw the shape at
      * @param renderPaint     Paint object used for styling and drawing
      */
-    void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler,
-                     float posX, float posY, Paint renderPaint);
+    fun renderShape(
+        c: Canvas?, dataSet: IScatterDataSet, viewPortHandler: ViewPortHandler,
+        posX: Float, posY: Float, renderPaint: Paint,
+    )
 }

@@ -196,7 +196,7 @@ public class StackedBarActivityNegative extends DemoBase implements
 			}
 			case R.id.actionToggleBarBorders: {
 				for (IBarDataSet set : chart.getData().getDataSets()) {
-					((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+					((BarDataSet) set).setBarBorderWidth(set.barBorderWidth == 1.f ? 0.f : 1.f);
 				}
 
 				chart.invalidate();

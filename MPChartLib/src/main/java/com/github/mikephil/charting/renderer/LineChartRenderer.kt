@@ -22,7 +22,7 @@ import java.lang.ref.WeakReference
 import kotlin.math.max
 import kotlin.math.min
 
-class LineChartRenderer(
+open class LineChartRenderer(
     @JvmField var chart: LineDataProvider, animator: ChartAnimator?,
     viewPortHandler: ViewPortHandler?
 ) : LineRadarRenderer(animator, viewPortHandler) {
@@ -74,7 +74,7 @@ class LineChartRenderer(
 
         drawBitmapLocal.eraseColor(Color.TRANSPARENT)
 
-        val lineData = chart.lineData
+        val lineData = chart.lineData ?: return
 
         for (set in lineData.dataSets) {
             if (set.isVisible) drawDataSet(c, set)
@@ -178,8 +178,6 @@ class LineChartRenderer(
             var cur = dataSet.getEntryForIndex(max((firstIndex - 1).toDouble(), 0.0).toInt())
             var next = cur
             var nextIndex = -1
-
-            if (cur == null) return
 
             // let the spline start
             cubicPath.moveTo(cur.x, cur.y * phaseY)
@@ -488,7 +486,7 @@ class LineChartRenderer(
 
     override fun drawValues(c: Canvas) {
         if (isDrawingValuesAllowed(chart)) {
-            val dataSets = chart.lineData.dataSets
+            val dataSets = chart.lineData?.dataSets ?: return
 
             for (i in dataSets.indices) {
                 val dataSet = dataSets[i]
@@ -590,7 +588,7 @@ class LineChartRenderer(
         mCirclesBuffer[0] = 0f
         mCirclesBuffer[1] = 0f
 
-        val dataSets = chart.lineData.dataSets
+        val dataSets = chart.lineData?.dataSets ?: return
 
         for (i in dataSets.indices) {
             val dataSet = dataSets[i]
@@ -654,13 +652,13 @@ class LineChartRenderer(
         val lineData = chart.lineData
 
         for (high in indices) {
-            val set = lineData.getDataSetByIndex(high.dataSetIndex)
+            val set = lineData?.getDataSetByIndex(high.dataSetIndex)
 
             if (set == null || !set.isHighlightEnabled) continue
 
             val e = set.getEntryForXValue(high.x, high.y)
 
-            if (!isInBoundsX(e, set)) continue
+            if (!isInBoundsX(e, set) || e == null) continue
 
             val pix = chart.getTransformer(set.axisDependency)!!.getPixelForValues(
                 e.x, e.y * animator

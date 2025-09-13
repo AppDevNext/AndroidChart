@@ -1,146 +1,145 @@
+package com.github.mikephil.charting.data.filter
 
-package com.github.mikephil.charting.data.filter;
-
-import java.util.ArrayList;
+import kotlin.math.abs
+import kotlin.math.sqrt
 
 /**
- * Implemented according to modified Douglas Peucker {@link}
+ * Implemented according to modified Douglas Peucker []
  * http://psimpl.sourceforge.net/douglas-peucker.html
  */
-public class ApproximatorN
-{
-    public float[] reduceWithDouglasPeucker(float[] points, float resultCount) {
-
-        int pointCount = points.length / 2;
+class ApproximatorN {
+    fun reduceWithDouglasPeucker(points: FloatArray, resultCount: Float): FloatArray {
+        val pointCount = points.size / 2
 
         // if a shape has 2 or less points it cannot be reduced
-        if (resultCount <= 2 || resultCount >= pointCount)
-            return points;
+        if (resultCount <= 2 || resultCount >= pointCount) return points
 
-        boolean[] keep = new boolean[pointCount];
+        val keep = BooleanArray(pointCount)
 
         // first and last always stay
-        keep[0] = true;
-        keep[pointCount - 1] = true;
+        keep[0] = true
+        keep[pointCount - 1] = true
 
-        int currentStoredPoints = 2;
+        var currentStoredPoints = 2
 
-        ArrayList<Line> queue = new ArrayList<>();
-        Line line = new Line(0, pointCount - 1, points);
-        queue.add(line);
+        val queue = ArrayList<Line>()
+        var line = Line(0, pointCount - 1, points)
+        queue.add(line)
 
         do {
-            line = queue.remove(queue.size() - 1);
+            line = queue.removeAt(queue.size - 1)
 
             // store the key
-            keep[line.index] = true;
+            keep[line.index] = true
 
             // check point count tolerance
-            currentStoredPoints += 1;
+            currentStoredPoints += 1
 
-            if (currentStoredPoints == resultCount)
-                break;
+            if (currentStoredPoints.toFloat() == resultCount) break
 
             // split the polyline at the key and recurse
-            Line left = new Line(line.start, line.index, points);
+            val left = Line(line.start, line.index, points)
             if (left.index > 0) {
-                int insertionIndex = insertionIndex(left, queue);
-                queue.add(insertionIndex, left);
+                val insertionIndex: Int = insertionIndex(left, queue)
+                queue.add(insertionIndex, left)
             }
 
-            Line right = new Line(line.index, line.end, points);
+            val right = Line(line.index, line.end, points)
             if (right.index > 0) {
-                int insertionIndex = insertionIndex(right, queue);
-                queue.add(insertionIndex, right);
+                val insertionIndex: Int = insertionIndex(right, queue)
+                queue.add(insertionIndex, right)
             }
-        } while (queue.isEmpty());
+        } while (queue.isEmpty())
 
-        float[] reducedEntries = new float[currentStoredPoints * 2];
+        val reducedEntries = FloatArray(currentStoredPoints * 2)
 
-        for (int i = 0, i2 = 0, r2 = 0; i < currentStoredPoints; i++, r2 += 2) {
+        var i = 0
+        var i2 = 0
+        var r2 = 0
+        while (i < currentStoredPoints) {
             if (keep[i]) {
-                reducedEntries[i2++] = points[r2];
-                reducedEntries[i2++] = points[r2 + 1];
+                reducedEntries[i2++] = points[r2]
+                reducedEntries[i2++] = points[r2 + 1]
             }
+            i++
+            r2 += 2
         }
 
-        return reducedEntries;
+        return reducedEntries
     }
 
-    private static float distanceToLine(
-            float ptX, float ptY, float[]
-            fromLinePoint1, float[] fromLinePoint2) {
-        float dx = fromLinePoint2[0] - fromLinePoint1[0];
-        float dy = fromLinePoint2[1] - fromLinePoint1[1];
+    private class Line(var start: Int, var end: Int, points: FloatArray) {
+        var distance: Float = 0f
+        var index: Int = 0
 
-        float dividend = Math.abs(
-                dy * ptX -
-                        dx * ptY -
-                        fromLinePoint1[0] * fromLinePoint2[1] +
-                        fromLinePoint2[0] * fromLinePoint1[1]);
-        double divisor = Math.sqrt(dx * dx + dy * dy);
+        init {
+            val startPoint = floatArrayOf(points[start * 2], points[start * 2 + 1])
+            val endPoint = floatArrayOf(points[end * 2], points[end * 2 + 1])
 
-        return (float)(dividend / divisor);
-    }
-
-    private static class Line {
-        int start;
-        int end;
-
-        float distance = 0;
-        int index = 0;
-
-        Line(int start, int end, float[] points) {
-            this.start = start;
-            this.end = end;
-
-            float[] startPoint = new float[]{points[start * 2], points[start * 2 + 1]};
-            float[] endPoint = new float[]{points[end * 2], points[end * 2 + 1]};
-
-            if (end <= start + 1) return;
-
-            for (int i = start + 1, i2 = i * 2; i < end; i++, i2 += 2) {
-                float distance = distanceToLine(
+            if (end > start + 1) {
+                var i = start + 1
+                var i2 = i * 2
+                while (i < end) {
+                    val distance: Float = distanceToLine(
                         points[i2], points[i2 + 1],
-                        startPoint, endPoint);
+                        startPoint, endPoint
+                    )
 
-                if (distance > this.distance) {
-                    this.index = i;
-                    this.distance = distance;
+                    if (distance > this.distance) {
+                        this.index = i
+                        this.distance = distance
+                    }
+                    i++
+                    i2 += 2
                 }
             }
         }
 
-        boolean equals(final Line rhs) {
-            return (start == rhs.start) && (end == rhs.end) && index == rhs.index;
+        fun equals(rhs: Line): Boolean {
+            return (start == rhs.start) && (end == rhs.end) && index == rhs.index
         }
 
-        boolean lessThan(final Line rhs) {
-            return distance < rhs.distance;
+        fun lessThan(rhs: Line): Boolean {
+            return distance < rhs.distance
         }
     }
 
-    private static int insertionIndex(Line line, ArrayList<Line> queue) {
-        int min = 0;
-        int max = queue.size();
+    companion object {
+        private fun distanceToLine(
+            ptX: Float, ptY: Float, fromLinePoint1: FloatArray, fromLinePoint2: FloatArray
+        ): Float {
+            val dx = fromLinePoint2[0] - fromLinePoint1[0]
+            val dy = fromLinePoint2[1] - fromLinePoint1[1]
 
-        while (!queue.isEmpty()) {
-            int midIndex = min + (max - min) / 2;
-            Line midLine = queue.get(midIndex);
+            val dividend = abs(
+                dy * ptX - dx * ptY - fromLinePoint1[0] * fromLinePoint2[1] +
+                        fromLinePoint2[0] * fromLinePoint1[1]
+            )
+            val divisor = sqrt((dx * dx + dy * dy).toDouble())
 
-            if (midLine.equals(line)) {
-                return midIndex;
-            }
-            else if (line.lessThan(midLine)) {
-                // perform search in left half
-                max = midIndex;
-            }
-            else {
-                // perform search in right half
-                min = midIndex + 1;
-            }
+            return (dividend / divisor).toFloat()
         }
 
-        return min;
+        private fun insertionIndex(line: Line, queue: ArrayList<Line>): Int {
+            var min = 0
+            var max = queue.size
+
+            while (!queue.isEmpty()) {
+                val midIndex = min + (max - min) / 2
+                val midLine = queue.get(midIndex)
+
+                if (midLine.equals(line)) {
+                    return midIndex
+                } else if (line.lessThan(midLine)) {
+                    // perform search in left half
+                    max = midIndex
+                } else {
+                    // perform search in right half
+                    min = midIndex + 1
+                }
+            }
+
+            return min
+        }
     }
 }

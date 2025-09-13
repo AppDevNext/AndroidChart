@@ -1,8 +1,7 @@
-package com.github.mikephil.charting.interfaces.dataprovider;
+package com.github.mikephil.charting.interfaces.dataprovider
 
-import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterData
 
-public interface ScatterDataProvider extends BarLineScatterCandleBubbleDataProvider {
-
-    ScatterData getScatterData();
+interface ScatterDataProvider : BarLineScatterCandleBubbleDataProvider {
+    val scatterData: ScatterData?
 }

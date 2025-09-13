@@ -1,93 +1,79 @@
-package com.github.mikephil.charting.charts;
+package com.github.mikephil.charting.charts
 
-import android.content.Context;
-import android.graphics.RectF;
-import android.util.AttributeSet;
-import android.util.Log;
-
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.highlight.BarHighlighter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.renderer.BarChartRenderer;
-
-import java.util.Locale;
+import android.content.Context
+import android.graphics.RectF
+import android.util.AttributeSet
+import android.util.Log
+import com.github.mikephil.charting.components.YAxis.AxisDependency
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.highlight.BarHighlighter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.github.mikephil.charting.renderer.BarChartRenderer
+import java.util.Locale
 
 /**
  * Chart that draws bars.
  *
  * @author Philipp Jahoda
  */
-public class BarChart extends BarLineChartBase<BarData> implements BarDataProvider {
-
+open class BarChart : BarLineChartBase<BarEntry, IBarDataSet, BarData>, BarDataProvider {
     /**
      * flag that indicates whether the highlight should be full-bar oriented, or single-value?
      */
-    protected boolean mHighlightFullBarEnabled = false;
+    protected var mHighlightFullBarEnabled: Boolean = false
 
     /**
      * if set to true, all values are drawn above their bars, instead of below their top
      */
-    private boolean mDrawValueAboveBar = true;
+    private var mDrawValueAboveBar = true
 
     /**
      * if set to true, a grey area is drawn behind each bar that indicates the maximum value
      */
-    private boolean mDrawBarShadow = false;
+    private var mDrawBarShadow = false
 
     /**
      * if set to true, the bar chart's bars would be round on all corners instead of rectangular
      */
-    private boolean mDrawRoundedBars;
+    private var mDrawRoundedBars = false
 
     /**
      * the radius of the rounded bar chart bars
      */
-    private float mRoundedBarRadius = 0f;
+    private var mRoundedBarRadius = 0f
 
-    private boolean mFitBars = false;
+    private var mFitBars = false
 
-    public BarChart(Context context) {
-        super(context);
+    constructor(context: Context) : super(context)
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+
+    override fun init() {
+        super.init()
+
+        mRenderer = BarChartRenderer(this, mAnimator, viewPortHandler, mDrawRoundedBars, mRoundedBarRadius)
+
+        setHighlighter(BarHighlighter(this))
+
+        xAxis.spaceMin = 0.5f
+        xAxis.spaceMax = 0.5f
     }
 
-    public BarChart(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public BarChart(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
-
-    @Override
-    protected void init() {
-        super.init();
-
-        mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler, mDrawRoundedBars, mRoundedBarRadius);
-
-        setHighlighter(new BarHighlighter(this));
-
-        getXAxis().setSpaceMin(0.5f);
-        getXAxis().setSpaceMax(0.5f);
-    }
-
-    @Override
-    protected void calcMinMax() {
-
+    override fun calcMinMax() {
         if (mFitBars) {
-            mXAxis.calculate(mData.getXMin() - mData.getBarWidth() / 2f, mData.getXMax() + mData.getBarWidth() / 2f);
+            mXAxis?.calculate(mData!!.xMin - mData!!.barWidth / 2f, mData!!.xMax + mData!!.barWidth / 2f)
         } else {
-            mXAxis.calculate(mData.getXMin(), mData.getXMax());
+            mXAxis?.calculate(mData!!.xMin, mData!!.xMax)
         }
 
         // calculate axis range (min / max) according to provided data
-        mAxisLeft.calculate(mData.getYMin(YAxis.AxisDependency.LEFT), mData.getYMax(YAxis.AxisDependency.LEFT));
-        mAxisRight.calculate(mData.getYMin(YAxis.AxisDependency.RIGHT), mData.getYMax(YAxis.AxisDependency
-                .RIGHT));
+        mAxisLeft?.calculate(mData!!.getYMin(AxisDependency.LEFT), mData!!.getYMax(AxisDependency.LEFT))
+        mAxisRight?.calculate(mData!!.getYMin(AxisDependency.RIGHT), mData!!.getYMax(AxisDependency.RIGHT))
     }
 
     /**
@@ -97,21 +83,21 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      *
      * @param x
      * @param y
-	 */
-    @Override
-    public Highlight getHighlightByTouchPoint(float x, float y) {
-
+     */
+    override fun getHighlightByTouchPoint(x: Float, y: Float): Highlight? {
         if (mData == null) {
-            Log.e(LOG_TAG, "Can't select by touch. No data set.");
-            return null;
+            Log.e(Chart.Companion.LOG_TAG, "Can't select by touch. No data set.")
+            return null
         } else {
-            Highlight h = getHighlighter().getHighlight(x, y);
-            if (h == null || !isHighlightFullBarEnabled()) return h;
+            val h = highlighter?.getHighlight(x, y)
+            if (h == null || !isHighlightFullBarEnabled) return h
 
             // For isHighlightFullBarEnabled, remove stackIndex
-            return new Highlight(h.getX(), h.getY(),
-                    h.getXPx(), h.getYPx(),
-                    h.getDataSetIndex(), -1, h.getAxis());
+            return Highlight(
+                h.x, h.y,
+                h.xPx, h.yPx,
+                h.dataSetIndex, -1, h.axis
+            )
         }
     }
 
@@ -120,13 +106,12 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * found in the charts data.  Performance-intensive code should use void getBarBounds(BarEntry, RectF) instead.
      *
      * @param barEntry
-	 */
-    public RectF getBarBounds(BarEntry barEntry) {
+     */
+    fun getBarBounds(barEntry: BarEntry): RectF {
+        val bounds = RectF()
+        getBarBounds(barEntry, bounds)
 
-        RectF bounds = new RectF();
-        getBarBounds(barEntry, bounds);
-
-        return bounds;
+        return bounds
     }
 
     /**
@@ -134,63 +119,60 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * The rect will be assigned Float.MIN_VALUE in all locations if the Entry could not be found in the charts data.
      *
      * @param barEntry
-	 */
-    public void getBarBounds(BarEntry barEntry, RectF outputRect) {
-
-		IBarDataSet set = mData.getDataSetForEntry(barEntry);
+     */
+    open fun getBarBounds(barEntry: BarEntry, outputRect: RectF) {
+        val set = mData!!.getDataSetForEntry(barEntry)
 
         if (set == null) {
-            outputRect.set(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
-            return;
+            outputRect.set(Float.Companion.MIN_VALUE, Float.Companion.MIN_VALUE, Float.Companion.MIN_VALUE, Float.Companion.MIN_VALUE)
+            return
         }
 
-        float y = barEntry.getY();
-        float x = barEntry.getX();
+        val y = barEntry.y
+        val x = barEntry.x
 
-        float barWidth = mData.getBarWidth();
+        val barWidth = mData!!.barWidth
 
-        float left = x - barWidth / 2f;
-        float right = x + barWidth / 2f;
-        float top = y >= 0 ? y : 0;
-        float bottom = y <= 0 ? y : 0;
+        val left = x - barWidth / 2f
+        val right = x + barWidth / 2f
+        val top = if (y >= 0) y else 0f
+        val bottom = if (y <= 0) y else 0f
 
-        outputRect.set(left, top, right, bottom);
+        outputRect.set(left, top, right, bottom)
 
-        getTransformer(set.getAxisDependency()).rectValueToPixel(outputRect);
+        getTransformer(set.axisDependency).rectValueToPixel(outputRect)
     }
 
     /**
      * If set to true, all values are drawn above their bars, instead of below their top.
      *
-	 */
-    public void setDrawValueAboveBar(boolean enabled) {
-        mDrawValueAboveBar = enabled;
+     */
+    fun setDrawValueAboveBar(enabled: Boolean) {
+        mDrawValueAboveBar = enabled
     }
 
     /**
      * returns true if drawing values above bars is enabled, false if not
      *
-	 */
-    public boolean isDrawValueAboveBarEnabled() {
-        return mDrawValueAboveBar;
-    }
+     */
+    override val isDrawValueAboveBarEnabled: Boolean
+        get() = mDrawValueAboveBar
 
     /**
      * If set to true, a grey area is drawn behind each bar that indicates the maximum value. Enabling his will reduce
      * performance by about 50%.
      *
-	 */
-    public void setDrawBarShadow(boolean enabled) {
-        mDrawBarShadow = enabled;
+     */
+    fun setDrawBarShadow(enabled: Boolean) {
+        mDrawBarShadow = enabled
     }
 
     /**
      * returns true if drawing shadows (maxvalue) for each bar is enabled, false if not
      *
-	 */
-    public boolean isDrawBarShadowEnabled() {
-        return mDrawBarShadow;
-    }
+     */
+    override val isDrawBarShadowEnabled: Boolean
+        get() = mDrawBarShadow
 
     /**
      * Set this to true to make the highlight operation full-bar oriented, false to make it highlight single values (relevant
@@ -198,18 +180,16 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * was tapped.
      * Default: false
      *
-	 */
-    public void setHighlightFullBarEnabled(boolean enabled) {
-        mHighlightFullBarEnabled = enabled;
+     */
+    fun setHighlightFullBarEnabled(enabled: Boolean) {
+        mHighlightFullBarEnabled = enabled
     }
 
     /**
      * @return true the highlight operation is be full-bar oriented, false if single-value
      */
-    @Override
-    public boolean isHighlightFullBarEnabled() {
-        return mHighlightFullBarEnabled;
-    }
+    override val isHighlightFullBarEnabled: Boolean
+        get() = mHighlightFullBarEnabled
 
     /**
      * Highlights the value at the given x-value in the given DataSet. Provide
@@ -217,25 +197,23 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      *
      * @param x
      * @param dataSetIndex
-     * @param stackIndex   the index inside the stack - only relevant for stacked entries
+     * @param dataIndex   the index inside the stack - only relevant for stacked entries
      */
-    public void highlightValue(float x, int dataSetIndex, int stackIndex) {
-        highlightValue(new Highlight(x, dataSetIndex, stackIndex), false);
+    override fun highlightValue(x: Float, dataSetIndex: Int, dataIndex: Int) {
+        highlightValue(Highlight(x, dataSetIndex, dataIndex), false)
     }
 
-    @Override
-    public BarData getBarData() {
-        return mData;
-    }
+    override val barData: BarData?
+        get() = mData
 
     /**
      * Adds half of the bar width to each side of the x-axis range in order to allow the bars of the barchart to be
      * fully displayed.
      * Default: false
      *
-	 */
-    public void setFitBars(boolean enabled) {
-        mFitBars = enabled;
+     */
+    fun setFitBars(enabled: Boolean) {
+        mFitBars = enabled
     }
 
     /**
@@ -248,53 +226,53 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * @param groupSpace the space between groups of bars in values (not pixels) e.g. 0.8f for bar width 1f
      * @param barSpace   the space between individual bars in values (not pixels) e.g. 0.1f for bar width 1f
      */
-    public void groupBars(float fromX, float groupSpace, float barSpace) {
-
-        if (getBarData() == null) {
-            throw new RuntimeException("You need to set data for the chart before grouping bars.");
+    fun groupBars(fromX: Float, groupSpace: Float, barSpace: Float) {
+        if (barData == null) {
+            throw RuntimeException("You need to set data for the chart before grouping bars.")
         } else {
-            getBarData().groupBars(fromX, groupSpace, barSpace);
-            notifyDataSetChanged();
+            barData!!.groupBars(fromX, groupSpace, barSpace)
+            notifyDataSetChanged()
         }
     }
+
     /**
      * Used to enable rounded bar chart bars and set the radius of the rounded bars
      *
      * @param mRoundedBarRadius - the radius of the rounded bars
      */
-    public void setRoundedBarRadius(float mRoundedBarRadius) {
-        this.mRoundedBarRadius = mRoundedBarRadius;
-        this.mDrawRoundedBars = true;
-        init();
+    fun setRoundedBarRadius(mRoundedBarRadius: Float) {
+        this.mRoundedBarRadius = mRoundedBarRadius
+        this.mDrawRoundedBars = true
+        init()
     }
 
-    @Override
-    public String getAccessibilityDescription() {
+    override val accessibilityDescription: String?
+        get() {
+            val barData = barData
+            if (barData == null) {
+                return ""
+            }
 
-        BarData barData = getBarData();
-        if (barData == null) {
-            return "";
-        }
+            val entryCount = barData.entryCount
 
-        int entryCount = barData.getEntryCount();
+            // Find the min and max index
+            val yAxisValueFormatter = axisLeft.valueFormatter
+            val minVal = yAxisValueFormatter!!.getFormattedValue(barData.yMin, null)
+            val maxVal = yAxisValueFormatter.getFormattedValue(barData.yMax, null)
 
-        // Find the min and max index
-        IAxisValueFormatter yAxisValueFormatter = getAxisLeft().getValueFormatter();
-        String minVal = yAxisValueFormatter.getFormattedValue(barData.getYMin(), null);
-        String maxVal = yAxisValueFormatter.getFormattedValue(barData.getYMax(), null);
+            // Data range...
+            val xAxisValueFormatter = xAxis.valueFormatter
+            val minRange = xAxisValueFormatter!!.getFormattedValue(barData.xMin, null)
+            val maxRange = xAxisValueFormatter.getFormattedValue(barData.xMax, null)
 
-        // Data range...
-        IAxisValueFormatter xAxisValueFormatter = getXAxis().getValueFormatter();
-        String minRange = xAxisValueFormatter.getFormattedValue(barData.getXMin(), null);
-        String maxRange = xAxisValueFormatter.getFormattedValue(barData.getXMax(), null);
+            val entries = if (entryCount == 1) "entry" else "entries"
 
-        String entries = entryCount == 1 ? "entry" : "entries";
-
-        // Format the values of min and max; to recite them back
-
-		return String.format(Locale.getDefault(), "The bar chart has %d %s. " +
+            // Format the values of min and max; to recite them back
+            return String.format(
+                Locale.getDefault(), "The bar chart has %d %s. " +
                         "The minimum value is %s and maximum value is %s." +
                         "Data ranges from %s to %s.",
-                entryCount, entries, minVal, maxVal, minRange, maxRange);
-    }
+                entryCount, entries, minVal, maxVal, minRange, maxRange
+            )
+        }
 }

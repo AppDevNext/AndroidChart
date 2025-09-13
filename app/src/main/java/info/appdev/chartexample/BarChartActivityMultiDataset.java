@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
@@ -102,6 +104,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
         xAxis.setGranularity(1f);
         xAxis.setCenterAxisLabels(true);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @NonNull
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 return String.valueOf((int) value);
@@ -211,7 +214,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             }
             case R.id.actionToggleValues: {
                 for (IBarDataSet set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
+                    set.setDrawValues(!set.isDrawValuesEnabled);
 
                 chart.invalidate();
                 break;
@@ -232,7 +235,7 @@ public class BarChartActivityMultiDataset extends DemoBase implements OnSeekBarC
             }
             case R.id.actionToggleBarBorders: {
                 for (IBarDataSet set : chart.getData().getDataSets())
-                    ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+                    ((BarDataSet) set).setBarBorderWidth(set.barBorderWidth == 1.f ? 0.f : 1.f);
 
                 chart.invalidate();
                 break;

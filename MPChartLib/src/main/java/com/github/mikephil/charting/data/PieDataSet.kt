@@ -1,65 +1,47 @@
+package com.github.mikephil.charting.data
 
-package com.github.mikephil.charting.data;
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
+import com.github.mikephil.charting.utils.Utils
 
-import androidx.annotation.Nullable;
-
-import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
-import com.github.mikephil.charting.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
-
+open class PieDataSet(yVals: MutableList<PieEntry>, label: String) : DataSet<PieEntry>(yVals, label), IPieDataSet {
     /**
      * the space in pixels between the chart-slices, default 0f
      */
-    private float mSliceSpace = 0f;
-    private boolean mAutomaticallyDisableSliceSpacing;
+    private var mSliceSpace = 0f
+    private var mAutomaticallyDisableSliceSpacing = false
 
     /**
      * indicates the selection distance of a pie slice
      */
-    private float mShift = 18f;
+    private var mShift = 18f
 
-    private ValuePosition mXValuePosition = ValuePosition.INSIDE_SLICE;
-    private ValuePosition mYValuePosition = ValuePosition.INSIDE_SLICE;
-    private int mValueLineColor = 0xff000000;
-    private boolean mUseValueColorForLine = false;
-    private float mValueLineWidth = 1.0f;
-    private float mValueLinePart1OffsetPercentage = 75.f;
-    private float mValueLinePart1Length = 0.3f;
-    private float mValueLinePart2Length = 0.4f;
-    private boolean mValueLineVariableLength = true;
-    private Integer mHighlightColor = null;
+    private var mXValuePosition: ValuePosition? = ValuePosition.INSIDE_SLICE
+    private var mYValuePosition: ValuePosition? = ValuePosition.INSIDE_SLICE
+    private var mValueLineColor = -0x1000000
+    private var mUseValueColorForLine = false
+    private var mValueLineWidth = 1.0f
+    private var mValueLinePart1OffsetPercentage = 75f
+    private var mValueLinePart1Length = 0.3f
+    private var mValueLinePart2Length = 0.4f
+    private var mValueLineVariableLength = true
+    private var mHighlightColor: Int? = null
 
-    public PieDataSet(List<PieEntry> yVals, String label) {
-        super(yVals, label);
-//        mShift = Utils.convertDpToPixel(12f);
-    }
-
-    @Override
-    public DataSet<PieEntry> copy() {
-        List<PieEntry> entries = new ArrayList<>();
-        for (int i = 0; i < mEntries.size(); i++) {
-            entries.add(mEntries.get(i).copy());
+    override fun copy(): DataSet<PieEntry> {
+        val entries: MutableList<PieEntry> = ArrayList()
+        for (i in mEntries.indices) {
+            entries.add(mEntries[i].copy())
         }
-        PieDataSet copied = new PieDataSet(entries, getLabel());
-        copy(copied);
-        return copied;
+        val copied = PieDataSet(entries, label)
+        copy(copied)
+        return copied
     }
 
-    protected void copy(PieDataSet pieDataSet) {
-        super.copy((BaseDataSet<?>) pieDataSet);
+    protected fun copy(pieDataSet: PieDataSet) {
+        super.copy((pieDataSet as BaseDataSet<*>?)!!)
     }
 
-    @Override
-    protected void calcMinMax(PieEntry e) {
-
-        if (e == null)
-            return;
-
-        calcMinMaxY(e);
+    override fun calcMinMax(e: PieEntry) {
+        calcMinMaxY(e)
     }
 
     /**
@@ -68,20 +50,16 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
      *
      * @param spaceDp
      */
-    public void setSliceSpace(float spaceDp) {
+    fun setSliceSpace(spaceDp: Float) {
+        var spaceDp = spaceDp
+        if (spaceDp > 20) spaceDp = 20f
+        if (spaceDp < 0) spaceDp = 0f
 
-        if (spaceDp > 20)
-            spaceDp = 20f;
-        if (spaceDp < 0)
-            spaceDp = 0f;
-
-        mSliceSpace = Utils.convertDpToPixel(spaceDp);
+        mSliceSpace = Utils.convertDpToPixel(spaceDp)
     }
 
-    @Override
-    public float getSliceSpace() {
-        return mSliceSpace;
-    }
+    override val sliceSpace: Float
+        get() = mSliceSpace
 
     /**
      * When enabled, slice spacing will be 0.0 when the smallest value is going to be
@@ -89,8 +67,8 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
      *
      * @param autoDisable
      */
-    public void setAutomaticallyDisableSliceSpacing(boolean autoDisable) {
-        mAutomaticallyDisableSliceSpacing = autoDisable;
+    fun setAutomaticallyDisableSliceSpacing(autoDisable: Boolean) {
+        mAutomaticallyDisableSliceSpacing = autoDisable
     }
 
     /**
@@ -99,10 +77,8 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
      *
      * @return
      */
-    @Override
-    public boolean isAutomaticallyDisableSliceSpacingEnabled() {
-        return mAutomaticallyDisableSliceSpacing;
-    }
+    override val isAutomaticallyDisableSliceSpacingEnabled: Boolean
+        get() = mAutomaticallyDisableSliceSpacing
 
     /**
      * sets the distance the highlighted piechart-slice of this DataSet is
@@ -110,152 +86,123 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
      *
      * @param shift
      */
-    public void setSelectionShift(float shift) {
-        mShift = Utils.convertDpToPixel(shift);
+    fun setSelectionShift(shift: Float) {
+        mShift = Utils.convertDpToPixel(shift)
     }
 
-    @Override
-    public float getSelectionShift() {
-        return mShift;
+    override val selectionShift: Float
+        get() = mShift
+
+    override val xValuePosition: ValuePosition?
+        get() = mXValuePosition
+
+    fun setXValuePosition(xValuePosition: ValuePosition?) {
+        this.mXValuePosition = xValuePosition
     }
 
-    @Override
-    public ValuePosition getXValuePosition() {
-        return mXValuePosition;
+    override val yValuePosition: ValuePosition?
+        get() = mYValuePosition
+
+    fun setYValuePosition(yValuePosition: ValuePosition?) {
+        this.mYValuePosition = yValuePosition
     }
 
-    public void setXValuePosition(ValuePosition xValuePosition) {
-        this.mXValuePosition = xValuePosition;
-    }
-
-    @Override
-    public ValuePosition getYValuePosition() {
-        return mYValuePosition;
-    }
-
-    public void setYValuePosition(ValuePosition yValuePosition) {
-        this.mYValuePosition = yValuePosition;
-    }
-
-    /**
-     * This method is deprecated.
-     * Use isUseValueColorForLineEnabled() instead.
-     */
-    @Deprecated
-    public boolean isUsingSliceColorAsValueLineColor() {
-        return isUseValueColorForLineEnabled();
-    }
-
-    /**
-     * This method is deprecated.
-     * Use setUseValueColorForLine(...) instead.
-     *
-     * @param enabled
-     */
-    @Deprecated
-    public void setUsingSliceColorAsValueLineColor(boolean enabled) {
-        setUseValueColorForLine(enabled);
-    }
+    @get:Deprecated("")
+    @set:Deprecated("")
+    var isUsingSliceColorAsValueLineColor: Boolean
+        /**
+         * This method is deprecated.
+         * Use isUseValueColorForLineEnabled() instead.
+         */
+        get() = isUseValueColorForLineEnabled
+        /**
+         * This method is deprecated.
+         * Use setUseValueColorForLine(...) instead.
+         *
+         * @param enabled
+         */
+        set(enabled) {
+            setUseValueColorForLine(enabled)
+        }
 
     /**
      * When valuePosition is OutsideSlice, indicates line color
      */
-    @Override
-    public int getValueLineColor() {
-        return mValueLineColor;
+    override val valueLineColor: Int
+        get() = mValueLineColor
+
+    fun setValueLineColor(valueLineColor: Int) {
+        this.mValueLineColor = valueLineColor
     }
 
-    public void setValueLineColor(int valueLineColor) {
-        this.mValueLineColor = valueLineColor;
-    }
+    override val isUseValueColorForLineEnabled: Boolean
+        get() = mUseValueColorForLine
 
-    @Override
-    public boolean isUseValueColorForLineEnabled()
-    {
-        return mUseValueColorForLine;
-    }
-
-    public void setUseValueColorForLine(boolean enabled)
-    {
-        mUseValueColorForLine = enabled;
+    fun setUseValueColorForLine(enabled: Boolean) {
+        mUseValueColorForLine = enabled
     }
 
     /**
      * When valuePosition is OutsideSlice, indicates line width
      */
-    @Override
-    public float getValueLineWidth() {
-        return mValueLineWidth;
-    }
+    override val valueLineWidth: Float
+        get() = mValueLineWidth
 
-    public void setValueLineWidth(float valueLineWidth) {
-        this.mValueLineWidth = valueLineWidth;
+    fun setValueLineWidth(valueLineWidth: Float) {
+        this.mValueLineWidth = valueLineWidth
     }
 
     /**
      * When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
      */
-    @Override
-    public float getValueLinePart1OffsetPercentage() {
-        return mValueLinePart1OffsetPercentage;
-    }
+    override val valueLinePart1OffsetPercentage: Float
+        get() = mValueLinePart1OffsetPercentage
 
-    public void setValueLinePart1OffsetPercentage(float valueLinePart1OffsetPercentage) {
-        this.mValueLinePart1OffsetPercentage = valueLinePart1OffsetPercentage;
+    fun setValueLinePart1OffsetPercentage(valueLinePart1OffsetPercentage: Float) {
+        this.mValueLinePart1OffsetPercentage = valueLinePart1OffsetPercentage
     }
 
     /**
      * When valuePosition is OutsideSlice, indicates length of first half of the line
      */
-    @Override
-    public float getValueLinePart1Length() {
-        return mValueLinePart1Length;
-    }
+    override val valueLinePart1Length: Float
+        get() = mValueLinePart1Length
 
-    public void setValueLinePart1Length(float valueLinePart1Length) {
-        this.mValueLinePart1Length = valueLinePart1Length;
+    fun setValueLinePart1Length(valueLinePart1Length: Float) {
+        this.mValueLinePart1Length = valueLinePart1Length
     }
 
     /**
      * When valuePosition is OutsideSlice, indicates length of second half of the line
      */
-    @Override
-    public float getValueLinePart2Length() {
-        return mValueLinePart2Length;
-    }
+    override val valueLinePart2Length: Float
+        get() = mValueLinePart2Length
 
-    public void setValueLinePart2Length(float valueLinePart2Length) {
-        this.mValueLinePart2Length = valueLinePart2Length;
+    fun setValueLinePart2Length(valueLinePart2Length: Float) {
+        this.mValueLinePart2Length = valueLinePart2Length
     }
 
     /**
      * When valuePosition is OutsideSlice, this allows variable line length
      */
-    @Override
-    public boolean isValueLineVariableLength() {
-        return mValueLineVariableLength;
+    override val isValueLineVariableLength: Boolean
+        get() = mValueLineVariableLength
+
+    fun setValueLineVariableLength(valueLineVariableLength: Boolean) {
+        this.mValueLineVariableLength = valueLineVariableLength
     }
 
-    public void setValueLineVariableLength(boolean valueLineVariableLength) {
-        this.mValueLineVariableLength = valueLineVariableLength;
-    }
+    /** Gets the color for the highlighted sector  */
+    override val highlightColor: Int?
+        get() = mHighlightColor
 
-    /** Gets the color for the highlighted sector */
-    @Override
-    @Nullable
-    public Integer getHighlightColor()
-    {
-        return mHighlightColor;
-    }
-
-    /** Sets the color for the highlighted sector (null for using entry color) */
-    public void setHighlightColor(@Nullable Integer color)
-    {
-        this.mHighlightColor = color;
+    /** Sets the color for the highlighted sector (null for using entry color)  */
+    fun setHighlightColor(color: Int?) {
+        this.mHighlightColor = color
     }
 
 
-    public enum ValuePosition {
+    enum class ValuePosition {
         INSIDE_SLICE,
         OUTSIDE_SLICE
     }
