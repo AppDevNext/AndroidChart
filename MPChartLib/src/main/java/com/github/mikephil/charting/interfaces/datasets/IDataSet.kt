@@ -1,56 +1,52 @@
-package com.github.mikephil.charting.interfaces.datasets;
+package com.github.mikephil.charting.interfaces.datasets
 
-import android.graphics.DashPathEffect;
-import android.graphics.Typeface;
+import android.graphics.DashPathEffect
+import android.graphics.Typeface
+import com.github.mikephil.charting.components.Legend.LegendForm
+import com.github.mikephil.charting.components.YAxis.AxisDependency
+import com.github.mikephil.charting.data.DataSet.Rounding
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.formatter.IValueFormatter
+import com.github.mikephil.charting.utils.MPPointF
 
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.utils.MPPointF;
-
-import java.util.List;
-
-public interface IDataSet<T extends Entry> {
-
+interface IDataSet<T : Entry> {
     /**
      * returns the minimum y-value this DataSet holds
      */
-    float getYMin();
+    val yMin: Float
 
     /**
      * returns the maximum y-value this DataSet holds
      */
-    float getYMax();
+    val yMax: Float
 
     /**
      * returns the minimum x-value this DataSet holds
      */
-    float getXMin();
+    val xMin: Float
 
     /**
      * returns the maximum x-value this DataSet holds
      */
-    float getXMax();
+    val xMax: Float
 
     /**
      * Returns the number of y-values this DataSet represents -> the size of the y-values array
      * -> yvals.size()
      */
-    int getEntryCount();
+    val entryCount: Int
 
     /**
      * Calculates the minimum and maximum x and y values (mXMin, mXMax, mYMin, mYMax).
      */
-    void calcMinMax();
+    fun calcMinMax()
 
     /**
      * Calculates the min and max y-values from the Entry closest to the given fromX to the Entry closest to the given toX value.
      * This is only needed for the autoScaleMinMax feature.
      *
      */
-    void calcMinMaxY(float fromX, float toX);
+    fun calcMinMaxY(fromX: Float, toX: Float)
 
     /**
      * Returns the first Entry object found at the given x-value with binary
@@ -63,11 +59,9 @@ public interface IDataSet<T extends Entry> {
      * @param xValue the x-value
      * @param closestToY If there are multiple y-values for the specified x-value,
      * @param rounding determine whether to round up/down/closest
-     *                 if there is no Entry matching the provided x-value
-     *
-     *
+     * if there is no Entry matching the provided x-value
      */
-    T getEntryForXValue(float xValue, float closestToY, DataSet.Rounding rounding);
+    fun getEntryForXValue(xValue: Float, closestToY: Float, rounding: Rounding?): T?
 
     /**
      * Returns the first Entry object found at the given x-value with binary
@@ -81,7 +75,7 @@ public interface IDataSet<T extends Entry> {
      * @param xValue the x-value
      * @param closestToY If there are multiple y-values for the specified x-value,
      */
-    T getEntryForXValue(float xValue, float closestToY);
+    fun getEntryForXValue(xValue: Float, closestToY: Float): T?
 
     /**
      * Returns all Entry objects found at the given x-value with binary
@@ -90,12 +84,12 @@ public interface IDataSet<T extends Entry> {
      * not over-use in performance critical situations.
      *
      */
-    List<T> getEntriesForXValue(float xValue);
+    fun getEntriesForXValue(xValue: Float): MutableList<out T>
 
     /**
      * Returns the Entry object found at the given index (NOT xIndex) in the values array.
      */
-    T getEntryForIndex(int index);
+    fun getEntryForIndex(index: Int): T
 
     /**
      * Returns the first Entry index found at the given x-value with binary
@@ -108,16 +102,16 @@ public interface IDataSet<T extends Entry> {
      * @param xValue the x-value
      * @param closestToY If there are multiple y-values for the specified x-value,
      * @param rounding determine whether to round up/down/closest
-     *                 if there is no Entry matching the provided x-value
+     * if there is no Entry matching the provided x-value
      */
-    int getEntryIndex(float xValue, float closestToY, DataSet.Rounding rounding);
+    fun getEntryIndex(xValue: Float, closestToY: Float, rounding: Rounding?): Int
 
     /**
      * Returns the position of the provided entry in the DataSets Entry array.
      * Returns -1 if doesn't exist.
      *
      */
-    int getEntryIndex(T e);
+    fun getEntryIndex(e: Entry): Int
 
 
     /**
@@ -127,7 +121,7 @@ public interface IDataSet<T extends Entry> {
      * situations.
      *
      */
-    int getIndexInEntries(int xIndex);
+    fun getIndexInEntries(xIndex: Int): Int
 
     /**
      * Adds an Entry to the DataSet dynamically.
@@ -136,7 +130,7 @@ public interface IDataSet<T extends Entry> {
      * values of the DataSet and the value-sum.
      *
      */
-    boolean addEntry(T e);
+    fun addEntry(e: T): Boolean
 
 
     /**
@@ -146,21 +140,21 @@ public interface IDataSet<T extends Entry> {
      * values of the DataSet and the value-sum.
      *
      */
-    void addEntryOrdered(T e);
+    fun addEntryOrdered(e: T)
 
     /**
      * Removes the first Entry (at index 0) of this DataSet from the entries array.
      * Returns true if successful, false if not.
      *
      */
-    boolean removeFirst();
+    fun removeFirst(): Boolean
 
     /**
      * Removes the last Entry (at index size-1) of this DataSet from the entries array.
      * Returns true if successful, false if not.
      *
      */
-    boolean removeLast();
+    fun removeLast(): Boolean
 
     /**
      * Removes an Entry from the DataSets entries array. This will also
@@ -169,21 +163,21 @@ public interface IDataSet<T extends Entry> {
      * be removed.
      *
      */
-    boolean removeEntry(T e);
+    fun removeEntry(e: T?): Boolean
 
     /**
      * Removes the Entry object closest to the given x-value from the DataSet.
      * Returns true if an Entry was removed, false if no Entry could be removed.
      *
      */
-    boolean removeEntryByXValue(float xValue);
+    fun removeEntryByXValue(xValue: Float): Boolean
 
     /**
      * Removes the Entry object at the given index in the values array from the DataSet.
      * Returns true if an Entry was removed, false if no Entry could be removed.
      *
      */
-    boolean removeEntry(int index);
+    fun removeEntry(index: Int): Boolean
 
     /**
      * Checks if this DataSet contains the specified Entry. Returns true if so,
@@ -191,70 +185,68 @@ public interface IDataSet<T extends Entry> {
      * over-use in performance critical situations.
      *
      */
-    boolean contains(T entry);
+    fun contains(entry: T?): Boolean
 
     /**
      * Removes all values from this DataSet and does all necessary recalculations.
      */
-    void clear();
+    fun clear()
 
     /**
      * Returns the label string that describes the DataSet.
      *
      */
-    String getLabel();
-
     /**
      * Sets the label string that describes the DataSet.
      *
      */
-    void setLabel(String label);
+    var label: String
 
     /**
      * Returns the axis this DataSet should be plotted against.
      */
-    YAxis.AxisDependency getAxisDependency();
-
     /**
      * Set the y-axis this DataSet should be plotted against (either LEFT or
      * RIGHT). Default: LEFT
      *
      */
-    void setAxisDependency(YAxis.AxisDependency dependency);
+    var axisDependency: AxisDependency?
 
     /**
      * returns all the colors that are set for this DataSet
      *
      */
-    List<Integer> getColors();
+    val colors: MutableList<Int>
 
     /**
      * Returns the first color (index 0) of the colors-array this DataSet
      * contains. This is only used for performance reasons when only one color is in the colors array (size == 1)
      *
      */
-    int getColor();
+    val color: Int
 
     /**
      * Returns the color at the given index of the DataSet's color array.
      * Performs a IndexOutOfBounds check by modulus.
      *
      */
-    int getColor(int index);
+    fun getColor(index: Int): Int
 
     /**
      * returns true if highlighting of values is enabled, false if not
      *
      */
-    boolean isHighlightEnabled();
-
     /**
      * If set to true, value highlighting is enabled which means that values can
      * be highlighted programmatically or by touch gesture.
      *
      */
-    void setHighlightEnabled(boolean enabled);
+    var isHighlightEnabled: Boolean
 
+    /**
+     * Returns the formatter used for drawing the values inside the chart.
+     *
+     */
     /**
      * Sets the formatter to be used for drawing the values inside the chart. If
      * no formatter is set, the chart will automatically determine a reasonable
@@ -263,146 +255,113 @@ public interface IDataSet<T extends Entry> {
      * calculated by the chart.
      *
      */
-    void setValueFormatter(IValueFormatter f);
-
-    /**
-     * Returns the formatter used for drawing the values inside the chart.
-     *
-     */
-    IValueFormatter getValueFormatter();
-
-    /**
-     * Returns true if the valueFormatter object of this DataSet is null.
-     *
-     */
-    boolean needsFormatter();
-
-    /**
-     * Sets the color the value-labels of this DataSet should have.
-     *
-     */
-    void setValueTextColor(int color);
+    var valueFormatter: IValueFormatter
 
     /**
      * Sets a list of colors to be used as the colors for the drawn values.
      *
      */
-    void setValueTextColors(List<Integer> colors);
-
-    /**
-     * Sets a Typeface for the value-labels of this DataSet.
-     *
-     */
-    void setValueTypeface(Typeface tf);
-
-    /**
-     * Sets the text-size of the value-labels of this DataSet in dp.
-     *
-     */
-    void setValueTextSize(float size);
+    fun setValueTextColors(colors: MutableList<Int>)
 
     /**
      * Returns only the first color of all colors that are set to be used for the values.
      *
      */
-    int getValueTextColor();
+    /**
+     * Sets the color the value-labels of this DataSet should have.
+     *
+     */
+    var valueTextColor: Int
 
     /**
      * Returns the color at the specified index that is used for drawing the values inside the chart.
      * Uses modulus internally.
      *
      */
-    int getValueTextColor(int index);
+    fun getValueTextColor(index: Int): Int
 
     /**
      * Returns the typeface that is used for drawing the values inside the chart
      *
      */
-    Typeface getValueTypeface();
+    /**
+     * Sets a Typeface for the value-labels of this DataSet.
+     *
+     */
+    var valueTypeface: Typeface?
 
     /**
      * Returns the text size that is used for drawing the values inside the chart
      *
      */
-    float getValueTextSize();
+    /**
+     * Sets the text-size of the value-labels of this DataSet in dp.
+     *
+     */
+    var valueTextSize: Float
 
     /**
      * The form to draw for this dataset in the legend.
-     * <p/>
+     *
+     *
      * Return `DEFAULT` to use the default legend form.
      */
-    Legend.LegendForm getForm();
+    val form: LegendForm?
 
     /**
      * The form size to draw for this dataset in the legend.
-     * <p/>
+     *
+     *
      * Return `Float.NaN` to use the default legend form size.
      */
-    float getFormSize();
+    val formSize: Float
 
     /**
      * The line width for drawing the form of this dataset in the legend
-     * <p/>
+     *
+     *
      * Return `Float.NaN` to use the default legend form line width.
      */
-    float getFormLineWidth();
+    val formLineWidth: Float
 
     /**
      * The line dash path effect used for shapes that consist of lines.
-     * <p/>
+     *
+     *
      * Return `null` to use the default legend form line dash effect.
      */
-    DashPathEffect getFormLineDashEffect();
-
-    /**
-     * set this to true to draw y-values on the chart.
-     * NOTE (for bar and line charts): if `maxVisibleCount` is reached, no values will be drawn even
-     * if this is enabled
-     */
-    void setDrawValues(boolean enabled);
+    val formLineDashEffect: DashPathEffect?
 
     /**
      * Returns true if y-value drawing is enabled, false if not
      *
      */
-    boolean isDrawValuesEnabled();
-
-    /**
-     * Set this to true to draw y-icons on the chart.
-     * NOTE (for bar and line charts): if `maxVisibleCount` is reached, no icons will be drawn even
-     * if this is enabled
-     *
-     */
-    void setDrawIcons(boolean enabled);
+    var isDrawValuesEnabled: Boolean
 
     /**
      * Returns true if y-icon drawing is enabled, false if not
      *
      */
-    boolean isDrawIconsEnabled();
+    var isDrawIconsEnabled: Boolean
 
+    /**
+     * Get the offset for drawing icons.
+     */
     /**
      * Offset of icons drawn on the chart.
      * For all charts except Pie and Radar it will be ordinary (x offset,y offset).
      * For Pie and Radar chart it will be (y offset, distance from center offset); so if you want icon to be rendered under value, you should increase X component of CGPoint, and if you want icon to be rendered closet to center, you should decrease height component of CGPoint.
      */
-    void setIconsOffset(MPPointF offset);
-
-    /**
-     * Get the offset for drawing icons.
-     */
-    MPPointF getIconsOffset();
-
-    /**
-     * Set the visibility of this DataSet. If not visible, the DataSet will not
-     * be drawn to the chart upon refreshing it.
-     *
-     */
-    void setVisible(boolean visible);
+    var iconsOffset: MPPointF
 
     /**
      * Returns true if this DataSet is visible inside the chart, or false if it
      * is currently hidden.
      */
-    boolean isVisible();
+    /**
+     * Set the visibility of this DataSet. If not visible, the DataSet will not
+     * be drawn to the chart upon refreshing it.
+     *
+     */
+    var isVisible: Boolean
 }

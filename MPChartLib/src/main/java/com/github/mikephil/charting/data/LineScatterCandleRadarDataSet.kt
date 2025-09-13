@@ -1,79 +1,65 @@
-package com.github.mikephil.charting.data;
+package com.github.mikephil.charting.data
 
-import android.graphics.DashPathEffect;
-
-import com.github.mikephil.charting.interfaces.datasets.ILineScatterCandleRadarDataSet;
-import com.github.mikephil.charting.utils.Utils;
-
-import java.util.List;
+import android.graphics.DashPathEffect
+import com.github.mikephil.charting.interfaces.datasets.ILineScatterCandleRadarDataSet
+import com.github.mikephil.charting.utils.Utils
 
 /**
  * Created by Philipp Jahoda on 11/07/15.
  */
-public abstract class LineScatterCandleRadarDataSet<T extends Entry> extends BarLineScatterCandleBubbleDataSet<T> implements ILineScatterCandleRadarDataSet<T> {
+abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>, label: String) : BarLineScatterCandleBubbleDataSet<T>(yVals, label),
+    ILineScatterCandleRadarDataSet<T> {
+    override var isVerticalHighlightIndicatorEnabled: Boolean = true
+        protected set
+    override var isHorizontalHighlightIndicatorEnabled: Boolean = true
+        protected set
 
-    protected boolean mDrawVerticalHighlightIndicator = true;
-    protected boolean mDrawHorizontalHighlightIndicator = true;
+    /** the width of the highlight indicator lines  */
+    protected var mHighlightLineWidth: Float = 0.5f
 
-    /** the width of the highlight indicator lines */
-    protected float mHighlightLineWidth = 0.5f;
-
-    /** the path effect for dashed highlight-lines */
-    protected DashPathEffect mHighlightDashPathEffect = null;
+    /** the path effect for dashed highlight-lines  */
+    override var dashPathEffectHighlight: DashPathEffect? = null
+        protected set
 
 
-    public LineScatterCandleRadarDataSet(List<T> yVals, String label) {
-        super(yVals, label);
-        mHighlightLineWidth = Utils.convertDpToPixel(0.5f);
+    init {
+        mHighlightLineWidth = Utils.convertDpToPixel(0.5f)
     }
 
     /**
      * Enables / disables the horizontal highlight-indicator. If disabled, the indicator is not drawn.
      * @param enabled
      */
-    public void setDrawHorizontalHighlightIndicator(boolean enabled) {
-        this.mDrawHorizontalHighlightIndicator = enabled;
+    fun setDrawHorizontalHighlightIndicator(enabled: Boolean) {
+        this.isHorizontalHighlightIndicatorEnabled = enabled
     }
 
     /**
      * Enables / disables the vertical highlight-indicator. If disabled, the indicator is not drawn.
      * @param enabled
      */
-    public void setDrawVerticalHighlightIndicator(boolean enabled) {
-        this.mDrawVerticalHighlightIndicator = enabled;
+    fun setDrawVerticalHighlightIndicator(enabled: Boolean) {
+        this.isVerticalHighlightIndicatorEnabled = enabled
     }
 
     /**
      * Enables / disables both vertical and horizontal highlight-indicators.
      * @param enabled
      */
-    public void setDrawHighlightIndicators(boolean enabled) {
-        setDrawVerticalHighlightIndicator(enabled);
-        setDrawHorizontalHighlightIndicator(enabled);
+    fun setDrawHighlightIndicators(enabled: Boolean) {
+        setDrawVerticalHighlightIndicator(enabled)
+        setDrawHorizontalHighlightIndicator(enabled)
     }
 
-    @Override
-    public boolean isVerticalHighlightIndicatorEnabled() {
-        return mDrawVerticalHighlightIndicator;
-    }
-
-    @Override
-    public boolean isHorizontalHighlightIndicatorEnabled() {
-        return mDrawHorizontalHighlightIndicator;
-    }
-
-    /**
-     * Sets the width of the highlight line in dp.
-     * @param width
-     */
-    public void setHighlightLineWidth(float width) {
-        mHighlightLineWidth = Utils.convertDpToPixel(width);
-    }
-
-    @Override
-    public float getHighlightLineWidth() {
-        return mHighlightLineWidth;
-    }
+    override var highlightLineWidth: Float
+        get() = mHighlightLineWidth
+        /**
+         * Sets the width of the highlight line in dp.
+         * @param width
+         */
+        set(width) {
+            mHighlightLineWidth = Utils.convertDpToPixel(width)
+        }
 
     /**
      * Enables the highlight-line to be drawn in dashed mode, e.g. like this "- - - - - -"
@@ -82,39 +68,35 @@ public abstract class LineScatterCandleRadarDataSet<T extends Entry> extends Bar
      * @param spaceLength the length of space inbetween the line-pieces
      * @param phase offset, in degrees (normally, use 0)
      */
-    public void enableDashedHighlightLine(float lineLength, float spaceLength, float phase) {
-        mHighlightDashPathEffect = new DashPathEffect(new float[] {
+    fun enableDashedHighlightLine(lineLength: Float, spaceLength: Float, phase: Float) {
+        this.dashPathEffectHighlight = DashPathEffect(
+            floatArrayOf(
                 lineLength, spaceLength
-        }, phase);
+            ), phase
+        )
     }
 
     /**
      * Disables the highlight-line to be drawn in dashed mode.
      */
-    public void disableDashedHighlightLine() {
-        mHighlightDashPathEffect = null;
+    fun disableDashedHighlightLine() {
+        this.dashPathEffectHighlight = null
     }
 
-    /**
-     * Returns true if the dashed-line effect is enabled for highlight lines, false if not.
-     * Default: disabled
-     *
-     * @return
-     */
-    public boolean isDashedHighlightLineEnabled() {
-        return mHighlightDashPathEffect == null ? false : true;
-    }
+    val isDashedHighlightLineEnabled: Boolean
+        /**
+         * Returns true if the dashed-line effect is enabled for highlight lines, false if not.
+         * Default: disabled
+         *
+         * @return
+         */
+        get() = if (this.dashPathEffectHighlight == null) false else true
 
-    @Override
-    public DashPathEffect getDashPathEffectHighlight() {
-        return mHighlightDashPathEffect;
-    }
-
-    protected void copy(LineScatterCandleRadarDataSet lineScatterCandleRadarDataSet) {
-        super.copy((BaseDataSet<?>) lineScatterCandleRadarDataSet);
-        lineScatterCandleRadarDataSet.mDrawHorizontalHighlightIndicator = mDrawHorizontalHighlightIndicator;
-        lineScatterCandleRadarDataSet.mDrawVerticalHighlightIndicator = mDrawVerticalHighlightIndicator;
-        lineScatterCandleRadarDataSet.mHighlightLineWidth = mHighlightLineWidth;
-        lineScatterCandleRadarDataSet.mHighlightDashPathEffect = mHighlightDashPathEffect;
+    protected fun copy(lineScatterCandleRadarDataSet: LineScatterCandleRadarDataSet<*>) {
+        super.copy((lineScatterCandleRadarDataSet as BaseDataSet<*>?)!!)
+        lineScatterCandleRadarDataSet.isHorizontalHighlightIndicatorEnabled = this.isHorizontalHighlightIndicatorEnabled
+        lineScatterCandleRadarDataSet.isVerticalHighlightIndicatorEnabled = this.isVerticalHighlightIndicatorEnabled
+        lineScatterCandleRadarDataSet.mHighlightLineWidth = mHighlightLineWidth
+        lineScatterCandleRadarDataSet.dashPathEffectHighlight = this.dashPathEffectHighlight
     }
 }

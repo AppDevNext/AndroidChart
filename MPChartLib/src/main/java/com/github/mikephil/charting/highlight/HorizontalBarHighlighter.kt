@@ -1,85 +1,71 @@
-package com.github.mikephil.charting.highlight;
+package com.github.mikephil.charting.highlight
 
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.utils.MPPointD;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.github.mikephil.charting.data.DataSet.Rounding
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
+import com.github.mikephil.charting.interfaces.datasets.IDataSet
+import com.github.mikephil.charting.utils.MPPointD
+import kotlin.math.abs
 
 /**
  * Created by Philipp Jahoda on 22/07/15.
  */
-public class HorizontalBarHighlighter extends BarHighlighter {
+class HorizontalBarHighlighter(chart: BarDataProvider?) : BarHighlighter(chart) {
+    override fun getHighlight(x: Float, y: Float): Highlight? {
+        val barData = mChart!!.barData
 
-	public HorizontalBarHighlighter(BarDataProvider chart) {
-		super(chart);
-	}
+        val pos = getValsForTouch(y, x)
 
-	@Override
-	public Highlight getHighlight(float x, float y) {
+        val high = getHighlightForX(pos.y.toFloat(), y, x)
+        if (high == null) return null
 
-		BarData barData = mChart.getBarData();
+        val set = barData!!.getDataSetByIndex(high.dataSetIndex)
+        if (set!!.isStacked) {
+            return getStackedHighlight(
+                high,
+                set,
+                pos.y.toFloat(),
+                pos.x.toFloat()
+            )
+        }
 
-		MPPointD pos = getValsForTouch(y, x);
+        MPPointD.Companion.recycleInstance(pos)
 
-		Highlight high = getHighlightForX((float) pos.y, y, x);
-		if (high == null)
-			return null;
+        return high
+    }
 
-		IBarDataSet set = barData.getDataSetByIndex(high.getDataSetIndex());
-		if (set.isStacked()) {
+    override fun buildHighlights(set: IDataSet<*>, dataSetIndex: Int, xVal: Float, rounding: Rounding?): MutableList<Highlight> {
+        val highlights = ArrayList<Highlight>()
 
-			return getStackedHighlight(high,
-					set,
-					(float) pos.y,
-					(float) pos.x);
-		}
+        var entries = set.getEntriesForXValue(xVal)
+        if (entries.isEmpty()) {
+            // Try to find closest x-value and take all entries for that x-value
+            val closest: Entry? = set.getEntryForXValue(xVal, Float.Companion.NaN, rounding)
+            if (closest != null) {
+                entries = set.getEntriesForXValue(closest.x)
+            }
+        }
 
-		MPPointD.recycleInstance(pos);
+        if (entries.isEmpty()) return highlights
 
-		return high;
-	}
+        for (e in entries) {
+            val pixels = mChart!!.getTransformer(
+                set.axisDependency
+            )!!.getPixelForValues(e.y, e.x)
 
-	@Override
-	protected List<Highlight> buildHighlights(IDataSet set, int dataSetIndex, float xVal, DataSet.Rounding rounding) {
+            highlights.add(
+                Highlight(
+                    e.x, e.y,
+                    pixels.x.toFloat(), pixels.y.toFloat(),
+                    dataSetIndex, set.axisDependency
+                )
+            )
+        }
 
-		ArrayList<Highlight> highlights = new ArrayList<>();
+        return highlights
+    }
 
-		//noinspection unchecked
-		List<Entry> entries = set.getEntriesForXValue(xVal);
-		if (entries.size() == 0) {
-			// Try to find closest x-value and take all entries for that x-value
-			final Entry closest = set.getEntryForXValue(xVal, Float.NaN, rounding);
-			if (closest != null)
-			{
-				//noinspection unchecked
-				entries = set.getEntriesForXValue(closest.getX());
-			}
-		}
-
-		if (entries.size() == 0)
-			return highlights;
-
-		for (Entry e : entries) {
-			MPPointD pixels = mChart.getTransformer(
-					set.getAxisDependency()).getPixelForValues(e.getY(), e.getX());
-
-			highlights.add(new Highlight(
-					e.getX(), e.getY(),
-					(float) pixels.x, (float) pixels.y,
-					dataSetIndex, set.getAxisDependency()));
-		}
-
-		return highlights;
-	}
-
-	@Override
-	protected float getDistance(float x1, float y1, float x2, float y2) {
-		return Math.abs(y1 - y2);
-	}
+    override fun getDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+        return abs(y1 - y2)
+    }
 }

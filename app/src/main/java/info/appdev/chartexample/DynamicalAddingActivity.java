@@ -75,11 +75,11 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
         int lastDataSetIndex = data.getDataSetCount() - 1; // add data only to the last
         ILineDataSet lastSet = data.getDataSetByIndex(lastDataSetIndex);
 
-        int cycleValue = (int) (lastSet.getEntryCount() % 100.0);
+        int cycleValue = (int) (lastSet.entryCount % 100.0);
 
         float value = (sampleValues[cycleValue].floatValue() * 50) + 50f * (lastDataSetIndex + 1);
 
-        data.addEntry(new Entry(lastSet.getEntryCount(), value), lastDataSetIndex);
+        data.addEntry(new Entry(lastSet.entryCount, value), lastDataSetIndex);
         data.notifyDataChanged();
 
         // let the chart know it's data has changed
@@ -103,7 +103,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
 
             if (set != null) {
 
-                Entry e = set.getEntryForXValue(set.getEntryCount() - 1, Float.NaN);
+                Entry e = set.getEntryForXValue(set.entryCount - 1, Float.NaN);
 
                 data.removeEntry(e, 0);
                 // or remove by index
@@ -123,7 +123,7 @@ public class DynamicalAddingActivity extends DemoBase implements OnChartValueSel
             chart.setData(new LineData());
         } else {
             int count = (data.getDataSetCount() + 1);
-            int amount = data.getDataSetByIndex(0).getEntryCount();
+            int amount = data.getDataSetByIndex(0).entryCount;
 
             ArrayList<Entry> values = new ArrayList<>();
 

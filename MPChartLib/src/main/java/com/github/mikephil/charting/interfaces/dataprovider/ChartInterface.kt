@@ -1,12 +1,9 @@
-package com.github.mikephil.charting.interfaces.dataprovider;
+package com.github.mikephil.charting.interfaces.dataprovider
 
-import android.graphics.RectF;
-
-import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.utils.MPPointF;
-
-import androidx.annotation.Nullable;
+import android.graphics.RectF
+import com.github.mikephil.charting.data.ChartData
+import com.github.mikephil.charting.formatter.IValueFormatter
+import com.github.mikephil.charting.utils.MPPointF
 
 /**
  * Interface that provides everything there is to know about the dimensions,
@@ -14,49 +11,47 @@ import androidx.annotation.Nullable;
  *
  * @author Philipp Jahoda
  */
-public interface ChartInterface {
-
+interface ChartInterface {
     /**
      * Returns the minimum x value of the chart, regardless of zoom or translation.
      */
-    float getXChartMin();
+    val xChartMin: Float
 
     /**
      * Returns the maximum x value of the chart, regardless of zoom or translation.
      */
-    float getXChartMax();
+    val xChartMax: Float
 
-    float getXRange();
+    val xRange: Float
 
     /**
      * Returns the minimum y value of the chart, regardless of zoom or translation.
      */
-    float getYChartMin();
+    val yChartMin: Float
 
     /**
      * Returns the maximum y value of the chart, regardless of zoom or translation.
      */
-    float getYChartMax();
+    val yChartMax: Float
 
     /**
      * Returns the maximum distance in scren dp a touch can be away from an entry to cause it to get highlighted.
      */
-    float getMaxHighlightDistance();
+    val maxHighlightDistance: Float
 
-    int getWidth();
+    val width: Int
 
-    int getHeight();
+    val height: Int
 
-    MPPointF getCenterOfView();
+    val centerOfView: MPPointF?
 
-    MPPointF getCenterOffsets();
+    val centerOffsets: MPPointF
 
-    RectF getContentRect();
+    val contentRect: RectF?
 
-    IValueFormatter getDefaultValueFormatter();
+    val defaultValueFormatter: IValueFormatter?
 
-    @Nullable
-    ChartData getData();
+    val data: ChartData<*, *>?
 
-    int getMaxVisibleCount();
+    val maxVisibleCount: Int
 }

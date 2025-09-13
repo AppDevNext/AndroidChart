@@ -178,7 +178,7 @@ public class RadarChartActivity extends DemoBase {
             }
             case R.id.actionToggleValues: {
                 for (IDataSet<?> set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
+                    set.setDrawValues(!set.isDrawValuesEnabled);
 
                 chart.invalidate();
                 break;
@@ -201,7 +201,7 @@ public class RadarChartActivity extends DemoBase {
                         .getDataSets();
 
                 for (IRadarDataSet set : sets) {
-					set.setDrawFilled(!set.isDrawFilledEnabled());
+					set.setDrawFilled(!set.isDrawFilledEnabled);
                 }
                 chart.invalidate();
                 break;
@@ -212,7 +212,7 @@ public class RadarChartActivity extends DemoBase {
                         .getDataSets();
 
                 for (IRadarDataSet set : sets) {
-                    set.setDrawHighlightCircleEnabled(!set.isDrawHighlightCircleEnabled());
+                    set.isDrawHighlightCircleEnabled = !set.isDrawHighlightCircleEnabled;
                 }
                 chart.invalidate();
                 break;

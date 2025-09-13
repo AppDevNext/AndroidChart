@@ -1,12 +1,12 @@
+package com.github.mikephil.charting.charts
 
-package com.github.mikephil.charting.charts;
-
-import android.content.Context;
-import android.util.AttributeSet;
-
-import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
-import com.github.mikephil.charting.renderer.BubbleChartRenderer;
+import android.content.Context
+import android.util.AttributeSet
+import com.github.mikephil.charting.data.BubbleData
+import com.github.mikephil.charting.data.BubbleEntry
+import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet
+import com.github.mikephil.charting.renderer.BubbleChartRenderer
 
 /**
  * The BubbleChart. Draws bubbles. Bubble chart implementation: Copyright 2015
@@ -16,33 +16,22 @@ import com.github.mikephil.charting.renderer.BubbleChartRenderer;
  *
  * @author Philipp Jahoda
  */
-public class BubbleChart extends BarLineChartBase<BubbleData> implements BubbleDataProvider {
+class BubbleChart : BarLineChartBase<BubbleEntry, IBubbleDataSet, BubbleData>, BubbleDataProvider {
+    constructor(context: Context) : super(context)
 
-    public BubbleChart(Context context) {
-        super(context);
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+
+    override fun init() {
+        super.init()
+
+        mRenderer = BubbleChartRenderer(this, mAnimator, viewPortHandler)
     }
 
-    public BubbleChart(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+    override val bubbleData: BubbleData?
+        get() = mData
 
-    public BubbleChart(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
-
-    @Override
-    protected void init() {
-        super.init();
-
-        mRenderer = new BubbleChartRenderer(this, mAnimator, mViewPortHandler);
-    }
-
-    public BubbleData getBubbleData() {
-        return mData;
-    }
-
-    @Override
-    public String getAccessibilityDescription() {
-        return "This is bubble chart";
-    }
+    override val accessibilityDescription: String?
+        get() = "This is bubble chart"
 }

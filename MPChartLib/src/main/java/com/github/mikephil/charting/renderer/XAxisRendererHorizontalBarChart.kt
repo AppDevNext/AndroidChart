@@ -117,7 +117,7 @@ open class XAxisRendererHorizontalBarChart(
         MPPointF.recycleInstance(pointF)
     }
 
-    override fun drawLabels(c: Canvas?, pos: Float, anchor: MPPointF?) {
+    override fun drawLabels(c: Canvas?, pos: Float, anchor: MPPointF) {
         val labelRotationAngleDegrees = xAxis.labelRotationAngle
         val centeringEnabled = xAxis.isCenterAxisLabelsEnabled
 
@@ -199,7 +199,7 @@ open class XAxisRendererHorizontalBarChart(
     override fun renderLimitLines(c: Canvas) {
         val limitLines = xAxis.limitLines
 
-        if (limitLines == null || limitLines.size <= 0) return
+        if (limitLines.isEmpty()) return
 
         val pts = mRenderLimitLinesBuffer
         pts[0] = 0f
@@ -218,10 +218,10 @@ open class XAxisRendererHorizontalBarChart(
                 mLimitLineClippingRect.inset(0f, -l.lineWidth)
                 c.clipRect(mLimitLineClippingRect)
 
-                limitLinePaint!!.style = Paint.Style.STROKE
-                limitLinePaint!!.color = l.lineColor
-                limitLinePaint!!.strokeWidth = l.lineWidth
-                limitLinePaint!!.setPathEffect(l.dashPathEffect)
+                limitLinePaint.style = Paint.Style.STROKE
+                limitLinePaint.color = l.lineColor
+                limitLinePaint.strokeWidth = l.lineWidth
+                limitLinePaint.setPathEffect(l.dashPathEffect)
 
                 pts[1] = l.limit
 
@@ -230,7 +230,7 @@ open class XAxisRendererHorizontalBarChart(
                 limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1])
                 limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1])
 
-                c.drawPath(limitLinePath, limitLinePaint!!)
+                c.drawPath(limitLinePath, limitLinePaint)
                 limitLinePath.reset()
 
                 // c.drawLines(pts, mLimitLinePaint);
@@ -238,11 +238,11 @@ open class XAxisRendererHorizontalBarChart(
 
                 // if drawing the limit-value label is enabled
                 if (label != null && label != "") {
-                    limitLinePaint!!.style = l.textStyle
-                    limitLinePaint!!.setPathEffect(null)
-                    limitLinePaint!!.color = l.textColor
-                    limitLinePaint!!.strokeWidth = 0.5f
-                    limitLinePaint!!.textSize = l.textSize
+                    limitLinePaint.style = l.textStyle
+                    limitLinePaint.setPathEffect(null)
+                    limitLinePaint.color = l.textColor
+                    limitLinePaint.strokeWidth = 0.5f
+                    limitLinePaint.textSize = l.textSize
 
                     val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
                     val xOffset = Utils.convertDpToPixel(4f) + l.xOffset
@@ -252,35 +252,35 @@ open class XAxisRendererHorizontalBarChart(
 
                     when (position) {
                         LimitLabelPosition.RIGHT_TOP -> {
-                            limitLinePaint!!.textAlign = Align.RIGHT
+                            limitLinePaint.textAlign = Align.RIGHT
                             c.drawText(
                                 label,
                                 viewPortHandler.contentRight() - xOffset,
-                                pts[1] - yOffset + labelLineHeight, limitLinePaint!!
+                                pts[1] - yOffset + labelLineHeight, limitLinePaint
                             )
                         }
                         LimitLabelPosition.RIGHT_BOTTOM -> {
-                            limitLinePaint!!.textAlign = Align.RIGHT
+                            limitLinePaint.textAlign = Align.RIGHT
                             c.drawText(
                                 label,
                                 viewPortHandler.contentRight() - xOffset,
-                                pts[1] + yOffset, limitLinePaint!!
+                                pts[1] + yOffset, limitLinePaint
                             )
                         }
                         LimitLabelPosition.LEFT_TOP -> {
-                            limitLinePaint!!.textAlign = Align.LEFT
+                            limitLinePaint.textAlign = Align.LEFT
                             c.drawText(
                                 label,
                                 viewPortHandler.contentLeft() + xOffset,
-                                pts[1] - yOffset + labelLineHeight, limitLinePaint!!
+                                pts[1] - yOffset + labelLineHeight, limitLinePaint
                             )
                         }
                         else -> {
-                            limitLinePaint!!.textAlign = Align.LEFT
+                            limitLinePaint.textAlign = Align.LEFT
                             c.drawText(
                                 label,
                                 viewPortHandler.offsetLeft() + xOffset,
-                                pts[1] + yOffset, limitLinePaint!!
+                                pts[1] + yOffset, limitLinePaint
                             )
                         }
                     }

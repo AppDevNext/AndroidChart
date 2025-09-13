@@ -15,8 +15,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 import androidx.core.graphics.withSave
 
 open class RadarChartRenderer(
-    protected var chart: RadarChart, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    protected var chart: RadarChart, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : LineRadarRenderer(animator, viewPortHandler) {
     var webPaint: Paint
         protected set
@@ -31,9 +31,9 @@ open class RadarChartRenderer(
     override fun initBuffers() = Unit
 
     override fun drawData(c: Canvas) {
-        val radarData = chart.data
+        val radarData = chart.data ?: return
 
-        val mostEntries = radarData!!.maxEntryCountSet.entryCount
+        val mostEntries = radarData.maxEntryCountSet?.entryCount ?: return
 
         for (set in radarData.dataSets) {
             if (set.isVisible) {
@@ -219,7 +219,7 @@ open class RadarChartRenderer(
         webPaint.alpha = chart.webAlpha
 
         val xIncrements = 1 + chart.skipWebLineCount
-        val maxEntryCount = chart.data!!.maxEntryCountSet.entryCount
+        val maxEntryCount = chart.data!!.maxEntryCountSet?.entryCount ?: return
 
         val p = MPPointF.getInstance(0f, 0f)
         var i = 0
@@ -298,7 +298,7 @@ open class RadarChartRenderer(
         for (high in indices) {
             val set = radarData!!.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled) continue
+            if (!set.isHighlightEnabled) continue
 
             val e = set.getEntryForIndex(high.x.toInt())
 

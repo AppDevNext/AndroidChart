@@ -17,7 +17,7 @@ import com.github.mikephil.charting.utils.Utils
  * This is the base dataset of all DataSets. It's purpose is to implement critical methods
  * provided by the IDataSet interface.
  */
-abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
+abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     /**
      * List representing all colors that are used for this DataSet
      */
@@ -29,60 +29,9 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
     protected var mValueColors: MutableList<Int>
 
     /**
-     * label that describes the DataSet or the data the DataSet represents
-     */
-    private var mLabel = "DataSet"
-
-    /**
      * this specifies which axis this DataSet should be plotted against
      */
     protected var mAxisDependency: AxisDependency = AxisDependency.LEFT
-
-    /**
-     * if true, value highlightning is enabled
-     */
-    protected var mHighlightEnabled: Boolean = true
-
-    /**
-     * custom formatter that is used instead of the auto-formatter if set
-     */
-    @Transient
-    protected var mValueFormatter: IValueFormatter? = null
-
-    /**
-     * the typeface used for the value text
-     */
-    protected var mValueTypeface: Typeface? = null
-
-    private var mForm = LegendForm.DEFAULT
-    private var mFormSize = Float.NaN
-    private var mFormLineWidth = Float.NaN
-    private var mFormLineDashEffect: DashPathEffect? = null
-
-    /**
-     * if true, y-values are drawn on the chart
-     */
-    protected var mDrawValues: Boolean = true
-
-    /**
-     * if true, y-icons are drawn on the chart
-     */
-    protected var mDrawIcons: Boolean = true
-
-    /**
-     * the offset for drawing icons (in dp)
-     */
-    protected var mIconsOffset: MPPointF = MPPointF()
-
-    /**
-     * the size of the value-text labels
-     */
-    protected var mValueTextSize: Float = 17f
-
-    /**
-     * flag that indicates if the DataSet is visible or not
-     */
-    protected var mVisible: Boolean = true
 
     /**
      * Default constructor.
@@ -102,7 +51,7 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
      * @param label
      */
     constructor(label: String) : this() {
-        this.mLabel = label
+        this.label = label
     }
 
     /**
@@ -112,16 +61,14 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
         calcMinMax()
     }
 
-    override fun getColors(): List<Int> {
-        return mColors
-    }
+    override val colors: MutableList<Int>
+        get() = mColors
 
     val valueColors: List<Int>
         get() = mValueColors
 
-    override fun getColor(): Int {
-        return mColors[0]
-    }
+    override val color: Int
+        get() = mColors[0]
 
     override fun getColor(index: Int): Int {
         return mColors[index % mColors.size]
@@ -227,142 +174,52 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
     /**
      * ###### ###### OTHER STYLING RELATED METHODS ##### ######
      */
-    override fun setLabel(label: String) {
-        mLabel = label
-    }
+    override var label: String = "DataSet"
 
-    override fun getLabel(): String {
-        return mLabel
-    }
+    override var isHighlightEnabled: Boolean = true
 
-    override fun setHighlightEnabled(enabled: Boolean) {
-        mHighlightEnabled = enabled
-    }
+    @Transient
+    override var valueFormatter: IValueFormatter = Utils.defaultValueFormatter
 
-    override fun isHighlightEnabled(): Boolean {
-        return mHighlightEnabled
-    }
-
-    override fun setValueFormatter(f: IValueFormatter?) {
-        if (f == null) return
-        else mValueFormatter = f
-    }
-
-    override fun getValueFormatter(): IValueFormatter {
-        if (needsFormatter()) return Utils.getDefaultValueFormatter()
-        return mValueFormatter!!
-    }
-
-    override fun needsFormatter(): Boolean {
-        return mValueFormatter == null
-    }
-
-    override fun setValueTextColor(color: Int) {
-        mValueColors.clear()
-        mValueColors.add(color)
-    }
+    override var valueTextColor: Int
+        get() = mValueColors[0]
+        set(value) {
+            mValueColors.clear()
+            mValueColors.add(value)
+        }
 
     override fun setValueTextColors(colors: MutableList<Int>) {
         mValueColors = colors
     }
 
-    override fun setValueTypeface(tf: Typeface?) {
-        mValueTypeface = tf
-    }
+    override var valueTypeface: Typeface? = null
 
-    override fun setValueTextSize(size: Float) {
-        mValueTextSize = Utils.convertDpToPixel(size)
-    }
-
-    override fun getValueTextColor(): Int {
-        return mValueColors[0]
-    }
+    override var valueTextSize: Float = 17f
+        set(value) {
+            field = Utils.convertDpToPixel(value)
+        }
 
     override fun getValueTextColor(index: Int): Int {
         return mValueColors[index % mValueColors.size]
     }
 
-    override fun getValueTypeface(): Typeface? {
-        return mValueTypeface
-    }
+    override var form: LegendForm? = LegendForm.DEFAULT
 
-    override fun getValueTextSize(): Float {
-        return mValueTextSize
-    }
+    override var formSize: Float = Float.NaN
 
-    fun setForm(form: LegendForm) {
-        mForm = form
-    }
+    override var formLineWidth: Float = Float.NaN
 
-    override fun getForm(): LegendForm {
-        return mForm
-    }
+    override var formLineDashEffect: DashPathEffect? = null
 
-    fun setFormSize(formSize: Float) {
-        mFormSize = formSize
-    }
+    override var isDrawValuesEnabled: Boolean = true
 
-    override fun getFormSize(): Float {
-        return mFormSize
-    }
+    override var isDrawIconsEnabled: Boolean = true
 
-    fun setFormLineWidth(formLineWidth: Float) {
-        mFormLineWidth = formLineWidth
-    }
+    override var iconsOffset: MPPointF = MPPointF()
 
-    override fun getFormLineWidth(): Float {
-        return mFormLineWidth
-    }
+    override var isVisible: Boolean = true
 
-    fun setFormLineDashEffect(dashPathEffect: DashPathEffect?) {
-        mFormLineDashEffect = dashPathEffect
-    }
-
-    override fun getFormLineDashEffect(): DashPathEffect? {
-        return mFormLineDashEffect
-    }
-
-    override fun setDrawValues(enabled: Boolean) {
-        this.mDrawValues = enabled
-    }
-
-    override fun isDrawValuesEnabled(): Boolean {
-        return mDrawValues
-    }
-
-    override fun setDrawIcons(enabled: Boolean) {
-        mDrawIcons = enabled
-    }
-
-    override fun isDrawIconsEnabled(): Boolean {
-        return mDrawIcons
-    }
-
-    override fun setIconsOffset(offsetDp: MPPointF) {
-        mIconsOffset.x = offsetDp.x
-        mIconsOffset.y = offsetDp.y
-    }
-
-    override fun getIconsOffset(): MPPointF {
-        return mIconsOffset
-    }
-
-    override fun setVisible(visible: Boolean) {
-        mVisible = visible
-    }
-
-    override fun isVisible(): Boolean {
-        return mVisible
-    }
-
-    override fun getAxisDependency(): AxisDependency {
-        return mAxisDependency
-    }
-
-    override fun setAxisDependency(dependency: AxisDependency) {
-        mAxisDependency = dependency
-    }
-
+    override var axisDependency: AxisDependency? = AxisDependency.LEFT
 
     /**
      * ###### ###### DATA RELATED METHODS ###### ######
@@ -399,9 +256,9 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
         return removeEntry(e)
     }
 
-    override fun contains(e: T): Boolean {
+    override fun contains(entry: T?): Boolean {
         for (i in 0..<entryCount) {
-            if (getEntryForIndex(i) == e) return true
+            if (getEntryForIndex(i) == entry) return true
         }
 
         return false
@@ -410,17 +267,17 @@ abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
     protected fun copy(baseDataSet: BaseDataSet<*>) {
         baseDataSet.mAxisDependency = mAxisDependency
         baseDataSet.mColors = mColors
-        baseDataSet.mDrawIcons = mDrawIcons
-        baseDataSet.mDrawValues = mDrawValues
-        baseDataSet.mForm = mForm
-        baseDataSet.mFormLineDashEffect = mFormLineDashEffect
-        baseDataSet.mFormLineWidth = mFormLineWidth
-        baseDataSet.mFormSize = mFormSize
-        baseDataSet.mHighlightEnabled = mHighlightEnabled
-        baseDataSet.mIconsOffset = mIconsOffset
+        baseDataSet.isDrawIconsEnabled = isDrawIconsEnabled
+        baseDataSet.isDrawValuesEnabled = isDrawValuesEnabled
+        baseDataSet.form = form
+        baseDataSet.formLineDashEffect = formLineDashEffect
+        baseDataSet.formLineWidth = formLineWidth
+        baseDataSet.formSize = formSize
+        baseDataSet.isHighlightEnabled = isHighlightEnabled
+        baseDataSet.iconsOffset = iconsOffset
         baseDataSet.mValueColors = mValueColors
-        baseDataSet.mValueFormatter = mValueFormatter
-        baseDataSet.mValueTextSize = mValueTextSize
-        baseDataSet.mVisible = mVisible
+        baseDataSet.valueFormatter = valueFormatter
+        baseDataSet.valueTextSize = valueTextSize
+        baseDataSet.isVisible = isVisible
     }
 }

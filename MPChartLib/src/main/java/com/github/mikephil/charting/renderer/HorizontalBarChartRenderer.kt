@@ -22,15 +22,15 @@ import kotlin.math.min
  */
 @Suppress("MemberVisibilityCanBePrivate")
 open class HorizontalBarChartRenderer(
-    chart: BarDataProvider, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    chart: BarDataProvider, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : BarChartRenderer(chart, animator, viewPortHandler) {
     override fun initBuffers() {
-        val barData = chart.barData
+        val barData = chart.barData ?: return
         barBuffers = arrayOfNulls<HorizontalBarBuffer>(barData.dataSetCount).toMutableList()
 
         for (i in barBuffers.indices) {
-            val set = barData.getDataSetByIndex(i)
+            val set = barData.getDataSetByIndex(i) ?: continue
             barBuffers[i] = HorizontalBarBuffer(
                 set.entryCount * 4 * (if (set.isStacked) set.stackSize else 1),
                 barData.dataSetCount, set.isStacked
@@ -55,11 +55,11 @@ open class HorizontalBarChartRenderer(
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
 
+        val barData = chart.barData ?: return
+
         // draw the bar shadow before the values
         if (chart.isDrawBarShadowEnabled) {
             shadowPaint.color = dataSet.barShadowColor
-
-            val barData = chart.barData
 
             val barWidth = barData.barWidth
             val barWidthHalf = barWidth / 2.0f
@@ -67,9 +67,8 @@ open class HorizontalBarChartRenderer(
 
             var i = 0
             val count = min((ceil(((dataSet.entryCount).toFloat() * phaseX).toDouble())).toInt().toDouble(), dataSet.entryCount.toDouble()).toInt()
-            while (i < count
-            ) {
-                val e = dataSet.getEntryForIndex(i)
+            while (i < count) {
+                val e = dataSet.getEntryForIndex(i) ?: continue
 
                 x = e.x
 
@@ -100,13 +99,13 @@ open class HorizontalBarChartRenderer(
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
         buffer.setInverted(chart.isInverted(dataSet.axisDependency))
-        buffer.setBarWidth(chart.barData.barWidth)
+        buffer.setBarWidth(barData.barWidth)
 
         buffer.feed(dataSet)
 
         trans!!.pointValuesToPixel(buffer.buffer)
 
-        val isCustomFill = dataSet.fills != null && dataSet.fills.isNotEmpty()
+        val isCustomFill = dataSet.fills != null && !dataSet.fills.isNullOrEmpty()
         val isSingleColor = dataSet.colors.size == 1
         val isInverted = chart.isInverted(dataSet.axisDependency)
 
@@ -134,8 +133,7 @@ open class HorizontalBarChartRenderer(
             }
 
             if (isCustomFill) {
-                dataSet.getFill(pos)
-                    .fillRect(
+                dataSet.getFill(pos)?.fillRect(
                         c, paintRender,
                         buffer.buffer[j],
                         buffer.buffer[j + 1],
@@ -165,14 +163,15 @@ open class HorizontalBarChartRenderer(
     override fun drawValues(c: Canvas) {
         // if values are drawn
         if (isDrawingValuesAllowed(chart)) {
-            val dataSets = chart.barData.dataSets
+            val barData = chart.barData ?: return
+            val dataSets = barData.dataSets
 
             val valueOffsetPlus = Utils.convertDpToPixel(5f)
             var posOffset: Float
             var negOffset: Float
             val drawValueAboveBar = chart.isDrawValueAboveBarEnabled
 
-            for (i in 0..<chart.barData.dataSetCount) {
+            for (i in 0..<barData.dataSetCount) {
                 val dataSet = dataSets[i]
                 if (dataSet.entryCount == 0) {
                     continue
@@ -218,7 +217,7 @@ open class HorizontalBarChartRenderer(
                             continue
                         }
 
-                        val entry = dataSet.getEntryForIndex(j / 4)
+                        val entry = dataSet.getEntryForIndex(j / 4) ?: continue
                         val `val` = entry.y
                         val formattedValue = formatter.getFormattedValue(`val`, entry, i, viewPortHandler)
 
@@ -272,7 +271,7 @@ open class HorizontalBarChartRenderer(
                     var index = 0
 
                     while (index < dataSet.entryCount * animator.phaseX) {
-                        val entry = dataSet.getEntryForIndex(index)
+                        val entry = dataSet.getEntryForIndex(index) ?: continue
 
                         val color = dataSet.getValueTextColor(index)
                         val vals = entry.yVals

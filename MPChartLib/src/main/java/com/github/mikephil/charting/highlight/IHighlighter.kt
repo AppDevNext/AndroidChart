@@ -1,11 +1,9 @@
-package com.github.mikephil.charting.highlight;
+package com.github.mikephil.charting.highlight
 
 /**
  * Created by philipp on 10/06/16.
  */
-public interface IHighlighter
-{
-
+interface IHighlighter {
     /**
      * Returns a Highlight object corresponding to the given x- and y- touch positions in pixels.
      *
@@ -13,5 +11,5 @@ public interface IHighlighter
      * @param y
      * @return
      */
-    Highlight getHighlight(float x, float y);
+    fun getHighlight(x: Float, y: Float): Highlight?
 }

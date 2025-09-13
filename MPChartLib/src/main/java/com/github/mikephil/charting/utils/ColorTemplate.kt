@@ -1,11 +1,7 @@
+package com.github.mikephil.charting.utils
 
-package com.github.mikephil.charting.utils;
-
-import android.content.res.Resources;
-import android.graphics.Color;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.content.res.Resources
+import android.graphics.Color
 
 /**
  * Class that holds predefined color integer arrays (e.g.
@@ -14,46 +10,51 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public class ColorTemplate {
-
+object ColorTemplate {
     /**
      * an "invalid" color that indicates that no color is set
      */
-    public static final int COLOR_NONE = 0x00112233;
+    const val COLOR_NONE: Int = 0x00112233
 
     /**
      * this "color" is used for the Legend creation and indicates that the next
      * form should be skipped
      */
-    public static final int COLOR_SKIP = 0x00112234;
+    const val COLOR_SKIP: Int = 0x00112234
 
     /**
      * THE COLOR THEMES ARE PREDEFINED (predefined color integer arrays), FEEL
      * FREE TO CREATE YOUR OWN WITH AS MANY DIFFERENT COLORS AS YOU WANT
      */
-    public static final int[] LIBERTY_COLORS = {
-            Color.rgb(207, 248, 246), Color.rgb(148, 212, 212), Color.rgb(136, 180, 187),
-            Color.rgb(118, 174, 175), Color.rgb(42, 109, 130)
-    };
-    public static final int[] JOYFUL_COLORS = {
-            Color.rgb(217, 80, 138), Color.rgb(254, 149, 7), Color.rgb(254, 247, 120),
-            Color.rgb(106, 167, 134), Color.rgb(53, 194, 209)
-    };
-    public static final int[] PASTEL_COLORS = {
-            Color.rgb(64, 89, 128), Color.rgb(149, 165, 124), Color.rgb(217, 184, 162),
-            Color.rgb(191, 134, 134), Color.rgb(179, 48, 80)
-    };
-    public static final int[] COLORFUL_COLORS = {
-            Color.rgb(193, 37, 82), Color.rgb(255, 102, 0), Color.rgb(245, 199, 0),
-            Color.rgb(106, 150, 31), Color.rgb(179, 100, 53)
-    };
-    public static final int[] VORDIPLOM_COLORS = {
-            Color.rgb(192, 255, 140), Color.rgb(255, 247, 140), Color.rgb(255, 208, 140),
-            Color.rgb(140, 234, 255), Color.rgb(255, 140, 157)
-    };
-    public static final int[] MATERIAL_COLORS = {
-            rgb("#2ecc71"), rgb("#f1c40f"), rgb("#e74c3c"), rgb("#3498db")
-    };
+    @JvmField
+    val LIBERTY_COLORS: IntArray = intArrayOf(
+        Color.rgb(207, 248, 246), Color.rgb(148, 212, 212), Color.rgb(136, 180, 187),
+        Color.rgb(118, 174, 175), Color.rgb(42, 109, 130)
+    )
+    @JvmField
+    val JOYFUL_COLORS: IntArray = intArrayOf(
+        Color.rgb(217, 80, 138), Color.rgb(254, 149, 7), Color.rgb(254, 247, 120),
+        Color.rgb(106, 167, 134), Color.rgb(53, 194, 209)
+    )
+    @JvmField
+    val PASTEL_COLORS: IntArray = intArrayOf(
+        Color.rgb(64, 89, 128), Color.rgb(149, 165, 124), Color.rgb(217, 184, 162),
+        Color.rgb(191, 134, 134), Color.rgb(179, 48, 80)
+    )
+    @JvmField
+    val COLORFUL_COLORS: IntArray = intArrayOf(
+        Color.rgb(193, 37, 82), Color.rgb(255, 102, 0), Color.rgb(245, 199, 0),
+        Color.rgb(106, 150, 31), Color.rgb(179, 100, 53)
+    )
+    @JvmField
+    val VORDIPLOM_COLORS: IntArray = intArrayOf(
+        Color.rgb(192, 255, 140), Color.rgb(255, 247, 140), Color.rgb(255, 208, 140),
+        Color.rgb(140, 234, 255), Color.rgb(255, 140, 157)
+    )
+    @JvmField
+    val MATERIAL_COLORS: IntArray = intArrayOf(
+        rgb("#2ecc71"), rgb("#f1c40f"), rgb("#e74c3c"), rgb("#3498db")
+    )
 
     /**
      * Converts the given hex-color-string to rgb.
@@ -61,22 +62,22 @@ public class ColorTemplate {
      * @param hex
      * @return
      */
-    public static int rgb(String hex) {
-        int color = (int) Long.parseLong(hex.replace("#", ""), 16);
-        int r = (color >> 16) & 0xFF;
-        int g = (color >> 8) & 0xFF;
-        int b = (color >> 0) & 0xFF;
-        return Color.rgb(r, g, b);
+    fun rgb(hex: String): Int {
+        val color = hex.replace("#", "").toLong(16).toInt()
+        val r = (color shr 16) and 0xFF
+        val g = (color shr 8) and 0xFF
+        val b = (color shr 0) and 0xFF
+        return Color.rgb(r, g, b)
     }
 
-    /**
-     * Returns the Android ICS holo blue light color.
-     *
-     * @return
-     */
-    public static int getHoloBlue() {
-        return Color.rgb(51, 181, 229);
-    }
+    @JvmStatic
+    val holoBlue: Int
+        /**
+         * Returns the Android ICS holo blue light color.
+         *
+         * @return
+         */
+        get() = Color.rgb(51, 181, 229)
 
     /**
      * Sets the alpha component of the given color.
@@ -85,8 +86,9 @@ public class ColorTemplate {
      * @param alpha 0 - 255
      * @return
      */
-    public static int colorWithAlpha(int color, int alpha) {
-        return (color & 0xffffff) | ((alpha & 0xff) << 24);
+    @JvmStatic
+    fun colorWithAlpha(color: Int, alpha: Int): Int {
+        return (color and 0xffffff) or ((alpha and 0xff) shl 24)
     }
 
     /**
@@ -97,15 +99,14 @@ public class ColorTemplate {
      * @param colors an integer array of resource id's of colors
      * @return
      */
-    public static List<Integer> createColors(Resources r, int[] colors) {
+    fun createColors(r: Resources, colors: IntArray): MutableList<Int?> {
+        val result: MutableList<Int?> = ArrayList<Int?>()
 
-        List<Integer> result = new ArrayList<Integer>();
-
-        for (int i : colors) {
-            result.add(r.getColor(i));
+        for (i in colors) {
+            result.add(r.getColor(i))
         }
 
-        return result;
+        return result
     }
 
     /**
@@ -115,14 +116,13 @@ public class ColorTemplate {
      * @param colors
      * @return
      */
-    public static List<Integer> createColors(int[] colors) {
+    fun createColors(colors: IntArray): MutableList<Int> {
+        val result: MutableList<Int> = ArrayList()
 
-        List<Integer> result = new ArrayList<Integer>();
-
-        for (int i : colors) {
-            result.add(i);
+        for (i in colors) {
+            result.add(i)
         }
 
-        return result;
+        return result
     }
 }

@@ -19,7 +19,7 @@ public class CustomScatterShapeRenderer implements IShapeRenderer
     public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler,
                             float posX, float posY, Paint renderPaint) {
 
-        final float shapeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeSize()) / 2f;
+        final float shapeHalf = Utils.convertDpToPixel(dataSet.scatterShapeSize) / 2f;
 
         c.drawLine(
                 posX - shapeHalf,

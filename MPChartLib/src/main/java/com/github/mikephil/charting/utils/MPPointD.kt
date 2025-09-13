@@ -1,53 +1,44 @@
+package com.github.mikephil.charting.utils
 
-package com.github.mikephil.charting.utils;
-
-import java.util.List;
+import com.github.mikephil.charting.utils.ObjectPool.Poolable
 
 /**
  * Point encapsulating two double values.
  *
  * @author Philipp Jahoda
  */
-public class MPPointD extends ObjectPool.Poolable {
-
-    private static ObjectPool<MPPointD> pool;
-
-    static {
-        pool = ObjectPool.create(64, new MPPointD(0,0));
-        pool.setReplenishPercentage(0.5f);
-    }
-
-    public static MPPointD getInstance(double x, double y){
-        MPPointD result = pool.get();
-        result.x = x;
-        result.y = y;
-        return result;
-    }
-
-    public static void recycleInstance(MPPointD instance){
-        pool.recycle(instance);
-    }
-
-    public static void recycleInstances(List<MPPointD> instances){
-        pool.recycle(instances);
-    }
-
-    public double x;
-    public double y;
-
-    protected ObjectPool.Poolable instantiate(){
-        return new MPPointD(0,0);
-    }
-
-    private MPPointD(double x, double y) {
-        this.x = x;
-        this.y = y;
+class MPPointD private constructor(var x: Double, var y: Double) : Poolable<MPPointD>() {
+    override fun instantiate(): MPPointD {
+        return MPPointD(0.0, 0.0)
     }
 
     /**
      * returns a string representation of the object
      */
-    public String toString() {
-        return "MPPointD, x: " + x + ", y: " + y;
+    override fun toString(): String {
+        return "MPPointD, x: $x, y: $y"
+    }
+
+    companion object {
+        private val pool: ObjectPool<MPPointD> = ObjectPool.Companion.create(64, MPPointD(0.0, 0.0))
+
+        init {
+            pool.setReplenishPercentage(0.5f)
+        }
+
+        fun getInstance(x: Double, y: Double): MPPointD {
+            val result: MPPointD = pool.get()
+            result.x = x
+            result.y = y
+            return result
+        }
+
+        fun recycleInstance(instance: MPPointD) {
+            pool.recycle(instance)
+        }
+
+        fun recycleInstances(instances: MutableList<MPPointD?>) {
+            pool.recycle(instances)
+        }
     }
 }

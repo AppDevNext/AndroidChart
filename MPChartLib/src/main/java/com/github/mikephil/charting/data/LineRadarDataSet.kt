@@ -1,57 +1,44 @@
+package com.github.mikephil.charting.data
 
-package com.github.mikephil.charting.data;
-
-import android.annotation.TargetApi;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-
-import com.github.mikephil.charting.interfaces.datasets.ILineRadarDataSet;
-import com.github.mikephil.charting.utils.Utils;
-
-import java.util.List;
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import com.github.mikephil.charting.interfaces.datasets.ILineRadarDataSet
+import com.github.mikephil.charting.utils.Utils
 
 /**
  * Base dataset for line and radar DataSets.
  *
  * @author Philipp Jahoda
  */
-public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandleRadarDataSet<T> implements ILineRadarDataSet<T> {
-
+abstract class LineRadarDataSet<T : Entry>(yVals: MutableList<T>, label: String) : LineScatterCandleRadarDataSet<T>(yVals, label), ILineRadarDataSet<T> {
     // TODO: Move to using `Fill` class
     /**
      * the color that is used for filling the line surface
      */
-    private int mFillColor = Color.rgb(140, 234, 255);
+    private var mFillColor = Color.rgb(140, 234, 255)
 
     /**
      * the drawable to be used for filling the line surface
      */
-    protected Drawable mFillDrawable;
+    protected var mFillDrawable: Drawable? = null
 
     /**
      * transparency used for filling line surface
      */
-    private int mFillAlpha = 85;
+    private var mFillAlpha = 85
 
     /**
      * the width of the drawn data lines
      */
-    private float mLineWidth = 2.5f;
+    private var mLineWidth = 2.5f
 
     /**
      * if true, the data will also be drawn filled
      */
-    private boolean mDrawFilled = false;
+    private var mDrawFilled = false
 
-
-    public LineRadarDataSet(List<T> yVals, String label) {
-        super(yVals, label);
-    }
-
-    @Override
-    public int getFillColor() {
-        return mFillColor;
-    }
+    override val fillColor: Int
+        get() = mFillColor
 
     /**
      * Sets the color that is used for filling the area below the line.
@@ -59,30 +46,25 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
      *
      * @param color
      */
-    public void setFillColor(int color) {
-        mFillColor = color;
-        mFillDrawable = null;
+    fun setFillColor(color: Int) {
+        mFillColor = color
+        mFillDrawable = null
     }
 
-    @Override
-    public Drawable getFillDrawable() {
-        return mFillDrawable;
-    }
+    override val fillDrawable: Drawable?
+        get() = mFillDrawable
 
     /**
      * Sets the drawable to be used to fill the area below the line.
      *
      * @param drawable
      */
-    @TargetApi(18)
-    public void setFillDrawable(Drawable drawable) {
-        this.mFillDrawable = drawable;
+    fun setFillDrawable(drawable: Drawable?) {
+        this.mFillDrawable = drawable
     }
 
-    @Override
-    public int getFillAlpha() {
-        return mFillAlpha;
-    }
+    override val fillAlpha: Int
+        get() = mFillAlpha
 
     /**
      * sets the alpha value (transparency) that is used for filling the line
@@ -90,8 +72,8 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
      *
      * @param alpha
      */
-    public void setFillAlpha(int alpha) {
-        mFillAlpha = alpha;
+    fun setFillAlpha(alpha: Int) {
+        mFillAlpha = alpha
     }
 
     /**
@@ -100,36 +82,29 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
      *
      * @param width
      */
-    public void setLineWidth(float width) {
-
-        if (width < 0.0f)
-            width = 0.0f;
-        if (width > 10.0f)
-            width = 10.0f;
-        mLineWidth = Utils.convertDpToPixel(width);
+    fun setLineWidth(width: Float) {
+        var width = width
+        if (width < 0.0f) width = 0.0f
+        if (width > 10.0f) width = 10.0f
+        mLineWidth = Utils.convertDpToPixel(width)
     }
 
-    @Override
-    public float getLineWidth() {
-        return mLineWidth;
+    override val lineWidth: Float
+        get() = mLineWidth
+
+    override fun setDrawFilled(enabled: Boolean) {
+        mDrawFilled = enabled
     }
 
-    @Override
-    public void setDrawFilled(boolean filled) {
-        mDrawFilled = filled;
-    }
+    override val isDrawFilledEnabled: Boolean
+        get() = mDrawFilled
 
-    @Override
-    public boolean isDrawFilledEnabled() {
-        return mDrawFilled;
-    }
-
-    protected void copy(LineRadarDataSet lineRadarDataSet) {
-        super.copy((BaseDataSet<?>) lineRadarDataSet);
-        lineRadarDataSet.mDrawFilled = mDrawFilled;
-        lineRadarDataSet.mFillAlpha = mFillAlpha;
-        lineRadarDataSet.mFillColor = mFillColor;
-        lineRadarDataSet.mFillDrawable = mFillDrawable;
-        lineRadarDataSet.mLineWidth = mLineWidth;
+    protected fun copy(lineRadarDataSet: LineRadarDataSet<*>) {
+        super.copy((lineRadarDataSet as BaseDataSet<*>?)!!)
+        lineRadarDataSet.mDrawFilled = mDrawFilled
+        lineRadarDataSet.mFillAlpha = mFillAlpha
+        lineRadarDataSet.mFillColor = mFillColor
+        lineRadarDataSet.mFillDrawable = mFillDrawable
+        lineRadarDataSet.mLineWidth = mLineWidth
     }
 }

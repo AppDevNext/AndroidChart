@@ -141,7 +141,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
             case R.id.actionToggleValues: {
 
                 for (IDataSet set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
+                    set.setDrawValues(!set.isDrawValuesEnabled);
 
                 chart.invalidate();
                 break;
@@ -173,7 +173,7 @@ public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListe
             }
             case R.id.actionToggleBarBorders: {
                 for (IBarDataSet set : chart.getData().getDataSets())
-                    ((BarDataSet)set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+                    ((BarDataSet)set).setBarBorderWidth(set.barBorderWidth == 1.f ? 0.f : 1.f);
 
                 chart.invalidate();
                 break;

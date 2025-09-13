@@ -1,71 +1,46 @@
+package com.github.mikephil.charting.data
 
-package com.github.mikephil.charting.data;
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet
+import com.github.mikephil.charting.utils.Utils
 
-import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
-import com.github.mikephil.charting.utils.Utils;
+open class BubbleDataSet(yVals: MutableList<BubbleEntry>, label: String) : BarLineScatterCandleBubbleDataSet<BubbleEntry>(yVals, label), IBubbleDataSet {
+    protected var mMaxSize: Float = 0f
+    protected var mNormalizeSize: Boolean = true
 
-import java.util.ArrayList;
-import java.util.List;
+    override var highlightCircleWidth: Float = 2.5f
 
-public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry> implements IBubbleDataSet {
+    override fun calcMinMax(e: BubbleEntry) {
+        super.calcMinMax(e)
 
-    protected float mMaxSize;
-    protected boolean mNormalizeSize = true;
-
-    private float mHighlightCircleWidth = 2.5f;
-
-    public BubbleDataSet(List<BubbleEntry> yVals, String label) {
-        super(yVals, label);
-    }
-
-    @Override
-    public void setHighlightCircleWidth(float width) {
-        mHighlightCircleWidth = Utils.convertDpToPixel(width);
-    }
-
-    @Override
-    public float getHighlightCircleWidth() {
-        return mHighlightCircleWidth;
-    }
-
-    @Override
-    protected void calcMinMax(BubbleEntry e) {
-        super.calcMinMax(e);
-
-        final float size = e.getSize();
+        val size = e.size
 
         if (size > mMaxSize) {
-            mMaxSize = size;
+            mMaxSize = size
         }
     }
 
-    @Override
-    public DataSet<BubbleEntry> copy() {
-        List<BubbleEntry> entries = new ArrayList<BubbleEntry>();
-        for (int i = 0; i < mEntries.size(); i++) {
-            entries.add(mEntries.get(i).copy());
+    override fun copy(): DataSet<BubbleEntry> {
+        val entries: MutableList<BubbleEntry> = ArrayList()
+        for (i in mEntries.indices) {
+            entries.add(mEntries[i].copy())
         }
-        BubbleDataSet copied = new BubbleDataSet(entries, getLabel());
-        copy(copied);
-        return copied;
+        val copied = BubbleDataSet(entries, label)
+        copy(copied)
+        return copied
     }
 
-    protected void copy(BubbleDataSet bubbleDataSet) {
-        bubbleDataSet.mHighlightCircleWidth = mHighlightCircleWidth;
-        bubbleDataSet.mNormalizeSize = mNormalizeSize;
+    protected fun copy(bubbleDataSet: BubbleDataSet) {
+        bubbleDataSet.highlightCircleWidth = highlightCircleWidth
+        bubbleDataSet.mNormalizeSize = mNormalizeSize
     }
 
-    @Override
-    public float getMaxSize() {
-        return mMaxSize;
-    }
+    override val maxSize: Float
+        get() = mMaxSize
 
-    @Override
-    public boolean isNormalizeSizeEnabled() {
-        return mNormalizeSize;
-    }
+    override val isNormalizeSizeEnabled: Boolean
+        get() = mNormalizeSize
 
-    public void setNormalizeSizeEnabled(boolean normalizeSize) {
-        mNormalizeSize = normalizeSize;
+    fun setNormalizeSizeEnabled(normalizeSize: Boolean) {
+        mNormalizeSize = normalizeSize
     }
 }

@@ -218,14 +218,14 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             }
             case R.id.actionToggleValues: {
                 for (IDataSet set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled());
+                    set.setDrawValues(!set.isDrawValuesEnabled);
 
                 chart.invalidate();
                 break;
             }
             case R.id.actionToggleIcons: {
                 for (IDataSet set : chart.getData().getDataSets())
-                    set.setDrawIcons(!set.isDrawIconsEnabled());
+                    set.setDrawIcons(!set.isDrawIconsEnabled);
 
                 chart.invalidate();
                 break;
@@ -253,7 +253,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             }
             case R.id.actionToggleBarBorders: {
                 for (IBarDataSet set : chart.getData().getDataSets())
-                    ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
+                    ((BarDataSet) set).setBarBorderWidth(set.barBorderWidth == 1.f ? 0.f : 1.f);
 
                 chart.invalidate();
                 break;

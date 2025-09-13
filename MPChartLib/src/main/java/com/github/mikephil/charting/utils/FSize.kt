@@ -1,79 +1,77 @@
+package com.github.mikephil.charting.utils
 
-package com.github.mikephil.charting.utils;
-
-import java.util.List;
+import com.github.mikephil.charting.utils.ObjectPool.Poolable
+import kotlin.Any
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.String
 
 /**
  * Class for describing width and height dimensions in some arbitrary
  * unit. Replacement for the android.Util.SizeF which is available only on API >= 21.
  */
-public final class FSize extends ObjectPool.Poolable{
-
+open class FSize : Poolable<FSize> {
     // TODO : Encapsulate width & height
+    var width: Float = 0f
+    var height: Float = 0f
 
-    public float width;
-    public float height;
-
-    private static ObjectPool<FSize> pool;
-
-    static {
-        pool = ObjectPool.create(256, new FSize(0,0));
-        pool.setReplenishPercentage(0.5f);
+    override fun instantiate(): FSize {
+        return FSize(0f, 0f)
     }
 
+    constructor()
 
-    protected ObjectPool.Poolable instantiate(){
-        return new FSize(0,0);
+    constructor(width: Float, height: Float) {
+        this.width = width
+        this.height = height
     }
 
-    public static FSize getInstance(final float width, final float height){
-        FSize result = pool.get();
-        result.width = width;
-        result.height = height;
-        return result;
-    }
-
-    public static void recycleInstance(FSize instance){
-        pool.recycle(instance);
-    }
-
-    public static void recycleInstances(List<FSize> instances){
-        pool.recycle(instances);
-    }
-
-    public FSize() {
-    }
-
-    public FSize(final float width, final float height) {
-        this.width = width;
-        this.height = height;
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
+    override fun equals(obj: Any?): Boolean {
         if (obj == null) {
-            return false;
+            return false
         }
-        if (this == obj) {
-            return true;
+        if (this === obj) {
+            return true
         }
-        if (obj instanceof FSize) {
-            final FSize other = (FSize) obj;
-            return width == other.width && height == other.height;
+        if (obj is FSize) {
+            val other = obj
+            return width == other.width && height == other.height
         }
-        return false;
+        return false
     }
 
-    @Override
-    public String toString() {
-        return width + "x" + height;
+    override fun toString(): String {
+        return width.toString() + "x" + height
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public int hashCode() {
-        return Float.floatToIntBits(width) ^ Float.floatToIntBits(height);
+    override fun hashCode(): Int {
+        return width.toBits() xor height.toBits()
+    }
+
+    companion object {
+        private val pool: ObjectPool<FSize> = ObjectPool.create(256, FSize(0f, 0f))
+
+        init {
+            pool.setReplenishPercentage(0.5f)
+        }
+
+
+        fun getInstance(width: Float, height: Float): FSize {
+            val result: FSize = pool.get()
+            result.width = width
+            result.height = height
+            return result
+        }
+
+        fun recycleInstance(instance: FSize) {
+            pool.recycle(instance)
+        }
+
+        fun recycleInstances(instances: MutableList<FSize?>) {
+            pool.recycle(instances)
+        }
     }
 }

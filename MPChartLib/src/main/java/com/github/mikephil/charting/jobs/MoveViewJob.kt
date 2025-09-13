@@ -1,60 +1,52 @@
+package com.github.mikephil.charting.jobs
 
-package com.github.mikephil.charting.jobs;
-
-import android.view.View;
-
-import com.github.mikephil.charting.utils.ObjectPool;
-import com.github.mikephil.charting.utils.Transformer;
-import com.github.mikephil.charting.utils.ViewPortHandler;
+import android.view.View
+import com.github.mikephil.charting.utils.ObjectPool
+import com.github.mikephil.charting.utils.Transformer
+import com.github.mikephil.charting.utils.ViewPortHandler
 
 /**
  * Created by Philipp Jahoda on 19/02/16.
  */
-public class MoveViewJob extends ViewPortJob {
+open class MoveViewJob(viewPortHandler: ViewPortHandler, xValue: Float, yValue: Float, trans: Transformer?, v: View?) :
+    ViewPortJob<MoveViewJob>(viewPortHandler, xValue, yValue, trans, v) {
+    override fun run() {
+        pts[0] = xValue
+        pts[1] = yValue
 
-    private static ObjectPool<MoveViewJob> pool;
+        mTrans?.pointValuesToPixel(pts)
+        mViewPortHandler.centerViewPort(pts, view)
 
-    static {
-        pool = ObjectPool.create(2, new MoveViewJob(null,0,0,null,null));
-        pool.setReplenishPercentage(0.5f);
+        recycleInstance(this)
     }
 
-    public static MoveViewJob getInstance(ViewPortHandler viewPortHandler, float xValue, float yValue, Transformer trans, View v){
-        MoveViewJob result = pool.get();
-        result.mViewPortHandler = viewPortHandler;
-        result.xValue = xValue;
-        result.yValue = yValue;
-        result.mTrans = trans;
-        result.view = v;
-        return result;
+    override fun instantiate(): MoveViewJob {
+        return MoveViewJob(mViewPortHandler, xValue, yValue, mTrans, view)
     }
 
-    public static void recycleInstance(MoveViewJob instance){
-        instance.recycle();
-        // Clear reference avoid memory leak
-        instance.xValue = 0f;
-        instance.yValue = 0f;
-        pool.recycle(instance);
-    }
+    companion object {
+        private val pool = ObjectPool.Companion.create(2, MoveViewJob(ViewPortHandler(), 0f, 0f, null, null))
 
-    public MoveViewJob(ViewPortHandler viewPortHandler, float xValue, float yValue, Transformer trans, View v) {
-        super(viewPortHandler, xValue, yValue, trans, v);
-    }
+        init {
+            pool.setReplenishPercentage(0.5f)
+        }
 
-    @Override
-    public void run() {
+        fun getInstance(viewPortHandler: ViewPortHandler, xValue: Float, yValue: Float, trans: Transformer?, v: View?): MoveViewJob {
+            val result: MoveViewJob = pool.get()
+            result.mViewPortHandler = viewPortHandler
+            result.xValue = xValue
+            result.yValue = yValue
+            result.mTrans = trans
+            result.view = v
+            return result
+        }
 
-        pts[0] = xValue;
-        pts[1] = yValue;
-
-        mTrans.pointValuesToPixel(pts);
-        mViewPortHandler.centerViewPort(pts, view);
-
-        this.recycleInstance(this);
-    }
-
-    @Override
-    protected ObjectPool.Poolable instantiate() {
-        return new MoveViewJob(mViewPortHandler, xValue, yValue, mTrans, view);
+        fun recycleInstance(instance: MoveViewJob) {
+            instance.recycle()
+            // Clear reference avoid memory leak
+            instance.xValue = 0f
+            instance.yValue = 0f
+            pool.recycle(instance)
+        }
     }
 }

@@ -1,72 +1,81 @@
-package com.github.mikephil.charting.jobs;
+package com.github.mikephil.charting.jobs
 
-import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
-import android.view.View;
-
-import com.github.mikephil.charting.utils.ObjectPool;
-import com.github.mikephil.charting.utils.Transformer;
-import com.github.mikephil.charting.utils.ViewPortHandler;
+import android.animation.ValueAnimator
+import android.annotation.SuppressLint
+import android.view.View
+import com.github.mikephil.charting.utils.ObjectPool
+import com.github.mikephil.charting.utils.Transformer
+import com.github.mikephil.charting.utils.ViewPortHandler
 
 /**
  * Created by Philipp Jahoda on 19/02/16.
  */
 @SuppressLint("NewApi")
-public class AnimatedMoveViewJob extends AnimatedViewPortJob {
+class AnimatedMoveViewJob(
+    viewPortHandler: ViewPortHandler,
+    xValue: Float,
+    yValue: Float,
+    trans: Transformer?,
+    v: View?,
+    xOrigin: Float,
+    yOrigin: Float,
+    duration: Long
+) : AnimatedViewPortJob<AnimatedMoveViewJob>(viewPortHandler, xValue, yValue, trans, v, xOrigin, yOrigin, duration) {
+    override fun onAnimationUpdate(animation: ValueAnimator) {
+        pts[0] = xOrigin + (xValue - xOrigin) * phase
+        pts[1] = yOrigin + (yValue - yOrigin) * phase
 
-    private static ObjectPool<AnimatedMoveViewJob> pool;
-
-    static {
-        pool = ObjectPool.create(4, new AnimatedMoveViewJob(null,0,0,null,null,0,0,0));
-        pool.setReplenishPercentage(0.5f);
+        mTrans!!.pointValuesToPixel(pts)
+        mViewPortHandler.centerViewPort(pts, view)
     }
 
-    public static AnimatedMoveViewJob getInstance(ViewPortHandler viewPortHandler, float xValue, float yValue, Transformer trans, View v, float xOrigin, float yOrigin, long duration){
-        AnimatedMoveViewJob result = pool.get();
-        result.mViewPortHandler = viewPortHandler;
-        result.xValue = xValue;
-        result.yValue = yValue;
-        result.mTrans = trans;
-        result.view = v;
-        result.xOrigin = xOrigin;
-        result.yOrigin = yOrigin;
-        //result.resetAnimator();
-        result.animator.setDuration(duration);
-        return result;
+    override fun recycleSelf() {
+        recycleInstance(this)
     }
 
-    public static void recycleInstance(AnimatedMoveViewJob instance){
-        // Clear reference avoid memory leak
-        instance.xValue = 0f;
-        instance.yValue = 0f;
-        instance.xOrigin = 0f;
-        instance.yOrigin = 0f;
-        instance.animator.setDuration(0);
-        instance.recycle();
-        pool.recycle(instance);
+    override fun instantiate(): AnimatedMoveViewJob {
+        return AnimatedMoveViewJob(ViewPortHandler(), 0f, 0f, null, null, 0f, 0f, 0)
     }
 
+    companion object {
+        private val pool = ObjectPool.Companion.create(4, AnimatedMoveViewJob(ViewPortHandler(), 0f, 0f, null, null, 0f, 0f, 0))
 
-    public AnimatedMoveViewJob(ViewPortHandler viewPortHandler, float xValue, float yValue, Transformer trans, View v, float xOrigin, float yOrigin, long duration) {
-        super(viewPortHandler, xValue, yValue, trans, v, xOrigin, yOrigin, duration);
-    }
+        init {
+            pool.setReplenishPercentage(0.5f)
+        }
 
-    @Override
-    public void onAnimationUpdate(ValueAnimator animation) {
+        fun getInstance(
+            viewPortHandler: ViewPortHandler,
+            xValue: Float,
+            yValue: Float,
+            trans: Transformer?,
+            v: View?,
+            xOrigin: Float,
+            yOrigin: Float,
+            duration: Long
+        ): AnimatedMoveViewJob {
+            val result: AnimatedMoveViewJob = pool.get()
+            result.mViewPortHandler = viewPortHandler
+            result.xValue = xValue
+            result.yValue = yValue
+            result.mTrans = trans
+            result.view = v
+            result.xOrigin = xOrigin
+            result.yOrigin = yOrigin
+            //result.resetAnimator();
+            result.animator.setDuration(duration)
+            return result
+        }
 
-        pts[0] = xOrigin + (xValue - xOrigin) * phase;
-        pts[1] = yOrigin + (yValue - yOrigin) * phase;
-
-        mTrans.pointValuesToPixel(pts);
-        mViewPortHandler.centerViewPort(pts, view);
-    }
-
-    public void recycleSelf(){
-        recycleInstance(this);
-    }
-
-    @Override
-    protected ObjectPool.Poolable instantiate() {
-        return new AnimatedMoveViewJob(null,0,0,null,null,0,0,0);
+        fun recycleInstance(instance: AnimatedMoveViewJob) {
+            // Clear reference avoid memory leak
+            instance.xValue = 0f
+            instance.yValue = 0f
+            instance.xOrigin = 0f
+            instance.yOrigin = 0f
+            instance.animator.setDuration(0)
+            instance.recycle()
+            pool.recycle(instance)
+        }
     }
 }

@@ -1,11 +1,10 @@
-package com.github.mikephil.charting.interfaces.dataprovider;
+package com.github.mikephil.charting.interfaces.dataprovider
 
-import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarData
 
-public interface BarDataProvider extends BarLineScatterCandleBubbleDataProvider {
-
-    BarData getBarData();
-    boolean isDrawBarShadowEnabled();
-    boolean isDrawValueAboveBarEnabled();
-    boolean isHighlightFullBarEnabled();
+interface BarDataProvider : BarLineScatterCandleBubbleDataProvider {
+    val barData: BarData?
+    val isDrawBarShadowEnabled: Boolean
+    val isDrawValueAboveBarEnabled: Boolean
+    val isHighlightFullBarEnabled: Boolean
 }

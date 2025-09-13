@@ -14,7 +14,7 @@ import kotlin.math.min
 /**
  * @noinspection unused
  */
-class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
+class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     HorizontalBarChartRenderer(chart, animator, viewPortHandler) {
     private val mBarShadowRectBuffer = RectF()
     private var roundedShadowRadius = 0f
@@ -49,7 +49,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
 
         if (chart.isDrawBarShadowEnabled) {
             shadowPaint.color = dataSet.barShadowColor
-            val barData = chart.barData
+            val barData = chart.barData ?: return
             val barWidth = barData.barWidth
             val barWidthHalf = barWidth / 2.0f
             var x: Float
@@ -84,7 +84,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
         buffer.setInverted(chart.isInverted(dataSet.axisDependency))
-        buffer.setBarWidth(chart.barData.barWidth)
+        buffer.setBarWidth(chart.barData!!.barWidth)
         buffer.feed(dataSet)
         trans!!.pointValuesToPixel(buffer.buffer)
 

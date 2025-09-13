@@ -31,6 +31,7 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
 import androidx.core.graphics.withSave
+import com.github.mikephil.charting.data.PieData
 
 open class PieChartRenderer(
     protected var chart: PieChart, animator: ChartAnimator,
@@ -164,7 +165,7 @@ open class PieChartRenderer(
         if (!dataSet.isAutomaticallyDisableSliceSpacingEnabled) return dataSet.sliceSpace
 
         val spaceSizeRatio = dataSet.sliceSpace / viewPortHandler.smallestContentExtension
-        val minValueRatio = dataSet.yMin / chart.data!!.yValueSum * 2
+        val minValueRatio = dataSet.yMin / (chart.data as PieData).yValueSum * 2
 
         val sliceSpace = if (spaceSizeRatio > minValueRatio) 0f else dataSet.sliceSpace
 
@@ -392,7 +393,7 @@ open class PieChartRenderer(
         val data = chart.data
         val dataSets = data!!.dataSets
 
-        val yValueSum = data.yValueSum
+        val yValueSum = (data as PieData).yValueSum
 
         val drawEntryLabels = chart.isDrawEntryLabelsEnabled
 
@@ -964,7 +965,7 @@ open class PieChartRenderer(
     protected fun drawRoundedSlices(c: Canvas?) {
         if (!chart.isDrawRoundedSlicesEnabled) return
 
-        val dataSet = chart.data!!.dataSet
+        val dataSet = (chart.data as PieData).dataSet
 
         if (!dataSet.isVisible) return
 

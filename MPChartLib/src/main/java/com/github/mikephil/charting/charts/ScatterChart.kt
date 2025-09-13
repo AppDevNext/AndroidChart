@@ -1,12 +1,12 @@
+package com.github.mikephil.charting.charts
 
-package com.github.mikephil.charting.charts;
-
-import android.content.Context;
-import android.util.AttributeSet;
-
-import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider;
-import com.github.mikephil.charting.renderer.ScatterChartRenderer;
+import android.content.Context
+import android.util.AttributeSet
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.ScatterData
+import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet
+import com.github.mikephil.charting.renderer.ScatterChartRenderer
 
 /**
  * The ScatterChart. Draws dots, triangles, squares and custom shapes into the
@@ -15,42 +15,31 @@ import com.github.mikephil.charting.renderer.ScatterChartRenderer;
  *
  * @author Philipp Jahoda
  */
-public class ScatterChart extends BarLineChartBase<ScatterData> implements ScatterDataProvider {
+class ScatterChart : BarLineChartBase<Entry, IScatterDataSet, ScatterData>, ScatterDataProvider {
+    constructor(context: Context) : super(context)
 
-    public ScatterChart(Context context) {
-        super(context);
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+
+
+    override fun init() {
+        super.init()
+
+        mRenderer = ScatterChartRenderer(this, mAnimator, viewPortHandler)
+
+        xAxis.spaceMin = 0.5f
+        xAxis.spaceMax = 0.5f
     }
 
-    public ScatterChart(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public ScatterChart(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
-
-
-    @Override
-    protected void init() {
-        super.init();
-
-        mRenderer = new ScatterChartRenderer(this, mAnimator, mViewPortHandler);
-
-        getXAxis().setSpaceMin(0.5f);
-        getXAxis().setSpaceMax(0.5f);
-    }
-
-    @Override
-    public ScatterData getScatterData() {
-        return mData;
-    }
+    override val scatterData: ScatterData?
+        get() = mData
 
     /**
      * Predefined ScatterShapes that allow the specification of a shape a ScatterDataSet should be drawn with.
      * If a ScatterShape is specified for a ScatterDataSet, the required renderer is set.
      */
-    public enum ScatterShape {
-
+    enum class ScatterShape(private val shapeIdentifier: String) {
         SQUARE("SQUARE"),
         CIRCLE("CIRCLE"),
         TRIANGLE("TRIANGLE"),
@@ -59,24 +48,25 @@ public class ScatterChart extends BarLineChartBase<ScatterData> implements Scatt
         CHEVRON_UP("CHEVRON_UP"),
         CHEVRON_DOWN("CHEVRON_DOWN");
 
-        private final String shapeIdentifier;
-
-        ScatterShape(final String shapeIdentifier) {
-            this.shapeIdentifier = shapeIdentifier;
+        override fun toString(): String {
+            return shapeIdentifier
         }
 
-        @Override
-        public String toString() {
-            return shapeIdentifier;
-        }
-
-        public static ScatterShape[] getAllDefaultShapes() {
-            return new ScatterShape[]{SQUARE, CIRCLE, TRIANGLE, CROSS, X, CHEVRON_UP, CHEVRON_DOWN};
+        companion object {
+            @JvmStatic
+            val allDefaultShapes: Array<ScatterShape>
+                get() = arrayOf<ScatterShape>(
+                    SQUARE,
+                    CIRCLE,
+                    TRIANGLE,
+                    CROSS,
+                    X,
+                    CHEVRON_UP,
+                    CHEVRON_DOWN
+                )
         }
     }
 
-    @Override
-    public String getAccessibilityDescription() {
-        return "This is scatter chart";
-    }
+    override val accessibilityDescription: String?
+        get() = "This is scatter chart"
 }

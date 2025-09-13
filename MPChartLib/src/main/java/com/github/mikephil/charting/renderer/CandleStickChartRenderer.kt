@@ -13,8 +13,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 
 open class CandleStickChartRenderer(
     @JvmField
-    var chart: CandleDataProvider, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    var chart: CandleDataProvider, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : LineScatterCandleRadarRenderer(animator, viewPortHandler) {
     private val shadowBuffers = FloatArray(8)
     private val bodyBuffers = FloatArray(4)
@@ -25,7 +25,7 @@ open class CandleStickChartRenderer(
     override fun initBuffers() = Unit
 
     override fun drawData(c: Canvas) {
-        val candleData = chart.candleData
+        val candleData = chart.candleData ?: return
 
         for (set in candleData.dataSets) {
             if (set.isVisible) drawDataSet(c, set)
@@ -206,7 +206,7 @@ open class CandleStickChartRenderer(
     override fun drawValues(c: Canvas) {
         // if values are drawn
         if (isDrawingValuesAllowed(chart)) {
-            val dataSets = chart.candleData.dataSets
+            val dataSets = chart.candleData?.dataSets ?: return
 
             for (i in dataSets.indices) {
                 val dataSet = dataSets[i]
@@ -246,7 +246,7 @@ open class CandleStickChartRenderer(
                         continue
                     }
 
-                    val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
+                    val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min) ?: continue
 
                     if (dataSet.isDrawValuesEnabled) {
                         drawValue(
@@ -285,14 +285,14 @@ open class CandleStickChartRenderer(
     override fun drawExtras(c: Canvas) = Unit
 
     override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
-        val candleData = chart.candleData
+        val candleData = chart.candleData ?: return
 
         for (high in indices) {
             val set = candleData.getDataSetByIndex(high.dataSetIndex)
 
             if (set == null || !set.isHighlightEnabled) continue
 
-            val e = set.getEntryForXValue(high.x, high.y)
+            val e = set.getEntryForXValue(high.x, high.y) ?: continue
 
             if (!isInBoundsX(e, set)) continue
 
