@@ -261,16 +261,16 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
 			}
 
 			// callbacks to update the content
-			IMarker markerItem =  mMarkers.get(i % mMarkers.size());
-            markerItem.refreshContent(e, highlight);
+			IMarker markerItem = mMarkers.get(i % mMarkers.size());
+			markerItem.refreshContent(e, highlight);
 
 			// draw the marker
 			markerItem.draw(canvas, pos[0], pos[1]);
 		}
 	}
 
-    @Override
-    public String getAccessibilityDescription() {
-        return "This is a combined chart";
-    }
+	@Override
+	public String getAccessibilityDescription() {
+		return "This is a combined chart";
+	}
 }
