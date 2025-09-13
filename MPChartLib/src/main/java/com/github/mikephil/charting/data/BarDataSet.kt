@@ -46,15 +46,14 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
     /**
      * array of labels used to describe the different values of the stacked bars
      */
-    private var mStackLabels: Array<String?>? = arrayOf<String?>()
+    private var mStackLabels: Array<String?>? = arrayOf()
 
     /**
      * This method is deprecated.
      * Use getFills() instead.
      */
     @get:Deprecated("")
-    var gradients: MutableList<Fill?>? = null
-        protected set
+    val gradients: MutableList<Fill> = mutableListOf()
 
     init {
         highLightColor = Color.rgb(0, 0, 0)
@@ -74,7 +73,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
     }
 
     protected fun copy(barDataSet: BarDataSet) {
-        super.copy((barDataSet as BaseDataSet<*>?)!!)
+        super.copy(barDataSet)
         barDataSet.mStackSize = mStackSize
         barDataSet.mBarShadowColor = mBarShadowColor
         barDataSet.mBarBorderWidth = mBarBorderWidth
@@ -82,11 +81,11 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
         barDataSet.mHighLightAlpha = mHighLightAlpha
     }
 
-    override val fills: MutableList<Fill?>?
+    override val fills: MutableList<Fill>
         get() = gradients
 
-    override fun getFill(index: Int): Fill? {
-        return gradients!!.get(index % gradients!!.size)
+    override fun getFill(index: Int): Fill {
+        return gradients[index % gradients.size]
     }
 
     /**
@@ -96,7 +95,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
      * @param index
      */
     @Deprecated("")
-    fun getGradient(index: Int): Fill? {
+    fun getGradient(index: Int): Fill {
         return getFill(index)
     }
 
@@ -107,8 +106,8 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
      * @param endColor
      */
     fun setGradientColor(startColor: Int, endColor: Int) {
-        gradients!!.clear()
-        gradients!!.add(Fill(startColor, endColor))
+        gradients.clear()
+        gradients.add(Fill(startColor, endColor))
     }
 
     /**
@@ -118,8 +117,9 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
      * @param gradientColors
      */
     @Deprecated("")
-    fun setGradientColors(gradientColors: MutableList<Fill?>?) {
-        this.gradients = gradientColors
+    fun setGradientColors(gradientColors: MutableList<Fill>) {
+        this.gradients.clear()
+        this.gradients.addAll(gradientColors)
     }
 
     /**
@@ -127,8 +127,9 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
      *
      * @param fills
      */
-    fun setFills(fills: MutableList<Fill?>?) {
-        this.gradients = fills
+    fun setFills(fills: MutableList<Fill>) {
+        this.gradients.clear()
+        this.gradients.addAll(fills)
     }
 
     /**

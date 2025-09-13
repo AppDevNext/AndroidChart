@@ -13,6 +13,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -53,7 +54,7 @@ open class BubbleChartRenderer(
         sizeBuffer[0] = 0f
         sizeBuffer[2] = 1f
 
-        trans!!.pointValuesToPixel(sizeBuffer)
+        trans.pointValuesToPixel(sizeBuffer)
 
         val normalizeSize = dataSet.isNormalizeSizeEnabled
 
@@ -63,7 +64,7 @@ open class BubbleChartRenderer(
         val referenceSize = min(maxBubbleHeight.toDouble(), maxBubbleWidth.toDouble()).toFloat()
 
         for (j in xBounds.min..xBounds.range + xBounds.min) {
-            val entry = dataSet.getEntryForIndex(j) ?: continue
+            val entry = dataSet.getEntryForIndex(j)
 
             pointBuffer[0] = entry.x
             pointBuffer[1] = (entry.y) * phaseY
@@ -112,7 +113,7 @@ open class BubbleChartRenderer(
 
                 xBounds[chart] = dataSet
 
-                chart.getTransformer(dataSet.axisDependency)?.let { transformer ->
+                chart.getTransformer(dataSet.axisDependency).let { transformer ->
                     val positions = transformer.generateTransformedValuesBubble(dataSet, phaseY, xBounds.min, xBounds.max)
 
                     val alpha = if (phaseX == 1f)
@@ -128,7 +129,7 @@ open class BubbleChartRenderer(
                     while (j < positions.size) {
                         var valueTextColor = dataSet.getValueTextColor(j / 2 + xBounds.min)
                         valueTextColor = Color.argb(
-                            Math.round(255f * alpha), Color.red(valueTextColor),
+                            (255f * alpha).roundToInt(), Color.red(valueTextColor),
                             Color.green(valueTextColor), Color.blue(valueTextColor)
                         )
 
@@ -142,7 +143,7 @@ open class BubbleChartRenderer(
                             continue
                         }
 
-                        val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min) ?: continue
+                        val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
 
                         if (dataSet.isDrawValuesEnabled) {
                             drawValue(
@@ -151,17 +152,19 @@ open class BubbleChartRenderer(
                             )
                         }
 
-                        if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                        if (dataSet.isDrawIconsEnabled) {
                             val icon = entry.icon
 
-                            Utils.drawImage(
-                                c,
-                                icon,
-                                (x + iconsOffset.x).toInt(),
-                                (y + iconsOffset.y).toInt(),
-                                icon!!.intrinsicWidth,
-                                icon.intrinsicHeight
-                            )
+                            icon?.let {
+                                Utils.drawImage(
+                                    c,
+                                    icon,
+                                    (x + iconsOffset.x).toInt(),
+                                    (y + iconsOffset.y).toInt(),
+                                    icon.intrinsicWidth,
+                                    icon.intrinsicHeight
+                                )
+                            }
                         }
                         j += 2
                     }
@@ -192,7 +195,7 @@ open class BubbleChartRenderer(
         for (high in indices) {
             val set = bubbleData.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled) continue
+            if (!set.isHighlightEnabled) continue
 
             val entry = set.getEntryForXValue(high.x, high.y) ?: continue
 
@@ -205,7 +208,7 @@ open class BubbleChartRenderer(
             sizeBuffer[0] = 0f
             sizeBuffer[2] = 1f
 
-            trans!!.pointValuesToPixel(sizeBuffer)
+            trans.pointValuesToPixel(sizeBuffer)
 
             val normalizeSize = set.isNormalizeSizeEnabled
 

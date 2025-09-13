@@ -7,7 +7,6 @@ import android.graphics.Typeface
 import android.text.TextUtils
 import android.util.AttributeSet
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
@@ -27,7 +26,7 @@ import kotlin.math.sin
  *
  * @author Philipp Jahoda
  */
-class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
+open class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
     /**
      * returns the circlebox, the boundingbox of the pie-chart slices
      *
@@ -206,8 +205,7 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
     override fun init() {
         super.init()
 
-        mRenderer = PieChartRenderer(this, mAnimator!!, viewPortHandler)
-        mXAxis = null
+        mRenderer = PieChartRenderer(this, mAnimator, viewPortHandler)
 
         highlighter = PieHighlighter(this)
     }
@@ -217,15 +215,15 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
 
         if (mData == null) return
 
-        mRenderer!!.drawData(canvas)
+        mRenderer?.drawData(canvas)
 
-        if (valuesToHighlight()) mRenderer!!.drawHighlighted(canvas, highlighted!!)
+        if (valuesToHighlight()) mRenderer?.drawHighlighted(canvas, highlighted!!)
 
-        mRenderer!!.drawExtras(canvas)
+        mRenderer?.drawExtras(canvas)
 
-        mRenderer!!.drawValues(canvas)
+        mRenderer?.drawValues(canvas)
 
-        legendRenderer!!.renderLegend(canvas)
+        legendRenderer.renderLegend(canvas)
 
         drawDescription(canvas)
 
@@ -243,12 +241,12 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
 
         val c = centerOffsets
 
-        val shift = mData!!.dataSet!!.selectionShift
+        val shift = mData!!.dataSet.selectionShift
 
         // create the circle box that will contain the pie-chart (the bounds of
         // the pie-chart)
-        circleBox!!.set(
-            c!!.x - radius + shift,
+        circleBox.set(
+            c.x - radius + shift,
             c.y - radius + shift,
             c.x + radius - shift,
             c.y + radius - shift
@@ -285,14 +283,14 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
                 * cos(
             Math.toRadians(
                 ((rotationAngle + this.absoluteAngles[entryIndex] - offset)
-                        * mAnimator!!.phaseY).toDouble()
+                        * mAnimator.phaseY).toDouble()
             )
         ) + center.x).toFloat()
         val y = (r
                 * sin(
             Math.toRadians(
                 ((rotationAngle + this.absoluteAngles[entryIndex] - offset)
-                        * mAnimator!!.phaseY).toDouble()
+                        * mAnimator.phaseY).toDouble()
             )
         ) + center.y).toFloat()
 
@@ -304,76 +302,78 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
      * calculates the needed angles for the chart slices
      */
     private fun calcAngles() {
-        val entryCount = mData!!.entryCount
+        mData?.let { mData ->
+            val entryCount = mData.entryCount
 
-        if (drawAngles.size != entryCount) {
-            this.drawAngles = FloatArray(entryCount)
-        } else {
-            for (i in 0..<entryCount) {
-                this.drawAngles[i] = 0f
+            if (drawAngles.size != entryCount) {
+                this.drawAngles = FloatArray(entryCount)
+            } else {
+                for (i in 0..<entryCount) {
+                    this.drawAngles[i] = 0f
+                }
             }
-        }
-        if (absoluteAngles.size != entryCount) {
-            this.absoluteAngles = FloatArray(entryCount)
-        } else {
-            for (i in 0..<entryCount) {
-                this.absoluteAngles[i] = 0f
+            if (absoluteAngles.size != entryCount) {
+                this.absoluteAngles = FloatArray(entryCount)
+            } else {
+                for (i in 0..<entryCount) {
+                    this.absoluteAngles[i] = 0f
+                }
             }
-        }
 
-        val yValueSum = mData!!.yValueSum
+            val yValueSum = mData.yValueSum
 
-        val dataSets = mData!!.dataSets
+            val dataSets = mData.dataSets
 
-        val hasMinAngle = mMinAngleForSlices != 0f && entryCount * mMinAngleForSlices <= mMaxAngle
-        val minAngles = FloatArray(entryCount)
+            val hasMinAngle = mMinAngleForSlices != 0f && entryCount * mMinAngleForSlices <= mMaxAngle
+            val minAngles = FloatArray(entryCount)
 
-        var cnt = 0
-        var offset = 0f
-        var diff = 0f
+            var cnt = 0
+            var offset = 0f
+            var diff = 0f
 
-        for (i in 0..<mData!!.dataSetCount) {
-            val set = dataSets[i]
+            for (i in 0..<mData.dataSetCount) {
+                val set = dataSets[i]
 
-            for (j in 0..<set.entryCount) {
-                val drawAngle = calcAngle(abs(set.getEntryForIndex(j)!!.y), yValueSum)
+                for (j in 0..<set.entryCount) {
+                    val drawAngle = calcAngle(abs(set.getEntryForIndex(j).y), yValueSum)
 
-                if (hasMinAngle) {
-                    val temp = drawAngle - mMinAngleForSlices
-                    if (temp <= 0) {
-                        minAngles[cnt] = mMinAngleForSlices
-                        offset += -temp
+                    if (hasMinAngle) {
+                        val temp = drawAngle - mMinAngleForSlices
+                        if (temp <= 0) {
+                            minAngles[cnt] = mMinAngleForSlices
+                            offset += -temp
+                        } else {
+                            minAngles[cnt] = drawAngle
+                            diff += temp
+                        }
+                    }
+
+                    this.drawAngles[cnt] = drawAngle
+
+                    if (cnt == 0) {
+                        this.absoluteAngles[cnt] = this.drawAngles[cnt]
                     } else {
-                        minAngles[cnt] = drawAngle
-                        diff += temp
+                        this.absoluteAngles[cnt] = this.absoluteAngles[cnt - 1] + this.drawAngles[cnt]
+                    }
+
+                    cnt++
+                }
+            }
+
+            if (hasMinAngle) {
+                // Correct bigger slices by relatively reducing their angles based on the total angle needed to subtract
+                // This requires that `entryCount * mMinAngleForSlices <= mMaxAngle` be true to properly work!
+                for (i in 0..<entryCount) {
+                    minAngles[i] -= (minAngles[i] - mMinAngleForSlices) / diff * offset
+                    if (i == 0) {
+                        this.absoluteAngles[0] = minAngles[0]
+                    } else {
+                        this.absoluteAngles[i] = this.absoluteAngles[i - 1] + minAngles[i]
                     }
                 }
 
-                this.drawAngles[cnt] = drawAngle
-
-                if (cnt == 0) {
-                    this.absoluteAngles[cnt] = this.drawAngles[cnt]
-                } else {
-                    this.absoluteAngles[cnt] = this.absoluteAngles[cnt - 1] + this.drawAngles[cnt]
-                }
-
-                cnt++
+                this.drawAngles = minAngles
             }
-        }
-
-        if (hasMinAngle) {
-            // Correct bigger slices by relatively reducing their angles based on the total angle needed to subtract
-            // This requires that `entryCount * mMinAngleForSlices <= mMaxAngle` be true to properly work!
-            for (i in 0..<entryCount) {
-                minAngles[i] -= (minAngles[i] - mMinAngleForSlices) / diff * offset
-                if (i == 0) {
-                    this.absoluteAngles[0] = minAngles[0]
-                } else {
-                    this.absoluteAngles[i] = this.absoluteAngles[i - 1] + minAngles[i]
-                }
-            }
-
-            this.drawAngles = minAngles
         }
     }
 
@@ -407,7 +407,7 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
      * @param value
      * @return
      */
-    private fun calcAngle(value: Float, yValueSum: Float = mData!!.yValueSum): Float {
+    private fun calcAngle(value: Float, yValueSum: Float = mData?.yValueSum ?: 0f): Float {
         return value / yValueSum * mMaxAngle
     }
 
@@ -439,7 +439,7 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
      * @return
      */
     fun getDataSetIndexForIndex(xIndex: Int): Int {
-        val dataSets = mData!!.dataSets
+        val dataSets = mData?.dataSets ?: return -1
 
         for (i in dataSets.indices) {
             if (dataSets[i].getEntryForXValue(xIndex.toFloat(), Float.Companion.NaN) != null) return i
@@ -478,8 +478,7 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
          * @param text
          */
         set(text) {
-            if (text == null) mCenterText = ""
-            else mCenterText = text
+            mCenterText = text ?: ""
         }
 
     /**
@@ -493,14 +492,13 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
     }
 
     override val requiredLegendOffset: Float
-        get() = legendRenderer!!.labelPaint.textSize * 2f
+        get() = legendRenderer.labelPaint.textSize * 2f
 
     override val requiredBaseOffset: Float
         get() = 0f
 
     override val radius: Float
-        get() = if (this.circleBox == null) 0f
-        else min(circleBox.width() / 2f, circleBox.height() / 2f)
+        get() = min(circleBox.width() / 2f, circleBox.height() / 2f)
 
     val centerCircleBox: MPPointF
         /**
@@ -508,7 +506,7 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
          *
          * @return
          */
-        get() = MPPointF.Companion.getInstance(circleBox!!.centerX(), circleBox.centerY())
+        get() = MPPointF.Companion.getInstance(circleBox.centerX(), circleBox.centerY())
 
     /**
      * sets the typeface for the center-text paint
@@ -525,9 +523,7 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
      * @param sizeDp
      */
     fun setCenterTextSize(sizeDp: Float) {
-        (mRenderer as PieChartRenderer).paintCenterText.setTextSize(
-            Utils.convertDpToPixel(sizeDp)
-        )
+        (mRenderer as PieChartRenderer).paintCenterText.textSize = Utils.convertDpToPixel(sizeDp)
     }
 
     /**
@@ -536,7 +532,7 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
      * @param sizePixels
      */
     fun setCenterTextSizePixels(sizePixels: Float) {
-        (mRenderer as PieChartRenderer).paintCenterText.setTextSize(sizePixels)
+        (mRenderer as PieChartRenderer).paintCenterText.textSize = sizePixels
     }
 
     /**
@@ -574,7 +570,7 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
      */
     fun setTransparentCircleColor(color: Int) {
         val p = (mRenderer as PieChartRenderer).paintTransparentCircle
-        val alpha = p.getAlpha()
+        val alpha = p.alpha
         p.setColor(color)
         p.setAlpha(alpha)
     }
@@ -634,7 +630,7 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
      * @param size
      */
     fun setEntryLabelTextSize(size: Float) {
-        (mRenderer as PieChartRenderer).paintEntryLabels.setTextSize(Utils.convertDpToPixel(size))
+        (mRenderer as PieChartRenderer).paintEntryLabels.textSize = Utils.convertDpToPixel(size)
     }
 
     /**
@@ -697,7 +693,7 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
             this.mMinAngleForSlices = minAngle
         }
 
-    protected override fun onDetachedFromWindow() {
+    override fun onDetachedFromWindow() {
         // releases the bitmap in the renderer to avoid oom error
         if (mRenderer != null && mRenderer is PieChartRenderer) {
             (mRenderer as PieChartRenderer).releaseBitmap()
@@ -717,8 +713,8 @@ class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
             builder.append(String.format(Locale.getDefault(), "The pie chart has %d entries.", entryCount))
 
             for (i in 0..<entryCount) {
-                val entry = pieData!!.dataSet!!.getEntryForIndex(i)
-                val percentage = (entry!!.value / pieData.yValueSum) * 100
+                val entry = pieData?.dataSet?.getEntryForIndex(i) ?: continue
+                val percentage = (entry.value / pieData.yValueSum) * 100
                 builder.append(
                     String.format(
                         Locale.getDefault(), "%s has %.2f percent pie taken",

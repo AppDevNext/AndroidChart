@@ -11,7 +11,7 @@ import kotlin.math.abs
  * @author Philipp Jahoda
  */
 @SuppressLint("ParcelCreator")
-class BarEntry : Entry {
+open class BarEntry : Entry {
     /**
      * Returns the stacked values this BarEntry represents, or null, if only a single value is represented (then, use
      * getY()).
@@ -148,7 +148,7 @@ class BarEntry : Entry {
     /**
      * Returns an exact copy of the BarEntry.
      */
-    public override fun copy(): BarEntry {
+    override fun copy(): BarEntry {
         val copied = BarEntry(x, y, data)
         copied.setVals(this.yVals)
         return copied

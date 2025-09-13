@@ -4,14 +4,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.os.Build
+import androidx.core.graphics.withTranslation
 import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.FSize
 import com.github.mikephil.charting.utils.MPPointF
 import java.lang.ref.WeakReference
-import androidx.core.graphics.withTranslation
 
 /**
  * View that can be displayed when selecting values in the chart. Extend this class to provide custom layouts for your
@@ -20,88 +19,67 @@ import androidx.core.graphics.withTranslation
  * @author Philipp Jahoda
  */
 class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMarker {
-    private var mDrawable: Drawable? = null
+    private var mDrawable: Drawable =
+        mContext.resources.getDrawable(drawableResourceId, null)
 
-    private var mOffset: MPPointF? = MPPointF()
+    private var mOffset: MPPointF = MPPointF()
     private val mOffset2 = MPPointF()
     private var mWeakChart: WeakReference<Chart<*, *, *>?>? = null
 
-    private var mSize: FSize? = FSize()
+    private var mSize: FSize = FSize()
     private val mDrawableBoundsCache = Rect()
 
-    /**
-     * Constructor. Sets up the MarkerView with a custom layout resource.
-     *
-     * @param mContext
-     * @param drawableResourceId the drawable resource to render
-     */
-    init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mDrawable = mContext.getResources().getDrawable(drawableResourceId, null)
-        } else {
-            mDrawable = mContext.getResources().getDrawable(drawableResourceId)
-        }
-    }
-
     fun setOffset(offset: MPPointF?) {
-        mOffset = offset
-
-        if (mOffset == null) {
-            mOffset = MPPointF()
-        }
+        mOffset = offset ?: MPPointF()
     }
 
     fun setOffset(offsetX: Float, offsetY: Float) {
-        mOffset!!.x = offsetX
-        mOffset!!.y = offsetY
+        mOffset.x = offsetX
+        mOffset.y = offsetY
     }
 
-    override val offset: MPPointF?
+    override val offset: MPPointF
         get() = mOffset
 
     var size: FSize?
         get() = mSize
         set(size) {
-            mSize = size
-
-            if (mSize == null) {
-                mSize = FSize()
-            }
+            mSize = size ?: FSize()
         }
 
     var chartView: Chart<*, *, *>?
-        get() = if (mWeakChart == null) null else mWeakChart!!.get()
+        get() = mWeakChart?.get()
         set(chart) {
             mWeakChart = WeakReference<Chart<*, *, *>?>(chart)
         }
 
     override fun getOffsetForDrawingAtPoint(posX: Float, posY: Float): MPPointF {
-        val offset = offset!!
+        val offset = offset
         mOffset2.x = offset.x
         mOffset2.y = offset.y
 
         val chart = this.chartView
 
-        var width = mSize!!.width
-        var height = mSize!!.height
+        var width = mSize.width
+        var height = mSize.height
 
-        if (width == 0f && mDrawable != null) {
-            width = mDrawable!!.getIntrinsicWidth().toFloat()
+        if (width == 0f) {
+            width = mDrawable.intrinsicWidth.toFloat()
         }
-        if (height == 0f && mDrawable != null) {
-            height = mDrawable!!.getIntrinsicHeight().toFloat()
+        if (height == 0f) {
+            height = mDrawable.intrinsicHeight.toFloat()
         }
 
         if (posX + mOffset2.x < 0) {
             mOffset2.x = -posX
-        } else if (chart != null && posX + width + mOffset2.x > chart.getWidth()) {
-            mOffset2.x = chart.getWidth() - posX - width
+        } else if (chart != null && posX + width + mOffset2.x > chart.width) {
+            mOffset2.x = chart.width - posX - width
         }
 
         if (posY + mOffset2.y < 0) {
             mOffset2.y = -posY
-        } else if (chart != null && posY + height + mOffset2.y > chart.getHeight()) {
-            mOffset2.y = chart.getHeight() - posY - height
+        } else if (chart != null && posY + height + mOffset2.y > chart.height) {
+            mOffset2.y = chart.height - posY - height
         }
 
         return mOffset2
@@ -111,22 +89,20 @@ class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMar
     }
 
     override fun draw(canvas: Canvas?, posX: Float, posY: Float) {
-        if (mDrawable == null) return
-
         val offset = getOffsetForDrawingAtPoint(posX, posY)
 
-        var width = mSize!!.width
-        var height = mSize!!.height
+        var width = mSize.width
+        var height = mSize.height
 
         if (width == 0f) {
-            width = mDrawable!!.getIntrinsicWidth().toFloat()
+            width = mDrawable.intrinsicWidth.toFloat()
         }
         if (height == 0f) {
-            height = mDrawable!!.getIntrinsicHeight().toFloat()
+            height = mDrawable.intrinsicHeight.toFloat()
         }
 
-        mDrawable!!.copyBounds(mDrawableBoundsCache)
-        mDrawable!!.setBounds(
+        mDrawable.copyBounds(mDrawableBoundsCache)
+        mDrawable.setBounds(
             mDrawableBoundsCache.left,
             mDrawableBoundsCache.top,
             mDrawableBoundsCache.left + width.toInt(),
@@ -135,9 +111,9 @@ class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMar
 
         canvas?.withTranslation(posX + offset.x, posY + offset.y) {
             // translate to the correct position and draw
-            mDrawable!!.draw(canvas)
+            mDrawable.draw(canvas)
         }
 
-        mDrawable!!.bounds = mDrawableBoundsCache
+        mDrawable.bounds = mDrawableBoundsCache
     }
 }

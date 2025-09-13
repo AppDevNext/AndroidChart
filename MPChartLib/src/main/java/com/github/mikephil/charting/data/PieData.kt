@@ -80,7 +80,7 @@ class PieData : ChartData<PieEntry, IPieDataSet> {
         get() {
             var sum = 0f
 
-            for (i in 0..<this.dataSet.entryCount) sum += this.dataSet.getEntryForIndex(i)!!.y
+            for (i in 0..<this.dataSet.entryCount) sum += this.dataSet.getEntryForIndex(i).y
 
 
             return sum

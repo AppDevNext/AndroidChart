@@ -15,9 +15,9 @@ class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, pr
         val labelRotationAngleDegrees = xAxis.labelRotationAngle
         val drawLabelAnchor = MPPointF.getInstance(0.5f, 0.25f)
 
-        paintAxisLabels!!.setTypeface(xAxis.typeface)
-        paintAxisLabels!!.textSize = xAxis.textSize
-        paintAxisLabels!!.color = xAxis.textColor
+        paintAxisLabels.setTypeface(xAxis.typeface)
+        paintAxisLabels.textSize = xAxis.textSize
+        paintAxisLabels.color = xAxis.textColor
 
         val sliceAngle = chart.sliceAngle
 
@@ -27,7 +27,7 @@ class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, pr
 
         val center = chart.centerOffsets
         val pOut = MPPointF.getInstance(0f, 0f)
-        for (i in 0..<(chart.data!!.maxEntryCountSet?.entryCount ?: 0)) {
+        for (i in 0..<(chart.data?.maxEntryCountSet?.entryCount ?: 0)) {
             val label = xAxis.valueFormatter.getFormattedValue(i.toFloat(), xAxis)
 
             val angle = (sliceAngle * i + chart.rotationAngle) % 360f

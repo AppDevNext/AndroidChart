@@ -69,7 +69,7 @@ open class CombinedChart : BarLineChartBase<Entry, IBarLineScatterCandleBubbleDa
         // Old default behaviour
         setHighlightFullBarEnabled(true)
 
-        mRenderer = CombinedChartRenderer(this, mAnimator!!, viewPortHandler)
+        mRenderer = CombinedChartRenderer(this, mAnimator, viewPortHandler)
     }
 
     override val combinedData: CombinedData?
@@ -78,8 +78,8 @@ open class CombinedChart : BarLineChartBase<Entry, IBarLineScatterCandleBubbleDa
     override fun setData(data: CombinedData?) {
         super.setData(data)
         setHighlighter(CombinedHighlighter(this, this))
-        (mRenderer as CombinedChartRenderer).createRenderers()
-        mRenderer!!.initBuffers()
+        (mRenderer as? CombinedChartRenderer)?.createRenderers()
+        mRenderer?.initBuffers()
     }
 
     /**
@@ -92,7 +92,7 @@ open class CombinedChart : BarLineChartBase<Entry, IBarLineScatterCandleBubbleDa
             Log.e(LOG_TAG, "Can't select by touch. No data set.")
             return null
         } else {
-            val h = highlighter!!.getHighlight(x, y)
+            val h = highlighter?.getHighlight(x, y)
             if (h == null || !isHighlightFullBarEnabled) {
                 return h
             }
@@ -182,15 +182,17 @@ open class CombinedChart : BarLineChartBase<Entry, IBarLineScatterCandleBubbleDa
     override fun drawMarkers(canvas: Canvas?) {
         // if there is no marker view or drawing marker is disabled
 
-        if (marker == null || !isDrawMarkersEnabled || !valuesToHighlight()) {
+        if (!isDrawMarkersEnabled || !valuesToHighlight()) {
             return
         }
 
-        for (i in highlighted!!.indices) {
-            val highlight = highlighted!![i]
-            val set = mData!!.getDataSetByHighlight(highlight)
+        val highlighted = highlighted ?: return
 
-            val e = mData!!.getEntryForHighlight(highlight)
+        for (i in highlighted.indices) {
+            val highlight = highlighted[i]
+            val set = mData?.getDataSetByHighlight(highlight)
+
+            val e = mData?.getEntryForHighlight(highlight)
             if (e == null || set == null) {
                 continue
             }
@@ -210,7 +212,7 @@ open class CombinedChart : BarLineChartBase<Entry, IBarLineScatterCandleBubbleDa
             }
 
             // callbacks to update the content
-            val markerItem = marker!![i % marker!!.size]
+            val markerItem = marker[i % marker.size]
             markerItem.refreshContent(e, highlight)
 
             // draw the marker

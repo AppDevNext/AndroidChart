@@ -38,10 +38,10 @@ abstract class BarLineScatterCandleBubbleRenderer(animator: ChartAnimator, viewP
 
         val entryIndex = set.getEntryIndex(e).toFloat()
 
-        if (entryIndex >= set.entryCount * animator.phaseX) {
-            return false
+        return if (entryIndex >= set.entryCount * animator.phaseX) {
+            false
         } else {
-            return true
+            true
         }
     }
 

@@ -1,6 +1,5 @@
 package com.github.mikephil.charting.data.filter
 
-import java.util.Arrays
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -15,7 +14,7 @@ class Approximator {
         var greatestIndex = 0
         var greatestDistance = 0f
 
-        val line: Line = Line(points[0], points[1], points[points.size - 2], points[points.size - 1])
+        val line = Line(points[0], points[1], points[points.size - 2], points[points.size - 1])
 
         var i = 2
         while (i < points.size - 2) {

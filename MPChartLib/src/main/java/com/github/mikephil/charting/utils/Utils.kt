@@ -18,22 +18,9 @@ import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
 import android.view.ViewConfiguration
+import androidx.core.graphics.withTranslation
 import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.IValueFormatter
-import kotlin.Array
-import kotlin.Boolean
-import kotlin.Char
-import kotlin.CharArray
-import kotlin.Deprecated
-import kotlin.Int
-import kotlin.IntArray
-import kotlin.String
-import kotlin.Suppress
-import kotlin.arrayOfNulls
-import kotlin.code
-import kotlin.collections.MutableList
-import kotlin.collections.indices
-import kotlin.intArrayOf
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.cos
@@ -43,7 +30,6 @@ import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sin
-import androidx.core.graphics.withTranslation
 
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
@@ -59,8 +45,8 @@ object Utils {
         private set
     var maximumFlingVelocity: Int = 8000
         private set
-    val DEG2RAD: Double = (Math.PI / 180.0)
-    val FDEG2RAD: Float = (Math.PI.toFloat() / 180f)
+    const val DEG2RAD: Double = (Math.PI / 180.0)
+    const val FDEG2RAD: Float = (Math.PI.toFloat() / 180f)
 
     @Suppress("unused")
     val DOUBLE_EPSILON: Double = java.lang.Double.longBitsToDouble(1)
@@ -85,11 +71,11 @@ object Utils {
             )
         } else {
             val viewConfiguration = ViewConfiguration.get(context)
-            minimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity()
-            maximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity()
+            minimumFlingVelocity = viewConfiguration.scaledMinimumFlingVelocity
+            maximumFlingVelocity = viewConfiguration.scaledMaximumFlingVelocity
 
-            val res = context.getResources()
-            mMetrics = res.getDisplayMetrics()
+            val res = context.resources
+            mMetrics = res.displayMetrics
         }
     }
 
@@ -101,7 +87,7 @@ object Utils {
      */
     @Deprecated("")
     fun init(res: Resources) {
-        mMetrics = res.getDisplayMetrics()
+        mMetrics = res.displayMetrics
 
         // noinspection deprecation
         minimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity()
@@ -298,7 +284,7 @@ object Utils {
         }
 
         number *= POW_10[digitCount].toFloat()
-        var lval = Math.round(number).toLong()
+        var lval = number.roundToInt().toLong()
         var ind = out.size - 1
         var charCount = 0
         var decimalPointAdded = false
@@ -386,7 +372,7 @@ object Utils {
      * @param integers
      * @return
      */
-    fun convertIntegers(integers: MutableList<Int?>): IntArray {
+    fun convertIntegers(integers: MutableList<Int>): IntArray {
         val ret = IntArray(integers.size)
 
         copyIntegers(integers, ret)
@@ -394,10 +380,10 @@ object Utils {
         return ret
     }
 
-    fun copyIntegers(from: MutableList<Int?>, to: IntArray) {
+    fun copyIntegers(from: MutableList<Int>, to: IntArray) {
         val count = min(to.size, from.size)
         for (i in 0..<count) {
-            to[i] = from[i]!!
+            to[i] = from[i]
         }
     }
 
@@ -411,7 +397,7 @@ object Utils {
         val ret = arrayOfNulls<String>(strings.size)
 
         for (i in ret.indices) {
-            ret[i] = strings.get(i)
+            ret[i] = strings[i]
         }
 
         return ret
@@ -560,8 +546,8 @@ object Utils {
         drawOffsetY -= mFontMetricsBuffer.ascent
 
         // To have a consistent point of reference, we always draw left-aligned
-        val originalTextAlign = paint.getTextAlign()
-        paint.setTextAlign(Align.LEFT)
+        val originalTextAlign = paint.textAlign
+        paint.textAlign = Align.LEFT
 
         if (angleDegrees != 0f) {
             // Move the text drawing rect in a way that it always rotates around its center
@@ -614,13 +600,12 @@ object Utils {
     ) {
         var drawOffsetX = 0f
         var drawOffsetY = 0f
-        val drawWidth: Float
         val drawHeight: Float
 
         val lineHeight = paint.getFontMetrics(mFontMetricsBuffer)
 
-        drawWidth = textLayout.getWidth().toFloat()
-        drawHeight = textLayout.getLineCount() * lineHeight
+        val drawWidth = textLayout.width.toFloat()
+        drawHeight = textLayout.lineCount * lineHeight
 
         // Android sometimes has pre-padding
         drawOffsetX -= mDrawTextRectBuffer.left.toFloat()
@@ -631,8 +616,8 @@ object Utils {
         drawOffsetY += drawHeight
 
         // To have a consistent point of reference, we always draw left-aligned
-        val originalTextAlign = paint.getTextAlign()
-        paint.setTextAlign(Align.LEFT)
+        val originalTextAlign = paint.textAlign
+        paint.textAlign = Align.LEFT
 
         if (angleDegrees != 0f) {
             // Move the text drawing rect in a way that it always rotates around its center
@@ -656,14 +641,12 @@ object Utils {
                 FSize.Companion.recycleInstance(rotatedSize)
             }
 
-            c.save()
-            c.translate(translateX, translateY)
-            c.rotate(angleDegrees)
+            c.withTranslation(translateX, translateY) {
+                rotate(angleDegrees)
 
-            c.translate(drawOffsetX, drawOffsetY)
-            textLayout.draw(c)
-
-            c.restore()
+                translate(drawOffsetX, drawOffsetY)
+                textLayout.draw(this)
+            }
         } else {
             if (anchor.x != 0f || anchor.y != 0f) {
                 drawOffsetX -= drawWidth * anchor.x
@@ -673,15 +656,12 @@ object Utils {
             drawOffsetX += x
             drawOffsetY += y
 
-            c.save()
-
-            c.translate(drawOffsetX, drawOffsetY)
-            textLayout.draw(c)
-
-            c.restore()
+            c.withTranslation(drawOffsetX, drawOffsetY) {
+                textLayout.draw(this)
+            }
         }
 
-        paint.setTextAlign(originalTextAlign)
+        paint.textAlign = originalTextAlign
     }
 
     fun drawMultilineText(

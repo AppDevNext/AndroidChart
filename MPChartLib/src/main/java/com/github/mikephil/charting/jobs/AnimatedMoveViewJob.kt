@@ -25,7 +25,7 @@ class AnimatedMoveViewJob(
         pts[0] = xOrigin + (xValue - xOrigin) * phase
         pts[1] = yOrigin + (yValue - yOrigin) * phase
 
-        mTrans!!.pointValuesToPixel(pts)
+        mTrans?.pointValuesToPixel(pts)
         mViewPortHandler.centerViewPort(pts, view)
     }
 

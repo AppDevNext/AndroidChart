@@ -23,8 +23,8 @@ import kotlin.math.max
 import kotlin.math.min
 
 open class LineChartRenderer(
-    @JvmField var chart: LineDataProvider, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    @JvmField var chart: LineDataProvider, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : LineRadarRenderer(animator, viewPortHandler) {
     /**
      * paint for the inner circle of the value indicators
@@ -59,7 +59,7 @@ open class LineChartRenderer(
         val width = viewPortHandler.chartWidth.toInt()
         val height = viewPortHandler.chartHeight.toInt()
 
-        var drawBitmapLocal = if (drawBitmap == null) null else drawBitmap!!.get()
+        var drawBitmapLocal = drawBitmap?.get()
 
         if (drawBitmapLocal == null || (drawBitmapLocal.width != width)
             || (drawBitmapLocal.height != height)
@@ -135,16 +135,16 @@ open class LineChartRenderer(
             cubicFillPath.reset()
             cubicFillPath.addPath(cubicPath)
             // create a new path, this is bad for performance
-            bitmapCanvas?.let { drawCubicFill(it, dataSet, cubicFillPath, trans!!, xBounds) }
+            bitmapCanvas?.let { drawCubicFill(it, dataSet, cubicFillPath, trans, xBounds) }
         }
 
         paintRender.color = dataSet.color
 
         paintRender.style = Paint.Style.STROKE
 
-        trans!!.pathValueToPixel(cubicPath)
+        trans.pathValueToPixel(cubicPath)
 
-        bitmapCanvas!!.drawPath(cubicPath, paintRender)
+        bitmapCanvas?.drawPath(cubicPath, paintRender)
 
         paintRender.setPathEffect(null)
     }
@@ -190,9 +190,9 @@ open class LineChartRenderer(
                 nextIndex = if (j + 1 < dataSet.entryCount) j + 1 else j
                 next = dataSet.getEntryForIndex(nextIndex)
 
-                prevDx = (cur!!.x - prevPrev!!.x) * intensity
+                prevDx = (cur.x - prevPrev.x) * intensity
                 prevDy = (cur.y - prevPrev.y) * intensity
-                curDx = (next.x - prev!!.x) * intensity
+                curDx = (next.x - prev.x) * intensity
                 curDy = (next.y - prev.y) * intensity
 
                 cubicPath.cubicTo(
@@ -208,16 +208,16 @@ open class LineChartRenderer(
             cubicFillPath.reset()
             cubicFillPath.addPath(cubicPath)
 
-            bitmapCanvas?.let { drawCubicFill(it, dataSet, cubicFillPath, trans!!, xBounds) }
+            bitmapCanvas?.let { drawCubicFill(it, dataSet, cubicFillPath, trans, xBounds) }
         }
 
         paintRender.color = dataSet.color
 
         paintRender.style = Paint.Style.STROKE
 
-        trans!!.pathValueToPixel(cubicPath)
+        trans.pathValueToPixel(cubicPath)
 
-        bitmapCanvas!!.drawPath(cubicPath, paintRender)
+        bitmapCanvas?.drawPath(cubicPath, paintRender)
 
         paintRender.setPathEffect(null)
     }
@@ -265,7 +265,7 @@ open class LineChartRenderer(
 
         // if drawing filled is enabled
         if (dataSet.isDrawFilledEnabled && entryCount > 0) {
-            drawLinearFill(c, dataSet, trans!!, xBounds)
+            drawLinearFill(c, dataSet, trans, xBounds)
         }
 
         // more than 1 color
@@ -278,15 +278,13 @@ open class LineChartRenderer(
             val max = xBounds.min + xBounds.range
 
             for (j in xBounds.min..<max) {
-                var entry: Entry = dataSet.getEntryForIndex(j) ?: continue
+                var entry: Entry = dataSet.getEntryForIndex(j)
 
                 lineBuffer[0] = entry.x
                 lineBuffer[1] = entry.y * phaseY
 
                 if (j < xBounds.max) {
                     entry = dataSet.getEntryForIndex(j + 1)
-
-                    if (entry == null) break
 
                     if (isDrawSteppedEnabled) {
                         lineBuffer[2] = entry.x
@@ -314,7 +312,7 @@ open class LineChartRenderer(
                     firstCoordinateY == lastCoordinateY
                 ) continue
 
-                trans!!.pointValuesToPixel(lineBuffer)
+                trans.pointValuesToPixel(lineBuffer)
 
                 if (!viewPortHandler.isInBoundsRight(firstCoordinateX)) break
 
@@ -333,7 +331,7 @@ open class LineChartRenderer(
                 // get the color that is set for this line-segment
                 paintRender.color = dataSet.getColor(j)
 
-                canvas!!.drawLines(lineBuffer, 0, pointsPerEntryPair * 2, paintRender)
+                canvas?.drawLines(lineBuffer, 0, pointsPerEntryPair * 2, paintRender)
             }
         } else { // only one color per dataset
 
@@ -346,37 +344,33 @@ open class LineChartRenderer(
 
             e1 = dataSet.getEntryForIndex(xBounds.min)
 
-            if (e1 != null) {
-                var j = 0
-                for (x in xBounds.min..xBounds.range + xBounds.min) {
-                    e1 = dataSet.getEntryForIndex(if (x == 0) 0 else (x - 1))
-                    e2 = dataSet.getEntryForIndex(x)
+            var j = 0
+            for (x in xBounds.min..xBounds.range + xBounds.min) {
+                e1 = dataSet.getEntryForIndex(if (x == 0) 0 else (x - 1))
+                e2 = dataSet.getEntryForIndex(x)
 
-                    if (e1 == null || e2 == null) continue
+                lineBuffer[j++] = e1.x
+                lineBuffer[j++] = e1.y * phaseY
 
-                    lineBuffer[j++] = e1.x
-                    lineBuffer[j++] = e1.y * phaseY
-
-                    if (isDrawSteppedEnabled) {
-                        lineBuffer[j++] = e2.x
-                        lineBuffer[j++] = e1.y * phaseY
-                        lineBuffer[j++] = e2.x
-                        lineBuffer[j++] = e1.y * phaseY
-                    }
-
+                if (isDrawSteppedEnabled) {
                     lineBuffer[j++] = e2.x
-                    lineBuffer[j++] = e2.y * phaseY
+                    lineBuffer[j++] = e1.y * phaseY
+                    lineBuffer[j++] = e2.x
+                    lineBuffer[j++] = e1.y * phaseY
                 }
 
-                if (j > 0) {
-                    trans!!.pointValuesToPixel(lineBuffer)
+                lineBuffer[j++] = e2.x
+                lineBuffer[j++] = e2.y * phaseY
+            }
 
-                    val size = (max(((xBounds.range + 1) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2).toInt()
+            if (j > 0) {
+                trans.pointValuesToPixel(lineBuffer)
 
-                    paintRender.color = dataSet.color
+                val size = (max(((xBounds.range + 1) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2).toInt()
 
-                    canvas!!.drawLines(lineBuffer, 0, size, paintRender)
-                }
+                paintRender.color = dataSet.color
+
+                canvas?.drawLines(lineBuffer, 0, size, paintRender)
             }
         }
 
@@ -465,15 +459,13 @@ open class LineChartRenderer(
         for (x in startIndex + 1..endIndex) {
             currentEntry = dataSet.getEntryForIndex(x)
 
-            if (currentEntry != null) {
-                if (isDrawSteppedEnabled) {
-                    filled.lineTo(currentEntry.x, previousEntry.y * phaseY)
-                }
-
-                filled.lineTo(currentEntry.x, currentEntry.y * phaseY)
-
-                previousEntry = currentEntry
+            if (isDrawSteppedEnabled) {
+                filled.lineTo(currentEntry.x, previousEntry.y * phaseY)
             }
+
+            filled.lineTo(currentEntry.x, currentEntry.y * phaseY)
+
+            previousEntry = currentEntry
         }
 
         // close up
@@ -509,7 +501,7 @@ open class LineChartRenderer(
 
                 xBounds[chart] = dataSet
 
-                val positions = trans!!.generateTransformedValuesLine(
+                val positions = trans.generateTransformedValuesLine(
                     dataSet, animator.phaseX, animator
                         .phaseY, xBounds.min, xBounds.max
                 )
@@ -532,23 +524,23 @@ open class LineChartRenderer(
 
                     val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
 
-                    if (entry != null) {
-                        if (dataSet.isDrawValuesEnabled) {
-                            drawValue(
-                                c, dataSet.valueFormatter, entry.y, entry, i, x,
-                                y - valOffset, dataSet.getValueTextColor(j / 2)
-                            )
-                        }
+                    if (dataSet.isDrawValuesEnabled) {
+                        drawValue(
+                            c, dataSet.valueFormatter, entry.y, entry, i, x,
+                            y - valOffset, dataSet.getValueTextColor(j / 2)
+                        )
+                    }
 
-                        if (entry.icon != null && dataSet.isDrawIconsEnabled) {
-                            val icon = entry.icon
+                    if (dataSet.isDrawIconsEnabled) {
+                        val icon = entry.icon
 
+                        icon?.let {
                             Utils.drawImage(
                                 c,
                                 icon,
                                 (x + iconsOffset.x).toInt(),
                                 (y + iconsOffset.y).toInt(),
-                                icon!!.intrinsicWidth,
+                                icon.intrinsicWidth,
                                 icon.intrinsicHeight
                             )
                         }
@@ -607,16 +599,9 @@ open class LineChartRenderer(
             val drawTransparentCircleHole = drawCircleHole &&
                     dataSet.circleHoleColor == ColorTemplate.COLOR_NONE
 
-            val imageCache: DataSetImageCache?
+            val imageCache: DataSetImageCache = mImageCaches.getOrPut(dataSet) { DataSetImageCache() }
 
-            if (mImageCaches.containsKey(dataSet)) {
-                imageCache = mImageCaches[dataSet]
-            } else {
-                imageCache = DataSetImageCache()
-                mImageCaches[dataSet] = imageCache
-            }
-
-            val changeRequired = imageCache!!.init(dataSet)
+            val changeRequired = imageCache.init(dataSet)
 
             // only fill the cache with new bitmaps if a change is required
             if (changeRequired) {
@@ -626,12 +611,12 @@ open class LineChartRenderer(
             val boundsRangeCount = xBounds.range + xBounds.min
 
             for (j in xBounds.min..boundsRangeCount) {
-                val e = dataSet.getEntryForIndex(j) ?: break
+                val e = dataSet.getEntryForIndex(j)
 
                 mCirclesBuffer[0] = e.x
                 mCirclesBuffer[1] = e.y * phaseY
 
-                trans!!.pointValuesToPixel(mCirclesBuffer)
+                trans.pointValuesToPixel(mCirclesBuffer)
 
                 if (!viewPortHandler.isInBoundsRight(mCirclesBuffer[0])) break
 
@@ -660,7 +645,7 @@ open class LineChartRenderer(
 
             if (!isInBoundsX(e, set) || e == null) continue
 
-            val pix = chart.getTransformer(set.axisDependency)!!.getPixelForValues(
+            val pix = chart.getTransformer(set.axisDependency).getPixelForValues(
                 e.x, e.y * animator
                     .phaseY
             )
@@ -708,7 +693,7 @@ open class LineChartRenderer(
     private inner class DataSetImageCache {
         private val mCirclePathBuffer = Path()
 
-        private var circleBitmaps: Array<Bitmap?>? = null
+        private val circleBitmaps: MutableList<Bitmap> = mutableListOf()
 
         /**
          * Sets up the cache, returns true if a change of cache was required.
@@ -720,11 +705,8 @@ open class LineChartRenderer(
             val size = set.circleColorCount
             var changeRequired = false
 
-            if (circleBitmaps == null) {
-                circleBitmaps = arrayOfNulls(size)
-                changeRequired = true
-            } else if (circleBitmaps!!.size != size) {
-                circleBitmaps = arrayOfNulls(size)
+            if (circleBitmaps.size != size) {
+                circleBitmaps.clear()
                 changeRequired = true
             }
 
@@ -748,7 +730,7 @@ open class LineChartRenderer(
                 val circleBitmap = createBitmap((circleRadius * 2.1).toInt(), (circleRadius * 2.1).toInt(), conf)
 
                 val canvas = Canvas(circleBitmap)
-                circleBitmaps!![i] = circleBitmap
+                circleBitmaps[i] = circleBitmap
                 paintRender.color = set.getCircleColor(i)
 
                 if (drawTransparentCircleHole) {
@@ -799,7 +781,7 @@ open class LineChartRenderer(
          * @return
          */
         fun getBitmap(index: Int): Bitmap? {
-            return circleBitmaps!![index % circleBitmaps!!.size]
+            return circleBitmaps[index % circleBitmaps.size]
         }
     }
 }

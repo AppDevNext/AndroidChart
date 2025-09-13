@@ -12,15 +12,15 @@ import kotlin.math.abs
  */
 class HorizontalBarHighlighter(chart: BarDataProvider?) : BarHighlighter(chart) {
     override fun getHighlight(x: Float, y: Float): Highlight? {
-        val barData = mChart!!.barData
+        val barData = mChart?.barData ?: return null
 
-        val pos = getValsForTouch(y, x)
+        val pos = getValsForTouch(y, x) ?: return null
 
         val high = getHighlightForX(pos.y.toFloat(), y, x)
         if (high == null) return null
 
-        val set = barData!!.getDataSetByIndex(high.dataSetIndex)
-        if (set!!.isStacked) {
+        val set = barData.getDataSetByIndex(high.dataSetIndex)
+        if (set.isStacked) {
             return getStackedHighlight(
                 high,
                 set,
@@ -49,17 +49,19 @@ class HorizontalBarHighlighter(chart: BarDataProvider?) : BarHighlighter(chart) 
         if (entries.isEmpty()) return highlights
 
         for (e in entries) {
-            val pixels = mChart!!.getTransformer(
+            val pixels = mChart?.getTransformer(
                 set.axisDependency
-            )!!.getPixelForValues(e.y, e.x)
+            )?.getPixelForValues(e.y, e.x)
 
-            highlights.add(
-                Highlight(
-                    e.x, e.y,
-                    pixels.x.toFloat(), pixels.y.toFloat(),
-                    dataSetIndex, set.axisDependency
+            if (pixels != null) {
+                highlights.add(
+                    Highlight(
+                        e.x, e.y,
+                        pixels.x.toFloat(), pixels.y.toFloat(),
+                        dataSetIndex, set.axisDependency
+                    )
                 )
-            )
+            }
         }
 
         return highlights

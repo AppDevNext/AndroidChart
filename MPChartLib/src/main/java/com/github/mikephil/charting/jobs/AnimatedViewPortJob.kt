@@ -54,7 +54,7 @@ abstract class AnimatedViewPortJob<T : AnimatedViewPortJob<T>>(
     override fun onAnimationEnd(animation: Animator) {
         try {
             recycleSelf()
-        } catch (e: IllegalArgumentException) {
+        } catch (_: IllegalArgumentException) {
             // don't worry about it.
         }
     }
@@ -62,7 +62,7 @@ abstract class AnimatedViewPortJob<T : AnimatedViewPortJob<T>>(
     override fun onAnimationCancel(animation: Animator) {
         try {
             recycleSelf()
-        } catch (e: IllegalArgumentException) {
+        } catch (_: IllegalArgumentException) {
             // don't worry about it.
         }
     }

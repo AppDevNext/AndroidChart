@@ -55,7 +55,7 @@ class PieEntry : Entry {
             Log.i("DEPRECATED", "Pie entries do not have x values")
         }
 
-    public override fun copy(): PieEntry {
+    override fun copy(): PieEntry {
         val e = PieEntry(y, label, data)
         return e
     }

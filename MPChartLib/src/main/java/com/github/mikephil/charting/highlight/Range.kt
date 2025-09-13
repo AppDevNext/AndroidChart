@@ -12,8 +12,7 @@ class Range(var from: Float, var to: Float) {
      * @return
      */
     fun contains(value: Float): Boolean {
-        if (value > from && value <= to) return true
-        else return false
+        return value > from && value <= to
     }
 
     fun isLarger(value: Float): Boolean {

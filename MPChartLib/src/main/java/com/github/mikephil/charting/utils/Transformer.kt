@@ -9,7 +9,6 @@ import com.github.mikephil.charting.interfaces.datasets.ICandleDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet
 import kotlin.Boolean
-import kotlin.FloatArray
 import kotlin.Int
 
 /**
@@ -87,8 +86,8 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
      * @return
      */
     fun generateTransformedValuesScatter(
-        data: IScatterDataSet, phaseX: kotlin.Float,
-        phaseY: kotlin.Float, from: Int, to: Int
+        data: IScatterDataSet, phaseX: Float,
+        phaseY: Float, from: Int, to: Int
     ): FloatArray {
         val count = ((to - from) * phaseX + 1).toInt() * 2
 
@@ -101,13 +100,8 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
         while (j < count) {
             val e = data.getEntryForIndex(j / 2 + from)
 
-            if (e != null) {
-                valuePoints[j] = e.x
-                valuePoints[j + 1] = e.y * phaseY
-            } else {
-                valuePoints[j] = 0f
-                valuePoints[j + 1] = 0f
-            }
+            valuePoints[j] = e.x
+            valuePoints[j + 1] = e.y * phaseY
             j += 2
         }
 
@@ -125,7 +119,7 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
      * @param data
      * @return
      */
-    fun generateTransformedValuesBubble(data: IBubbleDataSet, phaseY: kotlin.Float, from: Int, to: Int): FloatArray {
+    fun generateTransformedValuesBubble(data: IBubbleDataSet, phaseY: Float, from: Int, to: Int): FloatArray {
         val count = (to - from + 1) * 2 // (int) Math.ceil((to - from) * phaseX) * 2;
 
         if (valuePointsForGenerateTransformedValuesBubble.size != count) {
@@ -137,13 +131,8 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
         while (j < count) {
             val e: Entry = data.getEntryForIndex(j / 2 + from)
 
-            if (e != null) {
-                valuePoints[j] = e.x
-                valuePoints[j + 1] = e.y * phaseY
-            } else {
-                valuePoints[j] = 0f
-                valuePoints[j + 1] = 0f
-            }
+            valuePoints[j] = e.x
+            valuePoints[j + 1] = e.y * phaseY
             j += 2
         }
 
@@ -163,7 +152,7 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
      */
     fun generateTransformedValuesLine(
         data: ILineDataSet,
-        phaseX: kotlin.Float, phaseY: kotlin.Float,
+        phaseX: Float, phaseY: Float,
         min: Int, max: Int
     ): FloatArray {
         var count = (((max - min) * phaseX).toInt() + 1) * 2
@@ -178,13 +167,8 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
         while (j < count) {
             val e = data.getEntryForIndex(j / 2 + min)
 
-            if (e != null) {
-                valuePoints[j] = e.x
-                valuePoints[j + 1] = e.y * phaseY
-            } else {
-                valuePoints[j] = 0f
-                valuePoints[j + 1] = 0f
-            }
+            valuePoints[j] = e.x
+            valuePoints[j + 1] = e.y * phaseY
             j += 2
         }
 
@@ -204,7 +188,7 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
      */
     fun generateTransformedValuesCandle(
         data: ICandleDataSet,
-        phaseX: kotlin.Float, phaseY: kotlin.Float, from: Int, to: Int
+        phaseX: Float, phaseY: Float, from: Int, to: Int
     ): FloatArray {
         val count = ((to - from) * phaseX + 1).toInt() * 2
 
@@ -244,9 +228,9 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
      *
      * @param paths
      */
-    fun pathValuesToPixel(paths: MutableList<Path?>) {
+    fun pathValuesToPixel(paths: MutableList<Path>) {
         for (i in paths.indices) {
-            pathValueToPixel(paths.get(i)!!)
+            pathValueToPixel(paths[i])
         }
     }
 
@@ -279,7 +263,7 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
      * @param r
      * @param phaseY
      */
-    fun rectToPixelPhase(r: RectF, phaseY: kotlin.Float) {
+    fun rectToPixelPhase(r: RectF, phaseY: Float) {
         // multiply the height of the rect with the phase
 
         r.top *= phaseY
@@ -290,7 +274,7 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
         offsetMatrix.mapRect(r)
     }
 
-    fun rectToPixelPhaseHorizontal(r: RectF, phaseY: kotlin.Float) {
+    fun rectToPixelPhaseHorizontal(r: RectF, phaseY: Float) {
         // multiply the height of the rect with the phase
 
         r.left *= phaseY
@@ -318,7 +302,7 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
      * @param r
      * @param phaseY
      */
-    fun rectValueToPixelHorizontal(r: RectF, phaseY: kotlin.Float) {
+    fun rectValueToPixelHorizontal(r: RectF, phaseY: Float) {
         // multiply the height of the rect with the phase
 
         r.left *= phaseY
@@ -334,10 +318,10 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
      *
      * @param rects
      */
-    fun rectValuesToPixel(rects: MutableList<RectF?>) {
+    fun rectValuesToPixel(rects: MutableList<RectF>) {
         val m = this.valueToPixelMatrix
 
-        for (i in rects.indices) m.mapRect(rects.get(i))
+        for (i in rects.indices) m.mapRect(rects[i])
     }
 
     protected var mPixelToValueMatrixBuffer: Matrix = Matrix()
@@ -379,13 +363,13 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
      * @param y
      * @return
      */
-    fun getValuesByTouchPoint(x: kotlin.Float, y: kotlin.Float): MPPointD {
+    fun getValuesByTouchPoint(x: Float, y: Float): MPPointD {
         val result: MPPointD = MPPointD.Companion.getInstance(0.0, 0.0)
         getValuesByTouchPoint(x, y, result)
         return result
     }
 
-    fun getValuesByTouchPoint(x: kotlin.Float, y: kotlin.Float, outputPoint: MPPointD) {
+    fun getValuesByTouchPoint(x: Float, y: Float, outputPoint: MPPointD) {
         ptsBuffer[0] = x
         ptsBuffer[1] = y
 
@@ -403,7 +387,7 @@ open class Transformer(protected var mViewPortHandler: ViewPortHandler) {
      * @param y
      * @return
      */
-    fun getPixelForValues(x: kotlin.Float, y: kotlin.Float): MPPointD {
+    fun getPixelForValues(x: Float, y: Float): MPPointD {
         ptsBuffer[0] = x
         ptsBuffer[1] = y
 

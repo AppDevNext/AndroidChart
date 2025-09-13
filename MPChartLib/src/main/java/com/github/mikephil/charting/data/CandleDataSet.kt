@@ -10,7 +10,7 @@ import com.github.mikephil.charting.utils.Utils
  *
  * @author Philipp Jahoda
  */
-class CandleDataSet(yVals: MutableList<CandleEntry>, label: String) : LineScatterCandleRadarDataSet<CandleEntry>(yVals, label), ICandleDataSet {
+open class CandleDataSet(yVals: MutableList<CandleEntry>, label: String) : LineScatterCandleRadarDataSet<CandleEntry>(yVals, label), ICandleDataSet {
     /**
      * the width of the shadow of the candle
      */

@@ -18,6 +18,7 @@ import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import androidx.core.graphics.withClip
 import androidx.core.graphics.withSave
+import kotlin.math.roundToInt
 
 open class XAxisRenderer(
     viewPortHandler: ViewPortHandler,
@@ -38,19 +39,21 @@ open class XAxisRenderer(
         var minLocal = min
         var maxLocal = max
         if (viewPortHandler.contentWidth() > 10 && !viewPortHandler.isFullyZoomedOutX) {
-            val p1 = transformer!!.getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentTop())
-            val p2 = transformer!!.getValuesByTouchPoint(viewPortHandler.contentRight(), viewPortHandler.contentTop())
+            transformer?.let {
+                val p1 = it.getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentTop())
+                val p2 = it.getValuesByTouchPoint(viewPortHandler.contentRight(), viewPortHandler.contentTop())
 
-            if (inverted) {
-                minLocal = p2.x.toFloat()
-                maxLocal = p1.x.toFloat()
-            } else {
-                minLocal = p1.x.toFloat()
-                maxLocal = p2.x.toFloat()
+                if (inverted) {
+                    minLocal = p2.x.toFloat()
+                    maxLocal = p1.x.toFloat()
+                } else {
+                    minLocal = p1.x.toFloat()
+                    maxLocal = p2.x.toFloat()
+                }
+
+                MPPointD.recycleInstance(p1)
+                MPPointD.recycleInstance(p2)
             }
-
-            MPPointD.recycleInstance(p1)
-            MPPointD.recycleInstance(p2)
         }
 
         computeAxisValues(minLocal, maxLocal)
@@ -80,8 +83,8 @@ open class XAxisRenderer(
         )
 
 
-        xAxis.mLabelWidth = Math.round(labelRotatedSize.width)
-        xAxis.mLabelHeight = Math.round(labelRotatedSize.height)
+        xAxis.mLabelWidth = labelRotatedSize.width.roundToInt()
+        xAxis.mLabelHeight = labelRotatedSize.height.roundToInt()
 
         FSize.recycleInstance(labelRotatedSize)
         FSize.recycleInstance(labelSize)
@@ -184,7 +187,7 @@ open class XAxisRenderer(
             }
         }
 
-        transformer!!.pointValuesToPixel(positions)
+        transformer?.pointValuesToPixel(positions)
 
         var i = 0
         while (i < positions.size) {
@@ -228,7 +231,7 @@ open class XAxisRenderer(
     override fun renderGridLines(c: Canvas) {
         if (!xAxis.isDrawGridLinesEnabled || !xAxis.isEnabled) return
 
-        c.withClip(gridClippingRect!!) {
+        c.withClip(gridClippingRect) {
             if (axis.isShowSpecificPositions) {
                 if (mRenderGridLinesBuffer.size != axis.specificPositions.size * 2) {
                     mRenderGridLinesBuffer = FloatArray(xAxis.specificPositions.size * 2)
@@ -254,7 +257,7 @@ open class XAxisRenderer(
                 }
             }
 
-            transformer!!.pointValuesToPixel(positions)
+            transformer?.pointValuesToPixel(positions)
 
             setupGridPaint()
 
@@ -273,7 +276,7 @@ open class XAxisRenderer(
     @JvmField
     protected var mGridClippingRect: RectF = RectF()
 
-    open val gridClippingRect: RectF?
+    open val gridClippingRect: RectF
         get() {
             mGridClippingRect.set(viewPortHandler.contentRect)
             mGridClippingRect.inset(-axis.gridLineWidth, 0f)
@@ -339,7 +342,7 @@ open class XAxisRenderer(
     override fun renderLimitLines(c: Canvas) {
         val limitLines = xAxis.limitLines
 
-        if (limitLines == null || limitLines.size <= 0) return
+        if (limitLines.isEmpty()) return
 
         val position = mRenderLimitLinesBuffer
         position[0] = 0f
@@ -358,7 +361,7 @@ open class XAxisRenderer(
                 position[0] = l.limit
                 position[1] = 0f
 
-                transformer!!.pointValuesToPixel(position)
+                transformer?.pointValuesToPixel(position)
 
                 renderLimitLineLine(c, l, position)
                 renderLimitLineLabel(c, l, position, 2f + l.yOffset)

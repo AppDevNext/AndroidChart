@@ -1,7 +1,6 @@
 package com.github.mikephil.charting.highlight
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency
-import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData
 import com.github.mikephil.charting.data.DataSet.Rounding
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider
@@ -22,10 +21,10 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider?>(
     /**
      * buffer for storing previously highlighted values
      */
-    protected var mHighlightBuffer: MutableList<Highlight> = ArrayList<Highlight>()
+    protected var mHighlightBuffer: MutableList<Highlight> = ArrayList()
 
     override fun getHighlight(x: Float, y: Float): Highlight? {
-        val pos = getValsForTouch(x, y)
+        val pos = getValsForTouch(x, y) ?: return null
         val xVal = pos.x.toFloat()
         MPPointD.Companion.recycleInstance(pos)
 
@@ -41,10 +40,10 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider?>(
      * @param y
      * @return
      */
-    protected fun getValsForTouch(x: Float, y: Float): MPPointD {
+    protected fun getValsForTouch(x: Float, y: Float): MPPointD? {
         // take any transformer to determine the x-axis value
 
-        val pos = mChart!!.getTransformer(AxisDependency.LEFT)!!.getValuesByTouchPoint(x, y)
+        val pos = mChart?.getTransformer(AxisDependency.LEFT)?.getValuesByTouchPoint(x, y)
         return pos
     }
 
@@ -86,7 +85,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider?>(
         var distance = Float.Companion.MAX_VALUE
 
         for (i in closestValues.indices) {
-            val high = closestValues.get(i)
+            val high = closestValues[i]
 
             if (high.axis == axis) {
                 val tempDistance = abs(getHighlightPos(high) - pos)
@@ -125,7 +124,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider?>(
             val dataSet = data.getDataSetByIndex(i)
 
             // don't include DataSets that cannot be highlighted
-            if (!dataSet!!.isHighlightEnabled) {
+            if (!dataSet.isHighlightEnabled) {
                 i++
                 continue
             }
@@ -163,7 +162,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider?>(
         for (e in entries) {
             val pixels = mChart!!.getTransformer(
                 set.axisDependency
-            )!!.getPixelForValues(e.x, e.y)
+            ).getPixelForValues(e.x, e.y)
 
             highlights.add(
                 Highlight(

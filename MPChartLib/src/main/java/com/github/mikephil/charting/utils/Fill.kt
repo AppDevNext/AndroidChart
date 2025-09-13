@@ -8,6 +8,7 @@ import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.drawable.Drawable
 import kotlin.math.floor
+import androidx.core.graphics.withClip
 
 open class Fill {
     enum class Type {
@@ -101,11 +102,13 @@ open class Fill {
         }
 
     private fun calculateFinalColor() {
-        if (mColor == null) {
+        val color = mColor
+
+        if (color == null) {
             mFinalColor = null
         } else {
-            val alpha = floor(((mColor!! shr 24) / 255.0) * (mAlpha / 255.0) * 255.0).toInt()
-            mFinalColor = (alpha shl 24) or (mColor!! and 0xffffff)
+            val alpha = floor(((color shr 24) / 255.0) * (mAlpha / 255.0) * 255.0).toInt()
+            mFinalColor = (alpha shl 24) or (color and 0xffffff)
         }
     }
 
@@ -118,69 +121,60 @@ open class Fill {
             Type.EMPTY -> return
 
             Type.COLOR -> {
-                if (mFinalColor == null) {
+                val finalColor = mFinalColor
+                if (finalColor == null) {
                     return
                 }
 
                 if (this.isClipPathSupported) {
-                    val save = c.save()
-
-                    c.clipRect(left, top, right, bottom)
-                    c.drawColor(mFinalColor!!)
-
-                    c.restoreToCount(save)
+                    c.withClip(left, top, right, bottom) {
+                        c.drawColor(finalColor)
+                    }
                 } else {
                     // save
-                    val previous = paint.getStyle()
-                    val previousColor = paint.getColor()
+                    val previous = paint.style
+                    val previousColor = paint.color
 
                     // set
-                    paint.setStyle(Paint.Style.FILL)
-                    paint.setColor(mFinalColor!!)
+                    paint.style = Paint.Style.FILL
+                    paint.setColor(finalColor)
 
                     c.drawRoundRect(RectF(left, top, right, bottom), mRoundedBarRadius, mRoundedBarRadius, paint)
 
                     // restore
                     paint.setColor(previousColor)
-                    paint.setStyle(previous)
+                    paint.style = previous
                 }
             }
 
             Type.LINEAR_GRADIENT -> {
-                if (this.gradientColors == null) {
+                val gradientColors = this.gradientColors
+                if (gradientColors == null) {
                     return
                 }
 
                 val gradient = LinearGradient(
-                    (if (gradientDirection == Direction.RIGHT)
-                        right
-                    else
-                        if (gradientDirection == Direction.LEFT)
-                            left
-                        else
-                            left).toInt().toFloat(),
-                    (if (gradientDirection == Direction.UP)
-                        bottom
-                    else
-                        if (gradientDirection == Direction.DOWN)
-                            top
-                        else
-                            top).toInt().toFloat(),
-                    (if (gradientDirection == Direction.RIGHT)
-                        left
-                    else
-                        if (gradientDirection == Direction.LEFT)
-                            right
-                        else
-                            left).toInt().toFloat(),
-                    (if (gradientDirection == Direction.UP)
-                        top
-                    else
-                        if (gradientDirection == Direction.DOWN)
-                            bottom
-                        else
-                            top).toInt().toFloat(),
-                    this.gradientColors!!,
+                    (when (gradientDirection) {
+                        Direction.RIGHT -> right
+                        Direction.LEFT -> left
+                        else -> left
+                    }).toInt().toFloat(),
+                    (when (gradientDirection) {
+                        Direction.UP -> bottom
+                        Direction.DOWN -> top
+                        else -> top
+                    }).toInt().toFloat(),
+                    (when (gradientDirection) {
+                        Direction.RIGHT -> left
+                        Direction.LEFT -> right
+                        else -> left
+                    }).toInt().toFloat(),
+                    (when (gradientDirection) {
+                        Direction.UP -> top
+                        Direction.DOWN -> bottom
+                        else -> top
+                    }).toInt().toFloat(),
+                    gradientColors,
                     this.gradientPositions,
                     Shader.TileMode.MIRROR
                 )
@@ -191,12 +185,8 @@ open class Fill {
             }
 
             Type.DRAWABLE -> {
-                if (mDrawable == null) {
-                    return
-                }
-
-                mDrawable!!.setBounds(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
-                mDrawable!!.draw(c)
+                mDrawable?.setBounds(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
+                mDrawable?.draw(c)
             }
         }
     }
@@ -206,48 +196,49 @@ open class Fill {
         clipRect: RectF?
     ) {
         when (this.type) {
-            Type.EMPTY -> return
+            Type.EMPTY -> {
+                return
+            }
 
             Type.COLOR -> {
-                if (mFinalColor == null) {
+                val finalColor = mFinalColor
+                if (finalColor == null) {
                     return
                 }
 
                 if (clipRect != null && this.isClipPathSupported) {
-                    val save = c.save()
-
-                    c.clipPath(path)
-                    c.drawColor(mFinalColor!!)
-
-                    c.restoreToCount(save)
+                    c.withClip(path) {
+                        c.drawColor(finalColor)
+                    }
                 } else {
                     // save
-                    val previous = paint.getStyle()
-                    val previousColor = paint.getColor()
+                    val previous = paint.style
+                    val previousColor = paint.color
 
                     // set
-                    paint.setStyle(Paint.Style.FILL)
-                    paint.setColor(mFinalColor!!)
+                    paint.style = Paint.Style.FILL
+                    paint.setColor(finalColor)
 
                     c.drawPath(path, paint)
 
                     // restore
                     paint.setColor(previousColor)
-                    paint.setStyle(previous)
+                    paint.style = previous
                 }
             }
 
             Type.LINEAR_GRADIENT -> {
-                if (this.gradientColors == null) {
+                val gradientColors = this.gradientColors
+                if (gradientColors == null) {
                     return
                 }
 
                 val gradient = LinearGradient(
                     0f,
                     0f,
-                    c.getWidth().toFloat(),
-                    c.getHeight().toFloat(),
-                    this.gradientColors!!,
+                    c.width.toFloat(),
+                    c.height.toFloat(),
+                    gradientColors,
                     this.gradientPositions,
                     Shader.TileMode.MIRROR
                 )
@@ -267,13 +258,13 @@ open class Fill {
                 val save = c.save()
                 c.clipPath(path)
 
-                mDrawable!!.setBounds(
-                    if (clipRect == null) 0 else clipRect.left.toInt(),
-                    if (clipRect == null) 0 else clipRect.top.toInt(),
-                    if (clipRect == null) c.getWidth() else clipRect.right.toInt(),
-                    if (clipRect == null) c.getHeight() else clipRect.bottom.toInt()
+                mDrawable?.setBounds(
+                    clipRect?.left?.toInt() ?: 0,
+                    clipRect?.top?.toInt() ?: 0,
+                    clipRect?.right?.toInt() ?: c.width,
+                    clipRect?.bottom?.toInt() ?: c.height
                 )
-                mDrawable!!.draw(c)
+                mDrawable?.draw(c)
 
                 c.restoreToCount(save)
             }

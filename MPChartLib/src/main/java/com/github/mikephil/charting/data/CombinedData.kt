@@ -9,7 +9,6 @@ import java.lang.Float
 import kotlin.Boolean
 import kotlin.Deprecated
 import kotlin.Int
-import kotlin.unaryMinus
 
 /**
  * Data object that allows the combination of Line-, Bar-, Scatter-, Bubble- and
@@ -72,6 +71,7 @@ class CombinedData : BarLineScatterCandleBubbleData<Entry, IBarLineScatterCandle
         for (data in allData) {
             data.calcMinMax()
 
+            @Suppress("UNCHECKED_CAST")
             dataSets.addAll(data.dataSets as Collection<IBarLineScatterCandleBubbleDataSet<Entry>>)
 
             if (data.yMax > yMax) yMax = data.yMax
@@ -121,11 +121,11 @@ class CombinedData : BarLineScatterCandleBubbleData<Entry, IBarLineScatterCandle
     fun getDataByIndex(index: Int) = this.allData[index]
 
     override fun notifyDataChanged() {
-        if (this.lineData != null) lineData!!.notifyDataChanged()
-        if (this.barData != null) barData!!.notifyDataChanged()
-        if (this.candleData != null) candleData!!.notifyDataChanged()
-        if (this.scatterData != null) scatterData!!.notifyDataChanged()
-        if (this.bubbleData != null) bubbleData!!.notifyDataChanged()
+        lineData?.notifyDataChanged()
+        barData?.notifyDataChanged()
+        candleData?.notifyDataChanged()
+        scatterData?.notifyDataChanged()
+        bubbleData?.notifyDataChanged()
 
         calcMinMax() // recalculate everything
     }
@@ -145,7 +145,7 @@ class CombinedData : BarLineScatterCandleBubbleData<Entry, IBarLineScatterCandle
 
         // The value of the highlighted entry could be NaN -
         //   if we are not interested in highlighting a specific value.
-        val entries = data.getDataSetByIndex(highlight.dataSetIndex)!!.getEntriesForXValue(highlight.x)
+        val entries = data.getDataSetByIndex(highlight.dataSetIndex).getEntriesForXValue(highlight.x)
         for (entry in entries) if (entry.y == highlight.y ||
             Float.isNaN(highlight.y)
         ) return entry
@@ -173,7 +173,7 @@ class CombinedData : BarLineScatterCandleBubbleData<Entry, IBarLineScatterCandle
         return this.allData.indexOf(data)
     }
 
-    override fun removeDataSet(d: IDataSet<out Entry>?): Boolean {
+    override fun removeDataSet(d: IDataSet<Entry>?): Boolean {
         val datas = this.allData
 
         var success = false

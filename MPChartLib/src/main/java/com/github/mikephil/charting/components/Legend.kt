@@ -68,7 +68,7 @@ class Legend() : ComponentBase() {
     /**
      * The legend entries array
      */
-    var entries: Array<LegendEntry> = arrayOf<LegendEntry>()
+    var entries: Array<LegendEntry> = arrayOf()
         private set
 
     /**
@@ -446,16 +446,16 @@ class Legend() : ComponentBase() {
     /**
      * the total width of the legend (needed width space)
      */
-    var mNeededWidth: kotlin.Float = 0f
+    var mNeededWidth: Float = 0f
 
     /**
      * the total height of the legend (needed height space)
      */
-    var mNeededHeight: kotlin.Float = 0f
+    var mNeededHeight: Float = 0f
 
-    var mTextHeightMax: kotlin.Float = 0f
+    var mTextHeightMax: Float = 0f
 
-    var mTextWidthMax: kotlin.Float = 0f
+    var mTextWidthMax: Float = 0f
 
     /**
      * If this is set, then word wrapping the legend is enabled. This means the
@@ -604,7 +604,7 @@ class Legend() : ComponentBase() {
                     if (label != null) {
                         calculatedLabelSizes.add(Utils.calcTextSize(labelpaint, label))
                         requiredWidth += if (drawingForm) formToTextSpace + formSize else 0f
-                        requiredWidth += calculatedLabelSizes[i]!!.width
+                        requiredWidth += calculatedLabelSizes[i].width
                     } else {
                         calculatedLabelSizes.add(FSize.Companion.getInstance(0f, 0f))
                         requiredWidth += if (drawingForm) formSize else 0f
@@ -634,12 +634,10 @@ class Legend() : ComponentBase() {
                             maxLineWidth = max(maxLineWidth, currentLineWidth)
 
                             // Start a new line
-                            calculatedLabelBreakPoints.set(
-                                if (stackedStartIndex > -1)
-                                    stackedStartIndex
-                                else
-                                    i, true
-                            )
+                            calculatedLabelBreakPoints[if (stackedStartIndex > -1)
+                                stackedStartIndex
+                            else
+                                i] = true
                             currentLineWidth = requiredWidth
                         }
 
@@ -657,7 +655,7 @@ class Legend() : ComponentBase() {
                 mNeededWidth = maxLineWidth
                 mNeededHeight = (labelLineHeight
                         * (calculatedLineSizes.size).toFloat()
-                        + labelLineSpacing * (if (calculatedLineSizes.size == 0)
+                        + labelLineSpacing * (if (calculatedLineSizes.isEmpty())
                     0
                 else
                     (calculatedLineSizes.size - 1)).toFloat())

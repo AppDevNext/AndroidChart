@@ -47,7 +47,7 @@ open class LegendRenderer(
 
             // loop for building up the colors and labels used in the legend
             for (i in 0..<data.dataSetCount) {
-                val dataSet = data.getDataSetByIndex(i) ?: continue
+                val dataSet = data.getDataSetByIndex(i)
 
                 val clrs = dataSet.colors
                 val entryCount = dataSet.entryCount
@@ -99,7 +99,7 @@ open class LegendRenderer(
                     while (j < clrs.size && j < entryCount) {
                         computedEntries.add(
                             LegendEntry(
-                                pds.getEntryForIndex(j)?.label,
+                                pds.getEntryForIndex(j).label,
                                 dataSet.form,
                                 dataSet.formSize,
                                 dataSet.formLineWidth,
@@ -155,7 +155,7 @@ open class LegendRenderer(
                         val label = if (j < clrs.size - 1 && j < entryCount - 1) {
                             null
                         } else { // add label to the last entry
-                            data.getDataSetByIndex(i)?.label
+                            data.getDataSetByIndex(i).label
                         }
 
                         computedEntries.add(
@@ -314,7 +314,7 @@ open class LegendRenderer(
                             if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= it.width
                         }
 
-                        drawLabel(c, posX, posY + labelLineHeight, e.label!!)
+                        drawLabel(c, posX, posY + labelLineHeight, e.label)
 
                         calculatedLabelSizes[i].let {
                             if (direction == LegendDirection.LEFT_TO_RIGHT) posX += it.width
@@ -381,10 +381,10 @@ open class LegendRenderer(
                         if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= Utils.calcTextWidth(labelPaint, e.label).toFloat()
 
                         if (!wasStacked) {
-                            drawLabel(c, posX, posY + labelLineHeight, e.label!!)
+                            drawLabel(c, posX, posY + labelLineHeight, e.label)
                         } else {
                             posY += labelLineHeight + labelLineSpacing
-                            drawLabel(c, posX, posY + labelLineHeight, e.label!!)
+                            drawLabel(c, posX, posY + labelLineHeight, e.label)
                         }
 
                         // make a step down
@@ -492,7 +492,9 @@ open class LegendRenderer(
      * @param y
      * @param label the label to draw
      */
-    protected fun drawLabel(c: Canvas, x: Float, y: Float, label: String) {
-        c.drawText(label, x, y, labelPaint)
+    protected fun drawLabel(c: Canvas, x: Float, y: Float, label: String?) {
+        label?.let {
+            c.drawText(label, x, y, labelPaint)
+        }
     }
 }

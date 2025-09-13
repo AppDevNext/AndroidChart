@@ -26,15 +26,14 @@ open class FSize : Poolable<FSize> {
         this.height = height
     }
 
-    override fun equals(obj: Any?): Boolean {
-        if (obj == null) {
+    override fun equals(other: Any?): Boolean {
+        if (other == null) {
             return false
         }
-        if (this === obj) {
+        if (this === other) {
             return true
         }
-        if (obj is FSize) {
-            val other = obj
+        if (other is FSize) {
             return width == other.width && height == other.height
         }
         return false
@@ -70,7 +69,7 @@ open class FSize : Poolable<FSize> {
             pool.recycle(instance)
         }
 
-        fun recycleInstances(instances: MutableList<FSize?>) {
+        fun recycleInstances(instances: MutableList<FSize>) {
             pool.recycle(instances)
         }
     }

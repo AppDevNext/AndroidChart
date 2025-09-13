@@ -5,7 +5,6 @@ import android.view.View
 import com.github.mikephil.charting.charts.BarLineChartBase
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.utils.ObjectPool
-import com.github.mikephil.charting.utils.ObjectPool.Poolable
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.ViewPortHandler
 

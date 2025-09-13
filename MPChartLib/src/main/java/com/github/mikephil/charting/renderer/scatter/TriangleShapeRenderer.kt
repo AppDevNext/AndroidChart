@@ -12,7 +12,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler
  * Created by wajdic on 15/06/2016.
  * Created at Time 09:08
  */
-class TriangleShapeRenderer : IShapeRenderer {
+open class TriangleShapeRenderer : IShapeRenderer {
     protected var mTrianglePathBuffer: Path = Path()
 
     override fun renderShape(

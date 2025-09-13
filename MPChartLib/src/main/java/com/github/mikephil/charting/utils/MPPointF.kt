@@ -63,7 +63,7 @@ class MPPointF : Poolable<MPPointF> {
             pool.recycle(instance)
         }
 
-        fun recycleInstances(instances: MutableList<MPPointF?>) {
+        fun recycleInstances(instances: MutableList<MPPointF>) {
             pool.recycle(instances)
         }
 
@@ -81,7 +81,7 @@ class MPPointF : Poolable<MPPointF> {
              * Return an array of rectangles of the specified size.
              */
             override fun newArray(size: Int): Array<MPPointF?> {
-                return arrayOfNulls<MPPointF>(size)
+                return arrayOfNulls(size)
             }
         }
     }

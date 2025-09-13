@@ -32,6 +32,6 @@ class RadarData : ChartData<RadarEntry, IRadarDataSet> {
     }
 
     override fun getEntryForHighlight(highlight: Highlight): RadarEntry? {
-        return getDataSetByIndex(highlight.dataSetIndex)!!.getEntryForIndex(highlight.x.toInt())
+        return getDataSetByIndex(highlight.dataSetIndex).getEntryForIndex(highlight.x.toInt())
     }
 }

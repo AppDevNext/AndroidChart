@@ -1,7 +1,5 @@
 package com.github.mikephil.charting.charts
 
-import android.animation.ValueAnimator
-import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
@@ -20,6 +18,8 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.accessibility.AccessibilityEvent
+import androidx.core.graphics.createBitmap
+import androidx.core.view.size
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.animation.Easing.EasingFunction
 import com.github.mikephil.charting.components.Description
@@ -49,8 +49,6 @@ import java.io.IOException
 import java.io.OutputStream
 import kotlin.math.abs
 import kotlin.math.max
-import androidx.core.graphics.createBitmap
-import androidx.core.view.size
 
 /**
  * Baseclass of all Chart-Views.
@@ -71,9 +69,11 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      */
     var isLogEnabled: Boolean = false
 
+    @Suppress("UsePropertyAccessSyntax")
     override val width: Int
         get() = getWidth()
 
+    @Suppress("UsePropertyAccessSyntax")
     override val height: Int
         get() = getHeight()
 
@@ -123,18 +123,18 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * paint object used for drawing the description text in the bottom right
      * corner of the chart
      */
-    protected var mDescPaint: Paint? = null
+    protected var mDescPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     /**
      * paint object for drawing the information text when there are no values in
      * the chart
      */
-    protected var mInfoPaint: Paint? = null
+    protected var mInfoPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     /**
      * the object representing the labels on the x-axis
      */
-    protected var mXAxis: XAxis? = null
+    protected val mXAxis: XAxis = XAxis()
 
     /**
      * if true, touch gestures are enabled on the chart
@@ -151,7 +151,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
     /**
      * the object responsible for representing the description text
      */
-    var description: Description? = null
+    var description: Description = Description()
 
     /**
      * Returns the Legend object of the chart. This method can be used to get an
@@ -161,8 +161,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
     /**
      * the legend object containing all data associated with the legend
      */
-    var legend: Legend? = null
-        protected set
+    val legend: Legend = Legend()
 
     /**
      * listener that is called when a value on the chart is selected
@@ -189,21 +188,6 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
     var onChartGestureListener: OnChartGestureListener? = null
 
     /**
-     * Returns the renderer object responsible for rendering / drawing the
-     * Legend.
-     */
-    var legendRenderer: LegendRenderer? = null
-        protected set
-
-    /**
-     * object responsible for rendering the data
-     */
-    protected var mRenderer: DataRenderer? = null
-
-    var highlighter: IHighlighter? = null
-        protected set
-
-    /**
      * Returns the ViewPortHandler of the chart that is responsible for the
      * content area of the chart and its offsets and dimensions.
      */
@@ -211,6 +195,20 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * object that manages the bounds and drawing constraints of the chart
      */
     var viewPortHandler: ViewPortHandler = ViewPortHandler()
+        protected set
+
+    /**
+     * Returns the renderer object responsible for rendering / drawing the
+     * Legend.
+     */
+    val legendRenderer: LegendRenderer = LegendRenderer(this.viewPortHandler, this.legend)
+
+    /**
+     * object responsible for rendering the data
+     */
+    protected var mRenderer: DataRenderer? = null
+
+    var highlighter: IHighlighter? = null
         protected set
 
     /**
@@ -264,19 +262,9 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
         Utils.init(context)
         mMaxHighlightDistance = Utils.convertDpToPixel(500f)
 
-        this.description = Description()
-        this.legend = Legend()
-
-        this.legendRenderer = LegendRenderer(this.viewPortHandler, this.legend!!)
-
-        mXAxis = XAxis()
-
-        mDescPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-
-        mInfoPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        mInfoPaint!!.setColor(Color.rgb(247, 189, 51)) // orange
-        mInfoPaint!!.setTextAlign(Align.CENTER)
-        mInfoPaint!!.setTextSize(Utils.convertDpToPixel(12f))
+        mInfoPaint.setColor(Color.rgb(247, 189, 51)) // orange
+        mInfoPaint.textAlign = Align.CENTER
+        mInfoPaint.textSize = Utils.convertDpToPixel(12f)
 
         if (this.isLogEnabled) {
             Log.i("", "Chart.init()")
@@ -350,7 +338,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
         mData = null
         mOffsetsCalculated = false
         this.highlighted = null
-        mChartTouchListener!!.setLastHighlighted(null)
+        mChartTouchListener?.setLastHighlighted(null)
         invalidate()
     }
 
@@ -359,7 +347,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * chart by calling invalidate().
      */
     fun clearValues() {
-        mData!!.clearValues()
+        mData?.clearValues()
         invalidate()
     }
 
@@ -369,11 +357,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
          * null or contains no entries).
          */
         get() {
-            if (mData == null) {
-                return true
-            } else {
-                return mData!!.entryCount <= 0
-            }
+            return mData?.let { it.entryCount <= 0 } ?: true
         }
 
     /**
@@ -401,12 +385,10 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * drawn in the chart (if enabled), and creates the default-value-formatter
      */
     protected fun setupDefaultFormatter(min: Float, max: Float) {
-        val reference: Float
-
-        if (mData == null || mData!!.entryCount < 2) {
-            reference = max(abs(min), abs(max))
+        val reference = if (mData.let { it != null && it.entryCount < 2 }) {
+            max(abs(min), abs(max))
         } else {
-            reference = abs(max - min)
+            abs(max - min)
         }
 
         val digits = Utils.getDecimals(reference)
@@ -429,18 +411,18 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
             if (hasText) {
                 val pt = this.center
 
-                when (mInfoPaint!!.textAlign) {
+                when (mInfoPaint.textAlign) {
                     Align.LEFT -> {
                         pt.x = 0f
-                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint!!)
+                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint)
                     }
 
                     Align.RIGHT -> {
                         pt.x *= 2.0.toFloat()
-                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint!!)
+                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint)
                     }
 
-                    else -> canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint!!)
+                    else -> canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint)
                 }
             }
 
@@ -459,27 +441,27 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
     protected fun drawDescription(c: Canvas) {
         // check if description should be drawn
 
-        if (this.description != null && description!!.isEnabled) {
-            val position = description!!.position
+        if (description.isEnabled) {
+            val position = description.position
 
-            mDescPaint!!.setTypeface(description!!.typeface)
-            mDescPaint!!.textSize = description!!.textSize
-            mDescPaint!!.setColor(description!!.textColor)
-            mDescPaint!!.textAlign = description!!.textAlign
+            mDescPaint.setTypeface(description.typeface)
+            mDescPaint.textSize = description.textSize
+            mDescPaint.setColor(description.textColor)
+            mDescPaint.textAlign = description.textAlign
 
             val x: Float
             val y: Float
 
             // if no position specified, draw on default position
             if (position == null) {
-                x = width - viewPortHandler.offsetRight() - description!!.xOffset
-                y = height - viewPortHandler.offsetBottom() - description!!.yOffset
+                x = width - viewPortHandler.offsetRight() - description.xOffset
+                y = height - viewPortHandler.offsetBottom() - description.yOffset
             } else {
                 x = position.x
                 y = position.y
             }
 
-            c.drawText(description!!.text!!, x, y, mDescPaint!!)
+            c.drawText(description.text, x, y, mDescPaint)
         }
     }
 
@@ -516,7 +498,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * of zero or if the first object is null.
      */
     fun valuesToHighlight(): Boolean {
-        return this.highlighted != null && highlighted!!.isNotEmpty()
+        return !highlighted.isNullOrEmpty()
     }
 
     /**
@@ -524,9 +506,9 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      */
     protected fun setLastHighlighted(highs: Array<Highlight>?) {
         if (highs == null || highs.isEmpty()) {
-            mChartTouchListener!!.setLastHighlighted(null)
+            mChartTouchListener?.setLastHighlighted(null)
         } else {
-            mChartTouchListener!!.setLastHighlighted(highs[0])
+            mChartTouchListener?.setLastHighlighted(highs[0])
         }
     }
 
@@ -630,7 +612,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      */
     @JvmOverloads
     fun highlightValue(x: Float, y: Float, dataSetIndex: Int, dataIndex: Int = -1, callListener: Boolean = true) {
-        if (dataSetIndex < 0 || dataSetIndex >= mData!!.dataSetCount) {
+        if (dataSetIndex < 0 || mData.let { it != null && dataSetIndex >= it.dataSetCount }) {
             highlightValue(null, callListener)
         } else {
             highlightValue(Highlight(x, y, dataSetIndex, dataIndex), callListener)
@@ -676,17 +658,17 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
             this.highlighted = null
         } else {
             if (this.isLogEnabled) {
-                Log.i(LOG_TAG, "Highlighted: " + high)
+                Log.i(LOG_TAG, "Highlighted: $high")
             }
 
-            e = mData!!.getEntryForHighlight(high)
+            e = mData?.getEntryForHighlight(high)
             if (e == null) {
                 this.highlighted = null
                 high = null
             } else {
                 // set the indices to highlight
 
-                this.highlighted = arrayOf<Highlight>(high)
+                this.highlighted = arrayOf(high)
             }
         }
 
@@ -694,10 +676,10 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
 
         if (callListener && mSelectionListener != null) {
             if (!valuesToHighlight()) {
-                mSelectionListener!!.onNothingSelected()
+                mSelectionListener?.onNothingSelected()
             } else {
                 // notify the listener
-                mSelectionListener!!.onValueSelected(e, high)
+                mSelectionListener?.onValueSelected(e, high)
             }
         }
 
@@ -715,15 +697,15 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
             Log.e(LOG_TAG, "Can't select by touch. No data set.")
             return null
         } else {
-            return this.highlighter!!.getHighlight(x, y)
+            return this.highlighter?.getHighlight(x, y)
         }
     }
 
-    var onTouchListener: ChartTouchListener<*>
+    var onTouchListener: ChartTouchListener<*>?
         /**
          * Returns an instance of the currently active touch listener.
          */
-        get() = mChartTouchListener!!
+        get() = mChartTouchListener
         /**
          * Set a new (e.g. custom) ChartTouchListener NOTE: make sure to
          * setTouchEnabled(true); if you need touch gestures on the chart
@@ -749,7 +731,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
     /**
      * the view that represents the marker
      */
-    var marker: MutableList<IMarker>? = ArrayList()
+    var marker: MutableList<IMarker> = ArrayList()
         protected set
 
     /**
@@ -758,21 +740,24 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
     protected open fun drawMarkers(canvas: Canvas?) {
         // if there is no marker view or drawing marker is disabled
 
-        if (this.marker == null || !this.isDrawMarkersEnabled || !valuesToHighlight()) {
+        if (!this.isDrawMarkersEnabled || !valuesToHighlight()) {
             return
         }
 
-        for (i in highlighted!!.indices) {
-            val highlight = this.highlighted!![i]
+        val highlighted = highlighted ?: return
+        val data = mData ?: return
+
+        for (i in highlighted.indices) {
+            val highlight = highlighted[i]
 
             // When changing data sets and calling animation functions, sometimes an erroneous highlight is generated
             // on the dataset that is removed. Null check to prevent crash
-            val set = mData!!.getDataSetByIndex(highlight.dataSetIndex)
-            if (set == null || !set.isVisible) {
+            val set = data.getDataSetByIndex(highlight.dataSetIndex)
+            if (!set.isVisible) {
                 continue
             }
 
-            val e = mData!!.getEntryForHighlight(highlight)
+            val e = data.getEntryForHighlight(highlight)
 
             // make sure entry not null before using it
             if (e == null) {
@@ -780,7 +765,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
             }
             val entryIndex = set.getEntryIndex(e)
 
-            if (entryIndex > set.entryCount * mAnimator!!.phaseX) {
+            if (entryIndex > set.entryCount * mAnimator.phaseX) {
                 continue
             }
 
@@ -792,9 +777,9 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
             }
 
             // callbacks to update the content
-            if (!marker!!.isEmpty()) {
-                val markerIndex = i % marker!!.size
-                val markerItem = marker!!.get(markerIndex)
+            if (!marker.isEmpty()) {
+                val markerIndex = i % marker.size
+                val markerItem = marker[markerIndex]
                 markerItem.refreshContent(e, highlight)
 
                 // draw the marker
@@ -815,7 +800,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
         /**
          * Returns the animator responsible for animating chart values.
          */
-        get() = mAnimator!!
+        get() = mAnimator
 
     var dragDecelerationFrictionCoef: Float
         /**
@@ -851,7 +836,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * @param easingY a custom easing function to be used on the animation phase
      */
     fun animateXY(durationMillisX: Int, durationMillisY: Int, easingX: EasingFunction?, easingY: EasingFunction?) {
-        mAnimator!!.animateXY(durationMillisX, durationMillisY, easingX, easingY)
+        mAnimator.animateXY(durationMillisX, durationMillisY, easingX, easingY)
     }
 
     /**
@@ -863,7 +848,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * @param easing a custom easing function to be used on the animation phase
      */
     fun animateXY(durationMillisX: Int, durationMillisY: Int, easing: EasingFunction?) {
-        mAnimator!!.animateXY(durationMillisX, durationMillisY, easing)
+        mAnimator.animateXY(durationMillisX, durationMillisY, easing)
     }
 
     /**
@@ -875,7 +860,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * @param easing a custom easing function to be used on the animation phase
      */
     fun animateX(durationMillis: Int, easing: EasingFunction?) {
-        mAnimator!!.animateX(durationMillis, easing)
+        mAnimator.animateX(durationMillis, easing)
     }
 
     /**
@@ -887,7 +872,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * @param easing a custom easing function to be used on the animation phase
      */
     fun animateY(durationMillis: Int, easing: EasingFunction?) {
-        mAnimator!!.animateY(durationMillis, easing)
+        mAnimator.animateY(durationMillis, easing)
     }
 
     /**
@@ -897,7 +882,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     fun animateX(durationMillis: Int) {
-        mAnimator!!.animateX(durationMillis)
+        mAnimator.animateX(durationMillis)
     }
 
     /**
@@ -907,7 +892,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     fun animateY(durationMillis: Int) {
-        mAnimator!!.animateY(durationMillis)
+        mAnimator.animateY(durationMillis)
     }
 
     /**
@@ -917,7 +902,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * ONLY WORK FOR API LEVEL 11 (Android 3.0.x) AND HIGHER.
      */
     fun animateXY(durationMillisX: Int, durationMillisY: Int) {
-        mAnimator!!.animateXY(durationMillisX, durationMillisY)
+        mAnimator.animateXY(durationMillisX, durationMillisY)
     }
 
 
@@ -927,7 +912,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
          * acquire the XAxis object and modify it (e.g. change the position of the
          * labels, styling, etc.)
          */
-        get() = mXAxis!!
+        get() = mXAxis
 
     /**
      * Returns the default IValueFormatter that has been determined by the chart
@@ -943,26 +928,26 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
         this.mSelectionListener = l
     }
 
-    val yMax: Float
+    val yMax: Float?
         /**
          * returns the current y-max value across all DataSets
          */
-        get() = mData!!.yMax
+        get() = mData?.yMax
 
-    val yMin: Float
+    val yMin: Float?
         /**
          * returns the current y-min value across all DataSets
          */
-        get() = mData!!.yMin
+        get() = mData?.yMin
 
     override val xChartMax: Float
-        get() = mXAxis!!.mAxisMaximum
+        get() = mXAxis.mAxisMaximum
 
     override val xChartMin: Float
-        get() = mXAxis!!.axisMinimum
+        get() = mXAxis.axisMinimum
 
     override val xRange: Float
-        get() = mXAxis!!.mAxisRange
+        get() = mXAxis.mAxisRange
 
     val center: MPPointF
         /**
@@ -1050,21 +1035,21 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * Sets the color of the no data text.
      */
     fun setNoDataTextColor(color: Int) {
-        mInfoPaint!!.setColor(color)
+        mInfoPaint.setColor(color)
     }
 
     /**
      * Sets the typeface to be used for the no data text.
      */
     fun setNoDataTextTypeface(tf: Typeface?) {
-        mInfoPaint!!.setTypeface(tf)
+        mInfoPaint.setTypeface(tf)
     }
 
     /**
      * alignment of the no data text
      */
     fun setNoDataTextAlignment(align: Align?) {
-        mInfoPaint!!.textAlign = align
+        mInfoPaint.textAlign = align
     }
 
     /**
@@ -1075,7 +1060,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
         this.mTouchEnabled = enabled
     }
 
-    fun setMarkers(marker: MutableList<IMarker>?) {
+    fun setMarkers(marker: MutableList<IMarker>) {
         this.marker = marker
     }
 
@@ -1083,12 +1068,12 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * sets the marker that is displayed when a value is clicked on the chart
      */
     fun setMarker(marker: IMarker?) {
-        setMarkers(marker?.let { mutableListOf(marker) })
+        setMarkers(marker?.let { mutableListOf(it) } ?: mutableListOf())
     }
 
     @Deprecated("")
     fun setMarkerView(v: IMarker?) {
-        setMarker(v)
+        v?.let { setMarker(it) } ?: setMarkers(mutableListOf())
     }
 
     @get:Deprecated("")
@@ -1238,7 +1223,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
 
         val stream: OutputStream?
         try {
-            stream = FileOutputStream(Environment.getExternalStorageDirectory().getPath() + pathOnSD + "/" + title + ".png")
+            stream = FileOutputStream(Environment.getExternalStorageDirectory().path + pathOnSD + "/" + title + ".png")
 
             /*
 			 * Write bitmap to file using JPEG or PNG and 40% quality hint for
@@ -1360,7 +1345,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
         values.put(MediaStore.Images.Media.DATA, filePath)
         values.put(MediaStore.Images.Media.SIZE, size)
 
-        return getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) != null
+        return context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) != null
     }
 
     /**
@@ -1383,7 +1368,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
     /**
      * tasks to be done after the view is setup
      */
-    var jobs: ArrayList<Runnable?> = ArrayList<Runnable?>()
+    var jobs: ArrayList<Runnable?> = ArrayList()
         protected set
 
     fun removeViewportJob(job: Runnable?) {
@@ -1481,8 +1466,8 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * Link: http://stackoverflow.com/a/6779164/1590502
      */
     private fun unbindDrawables(view: View) {
-        if (view.getBackground() != null) {
-            view.getBackground().setCallback(null)
+        if (view.background != null) {
+            view.background.callback = null
         }
         if (view is ViewGroup) {
             for (i in 0..<view.size) {

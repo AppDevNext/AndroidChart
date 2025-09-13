@@ -73,11 +73,13 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
         for (renderer in dataRenderers) {
             var data: ChartData<*, *>? = null
 
-            if (renderer is BarChartRenderer) data = renderer.chart.barData
-            else if (renderer is LineChartRenderer) data = renderer.chart.lineData
-            else if (renderer is CandleStickChartRenderer) data = renderer.chart.candleData
-            else if (renderer is ScatterChartRenderer) data = renderer.chart.scatterData
-            else if (renderer is BubbleChartRenderer) data = renderer.chart.bubbleData
+            when (renderer) {
+                is BarChartRenderer -> data = renderer.chart.barData
+                is LineChartRenderer -> data = renderer.chart.lineData
+                is CandleStickChartRenderer -> data = renderer.chart.candleData
+                is ScatterChartRenderer -> data = renderer.chart.scatterData
+                is BubbleChartRenderer -> data = renderer.chart.bubbleData
+            }
 
             val dataIndex = if (data == null)
                 -1

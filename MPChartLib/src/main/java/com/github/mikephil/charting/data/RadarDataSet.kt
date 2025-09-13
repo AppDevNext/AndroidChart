@@ -29,7 +29,7 @@ open class RadarDataSet(yVals: MutableList<RadarEntry>, label: String) : LineRad
     }
 
     protected fun copy(radarDataSet: RadarDataSet) {
-        super.copy((radarDataSet as BaseDataSet<*>?)!!)
+        super.copy(radarDataSet)
         radarDataSet.isDrawHighlightCircleEnabled = isDrawHighlightCircleEnabled
         radarDataSet.highlightCircleFillColor = highlightCircleFillColor
         radarDataSet.highlightCircleInnerRadius = highlightCircleInnerRadius

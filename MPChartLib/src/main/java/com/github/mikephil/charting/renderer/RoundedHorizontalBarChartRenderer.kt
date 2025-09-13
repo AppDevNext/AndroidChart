@@ -60,7 +60,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
                 x = e.x
                 mBarShadowRectBuffer.top = x - barWidthHalf
                 mBarShadowRectBuffer.bottom = x + barWidthHalf
-                trans!!.rectValueToPixel(mBarShadowRectBuffer)
+                trans.rectValueToPixel(mBarShadowRectBuffer)
                 if (!viewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
                     i++
                     continue
@@ -80,13 +80,13 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
             }
         }
 
-        val buffer = barBuffers[index]!!
+        val buffer = barBuffers[index]
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
         buffer.setInverted(chart.isInverted(dataSet.axisDependency))
-        buffer.setBarWidth(chart.barData!!.barWidth)
+        chart.barData?.barWidth?.let { buffer.setBarWidth(it) }
         buffer.feed(dataSet)
-        trans!!.pointValuesToPixel(buffer.buffer)
+        trans.pointValuesToPixel(buffer.buffer)
 
         // if multiple colors has been assigned to Bar Chart
         if (dataSet.colors.size > 1) {
@@ -210,7 +210,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
                     RectF(
                         buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                         buffer.buffer[j + 3]
-                    ), roundedNegativeDataSetRadius, roundedNegativeDataSetRadius, true, true, true, true
+                    ), roundedNegativeDataSetRadius, roundedNegativeDataSetRadius, tl = true, tr = true, br = true, bl = true
                 )
                 c.drawPath(path2, paintRender)
             } else if ((dataSet.getEntryForIndex(j / 4).y > 0 && roundedPositiveDataSetRadius > 0)) {
@@ -218,7 +218,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
                     RectF(
                         buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                         buffer.buffer[j + 3]
-                    ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, true, true, true, true
+                    ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, tl = true, tr = true, br = true, bl = true
                 )
                 c.drawPath(path2, paintRender)
             } else {

@@ -37,12 +37,12 @@ open class LineChart : BarLineChartBase<Entry, ILineDataSet, LineData>, LineData
 
             // Min and max values...
             val yAxisValueFormatter = axisLeft.valueFormatter
-            val minVal = yAxisValueFormatter!!.getFormattedValue(lineData.yMin, null)
+            val minVal = yAxisValueFormatter.getFormattedValue(lineData.yMin, null)
             val maxVal = yAxisValueFormatter.getFormattedValue(lineData.yMax, null)
 
             // Data range...
             val xAxisValueFormatter = xAxis.valueFormatter
-            val minRange = xAxisValueFormatter!!.getFormattedValue(lineData.xMin, null)
+            val minRange = xAxisValueFormatter.getFormattedValue(lineData.xMin, null)
             val maxRange = xAxisValueFormatter.getFormattedValue(lineData.xMax, null)
             val entries = if (numberOfPoints == 1) "entry" else "entries"
             return String.format(
