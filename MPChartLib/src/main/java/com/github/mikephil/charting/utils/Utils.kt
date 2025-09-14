@@ -152,7 +152,7 @@ object Utils {
         return paint.measureText(demoText).toInt()
     }
 
-    private val mCalcTextHeightRect = Rect()
+    private val mCalcTextHeightRect by lazy { Rect() }
 
     /**
      * calculates the approximate height of a text, depending on a demo text

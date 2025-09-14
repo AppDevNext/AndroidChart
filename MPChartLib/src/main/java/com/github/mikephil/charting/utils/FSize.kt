@@ -54,7 +54,7 @@ open class FSize : Poolable<FSize> {
         private val pool: ObjectPool<FSize> = ObjectPool.create(256, FSize(0f, 0f))
 
         init {
-            pool.setReplenishPercentage(0.5f)
+            pool.replenishPercentage = 0.5f
         }
 
 

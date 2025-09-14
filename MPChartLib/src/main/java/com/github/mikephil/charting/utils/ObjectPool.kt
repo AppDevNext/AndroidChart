@@ -26,35 +26,23 @@ class ObjectPool<T : Poolable<T>> private constructor(withCapacity: Int, `object
     private var desiredCapacity: Int
     private val objects = ArrayList<T>(withCapacity)
     private val modelObject: T?
-    private var replenishPercentage: Float
+    var replenishPercentage: Float = 1.0f
+        set(value) {
+            var p = value
+            if (p > 1) {
+                p = 1f
+            } else if (p < 0f) {
+                p = 0f
+            }
+            field = p
+        }
 
 
     init {
         require(withCapacity > 0) { "Object Pool must be instantiated with a capacity greater than 0!" }
         this.desiredCapacity = withCapacity
         this.modelObject = `object`
-        this.replenishPercentage = 1.0f
         this.refillPool()
-    }
-
-    /**
-     * Set the percentage of the pool to replenish on empty.  Valid values are between
-     * 0.00f and 1.00f
-     *
-     * @param percentage a value between 0 and 1, representing the percentage of the pool to replenish.
-     */
-    fun setReplenishPercentage(percentage: Float) {
-        var p = percentage
-        if (p > 1) {
-            p = 1f
-        } else if (p < 0f) {
-            p = 0f
-        }
-        this.replenishPercentage = p
-    }
-
-    fun getReplenishPercentage(): Float {
-        return replenishPercentage
     }
 
     private fun refillPool(percentage: Float = this.replenishPercentage) {
@@ -68,7 +56,7 @@ class ObjectPool<T : Poolable<T>> private constructor(withCapacity: Int, `object
 
         this.objects.clear()
 
-        repeat(portionOfCapacity + 1) {
+        repeat(portionOfCapacity) {
             this.objects.add(modelObject!!.instantiate())
         }
     }
@@ -122,7 +110,7 @@ class ObjectPool<T : Poolable<T>> private constructor(withCapacity: Int, `object
      * @param objects A list of objects of type T to recycle
      */
     @Synchronized
-    fun recycle(objects: MutableList<T>) {
+    fun recycle(objects: List<T>) {
         val objectsListSize = objects.size
 
         while (objectsListSize + this.objects.size > this.desiredCapacity) {

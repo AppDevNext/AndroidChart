@@ -23,7 +23,7 @@ class MPPointD private constructor(var x: Double, var y: Double) : Poolable<MPPo
         private val pool: ObjectPool<MPPointD> = ObjectPool.Companion.create(64, MPPointD(0.0, 0.0))
 
         init {
-            pool.setReplenishPercentage(0.5f)
+            pool.replenishPercentage = 0.5f
         }
 
         fun getInstance(x: Double, y: Double): MPPointD {
