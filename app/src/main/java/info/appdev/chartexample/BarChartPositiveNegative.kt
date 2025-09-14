@@ -42,15 +42,15 @@ class BarChartPositiveNegative : DemoBase() {
         chart!!.extraLeftOffset = 70f
         chart!!.extraRightOffset = 70f
 
-        chart!!.setDrawBarShadow(false)
-        chart!!.setDrawValueAboveBar(true)
+        chart!!.isDrawBarShadowEnabled = false
+        chart!!.isDrawValueAboveBarEnabled = true
 
         chart!!.description.isEnabled = false
 
         // scaling can now only be done on x- and y-axis separately
         chart!!.setPinchZoom(false)
 
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
 
         val xAxis = chart!!.xAxis
         xAxis.position = XAxisPosition.BOTTOM

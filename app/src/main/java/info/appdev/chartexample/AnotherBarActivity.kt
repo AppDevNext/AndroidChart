@@ -3,7 +3,6 @@ package info.appdev.chartexample
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +11,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.data.BarData
@@ -21,7 +21,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
     private var chart: BarChart? = null
@@ -60,8 +59,8 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
         // scaling can now only be done on x- and y-axis separately
         chart?.setPinchZoom(false)
 
-        chart?.setDrawBarShadow(false)
-        chart?.setDrawGridBackground(false)
+        chart?.isDrawBarShadowEnabled = true
+        chart?.drawGridBackground = false
 
         val xAxis = chart?.xAxis
         xAxis?.position = XAxisPosition.BOTTOM

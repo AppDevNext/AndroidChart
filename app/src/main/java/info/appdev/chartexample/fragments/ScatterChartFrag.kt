@@ -26,7 +26,7 @@ class ScatterChartFrag : SimpleFragment() {
         mv.chartView = chart // For bounds control
         chart?.setMarker(mv)
 
-        chart?.setDrawGridBackground(false)
+        chart?.drawGridBackground = false
         chart?.setData(generateScatterData(6, 10000f))
 
         val xAxis = chart?.xAxis

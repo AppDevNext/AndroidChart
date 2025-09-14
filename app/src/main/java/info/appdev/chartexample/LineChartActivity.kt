@@ -55,7 +55,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
         // set listeners
         binding.chart1.setOnChartValueSelectedListener(this)
-        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.drawGridBackground = false
 
         // create marker to display box when values are selected
         val mv = MyMarkerView(this, R.layout.custom_marker_view)
@@ -189,7 +189,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                     binding.chart1.invalidate()
                 }
             }
@@ -197,7 +197,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleCircles -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawCircles(!set.isDrawCirclesEnabled)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 binding.chart1.invalidate()
             }
@@ -205,7 +205,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleCubic -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setMode(if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER)
+                    set.mode = if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER
                 }
                 binding.chart1.invalidate()
             }
@@ -213,7 +213,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleStepped -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setMode(if (set.mode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED)
+                    set.mode = if (set.mode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED
                 }
                 binding.chart1.invalidate()
             }
@@ -221,7 +221,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleHorizontalCubic -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setMode(if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER)
+                    set.mode = if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER
                 }
                 binding.chart1.invalidate()
             }

@@ -42,9 +42,9 @@ class FilledLineActivity : DemoBase() {
         chart = findViewById(R.id.chart1)
         chart!!.setBackgroundColor(Color.WHITE)
         chart!!.setGridBackgroundColor(fillColor)
-        chart!!.setDrawGridBackground(true)
+        chart!!.drawGridBackground = true
 
-        chart!!.setDrawBorders(true)
+        chart!!.isDrawBordersEnabled = true
 
         // no description text
         chart!!.description.isEnabled = false
@@ -108,41 +108,41 @@ class FilledLineActivity : DemoBase() {
 
             set1.axisDependency = AxisDependency.LEFT
             set1.setColor(Color.rgb(255, 241, 46))
-            set1.setDrawCircles(false)
-            set1.setLineWidth(2f)
-            set1.setCircleRadius(3f)
-            set1.setFillAlpha(255)
-            set1.setDrawFilled(true)
-            set1.setFillColor(Color.WHITE)
+            set1.isDrawCirclesEnabled = false
+            set1.lineWidth = 2f
+            set1.circleRadius = 3f
+            set1.fillAlpha = 255
+            set1.isDrawFilledEnabled = true
+            set1.fillColor = Color.WHITE
             set1.highLightColor = Color.rgb(244, 117, 117)
-            set1.setDrawCircleHole(false)
-            set1.setFillFormatter(object : IFillFormatter {
+            set1.isDrawCircleHoleEnabled = false
+            set1.fillFormatter = object : IFillFormatter {
                 override fun getFillLinePosition(dataSet: ILineDataSet, dataProvider: LineDataProvider): Float {
                     // change the return value here to better understand the effect
                     // return 0;
                     return chart!!.axisLeft.axisMinimum
                 }
-            })
+            }
 
             // create a dataset and give it a type
             set2 = LineDataSet(values2, "DataSet 2")
             set2.axisDependency = AxisDependency.LEFT
             set2.setColor(Color.rgb(255, 241, 46))
-            set2.setDrawCircles(false)
-            set2.setLineWidth(2f)
-            set2.setCircleRadius(3f)
-            set2.setFillAlpha(255)
-            set2.setDrawFilled(true)
-            set2.setFillColor(Color.WHITE)
-            set2.setDrawCircleHole(false)
+            set2.isDrawCirclesEnabled = false
+            set2.lineWidth = 2f
+            set2.circleRadius = 3f
+            set2.fillAlpha = 255
+            set2.isDrawFilledEnabled = true
+            set2.fillColor = Color.WHITE
+            set2.isDrawCircleHoleEnabled = false
             set2.highLightColor = Color.rgb(244, 117, 117)
-            set2.setFillFormatter(object : IFillFormatter {
+            set2.fillFormatter = object : IFillFormatter {
                 override fun getFillLinePosition(dataSet: ILineDataSet, dataProvider: LineDataProvider): Float {
                     // change the return value here to better understand the effect
                     // return 600;
                     return chart!!.axisLeft.axisMaximum
                 }
-            })
+            }
 
             val dataSets = ArrayList<ILineDataSet>()
             dataSets.add(set1) // add the data sets

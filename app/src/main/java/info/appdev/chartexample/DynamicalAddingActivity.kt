@@ -38,7 +38,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
 
         chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
         chart!!.description.isEnabled = false
         chart!!.setNoDataText("No chart data available. Use the menu to add entries and data sets!")
 
@@ -120,8 +120,8 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             }
 
             val set = LineDataSet(values, "DataSet $count")
-            set.setLineWidth(2.5f)
-            set.setCircleRadius(4.5f)
+            set.lineWidth = 2.5f
+            set.circleRadius = 4.5f
 
             val color = colors[count % colors.size]
 
@@ -151,8 +151,8 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
 
     private fun createSet(): LineDataSet {
         val set = LineDataSet(mutableListOf(), "DataSet 1")
-        set.setLineWidth(2.5f)
-        set.setCircleRadius(4.5f)
+        set.lineWidth = 2.5f
+        set.circleRadius = 4.5f
         set.setColor(Color.rgb(240, 99, 99))
         set.setCircleColor(Color.rgb(240, 99, 99))
         set.highLightColor = Color.rgb(190, 190, 190)

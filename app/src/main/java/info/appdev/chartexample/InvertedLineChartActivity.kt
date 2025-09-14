@@ -55,7 +55,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
         chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
 
         // no description text
         chart!!.description.isEnabled = false
@@ -126,8 +126,8 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         // create a dataset and give it a type
         val set1 = LineDataSet(entries, "DataSet 1")
 
-        set1.setLineWidth(1.5f)
-        set1.setCircleRadius(4f)
+        set1.lineWidth = 1.5f
+        set1.circleRadius = 4f
 
         // create a data object with the data sets
         val data = LineData(set1)
@@ -174,7 +174,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 chart!!.invalidate()
             }
@@ -185,7 +185,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setDrawCircles(!set.isDrawCirclesEnabled)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 chart!!.invalidate()
             }

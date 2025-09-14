@@ -60,7 +60,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
 
         chart!!.setOnChartValueSelectedListener(this)
 
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
 
         chart!!.setTouchEnabled(true)
 
@@ -110,7 +110,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
             values1.add(
                 BubbleEntry(
                     i.toFloat(),
-                    (sampleValues[i + 1]!! * range).toFloat(),
+                    (sampleValues[i + 1] * range).toFloat(),
                     (sampleValues[i].toFloat() * range),
                     getResources().getDrawable(R.drawable.star)
                 )

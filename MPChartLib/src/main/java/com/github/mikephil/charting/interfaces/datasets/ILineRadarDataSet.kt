@@ -12,14 +12,14 @@ interface ILineRadarDataSet<T : Entry> : ILineScatterCandleRadarDataSet<T> {
      *
      * @return
      */
-    val fillColor: Int
+    var fillColor: Int
 
     /**
      * Returns the drawable used for filling the area below the line.
      *
      * @return
      */
-    val fillDrawable: Drawable?
+    var fillDrawable: Drawable?
 
     /**
      * Returns the alpha value that is used for filling the line surface,
@@ -27,30 +27,19 @@ interface ILineRadarDataSet<T : Entry> : ILineScatterCandleRadarDataSet<T> {
      *
      * @return
      */
-    val fillAlpha: Int
+    var fillAlpha: Int
 
     /**
      * Returns the stroke-width of the drawn line
      *
      * @return
      */
-    val lineWidth: Float
+    var lineWidth: Float
 
     /**
      * Returns true if filled drawing is enabled, false if not
      *
      * @return
      */
-    val isDrawFilledEnabled: Boolean
-
-    /**
-     * Set to true if the DataSet should be drawn filled (surface), and not just
-     * as a line, disabling this will give great performance boost. Please note that this method
-     * uses the canvas.clipPath(...) method for drawing the filled area.
-     * For devices with API level < 18 (Android 4.3), hardware acceleration of the chart should
-     * be turned off. Default: false
-     *
-     * @param enabled
-     */
-    fun setDrawFilled(enabled: Boolean)
+    var isDrawFilledEnabled: Boolean
 }

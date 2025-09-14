@@ -51,7 +51,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         // enable scaling and dragging
         chart!!.isDragEnabled = true
         chart!!.setScaleEnabled(true)
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
 
         // if disabled, scaling can be done on x- and y-axis separately
         chart!!.setPinchZoom(true)
@@ -131,10 +131,10 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         set.axisDependency = AxisDependency.LEFT
         set.setColor(holoBlue)
         set.setCircleColor(Color.WHITE)
-        set.setLineWidth(2f)
-        set.setCircleRadius(4f)
-        set.setFillAlpha(65)
-        set.setFillColor(holoBlue)
+        set.lineWidth = 2f
+        set.circleRadius = 4f
+        set.fillAlpha = 65
+        set.fillColor = holoBlue
         set.highLightColor = Color.rgb(244, 117, 117)
         set.valueTextColor = Color.WHITE
         set.valueTextSize = 9f

@@ -52,7 +52,7 @@ class LineChartActivityColored : DemoBase() {
     )
 
     private fun setupChart(chart: LineChart, data: LineData, color: Int) {
-        (data.getDataSetByIndex(0) as LineDataSet).setCircleHoleColor(color)
+        (data.getDataSetByIndex(0) as LineDataSet).circleHoleColor = color
 
         // no description text
         chart.description.isEnabled = false
@@ -60,7 +60,7 @@ class LineChartActivityColored : DemoBase() {
         // chart.setDrawHorizontalGrid(false);
         //
         // enable / disable grid background
-        chart.setDrawGridBackground(false)
+        chart.drawGridBackground = false
 
         //        chart.getRenderer().getGridPaint().setGridColor(Color.WHITE & 0x70FFFFFF);
 
@@ -112,9 +112,9 @@ class LineChartActivityColored : DemoBase() {
 
         // set1.setFillAlpha(110);
         // set1.setFillColor(Color.RED);
-        set1.setLineWidth(1.75f)
-        set1.setCircleRadius(5f)
-        set1.setCircleHoleRadius(2.5f)
+        set1.lineWidth = 1.75f
+        set1.circleRadius = 5f
+        set1.circleHoleRadius = 2.5f
         set1.setColor(Color.WHITE)
         set1.setCircleColor(Color.WHITE)
         set1.highLightColor = Color.WHITE

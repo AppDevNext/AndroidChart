@@ -19,7 +19,7 @@ class SineCosineFragment : SimpleFragment() {
 
         chart?.description?.isEnabled = false
 
-        chart?.setDrawGridBackground(false)
+        chart?.drawGridBackground = false
 
         chart?.setData(generateLineData())
         chart?.animateX(3000)

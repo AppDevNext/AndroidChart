@@ -19,7 +19,7 @@ class ComplexityFragment : SimpleFragment() {
 
         chart?.description?.isEnabled = false
 
-        chart?.setDrawGridBackground(false)
+        chart?.drawGridBackground = false
 
         chart?.setData(complexity)
         chart?.animateX(3000)

@@ -57,9 +57,9 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
 
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
         chart!!.description.isEnabled = false
-        chart!!.setDrawBorders(false)
+        chart!!.isDrawBordersEnabled = false
 
         chart!!.axisLeft.isEnabled = false
         chart!!.axisRight.setDrawAxisLine(false)
@@ -113,8 +113,8 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             val d = LineDataSet(values, "DataSet " + (z + 1))
-            d.setLineWidth(2.5f)
-            d.setCircleRadius(4f)
+            d.lineWidth = 2.5f
+            d.circleRadius = 4f
 
             val color = colors[z % colors.size]
             d.setColor(color)
@@ -183,8 +183,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.isDrawFilledEnabled) set.setDrawFilled(false)
-                    else set.setDrawFilled(true)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 chart!!.invalidate()
             }
@@ -195,8 +194,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.isDrawCirclesEnabled) set.setDrawCircles(false)
-                    else set.setDrawCircles(true)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 chart!!.invalidate()
             }
@@ -207,7 +205,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setMode(
+                    set.mode = (
                         if (set.mode == LineDataSet.Mode.CUBIC_BEZIER)
                             LineDataSet.Mode.LINEAR
                         else
@@ -223,7 +221,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setMode(
+                    set.mode = (
                         if (set.mode == LineDataSet.Mode.STEPPED)
                             LineDataSet.Mode.LINEAR
                         else
@@ -239,7 +237,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setMode(
+                    set.mode = (
                         if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER)
                             LineDataSet.Mode.LINEAR
                         else

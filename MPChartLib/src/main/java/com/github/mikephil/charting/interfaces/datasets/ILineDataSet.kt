@@ -14,7 +14,7 @@ interface ILineDataSet : ILineRadarDataSet<Entry> {
      *
      * @return
      */
-    val mode: LineDataSet.Mode?
+    var mode: LineDataSet.Mode?
 
     /**
      * Returns the intensity of the cubic lines (the effect intensity).
@@ -22,7 +22,7 @@ interface ILineDataSet : ILineRadarDataSet<Entry> {
      *
      * @return
      */
-    val cubicIntensity: Float
+    var cubicIntensity: Float
 
     @get:Deprecated("")
     val isDrawCubicEnabled: Boolean
@@ -33,12 +33,12 @@ interface ILineDataSet : ILineRadarDataSet<Entry> {
     /**
      * Returns the size of the drawn circles.
      */
-    val circleRadius: Float
+    var circleRadius: Float
 
     /**
      * Returns the hole radius of the drawn circles.
      */
-    val circleHoleRadius: Float
+    var circleHoleRadius: Float
 
     /**
      * Returns the color at the given index of the DataSet's circle-color array.
@@ -61,28 +61,28 @@ interface ILineDataSet : ILineRadarDataSet<Entry> {
      *
      * @return
      */
-    val isDrawCirclesEnabled: Boolean
+    var isDrawCirclesEnabled: Boolean
 
     /**
      * Returns the color of the inner circle (the circle-hole).
      *
      * @return
      */
-    val circleHoleColor: Int
+    var circleHoleColor: Int
 
     /**
      * Returns true if drawing the circle-holes is enabled, false if not.
      *
      * @return
      */
-    val isDrawCircleHoleEnabled: Boolean
+    var isDrawCircleHoleEnabled: Boolean
 
     /**
      * Returns the DashPathEffect that is used for drawing the lines.
      *
      * @return
      */
-    val dashPathEffect: DashPathEffect?
+    var dashPathEffect: DashPathEffect?
 
     /**
      * Returns true if the dashed-line effect is enabled, false if not.
@@ -97,5 +97,5 @@ interface ILineDataSet : ILineRadarDataSet<Entry> {
      *
      * @return
      */
-    val fillFormatter: IFillFormatter
+    var fillFormatter: IFillFormatter
 }

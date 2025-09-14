@@ -65,11 +65,11 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         // scaling can now only be done on x- and y-axis separately
         chart!!.setPinchZoom(false)
 
-        chart!!.setDrawGridBackground(false)
-        chart!!.setDrawBarShadow(false)
+        chart!!.drawGridBackground = false
+        chart!!.isDrawBarShadowEnabled = false
 
-        chart!!.setDrawValueAboveBar(false)
-        chart!!.setHighlightFullBarEnabled(false)
+        chart!!.isDrawValueAboveBarEnabled = false
+        chart!!.isHighlightFullBarEnabled = false
 
         // change the position of the y-labels
         val leftAxis = chart!!.axisLeft

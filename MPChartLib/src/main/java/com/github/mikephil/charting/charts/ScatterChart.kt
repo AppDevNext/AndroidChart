@@ -30,8 +30,11 @@ class ScatterChart : BarLineChartBase<Entry, IScatterDataSet, ScatterData>, Scat
         xAxis.spaceMax = 0.5f
     }
 
-    override val scatterData: ScatterData?
+    override var scatterData: ScatterData?
         get() = mData
+        set(value) {
+            mData = scatterData
+        }
 
     /**
      * Predefined ScatterShapes that allow the specification of a shape a ScatterDataSet should be drawn with.

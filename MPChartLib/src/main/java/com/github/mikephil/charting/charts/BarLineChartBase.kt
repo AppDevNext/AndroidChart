@@ -163,7 +163,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
     /**
      * flag indicating if the grid background should be drawn or not
      */
-    protected var mDrawGridBackground: Boolean = false
+    var drawGridBackground: Boolean = false
 
     /**
      * When enabled, the borders rectangle will be rendered.
@@ -172,7 +172,6 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @return
      */
     var isDrawBordersEnabled: Boolean = false
-        protected set
 
     /**
      * When enabled, the values will be clipped to contentRect,
@@ -181,7 +180,6 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @return
      */
     var isClipValuesToContentEnabled: Boolean = false
-        protected set
 
     /**
      * When disabled, the data and/or highlights will not be clipped to contentRect. Disabling this option can
@@ -191,7 +189,6 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * @return
      */
     var isClipDataToContentEnabled: Boolean = true
-        protected set
 
     /**
      * Gets the minimum offset (padding) around the chart, defaults to 15.f
@@ -585,7 +582,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
      * draws the grid background
      */
     protected fun drawGridBackground(c: Canvas) {
-        if (mDrawGridBackground) {
+        if (drawGridBackground) {
             // draw the grid background
 
             c.drawRect(viewPortHandler.contentRect, mGridBackgroundPaint)
@@ -1118,46 +1115,6 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
     fun setScaleEnabled(enabled: Boolean) {
         this.isScaleXEnabled = enabled
         this.isScaleYEnabled = enabled
-    }
-
-    /**
-     * set this to true to draw the grid background, false if not
-     *
-     * @param enabled
-     */
-    fun setDrawGridBackground(enabled: Boolean) {
-        mDrawGridBackground = enabled
-    }
-
-    /**
-     * When enabled, the borders rectangle will be rendered.
-     * If this is enabled, there is no point drawing the axis-lines of x- and y-axis.
-     *
-     * @param enabled
-     */
-    fun setDrawBorders(enabled: Boolean) {
-        this.isDrawBordersEnabled = enabled
-    }
-
-    /**
-     * When enabled, the values will be clipped to contentRect,
-     * otherwise they can bleed outside the content rect.
-     *
-     * @param enabled
-     */
-    fun setClipValuesToContent(enabled: Boolean) {
-        this.isClipValuesToContentEnabled = enabled
-    }
-
-    /**
-     * When disabled, the data and/or highlights will not be clipped to contentRect. Disabling this option can
-     * be useful, when the data lies fully within the content rect, but is drawn in such a way (such as thick lines)
-     * that there is unwanted clipping.
-     *
-     * @param enabled
-     */
-    fun setClipDataToContent(enabled: Boolean) {
-        this.isClipDataToContentEnabled = enabled
     }
 
     /**

@@ -46,7 +46,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         // if disabled, drawn data sets with the finger will not be automatically
         // finished
         // chart.setAutoFinish(true);
-        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.drawGridBackground = false
 
         // add dummy-data to the chart
         initWithDummyData()
@@ -70,8 +70,8 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
 
         // create a dataset and give it a type (0)
         val set1 = LineDataSet(values, "DataSet")
-        set1.setLineWidth(3f)
-        set1.setCircleRadius(5f)
+        set1.lineWidth = 3f
+        set1.circleRadius = 5f
 
         // create a data object with the data sets
         val data = LineData(set1)

@@ -2,11 +2,11 @@ package info.appdev.chartexample
 
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder
 import com.github.mikephil.charting.components.AxisBase
@@ -33,7 +33,6 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
 import kotlin.math.roundToInt
-import androidx.core.net.toUri
 
 class CombinedChartActivity : DemoBase() {
     private var chart: CombinedChart? = null
@@ -53,9 +52,9 @@ class CombinedChartActivity : DemoBase() {
         chart = findViewById(R.id.chart1)
         chart!!.description.isEnabled = false
         chart!!.setBackgroundColor(Color.WHITE)
-        chart!!.setDrawGridBackground(false)
-        chart!!.setDrawBarShadow(false)
-        chart!!.setHighlightFullBarEnabled(false)
+        chart!!.drawGridBackground = false
+        chart!!.isDrawBarShadowEnabled = false
+        chart!!.isHighlightFullBarEnabled = false
 
         // draw bars behind lines
         chart!!.drawOrder = arrayOf(
@@ -107,15 +106,15 @@ class CombinedChartActivity : DemoBase() {
 
         val entries = ArrayList<Entry>()
 
-        for (index in 0..<sampleCount) entries.add(Entry(index + 0.5f, values[index]!!.toFloat() * 15 + 5))
+        for (index in 0..<sampleCount) entries.add(Entry(index + 0.5f, values[index].toFloat() * 15 + 5))
 
         val set = LineDataSet(entries, "Line DataSet")
         set.setColor(Color.rgb(240, 238, 70))
-        set.setLineWidth(2.5f)
+        set.lineWidth = 2.5f
         set.setCircleColor(Color.rgb(240, 238, 70))
-        set.setCircleRadius(5f)
-        set.setFillColor(Color.rgb(240, 238, 70))
-        set.setMode(LineDataSet.Mode.CUBIC_BEZIER)
+        set.circleRadius = 5f
+        set.fillColor = Color.rgb(240, 238, 70)
+        set.mode = LineDataSet.Mode.CUBIC_BEZIER
         set.isDrawValuesEnabled = true
         set.valueTextSize = 10f
         set.valueTextColor = Color.rgb(240, 238, 70)
