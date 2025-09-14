@@ -252,9 +252,7 @@ abstract class BarLineChartBase<E: Entry, D : IBarLineScatterCandleBubbleDataSet
 
     constructor(context: Context) : super(context)
 
-    override fun init() {
-        super.init()
-
+    init {
         setHighlighter(ChartHighlighter(this))
 
         mChartTouchListener = BarLineChartTouchListener(this, viewPortHandler.matrixTouch, 3f)

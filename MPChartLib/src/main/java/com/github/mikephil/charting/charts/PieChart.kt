@@ -202,9 +202,7 @@ open class PieChart : PieRadarChartBase<PieEntry, IPieDataSet, PieData> {
 
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    override fun init() {
-        super.init()
-
+    init {
         mRenderer = PieChartRenderer(this, mAnimator, viewPortHandler)
 
         highlighter = PieHighlighter(this)

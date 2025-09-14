@@ -1,31 +1,29 @@
-package info.appdev.chartexample.custom;
+package info.appdev.chartexample.custom
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
-import com.github.mikephil.charting.renderer.scatter.IShapeRenderer;
-import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ViewPortHandler;
+import android.graphics.Canvas
+import android.graphics.Paint
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet
+import com.github.mikephil.charting.renderer.scatter.IShapeRenderer
+import com.github.mikephil.charting.utils.Utils.convertDpToPixel
+import com.github.mikephil.charting.utils.ViewPortHandler
 
 /**
  * Custom shape renderer that draws a single line.
  * Created by philipp on 26/06/16.
  */
-public class CustomScatterShapeRenderer implements IShapeRenderer
-{
+class CustomScatterShapeRenderer : IShapeRenderer {
+    override fun renderShape(
+        c: Canvas?, dataSet: IScatterDataSet, viewPortHandler: ViewPortHandler,
+        posX: Float, posY: Float, renderPaint: Paint
+    ) {
+        val shapeHalf = convertDpToPixel(dataSet.scatterShapeSize) / 2f
 
-    @Override
-    public void renderShape(Canvas c, IScatterDataSet dataSet, ViewPortHandler viewPortHandler,
-                            float posX, float posY, Paint renderPaint) {
-
-        final float shapeHalf = Utils.convertDpToPixel(dataSet.scatterShapeSize) / 2f;
-
-        c.drawLine(
-                posX - shapeHalf,
-                posY - shapeHalf,
-                posX + shapeHalf,
-                posY + shapeHalf,
-                renderPaint);
+        c?.drawLine(
+            posX - shapeHalf,
+            posY - shapeHalf,
+            posX + shapeHalf,
+            posY + shapeHalf,
+            renderPaint
+        )
     }
 }

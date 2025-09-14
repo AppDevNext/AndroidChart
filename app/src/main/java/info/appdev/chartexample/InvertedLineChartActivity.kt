@@ -1,105 +1,98 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Legend.LegendForm
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.utils.EntryXComparator
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.custom.MyMarkerView
+import info.appdev.chartexample.notimportant.DemoBase
+import java.util.Collections
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
+class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
+    private var chart: LineChart? = null
+    private var seekBarX: SeekBar? = null
+    private var seekBarY: SeekBar? = null
+    private var tvX: TextView? = null
+    private var tvY: TextView? = null
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendForm;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.EntryXComparator;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_linechart)
 
-import info.appdev.chartexample.custom.MyMarkerView;
-import info.appdev.chartexample.notimportant.DemoBase;
+        setTitle("InvertedLineChartActivity")
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChangeListener,
-        OnChartValueSelectedListener {
+        seekBarX = findViewById(R.id.seekBarX)
+        seekBarY = findViewById(R.id.seekBarY)
 
-    private LineChart chart;
-    private SeekBar seekBarX, seekBarY;
-    private TextView tvX, tvY;
+        seekBarY!!.setOnSeekBarChangeListener(this)
+        seekBarX!!.setOnSeekBarChangeListener(this)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_linechart);
-
-        setTitle("InvertedLineChartActivity");
-
-        tvX = findViewById(R.id.tvXMax);
-        tvY = findViewById(R.id.tvYMax);
-
-        seekBarX = findViewById(R.id.seekBarX);
-        seekBarY = findViewById(R.id.seekBarY);
-
-        seekBarY.setOnSeekBarChangeListener(this);
-        seekBarX.setOnSeekBarChangeListener(this);
-
-        chart = findViewById(R.id.chart1);
-        chart.setOnChartValueSelectedListener(this);
-        chart.setDrawGridBackground(false);
+        chart = findViewById(R.id.chart1)
+        chart!!.setOnChartValueSelectedListener(this)
+        chart!!.setDrawGridBackground(false)
 
         // no description text
-        chart.getDescription().setEnabled(false);
+        chart!!.description.isEnabled = false
 
         // enable touch gestures
-        chart.setTouchEnabled(true);
+        chart!!.setTouchEnabled(true)
 
         // enable scaling and dragging
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
+        chart!!.isDragEnabled = true
+        chart!!.setScaleEnabled(true)
 
         // if disabled, scaling can be done on x- and y-axis separately
-        chart.setPinchZoom(true);
+        chart!!.setPinchZoom(true)
 
         // set an alternative background color
         // chart.setBackgroundColor(Color.GRAY);
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
-        MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
-        mv.setChartView(chart); // For bounds control
-        chart.setMarker(mv); // Set the marker to the chart
+        val mv = MyMarkerView(this, R.layout.custom_marker_view)
+        mv.chartView = chart // For bounds control
+        chart!!.setMarker(mv) // Set the marker to the chart
 
-        XAxis xl = chart.getXAxis();
-        xl.setAvoidFirstLastClipping(true);
-        xl.setAxisMinimum(0f);
+        val xl = chart!!.xAxis
+        xl.setAvoidFirstLastClipping(true)
+        xl.axisMinimum = 0f
 
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setInverted(true);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        val leftAxis = chart!!.axisLeft
+        leftAxis.isInverted = true
+        leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setEnabled(false);
+        val rightAxis = chart!!.axisRight
+        rightAxis.isEnabled = false
 
         // add data
-        seekBarX.setProgress(25);
-        seekBarY.setProgress(50);
+        seekBarX!!.progress = 25
+        seekBarY!!.progress = 50
 
         // // restrain the maximum scale-out factor
         // chart.setScaleMinima(3f, 3f);
@@ -108,169 +101,154 @@ public class InvertedLineChartActivity extends DemoBase implements OnSeekBarChan
         // chart.centerViewPort(10, 50);
 
         // get the legend (only possible after setting data)
-        Legend l = chart.getLegend();
+        val l = chart!!.legend
 
         // modify the legend ...
-        l.setForm(LegendForm.LINE);
+        l.form = LegendForm.LINE
 
         // don't forget to refresh the drawing
-        chart.invalidate();
+        chart!!.invalidate()
     }
 
-    private void setData(int count, float range) {
+    private fun setData(count: Int, range: Float) {
+        val entries = ArrayList<Entry>()
+        val sampleValues = getValues(count + 2)
 
-        ArrayList<Entry> entries = new ArrayList<>();
-        Double[] sampleValues = DataTools.Companion.getValues(count + 2);
-
-        for (int i = 0; i < count; i++) {
-            float xVal = sampleValues[i].floatValue() * range;
-            float yVal = sampleValues[i + 1].floatValue() * range;
-            entries.add(new Entry(xVal, yVal));
+        for (i in 0..<count) {
+            val xVal = sampleValues[i].toFloat() * range
+            val yVal = sampleValues[i + 1].toFloat() * range
+            entries.add(Entry(xVal, yVal))
         }
 
         // sort by x-value
-        Collections.sort(entries, new EntryXComparator());
+        Collections.sort(entries, EntryXComparator())
 
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(entries, "DataSet 1");
+        val set1 = LineDataSet(entries, "DataSet 1")
 
-        set1.setLineWidth(1.5f);
-        set1.setCircleRadius(4f);
+        set1.setLineWidth(1.5f)
+        set1.setCircleRadius(4f)
 
         // create a data object with the data sets
-        LineData data = new LineData(set1);
+        val data = LineData(set1)
 
         // set data
-        chart.setData(data);
+        chart!!.setData(data)
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.line, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.line, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/InvertedLineChartActivity.java"));
-                startActivity(i);
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/InvertedLineChartActivity.java".toUri())
+                startActivity(i)
             }
-            case R.id.actionToggleValues: {
-                List<ILineDataSet> sets = chart.getData()
-                        .getDataSets();
 
-                for (ILineDataSet iSet : sets) {
+            R.id.actionToggleValues -> {
+                val sets: MutableList<ILineDataSet> = chart!!.data!!
+                    .dataSets
 
-                    LineDataSet set = (LineDataSet) iSet;
-                    set.setDrawValues(!set.isDrawValuesEnabled());
+                for (iSet in sets) {
+                    val set = iSet as LineDataSet
+                    set.isDrawValuesEnabled = !set.isDrawValuesEnabled
                 }
 
-                chart.invalidate();
-                break;
+                chart!!.invalidate()
             }
-            case R.id.actionToggleHighlight: {
-                if(chart.getData() != null) {
-                    chart.getData().setHighlightEnabled(!chart.getData().isHighlightEnabled());
-                    chart.invalidate();
+
+            R.id.actionToggleHighlight -> {
+                if (chart!!.data != null) {
+                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled
+                    chart!!.invalidate()
                 }
-                break;
             }
-            case R.id.actionToggleFilled: {
 
-                List<ILineDataSet> sets = chart.getData()
-                        .getDataSets();
+            R.id.actionToggleFilled -> {
+                val sets: MutableList<ILineDataSet> = chart!!.data!!
+                    .dataSets
 
-                for (ILineDataSet iSet : sets) {
-
-                    LineDataSet set = (LineDataSet) iSet;
-					set.setDrawFilled(!set.isDrawFilledEnabled());
+                for (iSet in sets) {
+                    val set = iSet as LineDataSet
+                    set.setDrawFilled(!set.isDrawFilledEnabled)
                 }
-                chart.invalidate();
-                break;
+                chart!!.invalidate()
             }
-            case R.id.actionToggleCircles: {
-                List<ILineDataSet> sets = chart.getData()
-                        .getDataSets();
 
-                for (ILineDataSet iSet : sets) {
+            R.id.actionToggleCircles -> {
+                val sets: MutableList<ILineDataSet> = chart!!.data!!
+                    .dataSets
 
-                    LineDataSet set = (LineDataSet) iSet;
-					set.setDrawCircles(!set.isDrawCirclesEnabled());
+                for (iSet in sets) {
+                    val set = iSet as LineDataSet
+                    set.setDrawCircles(!set.isDrawCirclesEnabled)
                 }
-                chart.invalidate();
-                break;
+                chart!!.invalidate()
             }
-            case R.id.animateX: {
-                chart.animateX(2000);
-                break;
-            }
-            case R.id.animateY: {
-                chart.animateY(2000);
-                break;
-            }
-            case R.id.animateXY: {
 
-                chart.animateXY(2000, 2000);
-                break;
+            R.id.animateX -> {
+                chart!!.animateX(2000)
             }
-            case R.id.actionTogglePinch: {
-				chart.setPinchZoom(!chart.isPinchZoomEnabled());
 
-                chart.invalidate();
-                break;
+            R.id.animateY -> {
+                chart!!.animateY(2000)
             }
-            case R.id.actionToggleAutoScaleMinMax: {
-                chart.setAutoScaleMinMaxEnabled(!chart.isAutoScaleMinMaxEnabled());
-                chart.notifyDataSetChanged();
-                break;
+
+            R.id.animateXY -> {
+                chart!!.animateXY(2000, 2000)
             }
-            case R.id.actionSave: {
+
+            R.id.actionTogglePinch -> {
+                chart!!.setPinchZoom(!chart!!.isPinchZoomEnabled)
+
+                chart!!.invalidate()
+            }
+
+            R.id.actionToggleAutoScaleMinMax -> {
+                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
+                chart!!.notifyDataSetChanged()
+            }
+
+            R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    saveToGallery();
+                    saveToGallery()
                 } else {
-                    requestStoragePermission(chart);
+                    requestStoragePermission(chart)
                 }
-                break;
             }
         }
-        return true;
+        return true
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        tvX!!.text = seekBarX!!.progress.toString()
+        tvY!!.text = seekBarY!!.progress.toString()
 
-        tvX.setText(String.valueOf(seekBarX.getProgress()));
-        tvY.setText(String.valueOf(seekBarY.getProgress()));
-
-        setData(seekBarX.getProgress(), seekBarY.getProgress());
+        setData(seekBarX!!.progress, seekBarY!!.progress.toFloat())
 
         // redraw
-        chart.invalidate();
+        chart!!.invalidate()
     }
 
-    @Override
-    protected void saveToGallery() {
-        saveToGallery(chart, "InvertedLineChartActivity");
+    override fun saveToGallery() {
+        saveToGallery(chart, "InvertedLineChartActivity")
     }
 
-    @Override
-    public void onValueSelected(Entry e, Highlight h) {
-        Log.i("VAL SELECTED",
-                "Value: " + e.getY() + ", xIndex: " + e.getX()
-                        + ", DataSet index: " + h.getDataSetIndex());
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
+        Log.i(
+            "VAL SELECTED",
+            ("Value: " + e?.y + ", xIndex: " + e?.x
+                    + ", DataSet index: " + h?.dataSetIndex)
+        )
     }
 
-    @Override
-    public void onNothingSelected() {}
+    override fun onNothingSelected() {}
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {}
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 }

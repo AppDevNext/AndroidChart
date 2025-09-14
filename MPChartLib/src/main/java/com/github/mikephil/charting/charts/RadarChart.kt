@@ -100,9 +100,7 @@ open class RadarChart : PieRadarChartBase<RadarEntry, IRadarDataSet, RadarData> 
 
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    override fun init() {
-        super.init()
-
+    init {
         mYAxis.labelXOffset = 10f
 
         mWebLineWidth = Utils.convertDpToPixel(1.5f)

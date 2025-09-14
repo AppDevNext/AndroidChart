@@ -1,113 +1,97 @@
-package info.appdev.chartexample.fragments;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
+package info.appdev.chartexample.fragments
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
+import android.graphics.Typeface
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.fragment.app.Fragment
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.listener.ChartTouchListener.ChartGesture
+import com.github.mikephil.charting.listener.OnChartGestureListener
+import info.appdev.chartexample.R
+import info.appdev.chartexample.custom.MyMarkerView
 
-import info.appdev.chartexample.R;
-import info.appdev.chartexample.custom.MyMarkerView;
+class BarChartFrag : SimpleFragment(), OnChartGestureListener {
+    private var chart: BarChart? = null
 
-
-public class BarChartFrag extends SimpleFragment implements OnChartGestureListener {
-
-    @NonNull
-    public static Fragment newInstance() {
-        return new BarChartFrag();
-    }
-
-    private BarChart chart;
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.frag_simple_bar, container, false);
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val v = inflater.inflate(R.layout.frag_simple_bar, container, false)
 
         // create a new chart object
-        chart = new BarChart(getActivity());
-        chart.getDescription().setEnabled(false);
-        chart.setOnChartGestureListener(this);
+        chart = BarChart(requireActivity())
+        chart?.description?.isEnabled = false
+        chart?.onChartGestureListener = this
 
-        MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
-        mv.setChartView(chart); // For bounds control
-        chart.setMarker(mv);
+        val mv = MyMarkerView(requireContext(), R.layout.custom_marker_view)
+        mv.chartView = chart // For bounds control
+        chart?.setMarker(mv)
 
-        chart.setDrawGridBackground(false);
-        chart.setDrawBarShadow(false);
+        chart?.setDrawGridBackground(false)
+        chart?.setDrawBarShadow(false)
 
-        Typeface tf = Typeface.createFromAsset(requireContext().getAssets(), "OpenSans-Light.ttf");
+        val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 
-        chart.setData(generateBarData(1, 20000));
+        chart?.setData(generateBarData(1, 20000f))
 
-        Legend l = chart.getLegend();
-        l.setTypeface(tf);
+        val l = chart?.legend
+        l?.typeface = tf
 
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setTypeface(tf);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        val leftAxis = chart?.axisLeft
+        leftAxis?.typeface = tf
+        leftAxis?.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        chart.getAxisRight().setEnabled(false);
+        chart?.axisRight?.isEnabled = false
 
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setEnabled(false);
+        val xAxis = chart?.xAxis
+        xAxis?.isEnabled = false
 
         // programmatically add the chart
-        FrameLayout parent = v.findViewById(R.id.parentLayout);
-        parent.addView(chart);
+        val parent = v.findViewById<FrameLayout?>(R.id.parentLayout)
+        parent?.addView(chart)
 
-        return v;
+        return v
     }
 
-    @Override
-    public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        Log.i("Gesture", "START");
+    override fun onChartGestureStart(me: MotionEvent?, lastPerformedGesture: ChartGesture?) {
+        Log.i("Gesture", "START")
     }
 
-    @Override
-    public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        Log.i("Gesture", "END");
-        chart.highlightValues(null);
+    override fun onChartGestureEnd(me: MotionEvent?, lastPerformedGesture: ChartGesture?) {
+        Log.i("Gesture", "END")
+        chart?.highlightValues(null)
     }
 
-    @Override
-    public void onChartLongPressed(MotionEvent me) {
-        Log.i("LongPress", "Chart long pressed.");
+    override fun onChartLongPressed(me: MotionEvent?) {
+        Log.i("LongPress", "Chart long pressed.")
     }
 
-    @Override
-    public void onChartDoubleTapped(MotionEvent me) {
-        Log.i("DoubleTap", "Chart double-tapped.");
+    override fun onChartDoubleTapped(me: MotionEvent?) {
+        Log.i("DoubleTap", "Chart double-tapped.")
     }
 
-    @Override
-    public void onChartSingleTapped(MotionEvent me) {
-        Log.i("SingleTap", "Chart single-tapped.");
+    override fun onChartSingleTapped(me: MotionEvent?) {
+        Log.i("SingleTap", "Chart single-tapped.")
     }
 
-    @Override
-    public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
-        Log.i("Fling", "Chart fling. VelocityX: " + velocityX + ", VelocityY: " + velocityY);
+    override fun onChartFling(me1: MotionEvent?, me2: MotionEvent?, velocityX: Float, velocityY: Float) {
+        Log.i("Fling", "Chart fling. VelocityX: $velocityX, VelocityY: $velocityY")
     }
 
-    @Override
-    public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
-        Log.i("Scale / Zoom", "ScaleX: " + scaleX + ", ScaleY: " + scaleY);
+    override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
+        Log.i("Scale / Zoom", "ScaleX: $scaleX, ScaleY: $scaleY")
     }
 
-	@Override
-	public void onChartTranslate(MotionEvent me, float dX, float dY) {
-		Log.i("Translate / Move", "dX: " + dX + ", dY: " + dY);
-	}
+    override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
+        Log.i("Translate / Move", "dX: $dX, dY: $dY")
+    }
 
+    companion object {
+        fun newInstance(): Fragment {
+            return BarChartFrag()
+        }
+    }
 }

@@ -1,250 +1,245 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import com.github.mikephil.charting.charts.BubbleChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis.XAxisPosition
+import com.github.mikephil.charting.data.BubbleData
+import com.github.mikephil.charting.data.BubbleDataSet
+import com.github.mikephil.charting.data.BubbleEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.utils.MPPointF
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.notimportant.DemoBase
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
+class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
+    private var chart: BubbleChart? = null
+    private var seekBarX: SeekBar? = null
+    private var seekBarY: SeekBar? = null
+    private var tvX: TextView? = null
+    private var tvY: TextView? = null
 
-import com.github.mikephil.charting.charts.BubbleChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.data.BubbleDataSet;
-import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.MPPointF;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_bubblechart)
 
-import info.appdev.chartexample.notimportant.DemoBase;
+        setTitle("BubbleChartActivity")
 
-import java.util.ArrayList;
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-public class BubbleChartActivity extends DemoBase implements OnSeekBarChangeListener,
-        OnChartValueSelectedListener {
+        seekBarX = findViewById(R.id.seekBarX)
+        seekBarX!!.setOnSeekBarChangeListener(this)
 
-    private BubbleChart chart;
-    private SeekBar seekBarX, seekBarY;
-    private TextView tvX, tvY;
+        seekBarY = findViewById(R.id.seekBarY)
+        seekBarY!!.setOnSeekBarChangeListener(this)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_bubblechart);
+        chart = findViewById(R.id.chart1)
+        chart!!.description.isEnabled = false
 
-        setTitle("BubbleChartActivity");
+        chart!!.setOnChartValueSelectedListener(this)
 
-        tvX = findViewById(R.id.tvXMax);
-        tvY = findViewById(R.id.tvYMax);
+        chart!!.setDrawGridBackground(false)
 
-        seekBarX = findViewById(R.id.seekBarX);
-        seekBarX.setOnSeekBarChangeListener(this);
-
-        seekBarY = findViewById(R.id.seekBarY);
-        seekBarY.setOnSeekBarChangeListener(this);
-
-        chart = findViewById(R.id.chart1);
-        chart.getDescription().setEnabled(false);
-
-        chart.setOnChartValueSelectedListener(this);
-
-        chart.setDrawGridBackground(false);
-
-        chart.setTouchEnabled(true);
+        chart!!.setTouchEnabled(true)
 
         // enable scaling and dragging
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
+        chart!!.isDragEnabled = true
+        chart!!.setScaleEnabled(true)
 
-        chart.setMaxVisibleValueCount(200);
-        chart.setPinchZoom(true);
+        chart!!.setMaxVisibleValueCount(200)
+        chart!!.setPinchZoom(true)
 
-        seekBarX.setProgress(10);
-        seekBarY.setProgress(50);
+        seekBarX!!.progress = 10
+        seekBarY!!.progress = 50
 
-        Legend l = chart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
-        l.setTypeface(tfLight);
+        val l = chart!!.legend
+        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+        l.orientation = Legend.LegendOrientation.VERTICAL
+        l.setDrawInside(false)
+        l.typeface = tfLight
 
-        YAxis yl = chart.getAxisLeft();
-        yl.setTypeface(tfLight);
-        yl.setSpaceTop(30f);
-        yl.setSpaceBottom(30f);
-        yl.setDrawZeroLine(false);
+        val yl = chart!!.axisLeft
+        yl.typeface = tfLight
+        yl.spaceTop = 30f
+        yl.spaceBottom = 30f
+        yl.setDrawZeroLine(false)
 
-        chart.getAxisRight().setEnabled(false);
+        chart!!.axisRight.isEnabled = false
 
-        XAxis xl = chart.getXAxis();
-        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xl.setTypeface(tfLight);
+        val xl = chart!!.xAxis
+        xl.position = XAxisPosition.BOTTOM
+        xl.typeface = tfLight
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        val count = seekBarX!!.progress
+        val range = seekBarY!!.progress
 
-        int count = seekBarX.getProgress();
-        int range = seekBarY.getProgress();
+        tvX!!.text = count.toString()
+        tvY!!.text = range.toString()
 
-        tvX.setText(String.valueOf(count));
-        tvY.setText(String.valueOf(range));
+        val values1 = ArrayList<BubbleEntry>()
+        val values2 = ArrayList<BubbleEntry>()
+        val values3 = ArrayList<BubbleEntry>()
+        val sampleValues = getValues(100)
 
-        ArrayList<BubbleEntry> values1 = new ArrayList<>();
-        ArrayList<BubbleEntry> values2 = new ArrayList<>();
-        ArrayList<BubbleEntry> values3 = new ArrayList<>();
-        Double[] sampleValues = DataTools.Companion.getValues(100);
-
-        for (int i = 0; i < count; i++) {
-            values1.add(new BubbleEntry(i, (float) (sampleValues[i+1] * range), (float) (sampleValues[i].floatValue() * range), getResources().getDrawable(R.drawable.star)));
-            values2.add(new BubbleEntry(i, (float) (sampleValues[i+2] * range), (float) (sampleValues[i+1].floatValue() * range), getResources().getDrawable(R.drawable.star)));
-            values3.add(new BubbleEntry(i, (float) (sampleValues[i] * range), (float) (sampleValues[i+2].floatValue() * range)));
+        for (i in 0..<count) {
+            values1.add(
+                BubbleEntry(
+                    i.toFloat(),
+                    (sampleValues[i + 1]!! * range).toFloat(),
+                    (sampleValues[i].toFloat() * range),
+                    getResources().getDrawable(R.drawable.star)
+                )
+            )
+            values2.add(
+                BubbleEntry(
+                    i.toFloat(), (sampleValues[i + 2] * range).toFloat(), (sampleValues[i + 1].toFloat() * range), getResources().getDrawable(
+                        R.drawable.star
+                    )
+                )
+            )
+            values3.add(BubbleEntry(i.toFloat(), (sampleValues[i] * range).toFloat(), (sampleValues[i + 2].toFloat() * range)))
         }
 
         // create a dataset and give it a type
-        BubbleDataSet set1 = new BubbleDataSet(values1, "DS 1");
-        set1.setDrawIcons(false);
-        set1.setColor(ColorTemplate.COLORFUL_COLORS[0], 130);
-        set1.setDrawValues(true);
+        val set1 = BubbleDataSet(values1, "DS 1")
+        set1.isDrawIconsEnabled = false
+        set1.setColor(ColorTemplate.COLORFUL_COLORS[0], 130)
+        set1.isDrawValuesEnabled = true
 
-        BubbleDataSet set2 = new BubbleDataSet(values2, "DS 2");
-        set2.setDrawIcons(false);
-        set2.setIconsOffset(new MPPointF(0, 15));
-        set2.setColor(ColorTemplate.COLORFUL_COLORS[1], 130);
-        set2.setDrawValues(true);
+        val set2 = BubbleDataSet(values2, "DS 2")
+        set2.isDrawIconsEnabled = false
+        set2.iconsOffset = MPPointF(0f, 15f)
+        set2.setColor(ColorTemplate.COLORFUL_COLORS[1], 130)
+        set2.isDrawValuesEnabled = true
 
-        BubbleDataSet set3 = new BubbleDataSet(values3, "DS 3");
-        set3.setColor(ColorTemplate.COLORFUL_COLORS[2], 130);
-        set3.setDrawValues(true);
+        val set3 = BubbleDataSet(values3, "DS 3")
+        set3.setColor(ColorTemplate.COLORFUL_COLORS[2], 130)
+        set3.isDrawValuesEnabled = true
 
-        ArrayList<IBubbleDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1); // add the data sets
-        dataSets.add(set2);
-        dataSets.add(set3);
+        val dataSets = ArrayList<IBubbleDataSet>()
+        dataSets.add(set1) // add the data sets
+        dataSets.add(set2)
+        dataSets.add(set3)
 
         // create a data object with the data sets
-        BubbleData data = new BubbleData(dataSets);
-        data.setDrawValues(false);
-        data.setValueTypeface(tfLight);
-        data.setValueTextSize(8f);
-        data.setValueTextColor(Color.WHITE);
-        data.setHighlightCircleWidth(1.5f);
+        val data = BubbleData(dataSets)
+        data.setDrawValues(false)
+        data.setValueTypeface(tfLight)
+        data.setValueTextSize(8f)
+        data.setValueTextColor(Color.WHITE)
+        data.setHighlightCircleWidth(1.5f)
 
-        chart.setData(data);
-        chart.invalidate();
+        chart!!.setData(data)
+        chart!!.invalidate()
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.bubble, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.bubble, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/BubbleChartActivity.java"));
-                startActivity(i);
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/BubbleChartActivity.java".toUri())
+                startActivity(i)
             }
-            case R.id.actionToggleValues: {
-                for (IDataSet set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled);
 
-                chart.invalidate();
-                break;
-            }
-            case R.id.actionToggleIcons: {
-                for (IDataSet set : chart.getData().getDataSets())
-                    set.setDrawIcons(!set.isDrawIconsEnabled);
+            R.id.actionToggleValues -> {
+                for (set in chart!!.data!!.dataSets) set.isDrawValuesEnabled = !set.isDrawValuesEnabled
 
-                chart.invalidate();
-                break;
+                chart!!.invalidate()
             }
-            case R.id.actionToggleHighlight: {
-                if(chart.getData() != null) {
-                    chart.getData().setHighlightEnabled(!chart.getData().isHighlightEnabled());
-                    chart.invalidate();
+
+            R.id.actionToggleIcons -> {
+                for (set in chart!!.data!!.dataSets) set.isDrawIconsEnabled = !set.isDrawIconsEnabled
+
+                chart!!.invalidate()
+            }
+
+            R.id.actionToggleHighlight -> {
+                if (chart!!.data != null) {
+                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled
+                    chart!!.invalidate()
                 }
-                break;
             }
-            case R.id.actionTogglePinch: {
-                if (chart.isPinchZoomEnabled())
-                    chart.setPinchZoom(false);
-                else
-                    chart.setPinchZoom(true);
 
-                chart.invalidate();
-                break;
+            R.id.actionTogglePinch -> {
+                if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
+                else chart!!.setPinchZoom(true)
+
+                chart!!.invalidate()
             }
-            case R.id.actionToggleAutoScaleMinMax: {
-                chart.setAutoScaleMinMaxEnabled(!chart.isAutoScaleMinMaxEnabled());
-                chart.notifyDataSetChanged();
-                break;
+
+            R.id.actionToggleAutoScaleMinMax -> {
+                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
+                chart!!.notifyDataSetChanged()
             }
-            case R.id.actionSave: {
+
+            R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    saveToGallery();
+                    saveToGallery()
                 } else {
-                    requestStoragePermission(chart);
+                    requestStoragePermission(chart)
                 }
-                break;
             }
-            case R.id.animateX: {
-                chart.animateX(2000);
-                break;
+
+            R.id.animateX -> {
+                chart!!.animateX(2000)
             }
-            case R.id.animateY: {
-                chart.animateY(2000);
-                break;
+
+            R.id.animateY -> {
+                chart!!.animateY(2000)
             }
-            case R.id.animateXY: {
-                chart.animateXY(2000, 2000);
-                break;
+
+            R.id.animateXY -> {
+                chart!!.animateXY(2000, 2000)
             }
         }
-        return true;
+        return true
     }
 
-    @Override
-    protected void saveToGallery() {
-        saveToGallery(chart, "BubbleChartActivity");
+    override fun saveToGallery() {
+        saveToGallery(chart, "BubbleChartActivity")
     }
 
-    @Override
-    public void onValueSelected(Entry e, Highlight h) {
-        Log.i("VAL SELECTED",
-                "Value: " + e.getY() + ", xIndex: " + e.getX()
-                        + ", DataSet index: " + h.getDataSetIndex());
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
+        Log.i(
+            "VAL SELECTED",
+            ("Value: " + e?.y + ", xIndex: " + e?.x
+                    + ", DataSet index: " + h?.dataSetIndex)
+        )
     }
 
-    @Override
-    public void onNothingSelected() {}
+    override fun onNothingSelected() {}
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {}
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 }

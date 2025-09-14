@@ -41,8 +41,6 @@ interface IBarDataSet : IBarLineScatterCandleBubbleDataSet<BarEntry> {
      * @return
      */
     val barBorderWidth: Float
-        @JvmField
-        set
 
     /**
      * Returns the color drawing borders around the bars.

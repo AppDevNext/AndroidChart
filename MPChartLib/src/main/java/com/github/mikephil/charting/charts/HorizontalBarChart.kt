@@ -36,10 +36,8 @@ class HorizontalBarChart : BarChart {
 
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    override fun init() {
+    init {
         viewPortHandler = HorizontalViewPortHandler()
-
-        super.init()
 
         mLeftAxisTransformer = TransformerHorizontalBarChart(viewPortHandler)
         mRightAxisTransformer = TransformerHorizontalBarChart(viewPortHandler)

@@ -1,102 +1,92 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
+import android.content.Intent
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
+import androidx.core.net.toUri
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis.XAxisPosition
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.utils.ColorTemplate
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.notimportant.DemoBase
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
+class ScrollViewActivity : DemoBase() {
+    private var chart: BarChart? = null
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_scrollview)
 
-import info.appdev.chartexample.notimportant.DemoBase;
+        setTitle("ScrollViewActivity")
 
-import java.util.ArrayList;
+        chart = findViewById(R.id.chart1)
 
-@SuppressWarnings("SameParameterValue")
-public class ScrollViewActivity extends DemoBase {
-
-    private BarChart chart;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_scrollview);
-
-        setTitle("ScrollViewActivity");
-
-        chart = findViewById(R.id.chart1);
-
-        chart.getDescription().setEnabled(false);
+        chart!!.description.isEnabled = false
 
         // scaling can now only be done on x- and y-axis separately
-        chart.setPinchZoom(false);
+        chart!!.setPinchZoom(false)
 
-        chart.setDrawBarShadow(false);
-        chart.setDrawGridBackground(false);
+        chart!!.setDrawBarShadow(false)
+        chart!!.setDrawGridBackground(false)
 
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
+        val xAxis = chart!!.xAxis
+        xAxis.position = XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
 
-        chart.getAxisLeft().setDrawGridLines(false);
+        chart!!.axisLeft.setDrawGridLines(false)
 
-        chart.getLegend().setEnabled(false);
+        chart!!.legend.isEnabled = false
 
-        setData(10);
-        chart.setFitBars(true);
+        setData(10)
+        chart!!.setFitBars(true)
     }
 
-    private void setData(int count) {
-        Double[] sampleValues = DataTools.Companion.getValues(count);
-        ArrayList<BarEntry> values = new ArrayList<>();
+    private fun setData(count: Int) {
+        val sampleValues = getValues(count)
+        val values = ArrayList<BarEntry>()
 
-        for (int i = 0; i < count; i++) {
-            float val = (sampleValues[i].floatValue() * count) + 15;
-            values.add(new BarEntry(i, (int) val));
+        for (i in 0..<count) {
+            val `val` = (sampleValues[i].toFloat() * count) + 15
+            values.add(BarEntry(i.toFloat(), `val`.toInt().toFloat()))
         }
 
-        BarDataSet set = new BarDataSet(values, "Data Set");
-        set.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        set.setDrawValues(false);
+        val set = BarDataSet(values, "Data Set")
+        set.setColors(*ColorTemplate.VORDIPLOM_COLORS)
+        set.isDrawValuesEnabled = false
 
-        BarData data = new BarData(set);
+        val data = BarData(set)
 
-        chart.setData(data);
-        chart.invalidate();
-        chart.animateY(800);
+        chart!!.setData(data)
+        chart!!.invalidate()
+        chart!!.animateY(800)
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.only_github, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.only_github, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/ScrollViewActivity.java"));
-                startActivity(i);
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/ScrollViewActivity.java".toUri())
+                startActivity(i)
             }
         }
 
-        return true;
+        return true
     }
 
-    @Override
-    public void saveToGallery() { /* Intentionally left empty */ }
+    public override fun saveToGallery() { /* Intentionally left empty */
+    }
 }

@@ -14,8 +14,7 @@ open class LineChart : BarLineChartBase<Entry, ILineDataSet, LineData>, LineData
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    override fun init() {
-        super.init()
+    init {
         mRenderer = LineChartRenderer(this, mAnimator, viewPortHandler)
     }
 

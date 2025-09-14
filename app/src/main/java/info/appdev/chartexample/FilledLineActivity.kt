@@ -1,28 +1,22 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
-
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IFillFormatter;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-
-import info.appdev.chartexample.notimportant.DemoBase;
-
-import java.util.ArrayList;
+import android.content.Intent
+import android.graphics.Color
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
+import androidx.core.net.toUri
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.YAxis.AxisDependency
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IFillFormatter
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.notimportant.DemoBase
 
 /**
  * This works by inverting the background and desired "fill" color. First, we draw the fill color
@@ -31,160 +25,155 @@ import java.util.ArrayList;
  * This method makes it look like we filled the area between the lines, but really we are filling
  * the area OUTSIDE the lines!
  */
-@SuppressWarnings("SameParameterValue")
-public class FilledLineActivity extends DemoBase {
+class FilledLineActivity : DemoBase() {
+    private var chart: LineChart? = null
+    private val fillColor = Color.argb(150, 51, 181, 229)
 
-    private LineChart chart;
-    private final int fillColor = Color.argb(150, 51, 181, 229);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_linechart_noseekbar)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_linechart_noseekbar);
+        setTitle("FilledLineActivity")
 
-        setTitle("FilledLineActivity");
+        chart = findViewById(R.id.chart1)
+        chart!!.setBackgroundColor(Color.WHITE)
+        chart!!.setGridBackgroundColor(fillColor)
+        chart!!.setDrawGridBackground(true)
 
-        chart = findViewById(R.id.chart1);
-        chart.setBackgroundColor(Color.WHITE);
-        chart.setGridBackgroundColor(fillColor);
-        chart.setDrawGridBackground(true);
-
-        chart.setDrawBorders(true);
+        chart!!.setDrawBorders(true)
 
         // no description text
-        chart.getDescription().setEnabled(false);
+        chart!!.description.isEnabled = false
 
         // if disabled, scaling can be done on x- and y-axis separately
-        chart.setPinchZoom(false);
+        chart!!.setPinchZoom(false)
 
-        Legend l = chart.getLegend();
-        l.setEnabled(false);
+        val l = chart!!.legend
+        l.isEnabled = false
 
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setEnabled(false);
+        val xAxis = chart!!.xAxis
+        xAxis.isEnabled = false
 
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setAxisMaximum(900f);
-        leftAxis.setAxisMinimum(-250f);
-        leftAxis.setDrawAxisLine(false);
-        leftAxis.setDrawZeroLine(false);
-        leftAxis.setDrawGridLines(false);
+        val leftAxis = chart!!.axisLeft
+        leftAxis.axisMaximum = 900f
+        leftAxis.axisMinimum = -250f
+        leftAxis.setDrawAxisLine(false)
+        leftAxis.setDrawZeroLine(false)
+        leftAxis.setDrawGridLines(false)
 
-        chart.getAxisRight().setEnabled(false);
+        chart!!.axisRight.isEnabled = false
 
         // add data
-        setData(60);
+        setData(60f)
 
-        chart.invalidate();
+        chart!!.invalidate()
     }
 
-    private void setData(float range) {
-        int count = 100;
-        ArrayList<Entry> values1 = new ArrayList<>();
-        Double[] sampleValues = DataTools.Companion.getValues(count + 2);
+    private fun setData(range: Float) {
+        val count = 100
+        val values1 = ArrayList<Entry>()
+        val sampleValues = getValues(count + 2)
 
-        for (int i = 0; i < count; i++) {
-            float val = (sampleValues[i].floatValue() * range) + 50;
-            values1.add(new Entry(i, val));
+        for (i in 0..<count) {
+            val `val` = (sampleValues[i].toFloat() * range) + 50
+            values1.add(Entry(i.toFloat(), `val`))
         }
 
-        ArrayList<Entry> values2 = new ArrayList<>();
+        val values2 = ArrayList<Entry>()
 
-        for (int i = 0; i < count; i++) {
-            float val = (sampleValues[i+1].floatValue() * range) + 450;
-            values2.add(new Entry(i, val));
+        for (i in 0..<count) {
+            val `val` = (sampleValues[i + 1].toFloat() * range) + 450
+            values2.add(Entry(i.toFloat(), `val`))
         }
 
-        LineDataSet set1, set2;
+        val set1: LineDataSet?
+        val set2: LineDataSet?
 
-        if (chart.getData() != null &&
-                chart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
-            set2 = (LineDataSet) chart.getData().getDataSetByIndex(1);
-            set1.setEntries(values1);
-            set2.setEntries(values2);
-            chart.getData().notifyDataChanged();
-            chart.notifyDataSetChanged();
+        if (chart!!.data != null &&
+            chart!!.data!!.dataSetCount > 0
+        ) {
+            set1 = chart!!.data!!.getDataSetByIndex(0) as LineDataSet
+            set2 = chart!!.data!!.getDataSetByIndex(1) as LineDataSet
+            set1.entries = values1
+            set2.entries = values2
+            chart!!.data!!.notifyDataChanged()
+            chart!!.notifyDataSetChanged()
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(values1, "DataSet 1");
+            set1 = LineDataSet(values1, "DataSet 1")
 
-            set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-            set1.setColor(Color.rgb(255, 241, 46));
-            set1.setDrawCircles(false);
-            set1.setLineWidth(2f);
-            set1.setCircleRadius(3f);
-            set1.setFillAlpha(255);
-            set1.setDrawFilled(true);
-            set1.setFillColor(Color.WHITE);
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setDrawCircleHole(false);
-            set1.setFillFormatter(new IFillFormatter() {
-                @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+            set1.axisDependency = AxisDependency.LEFT
+            set1.setColor(Color.rgb(255, 241, 46))
+            set1.setDrawCircles(false)
+            set1.setLineWidth(2f)
+            set1.setCircleRadius(3f)
+            set1.setFillAlpha(255)
+            set1.setDrawFilled(true)
+            set1.setFillColor(Color.WHITE)
+            set1.highLightColor = Color.rgb(244, 117, 117)
+            set1.setDrawCircleHole(false)
+            set1.setFillFormatter(object : IFillFormatter {
+                override fun getFillLinePosition(dataSet: ILineDataSet, dataProvider: LineDataProvider): Float {
                     // change the return value here to better understand the effect
                     // return 0;
-                    return chart.getAxisLeft().getAxisMinimum();
+                    return chart!!.axisLeft.axisMinimum
                 }
-            });
+            })
 
             // create a dataset and give it a type
-            set2 = new LineDataSet(values2, "DataSet 2");
-            set2.setAxisDependency(YAxis.AxisDependency.LEFT);
-            set2.setColor(Color.rgb(255, 241, 46));
-            set2.setDrawCircles(false);
-            set2.setLineWidth(2f);
-            set2.setCircleRadius(3f);
-            set2.setFillAlpha(255);
-            set2.setDrawFilled(true);
-            set2.setFillColor(Color.WHITE);
-            set2.setDrawCircleHole(false);
-            set2.setHighLightColor(Color.rgb(244, 117, 117));
-            set2.setFillFormatter(new IFillFormatter() {
-                @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+            set2 = LineDataSet(values2, "DataSet 2")
+            set2.axisDependency = AxisDependency.LEFT
+            set2.setColor(Color.rgb(255, 241, 46))
+            set2.setDrawCircles(false)
+            set2.setLineWidth(2f)
+            set2.setCircleRadius(3f)
+            set2.setFillAlpha(255)
+            set2.setDrawFilled(true)
+            set2.setFillColor(Color.WHITE)
+            set2.setDrawCircleHole(false)
+            set2.highLightColor = Color.rgb(244, 117, 117)
+            set2.setFillFormatter(object : IFillFormatter {
+                override fun getFillLinePosition(dataSet: ILineDataSet, dataProvider: LineDataProvider): Float {
                     // change the return value here to better understand the effect
                     // return 600;
-                    return chart.getAxisLeft().getAxisMaximum();
+                    return chart!!.axisLeft.axisMaximum
                 }
-            });
+            })
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1); // add the data sets
-            dataSets.add(set2);
+            val dataSets = ArrayList<ILineDataSet>()
+            dataSets.add(set1) // add the data sets
+            dataSets.add(set2)
 
             // create a data object with the data sets
-            LineData data = new LineData(dataSets);
-            data.setDrawValues(false);
+            val data = LineData(dataSets)
+            data.setDrawValues(false)
 
             // set data
-            chart.setData(data);
+            chart!!.setData(data)
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.only_github, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.only_github, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/FilledLineActivity.java"));
-                startActivity(i);
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/FilledLineActivity.java".toUri())
+                startActivity(i)
             }
         }
 
-        return true;
+        return true
     }
 
-    @Override
-    public void saveToGallery() { /* Intentionally left empty */ }
+    public override fun saveToGallery() { /* Intentionally left empty */
+    }
 }

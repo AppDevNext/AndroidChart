@@ -83,9 +83,7 @@ abstract class PieRadarChartBase<E : Entry, D: IDataSet<E>, T : ChartData<E, D>>
 
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    override fun init() {
-        super.init()
-
+    init {
         mChartTouchListener = PieRadarChartTouchListener(this)
     }
 

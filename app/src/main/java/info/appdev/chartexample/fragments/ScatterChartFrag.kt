@@ -1,70 +1,61 @@
-package info.appdev.chartexample.fragments;
+package info.appdev.chartexample.fragments
 
-import android.graphics.Typeface;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.graphics.Typeface
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.github.mikephil.charting.charts.ScatterChart
+import com.github.mikephil.charting.components.XAxis.XAxisPosition
+import info.appdev.chartexample.R
+import info.appdev.chartexample.custom.MyMarkerView
 
-import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
-import com.github.mikephil.charting.components.YAxis;
+class ScatterChartFrag : SimpleFragment() {
+    private var chart: ScatterChart? = null
 
-import info.appdev.chartexample.R;
-import info.appdev.chartexample.custom.MyMarkerView;
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val v = inflater.inflate(R.layout.frag_simple_scatter, container, false)
 
+        chart = v.findViewById(R.id.scatterChart1)
+        chart?.description?.isEnabled = false
 
-public class ScatterChartFrag extends SimpleFragment {
+        val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 
-    @NonNull
-    public static Fragment newInstance() {
-        return new ScatterChartFrag();
-    }
+        val mv = MyMarkerView(requireContext(), R.layout.custom_marker_view)
+        mv.chartView = chart // For bounds control
+        chart?.setMarker(mv)
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private ScatterChart chart;
+        chart?.setDrawGridBackground(false)
+        chart?.setData(generateScatterData(6, 10000f))
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.frag_simple_scatter, container, false);
+        val xAxis = chart?.xAxis
+        xAxis?.isEnabled = true
+        xAxis?.position = XAxisPosition.BOTTOM
 
-        chart = v.findViewById(R.id.scatterChart1);
-        chart.getDescription().setEnabled(false);
+        val leftAxis = chart?.axisLeft
+        leftAxis?.typeface = tf
 
-        Typeface tf = Typeface.createFromAsset(requireContext().getAssets(), "OpenSans-Light.ttf");
+        val rightAxis = chart?.axisRight
+        rightAxis?.typeface = tf
+        rightAxis?.setDrawGridLines(false)
 
-        MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.custom_marker_view);
-        mv.setChartView(chart); // For bounds control
-        chart.setMarker(mv);
-
-        chart.setDrawGridBackground(false);
-        chart.setData(generateScatterData(6, 10000));
-
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setEnabled(true);
-        xAxis.setPosition(XAxisPosition.BOTTOM);
-
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setTypeface(tf);
-
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setTypeface(tf);
-        rightAxis.setDrawGridLines(false);
-
-        Legend l = chart.getLegend();
-        l.setWordWrapEnabled(true);
-        l.setTypeface(tf);
-        l.setFormSize(14f);
-        l.setTextSize(9f);
+        val l = chart?.legend
+        l?.isWordWrapEnabled = true
+        l?.typeface = tf
+        l?.formSize = 14f
+        l?.textSize = 9f
 
         // increase the space between legend & bottom and legend & content
-        l.setYOffset(13f);
-        chart.setExtraBottomOffset(16f);
+        l?.yOffset = 13f
+        chart?.extraBottomOffset = 16f
 
-        return v;
+        return v
+    }
+
+    companion object {
+        fun newInstance(): Fragment {
+            return ScatterChartFrag()
+        }
     }
 }

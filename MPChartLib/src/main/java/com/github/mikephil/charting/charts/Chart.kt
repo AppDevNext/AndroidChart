@@ -70,14 +70,6 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      */
     var isLogEnabled: Boolean = false
 
-    @Suppress("UsePropertyAccessSyntax")
-    override val width: Int
-        get() = getWidth()
-
-    @Suppress("UsePropertyAccessSyntax")
-    override val height: Int
-        get() = getHeight()
-
     /**
      * object that holds all data that was originally set for the chart, before
      * it was modified or any filtering algorithms had been applied
@@ -236,27 +228,29 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * default constructor for initialization in code
      */
     constructor(context: Context) : super(context) {
-        init()
     }
 
     /**
      * constructor for initialization in xml
      */
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init()
     }
 
     /**
      * even more awesome constructor
      */
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
-        init()
     }
+
+    /**
+     * The maximum distance in dp away from an entry causing it to highlight.
+     */
+    protected var mMaxHighlightDistance: Float = 0f
 
     /**
      * initialize all paints and stuff
      */
-    protected open fun init() {
+    init {
         setWillNotDraw(false)
 
         // initialize the utils
@@ -477,11 +471,6 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
     var highlighted: Array<Highlight>? = null
         protected set
 
-    /**
-     * The maximum distance in dp away from an entry causing it to highlight.
-     */
-    protected var mMaxHighlightDistance: Float = 0f
-
     override val maxHighlightDistance: Float
         get() = mMaxHighlightDistance
 
@@ -539,52 +528,6 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
     /**
      * Highlights any y-value at the given x-value in the given DataSet.
      * Provide -1 as the dataSetIndex to undo all highlighting.
-     * This method will call the listener.
-     * @param x            The x-value to highlight
-     * @param dataSetIndex The dataset index to search in
-     * @param dataIndex    The data index to search in (only used in CombinedChartView currently)
-     */
-    open fun highlightValue(x: Float, dataSetIndex: Int, dataIndex: Int) {
-        highlightValue(x, dataSetIndex, dataIndex, true)
-    }
-
-    /**
-     * Highlights any y-value at the given x-value in the given DataSet.
-     * Provide -1 as the dataSetIndex to undo all highlighting.
-     *
-     * @param x            The x-value to highlight
-     * @param dataSetIndex The dataset index to search in
-     * @param dataIndex    The data index to search in (only used in CombinedChartView currently)
-     * @param callListener Should the listener be called for this change
-     */
-    /**
-     * Highlights any y-value at the given x-value in the given DataSet.
-     * Provide -1 as the dataSetIndex to undo all highlighting.
-     * This method will call the listener.
-     *
-     * @param x            The x-value to highlight
-     * @param dataSetIndex The dataset index to search in
-     */
-    @JvmOverloads
-    fun highlightValue(x: Float, dataSetIndex: Int, dataIndex: Int = -1, callListener: Boolean = true) {
-        highlightValue(x, Float.Companion.NaN, dataSetIndex, dataIndex, callListener)
-    }
-
-    /**
-     * Highlights any y-value at the given x-value in the given DataSet.
-     * Provide -1 as the dataSetIndex to undo all highlighting.
-     *
-     * @param x            The x-value to highlight
-     * @param dataSetIndex The dataset index to search in
-     * @param callListener Should the listener be called for this change
-     */
-    fun highlightValue(x: Float, dataSetIndex: Int, callListener: Boolean) {
-        highlightValue(x, Float.Companion.NaN, dataSetIndex, -1, callListener)
-    }
-
-    /**
-     * Highlights any y-value at the given x-value in the given DataSet.
-     * Provide -1 as the dataSetIndex to undo all highlighting.
      *
      * @param x            The x-value to highlight
      * @param y            The y-value to highlight. Supply `NaN` for "any"
@@ -612,7 +555,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
      * @param dataIndex    The data index to search in (only used in CombinedChartView currently)
      */
     @JvmOverloads
-    fun highlightValue(x: Float, y: Float, dataSetIndex: Int, dataIndex: Int = -1, callListener: Boolean = true) {
+    open fun highlightValue(x: Float, y: Float = Float.NaN, dataSetIndex: Int = -1, dataIndex: Int = -1, callListener: Boolean = true) {
         if (dataSetIndex < 0 || mData.let { it != null && dataSetIndex >= it.dataSetCount }) {
             highlightValue(null, callListener)
         } else {
@@ -1154,7 +1097,7 @@ abstract class Chart<E: Entry, D: IDataSet<E>, T : ChartData<E, D>> : ViewGroup,
     /**
      * Returns the ChartData object that has been set for the chart.
      */
-    override val data: ChartData<E, D>?
+    override val data: T?
         get() = mData
 
     var renderer: DataRenderer?

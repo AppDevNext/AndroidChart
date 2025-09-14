@@ -23,9 +23,7 @@ class ScatterChart : BarLineChartBase<Entry, IScatterDataSet, ScatterData>, Scat
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
 
-    override fun init() {
-        super.init()
-
+    init {
         mRenderer = ScatterChartRenderer(this, mAnimator, viewPortHandler)
 
         xAxis.spaceMin = 0.5f

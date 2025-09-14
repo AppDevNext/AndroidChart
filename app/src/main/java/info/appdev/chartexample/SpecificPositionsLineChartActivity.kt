@@ -142,7 +142,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleValues -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                    set.isDrawValuesEnabled = !set.isDrawValuesEnabled
                 }
                 mChart!!.invalidate()
             }
@@ -173,7 +173,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleCubic -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER
+                    set.setMode(if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER)
                 }
                 mChart!!.invalidate()
             }
@@ -181,7 +181,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleStepped -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED
+                    set.setMode(if (set.mode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED)
                 }
                 mChart!!.invalidate()
             }
@@ -189,7 +189,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleHorizontalCubic -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER
+                    set.setMode(if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER)
                 }
                 mChart!!.invalidate()
             }
@@ -242,7 +242,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         val values = ArrayList<Entry>()
         val sampleValues = getValues(100)
         for (i in 0 until count) {
-            val `val` = (sampleValues[i]!!.toFloat() * range) + 3
+            val `val` = (sampleValues[i].toFloat() * range) + 3
             values.add(Entry(i.toFloat(), `val`))
         }
         mChart!!.data?.let {
@@ -265,22 +265,22 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         // set the line to be drawn like this "- - - - - -"
         set11.enableDashedLine(10f, 5f, 0f)
         set11.enableDashedHighlightLine(10f, 5f, 0f)
-        set11.color = Color.BLACK
+        set11.setColor(Color.BLACK)
         set11.setCircleColor(Color.BLACK)
-        set11.lineWidth = 1f
-        set11.circleRadius = 3f
+        set11.setLineWidth(1f)
+        set11.setCircleRadius(3f)
         set11.setDrawCircleHole(false)
         set11.valueTextSize = 9f
         set11.setDrawFilled(true)
         set11.formLineWidth = 1f
-        set11.setFormLineDashEffect(DashPathEffect(floatArrayOf(10f, 5f), 0f))
+        set11.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
         set11.formSize = 15f
-        if (Utils.getSDKInt() >= 18) {
+        if (Utils.sDKInt >= 18) {
             // fill drawable only supported on api level 18 and above
             val drawable = ContextCompat.getDrawable(this, R.drawable.fade_blue)
-            set11.fillDrawable = drawable
+            set11.setFillDrawable(drawable)
         } else {
-            set11.fillColor = Color.BLACK
+            set11.setFillColor(Color.BLACK)
         }
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(set11) // add the datasets
@@ -289,14 +289,14 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         val data = LineData(dataSets)
 
         // set data
-        mChart!!.data = data
+        mChart!!.setData(data)
     }
 
-    override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture) {
-        Log.i("Gesture", "START, x: " + me.x + ", y: " + me.y)
+    override fun onChartGestureStart(me: MotionEvent?, lastPerformedGesture: ChartGesture?) {
+        Log.i("Gesture", "START, x: " + me?.x + ", y: " + me?.y)
     }
 
-    override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartGesture) {
+    override fun onChartGestureEnd(me: MotionEvent?, lastPerformedGesture: ChartGesture?) {
         Log.i("Gesture", "END, lastGesture: $lastPerformedGesture")
 
         // un-highlight values after the gesture is finished and no single-tap
@@ -305,31 +305,31 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         }
     }
 
-    override fun onChartLongPressed(me: MotionEvent) {
+    override fun onChartLongPressed(me: MotionEvent?) {
         Log.i("LongPress", "Chart longpressed.")
     }
 
-    override fun onChartDoubleTapped(me: MotionEvent) {
+    override fun onChartDoubleTapped(me: MotionEvent?) {
         Log.i("DoubleTap", "Chart double-tapped.")
     }
 
-    override fun onChartSingleTapped(me: MotionEvent) {
+    override fun onChartSingleTapped(me: MotionEvent?) {
         Log.i("SingleTap", "Chart single-tapped.")
     }
 
-    override fun onChartFling(me1: MotionEvent, me2: MotionEvent, velocityX: Float, velocityY: Float) {
+    override fun onChartFling(me1: MotionEvent?, me2: MotionEvent?, velocityX: Float, velocityY: Float) {
         Log.i("Fling", "Chart flinged. VeloX: $velocityX, VeloY: $velocityY")
     }
 
-    override fun onChartScale(me: MotionEvent, scaleX: Float, scaleY: Float) {
+    override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
         Log.i("Scale / Zoom", "ScaleX: $scaleX, ScaleY: $scaleY")
     }
 
-    override fun onChartTranslate(me: MotionEvent, dX: Float, dY: Float) {
+    override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
         Log.i("Translate / Move", "dX: $dX, dY: $dY")
     }
 
-    override fun onValueSelected(e: Entry, h: Highlight) {
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
         Log.i("Entry selected", e.toString())
         Log.i("LOWHIGH", "low: " + mChart!!.lowestVisibleX + ", high: " + mChart!!.highestVisibleX)
         Log.i("MIN MAX", "xmin: " + mChart!!.xChartMin + ", xmax: " + mChart!!.xChartMax + ", ymin: " + mChart!!.yChartMin + ", ymax: " + mChart!!.yChartMax)

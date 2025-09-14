@@ -1,335 +1,320 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.RectF
+import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.Legend.LegendForm
+import com.github.mikephil.charting.components.XAxis.XAxisPosition
+import com.github.mikephil.charting.components.YAxis.AxisDependency
+import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.utils.Fill
+import com.github.mikephil.charting.utils.MPPointF.Companion.recycleInstance
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.custom.DayAxisValueFormatter
+import info.appdev.chartexample.custom.MyAxisValueFormatter
+import info.appdev.chartexample.custom.XYMarkerView
+import info.appdev.chartexample.notimportant.DemoBase
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.RectF;
-import android.net.Uri;
-import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
+class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
+    private var chart: BarChart? = null
+    private var seekBarX: SeekBar? = null
+    private var seekBarY: SeekBar? = null
+    private var tvX: TextView? = null
+    private var tvY: TextView? = null
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendForm;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Fill;
-import com.github.mikephil.charting.utils.MPPointF;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_barchart)
 
-import info.appdev.chartexample.custom.DayAxisValueFormatter;
-import info.appdev.chartexample.custom.MyAxisValueFormatter;
-import info.appdev.chartexample.custom.XYMarkerView;
-import info.appdev.chartexample.notimportant.DemoBase;
+        setTitle("BarChartActivity")
 
-import java.util.ArrayList;
-import java.util.List;
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-public class BarChartActivity extends DemoBase implements OnSeekBarChangeListener,
-        OnChartValueSelectedListener {
+        seekBarX = findViewById(R.id.seekBarX)
+        seekBarY = findViewById(R.id.seekBarY)
 
-    private BarChart chart;
-    private SeekBar seekBarX, seekBarY;
-    private TextView tvX, tvY;
+        seekBarY?.setOnSeekBarChangeListener(this)
+        seekBarX?.setOnSeekBarChangeListener(this)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_barchart);
+        chart = findViewById(R.id.chart1)
+        chart?.setOnChartValueSelectedListener(this)
+        chart?.setRoundedBarRadius(50f)
 
-        setTitle("BarChartActivity");
+        chart?.setDrawBarShadow(false)
+        chart?.setDrawValueAboveBar(true)
 
-        tvX = findViewById(R.id.tvXMax);
-        tvY = findViewById(R.id.tvYMax);
-
-        seekBarX = findViewById(R.id.seekBarX);
-        seekBarY = findViewById(R.id.seekBarY);
-
-        seekBarY.setOnSeekBarChangeListener(this);
-        seekBarX.setOnSeekBarChangeListener(this);
-
-        chart = findViewById(R.id.chart1);
-        chart.setOnChartValueSelectedListener(this);
-        chart.setRoundedBarRadius(50f);
-
-        chart.setDrawBarShadow(false);
-        chart.setDrawValueAboveBar(true);
-
-        chart.getDescription().setEnabled(false);
+        chart?.description?.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
-        chart.setMaxVisibleValueCount(60);
+        chart?.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        chart.setPinchZoom(false);
+        chart?.setPinchZoom(false)
 
-        chart.setDrawGridBackground(false);
+        chart?.setDrawGridBackground(false)
+
         // chart.setDrawYLabels(false);
+        val xAxisFormatter: IAxisValueFormatter = DayAxisValueFormatter(chart!!)
 
-        IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(chart);
+        val xAxis = chart?.xAxis
+        xAxis?.position = XAxisPosition.BOTTOM
+        xAxis?.typeface = tfLight
+        xAxis?.setDrawGridLines(false)
+        xAxis?.granularity = 1f // only intervals of 1 day
+        xAxis?.labelCount = 7
+        xAxis?.valueFormatter = xAxisFormatter
 
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setTypeface(tfLight);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f); // only intervals of 1 day
-        xAxis.setLabelCount(7);
-        xAxis.setValueFormatter(xAxisFormatter);
+        val custom: IAxisValueFormatter = MyAxisValueFormatter()
 
-        IAxisValueFormatter custom = new MyAxisValueFormatter();
+        val leftAxis = chart?.axisLeft
+        leftAxis?.typeface = tfLight
+        leftAxis?.setLabelCount(8, false)
+        leftAxis?.valueFormatter = custom
+        leftAxis?.setPosition(YAxisLabelPosition.OUTSIDE_CHART)
+        leftAxis?.spaceTop = 15f
+        leftAxis?.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setTypeface(tfLight);
-        leftAxis.setLabelCount(8, false);
-        leftAxis.setValueFormatter(custom);
-        leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(15f);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        val rightAxis = chart?.axisRight
+        rightAxis?.setDrawGridLines(false)
+        rightAxis?.typeface = tfLight
+        rightAxis?.setLabelCount(8, false)
+        rightAxis?.valueFormatter = custom
+        rightAxis?.spaceTop = 15f
+        rightAxis?.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(tfLight);
-        rightAxis.setLabelCount(8, false);
-        rightAxis.setValueFormatter(custom);
-        rightAxis.setSpaceTop(15f);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        val l = chart?.legend
+        l?.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+        l?.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+        l?.orientation = Legend.LegendOrientation.HORIZONTAL
+        l?.setDrawInside(false)
+        l?.form = LegendForm.SQUARE
+        l?.formSize = 9f
+        l?.textSize = 11f
+        l?.xEntrySpace = 4f
 
-        Legend l = chart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setForm(LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-        l.setXEntrySpace(4f);
-
-        XYMarkerView mv = new XYMarkerView(this, xAxisFormatter);
-        mv.setChartView(chart); // For bounds control
-        chart.setMarker(mv); // Set the marker to the chart
+        val mv = XYMarkerView(this, xAxisFormatter)
+        mv.chartView = chart // For bounds control
+        chart?.setMarker(mv) // Set the marker to the chart
 
         // setting data
-        seekBarY.setProgress(50);
-        seekBarX.setProgress(12);
+        seekBarY?.progress = 50
+        seekBarX?.progress = 12
 
         // chart.setDrawLegend(false);
     }
 
-    private void setData(int count, float range) {
+    private fun setData(count: Int, range: Float) {
+        val start = 1f
 
-        float start = 1f;
+        val values = ArrayList<BarEntry>()
+        val sampleValues = getValues(100)
 
-        ArrayList<BarEntry> values = new ArrayList<>();
-        Double[] sampleValues = DataTools.Companion.getValues(100);
+        var i = start.toInt()
+        while (i < start + count) {
+            val `val` = (sampleValues[i].toFloat() * (range + 1))
 
-        for (int i = (int) start; i < start + count; i++) {
-            float val = (float) (sampleValues[i].floatValue() * (range + 1));
-
-            if (val * 100 < 25) {
-                values.add(new BarEntry(i, val, getResources().getDrawable(R.drawable.star)));
+            if (`val` * 100 < 25) {
+                values.add(BarEntry(i.toFloat(), `val`, getResources().getDrawable(R.drawable.star)))
             } else {
-                values.add(new BarEntry(i, val));
+                values.add(BarEntry(i.toFloat(), `val`))
             }
+            i++
         }
 
-        BarDataSet set1;
+        val set1: BarDataSet?
 
-        if (chart.getData() != null &&
-                chart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) chart.getData().getDataSetByIndex(0);
-            set1.setEntries(values);
-            chart.getData().notifyDataChanged();
-            chart.notifyDataSetChanged();
-
+        if (chart?.data != null &&
+            chart?.data?.let { it.dataSetCount > 0 } == true
+        ) {
+            set1 = chart?.data?.getDataSetByIndex(0) as BarDataSet
+            set1.entries = values
+            chart?.data?.notifyDataChanged()
+            chart?.notifyDataSetChanged()
         } else {
-            set1 = new BarDataSet(values, "The year 2017");
+            set1 = BarDataSet(values, "The year 2017")
 
-            set1.setDrawIcons(false);
+            set1.isDrawIconsEnabled = false
 
-            int startColor1 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
-            int startColor2 = ContextCompat.getColor(this, android.R.color.holo_blue_light);
-            int startColor3 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
-            int startColor4 = ContextCompat.getColor(this, android.R.color.holo_green_light);
-            int startColor5 = ContextCompat.getColor(this, android.R.color.holo_red_light);
-            int endColor1 = ContextCompat.getColor(this, android.R.color.holo_blue_dark);
-            int endColor2 = ContextCompat.getColor(this, android.R.color.holo_purple);
-            int endColor3 = ContextCompat.getColor(this, android.R.color.holo_green_dark);
-            int endColor4 = ContextCompat.getColor(this, android.R.color.holo_red_dark);
-            int endColor5 = ContextCompat.getColor(this, android.R.color.holo_orange_dark);
+            val startColor1 = ContextCompat.getColor(this, android.R.color.holo_orange_light)
+            val startColor2 = ContextCompat.getColor(this, android.R.color.holo_blue_light)
+            val startColor3 = ContextCompat.getColor(this, android.R.color.holo_orange_light)
+            val startColor4 = ContextCompat.getColor(this, android.R.color.holo_green_light)
+            val startColor5 = ContextCompat.getColor(this, android.R.color.holo_red_light)
+            val endColor1 = ContextCompat.getColor(this, android.R.color.holo_blue_dark)
+            val endColor2 = ContextCompat.getColor(this, android.R.color.holo_purple)
+            val endColor3 = ContextCompat.getColor(this, android.R.color.holo_green_dark)
+            val endColor4 = ContextCompat.getColor(this, android.R.color.holo_red_dark)
+            val endColor5 = ContextCompat.getColor(this, android.R.color.holo_orange_dark)
 
-            List<Fill> gradientFills = new ArrayList<>();
-            gradientFills.add(new Fill(startColor1, endColor1));
-            gradientFills.add(new Fill(startColor2, endColor2));
-            gradientFills.add(new Fill(startColor3, endColor3));
-            gradientFills.add(new Fill(startColor4, endColor4));
-            gradientFills.add(new Fill(startColor5, endColor5));
+            val gradientFills: MutableList<Fill> = ArrayList()
+            gradientFills.add(Fill(startColor1, endColor1))
+            gradientFills.add(Fill(startColor2, endColor2))
+            gradientFills.add(Fill(startColor3, endColor3))
+            gradientFills.add(Fill(startColor4, endColor4))
+            gradientFills.add(Fill(startColor5, endColor5))
 
-            set1.setFills(gradientFills);
+            set1.setFills(gradientFills)
 
-            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
+            val dataSets = ArrayList<IBarDataSet>()
+            dataSets.add(set1)
 
-            BarData data = new BarData(dataSets);
-            data.setValueTextSize(10f);
-            data.setValueTypeface(tfLight);
-            data.setBarWidth(0.9f);
+            val data = BarData(dataSets)
+            data.setValueTextSize(10f)
+            data.setValueTypeface(tfLight)
+            data.barWidth = 0.9f
 
-            chart.setData(data);
+            chart?.setData(data)
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.bar, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.bar, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/BarChartActivity.java"));
-                startActivity(i);
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/BarChartActivity.java".toUri())
+                startActivity(i)
             }
-            case R.id.actionToggleValues: {
-                for (IDataSet set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled);
 
-                chart.invalidate();
-                break;
-            }
-            case R.id.actionToggleIcons: {
-                for (IDataSet set : chart.getData().getDataSets())
-                    set.setDrawIcons(!set.isDrawIconsEnabled);
-
-                chart.invalidate();
-                break;
-            }
-            case R.id.actionToggleHighlight: {
-                if (chart.getData() != null) {
-                    chart.getData().setHighlightEnabled(!chart.getData().isHighlightEnabled());
-                    chart.invalidate();
+            R.id.actionToggleValues -> {
+                chart?.data?.dataSets?.let {
+                    for (set in it) set.isDrawValuesEnabled = !set.isDrawValuesEnabled
                 }
-                break;
-            }
-            case R.id.actionTogglePinch: {
-                if (chart.isPinchZoomEnabled())
-                    chart.setPinchZoom(false);
-                else
-                    chart.setPinchZoom(true);
 
-                chart.invalidate();
-                break;
+                chart?.invalidate()
             }
-            case R.id.actionToggleAutoScaleMinMax: {
-                chart.setAutoScaleMinMaxEnabled(!chart.isAutoScaleMinMaxEnabled());
-                chart.notifyDataSetChanged();
-                break;
-            }
-            case R.id.actionToggleBarBorders: {
-                for (IBarDataSet set : chart.getData().getDataSets())
-                    ((BarDataSet) set).setBarBorderWidth(set.barBorderWidth == 1.f ? 0.f : 1.f);
 
-                chart.invalidate();
-                break;
+            R.id.actionToggleIcons -> {
+                chart?.data?.dataSets?.let {
+                    for (set in it) set.isDrawIconsEnabled = !set.isDrawIconsEnabled
+                }
+
+                chart?.invalidate()
             }
-            case R.id.animateX: {
-                chart.animateX(2000);
-                break;
+
+            R.id.actionToggleHighlight -> {
+                if (chart?.data != null) {
+                    chart?.data?.isHighlightEnabled = chart?.data?.isHighlightEnabled != true
+                    chart?.invalidate()
+                }
             }
-            case R.id.animateY: {
-                chart.animateY(2000);
-                break;
+
+            R.id.actionTogglePinch -> {
+                if (chart?.isPinchZoomEnabled == true) chart?.setPinchZoom(false)
+                else chart?.setPinchZoom(true)
+
+                chart?.invalidate()
             }
-            case R.id.animateXY: {
-                chart.animateXY(2000, 2000);
-                break;
+
+            R.id.actionToggleAutoScaleMinMax -> {
+                chart?.isAutoScaleMinMaxEnabled = chart?.isAutoScaleMinMaxEnabled != true
+                chart?.notifyDataSetChanged()
             }
-            case R.id.actionSave: {
+
+            R.id.actionToggleBarBorders -> {
+                chart?.data?.dataSets?.let {
+                    for (set in it) (set as BarDataSet).setBarBorderWidth(if (set.barBorderWidth == 1f) 0f else 1f)
+                }
+
+                chart?.invalidate()
+            }
+
+            R.id.animateX -> {
+                chart?.animateX(2000)
+            }
+
+            R.id.animateY -> {
+                chart?.animateY(2000)
+            }
+
+            R.id.animateXY -> {
+                chart?.animateXY(2000, 2000)
+            }
+
+            R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    saveToGallery();
+                    saveToGallery()
                 } else {
-                    requestStoragePermission(chart);
+                    requestStoragePermission(chart)
                 }
-                break;
             }
-            case R.id.actionRotateXAxisLabelsBy45Deg: {
-                chart.getXAxis().setLabelRotationAngle(45);
-                chart.notifyDataSetChanged();
-                chart.invalidate();
+
+            R.id.actionRotateXAxisLabelsBy45Deg -> {
+                chart?.xAxis?.labelRotationAngle = 45f
+                chart?.notifyDataSetChanged()
+                chart?.invalidate()
             }
         }
-        return true;
+        return true
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        tvX?.text = seekBarX?.progress.toString()
+        tvY?.text = seekBarY?.progress.toString()
 
-        tvX.setText(String.valueOf(seekBarX.getProgress()));
-        tvY.setText(String.valueOf(seekBarY.getProgress()));
-
-        setData(seekBarX.getProgress(), seekBarY.getProgress());
-        chart.invalidate();
+        setData(seekBarX?.progress ?: 0, seekBarY?.progress?.toFloat() ?: 0f)
+        chart?.invalidate()
     }
 
-    @Override
-    protected void saveToGallery() {
-        saveToGallery(chart, "BarChartActivity");
+    override fun saveToGallery() {
+        saveToGallery(chart, "BarChartActivity")
     }
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {}
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 
-    private final RectF onValueSelectedRectF = new RectF();
+    private val onValueSelectedRectF = RectF()
 
-    @Override
-    public void onValueSelected(Entry e, Highlight h) {
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
+        if (e == null) return
 
-        if (e == null)
-            return;
+        val bounds = onValueSelectedRectF
+        chart?.getBarBounds(e as BarEntry, bounds)
+        val position = chart?.getPosition(e, AxisDependency.LEFT)
 
-        RectF bounds = onValueSelectedRectF;
-        chart.getBarBounds((BarEntry) e, bounds);
-        MPPointF position = chart.getPosition(e, AxisDependency.LEFT);
+        Log.i("bounds", bounds.toString())
+        Log.i("position", position.toString())
 
-        Log.i("bounds", bounds.toString());
-        Log.i("position", position.toString());
+        Log.i(
+            "x-index",
+            ("low: " + chart?.lowestVisibleX + ", high: "
+                    + chart?.highestVisibleX)
+        )
 
-        Log.i("x-index",
-                "low: " + chart.getLowestVisibleX() + ", high: "
-                        + chart.getHighestVisibleX());
-
-        MPPointF.recycleInstance(position);
+        recycleInstance(position)
     }
 
-    @Override
-    public void onNothingSelected() { }
+    override fun onNothingSelected() {}
 }

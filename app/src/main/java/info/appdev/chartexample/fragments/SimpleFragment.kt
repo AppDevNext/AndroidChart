@@ -1,194 +1,184 @@
-package info.appdev.chartexample.fragments;
+package info.appdev.chartexample.fragments
 
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.graphics.Color
+import android.graphics.Typeface
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.github.mikephil.charting.charts.ScatterChart.ScatterShape
+import com.github.mikephil.charting.charts.ScatterChart.ScatterShape.Companion.allDefaultShapes
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.data.ScatterData
+import com.github.mikephil.charting.data.ScatterDataSet
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet
+import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.utils.FileUtils.loadEntriesFromAssets
+import info.appdev.chartexample.DataTools.Companion.getValues
 
-import com.github.mikephil.charting.charts.ScatterChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.data.ScatterDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.FileUtils;
-import info.appdev.chartexample.DataTools;
+abstract class SimpleFragment : Fragment() {
+    private var tf: Typeface? = null
 
-import java.util.ArrayList;
-
-@SuppressWarnings({"SameParameterValue", "WeakerAccess"})
-public abstract class SimpleFragment extends Fragment {
-
-    private Typeface tf;
-
-    public SimpleFragment() {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Regular.ttf")
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        tf = Typeface.createFromAsset(requireContext().getAssets(), "OpenSans-Regular.ttf");
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
+    protected fun generateBarData(dataSets: Int, range: Float): BarData {
+        val count = 12
+        val values = getValues(count)
+        val sets = ArrayList<IBarDataSet>()
 
-    protected BarData generateBarData(int dataSets, float range) {
-        int count = 12;
-        Double[] values = DataTools.Companion.getValues(count);
-        ArrayList<IBarDataSet> sets = new ArrayList<>();
+        for (i in 0..<dataSets) {
+            val entries = ArrayList<BarEntry>()
 
-        for(int i = 0; i < dataSets; i++) {
-
-            ArrayList<BarEntry> entries = new ArrayList<>();
-
-            for(int j = 0; j < count; j++) {
-                entries.add(new BarEntry(j, (float) (values[j].floatValue() * range) + range / 4));
+            for (j in 0..<count) {
+                entries.add(BarEntry(j.toFloat(), (values[j].toFloat() * range) + range / 4))
             }
 
-            BarDataSet ds = new BarDataSet(entries, getLabel(i));
-            ds.setColors(ColorTemplate.VORDIPLOM_COLORS);
-            sets.add(ds);
+            val ds = BarDataSet(entries, getLabel(i))
+            ds.setColors(*ColorTemplate.VORDIPLOM_COLORS)
+            sets.add(ds)
         }
 
-        BarData d = new BarData(sets);
-        d.setValueTypeface(tf);
-        return d;
+        val d = BarData(sets)
+        d.setValueTypeface(tf)
+        return d
     }
 
-    protected ScatterData generateScatterData(int dataSets, float range) {
-        int count = 100;
-        Double[] values = DataTools.Companion.getValues(count);
-        ArrayList<IScatterDataSet> sets = new ArrayList<>();
+    protected fun generateScatterData(dataSets: Int, range: Float): ScatterData {
+        val count = 100
+        val values = getValues(count)
+        val sets = ArrayList<IScatterDataSet>()
 
-        ScatterChart.ScatterShape[] shapes = ScatterChart.ScatterShape.getAllDefaultShapes();
+        val shapes: Array<ScatterShape> = allDefaultShapes
 
-        for(int i = 0; i < dataSets; i++) {
+        for (i in 0..<dataSets) {
+            val entries = ArrayList<Entry>()
 
-            ArrayList<Entry> entries = new ArrayList<>();
-
-            for(int j = 0; j < count; j++) {
-                entries.add(new Entry(j, (float) (values[j].floatValue() * range) + range / 4));
+            for (j in 0..<count) {
+                entries.add(Entry(j.toFloat(), (values[j].toFloat() * range) + range / 4))
             }
 
-            ScatterDataSet ds = new ScatterDataSet(entries, getLabel(i));
-            ds.setScatterShapeSize(12f);
-            ds.setScatterShape(shapes[i % shapes.length]);
-            ds.setColors(ColorTemplate.COLORFUL_COLORS);
-            ds.setScatterShapeSize(9f);
-            sets.add(ds);
+            val ds = ScatterDataSet(entries, getLabel(i))
+            ds.scatterShapeSize = 12f
+            ds.setScatterShape(shapes[i % shapes.size])
+            ds.setColors(*ColorTemplate.COLORFUL_COLORS)
+            ds.scatterShapeSize = 9f
+            sets.add(ds)
         }
 
-        ScatterData d = new ScatterData(sets);
-        d.setValueTypeface(tf);
-        return d;
+        val d = ScatterData(sets)
+        d.setValueTypeface(tf)
+        return d
     }
 
     /**
      * generates less data (1 DataSet, 4 values)
      * @return PieData
      */
-    protected PieData generatePieData() {
+    protected fun generatePieData(): PieData {
+        val count = 4
+        val values = getValues(count)
+        val entries1 = ArrayList<PieEntry>()
 
-        int count = 4;
-        Double[] values = DataTools.Companion.getValues(count);
-        ArrayList<PieEntry> entries1 = new ArrayList<>();
-
-        for(int i = 0; i < count; i++) {
-            entries1.add(new PieEntry((float) ((values[i].floatValue() * 60) + 40), "Quarter " + (i+1)));
+        for (i in 0..<count) {
+            entries1.add(PieEntry(((values[i].toFloat() * 60) + 40), "Quarter " + (i + 1)))
         }
 
-        PieDataSet ds1 = new PieDataSet(entries1, "Quarterly Revenues 2015");
-        ds1.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        ds1.setSliceSpace(2f);
-        ds1.setValueTextColor(Color.WHITE);
-        ds1.setValueTextSize(12f);
+        val ds1 = PieDataSet(entries1, "Quarterly Revenues 2015")
+        ds1.setColors(*ColorTemplate.VORDIPLOM_COLORS)
+        ds1.setSliceSpace(2f)
+        ds1.valueTextColor = Color.WHITE
+        ds1.valueTextSize = 12f
 
-        PieData d = new PieData(ds1);
-        d.setValueTypeface(tf);
+        val d = PieData(ds1)
+        d.setValueTypeface(tf)
 
-        return d;
+        return d
     }
 
-    protected LineData generateLineData() {
+    protected fun generateLineData(): LineData {
+        val sets = ArrayList<ILineDataSet>()
+        val ds1 = LineDataSet(loadEntriesFromAssets(requireContext().assets, "sine.txt"), "Sine function")
+        val ds2 = LineDataSet(loadEntriesFromAssets(requireContext().assets, "cosine.txt"), "Cosine function")
 
-        ArrayList<ILineDataSet> sets = new ArrayList<>();
-        LineDataSet ds1 = new LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().getAssets(), "sine.txt"), "Sine function");
-        LineDataSet ds2 = new LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().getAssets(), "cosine.txt"), "Cosine function");
+        ds1.setLineWidth(2f)
+        ds2.setLineWidth(2f)
 
-        ds1.setLineWidth(2f);
-        ds2.setLineWidth(2f);
+        ds1.setDrawCircles(false)
+        ds2.setDrawCircles(false)
 
-        ds1.setDrawCircles(false);
-        ds2.setDrawCircles(false);
-
-        ds1.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        ds2.setColor(ColorTemplate.VORDIPLOM_COLORS[1]);
+        ds1.setColor(ColorTemplate.VORDIPLOM_COLORS[0])
+        ds2.setColor(ColorTemplate.VORDIPLOM_COLORS[1])
 
         // load DataSets from files in assets folder
-        sets.add(ds1);
-        sets.add(ds2);
+        sets.add(ds1)
+        sets.add(ds2)
 
-        LineData d = new LineData(sets);
-        d.setValueTypeface(tf);
-        return d;
+        val d = LineData(sets)
+        d.setValueTypeface(tf)
+        return d
     }
 
-    protected LineData getComplexity() {
+    protected val complexity: LineData
+        get() {
+            val sets = ArrayList<ILineDataSet>()
 
-        ArrayList<ILineDataSet> sets = new ArrayList<>();
+            val ds1 =
+                LineDataSet(loadEntriesFromAssets(requireContext().assets, "n.txt"), "O(n)")
+            val ds2 =
+                LineDataSet(loadEntriesFromAssets(requireContext().assets, "nlogn.txt"), "O(nlogn)")
+            val ds3 =
+                LineDataSet(loadEntriesFromAssets(requireContext().assets, "square.txt"), "O(n\u00B2)")
+            val ds4 =
+                LineDataSet(loadEntriesFromAssets(requireContext().assets, "three.txt"), "O(n\u00B3)")
 
-        LineDataSet ds1 = new LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().getAssets(), "n.txt"), "O(n)");
-        LineDataSet ds2 = new LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().getAssets(), "nlogn.txt"), "O(nlogn)");
-        LineDataSet ds3 = new LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().getAssets(), "square.txt"), "O(n\u00B2)");
-        LineDataSet ds4 = new LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().getAssets(), "three.txt"), "O(n\u00B3)");
+            ds1.setColor(ColorTemplate.VORDIPLOM_COLORS[0])
+            ds2.setColor(ColorTemplate.VORDIPLOM_COLORS[1])
+            ds3.setColor(ColorTemplate.VORDIPLOM_COLORS[2])
+            ds4.setColor(ColorTemplate.VORDIPLOM_COLORS[3])
 
-        ds1.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        ds2.setColor(ColorTemplate.VORDIPLOM_COLORS[1]);
-        ds3.setColor(ColorTemplate.VORDIPLOM_COLORS[2]);
-        ds4.setColor(ColorTemplate.VORDIPLOM_COLORS[3]);
+            ds1.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0])
+            ds2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[1])
+            ds3.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[2])
+            ds4.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[3])
 
-        ds1.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        ds2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[1]);
-        ds3.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[2]);
-        ds4.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[3]);
-
-        ds1.setLineWidth(2.5f);
-        ds1.setCircleRadius(3f);
-        ds2.setLineWidth(2.5f);
-        ds2.setCircleRadius(3f);
-        ds3.setLineWidth(2.5f);
-        ds3.setCircleRadius(3f);
-        ds4.setLineWidth(2.5f);
-        ds4.setCircleRadius(3f);
+            ds1.setLineWidth(2.5f)
+            ds1.setCircleRadius(3f)
+            ds2.setLineWidth(2.5f)
+            ds2.setCircleRadius(3f)
+            ds3.setLineWidth(2.5f)
+            ds3.setCircleRadius(3f)
+            ds4.setLineWidth(2.5f)
+            ds4.setCircleRadius(3f)
 
 
-        // load DataSets from files in assets folder
-        sets.add(ds1);
-        sets.add(ds2);
-        sets.add(ds3);
-        sets.add(ds4);
+            // load DataSets from files in assets folder
+            sets.add(ds1)
+            sets.add(ds2)
+            sets.add(ds3)
+            sets.add(ds4)
 
-        LineData d = new LineData(sets);
-        d.setValueTypeface(tf);
-        return d;
-    }
+            val d = LineData(sets)
+            d.setValueTypeface(tf)
+            return d
+        }
 
-    private final String[] mLabels = new String[] { "Company A", "Company B", "Company C", "Company D", "Company E", "Company F" };
+    private val mLabels: Array<String> = arrayOf("Company A", "Company B", "Company C", "Company D", "Company E", "Company F")
 
-    private String getLabel(int i) {
-        return mLabels[i];
+    private fun getLabel(i: Int): String {
+        return mLabels[i]
     }
 }

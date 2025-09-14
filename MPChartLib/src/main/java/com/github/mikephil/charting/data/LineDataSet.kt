@@ -142,7 +142,6 @@ open class LineDataSet(yVals: MutableList<Entry>, label: String) : LineRadarData
     override val cubicIntensity: Float
         get() = mCubicIntensity
 
-
     /**
      * Sets the radius of the drawn circles.
      * Default radius = 4f, Min = 1f

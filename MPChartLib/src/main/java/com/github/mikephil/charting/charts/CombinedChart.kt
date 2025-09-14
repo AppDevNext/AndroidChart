@@ -61,9 +61,7 @@ open class CombinedChart : BarLineChartBase<Entry, IBarLineScatterCandleBubbleDa
 
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    override fun init() {
-        super.init()
-
+    init {
         setHighlighter(CombinedHighlighter(this, this))
 
         // Old default behaviour
