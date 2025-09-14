@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.withTranslation
 import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.data.Entry
@@ -20,7 +21,7 @@ import java.lang.ref.WeakReference
  */
 class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMarker {
     private var mDrawable: Drawable =
-        mContext.resources.getDrawable(drawableResourceId, null)
+        ResourcesCompat.getDrawable(mContext.resources, drawableResourceId, mContext.theme)!!
 
     private var mOffset: MPPointF = MPPointF()
     private val mOffset2 = MPPointF()

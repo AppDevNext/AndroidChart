@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -98,7 +99,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         values.add(BarEntry(25f, floatArrayOf(-15f, 15f)))
         values.add(BarEntry(35f, floatArrayOf(-17f, 17f)))
         values.add(BarEntry(45f, floatArrayOf(-19f, 20f)))
-        values.add(BarEntry(45f, floatArrayOf(-19f, 20f), getResources().getDrawable(R.drawable.star)))
+        values.add(BarEntry(45f, floatArrayOf(-19f, 20f), ResourcesCompat.getDrawable(resources, R.drawable.star, theme)))
         values.add(BarEntry(55f, floatArrayOf(-19f, 19f)))
         values.add(BarEntry(65f, floatArrayOf(-16f, 16f)))
         values.add(BarEntry(75f, floatArrayOf(-13f, 14f)))
