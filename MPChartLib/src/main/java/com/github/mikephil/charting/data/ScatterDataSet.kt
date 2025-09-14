@@ -64,16 +64,6 @@ open class ScatterDataSet(yVals: MutableList<Entry>, label: String) : LineScatte
         shapeRenderer = getRendererForShape(shape)
     }
 
-    /**
-     * Sets a new IShapeRenderer responsible for drawing this DataSet.
-     * This can also be used to set a custom IShapeRenderer aside from the default ones.
-     *
-     * @param shapeRenderer
-     */
-    fun setShapeRenderer(shapeRenderer: IShapeRenderer?) {
-        this@ScatterDataSet.shapeRenderer = shapeRenderer
-    }
-
     companion object {
         fun getRendererForShape(shape: ScatterShape): IShapeRenderer? {
             return when (shape) {

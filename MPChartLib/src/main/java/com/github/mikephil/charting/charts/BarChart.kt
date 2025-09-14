@@ -53,9 +53,7 @@ open class BarChart : BarLineChartBase<BarEntry, IBarDataSet, BarData>, BarDataP
 
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    override fun init() {
-        super.init()
-
+    init {
         mRenderer = BarChartRenderer(this, mAnimator, viewPortHandler, mDrawRoundedBars, mRoundedBarRadius)
 
         setHighlighter(BarHighlighter(this))
@@ -201,8 +199,8 @@ open class BarChart : BarLineChartBase<BarEntry, IBarDataSet, BarData>, BarDataP
      * @param dataSetIndex
      * @param dataIndex   the index inside the stack - only relevant for stacked entries
      */
-    override fun highlightValue(x: Float, dataSetIndex: Int, dataIndex: Int) {
-        highlightValue(Highlight(x, dataSetIndex, dataIndex), false)
+    override fun highlightValue(x: Float, y: Float, dataSetIndex: Int, dataIndex: Int, callListener: Boolean) {
+        super.highlightValue(Highlight(x, dataSetIndex, dataIndex), false)
     }
 
     override val barData: BarData?
@@ -245,7 +243,7 @@ open class BarChart : BarLineChartBase<BarEntry, IBarDataSet, BarData>, BarDataP
     fun setRoundedBarRadius(mRoundedBarRadius: Float) {
         this.mRoundedBarRadius = mRoundedBarRadius
         this.mDrawRoundedBars = true
-        init()
+        mRenderer = BarChartRenderer(this, mAnimator, viewPortHandler, mDrawRoundedBars, mRoundedBarRadius)
     }
 
     override val accessibilityDescription: String?

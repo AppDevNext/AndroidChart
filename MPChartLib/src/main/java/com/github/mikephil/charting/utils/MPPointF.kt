@@ -59,7 +59,7 @@ class MPPointF : Poolable<MPPointF> {
         }
 
         @JvmStatic
-        fun recycleInstance(instance: MPPointF) {
+        fun recycleInstance(instance: MPPointF?) {
             pool.recycle(instance)
         }
 

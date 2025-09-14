@@ -26,12 +26,15 @@ open class HorizontalBarChartRenderer(
     viewPortHandler: ViewPortHandler
 ) : BarChartRenderer(chart, animator, viewPortHandler) {
     override fun initBuffers() {
+        barBuffers.clear()
         val barData = chart.barData ?: return
         for (i in 0 until barData.dataSetCount) {
             val set = barData.getDataSetByIndex(i)
-            barBuffers[i] = HorizontalBarBuffer(
-                set.entryCount * 4 * (if (set.isStacked) set.stackSize else 1),
-                barData.dataSetCount, set.isStacked
+            barBuffers.add(
+                HorizontalBarBuffer(
+                    set.entryCount * 4 * (if (set.isStacked) set.stackSize else 1),
+                    barData.dataSetCount, set.isStacked
+                )
             )
         }
     }

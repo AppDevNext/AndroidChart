@@ -17,7 +17,7 @@ import androidx.core.graphics.withTranslation
  *
  * @author Philipp Jahoda
  */
-open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(context), IMarker {
+open class MarkerView(context: Context, layoutResource: Int) : RelativeLayout(context), IMarker {
     private var mOffset: MPPointF = MPPointF()
     private val mOffset2 = MPPointF()
     private var mWeakChart: WeakReference<Chart<*, *, *>?>? = null
@@ -90,7 +90,7 @@ open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(c
         return mOffset2
     }
 
-    override fun refreshContent(e: Entry?, highlight: Highlight?) {
+    override fun refreshContent(e: Entry, highlight: Highlight) {
         measure(
             MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
             MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)

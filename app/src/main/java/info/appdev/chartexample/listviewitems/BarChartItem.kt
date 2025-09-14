@@ -1,92 +1,77 @@
-package info.appdev.chartexample.listviewitems;
+package info.appdev.chartexample.listviewitems
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.Typeface;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Typeface
+import android.view.LayoutInflater
+import android.view.View
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis.XAxisPosition
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.ChartData
+import info.appdev.chartexample.R
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.ChartData;
+class BarChartItem(cd: ChartData<*, *>, c: Context) : ChartItem(cd) {
+    private val mTf = Typeface.createFromAsset(c.assets, "OpenSans-Regular.ttf")
 
-import info.appdev.chartexample.R;
-
-public class BarChartItem extends ChartItem {
-
-    private final Typeface mTf;
-
-    public BarChartItem(ChartData<?> cd, Context c) {
-        super(cd);
-
-        mTf = Typeface.createFromAsset(c.getAssets(), "OpenSans-Regular.ttf");
-    }
-
-    @Override
-    public int getItemType() {
-        return TYPE_BARCHART;
-    }
+    override val itemType: Int
+        get() = TYPE_BARCHART
 
     @SuppressLint("InflateParams")
-    @Override
-    public View getView(int position, View convertView, Context c) {
-
-        ViewHolder holder;
+    override fun getView(position: Int, convertView: View?, c: Context): View {
+        var convertView = convertView
+        val holder: ViewHolder
 
         if (convertView == null) {
-
-            holder = new ViewHolder();
+            holder = ViewHolder()
 
             convertView = LayoutInflater.from(c).inflate(
-                    R.layout.list_item_barchart, null);
-            holder.chart = convertView.findViewById(R.id.chart);
+                R.layout.list_item_barchart, null
+            )
+            holder.chart = convertView.findViewById(R.id.chart)
 
-            convertView.setTag(holder);
-
+            convertView.tag = holder
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = convertView.tag as ViewHolder
         }
 
         // apply styling
-        holder.chart.getDescription().setEnabled(false);
-        holder.chart.setDrawGridBackground(false);
-        holder.chart.setDrawBarShadow(false);
+        holder.chart?.description?.isEnabled = false
+        holder.chart?.setDrawGridBackground(false)
+        holder.chart?.setDrawBarShadow(false)
 
-        XAxis xAxis = holder.chart.getXAxis();
-        xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setTypeface(mTf);
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(true);
+        val xAxis = holder.chart?.xAxis
+        xAxis?.position = XAxisPosition.BOTTOM
+        xAxis?.typeface = mTf
+        xAxis?.setDrawGridLines(false)
+        xAxis?.setDrawAxisLine(true)
 
-        YAxis leftAxis = holder.chart.getAxisLeft();
-        leftAxis.setTypeface(mTf);
-        leftAxis.setLabelCount(5, false);
-        leftAxis.setSpaceTop(20f);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        val leftAxis = holder.chart?.axisLeft
+        leftAxis?.typeface = mTf
+        leftAxis?.setLabelCount(5, false)
+        leftAxis?.spaceTop = 20f
+        leftAxis?.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        YAxis rightAxis = holder.chart.getAxisRight();
-        rightAxis.setTypeface(mTf);
-        rightAxis.setLabelCount(5, false);
-        rightAxis.setSpaceTop(20f);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        val rightAxis = holder.chart?.axisRight
+        rightAxis?.typeface = mTf
+        rightAxis?.setLabelCount(5, false)
+        rightAxis?.spaceTop = 20f
+        rightAxis?.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        mChartData.setValueTypeface(mTf);
+        mChartData.setValueTypeface(mTf)
 
         // set data
-        holder.chart.setData((BarData) mChartData);
-        holder.chart.setFitBars(true);
+        holder.chart?.setData(mChartData as BarData?)
+        holder.chart?.setFitBars(true)
 
         // do not forget to refresh the chart
 //        holder.chart.invalidate();
-        holder.chart.animateY(700);
+        holder.chart?.animateY(700)
 
-        return convertView;
+        return convertView
     }
 
-    private static class ViewHolder {
-        BarChart chart;
+    private class ViewHolder {
+        var chart: BarChart? = null
     }
 }

@@ -23,9 +23,7 @@ class BubbleChart : BarLineChartBase<BubbleEntry, IBubbleDataSet, BubbleData>, B
 
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    override fun init() {
-        super.init()
-
+    init {
         mRenderer = BubbleChartRenderer(this, mAnimator, viewPortHandler)
     }
 

@@ -1,216 +1,203 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis.XAxisPosition
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.github.mikephil.charting.utils.ColorTemplate
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.notimportant.DemoBase
+import androidx.core.net.toUri
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
+class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
+    private var chart: BarChart? = null
+    private var seekBarX: SeekBar? = null
+    private var seekBarY: SeekBar? = null
+    private var tvX: TextView? = null
+    private var tvY: TextView? = null
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import info.appdev.chartexample.notimportant.DemoBase;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_barchart)
 
-import java.util.ArrayList;
+        setTitle("AnotherBarActivity")
 
-public class AnotherBarActivity extends DemoBase implements OnSeekBarChangeListener {
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-    private static final int DEFAULT_VALUE = 10;
-    private BarChart chart;
-    private SeekBar seekBarX, seekBarY;
-    private TextView tvX, tvY;
+        seekBarX = findViewById(R.id.seekBarX)
+        seekBarX?.setOnSeekBarChangeListener(this)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_barchart);
+        seekBarY = findViewById(R.id.seekBarY)
+        seekBarY?.setOnSeekBarChangeListener(this)
 
-        setTitle("AnotherBarActivity");
+        chart = findViewById(R.id.chart1)
 
-        tvX = findViewById(R.id.tvXMax);
-        tvY = findViewById(R.id.tvYMax);
-
-        seekBarX = findViewById(R.id.seekBarX);
-        seekBarX.setOnSeekBarChangeListener(this);
-
-        seekBarY = findViewById(R.id.seekBarY);
-        seekBarY.setOnSeekBarChangeListener(this);
-
-        chart = findViewById(R.id.chart1);
-
-        chart.getDescription().setEnabled(false);
+        chart?.description?.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
-        chart.setMaxVisibleValueCount(60);
+        chart?.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        chart.setPinchZoom(false);
+        chart?.setPinchZoom(false)
 
-        chart.setDrawBarShadow(false);
-        chart.setDrawGridBackground(false);
+        chart?.setDrawBarShadow(false)
+        chart?.setDrawGridBackground(false)
 
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
+        val xAxis = chart?.xAxis
+        xAxis?.position = XAxisPosition.BOTTOM
+        xAxis?.setDrawGridLines(false)
 
-        chart.getAxisLeft().setDrawGridLines(false);
+        chart?.axisLeft?.setDrawGridLines(false)
 
         // setting data
-        seekBarX.setProgress(DEFAULT_VALUE);
-        seekBarY.setProgress(100);
+        seekBarX?.progress = DEFAULT_VALUE
+        seekBarY?.progress = 100
 
         // add a nice and smooth animation
-        chart.animateY(1500);
+        chart?.animateY(1500)
 
-        chart.getLegend().setEnabled(false);
+        chart?.legend?.isEnabled = false
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        tvX?.text = seekBarX?.progress.toString()
+        tvY?.text = seekBarY?.progress.toString()
 
-        tvX.setText(String.valueOf(seekBarX.getProgress()));
-        tvY.setText(String.valueOf(seekBarY.getProgress()));
+        val values = ArrayList<BarEntry>()
+        val sampleValues = getValues(100)
 
-        ArrayList<BarEntry> values = new ArrayList<>();
-        Double[] sampleValues = DataTools.Companion.getValues(100);
-
-        for (int i = 0; i < seekBarX.getProgress(); i++) {
-            float multi = (seekBarY.getProgress() + 1);
-            float val = (float) (sampleValues[i].floatValue() * multi) + multi / 3;
-            values.add(new BarEntry(i, val));
+        for (i in 0..<(seekBarX?.progress ?: 0)) {
+            val multi = ((seekBarY?.progress ?: 0) + 1).toFloat()
+            val `val` = (sampleValues[i].toFloat() * multi) + multi / 3
+            values.add(BarEntry(i.toFloat(), `val`))
         }
 
-        BarDataSet set1;
+        val set1: BarDataSet?
 
-        if (chart.getData() != null &&
-                chart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) chart.getData().getDataSetByIndex(0);
-            set1.setEntries(values);
-            chart.getData().notifyDataChanged();
-            chart.notifyDataSetChanged();
+        if (chart?.data != null &&
+            chart?.data?.let { it.dataSetCount > 0 } == true
+        ) {
+            set1 = chart?.data?.getDataSetByIndex(0) as BarDataSet
+            set1.entries = values
+            chart?.data?.notifyDataChanged()
+            chart?.notifyDataSetChanged()
         } else {
-            set1 = new BarDataSet(values, "Data Set");
-            set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
-            set1.setDrawValues(false);
+            set1 = BarDataSet(values, "Data Set")
+            set1.setColors(*ColorTemplate.VORDIPLOM_COLORS)
+            set1.isDrawValuesEnabled = false
 
-            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
+            val dataSets = ArrayList<IBarDataSet>()
+            dataSets.add(set1)
 
-            BarData data = new BarData(dataSets);
-            chart.setData(data);
-            chart.setFitBars(true);
+            val data = BarData(dataSets)
+            chart?.setData(data)
+            chart?.setFitBars(true)
         }
 
-        chart.invalidate();
+        chart?.invalidate()
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.bar, menu);
-        menu.removeItem(R.id.actionToggleIcons);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.bar, menu)
+        menu.removeItem(R.id.actionToggleIcons)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/AnotherBarActivity.java"));
-                startActivity(i);
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/AnotherBarActivity.java".toUri())
+                startActivity(i)
             }
-            case R.id.actionToggleValues: {
 
-                for (IDataSet set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled);
-
-                chart.invalidate();
-                break;
-            }
-            /*
-            case R.id.actionToggleIcons: { break; }
-             */
-            case R.id.actionToggleHighlight: {
-
-                if(chart.getData() != null) {
-                    chart.getData().setHighlightEnabled(!chart.getData().isHighlightEnabled());
-                    chart.invalidate();
+            R.id.actionToggleValues -> {
+                chart?.data?.dataSets?.let {
+                    for (set in it) set.isDrawValuesEnabled = !set.isDrawValuesEnabled
                 }
-                break;
-            }
-            case R.id.actionTogglePinch: {
-                if (chart.isPinchZoomEnabled())
-                    chart.setPinchZoom(false);
-                else
-                    chart.setPinchZoom(true);
 
-                chart.invalidate();
-                break;
+                chart?.invalidate()
             }
-            case R.id.actionToggleAutoScaleMinMax: {
-                chart.setAutoScaleMinMaxEnabled(!chart.isAutoScaleMinMaxEnabled());
-                chart.notifyDataSetChanged();
-                break;
-            }
-            case R.id.actionToggleBarBorders: {
-                for (IBarDataSet set : chart.getData().getDataSets())
-                    ((BarDataSet)set).setBarBorderWidth(set.barBorderWidth == 1.f ? 0.f : 1.f);
 
-                chart.invalidate();
-                break;
+            R.id.actionToggleHighlight -> {
+                if (chart?.data != null) {
+                    chart?.data?.isHighlightEnabled = chart?.data?.isHighlightEnabled != true
+                    chart?.invalidate()
+                }
             }
-            case R.id.animateX: {
-                chart.animateX(2000);
-                break;
-            }
-            case R.id.animateY: {
-                chart.animateY(2000);
-                break;
-            }
-            case R.id.animateXY: {
 
-                chart.animateXY(2000, 2000);
-                break;
+            R.id.actionTogglePinch -> {
+                if (chart?.isPinchZoomEnabled == true) chart?.setPinchZoom(false)
+                else chart?.setPinchZoom(true)
+
+                chart?.invalidate()
             }
-            case R.id.actionSave: {
+
+            R.id.actionToggleAutoScaleMinMax -> {
+                chart?.isAutoScaleMinMaxEnabled = chart?.isAutoScaleMinMaxEnabled != true
+                chart?.notifyDataSetChanged()
+            }
+
+            R.id.actionToggleBarBorders -> {
+                chart?.data?.dataSets?.let {
+                    for (set in it) (set as BarDataSet).setBarBorderWidth(if (set.barBorderWidth == 1f) 0f else 1f)
+                }
+
+                chart?.invalidate()
+            }
+
+            R.id.animateX -> {
+                chart?.animateX(2000)
+            }
+
+            R.id.animateY -> {
+                chart?.animateY(2000)
+            }
+
+            R.id.animateXY -> {
+                chart?.animateXY(2000, 2000)
+            }
+
+            R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    saveToGallery();
+                    saveToGallery()
                 } else {
-                    requestStoragePermission(chart);
+                    requestStoragePermission(chart)
                 }
-                break;
             }
         }
-        return true;
+        return true
     }
 
-    @Override
-    protected void saveToGallery() {
-        saveToGallery(chart, "AnotherBarActivity");
+    override fun saveToGallery() {
+        saveToGallery(chart, "AnotherBarActivity")
     }
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {}
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+
+    companion object {
+        private const val DEFAULT_VALUE = 10
+    }
 }

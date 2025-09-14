@@ -1,264 +1,244 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.RadarChart
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.MarkerView
+import com.github.mikephil.charting.data.RadarData
+import com.github.mikephil.charting.data.RadarDataSet
+import com.github.mikephil.charting.data.RadarEntry
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.custom.RadarMarkerView
+import info.appdev.chartexample.notimportant.DemoBase
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
+class RadarChartActivity : DemoBase() {
+    private var chart: RadarChart? = null
 
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.MarkerView;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_radarchart)
 
-import info.appdev.chartexample.custom.RadarMarkerView;
-import info.appdev.chartexample.notimportant.DemoBase;
+        setTitle("RadarChartActivity")
 
-import java.util.ArrayList;
-import java.util.List;
+        chart = findViewById(R.id.chart1)
+        chart!!.setBackgroundColor(Color.rgb(60, 65, 82))
 
-public class RadarChartActivity extends DemoBase {
+        chart!!.description.isEnabled = false
 
-    private RadarChart chart;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_radarchart);
-
-        setTitle("RadarChartActivity");
-
-        chart = findViewById(R.id.chart1);
-        chart.setBackgroundColor(Color.rgb(60, 65, 82));
-
-        chart.getDescription().setEnabled(false);
-
-        chart.setWebLineWidth(1f);
-        chart.setWebColor(Color.LTGRAY);
-        chart.setWebLineWidthInner(1f);
-        chart.setWebColorInner(Color.LTGRAY);
-        chart.setWebAlpha(100);
+        chart!!.webLineWidth = 1f
+        chart!!.webColor = Color.LTGRAY
+        chart!!.webLineWidthInner = 1f
+        chart!!.webColorInner = Color.LTGRAY
+        chart!!.webAlpha = 100
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
-        MarkerView mv = new RadarMarkerView(this, R.layout.radar_markerview);
-        mv.setChartView(chart); // For bounds control
-        chart.setMarker(mv); // Set the marker to the chart
+        val mv: MarkerView = RadarMarkerView(this, R.layout.radar_markerview)
+        mv.chartView = chart // For bounds control
+        chart!!.setMarker(mv) // Set the marker to the chart
 
-        setData();
+        setData()
 
-        chart.animateXY(1400, 1400, Easing.EaseInOutQuad);
+        chart!!.animateXY(1400, 1400, Easing.EaseInOutQuad)
 
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setTypeface(tfLight);
-        xAxis.setTextSize(9f);
-        xAxis.setYOffset(0f);
-        xAxis.setXOffset(0f);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
+        val xAxis = chart!!.xAxis
+        xAxis.typeface = tfLight
+        xAxis.textSize = 9f
+        xAxis.yOffset = 0f
+        xAxis.xOffset = 0f
+        xAxis.valueFormatter = object : IAxisValueFormatter {
+            private val mActivities = arrayOf("Burger", "Steak", "Salad", "Pasta", "Pizza")
 
-            private final String[] mActivities = new String[]{"Burger", "Steak", "Salad", "Pasta", "Pizza"};
-
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return mActivities[(int) value % mActivities.length];
+            override fun getFormattedValue(value: Float, axis: AxisBase?): String {
+                return mActivities[value.toInt() % mActivities.size]
             }
-        });
-        xAxis.setTextColor(Color.WHITE);
+        }
+        xAxis.textColor = Color.WHITE
 
-        YAxis yAxis = chart.getYAxis();
-        yAxis.setTypeface(tfLight);
-        yAxis.setLabelCount(5, false);
-        yAxis.setTextSize(9f);
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(80f);
-        yAxis.setDrawLabels(false);
+        val yAxis = chart!!.yAxis
+        yAxis.typeface = tfLight
+        yAxis.setLabelCount(5, false)
+        yAxis.textSize = 9f
+        yAxis.axisMinimum = 0f
+        yAxis.axisMaximum = 80f
+        yAxis.setDrawLabels(false)
 
-        Legend l = chart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setTypeface(tfLight);
-        l.setXEntrySpace(7f);
-        l.setYEntrySpace(5f);
-        l.setTextColor(Color.WHITE);
+        val l = chart!!.legend
+        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        l.orientation = Legend.LegendOrientation.HORIZONTAL
+        l.setDrawInside(false)
+        l.typeface = tfLight
+        l.xEntrySpace = 7f
+        l.yEntrySpace = 5f
+        l.textColor = Color.WHITE
     }
 
-    private void setData() {
+    private fun setData() {
+        val mul = 80f
+        val min = 20f
+        val cnt = 5
+        val sampleValues = getValues(cnt + 1)
 
-        float mul = 80;
-        float min = 20;
-        int cnt = 5;
-        Double[] sampleValues = DataTools.Companion.getValues(cnt + 1);
-
-        ArrayList<RadarEntry> entries1 = new ArrayList<>();
-        ArrayList<RadarEntry> entries2 = new ArrayList<>();
+        val entries1 = ArrayList<RadarEntry>()
+        val entries2 = ArrayList<RadarEntry>()
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
-        for (int i = 0; i < cnt; i++) {
-            float val1 = (sampleValues[i].floatValue() * mul) + min;
-            entries1.add(new RadarEntry(val1));
+        for (i in 0..<cnt) {
+            val val1 = (sampleValues[i].toFloat() * mul) + min
+            entries1.add(RadarEntry(val1))
 
-            float val2 = (sampleValues[i + 1].floatValue() * mul) + min;
-            entries2.add(new RadarEntry(val2));
+            val val2 = (sampleValues[i + 1].toFloat() * mul) + min
+            entries2.add(RadarEntry(val2))
         }
 
-        RadarDataSet set1 = new RadarDataSet(entries1, "Last Week");
-        set1.setColor(Color.rgb(103, 110, 129));
-        set1.setFillColor(Color.rgb(103, 110, 129));
-        set1.setDrawFilled(true);
-        set1.setFillAlpha(180);
-        set1.setLineWidth(2f);
-        set1.setDrawHighlightCircleEnabled(true);
-        set1.setDrawHighlightIndicators(false);
+        val set1 = RadarDataSet(entries1, "Last Week")
+        set1.setColor(Color.rgb(103, 110, 129))
+        set1.setFillColor(Color.rgb(103, 110, 129))
+        set1.setDrawFilled(true)
+        set1.setFillAlpha(180)
+        set1.setLineWidth(2f)
+        set1.isDrawHighlightCircleEnabled = true
+        set1.setDrawHighlightIndicators(false)
 
-        RadarDataSet set2 = new RadarDataSet(entries2, "This Week");
-        set2.setColor(Color.rgb(121, 162, 175));
-        set2.setFillColor(Color.rgb(121, 162, 175));
-        set2.setDrawFilled(true);
-        set2.setFillAlpha(180);
-        set2.setLineWidth(2f);
-        set2.setDrawHighlightCircleEnabled(true);
-        set2.setDrawHighlightIndicators(false);
+        val set2 = RadarDataSet(entries2, "This Week")
+        set2.setColor(Color.rgb(121, 162, 175))
+        set2.setFillColor(Color.rgb(121, 162, 175))
+        set2.setDrawFilled(true)
+        set2.setFillAlpha(180)
+        set2.setLineWidth(2f)
+        set2.isDrawHighlightCircleEnabled = true
+        set2.setDrawHighlightIndicators(false)
 
-        ArrayList<IRadarDataSet> sets = new ArrayList<>();
-        sets.add(set1);
-        sets.add(set2);
+        val sets = ArrayList<IRadarDataSet>()
+        sets.add(set1)
+        sets.add(set2)
 
-        RadarData data = new RadarData(sets);
-        data.setValueTypeface(tfLight);
-        data.setValueTextSize(8f);
-        data.setDrawValues(false);
-        data.setValueTextColor(Color.WHITE);
+        val data = RadarData(sets)
+        data.setValueTypeface(tfLight)
+        data.setValueTextSize(8f)
+        data.setDrawValues(false)
+        data.setValueTextColor(Color.WHITE)
 
-        chart.setData(data);
-        List<Integer> colorList = new ArrayList<>();
-        colorList.add(Color.rgb(222, 166, 111));
-        colorList.add(Color.rgb(220, 206, 138));
-        colorList.add(Color.rgb(243, 255, 192));
-        colorList.add(Color.rgb(240, 255, 240));
-        colorList.add(Color.rgb(250, 255, 250));
-        chart.setLayerColorList(colorList);
-        chart.invalidate();
+        chart!!.setData(data)
+        val colorList: MutableList<Int> = ArrayList()
+        colorList.add(Color.rgb(222, 166, 111))
+        colorList.add(Color.rgb(220, 206, 138))
+        colorList.add(Color.rgb(243, 255, 192))
+        colorList.add(Color.rgb(240, 255, 240))
+        colorList.add(Color.rgb(250, 255, 250))
+        chart!!.layerColorList = colorList
+        chart!!.invalidate()
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.radar, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.radar, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/RadarChartActivity.java"));
-                startActivity(i);
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/RadarChartActivity.java".toUri())
+                startActivity(i)
             }
-            case R.id.actionToggleValues: {
-                for (IDataSet<?> set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled);
 
-                chart.invalidate();
-                break;
+            R.id.actionToggleValues -> {
+                for (set in chart!!.data!!.dataSets) set.isDrawValuesEnabled = !set.isDrawValuesEnabled
+
+                chart!!.invalidate()
             }
-            case R.id.actionToggleHighlight: {
-                if (chart.getData() != null) {
-                    chart.getData().setHighlightEnabled(!chart.getData().isHighlightEnabled());
-                    chart.invalidate();
+
+            R.id.actionToggleHighlight -> {
+                if (chart!!.data != null) {
+                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled
+                    chart!!.invalidate()
                 }
-                break;
             }
-            case R.id.actionToggleRotate: {
-				chart.setRotationEnabled(!chart.isRotationEnabled());
-                chart.invalidate();
-                break;
+
+            R.id.actionToggleRotate -> {
+                chart!!.isRotationEnabled = !chart!!.isRotationEnabled
+                chart!!.invalidate()
             }
-            case R.id.actionToggleFilled: {
 
-                ArrayList<IRadarDataSet> sets = (ArrayList<IRadarDataSet>) chart.getData()
-                        .getDataSets();
+            R.id.actionToggleFilled -> {
+                val sets = chart!!.data!!
+                    .dataSets as ArrayList<IRadarDataSet>
 
-                for (IRadarDataSet set : sets) {
-					set.setDrawFilled(!set.isDrawFilledEnabled);
+                for (set in sets) {
+                    set.setDrawFilled(!set.isDrawFilledEnabled)
                 }
-                chart.invalidate();
-                break;
+                chart!!.invalidate()
             }
-            case R.id.actionToggleHighlightCircle: {
 
-                ArrayList<IRadarDataSet> sets = (ArrayList<IRadarDataSet>) chart.getData()
-                        .getDataSets();
+            R.id.actionToggleHighlightCircle -> {
+                val sets = chart!!.data!!
+                    .dataSets as ArrayList<IRadarDataSet>
 
-                for (IRadarDataSet set : sets) {
-                    set.isDrawHighlightCircleEnabled = !set.isDrawHighlightCircleEnabled;
+                for (set in sets) {
+                    set.isDrawHighlightCircleEnabled = !set.isDrawHighlightCircleEnabled
                 }
-                chart.invalidate();
-                break;
+                chart!!.invalidate()
             }
-            case R.id.actionToggleXLabels: {
-                chart.getXAxis().setEnabled(!chart.getXAxis().isEnabled());
-                chart.notifyDataSetChanged();
-                chart.invalidate();
-                break;
-            }
-            case R.id.actionToggleYLabels: {
 
-                chart.getYAxis().setEnabled(!chart.getYAxis().isEnabled());
-                chart.invalidate();
-                break;
+            R.id.actionToggleXLabels -> {
+                chart!!.xAxis.isEnabled = !chart!!.xAxis.isEnabled
+                chart!!.notifyDataSetChanged()
+                chart!!.invalidate()
             }
-            case R.id.animateX: {
-                chart.animateX(1400);
-                break;
+
+            R.id.actionToggleYLabels -> {
+                chart!!.yAxis.isEnabled = !chart!!.yAxis.isEnabled
+                chart!!.invalidate()
             }
-            case R.id.animateY: {
-                chart.animateY(1400);
-                break;
+
+            R.id.animateX -> {
+                chart!!.animateX(1400)
             }
-            case R.id.animateXY: {
-                chart.animateXY(1400, 1400);
-                break;
+
+            R.id.animateY -> {
+                chart!!.animateY(1400)
             }
-            case R.id.actionToggleSpin: {
-                chart.spin(2000, chart.getRotationAngle(), chart.getRotationAngle() + 360, Easing.EaseInOutCubic);
-                break;
+
+            R.id.animateXY -> {
+                chart!!.animateXY(1400, 1400)
             }
-            case R.id.actionSave: {
+
+            R.id.actionToggleSpin -> {
+                chart!!.spin(2000, chart!!.rotationAngle, chart!!.rotationAngle + 360, Easing.EaseInOutCubic)
+            }
+
+            R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    saveToGallery();
+                    saveToGallery()
                 } else {
-                    requestStoragePermission(chart);
+                    requestStoragePermission(chart)
                 }
-                break;
             }
         }
-        return true;
+        return true
     }
 
-    @Override
-    protected void saveToGallery() {
-        saveToGallery(chart, "RadarChartActivity");
+    override fun saveToGallery() {
+        saveToGallery(chart, "RadarChartActivity")
     }
 }

@@ -1,170 +1,161 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
+import android.net.Uri
+import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
+import android.util.DisplayMetrics
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
+import android.widget.RelativeLayout
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.utils.ColorTemplate.holoBlue
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.notimportant.DemoBase
+import androidx.core.net.toUri
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
-import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
+class HalfPieChartActivity : DemoBase() {
+    private var chart: PieChart? = null
 
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_piechart_half)
 
-import info.appdev.chartexample.notimportant.DemoBase;
+        setTitle("HalfPieChartActivity")
 
-import java.util.ArrayList;
+        chart = findViewById(R.id.chart1)
+        chart!!.setBackgroundColor(Color.WHITE)
 
-@SuppressWarnings("SameParameterValue")
-public class HalfPieChartActivity extends DemoBase {
+        moveOffScreen()
 
-    private PieChart chart;
+        chart!!.setUsePercentValues(true)
+        chart!!.description.isEnabled = false
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_piechart_half);
+        chart!!.setCenterTextTypeface(tfLight)
+        chart!!.centerText = generateCenterSpannableText()
 
-        setTitle("HalfPieChartActivity");
+        chart!!.isDrawHoleEnabled = true
+        chart!!.setHoleColor(Color.WHITE)
 
-        chart = findViewById(R.id.chart1);
-        chart.setBackgroundColor(Color.WHITE);
+        chart!!.setTransparentCircleColor(Color.WHITE)
+        chart!!.setTransparentCircleAlpha(110)
 
-        moveOffScreen();
+        chart!!.holeRadius = 58f
+        chart!!.transparentCircleRadius = 61f
 
-        chart.setUsePercentValues(true);
-        chart.getDescription().setEnabled(false);
+        chart!!.setDrawCenterText(true)
 
-        chart.setCenterTextTypeface(tfLight);
-        chart.setCenterText(generateCenterSpannableText());
+        chart!!.isRotationEnabled = false
+        chart!!.isHighlightPerTapEnabled = true
 
-        chart.setDrawHoleEnabled(true);
-        chart.setHoleColor(Color.WHITE);
+        chart!!.maxAngle = 180f // HALF CHART
+        chart!!.rotationAngle = 180f
+        chart!!.setCenterTextOffset(0f, -20f)
 
-        chart.setTransparentCircleColor(Color.WHITE);
-        chart.setTransparentCircleAlpha(110);
+        setData(100f)
 
-        chart.setHoleRadius(58f);
-        chart.setTransparentCircleRadius(61f);
+        chart!!.animateY(1400, Easing.EaseInOutQuad)
 
-        chart.setDrawCenterText(true);
-
-        chart.setRotationEnabled(false);
-        chart.setHighlightPerTapEnabled(true);
-
-        chart.setMaxAngle(180f); // HALF CHART
-        chart.setRotationAngle(180f);
-        chart.setCenterTextOffset(0, -20);
-
-        setData(100);
-
-        chart.animateY(1400, Easing.EaseInOutQuad);
-
-        Legend l = chart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setXEntrySpace(7f);
-        l.setYEntrySpace(0f);
-        l.setYOffset(0f);
+        val l = chart!!.legend
+        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        l.orientation = Legend.LegendOrientation.HORIZONTAL
+        l.setDrawInside(false)
+        l.xEntrySpace = 7f
+        l.yEntrySpace = 0f
+        l.yOffset = 0f
 
         // entry label styling
-        chart.setEntryLabelColor(Color.WHITE);
-        chart.setEntryLabelTypeface(tfRegular);
-        chart.setEntryLabelTextSize(12f);
+        chart!!.setEntryLabelColor(Color.WHITE)
+        chart!!.setEntryLabelTypeface(tfRegular)
+        chart!!.setEntryLabelTextSize(12f)
     }
 
-    private void setData(float range) {
-        int count = 4;
-        ArrayList<PieEntry> values = new ArrayList<>();
-        Double[] sampleValues = DataTools.Companion.getValues(count);
+    private fun setData(range: Float) {
+        val count = 4
+        val values = ArrayList<PieEntry>()
+        val sampleValues = getValues(count)
 
-        for (int i = 0; i < count; i++) {
-            values.add(new PieEntry((sampleValues[i].floatValue() * range) + range / 5, parties[i % parties.length]));
+        for (i in 0..<count) {
+            values.add(PieEntry((sampleValues[i].toFloat() * range) + range / 5, parties[i % parties.size]))
         }
 
-        PieDataSet dataSet = new PieDataSet(values, "Election Results");
-        dataSet.setSliceSpace(3f);
-        dataSet.setSelectionShift(5f);
+        val dataSet = PieDataSet(values, "Election Results")
+        dataSet.setSliceSpace(3f)
+        dataSet.setSelectionShift(5f)
 
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        dataSet.setColors(*ColorTemplate.MATERIAL_COLORS)
+
         //dataSet.setSelectionShift(0f);
+        val data = PieData(dataSet)
+        data.setValueFormatter(PercentFormatter())
+        data.setValueTextSize(11f)
+        data.setValueTextColor(Color.WHITE)
+        data.setValueTypeface(tfLight)
+        chart!!.setData(data)
 
-        PieData data = new PieData(dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
-        data.setValueTypeface(tfLight);
-        chart.setData(data);
-
-        chart.invalidate();
+        chart!!.invalidate()
     }
 
-    private SpannableString generateCenterSpannableText() {
-
-        SpannableString s = new SpannableString("MPAndroidChart\ndeveloped by Philipp Jahoda");
-        s.setSpan(new RelativeSizeSpan(1.7f), 0, 14, 0);
-        s.setSpan(new StyleSpan(Typeface.NORMAL), 14, s.length() - 15, 0);
-        s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, s.length() - 15, 0);
-        s.setSpan(new RelativeSizeSpan(.8f), 14, s.length() - 15, 0);
-        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 14, s.length(), 0);
-        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);
-        return s;
+    private fun generateCenterSpannableText(): SpannableString {
+        val s = SpannableString("MPAndroidChart\ndeveloped by Philipp Jahoda")
+        s.setSpan(RelativeSizeSpan(1.7f), 0, 14, 0)
+        s.setSpan(StyleSpan(Typeface.NORMAL), 14, s.length - 15, 0)
+        s.setSpan(ForegroundColorSpan(Color.GRAY), 14, s.length - 15, 0)
+        s.setSpan(RelativeSizeSpan(.8f), 14, s.length - 15, 0)
+        s.setSpan(StyleSpan(Typeface.ITALIC), s.length - 14, s.length, 0)
+        s.setSpan(ForegroundColorSpan(holoBlue), s.length - 14, s.length, 0)
+        return s
     }
 
-    private void moveOffScreen() {
+    private fun moveOffScreen() {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        val height = displayMetrics.heightPixels
 
-        int height = displayMetrics.heightPixels;
+        val offset = (height * 0.65).toInt() /* percent to move */
 
-        int offset = (int)(height * 0.65); /* percent to move */
-
-        RelativeLayout.LayoutParams rlParams =
-                (RelativeLayout.LayoutParams) chart.getLayoutParams();
-        rlParams.setMargins(0, 0, 0, -offset);
-        chart.setLayoutParams(rlParams);
+        val rlParams =
+            chart!!.layoutParams as RelativeLayout.LayoutParams
+        rlParams.setMargins(0, 0, 0, -offset)
+        chart!!.setLayoutParams(rlParams)
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.only_github, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.only_github, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/HalfPieChartActivity.java"));
-                startActivity(i);
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/HalfPieChartActivity.java".toUri())
+                startActivity(i)
             }
         }
 
-        return true;
+        return true
     }
 
-    @Override
-    public void saveToGallery() { /* Intentionally left empty */ }
+    public override fun saveToGallery() { /* Intentionally left empty */
+    }
 }

@@ -1,240 +1,215 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.Legend.LegendForm
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.utils.FileUtils.loadBarEntriesFromAssets
+import info.appdev.chartexample.notimportant.DemoBase
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
+class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
+    private var chart: BarChart? = null
+    private var seekBarX: SeekBar? = null
+    private var tvX: TextView? = null
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendForm;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.utils.FileUtils;
+    private val data: MutableList<BarEntry> by lazy {
+        loadBarEntriesFromAssets(assets, "othersine.txt")
+    }
 
-import info.appdev.chartexample.notimportant.DemoBase;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_barchart_sinus)
 
-import java.util.ArrayList;
-import java.util.List;
+        setTitle("BarChartActivitySinus")
 
-public class BarChartActivitySinus extends DemoBase implements OnSeekBarChangeListener {
+        tvX = findViewById(R.id.tvValueCount)
 
-    private BarChart chart;
-    private SeekBar seekBarX;
-    private TextView tvX;
+        seekBarX = findViewById(R.id.seekbarValues)
 
-    private List<BarEntry> data;
+        chart = findViewById(R.id.chart1)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_barchart_sinus);
+        chart!!.setDrawBarShadow(false)
+        chart!!.setDrawValueAboveBar(true)
 
-        setTitle("BarChartActivitySinus");
-
-        data = FileUtils.loadBarEntriesFromAssets(getAssets(), "othersine.txt");
-
-        tvX = findViewById(R.id.tvValueCount);
-
-        seekBarX = findViewById(R.id.seekbarValues);
-
-        chart = findViewById(R.id.chart1);
-
-        chart.setDrawBarShadow(false);
-        chart.setDrawValueAboveBar(true);
-
-        chart.getDescription().setEnabled(false);
+        chart!!.description.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
-        chart.setMaxVisibleValueCount(60);
+        chart!!.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        chart.setPinchZoom(false);
+        chart!!.setPinchZoom(false)
 
         // draw shadows for each bar that show the maximum value
         // chart.setDrawBarShadow(true);
 
         // chart.setDrawXLabels(false);
+        chart!!.setDrawGridBackground(false)
 
-        chart.setDrawGridBackground(false);
         // chart.setDrawYLabels(false);
+        val xAxis = chart!!.xAxis
+        xAxis.isEnabled = false
 
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setEnabled(false);
+        val leftAxis = chart!!.axisLeft
+        leftAxis.typeface = tfLight
+        leftAxis.setLabelCount(6, false)
+        leftAxis.axisMinimum = -2.5f
+        leftAxis.axisMaximum = 2.5f
+        leftAxis.isGranularityEnabled = true
+        leftAxis.granularity = 0.1f
 
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setTypeface(tfLight);
-        leftAxis.setLabelCount(6, false);
-        leftAxis.setAxisMinimum(-2.5f);
-        leftAxis.setAxisMaximum(2.5f);
-        leftAxis.setGranularityEnabled(true);
-        leftAxis.setGranularity(0.1f);
+        val rightAxis = chart!!.axisRight
+        rightAxis.setDrawGridLines(false)
+        rightAxis.typeface = tfLight
+        rightAxis.setLabelCount(6, false)
+        rightAxis.axisMinimum = -2.5f
+        rightAxis.axisMaximum = 2.5f
+        rightAxis.granularity = 0.1f
 
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(tfLight);
-        rightAxis.setLabelCount(6, false);
-        rightAxis.setAxisMinimum(-2.5f);
-        rightAxis.setAxisMaximum(2.5f);
-        rightAxis.setGranularity(0.1f);
+        seekBarX!!.setOnSeekBarChangeListener(this)
+        seekBarX!!.progress = 150 // set data
 
-        seekBarX.setOnSeekBarChangeListener(this);
-        seekBarX.setProgress(150); // set data
+        val l = chart!!.legend
+        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+        l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+        l.orientation = Legend.LegendOrientation.HORIZONTAL
+        l.setDrawInside(false)
+        l.form = LegendForm.SQUARE
+        l.formSize = 9f
+        l.textSize = 11f
+        l.xEntrySpace = 4f
 
-        Legend l = chart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setForm(LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-        l.setXEntrySpace(4f);
-
-        chart.animateXY(1500, 1500);
+        chart!!.animateXY(1500, 1500)
     }
 
-    private void setData(int count) {
+    private fun setData(count: Int) {
+        val entries = ArrayList<BarEntry>()
 
-        ArrayList<BarEntry> entries = new ArrayList<>();
-
-        for (int i = 0; i < count; i++) {
-            entries.add(data.get(i));
+        for (i in 0..<count) {
+            entries.add(data[i])
         }
 
-        BarDataSet set;
+        val set: BarDataSet?
 
-        if (chart.getData() != null &&
-                chart.getData().getDataSetCount() > 0) {
-            set = (BarDataSet) chart.getData().getDataSetByIndex(0);
-            set.setEntries(entries);
-            chart.getData().notifyDataChanged();
-            chart.notifyDataSetChanged();
+        if (chart!!.data != null &&
+            chart!!.data!!.dataSetCount > 0
+        ) {
+            set = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
+            set.entries = entries
+            chart!!.data!!.notifyDataChanged()
+            chart!!.notifyDataSetChanged()
         } else {
-            set = new BarDataSet(entries, "Sinus Function");
-            set.setColor(Color.BLUE);
+            set = BarDataSet(entries, "Sinus Function")
+            set.setColor(Color.BLUE)
         }
 
-        BarData data = new BarData(set);
-        data.setValueTextSize(10f);
-        data.setValueTypeface(tfLight);
-        data.setDrawValues(false);
-        data.setBarWidth(0.8f);
+        val data = BarData(set)
+        data.setValueTextSize(10f)
+        data.setValueTypeface(tfLight)
+        data.setDrawValues(false)
+        data.barWidth = 0.8f
 
-        chart.setData(data);
+        chart!!.setData(data)
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.bar, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.bar, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/BarChartActivitySinus.java"));
-                startActivity(i);
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/BarChartActivitySinus.java".toUri())
+                startActivity(i)
             }
-            case R.id.actionToggleValues: {
-                for (IBarDataSet set : chart.getData().getDataSets())
-                    set.setDrawValues(!set.isDrawValuesEnabled);
 
-                chart.invalidate();
-                break;
+            R.id.actionToggleValues -> {
+                for (set in chart!!.data!!.dataSets) set.isDrawValuesEnabled = !set.isDrawValuesEnabled
+
+                chart!!.invalidate()
             }
-            case R.id.actionToggleHighlight: {
-                if (chart.getData() != null) {
-                    chart.getData().setHighlightEnabled(!chart.getData().isHighlightEnabled());
-                    chart.invalidate();
+
+            R.id.actionToggleHighlight -> {
+                if (chart!!.data != null) {
+                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled
+                    chart!!.invalidate()
                 }
-                break;
             }
-            case R.id.actionTogglePinch: {
-                if (chart.isPinchZoomEnabled())
-                    chart.setPinchZoom(false);
-                else
-                    chart.setPinchZoom(true);
 
-                chart.invalidate();
-                break;
-            }
-            case R.id.actionToggleAutoScaleMinMax: {
-                chart.setAutoScaleMinMaxEnabled(!chart.isAutoScaleMinMaxEnabled());
-                chart.notifyDataSetChanged();
-                break;
-            }
-            case R.id.actionToggleBarBorders: {
-                for (IBarDataSet set : chart.getData().getDataSets())
-                    ((BarDataSet) set).setBarBorderWidth(set.barBorderWidth == 1.f ? 0.f : 1.f);
+            R.id.actionTogglePinch -> {
+                if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
+                else chart!!.setPinchZoom(true)
 
-                chart.invalidate();
-                break;
+                chart!!.invalidate()
             }
-            case R.id.animateX: {
-                chart.animateX(2000);
-                break;
-            }
-            case R.id.animateY: {
-                chart.animateY(2000);
-                break;
-            }
-            case R.id.animateXY: {
 
-                chart.animateXY(2000, 2000);
-                break;
+            R.id.actionToggleAutoScaleMinMax -> {
+                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
+                chart!!.notifyDataSetChanged()
             }
-            case R.id.actionSave: {
+
+            R.id.actionToggleBarBorders -> {
+                for (set in chart!!.data!!.dataSets) (set as BarDataSet).setBarBorderWidth(if (set.barBorderWidth == 1f) 0f else 1f)
+
+                chart!!.invalidate()
+            }
+
+            R.id.animateX -> {
+                chart!!.animateX(2000)
+            }
+
+            R.id.animateY -> {
+                chart!!.animateY(2000)
+            }
+
+            R.id.animateXY -> {
+                chart!!.animateXY(2000, 2000)
+            }
+
+            R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    saveToGallery();
+                    saveToGallery()
                 } else {
-                    requestStoragePermission(chart);
+                    requestStoragePermission(chart)
                 }
-                break;
             }
         }
-        return true;
+        return true
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        tvX!!.text = seekBarX!!.progress.toString()
 
-        tvX.setText(String.valueOf(seekBarX.getProgress()));
-
-        setData(seekBarX.getProgress());
-        chart.invalidate();
+        setData(seekBarX!!.progress)
+        chart!!.invalidate()
     }
 
-    @Override
-    protected void saveToGallery() {
-        saveToGallery(chart, "BarChartActivitySinus");
+    override fun saveToGallery() {
+        saveToGallery(chart, "BarChartActivitySinus")
     }
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {}
-
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 }

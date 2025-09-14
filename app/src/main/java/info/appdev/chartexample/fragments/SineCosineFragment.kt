@@ -1,58 +1,50 @@
-package info.appdev.chartexample.fragments;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import info.appdev.chartexample.R;
+package info.appdev.chartexample.fragments
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.graphics.Typeface
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.github.mikephil.charting.charts.LineChart
+import info.appdev.chartexample.R
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
+class SineCosineFragment : SimpleFragment() {
+    private var chart: LineChart? = null
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val v = inflater.inflate(R.layout.frag_simple_line, container, false)
 
-public class SineCosineFragment extends SimpleFragment {
+        chart = v.findViewById(R.id.lineChart1)
 
-    @NonNull
-    public static Fragment newInstance() {
-        return new SineCosineFragment();
+        chart?.description?.isEnabled = false
+
+        chart?.setDrawGridBackground(false)
+
+        chart?.setData(generateLineData())
+        chart?.animateX(3000)
+
+        val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
+
+        val l = chart?.legend
+        l?.typeface = tf
+
+        val leftAxis = chart?.axisLeft
+        leftAxis?.typeface = tf
+        leftAxis?.axisMaximum = 1.2f
+        leftAxis?.axisMinimum = -1.2f
+
+        chart?.axisRight?.isEnabled = false
+
+        val xAxis = chart?.xAxis
+        xAxis?.isEnabled = false
+
+        return v
     }
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private LineChart chart;
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.frag_simple_line, container, false);
-
-        chart = v.findViewById(R.id.lineChart1);
-
-        chart.getDescription().setEnabled(false);
-
-        chart.setDrawGridBackground(false);
-
-        chart.setData(generateLineData());
-        chart.animateX(3000);
-
-        Typeface tf = Typeface.createFromAsset(requireContext().getAssets(), "OpenSans-Light.ttf");
-
-        Legend l = chart.getLegend();
-        l.setTypeface(tf);
-
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setTypeface(tf);
-        leftAxis.setAxisMaximum(1.2f);
-        leftAxis.setAxisMinimum(-1.2f);
-
-        chart.getAxisRight().setEnabled(false);
-
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setEnabled(false);
-
-        return v;
+    companion object {
+        fun newInstance(): Fragment {
+            return SineCosineFragment()
+        }
     }
 }

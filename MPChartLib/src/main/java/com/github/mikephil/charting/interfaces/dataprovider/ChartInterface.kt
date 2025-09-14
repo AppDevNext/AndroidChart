@@ -39,9 +39,9 @@ interface ChartInterface {
      */
     val maxHighlightDistance: Float
 
-    val width: Int
+    fun getWidth(): Int
 
-    val height: Int
+    fun getHeight(): Int
 
     val centerOfView: MPPointF?
 

@@ -725,12 +725,14 @@ open class LineChartRenderer(
             val circleRadius = set.circleRadius
             val circleHoleRadius = set.circleHoleRadius
 
+            circleBitmaps.clear()
+
             for (i in 0..<colorCount) {
                 val conf = Bitmap.Config.ARGB_4444
                 val circleBitmap = createBitmap((circleRadius * 2.1).toInt(), (circleRadius * 2.1).toInt(), conf)
 
                 val canvas = Canvas(circleBitmap)
-                circleBitmaps[i] = circleBitmap
+                circleBitmaps.add(circleBitmap)
                 paintRender.color = set.getCircleColor(i)
 
                 if (drawTransparentCircleHole) {

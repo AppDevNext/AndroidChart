@@ -1,40 +1,34 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
-
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
-
-import info.appdev.chartexample.listviewitems.BarChartItem;
-import info.appdev.chartexample.listviewitems.ChartItem;
-import info.appdev.chartexample.listviewitems.LineChartItem;
-import info.appdev.chartexample.listviewitems.PieChartItem;
-import info.appdev.chartexample.notimportant.DemoBase;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import androidx.core.net.toUri
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.utils.ColorTemplate
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.listviewitems.BarChartItem
+import info.appdev.chartexample.listviewitems.ChartItem
+import info.appdev.chartexample.listviewitems.LineChartItem
+import info.appdev.chartexample.listviewitems.PieChartItem
+import info.appdev.chartexample.notimportant.DemoBase
 
 /**
  * Demonstrates the use of charts inside a ListView. IMPORTANT: provide a
@@ -42,61 +36,50 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public class ListViewMultiChartActivity extends DemoBase {
+class ListViewMultiChartActivity : DemoBase() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_listview_chart)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_listview_chart);
+        setTitle("ListViewMultiChartActivity")
 
-        setTitle("ListViewMultiChartActivity");
+        val lv = findViewById<ListView?>(R.id.listViewMain)
 
-        ListView lv = findViewById(R.id.listViewMain);
-
-        ArrayList<ChartItem> list = new ArrayList<>();
+        val list = ArrayList<ChartItem?>()
 
         // 30 items
-        for (int i = 0; i < 30; i++) {
-
-            if(i % 3 == 0) {
-                list.add(new LineChartItem(generateDataLine(i + 1), getApplicationContext()));
-            } else if(i % 3 == 1) {
-                list.add(new BarChartItem(generateDataBar(i + 1), getApplicationContext()));
-            } else if(i % 3 == 2) {
-                list.add(new PieChartItem(generateDataPie(), getApplicationContext()));
+        for (i in 0..29) {
+            if (i % 3 == 0) {
+                list.add(LineChartItem(generateDataLine(i + 1), applicationContext))
+            } else if (i % 3 == 1) {
+                list.add(BarChartItem(generateDataBar(i + 1), applicationContext))
+            } else {
+                list.add(PieChartItem(generateDataPie(), applicationContext))
             }
         }
 
-        ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
-        lv.setAdapter(cda);
+        val cda = ChartDataAdapter(applicationContext, list)
+        lv!!.setAdapter(cda)
     }
 
-    /** adapter that supports 3 different item types */
-    private class ChartDataAdapter extends ArrayAdapter<ChartItem> {
-
-        ChartDataAdapter(Context context, List<ChartItem> objects) {
-            super(context, 0, objects);
+    /** adapter that supports 3 different item types  */
+    private inner class ChartDataAdapter(context: Context, objects: MutableList<ChartItem?>) : ArrayAdapter<ChartItem?>(context, 0, objects) {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            return getItem(position)!!.getView(position, convertView, context)
         }
 
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            //noinspection ConstantConditions
-            return getItem(position).getView(position, convertView, getContext());
-        }
-
-        @Override
-        public int getItemViewType(int position) {
+        override fun getItemViewType(position: Int): Int {
             // return the views type
-            ChartItem ci = getItem(position);
-            return ci != null ? ci.getItemType() : 0;
+            val ci = getItem(position)
+            return ci?.itemType ?: 0
         }
 
-        @Override
-        public int getViewTypeCount() {
-            return 3; // we have 3 different item-types
+        override fun getViewTypeCount(): Int {
+            return 3 // we have 3 different item-types
         }
     }
 
@@ -105,41 +88,40 @@ public class ListViewMultiChartActivity extends DemoBase {
      *
      * @return Line data
      */
-    private LineData generateDataLine(int cnt) {
+    private fun generateDataLine(cnt: Int): LineData {
+        val values1 = ArrayList<Entry>()
+        val count = 12
+        val sampleValues = getValues(count)
 
-        ArrayList<Entry> values1 = new ArrayList<>();
-        int count = 12;
-        Double[] sampleValues = DataTools.Companion.getValues(count);
-
-        for (int i = 0; i < count; i++) {
-            values1.add(new Entry(i, (int) (sampleValues[i].floatValue() * 65) + 40));
+        for (i in 0..<count) {
+            values1.add(Entry(i.toFloat(), ((sampleValues[i].toFloat() * 65).toInt() + 40).toFloat()))
         }
 
-        LineDataSet d1 = new LineDataSet(values1, "New DataSet " + cnt + ", (1)");
-        d1.setLineWidth(2.5f);
-        d1.setCircleRadius(4.5f);
-        d1.setHighLightColor(Color.rgb(244, 117, 117));
-        d1.setDrawValues(false);
+        val d1 = LineDataSet(values1, "New DataSet $cnt, (1)")
+        d1.setLineWidth(2.5f)
+        d1.setCircleRadius(4.5f)
+        d1.highLightColor = Color.rgb(244, 117, 117)
+        d1.isDrawValuesEnabled = false
 
-        ArrayList<Entry> values2 = new ArrayList<>();
+        val values2 = ArrayList<Entry>()
 
-        for (int i = 0; i < count; i++) {
-            values2.add(new Entry(i, values1.get(i).getY() - 30));
+        for (i in 0..<count) {
+            values2.add(Entry(i.toFloat(), values1[i].y - 30))
         }
 
-        LineDataSet d2 = new LineDataSet(values2, "New DataSet " + cnt + ", (2)");
-        d2.setLineWidth(2.5f);
-        d2.setCircleRadius(4.5f);
-        d2.setHighLightColor(Color.rgb(244, 117, 117));
-        d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        d2.setDrawValues(false);
+        val d2 = LineDataSet(values2, "New DataSet $cnt, (2)")
+        d2.setLineWidth(2.5f)
+        d2.setCircleRadius(4.5f)
+        d2.highLightColor = Color.rgb(244, 117, 117)
+        d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0])
+        d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0])
+        d2.isDrawValuesEnabled = false
 
-        ArrayList<ILineDataSet> sets = new ArrayList<>();
-        sets.add(d1);
-        sets.add(d2);
+        val sets = ArrayList<ILineDataSet>()
+        sets.add(d1)
+        sets.add(d2)
 
-        return new LineData(sets);
+        return LineData(sets)
     }
 
     /**
@@ -147,22 +129,22 @@ public class ListViewMultiChartActivity extends DemoBase {
      *
      * @return Bar data
      */
-    private BarData generateDataBar(int cnt) {
-        int count = 12;
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        Double[] sampleValues = DataTools.Companion.getValues(count);
+    private fun generateDataBar(cnt: Int): BarData {
+        val count = 12
+        val entries = ArrayList<BarEntry>()
+        val sampleValues = getValues(count)
 
-        for (int i = 0; i < count; i++) {
-            entries.add(new BarEntry(i, (int) (sampleValues[i].floatValue() * 70) + 30));
+        for (i in 0..<count) {
+            entries.add(BarEntry(i.toFloat(), ((sampleValues[i].toFloat() * 70).toInt() + 30).toFloat()))
         }
 
-        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        d.setHighLightAlpha(255);
+        val d = BarDataSet(entries, "New DataSet $cnt")
+        d.setColors(*ColorTemplate.VORDIPLOM_COLORS)
+        d.setHighLightAlpha(255)
 
-        BarData cd = new BarData(d);
-        cd.setBarWidth(0.9f);
-        return cd;
+        val cd = BarData(d)
+        cd.barWidth = 0.9f
+        return cd
     }
 
     /**
@@ -170,45 +152,41 @@ public class ListViewMultiChartActivity extends DemoBase {
      *
      * @return Pie data
      */
-    private PieData generateDataPie() {
-        int cnt = 4;
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        Double[] sampleValues = DataTools.Companion.getValues(cnt);
+    private fun generateDataPie(): PieData {
+        val cnt = 4
+        val entries = ArrayList<PieEntry>()
+        val sampleValues = getValues(cnt)
 
-        for (int i = 0; i < cnt; i++) {
-            entries.add(new PieEntry((sampleValues[i].floatValue() * 70) + 30, "Quarter " + (i+1)));
+        for (i in 0..<cnt) {
+            entries.add(PieEntry((sampleValues[i].toFloat() * 70) + 30, "Quarter " + (i + 1)))
         }
 
-        PieDataSet d = new PieDataSet(entries, "");
+        val d = PieDataSet(entries, "")
 
         // space between slices
-        d.setSliceSpace(2f);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        d.setSliceSpace(2f)
+        d.setColors(*ColorTemplate.VORDIPLOM_COLORS)
 
-        return new PieData(d);
+        return PieData(d)
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.only_github, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.only_github, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/ListViewMultiChartActivity.java"));
-                startActivity(i);
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/ListViewMultiChartActivity.java".toUri())
+                startActivity(i)
             }
         }
 
-        return true;
+        return true
     }
 
-    @Override
-    public void saveToGallery() { /* Intentionally left empty */ }
+    public override fun saveToGallery() { /* Intentionally left empty */
+    }
 }

@@ -99,7 +99,9 @@ class ObjectPool<T : Poolable<T>> private constructor(withCapacity: Int, `object
      * @param object An object of type T to recycle
      */
     @Synchronized
-    fun recycle(`object`: T) {
+    fun recycle(`object`: T?) {
+        if (`object` == null) return
+
         if (`object`.currentOwnerId != Poolable.Companion.NO_OWNER) {
             require(`object`.currentOwnerId != this.poolId) { "The object passed is already stored in this pool!" }
             throw IllegalArgumentException("The object to recycle already belongs to poolId " + `object`.currentOwnerId + ".  Object cannot belong to two different pool instances simultaneously!")

@@ -85,7 +85,7 @@ class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMar
         return mOffset2
     }
 
-    override fun refreshContent(e: Entry?, highlight: Highlight?) {
+    override fun refreshContent(e: Entry, highlight: Highlight) {
     }
 
     override fun draw(canvas: Canvas?, posX: Float, posY: Float) {

@@ -1,248 +1,224 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.YAxis.AxisDependency
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.utils.ColorTemplate
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.notimportant.DemoBase
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.Toast;
+class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
+    private var chart: LineChart? = null
+    var sampleValues: Array<Double> = getValues(102)
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_linechart_noseekbar)
 
-import info.appdev.chartexample.notimportant.DemoBase;
+        setTitle("DynamicalAddingActivity")
 
-import java.util.ArrayList;
+        chart = findViewById(R.id.chart1)
+        chart!!.setOnChartValueSelectedListener(this)
+        chart!!.setDrawGridBackground(false)
+        chart!!.description.isEnabled = false
+        chart!!.setNoDataText("No chart data available. Use the menu to add entries and data sets!")
 
-public class DynamicalAddingActivity extends DemoBase implements OnChartValueSelectedListener {
-
-    private LineChart chart;
-    Double[] sampleValues = DataTools.Companion.getValues(102);
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_linechart_noseekbar);
-
-        setTitle("DynamicalAddingActivity");
-
-        chart = findViewById(R.id.chart1);
-        chart.setOnChartValueSelectedListener(this);
-        chart.setDrawGridBackground(false);
-        chart.getDescription().setEnabled(false);
-        chart.setNoDataText("No chart data available. Use the menu to add entries and data sets!");
-
-//        chart.getXAxis().setDrawLabels(false);
+        //        chart.getXAxis().setDrawLabels(false);
 //        chart.getXAxis().setDrawGridLines(false);
-
-        chart.invalidate();
+        chart!!.invalidate()
     }
 
-    private final int[] colors = ColorTemplate.VORDIPLOM_COLORS;
+    private val colors = ColorTemplate.VORDIPLOM_COLORS
 
-    private void addEntry() {
-
-        LineData data = chart.getData();
+    private fun addEntry() {
+        var data: LineData? = chart!!.data
 
         if (data == null) {
-            data = new LineData();
-            chart.setData(data);
+            data = LineData()
+            chart!!.setData(data)
         }
 
-        ILineDataSet set = data.getDataSetByIndex(0);
+        var set: LineDataSet
+
         // set.addEntry(...); // can be called as well
-
-        if (set == null) {
-            set = createSet();
-            data.addDataSet(set);
+        if (data.dataSetCount == 0) {
+            set = createSet()
+            data.addDataSet(set)
         }
 
-        int lastDataSetIndex = data.getDataSetCount() - 1; // add data only to the last
-        ILineDataSet lastSet = data.getDataSetByIndex(lastDataSetIndex);
+        val lastDataSetIndex = data.dataSetCount - 1 // add data only to the last
+        val lastSet = data.getDataSetByIndex(lastDataSetIndex)
 
-        int cycleValue = (int) (lastSet.entryCount % 100.0);
+        val cycleValue = (lastSet.entryCount % 100.0).toInt()
 
-        float value = (sampleValues[cycleValue].floatValue() * 50) + 50f * (lastDataSetIndex + 1);
+        val value = (sampleValues[cycleValue].toFloat() * 50) + 50f * (lastDataSetIndex + 1)
 
-        data.addEntry(new Entry(lastSet.entryCount, value), lastDataSetIndex);
-        data.notifyDataChanged();
+        data.addEntry(Entry(lastSet.entryCount.toFloat(), value), lastDataSetIndex)
+        data.notifyDataChanged()
 
         // let the chart know it's data has changed
-        chart.notifyDataSetChanged();
+        chart!!.notifyDataSetChanged()
 
-        chart.setVisibleXRangeMaximum(6);
+        chart!!.setVisibleXRangeMaximum(6f)
         //chart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
 //
 //            // this automatically refreshes the chart (calls invalidate())
-        chart.moveViewTo(data.getEntryCount() - 7, 50f, AxisDependency.LEFT);
-
+        chart!!.moveViewTo((data.entryCount - 7).toFloat(), 50f, AxisDependency.LEFT)
     }
 
-    private void removeLastEntry() {
-
-        LineData data = chart.getData();
+    private fun removeLastEntry() {
+        val data: LineData? = chart!!.data
 
         if (data != null) {
+            val set = data.getDataSetByIndex(0)
 
-            ILineDataSet set = data.getDataSetByIndex(0);
+            val e = set.getEntryForXValue(set.entryCount - 1f, Float.Companion.NaN)
 
-            if (set != null) {
-
-                Entry e = set.getEntryForXValue(set.entryCount - 1, Float.NaN);
-
-                data.removeEntry(e, 0);
-                // or remove by index
-                // mData.removeEntryByXValue(xIndex, dataSetIndex);
-                data.notifyDataChanged();
-                chart.notifyDataSetChanged();
-                chart.invalidate();
-            }
+            data.removeEntry(e, 0)
+            // or remove by index
+            // mData.removeEntryByXValue(xIndex, dataSetIndex);
+            data.notifyDataChanged()
+            chart!!.notifyDataSetChanged()
+            chart!!.invalidate()
         }
     }
 
-    private void addDataSet() {
-
-        LineData data = chart.getData();
+    private fun addDataSet() {
+        val data: LineData? = chart!!.data
 
         if (data == null) {
-            chart.setData(new LineData());
+            chart!!.setData(LineData())
         } else {
-            int count = (data.getDataSetCount() + 1);
-            int amount = data.getDataSetByIndex(0).entryCount;
+            val count = (data.dataSetCount + 1)
+            val amount = data.getDataSetByIndex(0).entryCount
 
-            ArrayList<Entry> values = new ArrayList<>();
+            val values = ArrayList<Entry>()
 
-            for (int i = 0; i < amount; i++) {
-                int cycleValue = (int) (i % 100.0);
+            for (i in 0..<amount) {
+                val cycleValue = (i % 100.0).toInt()
 
-                values.add(new Entry(i, (sampleValues[cycleValue].floatValue() * 50f) + 50f * count));
+                values.add(Entry(i.toFloat(), (sampleValues[cycleValue].toFloat() * 50f) + 50f * count))
             }
 
-            LineDataSet set = new LineDataSet(values, "DataSet " + count);
-            set.setLineWidth(2.5f);
-            set.setCircleRadius(4.5f);
+            val set = LineDataSet(values, "DataSet $count")
+            set.setLineWidth(2.5f)
+            set.setCircleRadius(4.5f)
 
-            int color = colors[count % colors.length];
+            val color = colors[count % colors.size]
 
-            set.setColor(color);
-            set.setCircleColor(color);
-            set.setHighLightColor(color);
-            set.setValueTextSize(10f);
-            set.setValueTextColor(color);
+            set.setColor(color)
+            set.setCircleColor(color)
+            set.highLightColor = color
+            set.valueTextSize = 10f
+            set.valueTextColor = color
 
-            data.addDataSet(set);
-            data.notifyDataChanged();
-            chart.notifyDataSetChanged();
-            chart.invalidate();
+            data.addDataSet(set)
+            data.notifyDataChanged()
+            chart!!.notifyDataSetChanged()
+            chart!!.invalidate()
         }
     }
 
-    private void removeDataSet() {
-
-        LineData data = chart.getData();
+    private fun removeDataSet() {
+        val data: LineData? = chart!!.data
 
         if (data != null) {
+            data.removeDataSet(data.getDataSetByIndex(data.dataSetCount - 1))
 
-            data.removeDataSet(data.getDataSetByIndex(data.getDataSetCount() - 1));
-
-            chart.notifyDataSetChanged();
-            chart.invalidate();
+            chart!!.notifyDataSetChanged()
+            chart!!.invalidate()
         }
     }
 
-    private LineDataSet createSet() {
+    private fun createSet(): LineDataSet {
+        val set = LineDataSet(mutableListOf(), "DataSet 1")
+        set.setLineWidth(2.5f)
+        set.setCircleRadius(4.5f)
+        set.setColor(Color.rgb(240, 99, 99))
+        set.setCircleColor(Color.rgb(240, 99, 99))
+        set.highLightColor = Color.rgb(190, 190, 190)
+        set.axisDependency = AxisDependency.LEFT
+        set.valueTextSize = 10f
 
-        LineDataSet set = new LineDataSet(null, "DataSet 1");
-        set.setLineWidth(2.5f);
-        set.setCircleRadius(4.5f);
-        set.setColor(Color.rgb(240, 99, 99));
-        set.setCircleColor(Color.rgb(240, 99, 99));
-        set.setHighLightColor(Color.rgb(190, 190, 190));
-        set.setAxisDependency(AxisDependency.LEFT);
-        set.setValueTextSize(10f);
-
-        return set;
+        return set
     }
 
-    @Override
-    public void onValueSelected(Entry e, Highlight h) {
-        Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
+        Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show()
     }
 
-    @Override
-    public void onNothingSelected() {}
+    override fun onNothingSelected() {}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.dynamical, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.dynamical, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/DynamicalAddingActivity.java".toUri())
+                startActivity(i)
+            }
 
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/DynamicalAddingActivity.java"));
-                startActivity(i);
-                break;
+            R.id.actionAddEntry -> {
+                addEntry()
+                Toast.makeText(this, "Entry added!", Toast.LENGTH_SHORT).show()
             }
-            case R.id.actionAddEntry: {
-                addEntry();
-                Toast.makeText(this, "Entry added!", Toast.LENGTH_SHORT).show();
-                break;
+
+            R.id.actionRemoveEntry -> {
+                removeLastEntry()
+                Toast.makeText(this, "Entry removed!", Toast.LENGTH_SHORT).show()
             }
-            case R.id.actionRemoveEntry: {
-                removeLastEntry();
-                Toast.makeText(this, "Entry removed!", Toast.LENGTH_SHORT).show();
-                break;
+
+            R.id.actionAddDataSet -> {
+                addDataSet()
+                Toast.makeText(this, "DataSet added!", Toast.LENGTH_SHORT).show()
             }
-            case R.id.actionAddDataSet: {
-                addDataSet();
-                Toast.makeText(this, "DataSet added!", Toast.LENGTH_SHORT).show();
-                break;
+
+            R.id.actionRemoveDataSet -> {
+                removeDataSet()
+                Toast.makeText(this, "DataSet removed!", Toast.LENGTH_SHORT).show()
             }
-            case R.id.actionRemoveDataSet: {
-                removeDataSet();
-                Toast.makeText(this, "DataSet removed!", Toast.LENGTH_SHORT).show();
-                break;
+
+            R.id.actionClear -> {
+                chart!!.clear()
+                Toast.makeText(this, "Chart cleared!", Toast.LENGTH_SHORT).show()
             }
-            case R.id.actionClear: {
-                chart.clear();
-                Toast.makeText(this, "Chart cleared!", Toast.LENGTH_SHORT).show();
-                break;
-            }
-            case R.id.actionSave: {
+
+            R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    saveToGallery();
+                    saveToGallery()
                 } else {
-                    requestStoragePermission(chart);
+                    requestStoragePermission(chart)
                 }
-                break;
             }
         }
 
-        return true;
+        return true
     }
 
-    @Override
-    protected void saveToGallery() {
-        saveToGallery(chart, "DynamicalAddingActivity");
+    override fun saveToGallery() {
+        saveToGallery(chart, "DynamicalAddingActivity")
     }
 }

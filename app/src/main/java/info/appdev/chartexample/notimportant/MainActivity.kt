@@ -46,6 +46,7 @@ import info.appdev.chartexample.ScrollViewActivity
 import info.appdev.chartexample.SpecificPositionsLineChartActivity
 import info.appdev.chartexample.StackedBarActivity
 import info.appdev.chartexample.StackedBarActivityNegative
+import androidx.core.net.toUri
 
 class MainActivity : AppCompatActivity(), OnItemClickListener {
 
@@ -58,8 +59,8 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         Utils.init(this)
         val adapter = MenuAdapter(this, menuItems)
         val lv = findViewById<ListView>(R.id.listViewMain)
-        lv.adapter = adapter
-        lv.onItemClickListener = this
+        lv?.adapter = adapter
+        lv?.onItemClickListener = this
     }
 
     override fun onItemClick(av: AdapterView<*>?, v: View, pos: Int, arg3: Long) {
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         when (item.itemId) {
             R.id.viewGithub -> {
                 i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse("https://github.com/AppDevNext/AndroidChart")
+                i.data = "https://github.com/AppDevNext/AndroidChart".toUri()
                 startActivity(i)
             }
             R.id.report -> {
@@ -90,7 +91,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             }
             R.id.website -> {
                 i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse("http://at.linkedin.com/in/philippjahoda")
+                i.data = "http://at.linkedin.com/in/philippjahoda".toUri()
                 startActivity(i)
             }
         }

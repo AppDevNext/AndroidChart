@@ -32,7 +32,7 @@ interface IMarker {
      * @param highlight The highlight object contains information about the highlighted value such as it's dataset-index, the
      * selected range or stack-index (only stacked bar entries).
      */
-    fun refreshContent(e: Entry?, highlight: Highlight?)
+    fun refreshContent(e: Entry, highlight: Highlight)
 
     /**
      * Draws the IMarker on the given position on the screen with the given Canvas object.

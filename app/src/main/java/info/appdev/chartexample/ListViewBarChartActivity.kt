@@ -1,36 +1,28 @@
+package info.appdev.chartexample
 
-package info.appdev.chartexample;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
-
-import info.appdev.chartexample.notimportant.DemoBase;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import androidx.core.net.toUri
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis.XAxisPosition
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import com.github.mikephil.charting.utils.ColorTemplate
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.notimportant.DemoBase
 
 /**
  * Demonstrates the use of charts inside a ListView. IMPORTANT: provide a
@@ -38,96 +30,87 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
-public class ListViewBarChartActivity extends DemoBase {
+class ListViewBarChartActivity : DemoBase() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.activity_listview_chart)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_listview_chart);
+        setTitle("ListViewBarChartActivity")
 
-        setTitle("ListViewBarChartActivity");
+        val lv = findViewById<ListView?>(R.id.listViewMain)
 
-        ListView lv = findViewById(R.id.listViewMain);
-
-        ArrayList<BarData> list = new ArrayList<>();
+        val list = ArrayList<BarData?>()
 
         // 20 items
-        for (int i = 0; i < 20; i++) {
-            list.add(generateData(i + 1));
+        for (i in 0..19) {
+            list.add(generateData(i + 1))
         }
 
-        ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
-        lv.setAdapter(cda);
+        val cda = ChartDataAdapter(applicationContext, list)
+        lv!!.setAdapter(cda)
     }
 
-    private class ChartDataAdapter extends ArrayAdapter<BarData> {
-
-        ChartDataAdapter(Context context, List<BarData> objects) {
-            super(context, 0, objects);
-        }
-
+    private inner class ChartDataAdapter(context: Context, objects: MutableList<BarData?>) : ArrayAdapter<BarData?>(context, 0, objects) {
         @SuppressLint("InflateParams")
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            var convertView = convertView
+            val data = getItem(position)
 
-            BarData data = getItem(position);
-
-            ViewHolder holder;
+            val holder: ViewHolder
 
             if (convertView == null) {
+                holder = ViewHolder()
 
-                holder = new ViewHolder();
+                convertView = LayoutInflater.from(context).inflate(
+                    R.layout.list_item_barchart, null
+                )
+                holder.chart = convertView.findViewById(R.id.chart)
 
-                convertView = LayoutInflater.from(getContext()).inflate(
-                        R.layout.list_item_barchart, null);
-                holder.chart = convertView.findViewById(R.id.chart);
-
-                convertView.setTag(holder);
-
+                convertView.tag = holder
             } else {
-                holder = (ViewHolder) convertView.getTag();
+                holder = convertView.tag as ViewHolder
             }
 
             // apply styling
             if (data != null) {
-                data.setValueTypeface(tfLight);
-                data.setValueTextColor(Color.BLACK);
+                data.setValueTypeface(tfLight)
+                data.setValueTextColor(Color.BLACK)
             }
-            holder.chart.getDescription().setEnabled(false);
-            holder.chart.setDrawGridBackground(false);
+            holder.chart!!.description.isEnabled = false
+            holder.chart!!.setDrawGridBackground(false)
 
-            XAxis xAxis = holder.chart.getXAxis();
-            xAxis.setPosition(XAxisPosition.BOTTOM);
-            xAxis.setTypeface(tfLight);
-            xAxis.setDrawGridLines(false);
+            val xAxis = holder.chart!!.xAxis
+            xAxis.position = XAxisPosition.BOTTOM
+            xAxis.typeface = tfLight
+            xAxis.setDrawGridLines(false)
 
-            YAxis leftAxis = holder.chart.getAxisLeft();
-            leftAxis.setTypeface(tfLight);
-            leftAxis.setLabelCount(5, false);
-            leftAxis.setSpaceTop(15f);
+            val leftAxis = holder.chart!!.axisLeft
+            leftAxis.typeface = tfLight
+            leftAxis.setLabelCount(5, false)
+            leftAxis.spaceTop = 15f
 
-            YAxis rightAxis = holder.chart.getAxisRight();
-            rightAxis.setTypeface(tfLight);
-            rightAxis.setLabelCount(5, false);
-            rightAxis.setSpaceTop(15f);
+            val rightAxis = holder.chart!!.axisRight
+            rightAxis.typeface = tfLight
+            rightAxis.setLabelCount(5, false)
+            rightAxis.spaceTop = 15f
 
             // set data
-            holder.chart.setData(data);
-            holder.chart.setFitBars(true);
+            holder.chart!!.setData(data)
+            holder.chart!!.setFitBars(true)
 
             // do not forget to refresh the chart
 //            holder.chart.invalidate();
-            holder.chart.animateY(700);
+            holder.chart!!.animateY(700)
 
-            return convertView;
+            return convertView
         }
 
-        private class ViewHolder {
-
-            BarChart chart;
+        private inner class ViewHolder {
+            var chart: BarChart? = null
         }
     }
 
@@ -136,48 +119,44 @@ public class ListViewBarChartActivity extends DemoBase {
      *
      * @return Bar data
      */
-    private BarData generateData(int cnt) {
-        int count = 12;
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        Double[] sampleValues = DataTools.Companion.getValues(count);
+    private fun generateData(cnt: Int): BarData {
+        val count = 12
+        val entries = ArrayList<BarEntry>()
+        val sampleValues = getValues(count)
 
-        for (int i = 0; i < count; i++) {
-            entries.add(new BarEntry(i, (sampleValues[i].floatValue() * 70) + 30));
+        for (i in 0..<count) {
+            entries.add(BarEntry(i.toFloat(), (sampleValues[i].toFloat() * 70) + 30))
         }
 
-        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        d.setBarShadowColor(Color.rgb(203, 203, 203));
+        val d = BarDataSet(entries, "New DataSet $cnt")
+        d.setColors(*ColorTemplate.VORDIPLOM_COLORS)
+        d.setBarShadowColor(Color.rgb(203, 203, 203))
 
-        ArrayList<IBarDataSet> sets = new ArrayList<>();
-        sets.add(d);
+        val sets = ArrayList<IBarDataSet>()
+        sets.add(d)
 
-        BarData cd = new BarData(sets);
-        cd.setBarWidth(0.9f);
-        return cd;
+        val cd = BarData(sets)
+        cd.barWidth = 0.9f
+        return cd
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.only_github, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.only_github, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.viewGithub: {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/ListViewBarChartActivity.java"));
-                startActivity(i);
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.viewGithub -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/ListViewBarChartActivity.java".toUri())
+                startActivity(i)
             }
         }
 
-        return true;
+        return true
     }
 
-    @Override
-    public void saveToGallery() { /* Intentionally left empty */ }
+    public override fun saveToGallery() { /* Intentionally left empty */
+    }
 }

@@ -98,8 +98,8 @@ object FileUtils {
      * @return
      */
     @JvmStatic
-    fun loadEntriesFromAssets(am: AssetManager, path: String): MutableList<Entry?> {
-        val entries: MutableList<Entry?> = ArrayList()
+    fun loadEntriesFromAssets(am: AssetManager, path: String): MutableList<Entry> {
+        val entries: MutableList<Entry> = ArrayList()
 
         var reader: BufferedReader? = null
         try {
@@ -210,8 +210,8 @@ object FileUtils {
     }
 
     @JvmStatic
-    fun loadBarEntriesFromAssets(am: AssetManager, path: String): MutableList<BarEntry?> {
-        val entries: MutableList<BarEntry?> = ArrayList()
+    fun loadBarEntriesFromAssets(am: AssetManager, path: String): MutableList<BarEntry> {
+        val entries: MutableList<BarEntry> = ArrayList()
 
         var reader: BufferedReader? = null
         try {
