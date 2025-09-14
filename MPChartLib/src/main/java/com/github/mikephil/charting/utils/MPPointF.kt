@@ -38,7 +38,7 @@ class MPPointF : Poolable<MPPointF> {
         private var pool: ObjectPool<MPPointF> = ObjectPool.Companion.create(32, MPPointF(0f, 0f))
 
         init {
-            pool.setReplenishPercentage(0.5f)
+            pool.replenishPercentage = 0.5f
         }
 
         fun getInstance(x: Float, y: Float): MPPointF {

@@ -49,7 +49,7 @@ open class ZoomJob(
         private val pool = ObjectPool.Companion.create(1, ZoomJob(ViewPortHandler(), 0f, 0f, 0f, 0f, null, null, null))
 
         init {
-            pool.setReplenishPercentage(0.5f)
+            pool.replenishPercentage = 0.5f
         }
 
         fun getInstance(

@@ -28,7 +28,7 @@ open class MoveViewJob(viewPortHandler: ViewPortHandler, xValue: Float, yValue: 
         private val pool = ObjectPool.Companion.create(2, MoveViewJob(ViewPortHandler(), 0f, 0f, null, null))
 
         init {
-            pool.setReplenishPercentage(0.5f)
+            pool.replenishPercentage = 0.5f
         }
 
         fun getInstance(viewPortHandler: ViewPortHandler, xValue: Float, yValue: Float, trans: Transformer?, v: View?): MoveViewJob {

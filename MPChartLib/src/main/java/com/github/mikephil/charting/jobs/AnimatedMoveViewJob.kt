@@ -41,7 +41,7 @@ class AnimatedMoveViewJob(
         private val pool = ObjectPool.Companion.create(4, AnimatedMoveViewJob(ViewPortHandler(), 0f, 0f, null, null, 0f, 0f, 0))
 
         init {
-            pool.setReplenishPercentage(0.5f)
+            pool.replenishPercentage = 0.5f
         }
 
         fun getInstance(
