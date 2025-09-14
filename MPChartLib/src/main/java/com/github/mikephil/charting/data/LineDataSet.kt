@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.util.Log
+import androidx.core.content.res.ResourcesCompat
 import com.github.mikephil.charting.formatter.DefaultFillFormatter
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
@@ -253,7 +254,7 @@ open class LineDataSet(yVals: MutableList<Entry>, label: String) : LineRadarData
         clrs.clear()
 
         for (color in colors) {
-            clrs.add(c.resources.getColor(color))
+            clrs.add(ResourcesCompat.getColor(c.resources, color, c.theme))
         }
 
         this.circleColors = clrs

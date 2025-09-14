@@ -13,6 +13,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
@@ -141,7 +142,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             val `val` = (sampleValues[i].toFloat() * (range + 1))
 
             if (`val` * 100 < 25) {
-                values.add(BarEntry(i.toFloat(), `val`, getResources().getDrawable(R.drawable.star)))
+                values.add(BarEntry(i.toFloat(), `val`, ResourcesCompat.getDrawable(resources, R.drawable.star, theme)))
             } else {
                 values.add(BarEntry(i.toFloat(), `val`))
             }

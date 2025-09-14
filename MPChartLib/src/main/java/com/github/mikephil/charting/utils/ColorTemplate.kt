@@ -2,6 +2,7 @@ package com.github.mikephil.charting.utils
 
 import android.content.res.Resources
 import android.graphics.Color
+import androidx.core.content.res.ResourcesCompat
 
 /**
  * Class that holds predefined color integer arrays (e.g.
@@ -103,7 +104,7 @@ object ColorTemplate {
         val result: MutableList<Int?> = ArrayList()
 
         for (i in colors) {
-            result.add(r.getColor(i))
+            result.add(ResourcesCompat.getColor(r, i, r.newTheme()))
         }
 
         return result
