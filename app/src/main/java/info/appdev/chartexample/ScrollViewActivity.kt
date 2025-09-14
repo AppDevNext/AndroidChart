@@ -35,8 +35,8 @@ class ScrollViewActivity : DemoBase() {
         // scaling can now only be done on x- and y-axis separately
         chart!!.setPinchZoom(false)
 
-        chart!!.setDrawBarShadow(false)
-        chart!!.setDrawGridBackground(false)
+        chart!!.isDrawBarShadowEnabled = false
+        chart!!.drawGridBackground = false
 
         val xAxis = chart!!.xAxis
         xAxis.position = XAxisPosition.BOTTOM

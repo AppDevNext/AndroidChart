@@ -37,67 +37,39 @@ abstract class LineRadarDataSet<T : Entry>(yVals: MutableList<T>, label: String)
      */
     private var mDrawFilled = false
 
-    override val fillColor: Int
+    override var fillColor: Int
         get() = mFillColor
+        set(value) {
+            mFillColor = value
+            mFillDrawable = null
+        }
 
-    /**
-     * Sets the color that is used for filling the area below the line.
-     * Resets an eventually set "fillDrawable".
-     *
-     * @param color
-     */
-    fun setFillColor(color: Int) {
-        mFillColor = color
-        mFillDrawable = null
-    }
-
-    override val fillDrawable: Drawable?
+    override var fillDrawable: Drawable?
         get() = mFillDrawable
+        set(value) {
+            mFillDrawable = value
+        }
 
-    /**
-     * Sets the drawable to be used to fill the area below the line.
-     *
-     * @param drawable
-     */
-    fun setFillDrawable(drawable: Drawable?) {
-        this.mFillDrawable = drawable
-    }
-
-    override val fillAlpha: Int
+    override var fillAlpha: Int
         get() = mFillAlpha
+        set(value) {
+            mFillAlpha = value
+        }
 
-    /**
-     * sets the alpha value (transparency) that is used for filling the line
-     * surface (0-255), default: 85
-     *
-     * @param alpha
-     */
-    fun setFillAlpha(alpha: Int) {
-        mFillAlpha = alpha
-    }
-
-    /**
-     * set the line width of the chart (min = 0.2f, max = 10f); default 1f NOTE:
-     * thinner line == better performance, thicker line == worse performance
-     *
-     * @param width
-     */
-    fun setLineWidth(width: Float) {
-        var width = width
-        if (width < 0.0f) width = 0.0f
-        if (width > 10.0f) width = 10.0f
-        mLineWidth = Utils.convertDpToPixel(width)
-    }
-
-    override val lineWidth: Float
+    override var lineWidth: Float
         get() = mLineWidth
+        set(value) {
+            var width = value
+            if (width < 0.0f) width = 0.0f
+            if (width > 10.0f) width = 10.0f
+            mLineWidth = Utils.convertDpToPixel(width)
+        }
 
-    override fun setDrawFilled(enabled: Boolean) {
-        mDrawFilled = enabled
-    }
-
-    override val isDrawFilledEnabled: Boolean
+    override var isDrawFilledEnabled: Boolean
         get() = mDrawFilled
+        set(value) {
+            mDrawFilled = value
+        }
 
     protected fun copy(lineRadarDataSet: LineRadarDataSet<*>) {
         super.copy(lineRadarDataSet)

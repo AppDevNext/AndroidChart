@@ -65,7 +65,7 @@ open class CombinedChart : BarLineChartBase<Entry, IBarLineScatterCandleBubbleDa
         setHighlighter(CombinedHighlighter(this, this))
 
         // Old default behaviour
-        setHighlightFullBarEnabled(true)
+        mHighlightFullBarEnabled = true
 
         mRenderer = CombinedChartRenderer(this, mAnimator, viewPortHandler)
     }
@@ -104,57 +104,56 @@ open class CombinedChart : BarLineChartBase<Entry, IBarLineScatterCandleBubbleDa
         }
     }
 
-    override val lineData: LineData?
+    override var lineData: LineData?
         get() = mData?.lineData
+        set(value) {
+            mData?.setData(value)
+        }
 
-    override val barData: BarData?
+    override var barData: BarData?
         get() = mData?.barData
+        set(value) {
+            mData?.setData(value)
+        }
 
-    override val scatterData: ScatterData?
+    override var scatterData: ScatterData?
         get() = mData?.scatterData
+        set(value) {
+            mData?.setData(value)
+        }
 
-    override val candleData: CandleData?
+    override var candleData: CandleData?
         get() = mData?.candleData
+        set(value) {
+            mData?.setData(value)
+        }
 
-    override val bubbleData: BubbleData?
+    override var bubbleData: BubbleData?
         get() = mData?.bubbleData
+        set(value) {
+            mData?.setData(value)
+        }
 
-    override val isDrawBarShadowEnabled: Boolean
+    override var isDrawBarShadowEnabled: Boolean
         get() = mDrawBarShadow
+        set(value) {
+            mDrawBarShadow = value
+        }
 
-    override val isDrawValueAboveBarEnabled: Boolean
+    override var isDrawValueAboveBarEnabled: Boolean
         get() = mDrawValueAboveBar
-
-    /**
-     * If set to true, all values are drawn above their bars, instead of below
-     * their top.
-     */
-    fun setDrawValueAboveBar(enabled: Boolean) {
-        mDrawValueAboveBar = enabled
-    }
-
-
-    /**
-     * If set to true, a grey area is drawn behind each bar that indicates the
-     * maximum value. Enabling his will reduce performance by about 50%.
-     */
-    fun setDrawBarShadow(enabled: Boolean) {
-        mDrawBarShadow = enabled
-    }
-
-    /**
-     * Set this to true to make the highlight operation full-bar oriented,
-     * false to make it highlight single values (relevant only for stacked).
-     */
-    fun setHighlightFullBarEnabled(enabled: Boolean) {
-        mHighlightFullBarEnabled = enabled
-    }
+        set(value) {
+            mDrawValueAboveBar = value
+        }
 
     /**
      * @return true the highlight operation is be full-bar oriented, false if single-value
      */
-    override val isHighlightFullBarEnabled: Boolean
+    override var isHighlightFullBarEnabled: Boolean
         get() = mHighlightFullBarEnabled
+        set(value) {
+            mHighlightFullBarEnabled = value
+        }
 
     var drawOrder: Array<DrawOrder>
         /**

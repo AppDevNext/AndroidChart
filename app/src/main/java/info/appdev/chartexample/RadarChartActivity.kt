@@ -112,19 +112,19 @@ class RadarChartActivity : DemoBase() {
 
         val set1 = RadarDataSet(entries1, "Last Week")
         set1.setColor(Color.rgb(103, 110, 129))
-        set1.setFillColor(Color.rgb(103, 110, 129))
-        set1.setDrawFilled(true)
-        set1.setFillAlpha(180)
-        set1.setLineWidth(2f)
+        set1.fillColor = (Color.rgb(103, 110, 129))
+        set1.isDrawFilledEnabled = true
+        set1.fillAlpha = 180
+        set1.lineWidth = 2f
         set1.isDrawHighlightCircleEnabled = true
         set1.setDrawHighlightIndicators(false)
 
         val set2 = RadarDataSet(entries2, "This Week")
         set2.setColor(Color.rgb(121, 162, 175))
-        set2.setFillColor(Color.rgb(121, 162, 175))
-        set2.setDrawFilled(true)
-        set2.setFillAlpha(180)
-        set2.setLineWidth(2f)
+        set2.fillColor = (Color.rgb(121, 162, 175))
+        set2.isDrawFilledEnabled = true
+        set2.fillAlpha = 180
+        set2.lineWidth = 2f
         set2.isDrawHighlightCircleEnabled = true
         set2.setDrawHighlightIndicators(false)
 
@@ -185,7 +185,7 @@ class RadarChartActivity : DemoBase() {
                     .dataSets as ArrayList<IRadarDataSet>
 
                 for (set in sets) {
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 chart!!.invalidate()
             }

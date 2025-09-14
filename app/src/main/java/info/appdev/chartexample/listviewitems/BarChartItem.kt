@@ -37,8 +37,8 @@ class BarChartItem(cd: ChartData<*, *>, c: Context) : ChartItem(cd) {
 
         // apply styling
         holder.chart?.description?.isEnabled = false
-        holder.chart?.setDrawGridBackground(false)
-        holder.chart?.setDrawBarShadow(false)
+        holder.chart?.drawGridBackground = false
+        holder.chart?.isDrawBarShadowEnabled = false
 
         val xAxis = holder.chart?.xAxis
         xAxis?.position = XAxisPosition.BOTTOM

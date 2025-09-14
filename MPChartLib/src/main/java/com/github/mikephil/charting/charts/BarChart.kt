@@ -144,52 +144,33 @@ open class BarChart : BarLineChartBase<BarEntry, IBarDataSet, BarData>, BarDataP
     }
 
     /**
-     * If set to true, all values are drawn above their bars, instead of below their top.
-     *
-     */
-    fun setDrawValueAboveBar(enabled: Boolean) {
-        mDrawValueAboveBar = enabled
-    }
-
-    /**
      * returns true if drawing values above bars is enabled, false if not
      *
      */
-    override val isDrawValueAboveBarEnabled: Boolean
+    override var isDrawValueAboveBarEnabled: Boolean
         get() = mDrawValueAboveBar
-
-    /**
-     * If set to true, a grey area is drawn behind each bar that indicates the maximum value. Enabling his will reduce
-     * performance by about 50%.
-     *
-     */
-    fun setDrawBarShadow(enabled: Boolean) {
-        mDrawBarShadow = enabled
-    }
+        set(value) {
+            mDrawValueAboveBar = value
+        }
 
     /**
      * returns true if drawing shadows (maxvalue) for each bar is enabled, false if not
      *
      */
-    override val isDrawBarShadowEnabled: Boolean
+    override var isDrawBarShadowEnabled: Boolean
         get() = mDrawBarShadow
-
-    /**
-     * Set this to true to make the highlight operation full-bar oriented, false to make it highlight single values (relevant
-     * only for stacked). If enabled, highlighting operations will highlight the whole bar, even if only a single stack entry
-     * was tapped.
-     * Default: false
-     *
-     */
-    fun setHighlightFullBarEnabled(enabled: Boolean) {
-        mHighlightFullBarEnabled = enabled
-    }
+        set(value) {
+            mDrawBarShadow = value
+        }
 
     /**
      * @return true the highlight operation is be full-bar oriented, false if single-value
      */
-    override val isHighlightFullBarEnabled: Boolean
+    override var isHighlightFullBarEnabled: Boolean
         get() = mHighlightFullBarEnabled
+        set(value) {
+            mHighlightFullBarEnabled = value
+        }
 
     /**
      * Highlights the value at the given x-value in the given DataSet. Provide
@@ -203,8 +184,11 @@ open class BarChart : BarLineChartBase<BarEntry, IBarDataSet, BarData>, BarDataP
         super.highlightValue(Highlight(x, dataSetIndex, dataIndex), false)
     }
 
-    override val barData: BarData?
+    override var barData: BarData?
         get() = mData
+        set(value) {
+            mData = value
+        }
 
     /**
      * Adds half of the bar width to each side of the x-axis range in order to allow the bars of the barchart to be

@@ -66,8 +66,8 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         chart?.setOnChartValueSelectedListener(this)
         chart?.setRoundedBarRadius(50f)
 
-        chart?.setDrawBarShadow(false)
-        chart?.setDrawValueAboveBar(true)
+        chart?.isDrawBarShadowEnabled = false
+        chart?.isDrawValueAboveBarEnabled = true
 
         chart?.description?.isEnabled = false
 
@@ -78,7 +78,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         // scaling can now only be done on x- and y-axis separately
         chart?.setPinchZoom(false)
 
-        chart?.setDrawGridBackground(false)
+        chart?.drawGridBackground = false
 
         // chart.setDrawYLabels(false);
         val xAxisFormatter: IAxisValueFormatter = DayAxisValueFormatter(chart!!)

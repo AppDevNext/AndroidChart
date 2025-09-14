@@ -18,8 +18,11 @@ open class LineChart : BarLineChartBase<Entry, ILineDataSet, LineData>, LineData
         mRenderer = LineChartRenderer(this, mAnimator, viewPortHandler)
     }
 
-    override val lineData: LineData
-        get() = mData ?: LineData()
+    override var lineData: LineData?
+        get() = mData
+        set(value) {
+            mData = value
+        }
 
     public override fun onDetachedFromWindow() {
         // releases the bitmap in the renderer to avoid oom error
@@ -32,7 +35,7 @@ open class LineChart : BarLineChartBase<Entry, ILineDataSet, LineData>, LineData
     override val accessibilityDescription: String?
         get() {
             val lineData = lineData
-            val numberOfPoints = lineData.entryCount
+            val numberOfPoints = lineData?.entryCount ?: return null
 
             // Min and max values...
             val yAxisValueFormatter = axisLeft.valueFormatter

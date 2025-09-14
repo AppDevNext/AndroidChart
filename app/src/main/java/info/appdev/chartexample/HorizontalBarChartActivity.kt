@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.RectF
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -14,6 +13,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
@@ -27,7 +27,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.MPPointF.Companion.recycleInstance
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
     private var chart: HorizontalBarChart? = null
@@ -59,9 +58,9 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         chart!!.setOnChartValueSelectedListener(this)
 
         // chart.setHighlightEnabled(false);
-        chart!!.setDrawBarShadow(false)
+        chart!!.isDrawBarShadowEnabled = false
 
-        chart!!.setDrawValueAboveBar(true)
+        chart!!.isDrawValueAboveBarEnabled = true
 
         chart!!.description.isEnabled = false
 
@@ -74,7 +73,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
 
         // draw shadows for each bar that show the maximum value
         // chart.setDrawBarShadow(true);
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
 
         val xl = chart!!.xAxis
         xl.position = XAxisPosition.BOTTOM

@@ -37,7 +37,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         seekBarValues!!.setOnSeekBarChangeListener(this)
 
         chart = findViewById(R.id.chart1)
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
 
         // no description text
         chart!!.description.isEnabled = false
@@ -76,11 +76,11 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         val set1 = LineDataSet(values, "DataSet 1")
 
         set1.setColor(Color.BLACK)
-        set1.setLineWidth(0.5f)
+        set1.lineWidth = 0.5f
         set1.isDrawValuesEnabled = false
-        set1.setDrawCircles(false)
-        set1.setMode(LineDataSet.Mode.LINEAR)
-        set1.setDrawFilled(false)
+        set1.isDrawCirclesEnabled = false
+        set1.mode = LineDataSet.Mode.LINEAR
+        set1.isDrawFilledEnabled = false
 
         // create a data object with the data sets
         val data = LineData(set1)

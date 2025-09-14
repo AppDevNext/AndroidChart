@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Paint
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +13,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.components.YAxis.AxisDependency
@@ -22,7 +22,6 @@ import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
     private var chart: CandleStickChart? = null
@@ -62,7 +61,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
         // scaling can now only be done on x- and y-axis separately
         chart!!.setPinchZoom(false)
 
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
 
         val xAxis = chart!!.xAxis
         xAxis.position = XAxisPosition.BOTTOM

@@ -4,13 +4,13 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
@@ -29,7 +29,6 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 import info.appdev.chartexample.notimportant.DemoBase
 import java.text.DecimalFormat
 import kotlin.math.abs
-import androidx.core.net.toUri
 
 class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
     private var chart: HorizontalBarChart? = null
@@ -46,15 +45,15 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
 
         chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
         chart!!.description.isEnabled = false
 
         // scaling can now only be done on x- and y-axis separately
         chart!!.setPinchZoom(false)
 
-        chart!!.setDrawBarShadow(false)
-        chart!!.setDrawValueAboveBar(true)
-        chart!!.setHighlightFullBarEnabled(false)
+        chart!!.isDrawBarShadowEnabled = false
+        chart!!.isDrawValueAboveBarEnabled = true
+        chart!!.isHighlightFullBarEnabled = false
 
         chart!!.axisLeft.isEnabled = false
         chart!!.axisRight.axisMaximum = 25f

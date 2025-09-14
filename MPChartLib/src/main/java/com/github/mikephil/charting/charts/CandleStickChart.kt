@@ -27,8 +27,11 @@ class CandleStickChart : BarLineChartBase<CandleEntry, ICandleDataSet, CandleDat
         xAxis.spaceMax = 0.5f
     }
 
-    override val candleData: CandleData?
+    override var candleData: CandleData?
         get() = mData
+        set(value) {
+            mData = value
+        }
 
     override val accessibilityDescription: String?
         get() = "This is a candlestick chart"

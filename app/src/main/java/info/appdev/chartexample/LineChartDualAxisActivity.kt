@@ -75,7 +75,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         // enable scaling and dragging
         chart!!.isDragEnabled = true
         chart!!.setScaleEnabled(true)
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
         chart!!.isHighlightPerDragEnabled = true
 
         // if disabled, scaling can be done on x- and y-axis separately
@@ -174,12 +174,12 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set1.axisDependency = AxisDependency.LEFT
             set1.setColor(holoBlue)
             set1.setCircleColor(Color.WHITE)
-            set1.setLineWidth(2f)
-            set1.setCircleRadius(3f)
-            set1.setFillAlpha(65)
-            set1.setFillColor(holoBlue)
+            set1.lineWidth = 2f
+            set1.circleRadius = 3f
+            set1.fillAlpha = 65
+            set1.fillColor = holoBlue
             set1.highLightColor = Color.rgb(244, 117, 117)
-            set1.setDrawCircleHole(false)
+            set1.isDrawCircleHoleEnabled = false
 
             //set1.setFillFormatter(new MyFillFormatter(0f));
             //set1.setDrawHorizontalHighlightIndicator(false);
@@ -191,11 +191,11 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set2.axisDependency = AxisDependency.RIGHT
             set2.setColor(Color.MAGENTA)
             set2.setCircleColor(Color.WHITE)
-            set2.setLineWidth(2f)
-            set2.setCircleRadius(3f)
-            set2.setFillAlpha(65)
-            set2.setFillColor(Color.BLUE)
-            set2.setDrawCircleHole(false)
+            set2.lineWidth = 2f
+            set2.circleRadius = 3f
+            set2.fillAlpha = 65
+            set2.fillColor = Color.BLUE
+            set2.isDrawCircleHoleEnabled = false
             set2.highLightColor = Color.rgb(244, 117, 117)
 
             //set2.setFillFormatter(new MyFillFormatter(900f));
@@ -203,11 +203,11 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set3.axisDependency = AxisDependency.RIGHT
             set3.setColor(Color.YELLOW)
             set3.setCircleColor(Color.WHITE)
-            set3.setLineWidth(2f)
-            set3.setCircleRadius(3f)
-            set3.setFillAlpha(65)
-            set3.setFillColor(colorWithAlpha(Color.YELLOW, 200))
-            set3.setDrawCircleHole(false)
+            set3.lineWidth = 2f
+            set3.circleRadius = 3f
+            set3.fillAlpha = 65
+            set3.fillColor = colorWithAlpha(Color.YELLOW, 200)
+            set3.isDrawCircleHoleEnabled = false
             set3.highLightColor = Color.rgb(244, 117, 117)
 
             // create a data object with the data sets
@@ -258,7 +258,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 chart!!.invalidate()
             }
@@ -269,7 +269,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setDrawCircles(!set.isDrawCirclesEnabled)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 chart!!.invalidate()
             }
@@ -280,7 +280,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setMode(
+                    set.mode = (
                         if (set.mode == LineDataSet.Mode.CUBIC_BEZIER)
                             LineDataSet.Mode.LINEAR
                         else
@@ -296,7 +296,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setMode(
+                    set.mode = (
                         if (set.mode == LineDataSet.Mode.STEPPED)
                             LineDataSet.Mode.LINEAR
                         else
@@ -312,7 +312,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setMode(
+                    set.mode = (
                         if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER)
                             LineDataSet.Mode.LINEAR
                         else

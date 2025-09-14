@@ -64,7 +64,7 @@ class LineChartTime : DemoBase(), OnSeekBarChangeListener {
         // enable scaling and dragging
         chart!!.isDragEnabled = true
         chart!!.setScaleEnabled(true)
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
         chart!!.isHighlightPerDragEnabled = true
 
         // set an alternative background color
@@ -139,13 +139,13 @@ class LineChartTime : DemoBase(), OnSeekBarChangeListener {
         set1.axisDependency = AxisDependency.LEFT
         set1.setColor(holoBlue)
         set1.valueTextColor = holoBlue
-        set1.setLineWidth(1.5f)
-        set1.setDrawCircles(false)
+        set1.lineWidth = 1.5f
+        set1.isDrawCirclesEnabled = false
         set1.isDrawValuesEnabled = false
-        set1.setFillAlpha(65)
-        set1.setFillColor(holoBlue)
+        set1.fillAlpha = 65
+        set1.fillColor = holoBlue
         set1.highLightColor = Color.rgb(244, 117, 117)
-        set1.setDrawCircleHole(false)
+        set1.isDrawCircleHoleEnabled = false
 
         // create a data object with the data sets
         val data = LineData(set1)
@@ -194,8 +194,7 @@ class LineChartTime : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.isDrawFilledEnabled) set.setDrawFilled(false)
-                    else set.setDrawFilled(true)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 chart!!.invalidate()
             }
@@ -206,8 +205,7 @@ class LineChartTime : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.isDrawCirclesEnabled) set.setDrawCircles(false)
-                    else set.setDrawCircles(true)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 chart!!.invalidate()
             }
@@ -218,8 +216,8 @@ class LineChartTime : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) set.setMode(LineDataSet.Mode.LINEAR)
-                    else set.setMode(LineDataSet.Mode.CUBIC_BEZIER)
+                    if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) set.mode = LineDataSet.Mode.LINEAR
+                    else set.mode = LineDataSet.Mode.CUBIC_BEZIER
                 }
                 chart!!.invalidate()
             }
@@ -230,8 +228,8 @@ class LineChartTime : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.mode == LineDataSet.Mode.STEPPED) set.setMode(LineDataSet.Mode.LINEAR)
-                    else set.setMode(LineDataSet.Mode.STEPPED)
+                    if (set.mode == LineDataSet.Mode.STEPPED) set.mode = LineDataSet.Mode.LINEAR
+                    else set.mode = LineDataSet.Mode.STEPPED
                 }
                 chart!!.invalidate()
             }

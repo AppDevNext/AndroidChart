@@ -57,7 +57,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         mChart = findViewById<View>(R.id.chart1) as LineChart
         mChart!!.onChartGestureListener = this
         mChart!!.setOnChartValueSelectedListener(this)
-        mChart!!.setDrawGridBackground(false)
+        mChart!!.drawGridBackground = false
 
         // no description text
         mChart!!.description.isEnabled = false
@@ -157,7 +157,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleFilled -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 mChart!!.invalidate()
             }
@@ -165,7 +165,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleCircles -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawCircles(!set.isDrawCirclesEnabled)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 mChart!!.invalidate()
             }
@@ -173,7 +173,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleCubic -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setMode(if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER)
+                    set.mode = (if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER)
                 }
                 mChart!!.invalidate()
             }
@@ -181,7 +181,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleStepped -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setMode(if (set.mode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED)
+                    set.mode = (if (set.mode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED)
                 }
                 mChart!!.invalidate()
             }
@@ -189,7 +189,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleHorizontalCubic -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setMode(if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER)
+                    set.mode = (if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER)
                 }
                 mChart!!.invalidate()
             }
@@ -267,20 +267,20 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         set11.enableDashedHighlightLine(10f, 5f, 0f)
         set11.setColor(Color.BLACK)
         set11.setCircleColor(Color.BLACK)
-        set11.setLineWidth(1f)
-        set11.setCircleRadius(3f)
-        set11.setDrawCircleHole(false)
+        set11.lineWidth = 1f
+        set11.circleRadius = 3f
+        set11.isDrawCircleHoleEnabled = false
         set11.valueTextSize = 9f
-        set11.setDrawFilled(true)
+        set11.isDrawFilledEnabled = true
         set11.formLineWidth = 1f
         set11.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
         set11.formSize = 15f
         if (Utils.sDKInt >= 18) {
             // fill drawable only supported on api level 18 and above
             val drawable = ContextCompat.getDrawable(this, R.drawable.fade_blue)
-            set11.setFillDrawable(drawable)
+            set11.fillDrawable = drawable
         } else {
-            set11.setFillColor(Color.BLACK)
+            set11.fillColor = Color.BLACK
         }
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(set11) // add the datasets

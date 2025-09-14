@@ -47,8 +47,8 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
 
         chart = findViewById(R.id.chart1)
 
-        chart!!.setDrawBarShadow(false)
-        chart!!.setDrawValueAboveBar(true)
+        chart!!.isDrawBarShadowEnabled = false
+        chart!!.isDrawValueAboveBarEnabled = true
 
         chart!!.description.isEnabled = false
 
@@ -63,7 +63,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         // chart.setDrawBarShadow(true);
 
         // chart.setDrawXLabels(false);
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
 
         // chart.setDrawYLabels(false);
         val xAxis = chart!!.xAxis

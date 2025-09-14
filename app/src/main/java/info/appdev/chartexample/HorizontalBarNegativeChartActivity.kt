@@ -58,9 +58,9 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
         chart!!.setOnChartValueSelectedListener(this)
 
         // chart.setHighlightEnabled(false);
-        chart!!.setDrawBarShadow(false)
+        chart!!.isDrawBarShadowEnabled = false
 
-        chart!!.setDrawValueAboveBar(true)
+        chart!!.isDrawValueAboveBarEnabled = true
 
         chart!!.description.isEnabled = false
 
@@ -73,7 +73,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
         // draw shadows for each bar that show the maximum value
         // chart.setDrawBarShadow(true);
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
 
         val xl = chart!!.xAxis
         xl.position = XAxisPosition.BOTTOM

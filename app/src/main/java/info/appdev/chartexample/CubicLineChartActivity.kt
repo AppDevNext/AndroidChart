@@ -62,7 +62,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         // if disabled, scaling can be done on x- and y-axis separately
         binding.chart1.setPinchZoom(false)
 
-        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.drawGridBackground = false
         binding.chart1.setMaxHighlightDistance(300f)
 
         val x = binding.chart1.xAxis
@@ -118,23 +118,23 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             // create a dataset and give it a type
             set1 = LineDataSet(values, "DataSet 1")
 
-            set1.setMode(LineDataSet.Mode.CUBIC_BEZIER)
-            set1.setCubicIntensity(0.2f)
-            set1.setDrawFilled(true)
-            set1.setDrawCircles(false)
-            set1.setLineWidth(1.8f)
-            set1.setCircleRadius(4f)
+            set1.mode = LineDataSet.Mode.CUBIC_BEZIER
+            set1.cubicIntensity = 0.2f
+            set1.isDrawFilledEnabled = true
+            set1.isDrawCirclesEnabled = false
+            set1.lineWidth = 1.8f
+            set1.circleRadius = 4f
             set1.setCircleColor(Color.WHITE)
             set1.highLightColor = Color.rgb(244, 117, 117)
             set1.setColor(Color.WHITE)
-            set1.setFillColor(Color.WHITE)
-            set1.setFillAlpha(100)
+            set1.fillColor = Color.WHITE
+            set1.fillAlpha = 100
             set1.setDrawHorizontalHighlightIndicator(false)
-            set1.setFillFormatter(object : IFillFormatter {
+            set1.fillFormatter = object : IFillFormatter {
                 override fun getFillLinePosition(dataSet: ILineDataSet, dataProvider: LineDataProvider): Float {
                     return binding.chart1.axisLeft.axisMinimum
                 }
-            })
+            }
 
             // create a data object with the data sets
             val data = LineData(set1)
@@ -179,8 +179,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
 
-                    if (set.isDrawFilledEnabled) set.setDrawFilled(false)
-                    else set.setDrawFilled(true)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
             }
@@ -190,8 +189,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.isDrawCirclesEnabled) set.setDrawCircles(false)
-                    else set.setDrawCircles(true)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 binding.chart1.invalidate()
             }
@@ -201,7 +199,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setMode(
+                    set.mode = (
                         if (set.mode == LineDataSet.Mode.CUBIC_BEZIER)
                             LineDataSet.Mode.LINEAR
                         else
@@ -216,7 +214,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setMode(
+                    set.mode = (
                         if (set.mode == LineDataSet.Mode.STEPPED)
                             LineDataSet.Mode.LINEAR
                         else
@@ -231,7 +229,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setMode(
+                    set.mode = (
                         if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER)
                             LineDataSet.Mode.LINEAR
                         else

@@ -27,8 +27,11 @@ class BubbleChart : BarLineChartBase<BubbleEntry, IBubbleDataSet, BubbleData>, B
         mRenderer = BubbleChartRenderer(this, mAnimator, viewPortHandler)
     }
 
-    override val bubbleData: BubbleData?
+    override var bubbleData: BubbleData?
         get() = mData
+        set(value) {
+            mData = value
+        }
 
     override val accessibilityDescription: String?
         get() = "This is bubble chart"

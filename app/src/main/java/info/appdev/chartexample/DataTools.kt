@@ -186,11 +186,11 @@ class DataTools {
             lineDataSet01.setCircleColor(Color.BLACK)
 
             // line thickness and point size
-            lineDataSet01.setLineWidth(1f)
-            lineDataSet01.setCircleRadius(3f)
+            lineDataSet01.lineWidth = 1f
+            lineDataSet01.circleRadius = 3f
 
             // draw points as solid circles
-            lineDataSet01.setDrawCircleHole(false)
+            lineDataSet01.isDrawCircleHoleEnabled = false
 
             // customize legend entry
             lineDataSet01.formLineWidth = 1f
@@ -204,22 +204,20 @@ class DataTools {
             lineDataSet01.enableDashedHighlightLine(10f, 5f, 0f)
 
             // set the filled area
-            lineDataSet01.setDrawFilled(true)
-            lineDataSet01.setFillFormatter(
-                object : IFillFormatter {
-                    override fun getFillLinePosition(dataSet: ILineDataSet, dataProvider: LineDataProvider): Float {
-                        return lineChart.axisLeft.axisMinimum
-                    }
+            lineDataSet01.isDrawFilledEnabled = true
+            lineDataSet01.fillFormatter = object : IFillFormatter {
+                override fun getFillLinePosition(dataSet: ILineDataSet, dataProvider: LineDataProvider): Float {
+                    return lineChart.axisLeft.axisMinimum
                 }
-            )
+            }
 
             // set color of filled area
             if (Utils.sDKInt >= 18) {
                 // drawables only supported on api level 18 and above
                 val drawable = ContextCompat.getDrawable(context, R.drawable.fade_blue)
-                lineDataSet01.setFillDrawable(drawable)
+                lineDataSet01.fillDrawable = drawable
             } else {
-                lineDataSet01.setFillColor(Color.BLACK)
+                lineDataSet01.fillColor = Color.BLACK
             }
             val dataSets = ArrayList<ILineDataSet>()
             dataSets.add(lineDataSet01) // add the data sets

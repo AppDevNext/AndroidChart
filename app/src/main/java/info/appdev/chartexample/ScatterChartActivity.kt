@@ -57,7 +57,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         chart!!.description.isEnabled = false
         chart!!.setOnChartValueSelectedListener(this)
 
-        chart!!.setDrawGridBackground(false)
+        chart!!.drawGridBackground = false
         chart!!.setTouchEnabled(true)
         chart!!.setMaxHighlightDistance(50f)
 
