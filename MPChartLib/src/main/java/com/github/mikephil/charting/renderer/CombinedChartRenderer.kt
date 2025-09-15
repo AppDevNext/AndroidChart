@@ -21,7 +21,7 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
      */
     protected var dataRenderers: MutableList<DataRenderer> = ArrayList(5)
 
-    protected var weakChart: WeakReference<Chart<*>> = WeakReference(chart)
+    protected var weakChart: WeakReference<Chart<*, *, *>> = WeakReference(chart)
 
     /**
      * Creates the renderers needed for this combined-renderer in the required order. Also takes the DrawOrder into
@@ -71,13 +71,15 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
         val chart = weakChart.get() ?: return
 
         for (renderer in dataRenderers) {
-            var data: ChartData<*>? = null
+            var data: ChartData<*, *>? = null
 
-            if (renderer is BarChartRenderer) data = renderer.chart.barData
-            else if (renderer is LineChartRenderer) data = renderer.chart.lineData
-            else if (renderer is CandleStickChartRenderer) data = renderer.chart.candleData
-            else if (renderer is ScatterChartRenderer) data = renderer.chart.scatterData
-            else if (renderer is BubbleChartRenderer) data = renderer.chart.bubbleData
+            when (renderer) {
+                is BarChartRenderer -> data = renderer.chart.barData
+                is LineChartRenderer -> data = renderer.chart.lineData
+                is CandleStickChartRenderer -> data = renderer.chart.candleData
+                is ScatterChartRenderer -> data = renderer.chart.scatterData
+                is BubbleChartRenderer -> data = renderer.chart.bubbleData
+            }
 
             val dataIndex = if (data == null)
                 -1

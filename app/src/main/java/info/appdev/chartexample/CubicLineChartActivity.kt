@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +13,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -50,25 +50,25 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setBackgroundColor(Color.rgb(104, 241, 175))
 
         // no description text
-        binding.chart1.getDescription().isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
 
         // enable scaling and dragging
-        binding.chart1.setDragEnabled(true)
+        binding.chart1.isDragEnabled = true
         binding.chart1.setScaleEnabled(true)
 
         // if disabled, scaling can be done on x- and y-axis separately
         binding.chart1.setPinchZoom(false)
 
-        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.drawGridBackground = false
         binding.chart1.setMaxHighlightDistance(300f)
 
-        val x = binding.chart1.getXAxis()
+        val x = binding.chart1.xAxis
         x.isEnabled = false
 
-        val y = binding.chart1.getAxisLeft()
+        val y = binding.chart1.axisLeft
         y.typeface = tfLight
         y.setLabelCount(6, false)
         y.textColor = Color.WHITE
@@ -76,7 +76,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         y.setDrawGridLines(false)
         y.axisLineColor = Color.WHITE
 
-        binding.chart1.getAxisRight().isEnabled = false
+        binding.chart1.axisRight.isEnabled = false
 
         // add data
         binding.seekBarY.setOnSeekBarChangeListener(this)
@@ -85,10 +85,10 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         // lower max, as cubic runs significantly slower than linear
         binding.seekBarX.setMax(700)
 
-        binding.seekBarX.setProgress(45)
-        binding.seekBarY.setProgress(100)
+        binding.seekBarX.progress = 45
+        binding.seekBarY.progress = 100
 
-        binding.chart1.getLegend().isEnabled = false
+        binding.chart1.legend.isEnabled = false
 
         binding.chart1.animateXY(2000, 2000)
 
@@ -120,18 +120,18 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
             set1.mode = LineDataSet.Mode.CUBIC_BEZIER
             set1.cubicIntensity = 0.2f
-            set1.setDrawFilled(true)
-            set1.setDrawCircles(false)
+            set1.isDrawFilledEnabled = true
+            set1.isDrawCirclesEnabled = false
             set1.lineWidth = 1.8f
             set1.circleRadius = 4f
             set1.setCircleColor(Color.WHITE)
-            set1.setHighLightColor(Color.rgb(244, 117, 117))
-            set1.color = Color.WHITE
+            set1.highLightColor = Color.rgb(244, 117, 117)
+            set1.setColor(Color.WHITE)
             set1.fillColor = Color.WHITE
             set1.fillAlpha = 100
             set1.setDrawHorizontalHighlightIndicator(false)
             set1.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet, dataProvider: LineDataProvider): Float {
                     return binding.chart1.axisLeft.axisMinimum
                 }
             }
@@ -143,7 +143,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             data.setDrawValues(false)
 
             // set data
-            binding.chart1.data = data
+            binding.chart1.setData(data)
         }
     }
 
@@ -156,12 +156,12 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         when (item.itemId) {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/CubicLineChartActivity.java"))
+                i.setData("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/CubicLineChartActivity.java".toUri())
                 startActivity(i)
             }
 
             R.id.actionToggleValues -> {
-                for (set in binding.chart1.data!!.dataSets) set.setDrawValues(!set.isDrawValuesEnabled)
+                for (set in binding.chart1.data!!.dataSets) set.isDrawValuesEnabled = !set.isDrawValuesEnabled
 
                 binding.chart1.invalidate()
             }
@@ -174,63 +174,67 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleFilled -> {
-                val sets = binding.chart1.data!!.getDataSets()
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
 
-                    if (set.isDrawFilledEnabled) set.setDrawFilled(false)
-                    else set.setDrawFilled(true)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                val sets = binding.chart1.data!!.getDataSets()
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.isDrawCirclesEnabled) set.setDrawCircles(false)
-                    else set.setDrawCircles(true)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                val sets = binding.chart1.data!!.getDataSets()
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.CUBIC_BEZIER)
-                        LineDataSet.Mode.LINEAR
-                    else
-                        LineDataSet.Mode.CUBIC_BEZIER
+                    set.mode = (
+                        if (set.mode == LineDataSet.Mode.CUBIC_BEZIER)
+                            LineDataSet.Mode.LINEAR
+                        else
+                            LineDataSet.Mode.CUBIC_BEZIER
+                    )
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleStepped -> {
-                val sets = binding.chart1.data!!.getDataSets()
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.STEPPED)
-                        LineDataSet.Mode.LINEAR
-                    else
-                        LineDataSet.Mode.STEPPED
+                    set.mode = (
+                        if (set.mode == LineDataSet.Mode.STEPPED)
+                            LineDataSet.Mode.LINEAR
+                        else
+                            LineDataSet.Mode.STEPPED
+                    )
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                val sets = binding.chart1.data!!.getDataSets()
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER)
-                        LineDataSet.Mode.LINEAR
-                    else
-                        LineDataSet.Mode.HORIZONTAL_BEZIER
+                    set.mode = (
+                        if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER)
+                            LineDataSet.Mode.LINEAR
+                        else
+                            LineDataSet.Mode.HORIZONTAL_BEZIER
+                    )
                 }
                 binding.chart1.invalidate()
             }

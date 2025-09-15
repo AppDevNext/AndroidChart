@@ -123,7 +123,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
             }
 
             c.drawText(
-                text!!,
+                text,
                 fixedPosition + xOffset,
                 positions[i * 2 + 1] + offset,
                 paintAxisLabels
@@ -136,7 +136,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         if (!yAxis.isEnabled) return
 
         if (yAxis.isDrawGridLinesEnabled) {
-            c.withClip(gridClippingRect!!) {
+            c.withClip(gridClippingRect) {
                 val positions = transformedPositions
 
                 paintGrid.color = yAxis.gridColor
@@ -150,7 +150,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                 var i = 0
                 while (i < positions.size) {
                     // draw a path because lines don't support dashing on lower android versions
-                    c.drawPath(linePath(gridLinePath, i, positions)!!, paintGrid)
+                    c.drawPath(linePath(gridLinePath, i, positions), paintGrid)
                     gridLinePath.reset()
                     i += 2
                 }
@@ -165,7 +165,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
     @JvmField
     protected var mGridClippingRect: RectF = RectF()
 
-    open val gridClippingRect: RectF?
+    open val gridClippingRect: RectF
         get() {
             mGridClippingRect.set(viewPortHandler.contentRect)
             mGridClippingRect.inset(0f, -axis.gridLineWidth)
@@ -175,7 +175,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
     /**
      * Calculates the path for a grid line.
      */
-    protected open fun linePath(p: Path, i: Int, positions: FloatArray): Path? {
+    protected open fun linePath(p: Path, i: Int, positions: FloatArray): Path {
         p.moveTo(viewPortHandler.offsetLeft(), positions[i + 1])
         p.lineTo(viewPortHandler.contentRight(), positions[i + 1])
 
@@ -225,28 +225,28 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
      * Draws the zero line.
      */
     protected open fun drawZeroLine(c: Canvas) {
-        val clipRestoreCount = c.save()
-        zeroLineClippingRect.set(viewPortHandler.contentRect)
-        zeroLineClippingRect.inset(0f, -yAxis.zeroLineWidth)
-        c.clipRect(zeroLineClippingRect)
+        c.withSave {
+            zeroLineClippingRect.set(viewPortHandler.contentRect)
+            zeroLineClippingRect.inset(0f, -yAxis.zeroLineWidth)
+            c.clipRect(zeroLineClippingRect)
 
-        // draw zero line
-        val pos = transformer?.getPixelForValues(0f, 0f)
-        pos?.let {
-            zeroLinePaint.color = yAxis.zeroLineColor
-            zeroLinePaint.strokeWidth = yAxis.zeroLineWidth
+            // draw zero line
+            val pos = transformer?.getPixelForValues(0f, 0f)
+            pos?.let {
+                zeroLinePaint.color = yAxis.zeroLineColor
+                zeroLinePaint.strokeWidth = yAxis.zeroLineWidth
 
-            val zeroLinePath = drawZeroLinePath
-            zeroLinePath.reset()
+                val zeroLinePath = drawZeroLinePath
+                zeroLinePath.reset()
 
-            zeroLinePath.moveTo(viewPortHandler.contentLeft(), it.y.toFloat())
-            zeroLinePath.lineTo(viewPortHandler.contentRight(), it.y.toFloat())
+                zeroLinePath.moveTo(viewPortHandler.contentLeft(), it.y.toFloat())
+                zeroLinePath.lineTo(viewPortHandler.contentRight(), it.y.toFloat())
 
-            // draw a path because lines don't support dashing on lower android versions
-            c.drawPath(zeroLinePath, zeroLinePaint)
+                // draw a path because lines don't support dashing on lower android versions
+                c.drawPath(zeroLinePath, zeroLinePaint)
+            }
+
         }
-
-        c.restoreToCount(clipRestoreCount)
     }
 
     protected var renderLimitRanges: Path = Path()
@@ -268,7 +268,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
      */
     override fun renderLimitLines(c: Canvas) {
         val limitLines = yAxis.limitLines
-        if (limitLines != null && limitLines.size > 0) {
+        if (limitLines.isNotEmpty()) {
             val pts = renderLimitLinesBuffer
             pts[0] = 0f
             pts[1] = 0f
@@ -319,34 +319,39 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
                         val position = limitLine.labelPosition
 
-                        if (position == LimitLabelPosition.RIGHT_TOP) {
-                            limitLinePaint.textAlign = Align.RIGHT
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentRight() - xOffset,
-                                pts[1] - yOffset + labelLineHeight, limitLinePaint
-                            )
-                        } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-                            limitLinePaint.textAlign = Align.RIGHT
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentRight() - xOffset,
-                                pts[1] + yOffset, limitLinePaint
-                            )
-                        } else if (position == LimitLabelPosition.LEFT_TOP) {
-                            limitLinePaint.textAlign = Align.LEFT
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentLeft() + xOffset,
-                                pts[1] - yOffset + labelLineHeight, limitLinePaint
-                            )
-                        } else {
-                            limitLinePaint.textAlign = Align.LEFT
-                            c.drawText(
-                                label,
-                                viewPortHandler.offsetLeft() + xOffset,
-                                pts[1] + yOffset, limitLinePaint
-                            )
+                        when (position) {
+                            LimitLabelPosition.RIGHT_TOP -> {
+                                limitLinePaint.textAlign = Align.RIGHT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    pts[1] - yOffset + labelLineHeight, limitLinePaint
+                                )
+                            }
+                            LimitLabelPosition.RIGHT_BOTTOM -> {
+                                limitLinePaint.textAlign = Align.RIGHT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    pts[1] + yOffset, limitLinePaint
+                                )
+                            }
+                            LimitLabelPosition.LEFT_TOP -> {
+                                limitLinePaint.textAlign = Align.LEFT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentLeft() + xOffset,
+                                    pts[1] - yOffset + labelLineHeight, limitLinePaint
+                                )
+                            }
+                            else -> {
+                                limitLinePaint.textAlign = Align.LEFT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.offsetLeft() + xOffset,
+                                    pts[1] + yOffset, limitLinePaint
+                                )
+                            }
                         }
                     }
 
@@ -356,7 +361,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
         // Now the ranges
         val limitRanges = yAxis.limitRanges
-        if (limitRanges != null &&  limitRanges.size > 0) {
+        if (limitRanges.isNotEmpty()) {
             val ptsr = FloatArray(2)
             ptsr[0] = 0f
             ptsr[1] = 0f
@@ -374,105 +379,105 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                 if (!limitRange.isEnabled)
                     continue
 
-                val clipRestoreCount = c.save()
-                limitLineClippingRect.set(viewPortHandler.contentRect)
-                limitLineClippingRect.inset(0f, -limitRange.lineWidth)
-                c.clipRect(limitLineClippingRect)
+                c.withSave {
+                    limitLineClippingRect.set(viewPortHandler.contentRect)
+                    limitLineClippingRect.inset(0f, -limitRange.lineWidth)
+                    c.clipRect(limitLineClippingRect)
 
-                limitRangePaint.style = Paint.Style.STROKE
-                limitRangePaint.color = limitRange.lineColor
-                limitRangePaint.strokeWidth = limitRange.lineWidth
-                limitRangePaint.setPathEffect(limitRange.dashPathEffect)
+                    limitRangePaint.style = Paint.Style.STROKE
+                    limitRangePaint.color = limitRange.lineColor
+                    limitRangePaint.strokeWidth = limitRange.lineWidth
+                    limitRangePaint.setPathEffect(limitRange.dashPathEffect)
 
-                limitRangePaintFill.style = Paint.Style.FILL
-                limitRangePaintFill.color = limitRange.rangeColor
+                    limitRangePaintFill.style = Paint.Style.FILL
+                    limitRangePaintFill.color = limitRange.rangeColor
 
-                ptsr[1] = limitRange.limit.high
-                ptsr2[1] = limitRange.limit.low
+                    ptsr[1] = limitRange.limit.high
+                    ptsr2[1] = limitRange.limit.low
 
-                transformer?.pointValuesToPixel(ptsr)
-                transformer?.pointValuesToPixel(ptsr2)
+                    transformer?.pointValuesToPixel(ptsr)
+                    transformer?.pointValuesToPixel(ptsr2)
 
-                limitRangePathFill.moveTo(viewPortHandler.contentLeft(), ptsr[1])
-                limitRangePathFill.addRect(
-                    viewPortHandler.contentLeft(),
-                    ptsr[1],
-                    viewPortHandler.contentRight(),
-                    ptsr2[1],
-                    Path.Direction.CW
-                )
-                c.drawPath(limitRangePathFill, limitRangePaintFill)
-                limitRangePathFill.reset()
+                    limitRangePathFill.moveTo(viewPortHandler.contentLeft(), ptsr[1])
+                    limitRangePathFill.addRect(
+                        viewPortHandler.contentLeft(),
+                        ptsr[1],
+                        viewPortHandler.contentRight(),
+                        ptsr2[1],
+                        Path.Direction.CW
+                    )
+                    c.drawPath(limitRangePathFill, limitRangePaintFill)
+                    limitRangePathFill.reset()
 
-                if (limitRange.lineWidth > 0) {
-                    limitRangePath.moveTo(viewPortHandler.contentLeft(), ptsr[1])
-                    limitRangePath.lineTo(viewPortHandler.contentRight(), ptsr[1])
-                    c.drawPath(limitRangePath, limitRangePaint)
+                    if (limitRange.lineWidth > 0) {
+                        limitRangePath.moveTo(viewPortHandler.contentLeft(), ptsr[1])
+                        limitRangePath.lineTo(viewPortHandler.contentRight(), ptsr[1])
+                        c.drawPath(limitRangePath, limitRangePaint)
 
-                    limitRangePath.moveTo(viewPortHandler.contentLeft(), ptsr2[1])
-                    limitRangePath.lineTo(viewPortHandler.contentRight(), ptsr2[1])
-                    c.drawPath(limitRangePath, limitRangePaint)
-                }
+                        limitRangePath.moveTo(viewPortHandler.contentLeft(), ptsr2[1])
+                        limitRangePath.lineTo(viewPortHandler.contentRight(), ptsr2[1])
+                        c.drawPath(limitRangePath, limitRangePaint)
+                    }
 
-                limitRangePath.reset()
+                    limitRangePath.reset()
 
-                val label = limitRange.label
+                    val label = limitRange.label
 
-                // if drawing the limit-value label is enabled
-                if (label != null && label != "") {
-                    limitRangePaint.style = limitRange.textStyle
-                    limitRangePaint.setPathEffect(null)
-                    limitRangePaint.color = limitRange.textColor
-                    limitRangePaint.setTypeface(limitRange.typeface)
-                    limitRangePaint.strokeWidth = 0.5f
-                    limitRangePaint.textSize = limitRange.textSize
+                    // if drawing the limit-value label is enabled
+                    if (label != null && label != "") {
+                        limitRangePaint.style = limitRange.textStyle
+                        limitRangePaint.setPathEffect(null)
+                        limitRangePaint.color = limitRange.textColor
+                        limitRangePaint.setTypeface(limitRange.typeface)
+                        limitRangePaint.strokeWidth = 0.5f
+                        limitRangePaint.textSize = limitRange.textSize
 
-                    val labelLineHeight = Utils.calcTextHeight(limitRangePaint, label).toFloat()
-                    val xOffset = Utils.convertDpToPixel(4f) + limitRange.xOffset
-                    val yOffset = limitRange.lineWidth + labelLineHeight + limitRange.yOffset
+                        val labelLineHeight = Utils.calcTextHeight(limitRangePaint, label).toFloat()
+                        val xOffset = Utils.convertDpToPixel(4f) + limitRange.xOffset
+                        val yOffset = limitRange.lineWidth + labelLineHeight + limitRange.yOffset
 
-                    val position = limitRange.labelPosition
+                        val position = limitRange.labelPosition
 
-                    when (position) {
-                        LimitLabelPosition.RIGHT_TOP -> {
-                            limitRangePaint.textAlign = Align.RIGHT
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentRight() - xOffset,
-                                ptsr[1] - yOffset + labelLineHeight, limitRangePaint
-                            )
-                        }
+                        when (position) {
+                            LimitLabelPosition.RIGHT_TOP -> {
+                                limitRangePaint.textAlign = Align.RIGHT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    ptsr[1] - yOffset + labelLineHeight, limitRangePaint
+                                )
+                            }
 
-                        LimitLabelPosition.RIGHT_BOTTOM -> {
-                            limitRangePaint.textAlign = Align.RIGHT
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentRight() - xOffset,
-                                ptsr[1] + yOffset, limitRangePaint
-                            )
-                        }
+                            LimitLabelPosition.RIGHT_BOTTOM -> {
+                                limitRangePaint.textAlign = Align.RIGHT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    ptsr[1] + yOffset, limitRangePaint
+                                )
+                            }
 
-                        LimitLabelPosition.LEFT_TOP -> {
-                            limitRangePaint.textAlign = Align.LEFT
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentLeft() + xOffset,
-                                ptsr[1] - yOffset + labelLineHeight, limitRangePaint
-                            )
-                        }
+                            LimitLabelPosition.LEFT_TOP -> {
+                                limitRangePaint.textAlign = Align.LEFT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.contentLeft() + xOffset,
+                                    ptsr[1] - yOffset + labelLineHeight, limitRangePaint
+                                )
+                            }
 
-                        else -> {
-                            limitRangePaint.textAlign = Align.LEFT
-                            c.drawText(
-                                label,
-                                viewPortHandler.offsetLeft() + xOffset,
-                                ptsr[1] + yOffset, limitRangePaint
-                            )
+                            else -> {
+                                limitRangePaint.textAlign = Align.LEFT
+                                c.drawText(
+                                    label,
+                                    viewPortHandler.offsetLeft() + xOffset,
+                                    ptsr[1] + yOffset, limitRangePaint
+                                )
+                            }
                         }
                     }
-                }
 
-                c.restoreToCount(clipRestoreCount)
+                }
             }
         }
     }

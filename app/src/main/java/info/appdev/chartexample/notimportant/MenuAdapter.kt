@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import info.appdev.chartexample.R
 
-internal class MenuAdapter(context: Context, objects: List<ContentItem<*>?>?) : ArrayAdapter<ContentItem<*>?>(context, 0, objects!!) {
+internal class MenuAdapter(context: Context, objects: List<ContentItem<*>>) : ArrayAdapter<ContentItem<*>?>(context, 0, objects) {
     private val mTypeFaceLight: Typeface = Typeface.createFromAsset(context.assets, "OpenSans-Light.ttf")
     private val mTypeFaceRegular: Typeface = Typeface.createFromAsset(context.assets, "OpenSans-Regular.ttf")
 

@@ -5,7 +5,7 @@ import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import kotlin.math.max
 
-class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValueFormatter {
+class DayAxisValueFormatter(private val chart: BarLineChartBase<*, *, *>) : IAxisValueFormatter {
     private val months = arrayOf(
         "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     )

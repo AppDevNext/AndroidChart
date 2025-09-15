@@ -137,31 +137,31 @@ class DataSetTest {
         val set = ScatterDataSet(entries, "")
 
         var closest = set.getEntryForXValue(17f, Float.NaN, DataSet.Rounding.CLOSEST)
-        Assert.assertEquals(15f, closest.x, 0.01f)
+        Assert.assertEquals(15f, closest!!.x, 0.01f)
         Assert.assertEquals(5f, closest.y, 0.01f)
 
         closest = set.getEntryForXValue(17f, Float.NaN, DataSet.Rounding.DOWN)
-        Assert.assertEquals(15f, closest.x, 0.01f)
+        Assert.assertEquals(15f, closest!!.x, 0.01f)
         Assert.assertEquals(5f, closest.y, 0.01f)
 
         closest = set.getEntryForXValue(15f, Float.NaN, DataSet.Rounding.DOWN)
-        Assert.assertEquals(15f, closest.x, 0.01f)
+        Assert.assertEquals(15f, closest!!.x, 0.01f)
         Assert.assertEquals(5f, closest.y, 0.01f)
 
         closest = set.getEntryForXValue(14f, Float.NaN, DataSet.Rounding.DOWN)
-        Assert.assertEquals(10f, closest.x, 0.01f)
+        Assert.assertEquals(10f, closest!!.x, 0.01f)
         Assert.assertEquals(10f, closest.y, 0.01f)
 
         closest = set.getEntryForXValue(17f, Float.NaN, DataSet.Rounding.UP)
-        Assert.assertEquals(21f, closest.x, 0.01f)
+        Assert.assertEquals(21f, closest!!.x, 0.01f)
         Assert.assertEquals(5f, closest.y, 0.01f)
 
         closest = set.getEntryForXValue(21f, Float.NaN, DataSet.Rounding.UP)
-        Assert.assertEquals(21f, closest.x, 0.01f)
+        Assert.assertEquals(21f, closest!!.x, 0.01f)
         Assert.assertEquals(5f, closest.y, 0.01f)
 
         closest = set.getEntryForXValue(21f, Float.NaN, DataSet.Rounding.CLOSEST)
-        Assert.assertEquals(21f, closest.x, 0.01f)
+        Assert.assertEquals(21f, closest!!.x, 0.01f)
         Assert.assertEquals(5f, closest.y, 0.01f)
     }
 
@@ -186,27 +186,27 @@ class DataSetTest {
         val set = ScatterDataSet(values, "")
 
         var closest = set.getEntryForXValue(0f, Float.NaN, DataSet.Rounding.CLOSEST)
-        Assert.assertEquals(0f, closest.x, 0.01f)
+        Assert.assertEquals(0f, closest!!.x, 0.01f)
         Assert.assertEquals(10f, closest.y, 0.01f)
 
         closest = set.getEntryForXValue(5f, Float.NaN, DataSet.Rounding.CLOSEST)
-        Assert.assertEquals(5f, closest.x, 0.01f)
+        Assert.assertEquals(5f, closest!!.x, 0.01f)
         Assert.assertEquals(80f, closest.y, 0.01f)
 
         closest = set.getEntryForXValue(5.4f, Float.NaN, DataSet.Rounding.CLOSEST)
-        Assert.assertEquals(5f, closest.x, 0.01f)
+        Assert.assertEquals(5f, closest!!.x, 0.01f)
         Assert.assertEquals(80f, closest.y, 0.01f)
 
         closest = set.getEntryForXValue(4.6f, Float.NaN, DataSet.Rounding.CLOSEST)
-        Assert.assertEquals(5f, closest.x, 0.01f)
+        Assert.assertEquals(5f, closest!!.x, 0.01f)
         Assert.assertEquals(80f, closest.y, 0.01f)
 
         closest = set.getEntryForXValue(7f, Float.NaN, DataSet.Rounding.CLOSEST)
-        Assert.assertEquals(7f, closest.x, 0.01f)
+        Assert.assertEquals(7f, closest!!.x, 0.01f)
         Assert.assertEquals(100f, closest.y, 0.01f)
 
         closest = set.getEntryForXValue(4f, Float.NaN, DataSet.Rounding.CLOSEST)
-        Assert.assertEquals(4f, closest.x, 0.01f)
+        Assert.assertEquals(4f, closest!!.x, 0.01f)
         Assert.assertEquals(60f, closest.y, 0.01f)
 
         var entries = set.getEntriesForXValue(4f)
