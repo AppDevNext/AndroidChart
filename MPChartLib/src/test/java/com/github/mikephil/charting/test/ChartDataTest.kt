@@ -39,13 +39,13 @@ class ChartDataTest {
         Assert.assertEquals(-2f, data.yMin, 0.01f)
         Assert.assertEquals(50f, data.yMax, 0.01f)
 
-        Assert.assertEquals(3, data.maxEntryCountSet.entryCount)
+        Assert.assertEquals(3, data.maxEntryCountSet?.entryCount)
 
         // now add and remove values
         data.addEntry(Entry(-10f, -10f), 0)
 
         Assert.assertEquals(set1, data.maxEntryCountSet)
-        Assert.assertEquals(4, data.maxEntryCountSet.entryCount)
+        Assert.assertEquals(4, data.maxEntryCountSet?.entryCount)
 
         Assert.assertEquals(-10f, data.getYMin(YAxis.AxisDependency.LEFT), 0.01f)
         Assert.assertEquals(50f, data.getYMax(YAxis.AxisDependency.LEFT), 0.01f)

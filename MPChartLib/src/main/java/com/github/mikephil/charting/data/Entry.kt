@@ -72,7 +72,7 @@ open class Entry : BaseEntry, Parcelable, Serializable {
      *
      * @return
      */
-    open fun copy(): Entry? {
+    open fun copy(): Entry {
         val e = Entry(x, y, data)
         return e
     }

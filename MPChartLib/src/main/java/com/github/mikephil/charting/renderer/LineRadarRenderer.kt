@@ -9,7 +9,7 @@ import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import androidx.core.graphics.withClip
 
-abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
+abstract class LineRadarRenderer(animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     LineScatterCandleRadarRenderer(animator, viewPortHandler) {
     /**
      * Draws the provided path in filled mode with the provided drawable.
@@ -32,7 +32,7 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
         } else {
             throw RuntimeException(
                 "Fill-drawables not (yet) supported below API level 18, " +
-                        "this code was run on API level " + Utils.getSDKInt() + "."
+                        "this code was run on API level " + Utils.sDKInt + "."
             )
         }
     }
@@ -77,6 +77,6 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
      * @return
      */
     private fun clipPathSupported(): Boolean {
-        return Utils.getSDKInt() >= 18
+        return Utils.sDKInt >= 18
     }
 }
