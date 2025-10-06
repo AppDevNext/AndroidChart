@@ -6,7 +6,7 @@ import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.interfaces.datasets.ILineScatterCandleRadarDataSet
 import com.github.mikephil.charting.utils.ViewPortHandler
 
-abstract class LineScatterCandleRadarRenderer(animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
+abstract class LineScatterCandleRadarRenderer(animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
     /**
      * path that is used for drawing highlight-lines (drawLines(...) cannot be used because of dashes)

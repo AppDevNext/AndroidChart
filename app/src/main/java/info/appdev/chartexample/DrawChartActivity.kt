@@ -46,7 +46,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         // if disabled, drawn data sets with the finger will not be automatically
         // finished
         // chart.setAutoFinish(true);
-        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.drawGridBackground = false
 
         // add dummy-data to the chart
         initWithDummyData()
@@ -76,7 +76,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         // create a data object with the data sets
         val data = LineData(set1)
 
-        binding.chart1.data = data
+        binding.chart1.setData(data)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -91,7 +91,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                    set.isDrawValuesEnabled = !set.isDrawValuesEnabled
                 }
 
                 binding.chart1.invalidate()
@@ -131,26 +131,26 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         saveToGallery(binding.chart1, "DrawChartActivity")
     }
 
-    override fun onValueSelected(e: Entry, h: Highlight) {
-        Log.i("VAL SELECTED", ("Value: " + e.y + ", xIndex: " + e.x + ", DataSet index: " + h.dataSetIndex))
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
+        Log.i("VAL SELECTED", ("Value: " + e?.y + ", xIndex: " + e?.x + ", DataSet index: " + h?.dataSetIndex))
     }
 
     override fun onNothingSelected() = Unit
 
     /** callback for each new entry drawn with the finger  */
-    override fun onEntryAdded(entry: Entry) {
+    override fun onEntryAdded(entry: Entry?) {
         Log.i(Chart.LOG_TAG, entry.toString())
     }
 
     /** callback when a DataSet has been drawn (when lifting the finger)  */
-    override fun onDrawFinished(dataSet: DataSet<*>) {
-        Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet.toSimpleString())
+    override fun onDrawFinished(dataSet: DataSet<*>?) {
+        Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet?.toSimpleString())
 
         // prepare the legend again
         binding.chart1.data?.let { binding.chart1.legendRenderer.computeLegend(it) }
     }
 
-    override fun onEntryMoved(entry: Entry) {
+    override fun onEntryMoved(entry: Entry?) {
         Log.i(Chart.LOG_TAG, "Point moved $entry")
     }
 }

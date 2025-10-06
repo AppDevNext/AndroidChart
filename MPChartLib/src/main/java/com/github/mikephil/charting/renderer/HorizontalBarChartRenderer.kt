@@ -22,18 +22,19 @@ import kotlin.math.min
  */
 @Suppress("MemberVisibilityCanBePrivate")
 open class HorizontalBarChartRenderer(
-    chart: BarDataProvider, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    chart: BarDataProvider, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : BarChartRenderer(chart, animator, viewPortHandler) {
     override fun initBuffers() {
-        val barData = chart.barData
-        barBuffers = arrayOfNulls<HorizontalBarBuffer>(barData.dataSetCount).toMutableList()
-
-        for (i in barBuffers.indices) {
+        barBuffers.clear()
+        val barData = chart.barData ?: return
+        for (i in 0 until barData.dataSetCount) {
             val set = barData.getDataSetByIndex(i)
-            barBuffers[i] = HorizontalBarBuffer(
-                set.entryCount * 4 * (if (set.isStacked) set.stackSize else 1),
-                barData.dataSetCount, set.isStacked
+            barBuffers.add(
+                HorizontalBarBuffer(
+                    set.entryCount * 4 * (if (set.isStacked) set.stackSize else 1),
+                    barData.dataSetCount, set.isStacked
+                )
             )
         }
     }
@@ -55,11 +56,11 @@ open class HorizontalBarChartRenderer(
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
 
+        val barData = chart.barData ?: return
+
         // draw the bar shadow before the values
         if (chart.isDrawBarShadowEnabled) {
             shadowPaint.color = dataSet.barShadowColor
-
-            val barData = chart.barData
 
             val barWidth = barData.barWidth
             val barWidthHalf = barWidth / 2.0f
@@ -67,8 +68,7 @@ open class HorizontalBarChartRenderer(
 
             var i = 0
             val count = min((ceil(((dataSet.entryCount).toFloat() * phaseX).toDouble())).toInt().toDouble(), dataSet.entryCount.toDouble()).toInt()
-            while (i < count
-            ) {
+            while (i < count) {
                 val e = dataSet.getEntryForIndex(i)
 
                 x = e.x
@@ -76,7 +76,7 @@ open class HorizontalBarChartRenderer(
                 mBarShadowRectBuffer.top = x - barWidthHalf
                 mBarShadowRectBuffer.bottom = x + barWidthHalf
 
-                trans!!.rectValueToPixel(mBarShadowRectBuffer)
+                trans.rectValueToPixel(mBarShadowRectBuffer)
 
                 if (!viewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
                     i++
@@ -96,17 +96,17 @@ open class HorizontalBarChartRenderer(
         }
 
         // initialize the buffer
-        val buffer = barBuffers[index]!!
+        val buffer = barBuffers[index]
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
         buffer.setInverted(chart.isInverted(dataSet.axisDependency))
-        buffer.setBarWidth(chart.barData.barWidth)
+        buffer.setBarWidth(barData.barWidth)
 
         buffer.feed(dataSet)
 
-        trans!!.pointValuesToPixel(buffer.buffer)
+        trans.pointValuesToPixel(buffer.buffer)
 
-        val isCustomFill = dataSet.fills != null && dataSet.fills.isNotEmpty()
+        val isCustomFill = dataSet.fills.isNotEmpty()
         val isSingleColor = dataSet.colors.size == 1
         val isInverted = chart.isInverted(dataSet.axisDependency)
 
@@ -134,16 +134,15 @@ open class HorizontalBarChartRenderer(
             }
 
             if (isCustomFill) {
-                dataSet.getFill(pos)
-                    .fillRect(
-                        c, paintRender,
-                        buffer.buffer[j],
-                        buffer.buffer[j + 1],
-                        buffer.buffer[j + 2],
-                        buffer.buffer[j + 3],
-                        if (isInverted) Fill.Direction.LEFT else Fill.Direction.RIGHT,
-                        0f
-                    )
+                dataSet.getFill(pos).fillRect(
+                    c, paintRender,
+                    buffer.buffer[j],
+                    buffer.buffer[j + 1],
+                    buffer.buffer[j + 2],
+                    buffer.buffer[j + 3],
+                    if (isInverted) Fill.Direction.LEFT else Fill.Direction.RIGHT,
+                    0f
+                )
             } else {
                 c.drawRect(
                     buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
@@ -165,14 +164,15 @@ open class HorizontalBarChartRenderer(
     override fun drawValues(c: Canvas) {
         // if values are drawn
         if (isDrawingValuesAllowed(chart)) {
-            val dataSets = chart.barData.dataSets
+            val barData = chart.barData ?: return
+            val dataSets = barData.dataSets
 
             val valueOffsetPlus = Utils.convertDpToPixel(5f)
             var posOffset: Float
             var negOffset: Float
             val drawValueAboveBar = chart.isDrawValueAboveBarEnabled
 
-            for (i in 0..<chart.barData.dataSetCount) {
+            for (i in 0..<barData.dataSetCount) {
                 val dataSet = dataSets[i]
                 if (dataSet.entryCount == 0) {
                     continue
@@ -190,7 +190,7 @@ open class HorizontalBarChartRenderer(
                 val formatter = dataSet.valueFormatter
 
                 // get the buffer
-                val buffer = barBuffers[i]!!
+                val buffer = barBuffers[i]
 
                 val phaseY = animator.phaseY
 
@@ -367,7 +367,7 @@ open class HorizontalBarChartRenderer(
                                 }
                             }
 
-                            trans!!.pointValuesToPixel(transformed)
+                            trans.pointValuesToPixel(transformed)
 
                             var k = 0
                             while (k < transformed.size) {
@@ -460,7 +460,8 @@ open class HorizontalBarChartRenderer(
     }
 
     override fun isDrawingValuesAllowed(chart: ChartInterface): Boolean {
-        return (chart.data!!.entryCount < chart.maxVisibleCount
-                * viewPortHandler.scaleY)
+        return chart.data?.let {
+            it.entryCount < chart.maxVisibleCount * viewPortHandler.scaleY
+        } == true
     }
 }
