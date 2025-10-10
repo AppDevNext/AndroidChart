@@ -1,7 +1,7 @@
 plugins {
-    id 'com.android.library'
-    id 'maven-publish'
-    id 'kotlin-android'
+    id "com.android.library"
+    id "maven-publish"
+    id "kotlin-android"
     id "com.vanniktech.maven.publish" version "0.34.0"
 }
 
@@ -15,7 +15,7 @@ ext {
 }
 
 android {
-    namespace 'com.github.mikephil.charting'
+    namespace "com.github.mikephil.charting"
     defaultConfig {
         minSdkVersion 21
         compileSdk 35
@@ -23,9 +23,9 @@ android {
 
         // VERSION_NAME no longer available as of 4.1
         // https://issuetracker.google.com/issues/158695880
-        buildConfigField 'String', 'VERSION_NAME', "\"${getTag()}\""
+        buildConfigField "String", "VERSION_NAME", "\"${getTag()}\""
 
-        consumerProguardFiles 'proguard-lib.pro'
+        consumerProguardFiles "proguard-lib.pro"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -45,14 +45,14 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.9.1'
-    implementation 'androidx.core:core:1.16.0'
+    implementation "androidx.annotation:annotation:1.9.1"
+    implementation "androidx.core:core:1.16.0"
     implementation "androidx.activity:activity-ktx:1.10.1"
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "junit:junit:4.13.2"
 }
 
-tasks.register('androidSourcesJar', Jar) {
-    archiveClassifier.set('sources')
+tasks.register("androidSourcesJar", Jar) {
+    archiveClassifier.set("sources")
     from android.sourceSets.main.java.srcDirs
 }
 
