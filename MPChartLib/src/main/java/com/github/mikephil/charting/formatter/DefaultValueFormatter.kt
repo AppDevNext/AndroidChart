@@ -48,6 +48,6 @@ open class DefaultValueFormatter(digits: Int) : IValueFormatter {
 
         // put more logic here ...
         // avoid memory allocations here (for performance reasons)
-        return decimalFormat!!.format(value.toDouble())
+        return decimalFormat?.format(value.toDouble())
     }
 }

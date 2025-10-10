@@ -41,13 +41,13 @@ open class LegendRenderer(
     /**
      * Prepares the legend and calculates all needed forms, labels and colors.
      */
-    fun computeLegend(data: ChartData<*>) {
+    fun computeLegend(data: ChartData<*, *>) {
         if (!legend.isLegendCustom) {
             computedEntries.clear()
 
             // loop for building up the colors and labels used in the legend
             for (i in 0..<data.dataSetCount) {
-                val dataSet = data.getDataSetByIndex(i) ?: continue
+                val dataSet = data.getDataSetByIndex(i)
 
                 val clrs = dataSet.colors
                 val entryCount = dataSet.entryCount
@@ -59,40 +59,39 @@ open class LegendRenderer(
 
                     val minEntries = min(clrs.size.toDouble(), bds.stackSize.toDouble()).toInt()
 
-                    for (j in 0..<minEntries) {
-                        val label: String?
-                        if (sLabels.isNotEmpty()) {
-                            val labelIndex = j % minEntries
-                            label = if (labelIndex < sLabels.size) sLabels[labelIndex] else null
-                        } else {
-                            label = null
+                    sLabels?.let {
+                        for (j in 0..<minEntries) {
+                            val label: String?
+                            if (sLabels.isNotEmpty()) {
+                                val labelIndex = j % minEntries
+                                label = if (labelIndex < sLabels.size) sLabels[labelIndex] else null
+                            } else {
+                                label = null
+                            }
+
+                            computedEntries.add(
+                                LegendEntry(
+                                    label,
+                                    dataSet.form,
+                                    dataSet.formSize,
+                                    dataSet.formLineWidth,
+                                    dataSet.formLineDashEffect,
+                                    clrs[j]
+                                )
+                            )
                         }
-
-                        computedEntries.add(
-                            LegendEntry(
-                                label,
-                                dataSet.getForm(),
-                                dataSet.getFormSize(),
-                                dataSet.getFormLineWidth(),
-                                dataSet.getFormLineDashEffect(),
-                                clrs[j]
-                            )
-                        )
                     }
 
-                    if (bds.label != null) {
-                        // add the legend description label
-                        computedEntries.add(
-                            LegendEntry(
-                                dataSet.getLabel(),
-                                LegendForm.NONE,
-                                Float.NaN,
-                                Float.NaN,
-                                null,
-                                ColorTemplate.COLOR_NONE
-                            )
+                    computedEntries.add(
+                        LegendEntry(
+                            dataSet.label,
+                            LegendForm.NONE,
+                            Float.NaN,
+                            Float.NaN,
+                            null,
+                            ColorTemplate.COLOR_NONE
                         )
-                    }
+                    )
                 } else if (dataSet is IPieDataSet) {
                     val pds = dataSet
 
@@ -101,29 +100,26 @@ open class LegendRenderer(
                         computedEntries.add(
                             LegendEntry(
                                 pds.getEntryForIndex(j).label,
-                                dataSet.getForm(),
-                                dataSet.getFormSize(),
-                                dataSet.getFormLineWidth(),
-                                dataSet.getFormLineDashEffect(),
+                                dataSet.form,
+                                dataSet.formSize,
+                                dataSet.formLineWidth,
+                                dataSet.formLineDashEffect,
                                 clrs[j]
                             )
                         )
                         j++
                     }
 
-                    if (pds.label != null) {
-                        // add the legend description label
-                        computedEntries.add(
-                            LegendEntry(
-                                dataSet.getLabel(),
-                                LegendForm.NONE,
-                                Float.NaN,
-                                Float.NaN,
-                                null,
-                                ColorTemplate.COLOR_NONE
-                            )
+                    computedEntries.add(
+                        LegendEntry(
+                            dataSet.label,
+                            LegendForm.NONE,
+                            Float.NaN,
+                            Float.NaN,
+                            null,
+                            ColorTemplate.COLOR_NONE
                         )
-                    }
+                    )
                 } else if (dataSet is ICandleDataSet && dataSet.decreasingColor !=
                     ColorTemplate.COLOR_NONE
                 ) {
@@ -133,21 +129,21 @@ open class LegendRenderer(
                     computedEntries.add(
                         LegendEntry(
                             null,
-                            dataSet.getForm(),
-                            dataSet.getFormSize(),
-                            dataSet.getFormLineWidth(),
-                            dataSet.getFormLineDashEffect(),
+                            dataSet.form,
+                            dataSet.formSize,
+                            dataSet.formLineWidth,
+                            dataSet.formLineDashEffect,
                             decreasingColor
                         )
                     )
 
                     computedEntries.add(
                         LegendEntry(
-                            dataSet.getLabel(),
-                            dataSet.getForm(),
-                            dataSet.getFormSize(),
-                            dataSet.getFormLineWidth(),
-                            dataSet.getFormLineDashEffect(),
+                            dataSet.label,
+                            dataSet.form,
+                            dataSet.formSize,
+                            dataSet.formLineWidth,
+                            dataSet.formLineDashEffect,
                             increasingColor
                         )
                     )
@@ -177,9 +173,7 @@ open class LegendRenderer(
                 }
             }
 
-            if (legend.extraEntries != null) {
-                Collections.addAll(computedEntries, *legend.extraEntries)
-            }
+            Collections.addAll(computedEntries, *legend.extraEntries)
 
             legend.setEntries(computedEntries)
         }
@@ -227,7 +221,7 @@ open class LegendRenderer(
 
         val yOffset = legend.yOffset
         val xOffset = legend.xOffset
-        var originPosX = 0f
+        var originPosX: Float
 
         when (horizontalAlignment) {
             LegendHorizontalAlignment.LEFT -> {
@@ -316,11 +310,15 @@ open class LegendRenderer(
                     if (!isStacked) {
                         if (drawingForm) posX += if (direction == LegendDirection.RIGHT_TO_LEFT) -formToTextSpace else formToTextSpace
 
-                        if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= calculatedLabelSizes[i].width
+                        calculatedLabelSizes[i].let {
+                            if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= it.width
+                        }
 
                         drawLabel(c, posX, posY + labelLineHeight, e.label)
 
-                        if (direction == LegendDirection.LEFT_TO_RIGHT) posX += calculatedLabelSizes[i].width
+                        calculatedLabelSizes[i].let {
+                            if (direction == LegendDirection.LEFT_TO_RIGHT) posX += it.width
+                        }
 
                         posX += if (direction == LegendDirection.RIGHT_TO_LEFT) -xEntrySpace else xEntrySpace
                     } else posX += if (direction == LegendDirection.RIGHT_TO_LEFT) -stackSpace else stackSpace
@@ -332,7 +330,7 @@ open class LegendRenderer(
                 // contains the stacked legend size in pixels
                 var stack = 0f
                 var wasStacked = false
-                var posY = 0f
+                var posY: Float
 
                 when (verticalAlignment) {
                     LegendVerticalAlignment.TOP -> {
@@ -479,6 +477,8 @@ open class LegendRenderer(
                     mLineFormPath.lineTo(x + formSize, y)
                     c.drawPath(mLineFormPath, formPaint)
                 }
+
+                else -> {}
             }
 
         }
@@ -492,7 +492,9 @@ open class LegendRenderer(
      * @param y
      * @param label the label to draw
      */
-    protected fun drawLabel(c: Canvas, x: Float, y: Float, label: String) {
-        c.drawText(label, x, y, labelPaint)
+    protected fun drawLabel(c: Canvas, x: Float, y: Float, label: String?) {
+        label?.let {
+            c.drawText(label, x, y, labelPaint)
+        }
     }
 }
