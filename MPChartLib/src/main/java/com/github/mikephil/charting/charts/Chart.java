@@ -44,6 +44,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.renderer.LegendRenderer;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.github.mikephil.charting.utils.SaveUtils;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -1413,27 +1414,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 * @return returns true on success, false on error
 	 */
 	public boolean saveToPath(String title, String pathOnSD) {
-
-
-		Bitmap b = getChartBitmap();
-
-		OutputStream stream;
-		try {
-			stream = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + pathOnSD + "/" + title + ".png");
-
-			/*
-			 * Write bitmap to file using JPEG or PNG and 40% quality hint for
-			 * JPEG.
-			 */
-			b.compress(CompressFormat.PNG, 40, stream);
-
-			stream.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-
-		return true;
+		return SaveUtils.INSTANCE.saveToPath(title, pathOnSD, getChartBitmap());
 	}
 
 	/**
@@ -1449,76 +1430,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 * @return returns true if saving was successful, false if not
 	 */
 	public boolean saveToGallery(String fileName, String subFolderPath, String fileDescription, Bitmap.CompressFormat format, int quality) {
-		// restrain quality
-		if (quality < 0 || quality > 100) {
-			quality = 50;
-		}
-
-		long currentTime = System.currentTimeMillis();
-
-		File extBaseDir = Environment.getExternalStorageDirectory();
-		File file = new File(extBaseDir.getAbsolutePath() + "/DCIM/" + subFolderPath);
-		if (!file.exists()) {
-			if (!file.mkdirs()) {
-				return false;
-			}
-		}
-
-		String mimeType;
-		switch (format) {
-			case PNG:
-				mimeType = "image/png";
-				if (!fileName.endsWith(".png")) {
-					fileName += ".png";
-				}
-				break;
-			case WEBP:
-				mimeType = "image/webp";
-				if (!fileName.endsWith(".webp")) {
-					fileName += ".webp";
-				}
-				break;
-			case JPEG:
-			default:
-				mimeType = "image/jpeg";
-				if (!(fileName.endsWith(".jpg") || fileName.endsWith(".jpeg"))) {
-					fileName += ".jpg";
-				}
-				break;
-		}
-
-		String filePath = file.getAbsolutePath() + "/" + fileName;
-		FileOutputStream out;
-		try {
-			out = new FileOutputStream(filePath);
-
-			Bitmap b = getChartBitmap();
-			b.compress(format, quality, out);
-
-			out.flush();
-			out.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-
-			return false;
-		}
-
-		long size = new File(filePath).length();
-
-		ContentValues values = new ContentValues(8);
-
-		// store the details
-		values.put(Images.Media.TITLE, fileName);
-		values.put(Images.Media.DISPLAY_NAME, fileName);
-		values.put(Images.Media.DATE_ADDED, currentTime);
-		values.put(Images.Media.MIME_TYPE, mimeType);
-		values.put(Images.Media.DESCRIPTION, fileDescription);
-		values.put(Images.Media.ORIENTATION, 0);
-		values.put(Images.Media.DATA, filePath);
-		values.put(Images.Media.SIZE, size);
-
-		return getContext().getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values) != null;
+		return SaveUtils.INSTANCE.saveToGallery(fileName, subFolderPath, fileDescription, format, quality, getChartBitmap(), getContext());
 	}
 
 	/**
