@@ -8,12 +8,15 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.github.mikephil.charting.charts.Chart
 import com.google.android.material.snackbar.Snackbar
 import info.appdev.chartexample.R
 import java.text.DateFormatSymbols
+import androidx.core.view.size
+import androidx.core.view.get
 
 abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -37,21 +40,25 @@ abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissio
 
         tfRegular = Typeface.createFromAsset(assets, "OpenSans-Regular.ttf")
         tfLight = Typeface.createFromAsset(assets, "OpenSans-Light.ttf")
+
+        onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.let {
-            for (i in 0 until menu.size()) {
-                val menuItem: MenuItem = menu.getItem(i)
+            for (i in 0 until menu.size) {
+                val menuItem: MenuItem = menu[i]
                 optionMenus.add(menuItem.title.toString())
             }
         }
         return super.onPrepareOptionsMenu(menu)
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.move_left_in_activity, R.anim.move_right_out_activity)
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            overridePendingTransition(R.anim.move_left_in_activity, R.anim.move_right_out_activity)
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
