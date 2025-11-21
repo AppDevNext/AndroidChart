@@ -5,6 +5,8 @@ plugins {
     id "com.vanniktech.maven.publish" version "0.34.0"
 }
 
+apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+
 ext {
     mGroupId = "info.appdevnext"
     mArtifactId = "chart"
@@ -51,10 +53,10 @@ dependencies {
     testImplementation "junit:junit:4.13.2"
 }
 
-tasks.register("androidSourcesJar", Jar) {
-    archiveClassifier.set("sources")
-    from android.sourceSets.main.java.srcDirs
-}
+//tasks.register("androidSourcesJar", Jar) {
+//    archiveClassifier.set("sources")
+//    from android.sourceSets.main.java.srcDirs
+//}
 
 group = "info.mxtracks"
 version = "${getTag()}"
