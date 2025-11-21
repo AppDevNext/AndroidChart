@@ -53,10 +53,10 @@ dependencies {
     testImplementation "junit:junit:4.13.2"
 }
 
-tasks.register("androidSourcesJar", Jar) {
-    archiveClassifier.set("sources")
-    from android.sourceSets.main.java.srcDirs
-}
+//tasks.register("androidSourcesJar", Jar) {
+//    archiveClassifier.set("sources")
+//    from android.sourceSets.main.java.srcDirs
+//}
 
 group = "info.mxtracks"
 version = "${getTag()}"
