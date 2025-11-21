@@ -14,6 +14,8 @@ import com.github.mikephil.charting.charts.Chart
 import com.google.android.material.snackbar.Snackbar
 import info.appdev.chartexample.R
 import java.text.DateFormatSymbols
+import androidx.core.view.size
+import androidx.core.view.get
 
 abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -41,8 +43,8 @@ abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissio
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.let {
-            for (i in 0 until menu.size()) {
-                val menuItem: MenuItem = menu.getItem(i)
+            for (i in 0 until menu.size) {
+                val menuItem: MenuItem = menu[i]
                 optionMenus.add(menuItem.title.toString())
             }
         }
