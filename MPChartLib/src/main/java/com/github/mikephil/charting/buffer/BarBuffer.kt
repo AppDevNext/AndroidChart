@@ -3,7 +3,7 @@ package com.github.mikephil.charting.buffer
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import kotlin.math.abs
 
-open class BarBuffer(dataSetCount: Int, containsStacks: Boolean) : AbstractBuffer<IBarDataSet?>() {
+open class BarBuffer(size: Int, dataSetCount: Int, containsStacks: Boolean) : AbstractBuffer<IBarDataSet?>(size) {
     protected var dataSetIndex: Int = 0
     protected var dataSetCount: Int = 1
 
