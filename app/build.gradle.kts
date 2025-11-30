@@ -12,8 +12,8 @@ android {
     defaultConfig {
         applicationId = "info.appdev.chartexample"
         minSdk = 21
-        compileSdk = 35
-        targetSdk = 35
+        compileSdk = 36
+        targetSdk = 36
         versionCode = getGitCommitCount()
         versionName = getVersionText()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
