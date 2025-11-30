@@ -290,8 +290,8 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                 } else {
                     val range = e.ranges[high.stackIndex]
 
-                    y1 = range.from
-                    y2 = range.to
+                    y1 = range?.from ?: 0f
+                    y2 = range?.to ?: 0f
                 }
             } else {
                 y1 = e.y
