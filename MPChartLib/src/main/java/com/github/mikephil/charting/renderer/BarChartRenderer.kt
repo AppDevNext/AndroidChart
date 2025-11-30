@@ -59,10 +59,11 @@ open class BarChartRenderer(
         val barData = chart.barData
         barBuffers = mutableListOf()
 
-        barData.dataSets.forEach {
+        barData.dataSets.forEach { iBarDataSet ->
             barBuffers.add(
                 BarBuffer(
-                    barData.dataSetCount, it.isStacked
+                    iBarDataSet.entryCount * 4 * (if (iBarDataSet.isStacked) iBarDataSet.stackSize else 1),
+                    barData.dataSetCount, iBarDataSet.isStacked
                 )
             )
         }
