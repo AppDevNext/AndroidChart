@@ -15,7 +15,7 @@ import kotlin.math.min
 
 /** @noinspection unused
  */
-class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
+class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     BarChartRenderer(chart, animator, viewPortHandler) {
     private val mBarShadowRectBuffer = RectF()
     private val mRadius = 20f
@@ -47,7 +47,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
 
         if (chart.isDrawBarShadowEnabled) {
             shadowPaint.color = dataSet.barShadowColor
-            val barData = chart.barData
+            val barData = chart.barData ?: return
             val barWidth = barData.barWidth
             val barWidthHalf = barWidth / 2.0f
             var x: Float
@@ -58,7 +58,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                 x = e.x
                 mBarShadowRectBuffer.left = x - barWidthHalf
                 mBarShadowRectBuffer.right = x + barWidthHalf
-                trans!!.rectValueToPixel(mBarShadowRectBuffer)
+                trans.rectValueToPixel(mBarShadowRectBuffer)
                 if (!viewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right)) {
                     i++
                     continue
@@ -79,13 +79,13 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
             }
         }
 
-        val buffer = barBuffers!![index]!!
+        val buffer = barBuffers[index]
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
         buffer.setInverted(chart.isInverted(dataSet.axisDependency))
-        buffer.setBarWidth(chart.barData.barWidth)
+        chart.barData?.barWidth?.let { buffer.setBarWidth(it) }
         buffer.feed(dataSet)
-        trans!!.pointValuesToPixel(buffer.buffer)
+        trans.pointValuesToPixel(buffer.buffer)
 
         // if multiple colors has been assigned to Bar Chart
         if (dataSet.colors.size > 1) {
@@ -235,7 +235,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                     RectF(
                         buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                         buffer.buffer[j + 3]
-                    ), roundedNegativeDataSetRadius, roundedNegativeDataSetRadius, true, true, true, true
+                    ), roundedNegativeDataSetRadius, roundedNegativeDataSetRadius, tl = true, tr = true, br = true, bl = true
                 )
                 c.drawPath(path2, paintRender)
             } else if ((dataSet.getEntryForIndex(j / 4).y > 0 && roundedPositiveDataSetRadius > 0)) {
@@ -243,7 +243,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                     RectF(
                         buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                         buffer.buffer[j + 3]
-                    ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, true, true, true, true
+                    ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, tl = true, tr = true, br = true, bl = true
                 )
                 c.drawPath(path2, paintRender)
             } else {
@@ -261,15 +261,15 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
         val barData = chart.barData
 
         for (high in indices) {
-            val set = barData.getDataSetByIndex(high.dataSetIndex)
+            val set = barData?.getDataSetByIndex(high.dataSetIndex) ?: continue
 
-            if (set == null || !set.isHighlightEnabled) {
+            if (!set.isHighlightEnabled) {
                 continue
             }
 
             val e = set.getEntryForXValue(high.x, high.y)
 
-            if (!isInBoundsX(e, set)) {
+            if (!isInBoundsX(e, set) || e == null) {
                 continue
             }
 
@@ -298,7 +298,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                 y2 = 0f
             }
 
-            prepareBarHighlight(e.x, y1, y2, barData.barWidth / 2f, trans!!)
+            prepareBarHighlight(e.x, y1, y2, barData.barWidth / 2f, trans)
 
             setHighlightDrawPos(high, barRect)
 
@@ -306,7 +306,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                 RectF(
                     barRect.left, barRect.top, barRect.right,
                     barRect.bottom
-                ), mRadius, mRadius, true, true, true, true
+                ), mRadius, mRadius, tl = true, tr = true, br = true, bl = true
             )
 
             c.drawPath(path2, paintHighlight)

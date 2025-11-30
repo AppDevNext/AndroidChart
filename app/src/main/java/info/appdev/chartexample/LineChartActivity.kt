@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -13,6 +12,7 @@ import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.LimitLine
@@ -55,7 +55,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
         // set listeners
         binding.chart1.setOnChartValueSelectedListener(this)
-        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.drawGridBackground = false
 
         // create marker to display box when values are selected
         val mv = MyMarkerView(this, R.layout.custom_marker_view)
@@ -159,14 +159,14 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data =
-                    Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/LineChartActivity1.java")
+                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/LineChartActivity1.java".toUri()
                 startActivity(i)
             }
 
             R.id.actionToggleValues -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                    set.isDrawValuesEnabled = (!set.isDrawValuesEnabled)
                 }
                 binding.chart1.invalidate()
             }
@@ -174,7 +174,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleIcons -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawIcons(!set.isDrawIconsEnabled)
+                    set.isDrawIconsEnabled = (!set.isDrawIconsEnabled)
                     binding.chart1.invalidate()
                 }
             }
@@ -189,7 +189,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                     binding.chart1.invalidate()
                 }
             }
@@ -197,7 +197,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleCircles -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawCircles(!set.isDrawCirclesEnabled)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 binding.chart1.invalidate()
             }
@@ -265,7 +265,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
     override fun onStartTrackingTouch(seekBar: SeekBar) {}
     override fun onStopTrackingTouch(seekBar: SeekBar) {}
-    override fun onValueSelected(e: Entry, h: Highlight) {
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
         Log.i("Entry selected", e.toString())
         Log.i("LOW HIGH", "low: " + binding.chart1.lowestVisibleX + ", high: " + binding.chart1.highestVisibleX)
         Log.i(

@@ -6,13 +6,13 @@ import org.junit.Assert
 import org.junit.Test
 
 class ObjectPoolTest {
-    internal class TestPoolable private constructor(var foo: Int, var bar: Int) : Poolable() {
-        override fun instantiate(): Poolable {
+    internal class TestPoolable private constructor(var foo: Int, var bar: Int) : Poolable<TestPoolable>() {
+        override fun instantiate(): TestPoolable {
             return TestPoolable(0, 0)
         }
 
         companion object {
-            private val pool: ObjectPool<TestPoolable> = ObjectPool.create(4, TestPoolable(0, 0)) as ObjectPool<TestPoolable>
+            private val pool: ObjectPool<TestPoolable> = ObjectPool.create(4, TestPoolable(0, 0))
 
             fun getInstance(foo: Int, bar: Int): TestPoolable {
                 val result = pool.get()
@@ -25,7 +25,7 @@ class ObjectPoolTest {
                 pool.recycle(instance)
             }
 
-            fun recycleInstances(instances: List<TestPoolable>?) {
+            fun recycleInstances(instances: List<TestPoolable>) {
                 pool.recycle(instances)
             }
 
