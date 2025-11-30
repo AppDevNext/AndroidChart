@@ -3,7 +3,7 @@ package com.github.mikephil.charting.buffer
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import kotlin.math.abs
 
-class HorizontalBarBuffer(size: Int, dataSetCount: Int, containsStacks: Boolean) : BarBuffer(dataSetCount, containsStacks) {
+class HorizontalBarBuffer(size: Int, dataSetCount: Int, containsStacks: Boolean) : BarBuffer(size, dataSetCount, containsStacks) {
     override fun feed(data: IBarDataSet?) {
         val size = (data?.entryCount ?: 0) * phaseX
         val barWidthHalf = barWidth / 2f
