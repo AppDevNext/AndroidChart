@@ -70,7 +70,7 @@ open class BarChartRenderer(
     }
 
     override fun drawData(c: Canvas) {
-        if (barBuffers.size == 0) {
+        if (barBuffers.isEmpty()) {
             initBuffers()
         }
 
@@ -527,8 +527,8 @@ open class BarChartRenderer(
                 } else {
                     val range = e.ranges[high.stackIndex]
 
-                    y1 = range.from
-                    y2 = range.to
+                    y1 = range?.from ?: 0f
+                    y2 = range?.to ?: 0f
                 }
             } else {
                 y1 = e.y
