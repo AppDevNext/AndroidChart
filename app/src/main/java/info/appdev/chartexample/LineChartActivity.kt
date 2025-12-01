@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -26,6 +25,7 @@ import info.appdev.chartexample.DataTools.Companion.setData
 import info.appdev.chartexample.custom.MyMarkerView
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
+import androidx.core.net.toUri
 
 /**
  * Example of a heavily customized [LineChart] with limit lines, custom line shapes, etc.
@@ -159,7 +159,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data =
-                    Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/LineChartActivity1.java")
+                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/LineChartActivity1.java".toUri()
                 startActivity(i)
             }
 

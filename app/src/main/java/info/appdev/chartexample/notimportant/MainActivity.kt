@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.utils.Utils
 import info.appdev.chartexample.AnotherBarActivity
 import info.appdev.chartexample.BarChartActivity
-import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
 import info.appdev.chartexample.BarChartActivityMultiDataset
 import info.appdev.chartexample.BarChartActivitySinus
 import info.appdev.chartexample.BarChartPositiveNegative
@@ -30,7 +29,7 @@ import info.appdev.chartexample.InvertedLineChartActivity
 import info.appdev.chartexample.LineChartActivity
 import info.appdev.chartexample.LineChartActivityColored
 import info.appdev.chartexample.LineChartDualAxisActivity
-import info.appdev.chartexample.LineChartTime
+import info.appdev.chartexample.LineChartTimeActivity
 import info.appdev.chartexample.ListViewBarChartActivity
 import info.appdev.chartexample.ListViewMultiChartActivity
 import info.appdev.chartexample.MultiLineChartActivity
@@ -46,12 +45,17 @@ import info.appdev.chartexample.ScrollViewActivity
 import info.appdev.chartexample.SpecificPositionsLineChartActivity
 import info.appdev.chartexample.StackedBarActivity
 import info.appdev.chartexample.StackedBarActivityNegative
+import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
+import androidx.core.net.toUri
 
 class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         setContentView(R.layout.activity_main)
 
         // initialize the utilities
@@ -78,19 +82,24 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         when (item.itemId) {
             R.id.viewGithub -> {
                 i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse("https://github.com/AppDevNext/AndroidChart")
+                i.data = "https://github.com/AppDevNext/AndroidChart".toUri()
                 startActivity(i)
             }
+
             R.id.report -> {
-                i = Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                        "mailto", "philjay.librarysup@gmail.com", null))
-                i.putExtra(Intent.EXTRA_SUBJECT, "MPAndroidChart Issue")
+                i = Intent(
+                    Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", "philjay.librarysup@gmail.com", null
+                    )
+                )
+                i.putExtra(Intent.EXTRA_SUBJECT, "AndroidChart Issue")
                 i.putExtra(Intent.EXTRA_TEXT, "Your error report here...")
                 startActivity(Intent.createChooser(i, "Report Problem"))
             }
+
             R.id.website -> {
                 i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse("http://at.linkedin.com/in/philippjahoda")
+                i.data = "http://at.linkedin.com/in/xxxxx".toUri()
                 startActivity(i)
             }
         }
@@ -126,7 +135,14 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             add(20, ContentItem("Basic", "Rounded pie chart.", PieChartRoundedActivity::class.java))
             add(21, ContentItem("Value Lines", "Stylish lines drawn outward from slices.", PiePolylineChartActivity::class.java))
             add(22, ContentItem("Half Pie", "180° (half) pie chart.", HalfPieChartActivity::class.java))
-            add(23, ContentItem("Specific positions", "This demonstrates how to pass a list of specific positions for lines and labels on x and y axis", SpecificPositionsLineChartActivity::class.java))
+            add(
+                23,
+                ContentItem(
+                    "Specific positions",
+                    "This demonstrates how to pass a list of specific positions for lines and labels on x and y axis",
+                    SpecificPositionsLineChartActivity::class.java
+                )
+            )
 
             add(24, ContentItem("Other Charts"))
             add(25, ContentItem("Combined Chart", "Bar and line chart together.", CombinedChartActivity::class.java))
@@ -144,7 +160,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             add(35, ContentItem("Even More Line Charts"))
             add(36, ContentItem("Dynamic", "Build a line chart by adding points and sets.", DynamicalAddingActivity::class.java))
             add(37, ContentItem("Realtime", "Add data points in realtime.", RealtimeLineChartActivity::class.java))
-            add(38, ContentItem("Hourly", "Uses the current time to add a data point for each hour.", LineChartTime::class.java))
+            add(38, ContentItem("Hourly", "Uses the current time to add a data point for each hour.", LineChartTimeActivity::class.java))
             //add(39, new ContentItem("Realm.io Examples", "See more examples that use Realm.io mobile database."));
         }
     }

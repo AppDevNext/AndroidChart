@@ -90,7 +90,7 @@ public class PieChartItem extends ChartItem {
     }
 
     private SpannableString generateCenterText() {
-        SpannableString s = new SpannableString("MPAndroidChart\ncreated by\nPhilipp Jahoda");
+		SpannableString s = new SpannableString("MPAndroidChart\ncreated by\nPhilipp Jahoda");
         s.setSpan(new RelativeSizeSpan(1.6f), 0, 14, 0);
         s.setSpan(new ForegroundColorSpan(ColorTemplate.VORDIPLOM_COLORS[0]), 0, 14, 0);
         s.setSpan(new RelativeSizeSpan(.9f), 14, 25, 0);
