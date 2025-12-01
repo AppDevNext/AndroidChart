@@ -9,8 +9,6 @@ import java.util.List;
 
 /**
  * Baseclass of all DataSets for Bar-, Line-, Scatter- and CandleStickChart.
- *
- * @author Philipp Jahoda
  */
 public abstract class BarLineScatterCandleBubbleDataSet<T extends Entry>
         extends DataSet<T>

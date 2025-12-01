@@ -16,7 +16,7 @@ import info.appdev.chartexample.R
 import info.appdev.chartexample.notimportant.DemoBase
 
 /**
- * Demonstrates how to keep your charts straight forward, simple and beautiful with the MPAndroidChart library.
+ * Demonstrates how to keep your charts straight forward, simple and beautiful with the AndroidChart library.
  */
 class ViewPagerSimpleChartDemo : DemoBase() {
     override fun onCreate(savedInstanceState: Bundle?) {

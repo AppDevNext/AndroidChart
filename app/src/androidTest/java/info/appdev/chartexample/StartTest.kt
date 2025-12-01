@@ -78,7 +78,6 @@ class StartTest {
                         screenshotOfOptionMenu("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}", filteredTitle)
                     }
 
-                    // Espresso.pressBack()
                     //Thread.sleep(100)
                     Espresso.pressBack()
                 } catch (e: Exception) {
