@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.YAxis.AxisDependency
@@ -22,7 +23,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
     private var chart: LineChart? = null
@@ -179,7 +179,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/RealtimeLineChartActivity.java".toUri()
+                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/RealtimeLineChartActivity.kt".toUri()
                 startActivity(i)
             }
 

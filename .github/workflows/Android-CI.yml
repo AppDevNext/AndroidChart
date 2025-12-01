@@ -61,14 +61,14 @@ jobs:
         uses: actions/upload-artifact@v5
         if: ${{ always() }}
         with:
-          name: MPChart-Espresso-report-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
+          name: Chart-Espresso-report-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
           path: app/build/reports/androidTests/connected
           if-no-files-found: error
       - name: Archive screenshots
         if: ${{ always() }}
         uses: actions/upload-artifact@v5
         with:
-          name: MPChart-Screenshots-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
+          name: Chart-Screenshots-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
           path: |
             app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
             app/build/outputs/androidTest-results/connected
@@ -86,7 +86,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v5
         with:
-          name: MPChart-Screenshots-diffs-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
+          name: Chart-Screenshots-diffs-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
           path: |
             screenshotDiffs
       - name: Show git status

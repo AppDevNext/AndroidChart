@@ -11,6 +11,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.data.BarData
@@ -20,7 +21,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
     private var chart: BarChart? = null
@@ -126,8 +126,7 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
         when (item.itemId) {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/AnotherBarActivity.java".toUri()
+                i.data = "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/AnotherBarActivity.kt".toUri()
                 startActivity(i)
             }
 

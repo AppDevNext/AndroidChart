@@ -13,6 +13,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.BubbleChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -27,7 +28,6 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
     private var chart: BubbleChart? = null
@@ -168,8 +168,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         when (item.itemId) {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/BubbleChartActivity.java".toUri()
+                i.data = "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/BubbleChartActivity.kt".toUri()
                 startActivity(i)
             }
 

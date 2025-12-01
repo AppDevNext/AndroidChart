@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -22,7 +23,6 @@ import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.RadarMarkerView
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class RadarChartActivity : DemoBase() {
     private var chart: RadarChart? = null
@@ -158,8 +158,7 @@ class RadarChartActivity : DemoBase() {
         when (item.itemId) {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/RadarChartActivity.java".toUri()
+                i.data = "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/RadarChartActivity.kt".toUri()
                 startActivity(i)
             }
 

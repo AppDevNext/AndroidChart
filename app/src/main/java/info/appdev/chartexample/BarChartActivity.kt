@@ -203,8 +203,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         when (item.itemId) {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/BarChartActivity.java".toUri()
+                i.data = "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/BarChartActivity.kt".toUri()
                 startActivity(i)
             }
 

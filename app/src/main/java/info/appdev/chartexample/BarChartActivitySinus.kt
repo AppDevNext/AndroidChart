@@ -12,6 +12,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.Legend.LegendForm
@@ -20,7 +21,6 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.utils.FileUtils
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
     private var chart: BarChart? = null
@@ -140,8 +140,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         when (item.itemId) {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/BarChartActivitySinus.java".toUri()
+                i.data = "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/BarChartActivitySinus.java".toUri()
                 startActivity(i)
             }
 

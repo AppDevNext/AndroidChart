@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
@@ -20,7 +21,6 @@ import info.appdev.chartexample.notimportant.DemoBase
 import java.text.DecimalFormat
 import kotlin.math.max
 import kotlin.math.min
-import androidx.core.net.toUri
 
 class BarChartPositiveNegative : DemoBase() {
     private var chart: BarChart? = null
@@ -161,7 +161,7 @@ class BarChartPositiveNegative : DemoBase() {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/BarChartPositiveNegative.java".toUri()
+                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/BarChartPositiveNegative.java".toUri()
                 startActivity(i)
             }
         }
