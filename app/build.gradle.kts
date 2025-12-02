@@ -38,7 +38,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles.addAll(listOf(getDefaultProguardFile("proguard-android.txt"), File("proguard-rules.pro")))
+            proguardFiles.addAll(listOf(getDefaultProguardFile("proguard-android-optimize.txt"), File("proguard-rules.pro")))
         }
     }
     // https://stackoverflow.com/a/67635863/1079990
