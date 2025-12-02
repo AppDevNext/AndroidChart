@@ -65,15 +65,15 @@ class ListViewMultiChartActivity : DemoBase() {
     }
 
     /** adapter that supports 3 different item types  */
-    private class ChartDataAdapter(context: Context, objects: MutableList<ChartItem?>) : ArrayAdapter<ChartItem?>(context, 0, objects) {
+    private class ChartDataAdapter(context: Context, objects: MutableList<ChartItem?>) : ArrayAdapter<ChartItem>(context, 0, objects) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            return getItem(position)!!.getView(position, convertView, context)
+            return getItem(position)!!.getView(position, convertView, context)!!
         }
 
         override fun getItemViewType(position: Int): Int {
             // return the views type
             val ci = getItem(position)
-            return if (ci != null) ci.getItemType() else 0
+            return if (ci != null) ci.itemType else 0
         }
 
         override fun getViewTypeCount(): Int {
