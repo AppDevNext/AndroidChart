@@ -27,8 +27,6 @@ import androidx.core.net.toUri
 /**
  * Demonstrates the use of charts inside a ListView. IMPORTANT: provide a
  * specific height attribute for the chart inside your ListView item
- *
- * @author Philipp Jahoda
  */
 class ListViewBarChartActivity : DemoBase() {
     override fun onCreate(savedInstanceState: Bundle?) {

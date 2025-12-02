@@ -1,4 +1,4 @@
-package info.appdev.chartexample.custom
+package info.appdev.chartexample.formatter
 
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider
