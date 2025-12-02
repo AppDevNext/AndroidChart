@@ -64,7 +64,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Entry>>> extends ViewGroup implements ChartInterface {
 
-	public static final String LOG_TAG = "MPAndroidChart";
+	public static final String LOG_TAG = "AndroidChart";
 
 	/**
 	 * flag that indicates if logging is enabled or not
@@ -1443,7 +1443,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 * @return returns true if saving was successful, false if not
 	 */
 	public boolean saveToGallery(String fileName, int quality) {
-		return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.PNG, quality);
+		return saveToGallery(fileName, "", "AndroidChart-Library Save", Bitmap.CompressFormat.PNG, quality);
 	}
 
 	/**
@@ -1454,7 +1454,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 * @return returns true if saving was successful, false if not
 	 */
 	public boolean saveToGallery(String fileName) {
-		return saveToGallery(fileName, "", "MPAndroidChart-Library Save", Bitmap.CompressFormat.PNG, 40);
+		return saveToGallery(fileName, "", "AndroidChart-Library Save", Bitmap.CompressFormat.PNG, 40);
 	}
 
 	/**

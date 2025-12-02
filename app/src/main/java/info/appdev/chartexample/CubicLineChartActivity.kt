@@ -156,7 +156,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         when (item.itemId) {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/CubicLineChartActivity.java"))
+                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/CubicLineChartActivity.kt"))
                 startActivity(i)
             }
 

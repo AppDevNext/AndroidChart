@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class FileUtils {
 
-    private static final String LOG = "MPChart-FileUtils";
+    private static final String LOG = "Chart-FileUtils";
 
     /**
      * Loads a an Array of Entries from a textfile from the sd-card.

@@ -228,7 +228,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/LineChartActivity2.java".toUri()
+                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/LineChartActivity2.java".toUri()
                 startActivity(i)
             }
 

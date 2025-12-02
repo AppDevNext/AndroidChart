@@ -53,7 +53,7 @@ public class PieData extends ChartData<IPieDataSet> {
         List<IPieDataSet> dataSets = super.getDataSets();
 
         if (dataSets.size() < 1) {
-            Log.e("MPAndroidChart",
+            Log.e("AndroidChart",
                     "Found multiple data sets while pie chart only allows one");
         }
 

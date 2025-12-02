@@ -103,7 +103,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/PerformanceLineChart.java".toUri()
+                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/PerformanceLineChart.java".toUri()
                 startActivity(i)
             }
         }

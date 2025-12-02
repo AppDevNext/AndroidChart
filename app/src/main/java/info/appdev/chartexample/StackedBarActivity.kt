@@ -13,6 +13,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
@@ -28,7 +29,6 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.MyAxisValueFormatter
 import info.appdev.chartexample.custom.MyValueFormatter
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
     private var chart: BarChart? = null
@@ -158,8 +158,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         when (item.itemId) {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/StackedBarActivity.java".toUri()
+                i.data = "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/StackedBarActivity.kt".toUri()
                 startActivity(i)
             }
 

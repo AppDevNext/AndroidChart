@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
@@ -27,7 +28,6 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 import info.appdev.chartexample.notimportant.DemoBase
 import java.text.DecimalFormat
 import kotlin.math.abs
-import androidx.core.net.toUri
 
 class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
     private var chart: HorizontalBarChart? = null
@@ -131,7 +131,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/StackedBarActivityNegative.java".toUri()
+                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/StackedBarActivityNegative.java".toUri()
                 startActivity(i)
             }
 

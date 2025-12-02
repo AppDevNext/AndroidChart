@@ -18,6 +18,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -31,7 +32,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
     private var chart: PieChart? = null
@@ -173,8 +173,7 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
         when (item.itemId) {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/com/xxmassdeveloper/mpchartexample/PiePolylineChartActivity.java".toUri()
+                i.data = "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/PiePolylineChartActivity.kt".toUri()
                 startActivity(i)
             }
 
@@ -263,12 +262,12 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
 
     private fun generateCenterSpannableText(): SpannableString {
         val s = SpannableString("AndroidChart\ndeveloped by AppDevNext")
-        s.setSpan(RelativeSizeSpan(1.5f), 0, 14, 0)
-        s.setSpan(StyleSpan(Typeface.NORMAL), 14, s.length - 15, 0)
-        s.setSpan(ForegroundColorSpan(Color.GRAY), 14, s.length - 15, 0)
-        s.setSpan(RelativeSizeSpan(.65f), 14, s.length - 15, 0)
-        s.setSpan(StyleSpan(Typeface.ITALIC), s.length - 14, s.length, 0)
-        s.setSpan(ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length - 14, s.length, 0)
+        s.setSpan(RelativeSizeSpan(1.5f), 0, 12, 0)
+        s.setSpan(StyleSpan(Typeface.NORMAL), 12, s.length - 10, 0)
+        s.setSpan(ForegroundColorSpan(Color.GRAY), 12, s.length - 10, 0)
+        s.setSpan(RelativeSizeSpan(.65f), 12, s.length - 10, 0)
+        s.setSpan(StyleSpan(Typeface.ITALIC), s.length - 10, s.length, 0)
+        s.setSpan(ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length - 10, s.length, 0)
         return s
     }
 
