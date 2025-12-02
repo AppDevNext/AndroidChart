@@ -26,8 +26,8 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.custom.MyAxisValueFormatter
-import info.appdev.chartexample.custom.MyValueFormatter
+import info.appdev.chartexample.formatter.MyAxisValueFormatter
+import info.appdev.chartexample.formatter.MyValueFormatter
 import info.appdev.chartexample.notimportant.DemoBase
 
 class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {

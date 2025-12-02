@@ -43,7 +43,7 @@ internal class MenuAdapter(context: Context, objects: List<ContentItem<*>?>?) : 
         return inflatedView
     }
 
-    private inner class ViewHolder {
+    private class ViewHolder {
         var tvName: TextView? = null
         var tvDesc: TextView? = null
     }

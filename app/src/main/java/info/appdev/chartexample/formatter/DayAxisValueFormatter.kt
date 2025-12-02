@@ -1,4 +1,4 @@
-package info.appdev.chartexample.custom
+package info.appdev.chartexample.formatter
 
 import com.github.mikephil.charting.charts.BarLineChartBase
 import com.github.mikephil.charting.components.AxisBase

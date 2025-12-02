@@ -31,8 +31,8 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.Fill
 import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.custom.DayAxisValueFormatter
-import info.appdev.chartexample.custom.MyAxisValueFormatter
+import info.appdev.chartexample.formatter.DayAxisValueFormatter
+import info.appdev.chartexample.formatter.MyAxisValueFormatter
 import info.appdev.chartexample.custom.XYMarkerView
 import info.appdev.chartexample.notimportant.DemoBase
 
