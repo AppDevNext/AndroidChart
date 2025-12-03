@@ -31,11 +31,11 @@ fun Float.formatNumber(digitCount: Int, separateThousands: Boolean, separateChar
         number = -number
     }
 
-    if (digitCount > Utils.POW_10.size) {
-        digitCount = Utils.POW_10.size - 1
+    if (digitCount > POW_10.size) {
+        digitCount = POW_10.size - 1
     }
 
-    number *= Utils.POW_10[digitCount].toFloat()
+    number *= POW_10[digitCount].toFloat()
     var lval = Math.round(number).toLong()
     var ind = out.size - 1
     var charCount = 0

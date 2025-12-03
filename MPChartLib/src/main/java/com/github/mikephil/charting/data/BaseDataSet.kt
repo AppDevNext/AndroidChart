@@ -249,7 +249,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     }
 
     override fun getValueFormatter(): IValueFormatter {
-        if (needsFormatter()) return Utils.getDefaultValueFormatter()
+        if (needsFormatter()) return Utils.defaultValueFormatter
         return mValueFormatter!!
     }
 
