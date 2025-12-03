@@ -63,7 +63,7 @@ open class YAxisRendererHorizontalBarChart(
     /**
      * draws the y-axis labels to the screen
      */
-    override fun renderAxisLabels(c: Canvas) {
+    override fun renderAxisLabels(canvas: Canvas) {
         if (!yAxis.isEnabled || !yAxis.isDrawLabelsEnabled) return
 
         val positions = transformedPositions
@@ -93,23 +93,23 @@ open class YAxisRendererHorizontalBarChart(
             }
         }
 
-        drawYLabels(c, yPos, positions, yAxis.yOffset)
+        drawYLabels(canvas, yPos, positions, yAxis.yOffset)
     }
 
-    override fun renderAxisLine(c: Canvas) {
+    override fun renderAxisLine(canvas: Canvas) {
         if (!yAxis.isEnabled || !yAxis.isDrawAxisLineEnabled) return
 
         paintAxisLine.color = yAxis.axisLineColor
         paintAxisLine.strokeWidth = yAxis.axisLineWidth
 
         if (yAxis.axisDependency == AxisDependency.LEFT) {
-            c.drawLine(
+            canvas.drawLine(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentTop(), viewPortHandler.contentRight(),
                 viewPortHandler.contentTop(), paintAxisLine
             )
         } else {
-            c.drawLine(
+            canvas.drawLine(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentBottom(), viewPortHandler.contentRight(),
                 viewPortHandler.contentBottom(), paintAxisLine
@@ -123,7 +123,7 @@ open class YAxisRendererHorizontalBarChart(
      * @param fixedPosition
      * @param positions
      */
-    override fun drawYLabels(c: Canvas, fixedPosition: Float, positions: FloatArray, offset: Float) {
+    override fun drawYLabels(canvas: Canvas, fixedPosition: Float, positions: FloatArray, offset: Float) {
         paintAxisLabels.setTypeface(yAxis.typeface)
         paintAxisLabels.textSize = yAxis.textSize
         paintAxisLabels.color = yAxis.textColor
@@ -139,7 +139,7 @@ open class YAxisRendererHorizontalBarChart(
         for (i in from..<to) {
             val text = yAxis.getFormattedLabel(i)
 
-            c.drawText(
+            canvas.drawText(
                 text,
                 positions[i * 2],
                 fixedPosition - offset + xOffset,
@@ -180,11 +180,11 @@ open class YAxisRendererHorizontalBarChart(
         return p
     }
 
-    override fun drawZeroLine(c: Canvas) {
-        c.withSave {
+    override fun drawZeroLine(canvas: Canvas) {
+        canvas.withSave {
             zeroLineClippingRect.set(viewPortHandler.contentRect)
             zeroLineClippingRect.inset(-yAxis.zeroLineWidth, 0f)
-            c.clipRect(limitLineClippingRect)
+            canvas.clipRect(limitLineClippingRect)
 
             // draw zero line
             val pos = transformer!!.getPixelForValues(0f, 0f)
@@ -199,7 +199,7 @@ open class YAxisRendererHorizontalBarChart(
             zeroLinePath.lineTo(pos.x.toFloat() - 1, viewPortHandler.contentBottom())
 
             // draw a path because lines don't support dashing on lower android versions
-            c.drawPath(zeroLinePath, zeroLinePaint)
+            canvas.drawPath(zeroLinePath, zeroLinePaint)
 
         }
     }
@@ -215,9 +215,9 @@ open class YAxisRendererHorizontalBarChart(
      * Draws the LimitLines associated with this axis to the screen.
      * This is the standard XAxis renderer using the YAxis limit lines.
      *
-     * @param c
+     * @param canvas
      */
-    override fun renderLimitLines(c: Canvas) {
+    override fun renderLimitLines(canvas: Canvas) {
         val limitLines = yAxis.limitLines
 
         if (limitLines == null || limitLines.size <= 0) return
@@ -235,10 +235,10 @@ open class YAxisRendererHorizontalBarChart(
 
             if (!l.isEnabled) continue
 
-            c.withSave {
+            canvas.withSave {
                 limitLineClippingRect.set(viewPortHandler.contentRect)
                 limitLineClippingRect.inset(-l.lineWidth, 0f)
-                c.clipRect(limitLineClippingRect)
+                canvas.clipRect(limitLineClippingRect)
 
                 pts[0] = l.limit
                 pts[2] = l.limit
@@ -256,7 +256,7 @@ open class YAxisRendererHorizontalBarChart(
                 limitLinePaint.setPathEffect(l.dashPathEffect)
                 limitLinePaint.strokeWidth = l.lineWidth
 
-                c.drawPath(limitLinePath, limitLinePaint)
+                canvas.drawPath(limitLinePath, limitLinePaint)
                 limitLinePath.reset()
 
                 val label = l.label
@@ -279,20 +279,20 @@ open class YAxisRendererHorizontalBarChart(
                         LimitLabelPosition.RIGHT_TOP -> {
                             val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
                             limitLinePaint.textAlign = Align.LEFT
-                            c.drawText(label, pts[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint)
+                            canvas.drawText(label, pts[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint)
                         }
                         LimitLabelPosition.RIGHT_BOTTOM -> {
                             limitLinePaint.textAlign = Align.LEFT
-                            c.drawText(label, pts[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+                            canvas.drawText(label, pts[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
                         }
                         LimitLabelPosition.LEFT_TOP -> {
                             limitLinePaint.textAlign = Align.RIGHT
                             val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                            c.drawText(label, pts[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint)
+                            canvas.drawText(label, pts[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint)
                         }
                         else -> {
                             limitLinePaint.textAlign = Align.RIGHT
-                            c.drawText(label, pts[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+                            canvas.drawText(label, pts[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
                         }
                     }
                 }

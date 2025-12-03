@@ -67,7 +67,7 @@ abstract class DataRenderer(
      * object.
      */
     protected fun applyValueTextStyle(set: IDataSet<*>) {
-        paintValues.setTypeface(set.valueTypeface)
+        paintValues.typeface = set.valueTypeface
         paintValues.textSize = set.valueTextSize
     }
 
@@ -81,17 +81,17 @@ abstract class DataRenderer(
     /**
      * Draws the actual data in form of lines, bars, ... depending on Renderer subclass.
      */
-    abstract fun drawData(c: Canvas)
+    abstract fun drawData(canvas: Canvas)
 
     /**
      * Loops over all Entries and draws their values.
      */
-    abstract fun drawValues(c: Canvas)
+    abstract fun drawValues(canvas: Canvas)
 
     /**
      * Draws the value of the given entry by using the provided IValueFormatter.
      *
-     * @param c            canvas
+     * @param canvas            canvas
      * @param formatter    formatter for custom value-formatting
      * @param value        the value to be drawn
      * @param entry        the entry the value belongs to
@@ -99,19 +99,19 @@ abstract class DataRenderer(
      * @param x            position
      * @param y            position
      */
-    fun drawValue(c: Canvas, formatter: IValueFormatter, value: Float, entry: Entry?, dataSetIndex: Int, x: Float, y: Float, color: Int) {
+    fun drawValue(canvas: Canvas, formatter: IValueFormatter, value: Float, entry: Entry?, dataSetIndex: Int, x: Float, y: Float, color: Int) {
         paintValues.color = color
-        c.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, viewPortHandler)!!, x, y, paintValues)
+        canvas.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, viewPortHandler)!!, x, y, paintValues)
     }
 
     /**
      * Draws any kind of additional information (e.g. line-circles).
      */
-    abstract fun drawExtras(c: Canvas)
+    abstract fun drawExtras(canvas: Canvas)
 
     /**
      * Draws all highlight indicators for the values that are currently highlighted.
      * @param indices the highlighted values
      */
-    abstract fun drawHighlighted(c: Canvas, indices: Array<Highlight>)
+    abstract fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>)
 }

@@ -134,7 +134,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         axis.mAxisRange = abs((axis.mAxisMaximum - axis.mAxisMinimum).toDouble()).toFloat()
     }
 
-    override fun renderAxisLabels(c: Canvas) {
+    override fun renderAxisLabels(canvas: Canvas) {
         if (!yAxis.isEnabled || !yAxis.isDrawLabelsEnabled) return
 
         paintAxisLabels!!.setTypeface(yAxis.typeface)
@@ -160,13 +160,13 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
             val label = yAxis.getFormattedLabel(j)
 
-            c.drawText(label, pOut.x + xOffset, pOut.y, paintAxisLabels!!)
+            canvas.drawText(label, pOut.x + xOffset, pOut.y, paintAxisLabels!!)
         }
         MPPointF.recycleInstance(center)
         MPPointF.recycleInstance(pOut)
     }
 
-    override fun renderLimitLines(c: Canvas) {
+    override fun renderLimitLines(canvas: Canvas) {
         val limitLines = yAxis.limitLines ?: return
 
         val sliceAngle = chart.sliceAngle
@@ -200,7 +200,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
             }
             limitPath.close()
 
-            c.drawPath(limitPath, limitLinePaint!!)
+            canvas.drawPath(limitPath, limitLinePaint!!)
         }
         MPPointF.recycleInstance(center)
         MPPointF.recycleInstance(pOut)

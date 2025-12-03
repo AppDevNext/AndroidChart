@@ -69,7 +69,7 @@ open class BarChartRenderer(
         }
     }
 
-    override fun drawData(c: Canvas) {
+    override fun drawData(canvas: Canvas) {
         if (barBuffers.isEmpty()) {
             initBuffers()
         }
@@ -80,7 +80,7 @@ open class BarChartRenderer(
             val set = barData.getDataSetByIndex(i)
 
             if (set.isVisible) {
-                drawDataSet(c, set, i)
+                drawDataSet(canvas, set, i)
             }
         }
     }
@@ -101,7 +101,7 @@ open class BarChartRenderer(
         barBorderPaint.style = Paint.Style.STROKE
     }
 
-    protected open fun drawDataSet(c: Canvas, dataSet: IBarDataSet, index: Int) {
+    protected open fun drawDataSet(canvas: Canvas, dataSet: IBarDataSet, index: Int) {
         val trans = chart.getTransformer(dataSet.axisDependency)
 
         barBorderPaint.color = dataSet.barBorderColor
@@ -147,9 +147,9 @@ open class BarChartRenderer(
                 barShadowRectBuffer.bottom = viewPortHandler.contentBottom()
 
                 if (drawRoundedBars) {
-                    c.drawRoundRect(barShadowRectBuffer, roundedBarRadius, roundedBarRadius, shadowPaint)
+                    canvas.drawRoundRect(barShadowRectBuffer, roundedBarRadius, roundedBarRadius, shadowPaint)
                 } else {
-                    c.drawRect(barShadowRectBuffer, shadowPaint)
+                    canvas.drawRect(barShadowRectBuffer, shadowPaint)
                 }
                 i++
             }
@@ -195,7 +195,7 @@ open class BarChartRenderer(
             if (isCustomFill) {
                 dataSet.getFill(pos)
                     .fillRect(
-                        c, paintRender,
+                        canvas, paintRender,
                         buffer.buffer[j],
                         buffer.buffer[j + 1],
                         buffer.buffer[j + 2],
@@ -205,14 +205,14 @@ open class BarChartRenderer(
                     )
             } else {
                 if (drawRoundedBars) {
-                    c.drawRoundRect(
+                    canvas.drawRoundRect(
                         RectF(
                             buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                             buffer.buffer[j + 3]
                         ), roundedBarRadius, roundedBarRadius, paintRender
                     )
                 } else {
-                    c.drawRect(
+                    canvas.drawRect(
                         buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                         buffer.buffer[j + 3], paintRender
                     )
@@ -221,14 +221,14 @@ open class BarChartRenderer(
 
             if (drawBorder) {
                 if (drawRoundedBars) {
-                    c.drawRoundRect(
+                    canvas.drawRoundRect(
                         RectF(
                             buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                             buffer.buffer[j + 3]
                         ), roundedBarRadius, roundedBarRadius, barBorderPaint
                     )
                 } else {
-                    c.drawRect(
+                    canvas.drawRect(
                         buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                         buffer.buffer[j + 3], barBorderPaint
                     )
@@ -242,15 +242,13 @@ open class BarChartRenderer(
     protected open fun prepareBarHighlight(x: Float, y1: Float, y2: Float, barWidthHalf: Float, trans: Transformer) {
         val left = x - barWidthHalf
         val right = x + barWidthHalf
-        val top = y1
-        val bottom = y2
 
-        barRect[left, top, right] = bottom
+        barRect[left, y1, right] = y2
 
         trans.rectToPixelPhase(barRect, animator.phaseY)
     }
 
-    override fun drawValues(c: Canvas) {
+    override fun drawValues(canvas: Canvas) {
         // if values are drawn
 
         if (isDrawingValuesAllowed(chart)) {
@@ -317,7 +315,7 @@ open class BarChartRenderer(
 
                         if (dataSet.isDrawValuesEnabled) {
                             drawValue(
-                                c, dataSet.valueFormatter, `val`, entry, i, x,
+                                canvas, dataSet.valueFormatter, `val`, entry, i, x,
                                 if (`val` >= 0) (buffer.buffer[j + 1] + posOffset) else (buffer.buffer[j + 3] + negOffset),
                                 dataSet.getValueTextColor(j / 4)
                             )
@@ -333,7 +331,7 @@ open class BarChartRenderer(
                             py += iconsOffset.y
 
                             Utils.drawImage(
-                                c,
+                                canvas,
                                 icon,
                                 px.toInt(),
                                 py.toInt(),
@@ -375,7 +373,7 @@ open class BarChartRenderer(
 
                             if (dataSet.isDrawValuesEnabled) {
                                 drawValue(
-                                    c, dataSet.valueFormatter, entry.y, entry, i, x,
+                                    canvas, dataSet.valueFormatter, entry.y, entry, i, x,
                                     buffer.buffer[bufferIndex + 1] +
                                             (if (entry.y >= 0) posOffset else negOffset),
                                     color
@@ -393,7 +391,7 @@ open class BarChartRenderer(
                                 py += iconsOffset.y
 
                                 Utils.drawImage(
-                                    c,
+                                    canvas,
                                     icon,
                                     px.toInt(),
                                     py.toInt(),
@@ -457,7 +455,7 @@ open class BarChartRenderer(
 
                                 if (dataSet.isDrawValuesEnabled) {
                                     drawValue(
-                                        c,
+                                        canvas,
                                         dataSet.valueFormatter,
                                         vals[k / 2],
                                         entry,
@@ -472,7 +470,7 @@ open class BarChartRenderer(
                                     val icon = entry.icon
 
                                     Utils.drawImage(
-                                        c,
+                                        canvas,
                                         icon,
                                         (x + iconsOffset.x).toInt(),
                                         (y + iconsOffset.y).toInt(),
@@ -494,7 +492,7 @@ open class BarChartRenderer(
         }
     }
 
-    override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
+    override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
         val barData = chart.barData
 
         for (high in indices) {
@@ -540,9 +538,9 @@ open class BarChartRenderer(
             setHighlightDrawPos(high, barRect)
 
             if (drawRoundedBars) {
-                c.drawRoundRect(RectF(barRect), roundedBarRadius, roundedBarRadius, paintHighlight)
+                canvas.drawRoundRect(RectF(barRect), roundedBarRadius, roundedBarRadius, paintHighlight)
             } else {
-                c.drawRect(barRect, paintHighlight)
+                canvas.drawRect(barRect, paintHighlight)
             }
         }
     }
@@ -556,6 +554,6 @@ open class BarChartRenderer(
         high.setDraw(bar.centerX(), bar.top)
     }
 
-    override fun drawExtras(c: Canvas) {
+    override fun drawExtras(canvas: Canvas) {
     }
 }

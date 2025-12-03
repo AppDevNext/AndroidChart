@@ -16,19 +16,19 @@ abstract class LineScatterCandleRadarRenderer(animator: ChartAnimator?, viewPort
     /**
      * Draws vertical & horizontal highlight-lines if enabled.
      *
-     * @param c
+     * @param canvas
      * @param x x-position of the highlight line intersection
      * @param y y-position of the highlight line intersection
      * @param set the currently drawn dataset
      */
-    protected fun drawHighlightLines(c: Canvas, x: Float, y: Float, set: ILineScatterCandleRadarDataSet<*>) {
+    protected fun drawHighlightLines(canvas: Canvas, x: Float, y: Float, set: ILineScatterCandleRadarDataSet<*>) {
         // set color and stroke-width
 
         paintHighlight.color = set.highLightColor
         paintHighlight.strokeWidth = set.highlightLineWidth
 
         // draw highlighted lines (if enabled)
-        paintHighlight.setPathEffect(set.dashPathEffectHighlight)
+        paintHighlight.pathEffect = set.dashPathEffectHighlight
 
         // draw vertical highlight lines
         if (set.isVerticalHighlightIndicatorEnabled) {
@@ -38,7 +38,7 @@ abstract class LineScatterCandleRadarRenderer(animator: ChartAnimator?, viewPort
             highlightLinePath.moveTo(x, viewPortHandler.contentTop())
             highlightLinePath.lineTo(x, viewPortHandler.contentBottom())
 
-            c.drawPath(highlightLinePath, paintHighlight)
+            canvas.drawPath(highlightLinePath, paintHighlight)
         }
 
         // draw horizontal highlight lines
@@ -49,7 +49,7 @@ abstract class LineScatterCandleRadarRenderer(animator: ChartAnimator?, viewPort
             highlightLinePath.moveTo(viewPortHandler.contentLeft(), y)
             highlightLinePath.lineTo(viewPortHandler.contentRight(), y)
 
-            c.drawPath(highlightLinePath, paintHighlight)
+            canvas.drawPath(highlightLinePath, paintHighlight)
         }
     }
 }

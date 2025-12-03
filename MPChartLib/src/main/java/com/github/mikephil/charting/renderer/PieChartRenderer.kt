@@ -82,7 +82,7 @@ open class PieChartRenderer(
 
     override fun initBuffers() = Unit
 
-    override fun drawData(c: Canvas) {
+    override fun drawData(canvas: Canvas) {
         val width = viewPortHandler.chartWidth.toInt()
         val height = viewPortHandler.chartHeight.toInt()
 
@@ -106,7 +106,7 @@ open class PieChartRenderer(
         val pieData = chart.data
 
         for (set in pieData!!.dataSets) {
-            if (set.isVisible && set.entryCount > 0) drawDataSet(c, set)
+            if (set.isVisible && set.entryCount > 0) drawDataSet(canvas, set)
         }
     }
 
@@ -171,7 +171,7 @@ open class PieChartRenderer(
         return sliceSpace
     }
 
-    protected fun drawDataSet(c: Canvas?, dataSet: IPieDataSet) {
+    protected fun drawDataSet(canvas: Canvas?, dataSet: IPieDataSet) {
         var angle = 0f
         val rotationAngle = chart.rotationAngle
 
@@ -362,7 +362,7 @@ open class PieChartRenderer(
         MPPointF.recycleInstance(center)
     }
 
-    override fun drawValues(c: Canvas) {
+    override fun drawValues(canvas: Canvas) {
         val center = chart.centerCircleBox
 
         // get whole the radius
@@ -399,7 +399,7 @@ open class PieChartRenderer(
         var angle: Float
         var xIndex = 0
 
-        c.withSave {
+        canvas.withSave {
             val offset = Utils.convertDpToPixel(5f)
 
             for (i in dataSets.indices) {
@@ -610,19 +610,19 @@ open class PieChartRenderer(
     /**
      * Draws an entry label at the specified position.
      *
-     * @param c
+     * @param canvas
      * @param label
      * @param x
      * @param y
      */
-    protected fun drawEntryLabel(c: Canvas, label: String, x: Float, y: Float) {
-        c.drawText(label, x, y, paintEntryLabels)
+    protected fun drawEntryLabel(canvas: Canvas, label: String, x: Float, y: Float) {
+        canvas.drawText(label, x, y, paintEntryLabels)
     }
 
-    override fun drawExtras(c: Canvas) {
-        drawHole(c)
-        c.drawBitmap(mDrawBitmap!!.get()!!, 0f, 0f, null)
-        drawCenterText(c)
+    override fun drawExtras(canvas: Canvas) {
+        drawHole(canvas)
+        canvas.drawBitmap(mDrawBitmap!!.get()!!, 0f, 0f, null)
+        drawCenterText(canvas)
     }
 
     private val mHoleCirclePath = Path()
@@ -631,7 +631,7 @@ open class PieChartRenderer(
      * draws the hole in the center of the chart and the transparent circle /
      * hole
      */
-    protected fun drawHole(c: Canvas?) {
+    protected fun drawHole(canvas: Canvas?) {
         if (chart.isDrawHoleEnabled && bitmapCanvas != null) {
             val radius = chart.radius
             val holeRadius = radius * (chart.holeRadius / 100)
@@ -673,7 +673,7 @@ open class PieChartRenderer(
      * draws the description text in the center of the pie chart makes most
      * sense when center-hole is enabled
      */
-    protected fun drawCenterText(c: Canvas) {
+    protected fun drawCenterText(canvas: Canvas) {
         val centerText = chart.centerText
 
         if (chart.isDrawCenterTextEnabled && centerText != null) {
@@ -724,18 +724,18 @@ open class PieChartRenderer(
             //float layoutWidth = Utils.getStaticLayoutMaxWidth(mCenterTextLayout);
             val layoutHeight = centerTextLayout!!.height.toFloat()
 
-            c.save()
+            canvas.save()
             if (Build.VERSION.SDK_INT >= 18) {
                 val path = mDrawCenterTextPathBuffer
                 path.reset()
                 path.addOval(holeRect, Path.Direction.CW)
-                c.clipPath(path)
+                canvas.clipPath(path)
             }
 
-            c.translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2f)
-            centerTextLayout!!.draw(c)
+            canvas.translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2f)
+            centerTextLayout!!.draw(canvas)
 
-            c.restore()
+            canvas.restore()
 
             MPPointF.recycleInstance(center)
             MPPointF.recycleInstance(offset)
@@ -775,7 +775,7 @@ open class PieChartRenderer(
         roundedCornerPaint.isAntiAlias = true
     }
 
-    override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
+    override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
         /* Skip entirely if using rounded circle slices, because it doesn't make sense to highlight
                 * in this way.
                 * TODO: add support for changing slice color with highlighting rather than only shifting the slice
@@ -959,9 +959,9 @@ open class PieChartRenderer(
     /**
      * This gives all pie-slices a rounded edge.
      *
-     * @param c
+     * @param canvas
      */
-    protected fun drawRoundedSlices(c: Canvas?) {
+    protected fun drawRoundedSlices(canvas: Canvas?) {
         if (!chart.isDrawRoundedSlicesEnabled) return
 
         val dataSet = chart.data!!.dataSet

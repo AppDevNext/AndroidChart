@@ -55,7 +55,7 @@ class LineChartRenderer(
     override fun initBuffers() {
     }
 
-    override fun drawData(c: Canvas) {
+    override fun drawData(canvas: Canvas) {
         val width = viewPortHandler.chartWidth.toInt()
         val height = viewPortHandler.chartHeight.toInt()
 
@@ -77,12 +77,12 @@ class LineChartRenderer(
         val lineData = chart.lineData
 
         for (set in lineData.dataSets) {
-            if (set.isVisible) drawDataSet(c, set)
+            if (set.isVisible) drawDataSet(canvas, set)
         }
-        c.drawBitmap(drawBitmapLocal, 0f, 0f, null)
+        canvas.drawBitmap(drawBitmapLocal, 0f, 0f, null)
     }
 
-    protected fun drawDataSet(c: Canvas, dataSet: ILineDataSet) {
+    protected fun drawDataSet(canvas: Canvas, dataSet: ILineDataSet) {
         if (dataSet.entryCount < 1)
             return
 
@@ -90,10 +90,10 @@ class LineChartRenderer(
         paintRender.setPathEffect(dataSet.dashPathEffect)
 
         when (dataSet.mode) {
-            LineDataSet.Mode.LINEAR, LineDataSet.Mode.STEPPED -> drawLinear(c, dataSet)
+            LineDataSet.Mode.LINEAR, LineDataSet.Mode.STEPPED -> drawLinear(canvas, dataSet)
             LineDataSet.Mode.CUBIC_BEZIER -> drawCubicBezier(dataSet)
             LineDataSet.Mode.HORIZONTAL_BEZIER -> drawHorizontalBezier(dataSet)
-            else -> drawLinear(c, dataSet)
+            else -> drawLinear(canvas, dataSet)
         }
 
         paintRender.setPathEffect(null)
@@ -224,7 +224,7 @@ class LineChartRenderer(
         paintRender.setPathEffect(null)
     }
 
-    protected fun drawCubicFill(c: Canvas, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
+    protected fun drawCubicFill(canvas: Canvas, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
         val fillMin = dataSet.fillFormatter.getFillLinePosition(dataSet, chart)
 
         spline.lineTo(dataSet.getEntryForIndex(bounds.min + bounds.range).x, fillMin)
@@ -235,9 +235,9 @@ class LineChartRenderer(
 
         val drawable = dataSet.fillDrawable
         if (drawable != null) {
-            drawFilledPath(c, spline, drawable)
+            drawFilledPath(canvas, spline, drawable)
         } else {
-            drawFilledPath(c, spline, dataSet.fillColor, dataSet.fillAlpha)
+            drawFilledPath(canvas, spline, dataSet.fillColor, dataSet.fillAlpha)
         }
     }
 
@@ -287,8 +287,6 @@ class LineChartRenderer(
 
                 if (j < xBounds.max) {
                     entry = dataSet.getEntryForIndex(j + 1)
-
-                    if (entry == null) break
 
                     if (isDrawSteppedEnabled) {
                         lineBuffer[2] = entry.x
@@ -390,12 +388,12 @@ class LineChartRenderer(
     /**
      * Draws a filled linear path on the canvas.
      *
-     * @param c
+     * @param canvas
      * @param dataSet
      * @param trans
      * @param bounds
      */
-    protected fun drawLinearFill(c: Canvas, dataSet: ILineDataSet, trans: Transformer, bounds: XBounds) {
+    protected fun drawLinearFill(canvas: Canvas, dataSet: ILineDataSet, trans: Transformer, bounds: XBounds) {
         val filled = mGenerateFilledPathBuffer
 
         val startingIndex = bounds.min
@@ -429,9 +427,9 @@ class LineChartRenderer(
                 trans.pathValueToPixel(filled)
 
                 if (drawable != null) {
-                    drawFilledPath(c, filled, drawable)
+                    drawFilledPath(canvas, filled, drawable)
                 } else {
-                    drawFilledPath(c, filled, dataSet.fillColor, dataSet.fillAlpha)
+                    drawFilledPath(canvas, filled, dataSet.fillColor, dataSet.fillAlpha)
                 }
             }
 
@@ -486,7 +484,7 @@ class LineChartRenderer(
         filled.close()
     }
 
-    override fun drawValues(c: Canvas) {
+    override fun drawValues(canvas: Canvas) {
         if (isDrawingValuesAllowed(chart)) {
             val dataSets = chart.lineData.dataSets
 
@@ -537,7 +535,7 @@ class LineChartRenderer(
                     if (entry != null) {
                         if (dataSet.isDrawValuesEnabled) {
                             drawValue(
-                                c, dataSet.valueFormatter, entry.y, entry, i, x,
+                                canvas, dataSet.valueFormatter, entry.y, entry, i, x,
                                 y - valOffset, dataSet.getValueTextColor(j / 2)
                             )
                         }
@@ -546,7 +544,7 @@ class LineChartRenderer(
                             val icon = entry.icon
 
                             Utils.drawImage(
-                                c,
+                                canvas,
                                 icon,
                                 (x + iconsOffset.x).toInt(),
                                 (y + iconsOffset.y).toInt(),
@@ -563,8 +561,8 @@ class LineChartRenderer(
         }
     }
 
-    override fun drawExtras(c: Canvas) {
-        drawCircles(c)
+    override fun drawExtras(canvas: Canvas) {
+        drawCircles(canvas)
     }
 
     /**
@@ -582,7 +580,7 @@ class LineChartRenderer(
         circlePaintInner.color = Color.WHITE
     }
 
-    protected fun drawCircles(c: Canvas) {
+    protected fun drawCircles(canvas: Canvas) {
         paintRender.style = Paint.Style.FILL
 
         val phaseY = animator.phaseY
@@ -644,13 +642,13 @@ class LineChartRenderer(
                 val circleBitmap = imageCache.getBitmap(j)
 
                 if (circleBitmap != null) {
-                    c.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, null)
+                    canvas.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, null)
                 }
             }
         }
     }
 
-    override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
+    override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
         val lineData = chart.lineData
 
         for (high in indices) {
@@ -670,28 +668,9 @@ class LineChartRenderer(
             high.setDraw(pix.x.toFloat(), pix.y.toFloat())
 
             // draw the lines
-            drawHighlightLines(c, pix.x.toFloat(), pix.y.toFloat(), set)
+            drawHighlightLines(canvas, pix.x.toFloat(), pix.y.toFloat(), set)
         }
     }
-
-    var bitmapConfig: Bitmap.Config
-        /**
-         * Returns the Bitmap.Config that is used by this renderer.
-         *
-         * @return
-         */
-        get() = mBitmapConfig
-        /**
-         * Sets the Bitmap.Config to be used by this renderer.
-         * Default: Bitmap.Config.ARGB_8888
-         * Use Bitmap.Config.ARGB_4444 to consume less memory.
-         *
-         * @param config
-         */
-        set(config) {
-            mBitmapConfig = config
-            releaseBitmap()
-        }
 
     /**
      * Releases the drawing bitmap. This should be called when [LineChart.onDetachedFromWindow].
