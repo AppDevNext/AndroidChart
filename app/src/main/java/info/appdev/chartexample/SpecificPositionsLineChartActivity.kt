@@ -273,7 +273,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         set11.formLineWidth = 1f
         set11.setFormLineDashEffect(DashPathEffect(floatArrayOf(10f, 5f), 0f))
         set11.formSize = 15f
-        if (Utils.getSDKInt() >= 18) {
+        if (Utils.buildSDK >= 18) {
             // fill drawable only supported on api level 18 and above
             val drawable = ContextCompat.getDrawable(this, R.drawable.fade_blue)
             set11.fillDrawable = drawable

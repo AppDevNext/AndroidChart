@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.graphics.Paint.Align
 import android.graphics.Path
 import android.graphics.RectF
+import androidx.core.graphics.withSave
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
@@ -14,7 +15,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
-import androidx.core.graphics.withSave
+import kotlin.math.roundToInt
 
 @Suppress("MemberVisibilityCanBePrivate")
 open class XAxisRendererHorizontalBarChart(
@@ -50,7 +51,7 @@ open class XAxisRendererHorizontalBarChart(
     }
 
     override fun computeSize() {
-        paintAxisLabels.setTypeface(xAxis.typeface)
+        paintAxisLabels.typeface = xAxis.typeface
         paintAxisLabels.textSize = xAxis.textSize
 
         val longest = xAxis.longestLabel
@@ -66,8 +67,8 @@ open class XAxisRendererHorizontalBarChart(
             xAxis.labelRotationAngle
         )
 
-        xAxis.mLabelWidth = Math.round(labelRotatedSize.width)
-        xAxis.mLabelHeight = Math.round(labelRotatedSize.height)
+        xAxis.mLabelWidth = labelRotatedSize.width.roundToInt()
+        xAxis.mLabelHeight = labelRotatedSize.height.roundToInt()
 
         FSize.recycleInstance(labelRotatedSize)
     }
@@ -77,7 +78,7 @@ open class XAxisRendererHorizontalBarChart(
 
         val xOffset = xAxis.xOffset
 
-        paintAxisLabels.setTypeface(xAxis.typeface)
+        paintAxisLabels.typeface = xAxis.typeface
         paintAxisLabels.textSize = xAxis.textSize
         paintAxisLabels.color = xAxis.textColor
 
@@ -89,21 +90,25 @@ open class XAxisRendererHorizontalBarChart(
                 pointF.y = 0.5f
                 drawLabels(canvas, viewPortHandler.contentRight() + xOffset, pointF)
             }
+
             XAxisPosition.TOP_INSIDE -> {
                 pointF.x = 1.0f
                 pointF.y = 0.5f
                 drawLabels(canvas, viewPortHandler.contentRight() - xOffset, pointF)
             }
+
             XAxisPosition.BOTTOM -> {
                 pointF.x = 1.0f
                 pointF.y = 0.5f
                 drawLabels(canvas, viewPortHandler.contentLeft() - xOffset, pointF)
             }
+
             XAxisPosition.BOTTOM_INSIDE -> {
                 pointF.x = 1.0f
                 pointF.y = 0.5f
                 drawLabels(canvas, viewPortHandler.contentLeft() + xOffset, pointF)
             }
+
             else -> { // BOTH SIDED
                 pointF.x = 0.0f
                 pointF.y = 0.5f
@@ -117,7 +122,7 @@ open class XAxisRendererHorizontalBarChart(
         MPPointF.recycleInstance(pointF)
     }
 
-    override fun drawLabels(canvas: Canvas?, pos: Float, anchor: MPPointF?) {
+    override fun drawLabels(canvas: Canvas, pos: Float, anchor: MPPointF) {
         val labelRotationAngleDegrees = xAxis.labelRotationAngle
         val centeringEnabled = xAxis.isCenterAxisLabelsEnabled
 
@@ -199,7 +204,7 @@ open class XAxisRendererHorizontalBarChart(
     override fun renderLimitLines(canvas: Canvas) {
         val limitLines = xAxis.limitLines
 
-        if (limitLines == null || limitLines.size <= 0) return
+        if (limitLines == null || limitLines.isEmpty()) return
 
         val pts = mRenderLimitLinesBuffer
         pts[0] = 0f
@@ -221,7 +226,7 @@ open class XAxisRendererHorizontalBarChart(
                 limitLinePaint.style = Paint.Style.STROKE
                 limitLinePaint.color = l.lineColor
                 limitLinePaint.strokeWidth = l.lineWidth
-                limitLinePaint.setPathEffect(l.dashPathEffect)
+                limitLinePaint.pathEffect = l.dashPathEffect
 
                 pts[1] = l.limit
 
@@ -230,7 +235,7 @@ open class XAxisRendererHorizontalBarChart(
                 limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1])
                 limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1])
 
-                canvas.drawPath(limitLinePath, limitLinePaint!!)
+                canvas.drawPath(limitLinePath, limitLinePaint)
                 limitLinePath.reset()
 
                 // c.drawLines(pts, mLimitLinePaint);
@@ -239,7 +244,7 @@ open class XAxisRendererHorizontalBarChart(
                 // if drawing the limit-value label is enabled
                 if (label != null && label != "") {
                     limitLinePaint.style = l.textStyle
-                    limitLinePaint.setPathEffect(null)
+                    limitLinePaint.pathEffect = null
                     limitLinePaint.color = l.textColor
                     limitLinePaint.strokeWidth = 0.5f
                     limitLinePaint.textSize = l.textSize
@@ -259,6 +264,7 @@ open class XAxisRendererHorizontalBarChart(
                                 pts[1] - yOffset + labelLineHeight, limitLinePaint
                             )
                         }
+
                         LimitLabelPosition.RIGHT_BOTTOM -> {
                             limitLinePaint.textAlign = Align.RIGHT
                             canvas.drawText(
@@ -267,6 +273,7 @@ open class XAxisRendererHorizontalBarChart(
                                 pts[1] + yOffset, limitLinePaint
                             )
                         }
+
                         LimitLabelPosition.LEFT_TOP -> {
                             limitLinePaint.textAlign = Align.LEFT
                             canvas.drawText(
@@ -275,6 +282,7 @@ open class XAxisRendererHorizontalBarChart(
                                 pts[1] - yOffset + labelLineHeight, limitLinePaint
                             )
                         }
+
                         else -> {
                             limitLinePaint.textAlign = Align.LEFT
                             canvas.drawText(

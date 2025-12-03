@@ -32,7 +32,7 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
         } else {
             throw RuntimeException(
                 "Fill-drawables not (yet) supported below API level 18, " +
-                        "this code was run on API level " + Utils.getSDKInt() + "."
+                        "this code was run on API level " + Utils.buildSDK + "."
             )
         }
     }
@@ -77,6 +77,6 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
      * @return
      */
     private fun clipPathSupported(): Boolean {
-        return Utils.getSDKInt() >= 18
+        return Utils.buildSDK >= 18
     }
 }
