@@ -13,6 +13,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.BubbleChart
 import com.github.mikephil.charting.components.Legend
@@ -112,7 +113,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
                     i.toFloat(),
                     (sampleValues[i + 1]!! * range).toFloat(),
                     (sampleValues[i]!!.toFloat() * range),
-                    getResources().getDrawable(R.drawable.star)
+                    ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )
             values2.add(
@@ -120,7 +121,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
                     i.toFloat(),
                     (sampleValues[i + 2]!! * range).toFloat(),
                     (sampleValues[i + 1]!!.toFloat() * range),
-                    getResources().getDrawable(R.drawable.star)
+                    ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )
             values3.add(BubbleEntry(i.toFloat(), (sampleValues[i]!! * range).toFloat(), (sampleValues[i + 2]!!.toFloat() * range)))

@@ -13,6 +13,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
@@ -123,7 +124,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
             values.add(
                 BarEntry(
                     i * spaceForBar, `val`,
-                    getResources().getDrawable(R.drawable.star)
+                    ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )
         }

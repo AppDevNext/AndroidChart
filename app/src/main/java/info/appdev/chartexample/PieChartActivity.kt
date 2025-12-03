@@ -13,11 +13,14 @@ import android.text.style.StyleSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -124,7 +127,7 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
                 PieEntry(
                     (sampleValues[i]!!.toFloat() * range) + range / 5,
                     parties[i % parties.size],
-                    getResources().getDrawable(R.drawable.star)
+                    ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )
         }

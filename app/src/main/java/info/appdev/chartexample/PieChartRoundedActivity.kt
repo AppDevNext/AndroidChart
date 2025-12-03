@@ -18,6 +18,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
@@ -126,7 +127,7 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
                 PieEntry(
                     (sampleValues[i]!!.toFloat() * range) + range / 5,
                     parties[i % parties.size],
-                    getResources().getDrawable(R.drawable.star)
+                    ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )
         }
