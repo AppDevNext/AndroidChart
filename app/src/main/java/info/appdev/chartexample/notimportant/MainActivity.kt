@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
@@ -52,10 +54,21 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+
+        // Enable fullscreen mode using modern API
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            window.insetsController?.let {
+                it.hide(WindowInsets.Type.statusBars())
+                it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+
         setContentView(R.layout.activity_main)
 
         // initialize the utilities
@@ -69,7 +82,16 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
     override fun onItemClick(av: AdapterView<*>?, v: View, pos: Int, arg3: Long) {
         val intent = Intent(this, menuItems[pos].clazz)
         startActivity(intent)
-        overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransition(
+                OVERRIDE_TRANSITION_OPEN,
+                R.anim.move_right_in_activity,
+                R.anim.move_left_out_activity
+            )
+        } else {
+            @Suppress("DEPRECATION")
+            overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -8,11 +8,11 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
-import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.Entry
@@ -26,7 +26,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestureListener, OnChartValueSelectedListener {
     private var chart: LineChart? = null
@@ -37,24 +36,20 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_linechart)
 
         title = "MultiLineChartActivity"
 
-        tvX = findViewById<TextView>(R.id.tvXMax)
-        tvY = findViewById<TextView>(R.id.tvYMax)
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekBarX)
+        seekBarX = findViewById(R.id.seekBarX)
         seekBarX!!.setOnSeekBarChangeListener(this)
 
-        seekBarY = findViewById<SeekBar>(R.id.seekBarY)
+        seekBarY = findViewById(R.id.seekBarY)
         seekBarY!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<LineChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
 
         chart!!.setDrawGridBackground(false)
@@ -123,9 +118,9 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         }
 
         // make the first DataSet dashed
-        (dataSets.get(0) as LineDataSet).enableDashedLine(10f, 10f, 0f)
-        (dataSets.get(0) as LineDataSet).setColors(*ColorTemplate.VORDIPLOM_COLORS)
-        (dataSets.get(0) as LineDataSet).setCircleColors(*ColorTemplate.VORDIPLOM_COLORS)
+        (dataSets[0] as LineDataSet).enableDashedLine(10f, 10f, 0f)
+        (dataSets[0] as LineDataSet).setColors(*ColorTemplate.VORDIPLOM_COLORS)
+        (dataSets[0] as LineDataSet).setCircleColors(*ColorTemplate.VORDIPLOM_COLORS)
 
         val data = LineData(dataSets)
         chart!!.setData(data)
@@ -276,7 +271,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
     }
 
     override fun onChartGestureEnd(me: MotionEvent?, lastPerformedGesture: ChartGesture?) {
-        Log.i("Gesture", "END, lastGesture: " + lastPerformedGesture)
+        Log.i("Gesture", "END, lastGesture: $lastPerformedGesture")
 
         // un-highlight values after the gesture is finished and no single-tap
         if (lastPerformedGesture != ChartGesture.SINGLE_TAP) chart!!.highlightValues(null) // or highlightTouch(null) for callback to onNothingSelected(...)
@@ -295,28 +290,24 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
     }
 
     override fun onChartFling(me1: MotionEvent?, me2: MotionEvent?, velocityX: Float, velocityY: Float) {
-        Log.i("Fling", "Chart fling. VelocityX: " + velocityX + ", VelocityY: " + velocityY)
+        Log.i("Fling", "Chart fling. VelocityX: $velocityX, VelocityY: $velocityY")
     }
 
     override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
-        Log.i("Scale / Zoom", "ScaleX: " + scaleX + ", ScaleY: " + scaleY)
+        Log.i("Scale / Zoom", "ScaleX: $scaleX, ScaleY: $scaleY")
     }
 
     override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
-        Log.i("Translate / Move", "dX: " + dX + ", dY: " + dY)
+        Log.i("Translate / Move", "dX: $dX, dY: $dY")
     }
 
     override fun onValueSelected(e: Entry, h: Highlight) {
-        Log.i(
-            "VAL SELECTED",
-            ("Value: " + e.y + ", xIndex: " + e.x
-                    + ", DataSet index: " + h.dataSetIndex)
-        )
+        Log.i("VAL SELECTED", "Value: " + e.y + ", xIndex: " + e.x + ", DataSet index: " + h.dataSetIndex)
     }
 
-    override fun onNothingSelected() {}
+    override fun onNothingSelected() = Unit
 
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
 
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
 }

@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
@@ -29,6 +28,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import androidx.core.net.toUri
+import kotlin.math.roundToInt
 
 class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
     private var chart: LineChart? = null
@@ -37,19 +37,15 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_linechart_time)
 
         title = "LineChartTime"
 
-        tvX = findViewById<TextView>(R.id.tvXMax)
-        seekBarX = findViewById<SeekBar>(R.id.seekBarX)
+        tvX = findViewById(R.id.tvXMax)
+        seekBarX = findViewById(R.id.seekBarX)
         seekBarX!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<LineChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
 
         // no description text
         chart!!.description.isEnabled = false
@@ -120,7 +116,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         // count = hours
         val to = (now + count).toFloat()
 
-        val valuesData = getValues(Math.round(to))
+        val valuesData = getValues(to.roundToInt())
         // increment by 1 hour
         var x = now.toFloat()
         while (x < to) {

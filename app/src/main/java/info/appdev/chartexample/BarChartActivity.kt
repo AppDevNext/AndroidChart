@@ -8,11 +8,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
@@ -45,24 +45,20 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_barchart)
 
         title = "BarChartActivity"
 
-        tvX = findViewById<TextView>(R.id.tvXMax)
-        tvY = findViewById<TextView>(R.id.tvYMax)
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekBarX)
-        seekBarY = findViewById<SeekBar>(R.id.seekBarY)
+        seekBarX = findViewById(R.id.seekBarX)
+        seekBarY = findViewById(R.id.seekBarY)
 
         seekBarY!!.setOnSeekBarChangeListener(this)
         seekBarX!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<BarChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
         chart!!.setRoundedBarRadius(50f)
 
@@ -141,7 +137,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             val `val` = (sampleValues[i]!!.toFloat() * (range + 1))
 
             if (`val` * 100 < 25) {
-                values.add(BarEntry(i.toFloat(), `val`, getResources().getDrawable(R.drawable.star)))
+                values.add(BarEntry(i.toFloat(), `val`, ResourcesCompat.getDrawable(resources, R.drawable.star, null)))
             } else {
                 values.add(BarEntry(i.toFloat(), `val`))
             }
@@ -173,7 +169,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             val endColor4 = ContextCompat.getColor(this, android.R.color.holo_red_dark)
             val endColor5 = ContextCompat.getColor(this, android.R.color.holo_orange_dark)
 
-            val gradientFills: MutableList<Fill?> = ArrayList<Fill?>()
+            val gradientFills: MutableList<Fill?> = ArrayList()
             gradientFills.add(Fill(startColor1, endColor1))
             gradientFills.add(Fill(startColor2, endColor2))
             gradientFills.add(Fill(startColor3, endColor3))

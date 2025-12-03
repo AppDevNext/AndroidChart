@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -34,15 +34,11 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_age_distribution)
 
         title = "StackedBarActivityNegative"
 
-        chart = findViewById<HorizontalBarChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
         chart!!.setDrawGridBackground(false)
         chart!!.description.isEnabled = false
@@ -97,7 +93,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         values.add(BarEntry(25f, floatArrayOf(-15f, 15f)))
         values.add(BarEntry(35f, floatArrayOf(-17f, 17f)))
         values.add(BarEntry(45f, floatArrayOf(-19f, 20f)))
-        values.add(BarEntry(45f, floatArrayOf(-19f, 20f), getResources().getDrawable(R.drawable.star)))
+        values.add(BarEntry(45f, floatArrayOf(-19f, 20f), ResourcesCompat.getDrawable(resources, R.drawable.star, null)))
         values.add(BarEntry(55f, floatArrayOf(-19f, 19f)))
         values.add(BarEntry(65f, floatArrayOf(-16f, 16f)))
         values.add(BarEntry(75f, floatArrayOf(-13f, 14f)))
@@ -111,9 +107,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         set.valueTextSize = 7f
         set.axisDependency = YAxis.AxisDependency.RIGHT
         set.setColors(Color.rgb(67, 67, 72), Color.rgb(124, 181, 236))
-        set.stackLabels = arrayOf<String>(
-            "Men", "Women"
-        )
+        set.stackLabels = arrayOf("Men", "Women")
 
         val data = BarData(set)
         data.barWidth = 8.5f
@@ -227,20 +221,16 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
     }
 
     private class CustomFormatter : IValueFormatter, IAxisValueFormatter {
-        private val mFormat: DecimalFormat
-
-        init {
-            mFormat = DecimalFormat("###")
-        }
+        private val decimalFormat: DecimalFormat = DecimalFormat("###")
 
         // data
         override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
-            return mFormat.format(abs(value).toDouble()) + "m"
+            return decimalFormat.format(abs(value).toDouble()) + "m"
         }
 
         // YAxis
         override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-            return mFormat.format(abs(value).toDouble()) + "m"
+            return decimalFormat.format(abs(value).toDouble()) + "m"
         }
     }
 }

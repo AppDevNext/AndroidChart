@@ -6,7 +6,6 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -25,10 +24,6 @@ import info.appdev.chartexample.notimportant.DemoBase
 class ViewPagerSimpleChartDemo : DemoBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_awesomedesign)
         val pager = findViewById<ViewPager>(R.id.pager)
         pager.offscreenPageLimit = 3
@@ -37,7 +32,7 @@ class ViewPagerSimpleChartDemo : DemoBase() {
         showSnackbar("Swipe left and right for more awesome design examples!")
     }
 
-    private inner class PageAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
+    private class PageAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
         override fun getItem(pos: Int): Fragment {
             var f: Fragment? = null
             when (pos) {

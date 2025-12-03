@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -27,15 +26,11 @@ class BarChartPositiveNegative : DemoBase() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_barchart_noseekbar)
 
         title = "BarChartPositiveNegative"
 
-        chart = findViewById<BarChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setBackgroundColor(Color.WHITE)
         chart!!.extraTopOffset = -30f
         chart!!.extraBottomOffset = 10f
@@ -76,7 +71,7 @@ class BarChartPositiveNegative : DemoBase() {
         chart!!.legend.isEnabled = false
 
         // THIS IS THE ORIGINAL DATA YOU WANT TO PLOT
-        val data: MutableList<Data> = ArrayList<Data>()
+        val data: MutableList<Data> = ArrayList()
         data.add(Data(0f, -224.1f, "12-29"))
         data.add(Data(1f, 238.5f, "12-30"))
         data.add(Data(2f, 1280.1f, "12-31"))
@@ -85,7 +80,7 @@ class BarChartPositiveNegative : DemoBase() {
 
         xAxis.valueFormatter = object : IAxisValueFormatter {
             override fun getFormattedValue(value: Float, axis: AxisBase?): String? {
-                return data.get(min(max(value.toInt(), 0), data.size - 1)).xAxisValue
+                return data[min(max(value.toInt(), 0), data.size - 1)].xAxisValue
             }
         }
 
@@ -100,7 +95,7 @@ class BarChartPositiveNegative : DemoBase() {
         val red = Color.rgb(211, 74, 88)
 
         for (i in dataList.indices) {
-            val d = dataList.get(i)
+            val d = dataList[i]
             val entry = BarEntry(d.xValue, d.yValue)
             values.add(entry)
 
@@ -140,11 +135,7 @@ class BarChartPositiveNegative : DemoBase() {
     private class Data(val xValue: Float, val yValue: Float, val xAxisValue: String?)
 
     private class ValueFormatter : IValueFormatter {
-        private val mFormat: DecimalFormat
-
-        init {
-            mFormat = DecimalFormat("######.0")
-        }
+        private val mFormat: DecimalFormat = DecimalFormat("######.0")
 
         override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
             return mFormat.format(value.toDouble())

@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder
 import com.github.mikephil.charting.components.AxisBase
@@ -32,6 +31,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
 import androidx.core.net.toUri
+import kotlin.math.roundToInt
 
 class CombinedChartActivity : DemoBase() {
     private var chart: CombinedChart? = null
@@ -40,15 +40,11 @@ class CombinedChartActivity : DemoBase() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_combined)
 
         title = "CombinedChartActivity"
 
-        chart = findViewById<CombinedChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.description.isEnabled = false
         chart!!.setBackgroundColor(Color.WHITE)
         chart!!.setDrawGridBackground(false)
@@ -57,7 +53,7 @@ class CombinedChartActivity : DemoBase() {
 
         // draw bars behind lines
         chart!!.setDrawOrder(
-            arrayOf<DrawOrder>(
+            arrayOf(
                 DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
             )
         )
@@ -83,7 +79,7 @@ class CombinedChartActivity : DemoBase() {
         xAxis.setGranularity(1f)
         xAxis.valueFormatter = object : IAxisValueFormatter {
             override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-                return months.get(value.toInt() % months.size)
+                return months[value.toInt() % months.size]
             }
         }
 
@@ -144,7 +140,7 @@ class CombinedChartActivity : DemoBase() {
         set1.axisDependency = YAxis.AxisDependency.LEFT
 
         val set2 = BarDataSet(entries2, "")
-        set2.stackLabels = arrayOf<String>("Stack 1", "Stack 2")
+        set2.stackLabels = arrayOf("Stack 1", "Stack 2")
         set2.setColors(Color.rgb(61, 165, 255), Color.rgb(23, 197, 255))
         set2.setValueTextColor(Color.rgb(61, 165, 255))
         set2.valueTextSize = 10f
@@ -171,7 +167,7 @@ class CombinedChartActivity : DemoBase() {
 
         var index = 0f
         while (index < sampleCount) {
-            entries.add(Entry(index + 0.25f, values[Math.round(index * 2)]!!.toFloat() * 10 + 55))
+            entries.add(Entry(index + 0.25f, values[(index * 2).roundToInt()]!!.toFloat() * 10 + 55))
             index += 0.5f
         }
 

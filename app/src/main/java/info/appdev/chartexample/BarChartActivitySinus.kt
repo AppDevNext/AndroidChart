@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
@@ -31,21 +30,17 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_barchart_sinus)
 
         title = "BarChartActivitySinus"
 
         data = FileUtils.loadBarEntriesFromAssets(assets, "othersine.txt")
 
-        tvX = findViewById<TextView>(R.id.tvValueCount)
+        tvX = findViewById(R.id.tvValueCount)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekbarValues)
+        seekBarX = findViewById(R.id.seekbarValues)
 
-        chart = findViewById<BarChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
 
         chart!!.setDrawBarShadow(false)
         chart!!.setDrawValueAboveBar(true)
@@ -105,7 +100,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         val entries = ArrayList<BarEntry?>()
 
         for (i in 0..<count) {
-            entries.add(data!!.get(i))
+            entries.add(data!![i])
         }
 
         val set: BarDataSet

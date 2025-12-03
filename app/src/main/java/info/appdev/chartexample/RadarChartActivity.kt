@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.animation.Easing
@@ -29,10 +28,6 @@ class RadarChartActivity : DemoBase() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_radarchart)
 
         title = "RadarChartActivity"
@@ -139,7 +134,7 @@ class RadarChartActivity : DemoBase() {
         data.setValueTextColor(Color.WHITE)
 
         chart!!.setData(data)
-        val colorList: MutableList<Int?> = ArrayList<Int?>()
+        val colorList: MutableList<Int?> = ArrayList()
         colorList.add(Color.rgb(222, 166, 111))
         colorList.add(Color.rgb(220, 206, 138))
         colorList.add(Color.rgb(243, 255, 192))

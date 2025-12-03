@@ -8,11 +8,11 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.components.YAxis.AxisDependency
@@ -32,24 +32,20 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_candlechart)
 
         title = "CandleStickChartActivity"
 
-        tvX = findViewById<TextView>(R.id.tvXMax)
-        tvY = findViewById<TextView>(R.id.tvYMax)
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekBarX)
+        seekBarX = findViewById(R.id.seekBarX)
         seekBarX!!.setOnSeekBarChangeListener(this)
 
-        seekBarY = findViewById<SeekBar>(R.id.seekBarY)
+        seekBarY = findViewById(R.id.seekBarY)
         seekBarY!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<CandleStickChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setBackgroundColor(Color.WHITE)
 
         chart!!.description.isEnabled = false
@@ -86,8 +82,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        var progress: Int
-        progress = (seekBarX!!.progress)
+        val progress: Int = (seekBarX!!.progress)
 
         tvX!!.text = progress.toString()
         tvY!!.text = seekBarY!!.progress.toString()
@@ -115,7 +110,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
                     `val` - low,
                     if (even) `val` + open else `val` - open,
                     if (even) `val` - close else `val` + close,
-                    getResources().getDrawable(R.drawable.star)
+                    ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )
         }

@@ -13,11 +13,11 @@ import android.text.style.StyleSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -43,24 +43,20 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_piechart)
 
         title = "PieChartActivity"
 
-        tvX = findViewById<TextView>(R.id.tvXMax)
-        tvY = findViewById<TextView>(R.id.tvYMax)
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekBarX)
-        seekBarY = findViewById<SeekBar>(R.id.seekBarY)
+        seekBarX = findViewById(R.id.seekBarX)
+        seekBarY = findViewById(R.id.seekBarY)
 
         seekBarX!!.setOnSeekBarChangeListener(this)
         seekBarY!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<PieChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setUsePercentValues(true)
         chart!!.description.isEnabled = false
         chart!!.setExtraOffsets(5f, 10f, 5f, 5f)
@@ -124,7 +120,7 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
                 PieEntry(
                     (sampleValues[i]!!.toFloat() * range) + range / 5,
                     parties[i % parties.size],
-                    getResources().getDrawable(R.drawable.star)
+                    ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )
         }

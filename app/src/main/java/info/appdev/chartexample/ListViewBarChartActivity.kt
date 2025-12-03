@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.github.mikephil.charting.charts.BarChart
@@ -31,10 +30,6 @@ import androidx.core.net.toUri
 class ListViewBarChartActivity : DemoBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_listview_chart)
 
         title = "ListViewBarChartActivity"
@@ -66,7 +61,7 @@ class ListViewBarChartActivity : DemoBase() {
                 convertView = LayoutInflater.from(context).inflate(
                     R.layout.list_item_barchart, null
                 )
-                holder.chart = convertView.findViewById<BarChart>(R.id.chart)
+                holder.chart = convertView.findViewById(R.id.chart)
 
                 convertView.tag = holder
             } else {
@@ -126,7 +121,7 @@ class ListViewBarChartActivity : DemoBase() {
             entries.add(BarEntry(i.toFloat(), (sampleValues[i]!!.toFloat() * 70) + 30))
         }
 
-        val d = BarDataSet(entries, "New DataSet " + cnt)
+        val d = BarDataSet(entries, "New DataSet $cnt")
         d.setColors(*ColorTemplate.VORDIPLOM_COLORS)
         d.barShadowColor = Color.rgb(203, 203, 203)
 

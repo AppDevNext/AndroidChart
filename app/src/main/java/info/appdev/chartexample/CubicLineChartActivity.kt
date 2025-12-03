@@ -5,11 +5,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
@@ -24,6 +22,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import info.appdev.chartexample.DataTools.Companion.getMuchValues
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
+import androidx.core.net.toUri
 
 class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
     private var tvX: TextView? = null
@@ -33,10 +32,6 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         binding = ActivityLinechartBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -50,7 +45,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setBackgroundColor(Color.rgb(104, 241, 175))
 
         // no description text
-        binding.chart1.getDescription().isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
@@ -63,12 +58,12 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setPinchZoom(false)
 
         binding.chart1.setDrawGridBackground(false)
-        binding.chart1.setMaxHighlightDistance(300f)
+        binding.chart1.maxHighlightDistance = 300f
 
-        val x = binding.chart1.getXAxis()
+        val x = binding.chart1.xAxis
         x.isEnabled = false
 
-        val y = binding.chart1.getAxisLeft()
+        val y = binding.chart1.axisLeft
         y.typeface = tfLight
         y.setLabelCount(6, false)
         y.textColor = Color.WHITE
@@ -76,19 +71,19 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         y.setDrawGridLines(false)
         y.axisLineColor = Color.WHITE
 
-        binding.chart1.getAxisRight().isEnabled = false
+        binding.chart1.axisRight.isEnabled = false
 
         // add data
         binding.seekBarY.setOnSeekBarChangeListener(this)
         binding.seekBarX.setOnSeekBarChangeListener(this)
 
         // lower max, as cubic runs significantly slower than linear
-        binding.seekBarX.setMax(700)
+        binding.seekBarX.max = 700
 
-        binding.seekBarX.setProgress(45)
-        binding.seekBarY.setProgress(100)
+        binding.seekBarX.progress = 45
+        binding.seekBarY.progress = 100
 
-        binding.chart1.getLegend().isEnabled = false
+        binding.chart1.legend.isEnabled = false
 
         binding.chart1.animateXY(2000, 2000)
 
@@ -156,7 +151,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         when (item.itemId) {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.setData(Uri.parse("https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/CubicLineChartActivity.kt"))
+                i.data = "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/CubicLineChartActivity.kt".toUri()
                 startActivity(i)
             }
 
@@ -174,7 +169,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleFilled -> {
-                val sets = binding.chart1.data!!.getDataSets()
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -186,7 +181,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleCircles -> {
-                val sets = binding.chart1.data!!.getDataSets()
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -197,7 +192,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleCubic -> {
-                val sets = binding.chart1.data!!.getDataSets()
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -210,7 +205,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleStepped -> {
-                val sets = binding.chart1.data!!.getDataSets()
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -223,7 +218,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                val sets = binding.chart1.data!!.getDataSets()
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
