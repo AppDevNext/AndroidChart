@@ -50,13 +50,13 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
     /**
      * draws the y-axis labels to the screen
      */
-    override fun renderAxisLabels(c: Canvas) {
+    override fun renderAxisLabels(canvas: Canvas) {
         if (!yAxis.isEnabled || !yAxis.isDrawLabelsEnabled)
             return
 
         val positions = transformedPositions
 
-        paintAxisLabels.setTypeface(yAxis.typeface)
+        paintAxisLabels.typeface = yAxis.typeface
         paintAxisLabels.textSize = yAxis.textSize
         paintAxisLabels.color = yAxis.textColor
 
@@ -68,10 +68,10 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         val xPos = calculateAxisLabelsXPosition(dependency, labelPosition)
         paintAxisLabels.textAlign = getAxisLabelTextAlign(dependency, labelPosition)
 
-        drawYLabels(c, xPos, positions, yOffset)
+        drawYLabels(canvas, xPos, positions, yOffset)
     }
 
-    override fun renderAxisLine(c: Canvas) {
+    override fun renderAxisLine(canvas: Canvas) {
         if (!yAxis.isEnabled || !yAxis.isDrawAxisLineEnabled)
             return
 
@@ -79,12 +79,12 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         paintAxisLine.strokeWidth = yAxis.axisLineWidth
 
         if (yAxis.axisDependency == AxisDependency.LEFT) {
-            c.drawLine(
+            canvas.drawLine(
                 viewPortHandler.contentLeft(), viewPortHandler.contentTop(), viewPortHandler.contentLeft(),
                 viewPortHandler.contentBottom(), paintAxisLine
             )
         } else {
-            c.drawLine(
+            canvas.drawLine(
                 viewPortHandler.contentRight(), viewPortHandler.contentTop(), viewPortHandler.contentRight(),
                 viewPortHandler.contentBottom(), paintAxisLine
             )
@@ -94,7 +94,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
     /**
      * draws the y-labels on the specified x-position
      */
-    protected open fun drawYLabels(c: Canvas, fixedPosition: Float, positions: FloatArray, offset: Float) {
+    protected open fun drawYLabels(canvas: Canvas, fixedPosition: Float, positions: FloatArray, offset: Float) {
         val from: Int
         val to: Int
 
@@ -122,7 +122,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                 yAxis.getFormattedLabel(i)
             }
 
-            c.drawText(
+            canvas.drawText(
                 text!!,
                 fixedPosition + xOffset,
                 positions[i * 2 + 1] + offset,
@@ -132,16 +132,16 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
     }
 
     protected var renderGridLinesPath: Path = Path()
-    override fun renderGridLines(c: Canvas) {
+    override fun renderGridLines(canvas: Canvas) {
         if (!yAxis.isEnabled) return
 
         if (yAxis.isDrawGridLinesEnabled) {
-            c.withClip(gridClippingRect!!) {
+            canvas.withClip(gridClippingRect!!) {
                 val positions = transformedPositions
 
                 paintGrid.color = yAxis.gridColor
                 paintGrid.strokeWidth = yAxis.gridLineWidth
-                paintGrid.setPathEffect(yAxis.gridDashPathEffect)
+                paintGrid.pathEffect = yAxis.gridDashPathEffect
 
                 val gridLinePath = renderGridLinesPath
                 gridLinePath.reset()
@@ -150,7 +150,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                 var i = 0
                 while (i < positions.size) {
                     // draw a path because lines don't support dashing on lower android versions
-                    c.drawPath(linePath(gridLinePath, i, positions)!!, paintGrid)
+                    canvas.drawPath(linePath(gridLinePath, i, positions)!!, paintGrid)
                     gridLinePath.reset()
                     i += 2
                 }
@@ -158,7 +158,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         }
 
         if (yAxis.isDrawZeroLineEnabled) {
-            drawZeroLine(c)
+            drawZeroLine(canvas)
         }
     }
 
@@ -224,11 +224,11 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
     /**
      * Draws the zero line.
      */
-    protected open fun drawZeroLine(c: Canvas) {
-        val clipRestoreCount = c.save()
+    protected open fun drawZeroLine(canvas: Canvas) {
+        val clipRestoreCount = canvas.save()
         zeroLineClippingRect.set(viewPortHandler.contentRect)
         zeroLineClippingRect.inset(0f, -yAxis.zeroLineWidth)
-        c.clipRect(zeroLineClippingRect)
+        canvas.clipRect(zeroLineClippingRect)
 
         // draw zero line
         val pos = transformer?.getPixelForValues(0f, 0f)
@@ -243,10 +243,10 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
             zeroLinePath.lineTo(viewPortHandler.contentRight(), it.y.toFloat())
 
             // draw a path because lines don't support dashing on lower android versions
-            c.drawPath(zeroLinePath, zeroLinePaint)
+            canvas.drawPath(zeroLinePath, zeroLinePaint)
         }
 
-        c.restoreToCount(clipRestoreCount)
+        canvas.restoreToCount(clipRestoreCount)
     }
 
     protected var renderLimitRanges: Path = Path()
@@ -266,9 +266,9 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
     /**
      * Draws the LimitLines associated with this axis to the screen.
      */
-    override fun renderLimitLines(c: Canvas) {
+    override fun renderLimitLines(canvas: Canvas) {
         val limitLines = yAxis.limitLines
-        if (limitLines != null && limitLines.size > 0) {
+        if (limitLines != null && limitLines.isNotEmpty()) {
             val pts = renderLimitLinesBuffer
             pts[0] = 0f
             pts[1] = 0f
@@ -281,15 +281,15 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                 if (!limitLine.isEnabled)
                     continue
 
-                c.withSave {
+                canvas.withSave {
                     limitLineClippingRect.set(viewPortHandler.contentRect)
                     limitLineClippingRect.inset(0f, -limitLine.lineWidth)
-                    c.clipRect(limitLineClippingRect)
+                    canvas.clipRect(limitLineClippingRect)
 
                     limitLinePaint.style = Paint.Style.STROKE
                     limitLinePaint.color = limitLine.lineColor
                     limitLinePaint.strokeWidth = limitLine.lineWidth
-                    limitLinePaint.setPathEffect(limitLine.dashPathEffect)
+                    limitLinePaint.pathEffect = limitLine.dashPathEffect
 
                     pts[1] = limitLine.limit
 
@@ -298,7 +298,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                     limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1])
                     limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1])
 
-                    c.drawPath(limitLinePath, limitLinePaint)
+                    canvas.drawPath(limitLinePath, limitLinePaint)
                     limitLinePath.reset()
 
                     // c.drawLines(pts, mLimitLinePaint);
@@ -307,9 +307,9 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                     // if drawing the limit-value label is enabled
                     if (label != null && label != "") {
                         limitLinePaint.style = limitLine.textStyle
-                        limitLinePaint.setPathEffect(null)
+                        limitLinePaint.pathEffect = null
                         limitLinePaint.color = limitLine.textColor
-                        limitLinePaint.setTypeface(limitLine.typeface)
+                        limitLinePaint.typeface = limitLine.typeface
                         limitLinePaint.strokeWidth = 0.5f
                         limitLinePaint.textSize = limitLine.textSize
 
@@ -319,34 +319,39 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
                         val position = limitLine.labelPosition
 
-                        if (position == LimitLabelPosition.RIGHT_TOP) {
-                            limitLinePaint.textAlign = Align.RIGHT
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentRight() - xOffset,
-                                pts[1] - yOffset + labelLineHeight, limitLinePaint
-                            )
-                        } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-                            limitLinePaint.textAlign = Align.RIGHT
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentRight() - xOffset,
-                                pts[1] + yOffset, limitLinePaint
-                            )
-                        } else if (position == LimitLabelPosition.LEFT_TOP) {
-                            limitLinePaint.textAlign = Align.LEFT
-                            c.drawText(
-                                label,
-                                viewPortHandler.contentLeft() + xOffset,
-                                pts[1] - yOffset + labelLineHeight, limitLinePaint
-                            )
-                        } else {
-                            limitLinePaint.textAlign = Align.LEFT
-                            c.drawText(
-                                label,
-                                viewPortHandler.offsetLeft() + xOffset,
-                                pts[1] + yOffset, limitLinePaint
-                            )
+                        when (position) {
+                            LimitLabelPosition.RIGHT_TOP -> {
+                                limitLinePaint.textAlign = Align.RIGHT
+                                canvas.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    pts[1] - yOffset + labelLineHeight, limitLinePaint
+                                )
+                            }
+                            LimitLabelPosition.RIGHT_BOTTOM -> {
+                                limitLinePaint.textAlign = Align.RIGHT
+                                canvas.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    pts[1] + yOffset, limitLinePaint
+                                )
+                            }
+                            LimitLabelPosition.LEFT_TOP -> {
+                                limitLinePaint.textAlign = Align.LEFT
+                                canvas.drawText(
+                                    label,
+                                    viewPortHandler.contentLeft() + xOffset,
+                                    pts[1] - yOffset + labelLineHeight, limitLinePaint
+                                )
+                            }
+                            else -> {
+                                limitLinePaint.textAlign = Align.LEFT
+                                canvas.drawText(
+                                    label,
+                                    viewPortHandler.offsetLeft() + xOffset,
+                                    pts[1] + yOffset, limitLinePaint
+                                )
+                            }
                         }
                     }
 
@@ -356,7 +361,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
         // Now the ranges
         val limitRanges = yAxis.limitRanges
-        if (limitRanges != null &&  limitRanges.size > 0) {
+        if (limitRanges != null && limitRanges.isNotEmpty()) {
             val ptsr = FloatArray(2)
             ptsr[0] = 0f
             ptsr[1] = 0f
@@ -374,15 +379,15 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                 if (!limitRange.isEnabled)
                     continue
 
-                val clipRestoreCount = c.save()
+                val clipRestoreCount = canvas.save()
                 limitLineClippingRect.set(viewPortHandler.contentRect)
                 limitLineClippingRect.inset(0f, -limitRange.lineWidth)
-                c.clipRect(limitLineClippingRect)
+                canvas.clipRect(limitLineClippingRect)
 
                 limitRangePaint.style = Paint.Style.STROKE
                 limitRangePaint.color = limitRange.lineColor
                 limitRangePaint.strokeWidth = limitRange.lineWidth
-                limitRangePaint.setPathEffect(limitRange.dashPathEffect)
+                limitRangePaint.pathEffect = limitRange.dashPathEffect
 
                 limitRangePaintFill.style = Paint.Style.FILL
                 limitRangePaintFill.color = limitRange.rangeColor
@@ -401,17 +406,17 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                     ptsr2[1],
                     Path.Direction.CW
                 )
-                c.drawPath(limitRangePathFill, limitRangePaintFill)
+                canvas.drawPath(limitRangePathFill, limitRangePaintFill)
                 limitRangePathFill.reset()
 
                 if (limitRange.lineWidth > 0) {
                     limitRangePath.moveTo(viewPortHandler.contentLeft(), ptsr[1])
                     limitRangePath.lineTo(viewPortHandler.contentRight(), ptsr[1])
-                    c.drawPath(limitRangePath, limitRangePaint)
+                    canvas.drawPath(limitRangePath, limitRangePaint)
 
                     limitRangePath.moveTo(viewPortHandler.contentLeft(), ptsr2[1])
                     limitRangePath.lineTo(viewPortHandler.contentRight(), ptsr2[1])
-                    c.drawPath(limitRangePath, limitRangePaint)
+                    canvas.drawPath(limitRangePath, limitRangePaint)
                 }
 
                 limitRangePath.reset()
@@ -421,9 +426,9 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                 // if drawing the limit-value label is enabled
                 if (label != null && label != "") {
                     limitRangePaint.style = limitRange.textStyle
-                    limitRangePaint.setPathEffect(null)
+                    limitRangePaint.pathEffect = null
                     limitRangePaint.color = limitRange.textColor
-                    limitRangePaint.setTypeface(limitRange.typeface)
+                    limitRangePaint.typeface = limitRange.typeface
                     limitRangePaint.strokeWidth = 0.5f
                     limitRangePaint.textSize = limitRange.textSize
 
@@ -436,7 +441,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                     when (position) {
                         LimitLabelPosition.RIGHT_TOP -> {
                             limitRangePaint.textAlign = Align.RIGHT
-                            c.drawText(
+                            canvas.drawText(
                                 label,
                                 viewPortHandler.contentRight() - xOffset,
                                 ptsr[1] - yOffset + labelLineHeight, limitRangePaint
@@ -445,7 +450,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
                         LimitLabelPosition.RIGHT_BOTTOM -> {
                             limitRangePaint.textAlign = Align.RIGHT
-                            c.drawText(
+                            canvas.drawText(
                                 label,
                                 viewPortHandler.contentRight() - xOffset,
                                 ptsr[1] + yOffset, limitRangePaint
@@ -454,7 +459,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
                         LimitLabelPosition.LEFT_TOP -> {
                             limitRangePaint.textAlign = Align.LEFT
-                            c.drawText(
+                            canvas.drawText(
                                 label,
                                 viewPortHandler.contentLeft() + xOffset,
                                 ptsr[1] - yOffset + labelLineHeight, limitRangePaint
@@ -463,7 +468,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
                         else -> {
                             limitRangePaint.textAlign = Align.LEFT
-                            c.drawText(
+                            canvas.drawText(
                                 label,
                                 viewPortHandler.offsetLeft() + xOffset,
                                 ptsr[1] + yOffset, limitRangePaint
@@ -472,7 +477,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                     }
                 }
 
-                c.restoreToCount(clipRestoreCount)
+                canvas.restoreToCount(clipRestoreCount)
             }
         }
     }

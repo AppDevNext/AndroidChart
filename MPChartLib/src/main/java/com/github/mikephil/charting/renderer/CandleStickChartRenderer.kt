@@ -24,15 +24,15 @@ open class CandleStickChartRenderer(
 
     override fun initBuffers() = Unit
 
-    override fun drawData(c: Canvas) {
+    override fun drawData(canvas: Canvas) {
         val candleData = chart.candleData
 
         for (set in candleData.dataSets) {
-            if (set.isVisible) drawDataSet(c, set)
+            if (set.isVisible) drawDataSet(canvas, set)
         }
     }
 
-    protected fun drawDataSet(c: Canvas, dataSet: ICandleDataSet) {
+    protected fun drawDataSet(canvas: Canvas, dataSet: ICandleDataSet) {
         val trans = chart.getTransformer(dataSet.axisDependency)
 
         val phaseY = animator.phaseY
@@ -95,7 +95,7 @@ open class CandleStickChartRenderer(
 
                 paintRender.style = Paint.Style.STROKE
 
-                c.drawLines(shadowBuffers, paintRender)
+                canvas.drawLines(shadowBuffers, paintRender)
 
                 // calculate the body
                 bodyBuffers[0] = xPos - 0.5f + barSpace
@@ -116,7 +116,7 @@ open class CandleStickChartRenderer(
 
                     paintRender.style = dataSet.decreasingPaintStyle
 
-                    c.drawRect(
+                    canvas.drawRect(
                         bodyBuffers[0], bodyBuffers[3],
                         bodyBuffers[2], bodyBuffers[1],
                         paintRender
@@ -130,7 +130,7 @@ open class CandleStickChartRenderer(
 
                     paintRender.style = dataSet.increasingPaintStyle
 
-                    c.drawRect(
+                    canvas.drawRect(
                         bodyBuffers[0], bodyBuffers[1],
                         bodyBuffers[2], bodyBuffers[3],
                         paintRender
@@ -143,7 +143,7 @@ open class CandleStickChartRenderer(
                         paintRender.color = dataSet.neutralColor
                     }
 
-                    c.drawLine(
+                    canvas.drawLine(
                         bodyBuffers[0], bodyBuffers[1],
                         bodyBuffers[2], bodyBuffers[3],
                         paintRender
@@ -184,17 +184,17 @@ open class CandleStickChartRenderer(
                     dataSet.neutralColor
 
                 paintRender.color = barColor
-                c.drawLine(
+                canvas.drawLine(
                     rangeBuffers[0], rangeBuffers[1],
                     rangeBuffers[2], rangeBuffers[3],
                     paintRender
                 )
-                c.drawLine(
+                canvas.drawLine(
                     openBuffers[0], openBuffers[1],
                     openBuffers[2], openBuffers[3],
                     paintRender
                 )
-                c.drawLine(
+                canvas.drawLine(
                     closeBuffers[0], closeBuffers[1],
                     closeBuffers[2], closeBuffers[3],
                     paintRender
@@ -203,7 +203,7 @@ open class CandleStickChartRenderer(
         }
     }
 
-    override fun drawValues(c: Canvas) {
+    override fun drawValues(canvas: Canvas) {
         // if values are drawn
         if (isDrawingValuesAllowed(chart)) {
             val dataSets = chart.candleData.dataSets
@@ -250,7 +250,7 @@ open class CandleStickChartRenderer(
 
                     if (dataSet.isDrawValuesEnabled) {
                         drawValue(
-                            c,
+                            canvas,
                             dataSet.valueFormatter,
                             entry.high,
                             entry,
@@ -266,7 +266,7 @@ open class CandleStickChartRenderer(
                         val icon = entry.icon
 
                         Utils.drawImage(
-                            c,
+                            canvas,
                             icon,
                             (x + iconsOffset.x).toInt(),
                             (y + iconsOffset.y).toInt(),
@@ -282,9 +282,9 @@ open class CandleStickChartRenderer(
         }
     }
 
-    override fun drawExtras(c: Canvas) = Unit
+    override fun drawExtras(canvas: Canvas) = Unit
 
-    override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
+    override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
         val candleData = chart.candleData
 
         for (high in indices) {
@@ -305,7 +305,7 @@ open class CandleStickChartRenderer(
             high.setDraw(pix.x.toFloat(), pix.y.toFloat())
 
             // draw the lines
-            drawHighlightLines(c, pix.x.toFloat(), pix.y.toFloat(), set)
+            drawHighlightLines(canvas, pix.x.toFloat(), pix.y.toFloat(), set)
         }
     }
 }

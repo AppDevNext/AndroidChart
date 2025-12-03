@@ -49,16 +49,16 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
         for (renderer in dataRenderers) renderer.initBuffers()
     }
 
-    override fun drawData(c: Canvas) {
-        for (renderer in dataRenderers) renderer.drawData(c)
+    override fun drawData(canvas: Canvas) {
+        for (renderer in dataRenderers) renderer.drawData(canvas)
     }
 
-    override fun drawValues(c: Canvas) {
-        for (renderer in dataRenderers) renderer.drawValues(c)
+    override fun drawValues(canvas: Canvas) {
+        for (renderer in dataRenderers) renderer.drawValues(canvas)
     }
 
-    override fun drawExtras(c: Canvas) {
-        for (renderer in dataRenderers) renderer.drawExtras(c)
+    override fun drawExtras(canvas: Canvas) {
+        for (renderer in dataRenderers) renderer.drawExtras(canvas)
     }
 
     protected var mHighlightBuffer: MutableList<Highlight> = ArrayList()
@@ -67,7 +67,7 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
         createRenderers()
     }
 
-    override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
+    override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
         val chart = weakChart.get() ?: return
 
         for (renderer in dataRenderers) {
@@ -90,7 +90,7 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
                 if (h.dataIndex == dataIndex || h.dataIndex == -1) mHighlightBuffer.add(h)
             }
 
-            renderer.drawHighlighted(c, mHighlightBuffer.toTypedArray<Highlight>())
+            renderer.drawHighlighted(canvas, mHighlightBuffer.toTypedArray<Highlight>())
         }
     }
 

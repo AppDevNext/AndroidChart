@@ -8,7 +8,7 @@ import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 
 class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, private val chart: RadarChart) : XAxisRenderer(viewPortHandler, xAxis, null) {
-    override fun renderAxisLabels(c: Canvas) {
+    override fun renderAxisLabels(canvas: Canvas) {
         if (!xAxis.isEnabled || !xAxis.isDrawLabelsEnabled)
             return
 
@@ -37,7 +37,7 @@ class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, pr
             )
 
             drawLabel(
-                c, label, pOut.x, pOut.y - xAxis.mLabelHeight / 2f,
+                canvas, label, pOut.x, pOut.y - xAxis.mLabelHeight / 2f,
                 drawLabelAnchor, labelRotationAngleDegrees
             )
         }
@@ -50,5 +50,5 @@ class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, pr
     /**
      * XAxis LimitLines on RadarChart not yet supported.
      */
-    override fun renderLimitLines(c: Canvas) = Unit
+    override fun renderLimitLines(canvas: Canvas) = Unit
 }

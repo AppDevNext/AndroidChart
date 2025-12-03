@@ -18,6 +18,7 @@ import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import androidx.core.graphics.withClip
 import androidx.core.graphics.withSave
+import kotlin.math.roundToInt
 
 open class XAxisRenderer(
     viewPortHandler: ViewPortHandler,
@@ -28,12 +29,12 @@ open class XAxisRenderer(
     protected fun setupGridPaint() {
         paintGrid.color = xAxis.gridColor
         paintGrid.strokeWidth = xAxis.gridLineWidth
-        paintGrid.setPathEffect(xAxis.gridDashPathEffect)
+        paintGrid.pathEffect = xAxis.gridDashPathEffect
     }
 
     override fun computeAxis(min: Float, max: Float, inverted: Boolean) {
         // calculate the starting and entry point of the y-labels (depending on
-        // zoom / contentrect bounds)
+        // zoom / content rect bounds)
 
         var minLocal = min
         var maxLocal = max
@@ -65,7 +66,7 @@ open class XAxisRenderer(
     protected open fun computeSize() {
         val longest = xAxis.longestLabel
 
-        paintAxisLabels.setTypeface(xAxis.typeface)
+        paintAxisLabels.typeface = xAxis.typeface
         paintAxisLabels.textSize = xAxis.textSize
 
         val labelSize = Utils.calcTextSize(paintAxisLabels, longest)
@@ -80,17 +81,17 @@ open class XAxisRenderer(
         )
 
 
-        xAxis.mLabelWidth = Math.round(labelRotatedSize.width)
-        xAxis.mLabelHeight = Math.round(labelRotatedSize.height)
+        xAxis.mLabelWidth = labelRotatedSize.width.roundToInt()
+        xAxis.mLabelHeight = labelRotatedSize.height.roundToInt()
 
         FSize.recycleInstance(labelRotatedSize)
         FSize.recycleInstance(labelSize)
     }
 
-    override fun renderAxisLabels(c: Canvas) {
+    override fun renderAxisLabels(canvas: Canvas) {
         if (!xAxis.isEnabled || !xAxis.isDrawLabelsEnabled) return
 
-        val yoffset = xAxis.yOffset
+        val yOffset = xAxis.yOffset
 
         paintAxisLabels.color = xAxis.textColor
 
@@ -99,44 +100,44 @@ open class XAxisRenderer(
             XAxisPosition.TOP -> {
                 pointF.x = 0.5f
                 pointF.y = 1.0f
-                drawLabels(c, viewPortHandler.contentTop() - yoffset, pointF)
+                drawLabels(canvas, viewPortHandler.contentTop() - yOffset, pointF)
             }
             XAxisPosition.TOP_INSIDE -> {
                 pointF.x = 0.5f
                 pointF.y = 1.0f
-                drawLabels(c, viewPortHandler.contentTop() + yoffset + xAxis.mLabelHeight, pointF)
+                drawLabels(canvas, viewPortHandler.contentTop() + yOffset + xAxis.mLabelHeight, pointF)
             }
             XAxisPosition.BOTTOM -> {
                 pointF.x = 0.5f
                 pointF.y = 0.0f
-                drawLabels(c, viewPortHandler.contentBottom() + yoffset, pointF)
+                drawLabels(canvas, viewPortHandler.contentBottom() + yOffset, pointF)
             }
             XAxisPosition.BOTTOM_INSIDE -> {
                 pointF.x = 0.5f
                 pointF.y = 0.0f
-                drawLabels(c, viewPortHandler.contentBottom() - yoffset - xAxis.mLabelHeight, pointF)
+                drawLabels(canvas, viewPortHandler.contentBottom() - yOffset - xAxis.mLabelHeight, pointF)
             }
             else -> { // BOTH SIDED
                 pointF.x = 0.5f
                 pointF.y = 1.0f
-                drawLabels(c, viewPortHandler.contentTop() - yoffset, pointF)
+                drawLabels(canvas, viewPortHandler.contentTop() - yOffset, pointF)
                 pointF.x = 0.5f
                 pointF.y = 0.0f
-                drawLabels(c, viewPortHandler.contentBottom() + yoffset, pointF)
+                drawLabels(canvas, viewPortHandler.contentBottom() + yOffset, pointF)
             }
         }
         MPPointF.recycleInstance(pointF)
     }
 
-    override fun renderAxisLine(c: Canvas) {
+    override fun renderAxisLine(canvas: Canvas) {
         if (!xAxis.isDrawAxisLineEnabled || !xAxis.isEnabled) return
 
         paintAxisLine.color = xAxis.axisLineColor
         paintAxisLine.strokeWidth = xAxis.axisLineWidth
-        paintAxisLine.setPathEffect(xAxis.axisLineDashPathEffect)
+        paintAxisLine.pathEffect = xAxis.axisLineDashPathEffect
 
         if (xAxis.position == XAxisPosition.TOP || xAxis.position == XAxisPosition.TOP_INSIDE || xAxis.position == XAxisPosition.BOTH_SIDED) {
-            c.drawLine(
+            canvas.drawLine(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentTop(), viewPortHandler.contentRight(),
                 viewPortHandler.contentTop(), paintAxisLine
@@ -144,7 +145,7 @@ open class XAxisRenderer(
         }
 
         if (xAxis.position == XAxisPosition.BOTTOM || xAxis.position == XAxisPosition.BOTTOM_INSIDE || xAxis.position == XAxisPosition.BOTH_SIDED) {
-            c.drawLine(
+            canvas.drawLine(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentBottom(), viewPortHandler.contentRight(),
                 viewPortHandler.contentBottom(), paintAxisLine
@@ -157,7 +158,7 @@ open class XAxisRenderer(
      *
      * @param pos
      */
-    protected open fun drawLabels(c: Canvas?, pos: Float, anchor: MPPointF?) {
+    protected open fun drawLabels(canvas: Canvas?, pos: Float, anchor: MPPointF?) {
         val labelRotationAngleDegrees = xAxis.labelRotationAngle
         val centeringEnabled = xAxis.isCenterAxisLabelsEnabled
 
@@ -213,22 +214,22 @@ open class XAxisRenderer(
                     }
                 }
 
-                drawLabel(c, label, x, pos, anchor, labelRotationAngleDegrees)
+                drawLabel(canvas, label, x, pos, anchor, labelRotationAngleDegrees)
             }
             i += 2
         }
     }
 
-    protected fun drawLabel(c: Canvas?, formattedLabel: String?, x: Float, y: Float, anchor: MPPointF?, angleDegrees: Float) {
-        Utils.drawXAxisValue(c, formattedLabel, x, y, paintAxisLabels, anchor, angleDegrees)
+    protected fun drawLabel(canvas: Canvas?, formattedLabel: String?, x: Float, y: Float, anchor: MPPointF?, angleDegrees: Float) {
+        Utils.drawXAxisValue(canvas, formattedLabel, x, y, paintAxisLabels, anchor, angleDegrees)
     }
 
     protected open var mRenderGridLinesPath: Path = Path()
     protected open var mRenderGridLinesBuffer: FloatArray = FloatArray(2)
-    override fun renderGridLines(c: Canvas) {
+    override fun renderGridLines(canvas: Canvas) {
         if (!xAxis.isDrawGridLinesEnabled || !xAxis.isEnabled) return
 
-        c.withClip(gridClippingRect!!) {
+        canvas.withClip(gridClippingRect!!) {
             if (axis.isShowSpecificPositions) {
                 if (mRenderGridLinesBuffer.size != axis.specificPositions.size * 2) {
                     mRenderGridLinesBuffer = FloatArray(xAxis.specificPositions.size * 2)
@@ -263,7 +264,7 @@ open class XAxisRenderer(
 
             var i = 0
             while (i < positions.size) {
-                drawGridLine(c, positions[i], positions[i + 1], gridLinePath)
+                drawGridLine(canvas, positions[i], positions[i + 1], gridLinePath)
                 i += 2
             }
 
@@ -298,22 +299,22 @@ open class XAxisRenderer(
     /**
      * Draws the grid line at the specified position using the provided path.
      *
-     * @param c
+     * @param canvas
      * @param x
      * @param y
      * @param gridLinePath
      */
-    protected open fun drawGridLine(c: Canvas, x: Float, y: Float, gridLinePath: Path) {
+    protected open fun drawGridLine(canvas: Canvas, x: Float, y: Float, gridLinePath: Path) {
         gridLinePath.moveTo(x, viewPortHandler.contentBottom())
         gridLinePath.lineTo(x, viewPortHandler.contentTop())
 
         // draw a path because lines don't support dashing on lower android versions
-        c.drawPath(gridLinePath, paintGrid)
+        canvas.drawPath(gridLinePath, paintGrid)
 
         gridLinePath.reset()
     }
 
-    fun renderLimitLineLine(c: Canvas, limitLine: LimitLine, position: FloatArray) {
+    fun renderLimitLineLine(canvas: Canvas, limitLine: LimitLine, position: FloatArray) {
         limitLineSegmentsBuffer[0] = position[0]
         limitLineSegmentsBuffer[1] = viewPortHandler.contentTop()
         limitLineSegmentsBuffer[2] = position[0]
@@ -326,20 +327,20 @@ open class XAxisRenderer(
         limitLinePaint.style = Paint.Style.STROKE
         limitLinePaint.color = limitLine.lineColor
         limitLinePaint.strokeWidth = limitLine.lineWidth
-        limitLinePaint.setPathEffect(limitLine.dashPathEffect)
+        limitLinePaint.pathEffect = limitLine.dashPathEffect
 
-        c.drawPath(mLimitLinePath, limitLinePaint)
+        canvas.drawPath(mLimitLinePath, limitLinePaint)
     }
 
     /**
      * Draws the LimitLines associated with this axis to the screen.
      *
-     * @param c
+     * @param canvas
      */
-    override fun renderLimitLines(c: Canvas) {
+    override fun renderLimitLines(canvas: Canvas) {
         val limitLines = xAxis.limitLines
 
-        if (limitLines == null || limitLines.size <= 0) return
+        if (limitLines == null || limitLines.isEmpty()) return
 
         val position = mRenderLimitLinesBuffer
         position[0] = 0f
@@ -350,30 +351,30 @@ open class XAxisRenderer(
 
             if (!l.isEnabled) continue
 
-            c.withSave {
+            canvas.withSave {
                 mLimitLineClippingRect.set(viewPortHandler.contentRect)
                 mLimitLineClippingRect.inset(-l.lineWidth, 0f)
-                c.clipRect(mLimitLineClippingRect)
+                canvas.clipRect(mLimitLineClippingRect)
 
                 position[0] = l.limit
                 position[1] = 0f
 
                 transformer!!.pointValuesToPixel(position)
 
-                renderLimitLineLine(c, l, position)
-                renderLimitLineLabel(c, l, position, 2f + l.yOffset)
+                renderLimitLineLine(canvas, l, position)
+                renderLimitLineLabel(canvas, l, position, 2f + l.yOffset)
 
             }
         }
     }
 
-    fun renderLimitLineLabel(c: Canvas, limitLine: LimitLine, position: FloatArray, yOffset: Float) {
+    fun renderLimitLineLabel(canvas: Canvas, limitLine: LimitLine, position: FloatArray, yOffset: Float) {
         val label = limitLine.label
 
         // if drawing the limit-value label is enabled
         if (label != null && label != "") {
             limitLinePaint.style = limitLine.textStyle
-            limitLinePaint.setPathEffect(null)
+            limitLinePaint.pathEffect = null
             limitLinePaint.color = limitLine.textColor
             limitLinePaint.strokeWidth = 0.5f
             limitLinePaint.textSize = limitLine.textSize
@@ -387,26 +388,26 @@ open class XAxisRenderer(
                 LimitLabelPosition.RIGHT_TOP -> {
                     val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
                     limitLinePaint.textAlign = Align.LEFT
-                    c.drawText(
+                    canvas.drawText(
                         label, position[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
                         limitLinePaint
                     )
                 }
                 LimitLabelPosition.RIGHT_BOTTOM -> {
                     limitLinePaint.textAlign = Align.LEFT
-                    c.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+                    canvas.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
                 }
                 LimitLabelPosition.LEFT_TOP -> {
                     limitLinePaint.textAlign = Align.RIGHT
                     val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                    c.drawText(
+                    canvas.drawText(
                         label, position[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
                         limitLinePaint
                     )
                 }
                 else -> {
                     limitLinePaint.textAlign = Align.RIGHT
-                    c.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+                    canvas.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
                 }
             }
         }

@@ -44,7 +44,7 @@ open class HorizontalBarChartRenderer(
         paintValues.textAlign = Align.LEFT
     }
 
-    override fun drawDataSet(c: Canvas, dataSet: IBarDataSet, index: Int) {
+    override fun drawDataSet(canvas: Canvas, dataSet: IBarDataSet, index: Int) {
         val trans = chart.getTransformer(dataSet.axisDependency)
 
         barBorderPaint.color = dataSet.barBorderColor
@@ -90,7 +90,7 @@ open class HorizontalBarChartRenderer(
                 mBarShadowRectBuffer.left = viewPortHandler.contentLeft()
                 mBarShadowRectBuffer.right = viewPortHandler.contentRight()
 
-                c.drawRect(mBarShadowRectBuffer, shadowPaint)
+                canvas.drawRect(mBarShadowRectBuffer, shadowPaint)
                 i++
             }
         }
@@ -136,7 +136,7 @@ open class HorizontalBarChartRenderer(
             if (isCustomFill) {
                 dataSet.getFill(pos)
                     .fillRect(
-                        c, paintRender,
+                        canvas, paintRender,
                         buffer.buffer[j],
                         buffer.buffer[j + 1],
                         buffer.buffer[j + 2],
@@ -145,14 +145,14 @@ open class HorizontalBarChartRenderer(
                         0f
                     )
             } else {
-                c.drawRect(
+                canvas.drawRect(
                     buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                     buffer.buffer[j + 3], paintRender
                 )
             }
 
             if (drawBorder) {
-                c.drawRect(
+                canvas.drawRect(
                     buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                     buffer.buffer[j + 3], barBorderPaint
                 )
@@ -162,7 +162,7 @@ open class HorizontalBarChartRenderer(
         }
     }
 
-    override fun drawValues(c: Canvas) {
+    override fun drawValues(canvas: Canvas) {
         // if values are drawn
         if (isDrawingValuesAllowed(chart)) {
             val dataSets = chart.barData.dataSets
@@ -235,7 +235,7 @@ open class HorizontalBarChartRenderer(
 
                         if (dataSet.isDrawValuesEnabled) {
                             drawValue(
-                                c,
+                                canvas,
                                 formattedValue!!,
                                 buffer.buffer[j + 2] + (if (`val` >= 0) posOffset else negOffset),
                                 y + halfTextHeight,
@@ -253,7 +253,7 @@ open class HorizontalBarChartRenderer(
                             py += iconsOffset.y
 
                             Utils.drawImage(
-                                c,
+                                canvas,
                                 icon,
                                 px.toInt(),
                                 py.toInt(),
@@ -311,7 +311,7 @@ open class HorizontalBarChartRenderer(
 
                             if (dataSet.isDrawValuesEnabled) {
                                 drawValue(
-                                    c, formattedValue!!,
+                                    canvas, formattedValue!!,
                                     buffer.buffer[bufferIndex + 2]
                                             + (if (entry.y >= 0) posOffset else negOffset),
                                     buffer.buffer[bufferIndex + 1] + halfTextHeight, color
@@ -329,7 +329,7 @@ open class HorizontalBarChartRenderer(
                                 py += iconsOffset.y
 
                                 Utils.drawImage(
-                                    c,
+                                    canvas,
                                     icon,
                                     px.toInt(),
                                     py.toInt(),
@@ -410,14 +410,14 @@ open class HorizontalBarChartRenderer(
                                 }
 
                                 if (dataSet.isDrawValuesEnabled) {
-                                    drawValue(c, formattedValue!!, x, y + halfTextHeight, color)
+                                    drawValue(canvas, formattedValue!!, x, y + halfTextHeight, color)
                                 }
 
                                 if (entry.icon != null && dataSet.isDrawIconsEnabled) {
                                     val icon = entry.icon
 
                                     Utils.drawImage(
-                                        c,
+                                        canvas,
                                         icon,
                                         (x + iconsOffset.x).toInt(),
                                         (y + iconsOffset.y).toInt(),
@@ -439,18 +439,16 @@ open class HorizontalBarChartRenderer(
         }
     }
 
-    protected fun drawValue(c: Canvas, valueText: String, x: Float, y: Float, color: Int) {
+    protected fun drawValue(canvas: Canvas, valueText: String, x: Float, y: Float, color: Int) {
         paintValues.color = color
-        c.drawText(valueText, x, y, paintValues)
+        canvas.drawText(valueText, x, y, paintValues)
     }
 
     override fun prepareBarHighlight(x: Float, y1: Float, y2: Float, barWidthHalf: Float, trans: Transformer) {
         val top = x - barWidthHalf
         val bottom = x + barWidthHalf
-        val left = y1
-        val right = y2
 
-        barRect[left, top, right] = bottom
+        barRect[y1, top, y2] = bottom
 
         trans.rectToPixelPhaseHorizontal(barRect, animator.phaseY)
     }

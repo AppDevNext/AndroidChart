@@ -30,14 +30,14 @@ open class RadarChartRenderer(
 
     override fun initBuffers() = Unit
 
-    override fun drawData(c: Canvas) {
+    override fun drawData(canvas: Canvas) {
         val radarData = chart.data
 
         val mostEntries = radarData!!.maxEntryCountSet.entryCount
 
         for (set in radarData.dataSets) {
             if (set.isVisible) {
-                drawDataSet(c, set, mostEntries)
+                drawDataSet(canvas, set, mostEntries)
             }
         }
     }
@@ -47,15 +47,15 @@ open class RadarChartRenderer(
     /**
      * Draws the RadarDataSet
      *
-     * @param c
+     * @param canvas
      * @param dataSet
      * @param mostEntries the entry count of the dataset with the most entries
      */
-    protected fun drawDataSet(c: Canvas, dataSet: IRadarDataSet, mostEntries: Int) {
+    protected fun drawDataSet(canvas: Canvas, dataSet: IRadarDataSet, mostEntries: Int) {
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
 
-        val sliceangle = chart.sliceAngle
+        val sliceAngle = chart.sliceAngle
 
         // calculate the factor that is needed for transforming the value to
         // pixels
@@ -76,7 +76,7 @@ open class RadarChartRenderer(
             Utils.getPosition(
                 center,
                 (e.y - chart.yChartMin) * factor * phaseY,
-                sliceangle * j * phaseX + chart.rotationAngle, pOut
+                sliceAngle * j * phaseX + chart.rotationAngle, pOut
             )
 
             if (java.lang.Float.isNaN(pOut.x)) continue
@@ -97,9 +97,9 @@ open class RadarChartRenderer(
         if (dataSet.isDrawFilledEnabled) {
             val drawable = dataSet.fillDrawable
             if (drawable != null) {
-                drawFilledPath(c, surface, drawable)
+                drawFilledPath(canvas, surface, drawable)
             } else {
-                drawFilledPath(c, surface, dataSet.fillColor, dataSet.fillAlpha)
+                drawFilledPath(canvas, surface, dataSet.fillColor, dataSet.fillAlpha)
             }
         }
 
@@ -107,17 +107,17 @@ open class RadarChartRenderer(
         paintRender.style = Paint.Style.STROKE
 
         // draw the line (only if filled is disabled or alpha is below 255)
-        if (!dataSet.isDrawFilledEnabled || dataSet.fillAlpha < 255) c.drawPath(surface, paintRender)
+        if (!dataSet.isDrawFilledEnabled || dataSet.fillAlpha < 255) canvas.drawPath(surface, paintRender)
 
         MPPointF.recycleInstance(center)
         MPPointF.recycleInstance(pOut)
     }
 
-    override fun drawValues(c: Canvas) {
+    override fun drawValues(canvas: Canvas) {
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
 
-        val sliceangle = chart.sliceAngle
+        val sliceAngle = chart.sliceAngle
 
         // calculate the factor that is needed for transforming the value to
         // pixels
@@ -127,7 +127,7 @@ open class RadarChartRenderer(
         val pOut = MPPointF.getInstance(0f, 0f)
         val pIcon = MPPointF.getInstance(0f, 0f)
 
-        val yoffset = Utils.convertDpToPixel(5f)
+        val yOffset = Utils.convertDpToPixel(5f)
 
         for (i in 0..<chart.data!!.dataSetCount) {
             val dataSet = chart.data!!.getDataSetByIndex(i)
@@ -151,19 +151,19 @@ open class RadarChartRenderer(
                 Utils.getPosition(
                     center,
                     (entry.y - chart.yChartMin) * factor * phaseY,
-                    sliceangle * j * phaseX + chart.rotationAngle,
+                    sliceAngle * j * phaseX + chart.rotationAngle,
                     pOut
                 )
 
                 if (dataSet.isDrawValuesEnabled) {
                     drawValue(
-                        c,
+                        canvas,
                         dataSet.valueFormatter,
                         entry.y,
                         entry,
                         i,
                         pOut.x,
-                        pOut.y - yoffset,
+                        pOut.y - yOffset,
                         dataSet.getValueTextColor(j)
                     )
                 }
@@ -174,14 +174,14 @@ open class RadarChartRenderer(
                     Utils.getPosition(
                         center,
                         (entry.y) * factor * phaseY + iconsOffset.y,
-                        sliceangle * j * phaseX + chart.rotationAngle,
+                        sliceAngle * j * phaseX + chart.rotationAngle,
                         pIcon
                     )
 
                     pIcon.y += iconsOffset.x
 
                     Utils.drawImage(
-                        c,
+                        canvas,
                         icon,
                         pIcon.x.toInt(),
                         pIcon.y.toInt(),
@@ -199,17 +199,17 @@ open class RadarChartRenderer(
         MPPointF.recycleInstance(pIcon)
     }
 
-    override fun drawExtras(c: Canvas) {
-        drawWeb(c)
+    override fun drawExtras(canvas: Canvas) {
+        drawWeb(canvas)
     }
 
-    protected fun drawWeb(c: Canvas) {
-        val sliceangle = chart.sliceAngle
+    protected fun drawWeb(canvas: Canvas) {
+        val sliceAngle = chart.sliceAngle
 
         // calculate the factor that is needed for transforming the value to
         // pixels
         val factor = chart.factor
-        val rotationangle = chart.rotationAngle
+        val rotationAngle = chart.rotationAngle
 
         val center = chart.centerOffsets
 
@@ -227,11 +227,11 @@ open class RadarChartRenderer(
             Utils.getPosition(
                 center,
                 chart.yRange * factor,
-                sliceangle * i + rotationangle,
+                sliceAngle * i + rotationAngle,
                 p
             )
 
-            c.drawLine(center.x, center.y, p.x, p.y, webPaint)
+            canvas.drawLine(center.x, center.y, p.x, p.y, webPaint)
             i += xIncrements
         }
         MPPointF.recycleInstance(p)
@@ -253,10 +253,10 @@ open class RadarChartRenderer(
             for (i in 0..<chart.data!!.entryCount) {
                 val r = (chart.yAxis.mEntries[j] - chart.yChartMin) * factor
 
-                Utils.getPosition(center, r, sliceangle * i + rotationangle, p1out)
-                Utils.getPosition(center, r, sliceangle * (i + 1) + rotationangle, p2out)
+                Utils.getPosition(center, r, sliceAngle * i + rotationAngle, p1out)
+                Utils.getPosition(center, r, sliceAngle * (i + 1) + rotationAngle, p2out)
 
-                c.drawLine(p1out.x, p1out.y, p2out.x, p2out.y, webPaint)
+                canvas.drawLine(p1out.x, p1out.y, p2out.x, p2out.y, webPaint)
                 if (chart.isCustomLayerColorEnable) {
                     if (p1out.x != p2out.x) {
                         if (i == 0) {
@@ -273,7 +273,7 @@ open class RadarChartRenderer(
                 if (!innerArea.isEmpty) {
                     val result = innerArea.op(previousPath, Path.Op.DIFFERENCE)
                     if (result) {
-                        c.drawPath(innerArea, paint)
+                        canvas.drawPath(innerArea, paint)
                     }
                 }
                 previousPath.set(temp)
@@ -283,8 +283,8 @@ open class RadarChartRenderer(
         MPPointF.recycleInstance(p2out)
     }
 
-    override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
-        val sliceangle = chart.sliceAngle
+    override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
+        val sliceAngle = chart.sliceAngle
 
         // calculate the factor that is needed for transforming the value to
         // pixels
@@ -309,14 +309,14 @@ open class RadarChartRenderer(
             Utils.getPosition(
                 center,
                 y * factor * animator.phaseY,
-                sliceangle * high.x * animator.phaseX + chart.rotationAngle,
+                sliceAngle * high.x * animator.phaseX + chart.rotationAngle,
                 pOut
             )
 
             high.setDraw(pOut.x, pOut.y)
 
             // draw the lines
-            drawHighlightLines(c, pOut.x, pOut.y, set)
+            drawHighlightLines(canvas, pOut.x, pOut.y, set)
 
             if (set.isDrawHighlightCircleEnabled) {
                 if (!java.lang.Float.isNaN(pOut.x) && !java.lang.Float.isNaN(pOut.y)) {
@@ -330,7 +330,7 @@ open class RadarChartRenderer(
                     }
 
                     drawHighlightCircle(
-                        c,
+                        canvas,
                         pOut,
                         set.highlightCircleInnerRadius,
                         set.highlightCircleOuterRadius,
@@ -365,7 +365,7 @@ open class RadarChartRenderer(
     }
 
     fun drawHighlightCircle(
-        c: Canvas,
+        canvas: Canvas,
         point: MPPointF,
         innerRadius: Float,
         outerRadius: Float,
@@ -375,7 +375,7 @@ open class RadarChartRenderer(
     ) {
         var innerRadiusLocal = innerRadius
         var outerRadiusLocal = outerRadius
-        c.withSave {
+        canvas.withSave {
             outerRadiusLocal = Utils.convertDpToPixel(outerRadiusLocal)
             innerRadiusLocal = Utils.convertDpToPixel(innerRadiusLocal)
 

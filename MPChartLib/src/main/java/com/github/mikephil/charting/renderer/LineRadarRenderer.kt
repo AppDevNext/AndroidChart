@@ -14,20 +14,20 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
     /**
      * Draws the provided path in filled mode with the provided drawable.
      *
-     * @param c
+     * @param canvas
      * @param filledPath
      * @param drawable
      */
-    protected fun drawFilledPath(c: Canvas, filledPath: Path, drawable: Drawable) {
+    protected fun drawFilledPath(canvas: Canvas, filledPath: Path, drawable: Drawable) {
         if (clipPathSupported()) {
-            c.withClip(filledPath) {
+            canvas.withClip(filledPath) {
                 drawable.setBounds(
                     viewPortHandler.contentLeft().toInt(),
                     viewPortHandler.contentTop().toInt(),
                     viewPortHandler.contentRight().toInt(),
                     viewPortHandler.contentBottom().toInt()
                 )
-                drawable.draw(c)
+                drawable.draw(canvas)
             }
         } else {
             throw RuntimeException(
@@ -41,17 +41,17 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
      * Draws the provided path in filled mode with the provided color and alpha.
      * Special thanks to Angelo Suzuki (https://github.com/tinsukE) for this.
      *
-     * @param c
+     * @param canvas
      * @param filledPath
      * @param fillColor
      * @param fillAlpha
      */
-    protected fun drawFilledPath(c: Canvas, filledPath: Path, fillColor: Int, fillAlpha: Int) {
+    protected fun drawFilledPath(canvas: Canvas, filledPath: Path, fillColor: Int, fillAlpha: Int) {
         val color = (fillAlpha shl 24) or (fillColor and 0xffffff)
 
         if (clipPathSupported()) {
-            c.withClip(filledPath) {
-                c.drawColor(color)
+            canvas.withClip(filledPath) {
+                canvas.drawColor(color)
             }
         } else {
             // save
@@ -63,7 +63,7 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
             paintRender.style = Paint.Style.FILL
             paintRender.color = color
 
-            c.drawPath(filledPath, paintRender)
+            canvas.drawPath(filledPath, paintRender)
 
             // restore
             paintRender.color = previousColor

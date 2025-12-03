@@ -17,17 +17,17 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
     override fun initBuffers() {
     }
 
-    override fun drawData(c: Canvas) {
+    override fun drawData(canvas: Canvas) {
         val scatterData = chart.scatterData
 
         for (set in scatterData.dataSets) {
-            if (set.isVisible) drawDataSet(c, set)
+            if (set.isVisible) drawDataSet(canvas, set)
         }
     }
 
     var pixelBuffer: FloatArray = FloatArray(2)
 
-    protected fun drawDataSet(c: Canvas?, dataSet: IScatterDataSet) {
+    protected fun drawDataSet(canvas: Canvas?, dataSet: IScatterDataSet) {
         if (dataSet.entryCount < 1) return
 
         val viewPortHandler = this.viewPortHandler
@@ -63,14 +63,14 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
 
             paintRender.color = dataSet.getColor(i / 2)
             renderer.renderShape(
-                c, dataSet, this.viewPortHandler,
+                canvas, dataSet, this.viewPortHandler,
                 pixelBuffer[0], pixelBuffer[1],
                 paintRender
             )
         }
     }
 
-    override fun drawValues(c: Canvas) {
+    override fun drawValues(canvas: Canvas) {
         // if values are drawn
 
         if (isDrawingValuesAllowed(chart)) {
@@ -118,7 +118,7 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
 
                     if (dataSet.isDrawValuesEnabled) {
                         drawValue(
-                            c,
+                            canvas,
                             dataSet.valueFormatter,
                             entry.y,
                             entry,
@@ -133,7 +133,7 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
                         val icon = entry.icon
 
                         Utils.drawImage(
-                            c,
+                            canvas,
                             icon,
                             (positions[j] + iconsOffset.x).toInt(),
                             (positions[j + 1] + iconsOffset.y).toInt(),
@@ -149,10 +149,10 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
         }
     }
 
-    override fun drawExtras(c: Canvas) {
+    override fun drawExtras(canvas: Canvas) {
     }
 
-    override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
+    override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
         val scatterData = chart.scatterData
 
         for (high in indices) {
@@ -172,7 +172,7 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
             high.setDraw(pix.x.toFloat(), pix.y.toFloat())
 
             // draw the lines
-            drawHighlightLines(c, pix.x.toFloat(), pix.y.toFloat(), set)
+            drawHighlightLines(canvas, pix.x.toFloat(), pix.y.toFloat(), set)
         }
     }
 }

@@ -233,30 +233,30 @@ abstract class AxisRenderer(
     /**
      * Draws the axis labels to the screen.
      *
-     * @param c
+     * @param canvas
      */
-    abstract fun renderAxisLabels(c: Canvas)
+    abstract fun renderAxisLabels(canvas: Canvas)
 
     /**
      * Draws the grid lines belonging to the axis.
      *
-     * @param c
+     * @param canvas
      */
-    abstract fun renderGridLines(c: Canvas)
+    abstract fun renderGridLines(canvas: Canvas)
 
     /**
      * Draws the line that goes alongside the axis.
      *
-     * @param c
+     * @param canvas
      */
-    abstract fun renderAxisLine(c: Canvas)
+    abstract fun renderAxisLine(canvas: Canvas)
 
     /**
      * Draws the LimitLines associated with this axis to the screen.
      *
-     * @param c
+     * @param canvas
      */
-    abstract fun renderLimitLines(c: Canvas)
+    abstract fun renderLimitLines(canvas: Canvas)
 
     /**
      * Sets the text color to use for the labels. Make sure to use

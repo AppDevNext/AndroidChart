@@ -13,6 +13,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -24,11 +25,11 @@ open class BubbleChartRenderer(
     override fun initBuffers() {
     }
 
-    override fun drawData(c: Canvas) {
+    override fun drawData(canvas: Canvas) {
         val bubbleData = chart.bubbleData
 
         for (set in bubbleData.dataSets) {
-            if (set.isVisible) drawDataSet(c, set)
+            if (set.isVisible) drawDataSet(canvas, set)
         }
     }
 
@@ -41,7 +42,7 @@ open class BubbleChartRenderer(
         return shapeSize
     }
 
-    protected fun drawDataSet(c: Canvas, dataSet: IBubbleDataSet) {
+    protected fun drawDataSet(canvas: Canvas, dataSet: IBubbleDataSet) {
         if (dataSet.entryCount < 1) return
 
         val trans = chart.getTransformer(dataSet.axisDependency)
@@ -82,11 +83,11 @@ open class BubbleChartRenderer(
             val color = dataSet.getColor(j)
 
             paintRender.color = color
-            c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, paintRender)
+            canvas.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, paintRender)
         }
     }
 
-    override fun drawValues(c: Canvas) {
+    override fun drawValues(canvas: Canvas) {
         val bubbleData = chart.bubbleData ?: return
 
         // if values are drawn
@@ -128,7 +129,7 @@ open class BubbleChartRenderer(
                     while (j < positions.size) {
                         var valueTextColor = dataSet.getValueTextColor(j / 2 + xBounds.min)
                         valueTextColor = Color.argb(
-                            Math.round(255f * alpha), Color.red(valueTextColor),
+                            (255f * alpha).roundToInt(), Color.red(valueTextColor),
                             Color.green(valueTextColor), Color.blue(valueTextColor)
                         )
 
@@ -146,7 +147,7 @@ open class BubbleChartRenderer(
 
                         if (dataSet.isDrawValuesEnabled) {
                             drawValue(
-                                c, dataSet.valueFormatter, entry.size, entry, i, x,
+                                canvas, dataSet.valueFormatter, entry.size, entry, i, x,
                                 y + (0.5f * lineHeight), valueTextColor
                             )
                         }
@@ -155,7 +156,7 @@ open class BubbleChartRenderer(
                             val icon = entry.icon
 
                             Utils.drawImage(
-                                c,
+                                canvas,
                                 icon,
                                 (x + iconsOffset.x).toInt(),
                                 (y + iconsOffset.y).toInt(),
@@ -172,7 +173,7 @@ open class BubbleChartRenderer(
         }
     }
 
-    override fun drawExtras(c: Canvas) {
+    override fun drawExtras(canvas: Canvas) {
     }
 
     private val _hsvBuffer = FloatArray(3)
@@ -184,7 +185,7 @@ open class BubbleChartRenderer(
         paintHighlight.strokeWidth = Utils.convertDpToPixel(1.5f)
     }
 
-    override fun drawHighlighted(c: Canvas, indices: Array<Highlight>) {
+    override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
         val bubbleData = chart.bubbleData
 
         val phaseY = animator.phaseY
@@ -248,7 +249,7 @@ open class BubbleChartRenderer(
 
             paintHighlight.color = color
             paintHighlight.strokeWidth = set.highlightCircleWidth
-            c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, paintHighlight)
+            canvas.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, paintHighlight)
         }
     }
 }

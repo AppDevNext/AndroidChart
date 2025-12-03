@@ -186,7 +186,7 @@ open class LegendRenderer(
 
         val tf = legend.typeface
 
-        if (tf != null) labelPaint.setTypeface(tf)
+        if (tf != null) labelPaint.typeface = tf
 
         labelPaint.textSize = legend.textSize
         labelPaint.color = legend.textColor
@@ -197,12 +197,12 @@ open class LegendRenderer(
 
     protected var legendFontMetrics: Paint.FontMetrics = Paint.FontMetrics()
 
-    fun renderLegend(c: Canvas) {
+    fun renderLegend(canvas: Canvas) {
         if (!legend.isEnabled) return
 
         val tf = legend.typeface
 
-        if (tf != null) labelPaint.setTypeface(tf)
+        if (tf != null) labelPaint.typeface = tf
 
         labelPaint.textSize = legend.textSize
         labelPaint.color = legend.textColor
@@ -227,7 +227,7 @@ open class LegendRenderer(
 
         val yOffset = legend.yOffset
         val xOffset = legend.xOffset
-        var originPosX = 0f
+        var originPosX: Float
 
         when (horizontalAlignment) {
             LegendHorizontalAlignment.LEFT -> {
@@ -308,7 +308,7 @@ open class LegendRenderer(
                     if (drawingForm) {
                         if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= formSize
 
-                        drawForm(c, posX, posY + formYOffset, e, legend)
+                        drawForm(canvas, posX, posY + formYOffset, e, legend)
 
                         if (direction == LegendDirection.LEFT_TO_RIGHT) posX += formSize
                     }
@@ -318,7 +318,7 @@ open class LegendRenderer(
 
                         if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= calculatedLabelSizes[i].width
 
-                        drawLabel(c, posX, posY + labelLineHeight, e.label)
+                        drawLabel(canvas, posX, posY + labelLineHeight, e.label)
 
                         if (direction == LegendDirection.LEFT_TO_RIGHT) posX += calculatedLabelSizes[i].width
 
@@ -332,7 +332,7 @@ open class LegendRenderer(
                 // contains the stacked legend size in pixels
                 var stack = 0f
                 var wasStacked = false
-                var posY = 0f
+                var posY: Float
 
                 when (verticalAlignment) {
                     LegendVerticalAlignment.TOP -> {
@@ -368,7 +368,7 @@ open class LegendRenderer(
                         if (direction == LegendDirection.LEFT_TO_RIGHT) posX += stack
                         else posX -= formSize - stack
 
-                        drawForm(c, posX, posY + formYOffset, e, legend)
+                        drawForm(canvas, posX, posY + formYOffset, e, legend)
 
                         if (direction == LegendDirection.LEFT_TO_RIGHT) posX += formSize
                     }
@@ -383,10 +383,10 @@ open class LegendRenderer(
                         if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= Utils.calcTextWidth(labelPaint, e.label).toFloat()
 
                         if (!wasStacked) {
-                            drawLabel(c, posX, posY + labelLineHeight, e.label)
+                            drawLabel(canvas, posX, posY + labelLineHeight, e.label)
                         } else {
                             posY += labelLineHeight + labelLineSpacing
-                            drawLabel(c, posX, posY + labelLineHeight, e.label)
+                            drawLabel(canvas, posX, posY + labelLineHeight, e.label)
                         }
 
                         // make a step down
@@ -417,21 +417,21 @@ open class LegendRenderer(
      * Draws the Legend-form at the given position with the color at the given
      * index.
      *
-     * @param c      canvas to draw with
+     * @param canvas      canvas to draw with
      * @param x      position
      * @param y      position
      * @param entry  the entry to render
      * @param legend the legend context
      */
     protected fun drawForm(
-        c: Canvas,
+        canvas: Canvas,
         x: Float, y: Float,
         entry: LegendEntry,
         legend: Legend
     ) {
         if (entry.formColor == ColorTemplate.COLOR_SKIP || entry.formColor == ColorTemplate.COLOR_NONE || entry.formColor == 0) return
 
-        c.withSave {
+        canvas.withSave {
 
             var form = entry.form
             if (form == LegendForm.DEFAULT) form = legend.form
@@ -451,12 +451,12 @@ open class LegendRenderer(
                 LegendForm.EMPTY -> {}
                 LegendForm.DEFAULT, LegendForm.CIRCLE -> {
                     formPaint.style = Paint.Style.FILL
-                    c.drawCircle(x + half, y, half, formPaint)
+                    canvas.drawCircle(x + half, y, half, formPaint)
                 }
 
                 LegendForm.SQUARE -> {
                     formPaint.style = Paint.Style.FILL
-                    c.drawRect(x, y - half, x + formSize, y + half, formPaint)
+                    canvas.drawRect(x, y - half, x + formSize, y + half, formPaint)
                 }
 
                 LegendForm.LINE -> {
@@ -472,12 +472,12 @@ open class LegendRenderer(
                         entry.formLineDashEffect
                     formPaint.style = Paint.Style.STROKE
                     formPaint.strokeWidth = formLineWidth
-                    formPaint.setPathEffect(formLineDashEffect)
+                    formPaint.pathEffect = formLineDashEffect
 
                     mLineFormPath.reset()
                     mLineFormPath.moveTo(x, y)
                     mLineFormPath.lineTo(x + formSize, y)
-                    c.drawPath(mLineFormPath, formPaint)
+                    canvas.drawPath(mLineFormPath, formPaint)
                 }
             }
 
@@ -487,12 +487,12 @@ open class LegendRenderer(
     /**
      * Draws the provided label at the given position.
      *
-     * @param c     canvas to draw with
+     * @param canvas     canvas to draw with
      * @param x
      * @param y
      * @param label the label to draw
      */
-    protected fun drawLabel(c: Canvas, x: Float, y: Float, label: String) {
-        c.drawText(label, x, y, labelPaint)
+    protected fun drawLabel(canvas: Canvas, x: Float, y: Float, label: String) {
+        canvas.drawText(label, x, y, labelPaint)
     }
 }
