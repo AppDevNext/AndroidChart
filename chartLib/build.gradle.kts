@@ -43,6 +43,8 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.12.2")
     implementation("com.github.AppDevNext.Logcat:LogcatCoreLib:3.4")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:5.21.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
 }
 
 tasks.register<Jar>("androidSourcesJar") {
