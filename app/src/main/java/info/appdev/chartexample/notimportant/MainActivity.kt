@@ -69,7 +69,16 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
     override fun onItemClick(av: AdapterView<*>?, v: View, pos: Int, arg3: Long) {
         val intent = Intent(this, menuItems[pos].clazz)
         startActivity(intent)
-        overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransition(
+                OVERRIDE_TRANSITION_OPEN,
+                R.anim.move_right_in_activity,
+                R.anim.move_left_out_activity
+            )
+        } else {
+            @Suppress("DEPRECATION")
+            overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
