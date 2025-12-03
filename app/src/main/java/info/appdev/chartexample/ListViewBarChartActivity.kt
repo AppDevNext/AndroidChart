@@ -66,7 +66,7 @@ class ListViewBarChartActivity : DemoBase() {
                 convertView = LayoutInflater.from(context).inflate(
                     R.layout.list_item_barchart, null
                 )
-                holder.chart = convertView.findViewById<BarChart>(R.id.chart)
+                holder.chart = convertView.findViewById(R.id.chart)
 
                 convertView.tag = holder
             } else {
@@ -126,7 +126,7 @@ class ListViewBarChartActivity : DemoBase() {
             entries.add(BarEntry(i.toFloat(), (sampleValues[i]!!.toFloat() * 70) + 30))
         }
 
-        val d = BarDataSet(entries, "New DataSet " + cnt)
+        val d = BarDataSet(entries, "New DataSet $cnt")
         d.setColors(*ColorTemplate.VORDIPLOM_COLORS)
         d.barShadowColor = Color.rgb(203, 203, 203)
 

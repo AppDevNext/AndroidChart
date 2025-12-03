@@ -28,7 +28,7 @@ class ScrollViewActivity : DemoBase() {
 
         title = "ScrollViewActivity"
 
-        chart = findViewById<BarChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
 
         chart!!.description.isEnabled = false
 

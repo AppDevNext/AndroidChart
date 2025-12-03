@@ -46,16 +46,16 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
 
         title = "BubbleChartActivity"
 
-        tvX = findViewById<TextView>(R.id.tvXMax)
-        tvY = findViewById<TextView>(R.id.tvYMax)
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekBarX)
+        seekBarX = findViewById(R.id.seekBarX)
         seekBarX!!.setOnSeekBarChangeListener(this)
 
-        seekBarY = findViewById<SeekBar>(R.id.seekBarY)
+        seekBarY = findViewById(R.id.seekBarY)
         seekBarY!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<BubbleChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.description.isEnabled = false
 
         chart!!.setOnChartValueSelectedListener(this)

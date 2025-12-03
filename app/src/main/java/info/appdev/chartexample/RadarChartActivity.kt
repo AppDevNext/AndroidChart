@@ -139,7 +139,7 @@ class RadarChartActivity : DemoBase() {
         data.setValueTextColor(Color.WHITE)
 
         chart!!.setData(data)
-        val colorList: MutableList<Int?> = ArrayList<Int?>()
+        val colorList: MutableList<Int?> = ArrayList()
         colorList.add(Color.rgb(222, 166, 111))
         colorList.add(Color.rgb(220, 206, 138))
         colorList.add(Color.rgb(243, 255, 192))

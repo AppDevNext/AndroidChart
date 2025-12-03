@@ -42,7 +42,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
 
         title = "StackedBarActivityNegative"
 
-        chart = findViewById<HorizontalBarChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
         chart!!.setDrawGridBackground(false)
         chart!!.description.isEnabled = false
@@ -111,9 +111,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         set.valueTextSize = 7f
         set.axisDependency = YAxis.AxisDependency.RIGHT
         set.setColors(Color.rgb(67, 67, 72), Color.rgb(124, 181, 236))
-        set.stackLabels = arrayOf<String>(
-            "Men", "Women"
-        )
+        set.stackLabels = arrayOf("Men", "Women")
 
         val data = BarData(set)
         data.barWidth = 8.5f
@@ -227,20 +225,16 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
     }
 
     private class CustomFormatter : IValueFormatter, IAxisValueFormatter {
-        private val mFormat: DecimalFormat
-
-        init {
-            mFormat = DecimalFormat("###")
-        }
+        private val decimalFormat: DecimalFormat = DecimalFormat("###")
 
         // data
         override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
-            return mFormat.format(abs(value).toDouble()) + "m"
+            return decimalFormat.format(abs(value).toDouble()) + "m"
         }
 
         // YAxis
         override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-            return mFormat.format(abs(value).toDouble()) + "m"
+            return decimalFormat.format(abs(value).toDouble()) + "m"
         }
     }
 }

@@ -37,7 +37,7 @@ class ViewPagerSimpleChartDemo : DemoBase() {
         showSnackbar("Swipe left and right for more awesome design examples!")
     }
 
-    private inner class PageAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
+    private class PageAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
         override fun getItem(pos: Int): Fragment {
             var f: Fragment? = null
             when (pos) {

@@ -36,7 +36,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
 
         title = "DynamicalAddingActivity"
 
-        chart = findViewById<LineChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
         chart!!.setDrawGridBackground(false)
         chart!!.description.isEnabled = false
@@ -121,7 +121,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
                 values.add(Entry(i.toFloat(), (sampleValues[cycleValue]!!.toFloat() * 50f) + 50f * count))
             }
 
-            val set = LineDataSet(values, "DataSet " + count)
+            val set = LineDataSet(values, "DataSet $count")
             set.setLineWidth(2.5f)
             set.circleRadius = 4.5f
 

@@ -39,7 +39,7 @@ class FilledLineActivity : DemoBase() {
 
         title = "FilledLineActivity"
 
-        chart = findViewById<LineChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setBackgroundColor(Color.WHITE)
         chart!!.setGridBackgroundColor(fillColor)
         chart!!.setDrawGridBackground(true)

@@ -50,16 +50,16 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
         title = "LineChart DualAxis"
 
-        tvX = findViewById<TextView>(R.id.tvXMax)
-        tvY = findViewById<TextView>(R.id.tvYMax)
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekBarX)
+        seekBarX = findViewById(R.id.seekBarX)
         seekBarX!!.setOnSeekBarChangeListener(this)
 
-        seekBarY = findViewById<SeekBar>(R.id.seekBarY)
+        seekBarY = findViewById(R.id.seekBarY)
         seekBarY!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<LineChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
 
         // no description text

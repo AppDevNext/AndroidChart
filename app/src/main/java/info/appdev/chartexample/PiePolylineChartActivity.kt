@@ -52,16 +52,16 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
 
         title = "PiePolylineChartActivity"
 
-        tvX = findViewById<TextView>(R.id.tvXMax)
-        tvY = findViewById<TextView>(R.id.tvYMax)
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekBarX)
-        seekBarY = findViewById<SeekBar>(R.id.seekBarY)
+        seekBarX = findViewById(R.id.seekBarX)
+        seekBarY = findViewById(R.id.seekBarY)
 
         seekBarX!!.setOnSeekBarChangeListener(this)
         seekBarY!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<PieChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setUsePercentValues(true)
         chart!!.description.isEnabled = false
         chart!!.setExtraOffsets(5f, 10f, 5f, 5f)

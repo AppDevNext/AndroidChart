@@ -40,16 +40,16 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
 
         title = "CandleStickChartActivity"
 
-        tvX = findViewById<TextView>(R.id.tvXMax)
-        tvY = findViewById<TextView>(R.id.tvYMax)
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekBarX)
+        seekBarX = findViewById(R.id.seekBarX)
         seekBarX!!.setOnSeekBarChangeListener(this)
 
-        seekBarY = findViewById<SeekBar>(R.id.seekBarY)
+        seekBarY = findViewById(R.id.seekBarY)
         seekBarY!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<CandleStickChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setBackgroundColor(Color.WHITE)
 
         chart!!.description.isEnabled = false
@@ -86,8 +86,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        var progress: Int
-        progress = (seekBarX!!.progress)
+        val progress: Int = (seekBarX!!.progress)
 
         tvX!!.text = progress.toString()
         tvY!!.text = seekBarY!!.progress.toString()

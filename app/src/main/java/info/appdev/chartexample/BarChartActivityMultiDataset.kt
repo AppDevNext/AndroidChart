@@ -47,18 +47,18 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
 
         title = "BarChartActivityMultiDataset"
 
-        tvX = findViewById<TextView>(R.id.tvXMax)
+        tvX = findViewById(R.id.tvXMax)
         tvX!!.textSize = 10f
-        tvY = findViewById<TextView>(R.id.tvYMax)
+        tvY = findViewById(R.id.tvYMax)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekBarX)
+        seekBarX = findViewById(R.id.seekBarX)
         seekBarX!!.max = 50
         seekBarX!!.setOnSeekBarChangeListener(this)
 
-        seekBarY = findViewById<SeekBar>(R.id.seekBarY)
+        seekBarY = findViewById(R.id.seekBarY)
         seekBarY!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<BarChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
         chart!!.description.isEnabled = false
 

@@ -41,11 +41,11 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
 
         data = FileUtils.loadBarEntriesFromAssets(assets, "othersine.txt")
 
-        tvX = findViewById<TextView>(R.id.tvValueCount)
+        tvX = findViewById(R.id.tvValueCount)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekbarValues)
+        seekBarX = findViewById(R.id.seekbarValues)
 
-        chart = findViewById<BarChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
 
         chart!!.setDrawBarShadow(false)
         chart!!.setDrawValueAboveBar(true)
@@ -105,7 +105,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         val entries = ArrayList<BarEntry?>()
 
         for (i in 0..<count) {
-            entries.add(data!!.get(i))
+            entries.add(data!![i])
         }
 
         val set: BarDataSet

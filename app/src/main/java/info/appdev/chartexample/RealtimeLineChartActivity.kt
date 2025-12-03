@@ -38,7 +38,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
 
         title = "RealtimeLineChartActivity"
 
-        chart = findViewById<LineChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
 
         // enable description text
@@ -144,27 +144,21 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
     private fun feedMultiple() {
         if (thread != null) thread!!.interrupt()
 
-        val runnable: Runnable = object : Runnable {
-            override fun run() {
-                addEntry()
-            }
-        }
+        val runnable = Runnable { addEntry() }
 
-        thread = Thread(object : Runnable {
-            override fun run() {
-                (0..999).forEach {
-                    // Don't generate garbage runnables inside the loop.
+        thread = Thread {
+            repeat((0..999).count()) {
+                // Don't generate garbage runnable inside the loop.
 
-                    runOnUiThread(runnable)
+                runOnUiThread(runnable)
 
-                    try {
-                        Thread.sleep(25)
-                    } catch (e: InterruptedException) {
-                        e.printStackTrace()
-                    }
+                try {
+                    Thread.sleep(25)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
                 }
             }
-        })
+        }
 
         thread!!.start()
     }

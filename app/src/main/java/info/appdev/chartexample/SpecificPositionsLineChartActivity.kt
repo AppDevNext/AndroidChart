@@ -309,7 +309,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
     }
 
     override fun onChartLongPressed(me: MotionEvent) {
-        Log.i("LongPress", "Chart longpressed.")
+        Log.i("LongPress", "Chart long pressed.")
     }
 
     override fun onChartDoubleTapped(me: MotionEvent) {

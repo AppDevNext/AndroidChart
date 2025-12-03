@@ -32,11 +32,11 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
 
         title = "PerformanceLineChart"
 
-        tvCount = findViewById<TextView>(R.id.tvValueCount)
-        seekBarValues = findViewById<SeekBar>(R.id.seekbarValues)
+        tvCount = findViewById(R.id.tvValueCount)
+        seekBarValues = findViewById(R.id.seekbarValues)
         seekBarValues!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<LineChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setDrawGridBackground(false)
 
         // no description text

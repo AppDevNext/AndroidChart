@@ -44,16 +44,16 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
         title = "StackedBarActivity"
 
-        tvX = findViewById<TextView>(R.id.tvXMax)
-        tvY = findViewById<TextView>(R.id.tvYMax)
+        tvX = findViewById(R.id.tvXMax)
+        tvY = findViewById(R.id.tvYMax)
 
-        seekBarX = findViewById<SeekBar>(R.id.seekBarX)
+        seekBarX = findViewById(R.id.seekBarX)
         seekBarX!!.setOnSeekBarChangeListener(this)
 
-        seekBarY = findViewById<SeekBar>(R.id.seekBarY)
+        seekBarY = findViewById(R.id.seekBarY)
         seekBarY!!.setOnSeekBarChangeListener(this)
 
-        chart = findViewById<BarChart>(R.id.chart1)
+        chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
 
         chart!!.description.isEnabled = false
@@ -133,7 +133,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             set1 = BarDataSet(values, "Statistics Vienna 2014")
             set1.setDrawIcons(false)
             set1.setColors(*this.colors)
-            set1.stackLabels = arrayOf<String>("Births", "Divorces", "Marriages")
+            set1.stackLabels = arrayOf("Births", "Divorces", "Marriages")
 
             val dataSets = ArrayList<IBarDataSet?>()
             dataSets.add(set1)
