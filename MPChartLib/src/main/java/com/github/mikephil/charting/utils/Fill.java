@@ -300,13 +300,13 @@ public class Fill {
 	}
 
 	private boolean isClipPathSupported() {
-		return Utils.getSDKInt() >= 18;
+		return Utils.getBuildSDK() >= 18;
 	}
 
 	private void ensureClipPathSupported() {
-		if (Utils.getSDKInt() < 18) {
+		if (Utils.getBuildSDK() < 18) {
 			throw new RuntimeException("Fill-drawables not (yet) supported below API level 18, " +
-					"this code was run on API level " + Utils.getSDKInt() + ".");
+					"this code was run on API level " + Utils.getBuildSDK() + ".");
 		}
 	}
 }

@@ -207,12 +207,12 @@ class BarLineChartTouchListener(
             MotionEvent.ACTION_UP -> {
                 val velocityTracker = mVelocityTracker
                 val pointerId = event.getPointerId(0)
-                velocityTracker!!.computeCurrentVelocity(1000, Utils.getMaximumFlingVelocity().toFloat())
+                velocityTracker!!.computeCurrentVelocity(1000, Utils.maximumFlingVelocity.toFloat())
                 val velocityY = velocityTracker.getYVelocity(pointerId)
                 val velocityX = velocityTracker.getXVelocity(pointerId)
 
-                if (abs(velocityX.toDouble()) > Utils.getMinimumFlingVelocity() ||
-                    abs(velocityY.toDouble()) > Utils.getMinimumFlingVelocity()
+                if (abs(velocityX.toDouble()) > Utils.minimumFlingVelocity ||
+                    abs(velocityY.toDouble()) > Utils.minimumFlingVelocity
                 ) {
                     if (mTouchMode == DRAG && mChart!!.isDragDecelerationEnabled) {
                         stopDeceleration()
@@ -225,8 +225,8 @@ class BarLineChartTouchListener(
                         mDecelerationVelocity.x = velocityX
                         mDecelerationVelocity.y = velocityY
 
-                        Utils.postInvalidateOnAnimation(mChart) // This causes computeScroll to fire, recommended for this by
-                        // Google
+                        // This causes computeScroll to fire, recommended for this by Google
+                        Utils.postInvalidateOnAnimation(mChart!!)
                     }
                 }
 
@@ -249,7 +249,7 @@ class BarLineChartTouchListener(
             }
 
             MotionEvent.ACTION_POINTER_UP -> {
-                Utils.velocityTrackerPointerUpCleanUpIfNecessary(event, mVelocityTracker)
+                mVelocityTracker?.let { Utils.velocityTrackerPointerUpCleanUpIfNecessary(event, it) }
 
                 mTouchMode = POST_ZOOM
             }
@@ -469,10 +469,9 @@ class BarLineChartTouchListener(
         val vph = mChart!!.viewPortHandler
 
         val xTrans = x - vph.offsetLeft()
-        var yTrans = 0f
 
         // check if axis is inverted
-        yTrans = if (inverted()) {
+        val yTrans: Float = if (inverted()) {
             -(y - vph.offsetTop())
         } else {
             -(mChart!!.measuredHeight - y - vph.offsetBottom())

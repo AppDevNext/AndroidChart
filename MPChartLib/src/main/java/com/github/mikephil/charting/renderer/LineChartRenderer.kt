@@ -543,14 +543,14 @@ class LineChartRenderer(
                         if (entry.icon != null && dataSet.isDrawIconsEnabled) {
                             val icon = entry.icon
 
-                            Utils.drawImage(
-                                canvas,
-                                icon,
-                                (x + iconsOffset.x).toInt(),
-                                (y + iconsOffset.y).toInt(),
-                                icon!!.intrinsicWidth,
-                                icon.intrinsicHeight
-                            )
+                            icon?.let {
+                                Utils.drawImage(
+                                    canvas,
+                                    it,
+                                    (x + iconsOffset.x).toInt(),
+                                    (y + iconsOffset.y).toInt()
+                                )
+                            }
                         }
                     }
                     j += 2

@@ -212,7 +212,7 @@ class DataTools {
             }
 
             // set color of filled area
-            if (Utils.getSDKInt() >= 18) {
+            if (Utils.buildSDK >= 18) {
                 // drawables only supported on api level 18 and above
                 val drawable = ContextCompat.getDrawable(context, R.drawable.fade_blue)
                 lineDataSet01.fillDrawable = drawable
