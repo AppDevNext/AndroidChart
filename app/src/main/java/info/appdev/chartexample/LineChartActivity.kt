@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
@@ -38,7 +37,6 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         super.onCreate(savedInstanceState)
         binding = ActivityLinechartBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         title = "LineChartActivity1"
         binding.seekBarX.setOnSeekBarChangeListener(this)
         binding.seekBarY.max = 180

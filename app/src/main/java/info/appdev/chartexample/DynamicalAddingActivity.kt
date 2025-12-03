@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
@@ -28,10 +27,6 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_linechart_noseekbar)
 
         title = "DynamicalAddingActivity"
