@@ -18,6 +18,8 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 /**
  * Implementation of the RadarChart, a "spidernet"-like chart. It works best
  * when displaying 5-10 entries per DataSet.
@@ -125,7 +127,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
 
         if (mData == null)

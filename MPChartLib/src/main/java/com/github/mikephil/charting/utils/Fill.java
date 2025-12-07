@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import static com.github.mikephil.charting.utils.UtilsKtKt.getSDKInt;
+
 public class Fill {
 	public enum Type {
 		EMPTY, COLOR, LINEAR_GRADIENT, DRAWABLE
@@ -296,13 +298,12 @@ public class Fill {
 	}
 
 	private boolean isClipPathSupported() {
-		return Utils.getSDKInt() >= 18;
+		return getSDKInt() >= 18;
 	}
 
 	private void ensureClipPathSupported() {
-		if (Utils.getSDKInt() < 18) {
-			throw new RuntimeException("Fill-drawables not (yet) supported below API level 18, " +
-					"this code was run on API level " + Utils.getSDKInt() + ".");
+		if (getSDKInt() < 18) {
+			throw new RuntimeException("Fill-drawables not (yet) supported below API level 18, this code was run on API level ${getSDKInt()}");
 		}
 	}
 }

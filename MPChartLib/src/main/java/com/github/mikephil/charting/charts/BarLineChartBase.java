@@ -36,6 +36,8 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 
+import androidx.annotation.NonNull;
+
 /**
  * Base-class of LineChart, BarChart, ScatterChart and CandleStickChart.
  *
@@ -191,7 +193,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     private long drawCycles = 0;
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
 
         if (mData == null)
@@ -465,7 +467,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         }
     }
 
-    private RectF mOffsetsBuffer = new RectF();
+    private final RectF mOffsetsBuffer = new RectF();
 
     @Override
     public void calculateOffsets() {
