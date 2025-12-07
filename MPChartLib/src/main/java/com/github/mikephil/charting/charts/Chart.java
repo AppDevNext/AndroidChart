@@ -1,7 +1,5 @@
 package com.github.mikephil.charting.charts;
 
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -167,12 +165,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 */
 	private float mExtraTopOffset = 0.f, mExtraRightOffset = 0.f, mExtraBottomOffset = 0.f, mExtraLeftOffset = 0.f;
 
-    /**
-     * Additional data on top of dynamically generated description. This can be set by the user.
-     */
-    private String accessibilitySummaryDescription = "";
+	/**
+	 * Additional data on top of dynamically generated description. This can be set by the user.
+	 */
+	private String accessibilitySummaryDescription = "";
 
-    /**
+	/**
 	 * default constructor for initialization in code
 	 */
 	public Chart(Context context) {
@@ -228,11 +226,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 		mInfoPaint.setTextSize(Utils.convertDpToPixel(12f));
 
 		if (mLogEnabled) {
-            Log.i("", "Chart.init()");
+			Log.i("", "Chart.init()");
 
-        // enable being detected by ScreenReader
-        setFocusable(true);
-    }}
+			// enable being detected by ScreenReader
+			setFocusable(true);
+		}
+	}
 
 	// public void initWithDummyData() {
 	// ColorTemplate template = new ColorTemplate();
@@ -530,16 +529,19 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	}
 
 	public void highlightValues(List<Highlight> highs, List<IMarker> markers) {
-        if (highs.size() != markers.size()) throw new IllegalArgumentException("Markers and highs must be mutually corresponding. High size = " + highs.size() + " Markers size = " + markers.size());
-        setMarkers(markers);
-        highlightValues(highs.toArray(new Highlight[0]));
-    }
+		if (highs.size() != markers.size()) {
+			throw new IllegalArgumentException("Markers and highs must be mutually corresponding. High size = " + highs.size() + " Markers size = " + markers.size());
+		}
+		setMarkers(markers);
+		highlightValues(highs.toArray(new Highlight[0]));
+	}
 
-    /**
-     * Highlights any y-value at the given x-value in the given DataSet.
-     * Provide -1 as the dataSetIndex to undo all highlighting.
-     * This method will call the listener.
-     ** @param x            The x-value to highlight
+	/**
+	 * Highlights any y-value at the given x-value in the given DataSet.
+	 * Provide -1 as the dataSetIndex to undo all highlighting.
+	 * This method will call the listener.
+	 * * @param x            The x-value to highlight
+	 *
 	 * @param dataSetIndex The dataset index to search in
 	 * @param dataIndex    The data index to search in (only used in CombinedChartView currently)
 	 */
@@ -1134,18 +1136,18 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	}
 
 	public void setMarkers(List<IMarker> marker) {
-        mMarkers = marker;
-    }
+		mMarkers = marker;
+	}
 
-    /**
-     * sets the marker that is displayed when a value is clicked on the chart
-     */
+	/**
+	 * sets the marker that is displayed when a value is clicked on the chart
+	 */
 	public void setMarker(IMarker marker) {
 		setMarkers(Collections.singletonList(marker));
-    }
-    /**
-	 * returns the marker that is set as a marker view for the chart
+	}
 
+	/**
+	 * returns the marker that is set as a marker view for the chart
 	 */
 	public List<IMarker> getMarker() {
 		return mMarkers;
@@ -1580,37 +1582,37 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 		this.mUnbind = enabled;
 	}
 
-    // region accessibility
+	// region accessibility
 
-    /**
-     *
-     * @return accessibility description must be created for each chart
-     */
-    public abstract String getAccessibilityDescription();
+	/**
+	 *
+	 * @return accessibility description must be created for each chart
+	 */
+	public abstract String getAccessibilityDescription();
 
-    public String getAccessibilitySummaryDescription() {
-        return accessibilitySummaryDescription;
-    }
+	public String getAccessibilitySummaryDescription() {
+		return accessibilitySummaryDescription;
+	}
 
-    public void setAccessibilitySummaryDescription(String accessibilitySummaryDescription) {
-        this.accessibilitySummaryDescription = accessibilitySummaryDescription;
-    }
+	public void setAccessibilitySummaryDescription(String accessibilitySummaryDescription) {
+		this.accessibilitySummaryDescription = accessibilitySummaryDescription;
+	}
 
-    @Override
-    public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
+	@Override
+	public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
 
-        boolean completed = super.dispatchPopulateAccessibilityEvent(event);
-        Log.d(LOG_TAG, "Dispatch called for Chart <View> and completed as " + completed);
+		boolean completed = super.dispatchPopulateAccessibilityEvent(event);
+		Log.d(LOG_TAG, "Dispatch called for Chart <View> and completed as " + completed);
 
-        event.getText().add(getAccessibilityDescription());
+		event.getText().add(getAccessibilityDescription());
 
-        // Add the user generated summary after the dynamic summary is complete.
-        if (!TextUtils.isEmpty(this.getAccessibilitySummaryDescription())) {
-            event.getText().add(this.getAccessibilitySummaryDescription());
-        }
+		// Add the user generated summary after the dynamic summary is complete.
+		if (!TextUtils.isEmpty(this.getAccessibilitySummaryDescription())) {
+			event.getText().add(this.getAccessibilitySummaryDescription());
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    // endregion
+	// endregion
 }
