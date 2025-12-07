@@ -330,14 +330,14 @@ open class BarChartRenderer(
                             px += iconsOffset.x
                             py += iconsOffset.y
 
-                            Utils.drawImage(
-                                canvas,
-                                icon,
-                                px.toInt(),
-                                py.toInt(),
-                                icon!!.intrinsicWidth,
-                                icon.intrinsicHeight
-                            )
+                            icon?.let {
+                                Utils.drawImage(
+                                    canvas,
+                                    it,
+                                    px.toInt(),
+                                    py.toInt()
+                                )
+                            }
                         }
                         j += 4
                     }
@@ -390,14 +390,14 @@ open class BarChartRenderer(
                                 px += iconsOffset.x
                                 py += iconsOffset.y
 
-                                Utils.drawImage(
-                                    canvas,
-                                    icon,
-                                    px.toInt(),
-                                    py.toInt(),
-                                    icon!!.intrinsicWidth,
-                                    icon.intrinsicHeight
-                                )
+                                icon?.let {
+                                    Utils.drawImage(
+                                        canvas,
+                                        it,
+                                        px.toInt(),
+                                        py.toInt()
+                                    )
+                                }
                             }
 
                             // draw stack values
@@ -469,14 +469,14 @@ open class BarChartRenderer(
                                 if (entry.icon != null && dataSet.isDrawIconsEnabled) {
                                     val icon = entry.icon
 
-                                    Utils.drawImage(
-                                        canvas,
-                                        icon,
-                                        (x + iconsOffset.x).toInt(),
-                                        (y + iconsOffset.y).toInt(),
-                                        icon!!.intrinsicWidth,
-                                        icon.intrinsicHeight
-                                    )
+                                    icon?.let {
+                                        Utils.drawImage(
+                                            canvas,
+                                            it,
+                                            (x + iconsOffset.x).toInt(),
+                                            (y + iconsOffset.y).toInt()
+                                        )
+                                    }
                                 }
                                 k += 2
                             }

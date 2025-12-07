@@ -132,14 +132,14 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
                     if (entry.icon != null && dataSet.isDrawIconsEnabled) {
                         val icon = entry.icon
 
-                        Utils.drawImage(
-                            canvas,
-                            icon,
-                            (positions[j] + iconsOffset.x).toInt(),
-                            (positions[j + 1] + iconsOffset.y).toInt(),
-                            icon!!.intrinsicWidth,
-                            icon.intrinsicHeight
-                        )
+                        icon?.let {
+                            Utils.drawImage(
+                                canvas,
+                                it,
+                                (positions[j] + iconsOffset.x).toInt(),
+                                (positions[j + 1] + iconsOffset.y).toInt()
+                            )
+                        }
                     }
                     j += 2
                 }
