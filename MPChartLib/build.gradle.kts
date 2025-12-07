@@ -11,7 +11,7 @@ plugins {
 android {
     namespace = "com.github.mikephil.charting"
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
         compileSdk = 36
 
         // VERSION_NAME no longer available as of 4.1
