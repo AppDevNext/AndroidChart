@@ -3,16 +3,43 @@ package info.appdev.chartexample.notimportant
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowInsets
-import android.view.WindowInsetsController
-import android.view.WindowManager
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemClickListener
-import android.widget.ListView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.github.mikephil.charting.utils.Utils
 import info.appdev.chartexample.AnotherBarActivity
 import info.appdev.chartexample.BarChartActivity
@@ -48,86 +75,76 @@ import info.appdev.chartexample.SpecificPositionsLineChartActivity
 import info.appdev.chartexample.StackedBarActivity
 import info.appdev.chartexample.StackedBarActivityNegative
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
-import androidx.core.net.toUri
 
-class MainActivity : AppCompatActivity(), OnItemClickListener {
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Enable fullscreen mode using modern API
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            window.insetsController?.let {
-                it.hide(WindowInsets.Type.statusBars())
-                it.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            }
-        } else {
-            @Suppress("DEPRECATION")
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
+        // Enable edge-to-edge and hide status bar
+        enableEdgeToEdge()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            hide(WindowInsetsCompat.Type.statusBars())
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
 
-        setContentView(R.layout.activity_main)
-
-        // initialize the utilities
+        // Initialize the utilities
         Utils.init(this)
-        val adapter = MenuAdapter(this, menuItems)
-        val lv = findViewById<ListView>(R.id.listViewMain)
-        lv.adapter = adapter
-        lv.onItemClickListener = this
-    }
 
-    override fun onItemClick(av: AdapterView<*>?, v: View, pos: Int, arg3: Long) {
-        val intent = Intent(this, menuItems[pos].clazz)
-        startActivity(intent)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            overrideActivityTransition(
-                OVERRIDE_TRANSITION_OPEN,
-                R.anim.move_right_in_activity,
-                R.anim.move_left_out_activity
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val i: Intent
-        when (item.itemId) {
-            R.id.viewGithub -> {
-                i = Intent(Intent.ACTION_VIEW)
-                i.data = "https://github.com/AppDevNext/AndroidChart".toUri()
-                startActivity(i)
+        setContent {
+            ChartExampleTheme {
+                MainScreen(
+                    menuItems = menuItems,
+                    onItemClick = { item ->
+                        item.clazz?.let { clazz ->
+                            val intent = Intent(this, clazz)
+                            startActivity(intent)
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                                overrideActivityTransition(
+                                    OVERRIDE_TRANSITION_OPEN,
+                                    R.anim.move_right_in_activity,
+                                    R.anim.move_left_out_activity
+                                )
+                            } else {
+                                @Suppress("DEPRECATION")
+                                overridePendingTransition(
+                                    R.anim.move_right_in_activity,
+                                    R.anim.move_left_out_activity
+                                )
+                            }
+                        }
+                    },
+                    onMenuAction = { action ->
+                        when (action) {
+                            MenuAction.VIEW_GITHUB -> {
+                                val intent = Intent(Intent.ACTION_VIEW).apply {
+                                    data = "https://github.com/AppDevNext/AndroidChart".toUri()
+                                }
+                                startActivity(intent)
+                            }
+                            MenuAction.REPORT -> {
+                                val intent = Intent(
+                                    Intent.ACTION_SENDTO,
+                                    Uri.fromParts("mailto", "philjay.librarysup@gmail.com", null)
+                                ).apply {
+                                    putExtra(Intent.EXTRA_SUBJECT, "AndroidChart Issue")
+                                    putExtra(Intent.EXTRA_TEXT, "Your error report here...")
+                                }
+                                startActivity(Intent.createChooser(intent, "Report Problem"))
                             }
 
-
-            R.id.report -> {
-                i = Intent(
-                    Intent.ACTION_SENDTO, Uri.fromParts(
-                        "mailto", "philjay.librarysup@gmail.com", null
-                    )
+                            MenuAction.WEBSITE -> {
+                                val intent = Intent(Intent.ACTION_VIEW).apply {
+                                    data = "http://at.linkedin.com/in/xxxxx".toUri()
+                                }
+                                startActivity(intent)
+                            }
+                        }
+                    }
                 )
-                i.putExtra(Intent.EXTRA_SUBJECT, "AndroidChart Issue")
-                i.putExtra(Intent.EXTRA_TEXT, "Your error report here...")
-                startActivity(Intent.createChooser(i, "Report Problem"))
-                            }
-
-
-            R.id.website -> {
-                i = Intent(Intent.ACTION_VIEW)
-                i.data = "http://at.linkedin.com/in/xxxxx".toUri()
-                startActivity(i)
             }
         }
-        return true
     }
 
     companion object {
@@ -188,4 +205,135 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             //add(39, new ContentItem("Realm.io Examples", "See more examples that use Realm.io mobile database."));
         }
     }
+}
+
+enum class MenuAction {
+    VIEW_GITHUB, REPORT, WEBSITE
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainScreen(
+    menuItems: List<ContentItem<out DemoBase>>,
+    onItemClick: (ContentItem<out DemoBase>) -> Unit,
+    onMenuAction: (MenuAction) -> Unit
+) {
+    var showMenu by remember { mutableStateOf(false) }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Chart Examples") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                actions = {
+                    Box {
+                        IconButton(onClick = { showMenu = true }) {
+                            Icon(
+                                Icons.Default.MoreVert,
+                                contentDescription = "Menu",
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("View on GitHub") },
+                                onClick = {
+                                    showMenu = false
+                                    onMenuAction(MenuAction.VIEW_GITHUB)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Report Problem") },
+                                onClick = {
+                                    showMenu = false
+                                    onMenuAction(MenuAction.REPORT)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("View Website") },
+                                onClick = {
+                                    showMenu = false
+                                    onMenuAction(MenuAction.WEBSITE)
+                                }
+                            )
+                        }
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            itemsIndexed(menuItems) { _, item ->
+                MenuItem(
+                    item = item,
+                    onClick = { onItemClick(item) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun MenuItem(
+    item: ContentItem<out DemoBase>,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = !item.isSection) { onClick() },
+        color = if (item.isSection) {
+            MaterialTheme.colorScheme.surfaceVariant
+        } else {
+            MaterialTheme.colorScheme.surface
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = if (item.isSection) 12.dp else 8.dp
+                )
+        ) {
+            Text(
+                text = item.name,
+                fontSize = if (item.isSection) 18.sp else 16.sp,
+                color = if (item.isSection) {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                },
+                fontWeight = if (item.isSection) FontWeight.Medium else FontWeight.Light
+            )
+            if (item.desc.isNotEmpty()) {
+                Text(
+                    text = item.desc,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.Light,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ChartExampleTheme(content: @Composable () -> Unit) {
+    MaterialTheme(
+        colorScheme = MaterialTheme.colorScheme,
+        typography = MaterialTheme.typography,
+        content = content
+    )
 }
