@@ -106,7 +106,8 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                 i = Intent(Intent.ACTION_VIEW)
                 i.data = "https://github.com/AppDevNext/AndroidChart".toUri()
                 startActivity(i)
-            }
+                            }
+
 
             R.id.report -> {
                 i = Intent(
@@ -117,7 +118,8 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                 i.putExtra(Intent.EXTRA_SUBJECT, "AndroidChart Issue")
                 i.putExtra(Intent.EXTRA_TEXT, "Your error report here...")
                 startActivity(Intent.createChooser(i, "Report Problem"))
-            }
+                            }
+
 
             R.id.website -> {
                 i = Intent(Intent.ACTION_VIEW)

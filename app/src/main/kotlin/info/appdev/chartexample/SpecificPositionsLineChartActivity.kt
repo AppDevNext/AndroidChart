@@ -28,7 +28,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.ChartTouchListener.ChartGesture
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.getSDKInt
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.MyMarkerView
 import info.appdev.chartexample.notimportant.DemoBase
@@ -273,7 +273,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         set11.formLineWidth = 1f
         set11.setFormLineDashEffect(DashPathEffect(floatArrayOf(10f, 5f), 0f))
         set11.formSize = 15f
-        if (Utils.getSDKInt() >= 18) {
+        if (getSDKInt() >= 18) {
             // fill drawable only supported on api level 18 and above
             val drawable = ContextCompat.getDrawable(this, R.drawable.fade_blue)
             set11.fillDrawable = drawable
@@ -329,8 +329,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
     override fun onValueSelected(e: Entry, h: Highlight) {
         Log.i("Entry selected", e.toString())
-        Log.i("LOWHIGH", "low: " + mChart!!.lowestVisibleX + ", high: " + mChart!!.highestVisibleX)
-        Log.i("MIN MAX", "xmin: " + mChart!!.xChartMin + ", xmax: " + mChart!!.xChartMax + ", ymin: " + mChart!!.yChartMin + ", ymax: " + mChart!!.yChartMax)
+        Log.i("LOWHIGH", "low: ${mChart!!.lowestVisibleX}, high: ${mChart!!.highestVisibleX}")
+        Log.i("MIN MAX", "xmin: ${mChart!!.xChartMin}, xmax: ${mChart!!.xChartMax}, ymin: ${mChart!!.yChartMin}, ymax: ${mChart!!.yChartMax}")
     }
 
     override fun onNothingSelected() {

@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import static com.github.mikephil.charting.utils.UtilsKtKt.getSDKInt;
+
 public class Fill {
 	public enum Type {
 		EMPTY, COLOR, LINEAR_GRADIENT, DRAWABLE
@@ -143,9 +145,9 @@ public class Fill {
 				return;
 
 			case COLOR: {
-                if (mFinalColor == null) {
-                    return;
-                }
+				if (mFinalColor == null) {
+					return;
+				}
 
 				if (isClipPathSupported()) {
 					int save = c.save();
@@ -173,20 +175,16 @@ public class Fill {
 			break;
 
 			case LINEAR_GRADIENT: {
-                if (mGradientColors == null) {
-                    return;
-                }
+				if (mGradientColors == null) {
+					return;
+				}
 
 				LinearGradient gradient = new LinearGradient(
 						(int) (gradientDirection == Direction.RIGHT
 								? right
-								: gradientDirection == Direction.LEFT
-								? left
 								: left),
 						(int) (gradientDirection == Direction.UP
 								? bottom
-								: gradientDirection == Direction.DOWN
-								? top
 								: top),
 						(int) (gradientDirection == Direction.RIGHT
 								? left
@@ -209,9 +207,9 @@ public class Fill {
 			break;
 
 			case DRAWABLE: {
-                if (mDrawable == null) {
-                    return;
-                }
+				if (mDrawable == null) {
+					return;
+				}
 
 				mDrawable.setBounds((int) left, (int) top, (int) right, (int) bottom);
 				mDrawable.draw(c);
@@ -227,9 +225,9 @@ public class Fill {
 				return;
 
 			case COLOR: {
-                if (mFinalColor == null) {
-                    return;
-                }
+				if (mFinalColor == null) {
+					return;
+				}
 
 				if (clipRect != null && isClipPathSupported()) {
 					int save = c.save();
@@ -257,9 +255,9 @@ public class Fill {
 			break;
 
 			case LINEAR_GRADIENT: {
-                if (mGradientColors == null) {
-                    return;
-                }
+				if (mGradientColors == null) {
+					return;
+				}
 
 				LinearGradient gradient = new LinearGradient(
 						0,
@@ -277,9 +275,9 @@ public class Fill {
 			break;
 
 			case DRAWABLE: {
-                if (mDrawable == null) {
-                    return;
-                }
+				if (mDrawable == null) {
+					return;
+				}
 
 				ensureClipPathSupported();
 
@@ -300,13 +298,12 @@ public class Fill {
 	}
 
 	private boolean isClipPathSupported() {
-		return Utils.getSDKInt() >= 18;
+		return getSDKInt() >= 18;
 	}
 
 	private void ensureClipPathSupported() {
-		if (Utils.getSDKInt() < 18) {
-			throw new RuntimeException("Fill-drawables not (yet) supported below API level 18, " +
-					"this code was run on API level " + Utils.getSDKInt() + ".");
+		if (getSDKInt() < 18) {
+			throw new RuntimeException("Fill-drawables not (yet) supported below API level 18, this code was run on API level ${getSDKInt()}");
 		}
 	}
 }

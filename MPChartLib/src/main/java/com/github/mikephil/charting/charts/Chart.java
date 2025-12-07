@@ -2,10 +2,8 @@ package com.github.mikephil.charting.charts;
 
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,8 +11,6 @@ import android.graphics.Paint.Align;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
-import android.provider.MediaStore.Images;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -48,13 +44,11 @@ import com.github.mikephil.charting.utils.SaveUtils;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Baseclass of all Chart-Views.
@@ -210,13 +204,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 		setWillNotDraw(false);
 		// setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
-		mAnimator = new ChartAnimator(new AnimatorUpdateListener() {
-
-			@Override
-			public void onAnimationUpdate(ValueAnimator animation) {
-				// ViewCompat.postInvalidateOnAnimation(Chart.this);
-				postInvalidate();
-			}
+		mAnimator = new ChartAnimator(animation -> {
+			// ViewCompat.postInvalidateOnAnimation(Chart.this);
+			postInvalidate();
 		});
 
 		// initialize the utils
@@ -387,7 +377,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	private boolean mOffsetsCalculated = false;
 
 	@Override
-	protected void onDraw(Canvas canvas) {
+	protected void onDraw(@NonNull Canvas canvas) {
 		// super.onDraw(canvas);
 
 		if (mData == null) {
@@ -404,7 +394,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 						break;
 
 					case RIGHT:
-						pt.x *= 2.0;
+						pt.x *= 2.0F;
 						canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint);
 						break;
 
@@ -1289,14 +1279,12 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 * @param which e.g. Chart.PAINT_LEGEND_LABEL
 	 */
 	public Paint getPaint(int which) {
-		switch (which) {
-			case PAINT_INFO:
-				return mInfoPaint;
-			case PAINT_DESCRIPTION:
-				return mDescPaint;
-		}
+		return switch (which) {
+			case PAINT_INFO -> mInfoPaint;
+			case PAINT_DESCRIPTION -> mDescPaint;
+			default -> null;
+		};
 
-		return null;
 	}
 
 	@Deprecated

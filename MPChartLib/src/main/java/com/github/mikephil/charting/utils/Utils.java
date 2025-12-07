@@ -21,7 +21,7 @@ import android.view.ViewConfiguration;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 
-import java.util.List;
+import androidx.annotation.NonNull;
 
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
@@ -50,41 +50,13 @@ public abstract class Utils {
 	 * initialize method, called inside the Chart.init() method.
 	 */
 	@SuppressWarnings("deprecation")
-	public static void init(Context context) {
+	public static void init(@NonNull Context context) {
+		ViewConfiguration viewConfiguration = ViewConfiguration.get(context);
+		mMinimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
+		mMaximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
 
-		if (context == null) {
-			// noinspection deprecation
-			mMinimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity();
-			// noinspection deprecation
-			mMaximumFlingVelocity = ViewConfiguration.getMaximumFlingVelocity();
-
-			Log.e("chartLib-Utils", "Utils.init(...) PROVIDED CONTEXT OBJECT IS NULL");
-
-		} else {
-			ViewConfiguration viewConfiguration = ViewConfiguration.get(context);
-			mMinimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
-			mMaximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
-
-			Resources res = context.getResources();
-			mMetrics = res.getDisplayMetrics();
-		}
-	}
-
-	/**
-	 * initialize method, called inside the Chart.init() method. backwards
-	 * compatibility - to not break existing code
-	 *
-	 * @param res
-	 */
-	@Deprecated
-	public static void init(Resources res) {
-
+		Resources res = context.getResources();
 		mMetrics = res.getDisplayMetrics();
-
-		// noinspection deprecation
-		mMinimumFlingVelocity = ViewConfiguration.getMinimumFlingVelocity();
-		// noinspection deprecation
-		mMaximumFlingVelocity = ViewConfiguration.getMaximumFlingVelocity();
 	}
 
 	/**
@@ -97,38 +69,12 @@ public abstract class Utils {
 	 * device density
 	 */
 	public static float convertDpToPixel(float dp) {
-
 		if (mMetrics == null) {
-
-			Log.e("chartLib-Utils",
-					"Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before" +
-							" calling Utils.convertDpToPixel(...). Otherwise conversion does not " +
-							"take place.");
+			Log.e("chartLib-Utils", "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place.");
 			return dp;
 		}
 
 		return dp * mMetrics.density;
-	}
-
-	/**
-	 * This method converts device specific pixels to density independent
-	 * pixels. NEEDS UTILS TO BE INITIALIZED BEFORE USAGE.
-	 *
-	 * @param px A value in px (pixels) unit. Which we need to convert into db
-	 * @return A float value to represent dp equivalent to px value
-	 */
-	public static float convertPixelsToDp(float px) {
-
-		if (mMetrics == null) {
-
-			Log.e("chartLib-Utils",
-					"Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before" +
-							" calling Utils.convertPixelsToDp(...). Otherwise conversion does not" +
-							" take place.");
-			return px;
-		}
-
-		return px / mMetrics.density;
 	}
 
 	/**
@@ -377,47 +323,8 @@ public abstract class Utils {
 	}
 
 	/**
-	 * Converts the provided Integer List to an int array.
-	 *
-	 * @param integers
-	 * @return
-	 */
-	public static int[] convertIntegers(List<Integer> integers) {
-
-		int[] ret = new int[integers.size()];
-
-		copyIntegers(integers, ret);
-
-		return ret;
-	}
-
-	public static void copyIntegers(List<Integer> from, int[] to) {
-		int count = Math.min(to.length, from.size());
-		for (int i = 0; i < count; i++) {
-			to[i] = from.get(i);
-		}
-	}
-
-	/**
-	 * Converts the provided String List to a String array.
-	 *
-	 * @param strings
-	 * @return
-	 */
-	public static String[] convertStrings(List<String> strings) {
-
-		String[] ret = new String[strings.size()];
-
-		for (int i = 0; i < ret.length; i++) {
-			ret[i] = strings.get(i);
-		}
-
-		return ret;
-	}
-
-	/**
 	 * Replacement for the Math.nextUp(...) method that is only available in
-	 * HONEYCOMB and higher. Dat's some seeeeek sheeet.
+	 * HONEYCOMB and higher.
 	 *
 	 * @param d
 	 * @return
@@ -427,8 +334,7 @@ public abstract class Utils {
 			return d;
 		} else {
 			d += 0.0d;
-			return Double.longBitsToDouble(Double.doubleToRawLongBits(d) +
-					((d >= 0.0d) ? +1L : -1L));
+			return Double.longBitsToDouble(Double.doubleToRawLongBits(d) + ((d >= 0.0d) ? +1L : -1L));
 		}
 	}
 
@@ -702,40 +608,12 @@ public abstract class Utils {
 	 * Returns a recyclable FSize instance.
 	 * Represents size of a rotated rectangle by degrees.
 	 *
-	 * @param rectangleSize
-	 * @param degrees
-	 * @return A Recyclable FSize instance
-	 */
-	public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees) {
-		final float radians = degrees * FDEG2RAD;
-		return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
-				radians);
-	}
-
-	/**
-	 * Returns a recyclable FSize instance.
-	 * Represents size of a rotated rectangle by radians.
-	 *
-	 * @param rectangleSize
-	 * @param radians
-	 * @return A Recyclable FSize instance
-	 */
-	public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians) {
-		return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
-				radians);
-	}
-
-	/**
-	 * Returns a recyclable FSize instance.
-	 * Represents size of a rotated rectangle by degrees.
-	 *
 	 * @param rectangleWidth
 	 * @param rectangleHeight
 	 * @param degrees
 	 * @return A Recyclable FSize instance
 	 */
-	public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float
-			rectangleHeight, float degrees) {
+	public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float rectangleHeight, float degrees) {
 		final float radians = degrees * FDEG2RAD;
 		return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians);
 	}
@@ -749,17 +627,11 @@ public abstract class Utils {
 	 * @param radians
 	 * @return A Recyclable FSize instance
 	 */
-	public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float
-			rectangleHeight, float radians) {
+	public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float rectangleHeight, float radians) {
 		return FSize.getInstance(
-				Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight *
-						(float) Math.sin(radians)),
-				Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight *
-						(float) Math.cos(radians))
+				Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight * (float) Math.sin(radians)),
+				Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight * (float) Math.cos(radians))
 		);
 	}
 
-	public static int getSDKInt() {
-		return android.os.Build.VERSION.SDK_INT;
-	}
 }

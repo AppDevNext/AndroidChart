@@ -12,7 +12,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.getSDKInt
 
 class DataTools {
     companion object {
@@ -212,7 +212,7 @@ class DataTools {
             }
 
             // set color of filled area
-            if (Utils.getSDKInt() >= 18) {
+            if (getSDKInt() >= 18) {
                 // drawables only supported on api level 18 and above
                 val drawable = ContextCompat.getDrawable(context, R.drawable.fade_blue)
                 lineDataSet01.fillDrawable = drawable

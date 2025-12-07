@@ -4,10 +4,10 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.drawable.Drawable
-import com.github.mikephil.charting.animation.ChartAnimator
-import com.github.mikephil.charting.utils.Utils
-import com.github.mikephil.charting.utils.ViewPortHandler
 import androidx.core.graphics.withClip
+import com.github.mikephil.charting.animation.ChartAnimator
+import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.getSDKInt
 
 abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
     LineScatterCandleRadarRenderer(animator, viewPortHandler) {
@@ -30,10 +30,7 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
                 drawable.draw(canvas)
             }
         } else {
-            throw RuntimeException(
-                "Fill-drawables not (yet) supported below API level 18, " +
-                        "this code was run on API level " + Utils.getSDKInt() + "."
-            )
+            throw RuntimeException("Fill-drawables not (yet) supported below API level 18, this code was run on API level ${getSDKInt()}")
         }
     }
 
@@ -77,6 +74,6 @@ abstract class LineRadarRenderer(animator: ChartAnimator?, viewPortHandler: View
      * @return
      */
     private fun clipPathSupported(): Boolean {
-        return Utils.getSDKInt() >= 18
+        return getSDKInt() >= 18
     }
 }
