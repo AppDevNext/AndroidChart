@@ -67,6 +67,10 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     debugImplementation("androidx.compose.ui:ui-tooling")
 
+    // Compose testing
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
     androidTestImplementation("androidx.test.ext:junit-ktx:1.3.0")
     androidTestImplementation("com.github.AppDevNext.Logcat:LogcatCoreLib:3.4")
     androidTestUtil("androidx.test.services:test-services:1.6.0")

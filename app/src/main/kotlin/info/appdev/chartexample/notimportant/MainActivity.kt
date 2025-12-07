@@ -33,6 +33,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -272,11 +273,13 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .testTag("menuList")
         ) {
-            itemsIndexed(menuItems) { _, item ->
+            itemsIndexed(menuItems) { index, item ->
                 MenuItem(
                     item = item,
-                    onClick = { onItemClick(item) }
+                    onClick = { onItemClick(item) },
+                    testTag = "menuItem_$index"
                 )
             }
         }
@@ -286,11 +289,13 @@ fun MainScreen(
 @Composable
 fun MenuItem(
     item: ContentItem<out DemoBase>,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    testTag: String = ""
 ) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .testTag(testTag)
             .clickable(enabled = !item.isSection) { onClick() },
         color = if (item.isSection) {
             MaterialTheme.colorScheme.surfaceVariant
