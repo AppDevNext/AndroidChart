@@ -143,9 +143,9 @@ public class Fill {
 				return;
 
 			case COLOR: {
-                if (mFinalColor == null) {
-                    return;
-                }
+				if (mFinalColor == null) {
+					return;
+				}
 
 				if (isClipPathSupported()) {
 					int save = c.save();
@@ -209,9 +209,9 @@ public class Fill {
 			break;
 
 			case DRAWABLE: {
-                if (mDrawable == null) {
-                    return;
-                }
+				if (mDrawable == null) {
+					return;
+				}
 
 				mDrawable.setBounds((int) left, (int) top, (int) right, (int) bottom);
 				mDrawable.draw(c);
@@ -227,9 +227,9 @@ public class Fill {
 				return;
 
 			case COLOR: {
-                if (mFinalColor == null) {
-                    return;
-                }
+				if (mFinalColor == null) {
+					return;
+				}
 
 				if (clipRect != null && isClipPathSupported()) {
 					int save = c.save();
@@ -257,9 +257,9 @@ public class Fill {
 			break;
 
 			case LINEAR_GRADIENT: {
-                if (mGradientColors == null) {
-                    return;
-                }
+				if (mGradientColors == null) {
+					return;
+				}
 
 				LinearGradient gradient = new LinearGradient(
 						0,
@@ -277,9 +277,9 @@ public class Fill {
 			break;
 
 			case DRAWABLE: {
-                if (mDrawable == null) {
-                    return;
-                }
+				if (mDrawable == null) {
+					return;
+				}
 
 				ensureClipPathSupported();
 

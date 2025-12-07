@@ -27,6 +27,7 @@ import java.util.Locale;
  *
  * @author Philipp Jahoda
  */
+@SuppressWarnings("unused")
 public class PieChart extends PieRadarChartBase<PieData> {
 
     /**
@@ -78,8 +79,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
     private final MPPointF mCenterTextOffset = MPPointF.getInstance(0, 0);
 
     /**
-     * indicates the size of the hole in the center of the piechart, default:
-     * radius / 2
+     * indicates the size of the hole in the center of the piechart,
+	 * default: radius / 2
      */
     private float mHoleRadiusPercent = 50f;
 

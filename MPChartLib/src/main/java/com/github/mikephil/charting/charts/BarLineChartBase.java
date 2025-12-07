@@ -528,7 +528,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             if (mLogEnabled) {
                 Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
                         + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
-                Log.i(LOG_TAG, "Content: " + mViewPortHandler.getContentRect().toString());
+                Log.i(LOG_TAG, "Content: " + mViewPortHandler.getContentRect());
             }
         }
 

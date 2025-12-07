@@ -417,7 +417,7 @@ public abstract class Utils {
 
 	/**
 	 * Replacement for the Math.nextUp(...) method that is only available in
-	 * HONEYCOMB and higher. Dat's some seeeeek sheeet.
+	 * HONEYCOMB and higher.
 	 *
 	 * @param d
 	 * @return
@@ -427,8 +427,7 @@ public abstract class Utils {
 			return d;
 		} else {
 			d += 0.0d;
-			return Double.longBitsToDouble(Double.doubleToRawLongBits(d) +
-					((d >= 0.0d) ? +1L : -1L));
+			return Double.longBitsToDouble(Double.doubleToRawLongBits(d) + ((d >= 0.0d) ? +1L : -1L));
 		}
 	}
 
@@ -702,40 +701,12 @@ public abstract class Utils {
 	 * Returns a recyclable FSize instance.
 	 * Represents size of a rotated rectangle by degrees.
 	 *
-	 * @param rectangleSize
-	 * @param degrees
-	 * @return A Recyclable FSize instance
-	 */
-	public static FSize getSizeOfRotatedRectangleByDegrees(FSize rectangleSize, float degrees) {
-		final float radians = degrees * FDEG2RAD;
-		return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
-				radians);
-	}
-
-	/**
-	 * Returns a recyclable FSize instance.
-	 * Represents size of a rotated rectangle by radians.
-	 *
-	 * @param rectangleSize
-	 * @param radians
-	 * @return A Recyclable FSize instance
-	 */
-	public static FSize getSizeOfRotatedRectangleByRadians(FSize rectangleSize, float radians) {
-		return getSizeOfRotatedRectangleByRadians(rectangleSize.width, rectangleSize.height,
-				radians);
-	}
-
-	/**
-	 * Returns a recyclable FSize instance.
-	 * Represents size of a rotated rectangle by degrees.
-	 *
 	 * @param rectangleWidth
 	 * @param rectangleHeight
 	 * @param degrees
 	 * @return A Recyclable FSize instance
 	 */
-	public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float
-			rectangleHeight, float degrees) {
+	public static FSize getSizeOfRotatedRectangleByDegrees(float rectangleWidth, float rectangleHeight, float degrees) {
 		final float radians = degrees * FDEG2RAD;
 		return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians);
 	}
@@ -749,13 +720,10 @@ public abstract class Utils {
 	 * @param radians
 	 * @return A Recyclable FSize instance
 	 */
-	public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float
-			rectangleHeight, float radians) {
+	public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float rectangleHeight, float radians) {
 		return FSize.getInstance(
-				Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight *
-						(float) Math.sin(radians)),
-				Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight *
-						(float) Math.cos(radians))
+				Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight * (float) Math.sin(radians)),
+				Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight * (float) Math.cos(radians))
 		);
 	}
 

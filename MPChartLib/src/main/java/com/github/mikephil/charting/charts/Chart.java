@@ -210,13 +210,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 		setWillNotDraw(false);
 		// setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
-		mAnimator = new ChartAnimator(new AnimatorUpdateListener() {
-
-			@Override
-			public void onAnimationUpdate(ValueAnimator animation) {
-				// ViewCompat.postInvalidateOnAnimation(Chart.this);
-				postInvalidate();
-			}
+		mAnimator = new ChartAnimator(animation -> {
+			// ViewCompat.postInvalidateOnAnimation(Chart.this);
+			postInvalidate();
 		});
 
 		// initialize the utils

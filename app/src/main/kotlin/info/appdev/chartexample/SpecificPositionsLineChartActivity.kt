@@ -329,8 +329,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
     override fun onValueSelected(e: Entry, h: Highlight) {
         Log.i("Entry selected", e.toString())
-        Log.i("LOWHIGH", "low: " + mChart!!.lowestVisibleX + ", high: " + mChart!!.highestVisibleX)
-        Log.i("MIN MAX", "xmin: " + mChart!!.xChartMin + ", xmax: " + mChart!!.xChartMax + ", ymin: " + mChart!!.yChartMin + ", ymax: " + mChart!!.yChartMax)
+        Log.i("LOWHIGH", "low: ${mChart!!.lowestVisibleX}, high: ${mChart!!.highestVisibleX}")
+        Log.i("MIN MAX", "xmin: ${mChart!!.xChartMin}, xmax: ${mChart!!.xChartMax}, ymin: ${mChart!!.yChartMin}, ymax: ${mChart!!.yChartMax}")
     }
 
     override fun onNothingSelected() {
