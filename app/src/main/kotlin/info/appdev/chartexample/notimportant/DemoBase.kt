@@ -51,9 +51,9 @@ abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissio
     override fun onStart() {
         super.onStart()
 
-        // Enable fullscreen mode using modern WindowCompat API
-        // This must be called after setContentView, so we do it in onStart
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        // Hide status bars using modern WindowCompat API
+        // Note: We don't call setDecorFitsSystemWindows(false) because these activities
+        // use traditional AppCompat ActionBar which needs to fit within system windows
         WindowCompat.getInsetsController(window, window.decorView).apply {
             hide(WindowInsetsCompat.Type.statusBars())
             systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
