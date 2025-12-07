@@ -400,7 +400,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 						break;
 
 					case RIGHT:
-						pt.x *= 2.0;
+						pt.x *= 2.0F;
 						canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint);
 						break;
 
