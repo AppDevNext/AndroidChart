@@ -208,7 +208,6 @@ public abstract class Utils {
 	 * @return
 	 */
 	public static int getDecimals(float number) {
-
 		float i = roundToNextSignificant(number);
 
 		if (Float.isInfinite(i)) {
@@ -216,22 +215,6 @@ public abstract class Utils {
 		}
 
 		return (int) Math.ceil(-Math.log10(i)) + 2;
-	}
-
-	/**
-	 * Replacement for the Math.nextUp(...) method that is only available in
-	 * HONEYCOMB and higher.
-	 *
-	 * @param d
-	 * @return
-	 */
-	public static double nextUp(double d) {
-		if (d == Double.POSITIVE_INFINITY) {
-			return d;
-		} else {
-			d += 0.0d;
-			return Double.longBitsToDouble(Double.doubleToRawLongBits(d) + ((d >= 0.0d) ? +1L : -1L));
-		}
 	}
 
 	/**
@@ -245,7 +228,6 @@ public abstract class Utils {
 	 * @return
 	 */
 	public static MPPointF getPosition(MPPointF center, float dist, float angle) {
-
 		MPPointF p = MPPointF.getInstance(0, 0);
 		getPosition(center, dist, angle, p);
 		return p;
@@ -256,8 +238,7 @@ public abstract class Utils {
 		outputPoint.y = (float) (center.y + dist * Math.sin(Math.toRadians(angle)));
 	}
 
-	public static void velocityTrackerPointerUpCleanUpIfNecessary(MotionEvent ev,
-																  VelocityTracker tracker) {
+	public static void velocityTrackerPointerUpCleanUpIfNecessary(MotionEvent ev, VelocityTracker tracker) {
 
 		// Check the dot product of current velocities.
 		// If the pointer that left was opposing another velocity vector, clear.
@@ -335,7 +316,7 @@ public abstract class Utils {
 	private static final Rect mDrawTextRectBuffer = new Rect();
 	private static final Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
 
-	public static void drawXAxisValue(Canvas c, String text, float x, float y,
+	public static void drawXAxisValue(Canvas canvas, String text, float x, float y,
 									  Paint paint,
 									  MPPointF anchor, float angleDegrees) {
 
@@ -378,13 +359,13 @@ public abstract class Utils {
 				FSize.recycleInstance(rotatedSize);
 			}
 
-			c.save();
-			c.translate(translateX, translateY);
-			c.rotate(angleDegrees);
+			canvas.save();
+			canvas.translate(translateX, translateY);
+			canvas.rotate(angleDegrees);
 
-			c.drawText(text, drawOffsetX, drawOffsetY, paint);
+			canvas.drawText(text, drawOffsetX, drawOffsetY, paint);
 
-			c.restore();
+			canvas.restore();
 		} else {
 			if (anchor.x != 0.f || anchor.y != 0.f) {
 
@@ -395,7 +376,7 @@ public abstract class Utils {
 			drawOffsetX += x;
 			drawOffsetY += y;
 
-			c.drawText(text, drawOffsetX, drawOffsetY, paint);
+			canvas.drawText(text, drawOffsetX, drawOffsetY, paint);
 		}
 
 		paint.setTextAlign(originalTextAlign);

@@ -80,7 +80,6 @@ open class XAxisRenderer(
             xAxis.labelRotationAngle
         )
 
-
         xAxis.mLabelWidth = labelRotatedSize.width.roundToInt()
         xAxis.mLabelHeight = labelRotatedSize.height.roundToInt()
 
