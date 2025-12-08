@@ -11,6 +11,7 @@ import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.log10
+import kotlin.math.nextUp
 import kotlin.math.pow
 
 class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, private val chart: RadarChart) : YAxisRenderer(viewPortHandler, yAxis, null) {
@@ -77,7 +78,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
                 first -= interval
             }
 
-            val last = if (interval == 0.0) 0.0 else Utils.nextUp(floor(max / interval) * interval)
+            val last = if (interval == 0.0) 0.0 else (floor(max / interval) * interval).nextUp()
 
             var f: Double
 
@@ -137,9 +138,9 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
     override fun renderAxisLabels(canvas: Canvas) {
         if (!yAxis.isEnabled || !yAxis.isDrawLabelsEnabled) return
 
-        paintAxisLabels!!.setTypeface(yAxis.typeface)
-        paintAxisLabels!!.textSize = yAxis.textSize
-        paintAxisLabels!!.color = yAxis.textColor
+        paintAxisLabels.typeface = yAxis.typeface
+        paintAxisLabels.textSize = yAxis.textSize
+        paintAxisLabels.color = yAxis.textColor
 
         val center = chart.centerOffsets
         val pOut = MPPointF.getInstance(0f, 0f)
@@ -160,7 +161,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
             val label = yAxis.getFormattedLabel(j)
 
-            canvas.drawText(label, pOut.x + xOffset, pOut.y, paintAxisLabels!!)
+            canvas.drawText(label, pOut.x + xOffset, pOut.y, paintAxisLabels)
         }
         MPPointF.recycleInstance(center)
         MPPointF.recycleInstance(pOut)
@@ -182,9 +183,9 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
             if (!l.isEnabled) continue
 
-            limitLinePaint!!.color = l.lineColor
-            limitLinePaint!!.setPathEffect(l.dashPathEffect)
-            limitLinePaint!!.strokeWidth = l.lineWidth
+            limitLinePaint.color = l.lineColor
+            limitLinePaint.pathEffect = l.dashPathEffect
+            limitLinePaint.strokeWidth = l.lineWidth
 
             val r = (l.limit - chart.yChartMin) * factor
 
@@ -200,7 +201,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
             }
             limitPath.close()
 
-            canvas.drawPath(limitPath, limitLinePaint!!)
+            canvas.drawPath(limitPath, limitLinePaint)
         }
         MPPointF.recycleInstance(center)
         MPPointF.recycleInstance(pOut)

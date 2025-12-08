@@ -3,7 +3,6 @@ package com.github.mikephil.charting.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -35,8 +34,8 @@ import androidx.annotation.NonNull;
 public abstract class Utils {
 
 	private static DisplayMetrics mMetrics;
-	private static int mMinimumFlingVelocity = 50;
-	private static int mMaximumFlingVelocity = 8000;
+	public static int minimumFlingVelocity = 50;
+	public static int maximumFlingVelocity = 8000;
 	public final static double DEG2RAD = (Math.PI / 180.0);
 	public final static float FDEG2RAD = ((float) Math.PI / 180.f);
 
@@ -52,11 +51,10 @@ public abstract class Utils {
 	@SuppressWarnings("deprecation")
 	public static void init(@NonNull Context context) {
 		ViewConfiguration viewConfiguration = ViewConfiguration.get(context);
-		mMinimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
-		mMaximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
+		minimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
+		maximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
 
-		Resources res = context.getResources();
-		mMetrics = res.getDisplayMetrics();
+		mMetrics = context.getResources().getDisplayMetrics();
 	}
 
 	/**
@@ -163,12 +161,11 @@ public abstract class Utils {
 
 	}
 
-
 	/**
 	 * Math.pow(...) is very expensive, so avoid calling it and create it
 	 * yourself.
 	 */
-	private static final int[] POW_10 = {
+	static final int[] POW_10 = {
 			1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
 	};
 
@@ -181,107 +178,6 @@ public abstract class Utils {
 	/// - returns: The default value formatter used for all chart components that needs a default
 	public static IValueFormatter getDefaultValueFormatter() {
 		return mDefaultValueFormatter;
-	}
-
-	/**
-	 * Formats the given number to the given number of decimals, and returns the
-	 * number as a string, maximum 35 characters. If thousands are separated, the separating
-	 * character is a dot (".").
-	 *
-	 * @param number
-	 * @param digitCount
-	 * @param separateThousands set this to true to separate thousands values
-	 * @return
-	 */
-	public static String formatNumber(float number, int digitCount, boolean separateThousands) {
-		return formatNumber(number, digitCount, separateThousands, '.');
-	}
-
-	/**
-	 * Formats the given number to the given number of decimals, and returns the
-	 * number as a string, maximum 35 characters.
-	 *
-	 * @param number
-	 * @param digitCount
-	 * @param separateThousands set this to true to separate thousands values
-	 * @param separateChar      a caracter to be paced between the "thousands"
-	 * @return
-	 */
-	public static String formatNumber(float number, int digitCount, boolean separateThousands,
-									  char separateChar) {
-
-		char[] out = new char[35];
-
-		boolean neg = false;
-		if (number == 0) {
-			return "0";
-		}
-
-		boolean zero = number < 1 && number > -1;
-
-		if (number < 0) {
-			neg = true;
-			number = -number;
-		}
-
-		if (digitCount > POW_10.length) {
-			digitCount = POW_10.length - 1;
-		}
-
-		number *= POW_10[digitCount];
-		long lval = Math.round(number);
-		int ind = out.length - 1;
-		int charCount = 0;
-		boolean decimalPointAdded = false;
-
-		while (lval != 0 || charCount < (digitCount + 1)) {
-			int digit = (int) (lval % 10);
-			lval = lval / 10;
-			out[ind--] = (char) (digit + '0');
-			charCount++;
-
-			// add decimal point
-			if (charCount == digitCount) {
-				out[ind--] = ',';
-				charCount++;
-				decimalPointAdded = true;
-
-				// add thousand separators
-			} else if (separateThousands && lval != 0 && charCount > digitCount) {
-
-				if (decimalPointAdded) {
-
-					if ((charCount - digitCount) % 4 == 0) {
-						out[ind--] = separateChar;
-						charCount++;
-					}
-
-				} else {
-
-					if ((charCount - digitCount) % 4 == 3) {
-						out[ind--] = separateChar;
-						charCount++;
-					}
-				}
-			}
-		}
-
-		// if number around zero (between 1 and -1)
-		if (zero) {
-			out[ind--] = '0';
-			charCount += 1;
-		}
-
-		// if the number is negative
-		if (neg) {
-			out[ind--] = '-';
-			charCount += 1;
-		}
-
-		int start = out.length - charCount;
-
-		// use this instead of "new String(...)" because of issue < Android 4.0
-		return String.valueOf(out, start, out.length - start);
 	}
 
 	/**
@@ -312,7 +208,6 @@ public abstract class Utils {
 	 * @return
 	 */
 	public static int getDecimals(float number) {
-
 		float i = roundToNextSignificant(number);
 
 		if (Float.isInfinite(i)) {
@@ -320,22 +215,6 @@ public abstract class Utils {
 		}
 
 		return (int) Math.ceil(-Math.log10(i)) + 2;
-	}
-
-	/**
-	 * Replacement for the Math.nextUp(...) method that is only available in
-	 * HONEYCOMB and higher.
-	 *
-	 * @param d
-	 * @return
-	 */
-	public static double nextUp(double d) {
-		if (d == Double.POSITIVE_INFINITY) {
-			return d;
-		} else {
-			d += 0.0d;
-			return Double.longBitsToDouble(Double.doubleToRawLongBits(d) + ((d >= 0.0d) ? +1L : -1L));
-		}
 	}
 
 	/**
@@ -349,7 +228,6 @@ public abstract class Utils {
 	 * @return
 	 */
 	public static MPPointF getPosition(MPPointF center, float dist, float angle) {
-
 		MPPointF p = MPPointF.getInstance(0, 0);
 		getPosition(center, dist, angle, p);
 		return p;
@@ -360,12 +238,11 @@ public abstract class Utils {
 		outputPoint.y = (float) (center.y + dist * Math.sin(Math.toRadians(angle)));
 	}
 
-	public static void velocityTrackerPointerUpCleanUpIfNecessary(MotionEvent ev,
-																  VelocityTracker tracker) {
+	public static void velocityTrackerPointerUpCleanUpIfNecessary(MotionEvent ev, VelocityTracker tracker) {
 
 		// Check the dot product of current velocities.
 		// If the pointer that left was opposing another velocity vector, clear.
-		tracker.computeCurrentVelocity(1000, mMaximumFlingVelocity);
+		tracker.computeCurrentVelocity(1000, maximumFlingVelocity);
 		final int upIndex = ev.getActionIndex();
 		final int id1 = ev.getPointerId(upIndex);
 		final float x1 = tracker.getXVelocity(id1);
@@ -398,14 +275,6 @@ public abstract class Utils {
 		view.postInvalidateOnAnimation();
 	}
 
-	public static int getMinimumFlingVelocity() {
-		return mMinimumFlingVelocity;
-	}
-
-	public static int getMaximumFlingVelocity() {
-		return mMaximumFlingVelocity;
-	}
-
 	/**
 	 * returns an angle between 0.f < 360.f (not less than zero, less than 360)
 	 */
@@ -421,8 +290,10 @@ public abstract class Utils {
 
 	public static void drawImage(Canvas canvas,
 								 Drawable drawable,
-								 int x, int y,
-								 int width, int height) {
+								 int x, int y) {
+
+		int width = drawable.getIntrinsicWidth();
+		int height = drawable.getIntrinsicHeight();
 
 		MPPointF drawOffset = MPPointF.getInstance();
 		drawOffset.x = x - (width / 2);
@@ -445,7 +316,7 @@ public abstract class Utils {
 	private static final Rect mDrawTextRectBuffer = new Rect();
 	private static final Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
 
-	public static void drawXAxisValue(Canvas c, String text, float x, float y,
+	public static void drawXAxisValue(Canvas canvas, String text, float x, float y,
 									  Paint paint,
 									  MPPointF anchor, float angleDegrees) {
 
@@ -488,13 +359,13 @@ public abstract class Utils {
 				FSize.recycleInstance(rotatedSize);
 			}
 
-			c.save();
-			c.translate(translateX, translateY);
-			c.rotate(angleDegrees);
+			canvas.save();
+			canvas.translate(translateX, translateY);
+			canvas.rotate(angleDegrees);
 
-			c.drawText(text, drawOffsetX, drawOffsetY, paint);
+			canvas.drawText(text, drawOffsetX, drawOffsetY, paint);
 
-			c.restore();
+			canvas.restore();
 		} else {
 			if (anchor.x != 0.f || anchor.y != 0.f) {
 
@@ -505,13 +376,13 @@ public abstract class Utils {
 			drawOffsetX += x;
 			drawOffsetY += y;
 
-			c.drawText(text, drawOffsetX, drawOffsetY, paint);
+			canvas.drawText(text, drawOffsetX, drawOffsetY, paint);
 		}
 
 		paint.setTextAlign(originalTextAlign);
 	}
 
-	public static void drawMultilineText(Canvas c, StaticLayout textLayout,
+	public static void drawMultilineText(Canvas canvas, StaticLayout textLayout,
 										 float x, float y,
 										 TextPaint paint,
 										 MPPointF anchor, float angleDegrees) {
@@ -559,14 +430,14 @@ public abstract class Utils {
 				FSize.recycleInstance(rotatedSize);
 			}
 
-			c.save();
-			c.translate(translateX, translateY);
-			c.rotate(angleDegrees);
+			canvas.save();
+			canvas.translate(translateX, translateY);
+			canvas.rotate(angleDegrees);
 
-			c.translate(drawOffsetX, drawOffsetY);
-			textLayout.draw(c);
+			canvas.translate(drawOffsetX, drawOffsetY);
+			textLayout.draw(canvas);
 
-			c.restore();
+			canvas.restore();
 		} else {
 			if (anchor.x != 0.f || anchor.y != 0.f) {
 
@@ -577,12 +448,12 @@ public abstract class Utils {
 			drawOffsetX += x;
 			drawOffsetY += y;
 
-			c.save();
+			canvas.save();
 
-			c.translate(drawOffsetX, drawOffsetY);
-			textLayout.draw(c);
+			canvas.translate(drawOffsetX, drawOffsetY);
+			textLayout.draw(canvas);
 
-			c.restore();
+			canvas.restore();
 		}
 
 		paint.setTextAlign(originalTextAlign);

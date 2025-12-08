@@ -180,14 +180,14 @@ open class RadarChartRenderer(
 
                     pIcon.y += iconsOffset.x
 
-                    Utils.drawImage(
-                        canvas,
-                        icon,
-                        pIcon.x.toInt(),
-                        pIcon.y.toInt(),
-                        icon!!.intrinsicWidth,
-                        icon.intrinsicHeight
-                    )
+                    icon?.let {
+                        Utils.drawImage(
+                            canvas,
+                            it,
+                            pIcon.x.toInt(),
+                            pIcon.y.toInt()
+                        )
+                    }
                 }
             }
 

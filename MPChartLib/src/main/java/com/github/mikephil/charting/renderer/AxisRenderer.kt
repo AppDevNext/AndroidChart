@@ -12,6 +12,7 @@ import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.log10
+import kotlin.math.nextUp
 import kotlin.math.pow
 
 /**
@@ -180,7 +181,10 @@ abstract class AxisRenderer(
                 first -= interval
             }
 
-            val last = if (interval == 0.0) 0.0 else Utils.nextUp(floor(max / interval) * interval)
+            val last = if (interval == 0.0)
+                0.0
+            else
+                (floor(max / interval) * interval).nextUp()
 
             var f: Double
 

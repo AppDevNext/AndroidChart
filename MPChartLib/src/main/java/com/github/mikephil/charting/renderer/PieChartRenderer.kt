@@ -7,7 +7,6 @@ import android.graphics.Paint
 import android.graphics.Paint.Align
 import android.graphics.Path
 import android.graphics.RectF
-import android.os.Build
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -31,6 +30,7 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
 import androidx.core.graphics.withSave
+import androidx.core.graphics.createBitmap
 
 open class PieChartRenderer(
     protected var chart: PieChart, animator: ChartAnimator,
@@ -95,7 +95,7 @@ open class PieChartRenderer(
             || (drawBitmap.height != height)
         ) {
             if (width > 0 && height > 0) {
-                drawBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444)
+                drawBitmap = createBitmap(width, height, Bitmap.Config.ARGB_4444)
                 mDrawBitmap = WeakReference(drawBitmap)
                 bitmapCanvas = Canvas(drawBitmap)
             } else return
@@ -106,7 +106,7 @@ open class PieChartRenderer(
         val pieData = chart.data
 
         for (set in pieData!!.dataSets) {
-            if (set.isVisible && set.entryCount > 0) drawDataSet(canvas, set)
+            if (set.isVisible && set.entryCount > 0) drawDataSet(set)
         }
     }
 
@@ -171,7 +171,7 @@ open class PieChartRenderer(
         return sliceSpace
     }
 
-    protected fun drawDataSet(canvas: Canvas?, dataSet: IPieDataSet) {
+    protected fun drawDataSet(dataSet: IPieDataSet) {
         var angle = 0f
         val rotationAngle = chart.rotationAngle
 
@@ -588,14 +588,14 @@ open class PieChartRenderer(
                         var y = (labelRadius + iconsOffset.y) * sliceYBase + center.y
                         y += iconsOffset.x
 
-                        Utils.drawImage(
-                            this,
-                            icon,
-                            x.toInt(),
-                            y.toInt(),
-                            icon!!.intrinsicWidth,
-                            icon.intrinsicHeight
-                        )
+                        icon?.let {
+                            Utils.drawImage(
+                                this,
+                                it,
+                                x.toInt(),
+                                y.toInt()
+                            )
+                        }
                     }
 
                     xIndex++
@@ -725,12 +725,10 @@ open class PieChartRenderer(
             val layoutHeight = centerTextLayout!!.height.toFloat()
 
             canvas.save()
-            if (Build.VERSION.SDK_INT >= 18) {
-                val path = mDrawCenterTextPathBuffer
-                path.reset()
-                path.addOval(holeRect, Path.Direction.CW)
-                canvas.clipPath(path)
-            }
+            val path = mDrawCenterTextPathBuffer
+            path.reset()
+            path.addOval(holeRect, Path.Direction.CW)
+            canvas.clipPath(path)
 
             canvas.translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2f)
             centerTextLayout!!.draw(canvas)

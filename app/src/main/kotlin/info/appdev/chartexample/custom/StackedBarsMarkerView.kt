@@ -9,6 +9,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.formatNumber
 import info.appdev.chartexample.R
 
 /**
@@ -26,12 +27,12 @@ class StackedBarsMarkerView(context: Context?, layoutResource: Int) : MarkerView
 
             if (entry.yVals != null) {
                 // draw the stack value
-                tvContent.text = Utils.formatNumber(entry.yVals!![highlight.stackIndex], 0, true)
+                tvContent.text = entry.yVals!![highlight.stackIndex].formatNumber( 0, true)
             } else {
-                tvContent.text = Utils.formatNumber(entry.y, 0, true)
+                tvContent.text = entry.y.formatNumber( 0, true)
             }
         } else {
-            tvContent.text = Utils.formatNumber(entry.y, 0, true)
+            tvContent.text = entry.y.formatNumber( 0, true)
         }
 
         super.refreshContent(entry, highlight)

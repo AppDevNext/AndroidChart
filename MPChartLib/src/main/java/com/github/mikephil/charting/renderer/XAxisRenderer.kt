@@ -80,7 +80,6 @@ open class XAxisRenderer(
             xAxis.labelRotationAngle
         )
 
-
         xAxis.mLabelWidth = labelRotatedSize.width.roundToInt()
         xAxis.mLabelHeight = labelRotatedSize.height.roundToInt()
 
@@ -158,7 +157,7 @@ open class XAxisRenderer(
      *
      * @param pos
      */
-    protected open fun drawLabels(canvas: Canvas?, pos: Float, anchor: MPPointF?) {
+    protected open fun drawLabels(canvas: Canvas, pos: Float, anchor: MPPointF) {
         val labelRotationAngleDegrees = xAxis.labelRotationAngle
         val centeringEnabled = xAxis.isCenterAxisLabelsEnabled
 
@@ -220,7 +219,7 @@ open class XAxisRenderer(
         }
     }
 
-    protected fun drawLabel(canvas: Canvas?, formattedLabel: String?, x: Float, y: Float, anchor: MPPointF?, angleDegrees: Float) {
+    protected fun drawLabel(canvas: Canvas, formattedLabel: String?, x: Float, y: Float, anchor: MPPointF, angleDegrees: Float) {
         Utils.drawXAxisValue(canvas, formattedLabel, x, y, paintAxisLabels, anchor, angleDegrees)
     }
 

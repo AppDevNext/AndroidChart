@@ -8,7 +8,7 @@ import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
-import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.formatNumber
 import info.appdev.chartexample.R
 
 /**
@@ -22,9 +22,9 @@ class MyMarkerView(context: Context?, layoutResource: Int) : MarkerView(context,
     // content (user-interface)
     override fun refreshContent(e: Entry, highlight: Highlight?) {
         if (e is CandleEntry) {
-            tvContent.text = Utils.formatNumber(e.high, 0, true)
+            tvContent.text = e.high.formatNumber(0, true)
         } else {
-            tvContent.text = Utils.formatNumber(e.y, 0, true)
+            tvContent.text = e.y.formatNumber(0, true)
         }
 
         super.refreshContent(e, highlight)
