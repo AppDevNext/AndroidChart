@@ -293,12 +293,10 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
     private val onValueSelectedRectF = RectF()
 
-    override fun onValueSelected(e: Entry?, h: Highlight?) {
-        if (e == null) return
-
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
         val bounds = onValueSelectedRectF
-        chart!!.getBarBounds(e as BarEntry, bounds)
-        val position = chart!!.getPosition(e, AxisDependency.LEFT)
+        chart!!.getBarBounds(entry as BarEntry, bounds)
+        val position = chart!!.getPosition(entry, AxisDependency.LEFT)
 
         Log.i("bounds", bounds.toString())
         Log.i("position", position.toString())

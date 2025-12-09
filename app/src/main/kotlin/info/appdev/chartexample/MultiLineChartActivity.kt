@@ -270,39 +270,39 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         Log.i("Gesture", "START, x: " + me.x + ", y: " + me.y)
     }
 
-    override fun onChartGestureEnd(me: MotionEvent?, lastPerformedGesture: ChartGesture?) {
+    override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
         Log.i("Gesture", "END, lastGesture: $lastPerformedGesture")
 
         // un-highlight values after the gesture is finished and no single-tap
         if (lastPerformedGesture != ChartGesture.SINGLE_TAP) chart!!.highlightValues(null) // or highlightTouch(null) for callback to onNothingSelected(...)
     }
 
-    override fun onChartLongPressed(me: MotionEvent?) {
+    override fun onChartLongPressed(me: MotionEvent) {
         Log.i("LongPress", "Chart long pressed.")
     }
 
-    override fun onChartDoubleTapped(me: MotionEvent?) {
+    override fun onChartDoubleTapped(me: MotionEvent) {
         Log.i("DoubleTap", "Chart double-tapped.")
     }
 
-    override fun onChartSingleTapped(me: MotionEvent?) {
+    override fun onChartSingleTapped(me: MotionEvent) {
         Log.i("SingleTap", "Chart single-tapped.")
     }
 
-    override fun onChartFling(me1: MotionEvent?, me2: MotionEvent?, velocityX: Float, velocityY: Float) {
+    override fun onChartFling(me1: MotionEvent?, me2: MotionEvent, velocityX: Float, velocityY: Float) {
         Log.i("Fling", "Chart fling. VelocityX: $velocityX, VelocityY: $velocityY")
     }
 
-    override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
+    override fun onChartScale(me: MotionEvent, scaleX: Float, scaleY: Float) {
         Log.i("Scale / Zoom", "ScaleX: $scaleX, ScaleY: $scaleY")
     }
 
-    override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
+    override fun onChartTranslate(me: MotionEvent, dX: Float, dY: Float) {
         Log.i("Translate / Move", "dX: $dX, dY: $dY")
     }
 
-    override fun onValueSelected(e: Entry, h: Highlight) {
-        Log.i("VAL SELECTED", "Value: " + e.y + ", xIndex: " + e.x + ", DataSet index: " + h.dataSetIndex)
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        Log.i("VAL SELECTED", "Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex)
     }
 
     override fun onNothingSelected() = Unit

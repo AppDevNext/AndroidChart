@@ -56,36 +56,36 @@ class BarChartFrag : SimpleFragment(), OnChartGestureListener {
         return v
     }
 
-    override fun onChartGestureStart(me: MotionEvent?, lastPerformedGesture: ChartGesture?) {
+    override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
         Log.i("Gesture", "START")
     }
 
-    override fun onChartGestureEnd(me: MotionEvent?, lastPerformedGesture: ChartGesture?) {
+    override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
         Log.i("Gesture", "END")
         chart!!.highlightValues(null)
     }
 
-    override fun onChartLongPressed(me: MotionEvent?) {
+    override fun onChartLongPressed(me: MotionEvent) {
         Log.i("LongPress", "Chart long pressed.")
     }
 
-    override fun onChartDoubleTapped(me: MotionEvent?) {
+    override fun onChartDoubleTapped(me: MotionEvent) {
         Log.i("DoubleTap", "Chart double-tapped.")
     }
 
-    override fun onChartSingleTapped(me: MotionEvent?) {
+    override fun onChartSingleTapped(me: MotionEvent) {
         Log.i("SingleTap", "Chart single-tapped.")
     }
 
-    override fun onChartFling(me1: MotionEvent?, me2: MotionEvent?, velocityX: Float, velocityY: Float) {
+    override fun onChartFling(me1: MotionEvent?, me2: MotionEvent, velocityX: Float, velocityY: Float) {
         Log.i("Fling", "Chart fling. VelocityX: $velocityX, VelocityY: $velocityY")
     }
 
-    override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
+    override fun onChartScale(me: MotionEvent, scaleX: Float, scaleY: Float) {
         Log.i("Scale / Zoom", "ScaleX: $scaleX, ScaleY: $scaleY")
     }
 
-    override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
+    override fun onChartTranslate(me: MotionEvent, dX: Float, dY: Float) {
         Log.i("Translate / Move", "dX: $dX, dY: $dY")
     }
 

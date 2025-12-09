@@ -126,8 +126,8 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         saveToGallery(binding.chart1, "DrawChartActivity")
     }
 
-    override fun onValueSelected(e: Entry, h: Highlight) {
-        Log.i("VAL SELECTED", ("Value: " + e.y + ", xIndex: " + e.x + ", DataSet index: " + h.dataSetIndex))
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        Log.i("VAL SELECTED", ("Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex))
     }
 
     override fun onNothingSelected() = Unit

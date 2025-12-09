@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.LimitLine
@@ -24,7 +25,6 @@ import info.appdev.chartexample.DataTools.Companion.setData
 import info.appdev.chartexample.custom.MyMarkerView
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 /**
  * Example of a heavily customized [LineChart] with limit lines, custom line shapes, etc.
@@ -263,8 +263,8 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
     override fun onStartTrackingTouch(seekBar: SeekBar) {}
     override fun onStopTrackingTouch(seekBar: SeekBar) {}
-    override fun onValueSelected(e: Entry, h: Highlight) {
-        Log.i("Entry selected", e.toString())
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        Log.i("Entry selected", entry.toString())
         Log.i("LOW HIGH", "low: " + binding.chart1.lowestVisibleX + ", high: " + binding.chart1.highestVisibleX)
         Log.i(
             "MIN MAX",

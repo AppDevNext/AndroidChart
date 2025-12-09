@@ -208,12 +208,9 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         saveToGallery(chart, "StackedBarActivityNegative")
     }
 
-    override fun onValueSelected(e: Entry?, h: Highlight) {
-        val entry = e as BarEntry
-        Log.i(
-            "VAL SELECTED",
-            "Value: " + abs(entry.yVals!![h.stackIndex])
-        )
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        val barEntry = entry as BarEntry
+        Log.i("VAL SELECTED", "Value: " + abs(barEntry.yVals!![highlight.stackIndex]))
     }
 
     override fun onNothingSelected() {

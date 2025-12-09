@@ -256,8 +256,8 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
 
     override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 
-    override fun onValueSelected(e: Entry, h: Highlight) {
-        Log.i("Activity", "Selected: " + e.toString() + ", dataSet: " + h.dataSetIndex)
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        Log.i("Activity", "Selected: " + entry.toString() + ", dataSet: " + highlight.dataSetIndex)
     }
 
     override fun onNothingSelected() {

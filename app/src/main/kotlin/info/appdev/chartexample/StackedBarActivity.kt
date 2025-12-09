@@ -240,11 +240,13 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
     override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 
-    override fun onValueSelected(e: Entry?, h: Highlight) {
-        val entry = e as BarEntry
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        val barEntry = entry as BarEntry
 
-        if (entry.yVals != null) Log.i("VAL SELECTED", "Value: " + entry.yVals!![h.stackIndex])
-        else Log.i("VAL SELECTED", "Value: " + entry.y)
+        if (barEntry.yVals != null)
+            Log.i("VAL SELECTED", "Value: " + barEntry.yVals!![highlight.stackIndex])
+        else
+            Log.i("VAL SELECTED", "Value: " + barEntry.y)
     }
 
     override fun onNothingSelected() {}
