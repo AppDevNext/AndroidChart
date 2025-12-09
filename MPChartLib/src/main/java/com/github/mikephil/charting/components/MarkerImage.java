@@ -128,7 +128,7 @@ public class MarkerImage implements IMarker {
     }
 
     @Override
-    public void refreshContent(Entry e, Highlight highlight) {
+    public void refreshContent(Entry entry, Highlight highlight) {
 
     }
 

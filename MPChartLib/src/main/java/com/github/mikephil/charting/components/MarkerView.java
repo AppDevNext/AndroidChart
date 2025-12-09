@@ -107,7 +107,7 @@ public class MarkerView extends RelativeLayout implements IMarker {
     }
 
     @Override
-    public void refreshContent(Entry e, Highlight highlight) {
+    public void refreshContent(Entry entry, Highlight highlight) {
 
         measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
                 MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));

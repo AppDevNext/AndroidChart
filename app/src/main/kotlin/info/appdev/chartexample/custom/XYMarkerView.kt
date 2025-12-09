@@ -21,13 +21,12 @@ class XYMarkerView(context: Context?, private val xAxisValueFormatter: IAxisValu
     private val format: DecimalFormat = DecimalFormat("###.0")
 
     // runs every time the MarkerView is redrawn, can be used to update the content (user-interface)
-    override fun refreshContent(e: Entry, highlight: Highlight?) {
-        tvContent.text = String.format("x: %s, y: %s", xAxisValueFormatter.getFormattedValue(e.x, null), format.format(e.y.toDouble()))
+    override fun refreshContent(entry: Entry, highlight: Highlight) {
+        tvContent.text = String.format("x: %s, y: %s", xAxisValueFormatter.getFormattedValue(entry.x, null), format.format(entry.y.toDouble()))
 
-        super.refreshContent(e, highlight)
+        super.refreshContent(entry, highlight)
     }
 
-    override fun getOffset(): MPPointF {
-        return MPPointF(-(width / 2).toFloat(), -height.toFloat())
-    }
+    override val offset: MPPointF
+        get() = MPPointF(-(width / 2).toFloat(), -height.toFloat())
 }
