@@ -27,8 +27,9 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
 
     var pixelBuffer: FloatArray = FloatArray(2)
 
-    protected fun drawDataSet(canvas: Canvas?, dataSet: IScatterDataSet) {
-        if (dataSet.entryCount < 1) return
+    protected fun drawDataSet(canvas: Canvas, dataSet: IScatterDataSet) {
+        if (dataSet.entryCount < 1)
+            return
 
         val viewPortHandler = this.viewPortHandler
 
