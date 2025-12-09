@@ -439,7 +439,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 				y = position.y;
 			}
 
-			c.drawText(mDescription.getText(), x, y, mDescPaint);
+			c.drawText(mDescription.text, x, y, mDescPaint);
 		}
 	}
 

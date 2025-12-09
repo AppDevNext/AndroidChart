@@ -31,6 +31,6 @@ class RadarMarkerView(context: Context, layoutResource: Int) : MarkerView(contex
         super.refreshContent(entry, highlight)
     }
 
-    override val offset: MPPointF
+    override var offset: MPPointF = MPPointF()
         get() = MPPointF(-(width / 2).toFloat(), (-height - 10).toFloat())
 }
