@@ -159,8 +159,8 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         return set
     }
 
-    override fun onValueSelected(e: Entry, h: Highlight?) {
-        Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show()
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        Toast.makeText(this, entry.toString(), Toast.LENGTH_SHORT).show()
     }
 
     override fun onNothingSelected() {}

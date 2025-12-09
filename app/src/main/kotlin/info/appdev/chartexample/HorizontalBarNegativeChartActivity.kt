@@ -249,14 +249,12 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
     private val mOnValueSelectedRectF = RectF()
 
-    override fun onValueSelected(e: Entry?, h: Highlight) {
-        if (e == null) return
-
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
         val bounds = mOnValueSelectedRectF
-        chart!!.getBarBounds(e as BarEntry, bounds)
+        chart!!.getBarBounds(entry as BarEntry, bounds)
 
         val position = chart!!.getPosition(
-            e, chart!!.data!!.getDataSetByIndex(h.dataSetIndex)
+            entry, chart!!.data!!.getDataSetByIndex(highlight.dataSetIndex)
                 .getAxisDependency()
         )
 

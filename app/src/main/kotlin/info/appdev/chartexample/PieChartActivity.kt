@@ -18,6 +18,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -32,7 +33,6 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
     private var chart: PieChart? = null
@@ -278,13 +278,8 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         return s
     }
 
-    override fun onValueSelected(e: Entry?, h: Highlight) {
-        if (e == null) return
-        Log.i(
-            "VAL SELECTED",
-            ("Value: " + e.y + ", index: " + h.x
-                    + ", DataSet index: " + h.dataSetIndex)
-        )
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        Log.i("VAL SELECTED", "Value: " + entry.y + ", index: " + highlight.x + ", DataSet index: " + highlight.dataSetIndex)
     }
 
     override fun onNothingSelected() {

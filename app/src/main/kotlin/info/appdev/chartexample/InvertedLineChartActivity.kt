@@ -11,6 +11,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.data.Entry
@@ -23,7 +24,6 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.MyMarkerView
 import info.appdev.chartexample.notimportant.DemoBase
 import java.util.Collections
-import androidx.core.net.toUri
 
 class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
     private var chart: LineChart? = null
@@ -139,7 +139,8 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         when (item.itemId) {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.data = "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/InvertedLineChartActivity.kt".toUri()
+                i.data =
+                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/InvertedLineChartActivity.kt".toUri()
                 startActivity(i)
             }
 
@@ -232,12 +233,8 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         saveToGallery(chart, "InvertedLineChartActivity")
     }
 
-    override fun onValueSelected(e: Entry, h: Highlight) {
-        Log.i(
-            "VAL SELECTED",
-            ("Value: " + e.y + ", xIndex: " + e.x
-                    + ", DataSet index: " + h.dataSetIndex)
-        )
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        Log.i("VAL SELECTED", "Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex)
     }
 
     override fun onNothingSelected() {}

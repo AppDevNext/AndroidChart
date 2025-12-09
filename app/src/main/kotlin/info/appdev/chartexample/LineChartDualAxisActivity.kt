@@ -358,11 +358,11 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         saveToGallery(chart, "LineChartActivity2")
     }
 
-    override fun onValueSelected(e: Entry, h: Highlight) {
-        Log.i("Entry selected", e.toString())
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        Log.i("Entry selected", entry.toString())
 
         chart!!.centerViewToAnimated(
-            e.x, e.y, chart!!.data!!.getDataSetByIndex(h.dataSetIndex)
+            entry.x, entry.y, chart!!.data!!.getDataSetByIndex(highlight.dataSetIndex)
                 .getAxisDependency(), 500
         )
         //chart.zoomAndCenterAnimated(2.5f, 2.5f, e.getX(), e.getY(), chart.getData().getDataSetByIndex(dataSetIndex)

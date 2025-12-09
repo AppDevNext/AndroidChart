@@ -562,9 +562,9 @@ class BarLineChartTouchListener(
     override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
         mLastGesture = ChartGesture.FLING
 
-        val l = mChart!!.onChartGestureListener
+        val chartGestureListener = mChart!!.onChartGestureListener
 
-        l?.onChartFling(e1, e2, velocityX, velocityY)
+        chartGestureListener?.onChartFling(e1, e2, velocityX, velocityY)
 
         return super.onFling(e1, e2, velocityX, velocityY)
     }

@@ -283,13 +283,8 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
         return s
     }
 
-    override fun onValueSelected(e: Entry?, h: Highlight) {
-        if (e == null) return
-        Log.i(
-            "VAL SELECTED",
-            ("Value: " + e.y + ", index: " + h.x
-                    + ", DataSet index: " + h.dataSetIndex)
-        )
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        Log.i("VAL SELECTED", "Value: " + entry.y + ", index: " + highlight.x + ", DataSet index: " + highlight.dataSetIndex)
     }
 
     override fun onNothingSelected() {

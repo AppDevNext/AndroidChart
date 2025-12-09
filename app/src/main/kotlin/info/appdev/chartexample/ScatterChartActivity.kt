@@ -208,12 +208,8 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         saveToGallery(chart, "ScatterChartActivity")
     }
 
-    override fun onValueSelected(e: Entry, h: Highlight) {
-        Log.i(
-            "VAL SELECTED",
-            ("Value: " + e.y + ", xIndex: " + e.x
-                    + ", DataSet index: " + h.dataSetIndex)
-        )
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        Log.i("VAL SELECTED", "Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex)
     }
 
     override fun onNothingSelected() {}

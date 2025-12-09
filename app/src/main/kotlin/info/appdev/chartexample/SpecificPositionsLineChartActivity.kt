@@ -290,11 +290,11 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         mChart!!.data = data
     }
 
-    override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture) {
+    override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
         Log.i("Gesture", "START, x: " + me.x + ", y: " + me.y)
     }
 
-    override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartGesture) {
+    override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
         Log.i("Gesture", "END, lastGesture: $lastPerformedGesture")
 
         // un-highlight values after the gesture is finished and no single-tap
@@ -315,7 +315,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         Log.i("SingleTap", "Chart single-tapped.")
     }
 
-    override fun onChartFling(me1: MotionEvent, me2: MotionEvent, velocityX: Float, velocityY: Float) {
+    override fun onChartFling(me1: MotionEvent?, me2: MotionEvent, velocityX: Float, velocityY: Float) {
         Log.i("Fling", "Chart flinged. VeloX: $velocityX, VeloY: $velocityY")
     }
 
@@ -327,8 +327,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         Log.i("Translate / Move", "dX: $dX, dY: $dY")
     }
 
-    override fun onValueSelected(e: Entry, h: Highlight) {
-        Log.i("Entry selected", e.toString())
+    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+        Log.i("Entry selected", entry.toString())
         Log.i("LOWHIGH", "low: ${mChart!!.lowestVisibleX}, high: ${mChart!!.highestVisibleX}")
         Log.i("MIN MAX", "xmin: ${mChart!!.xChartMin}, xmax: ${mChart!!.xChartMax}, ymin: ${mChart!!.yChartMin}, ymax: ${mChart!!.yChartMax}")
     }
