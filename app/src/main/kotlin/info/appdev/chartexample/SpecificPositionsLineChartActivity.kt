@@ -203,7 +203,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             }
 
             R.id.animateX -> mChart!!.animateX(3000)
-            R.id.animateY -> mChart!!.animateY(3000, Easing.EaseInCubic)
+            R.id.animateY -> mChart!!.animateY(3000, Easing.easeInCubic)
             R.id.animateXY -> mChart!!.animateXY(3000, 3000)
             R.id.actionSave -> {
                 if (mChart!!.saveToPath("title" + System.currentTimeMillis(), "")) {

@@ -64,7 +64,7 @@ class HalfPieChartActivity : DemoBase() {
 
         setData(100f)
 
-        chart!!.animateY(1400, Easing.EaseInOutQuad)
+        chart!!.animateY(1400, Easing.easeInOutQuad)
 
         val l = chart!!.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
