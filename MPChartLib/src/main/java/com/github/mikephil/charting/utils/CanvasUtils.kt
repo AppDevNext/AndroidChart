@@ -13,8 +13,8 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 private val mDrawableBoundsCache = Rect()
-val DEG2RAD: kotlin.Double = (Math.PI / 180.0)
-val FDEG2RAD: kotlin.Float = (Math.PI.toFloat() / 180f)
+val DEG2RAD: Double = (Math.PI / 180.0)
+val FDEG2RAD: Float = (Math.PI.toFloat() / 180f)
 
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
@@ -51,9 +51,9 @@ private val mDrawTextRectBuffer = Rect()
 private val mFontMetricsBuffer = Paint.FontMetrics()
 
 fun Canvas.drawXAxisValue(
-    text: String?, x: kotlin.Float, y: kotlin.Float,
+    text: String?, x: Float, y: Float,
     paint: Paint,
-    anchor: MPPointF, angleDegrees: kotlin.Float
+    anchor: MPPointF, angleDegrees: Float
 ) {
     var drawOffsetX = 0f
     var drawOffsetY = 0f
@@ -119,14 +119,14 @@ fun Canvas.drawXAxisValue(
 
 fun Canvas.drawMultilineText(
     textLayout: StaticLayout,
-    x: kotlin.Float, y: kotlin.Float,
+    x: Float, y: Float,
     paint: TextPaint,
-    anchor: MPPointF, angleDegrees: kotlin.Float
+    anchor: MPPointF, angleDegrees: Float
 ) {
     var drawOffsetX = 0f
     var drawOffsetY = 0f
-    val drawWidth: kotlin.Float
-    val drawHeight: kotlin.Float
+    val drawWidth: Float
+    val drawHeight: Float
 
     val lineHeight = paint.getFontMetrics(mFontMetricsBuffer)
 
@@ -204,7 +204,7 @@ fun Canvas.drawMultilineText(
  * @param degrees
  * @return A Recyclable FSize instance
  */
-fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: kotlin.Float, rectangleHeight: kotlin.Float, degrees: kotlin.Float): FSize {
+fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: Float, rectangleHeight: Float, degrees: Float): FSize {
     val radians = degrees * FDEG2RAD
     return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians)
 }
@@ -218,7 +218,7 @@ fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: kotlin.Float, rectangleHe
  * @param radians
  * @return A Recyclable FSize instance
  */
-fun getSizeOfRotatedRectangleByRadians(rectangleWidth: kotlin.Float, rectangleHeight: kotlin.Float, radians: kotlin.Float): FSize {
+fun getSizeOfRotatedRectangleByRadians(rectangleWidth: Float, rectangleHeight: Float, radians: Float): FSize {
     return FSize.getInstance(
         abs(rectangleWidth * cos(radians.toDouble()).toFloat()) + abs(rectangleHeight * sin(radians.toDouble()).toFloat()),
         abs(rectangleWidth * sin(radians.toDouble()).toFloat()) + abs(rectangleHeight * cos(radians.toDouble()).toFloat())

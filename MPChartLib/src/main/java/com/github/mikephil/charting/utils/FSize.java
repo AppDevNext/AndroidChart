@@ -3,6 +3,8 @@ package com.github.mikephil.charting.utils;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 /**
  * Class for describing width and height dimensions in some arbitrary
  * unit. Replacement for the android.Util.SizeF which is available only on API >= 21.
@@ -14,7 +16,7 @@ public final class FSize extends ObjectPool.Poolable{
     public float width;
     public float height;
 
-    private static ObjectPool<FSize> pool;
+    private static final ObjectPool<FSize> pool;
 
     static {
         pool = ObjectPool.create(256, new FSize(0,0));
@@ -57,14 +59,14 @@ public final class FSize extends ObjectPool.Poolable{
         if (this == obj) {
             return true;
         }
-        if (obj instanceof FSize) {
-            final FSize other = (FSize) obj;
-            return width == other.width && height == other.height;
+        if (obj instanceof FSize other) {
+			return width == other.width && height == other.height;
         }
         return false;
     }
 
-    @Override
+    @NonNull
+	@Override
     public String toString() {
         return width + "x" + height;
     }
