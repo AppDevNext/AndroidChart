@@ -41,11 +41,6 @@ public class Transformer {
     /**
      * Prepares the matrix that transforms values to pixels. Calculates the
      * scale factors from the charts size and offsets.
-     *
-     * @param xChartMin
-     * @param deltaX
-     * @param deltaY
-     * @param yChartMin
      */
     public void prepareMatrixValuePx(float xChartMin, float deltaX, float deltaY, float yChartMin) {
 
@@ -67,8 +62,6 @@ public class Transformer {
 
     /**
      * Prepares the matrix that contains all offsets.
-     *
-     * @param inverted
      */
     public void prepareMatrixOffset(boolean inverted) {
 
@@ -91,9 +84,6 @@ public class Transformer {
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the SCATTERCHART.
-     *
-     * @param data
-     * @return
      */
     public float[] generateTransformedValuesScatter(IScatterDataSet data, float phaseX,
                                                     float phaseY, int from, int to) {
@@ -128,9 +118,6 @@ public class Transformer {
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the BUBBLECHART.
-     *
-     * @param data
-     * @return
      */
     public float[] generateTransformedValuesBubble(IBubbleDataSet data, float phaseY, int from, int to) {
 
@@ -164,9 +151,6 @@ public class Transformer {
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the LINECHART.
-     *
-     * @param data
-     * @return
      */
     public float[] generateTransformedValuesLine(ILineDataSet data,
                                                  float phaseX, float phaseY,
@@ -204,9 +188,6 @@ public class Transformer {
     /**
      * Transforms an List of Entry into a float array containing the x and
      * y values transformed with all matrices for the CANDLESTICKCHART.
-     *
-     * @param data
-     * @return
      */
     public float[] generateTransformedValuesCandle(ICandleDataSet data,
                                                    float phaseX, float phaseY, int from, int to) {
@@ -239,8 +220,6 @@ public class Transformer {
     /**
      * transform a path with all the given matrices VERY IMPORTANT: keep order
      * to value-touch-offset
-     *
-     * @param path
      */
     public void pathValueToPixel(Path path) {
 
@@ -251,8 +230,6 @@ public class Transformer {
 
     /**
      * Transforms multiple paths will all matrices.
-     *
-     * @param paths
      */
     public void pathValuesToPixel(List<Path> paths) {
 
@@ -264,8 +241,6 @@ public class Transformer {
     /**
      * Transform an array of points with all matrices. VERY IMPORTANT: Keep
      * matrix order "value-touch-offset" when transforming.
-     *
-     * @param pts
      */
     public void pointValuesToPixel(float[] pts) {
 
@@ -276,8 +251,6 @@ public class Transformer {
 
     /**
      * Transform a rectangle with all matrices.
-     *
-     * @param r
      */
     public void rectValueToPixel(RectF r) {
 
@@ -288,9 +261,6 @@ public class Transformer {
 
     /**
      * Transform a rectangle with all matrices with potential animation phases.
-     *
-     * @param r
-     * @param phaseY
      */
     public void rectToPixelPhase(RectF r, float phaseY) {
 
@@ -316,8 +286,6 @@ public class Transformer {
 
     /**
      * Transform a rectangle with all matrices with potential animation phases.
-     *
-     * @param r
      */
     public void rectValueToPixelHorizontal(RectF r) {
 
@@ -328,9 +296,6 @@ public class Transformer {
 
     /**
      * Transform a rectangle with all matrices with potential animation phases.
-     *
-     * @param r
-     * @param phaseY
      */
     public void rectValueToPixelHorizontal(RectF r, float phaseY) {
 
@@ -345,8 +310,6 @@ public class Transformer {
 
     /**
      * transforms multiple rects with all matrices
-     *
-     * @param rects
      */
     public void rectValuesToPixel(List<RectF> rects) {
 
@@ -361,8 +324,6 @@ public class Transformer {
     /**
      * Transforms the given array of touch positions (pixels) (x, y, x, y, ...)
      * into values on the chart.
-     *
-     * @param pixels
      */
     public void pixelsToValue(float[] pixels) {
 
@@ -391,10 +352,6 @@ public class Transformer {
      * (encapsulated in a MPPointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
      * getPixelForValues(...).
-     *
-     * @param x
-     * @param y
-     * @return
      */
     public MPPointD getValuesByTouchPoint(float x, float y) {
 
@@ -417,10 +374,6 @@ public class Transformer {
     /**
      * Returns a recyclable MPPointD instance.
      * Returns the x and y coordinates (pixels) for a given x and y value in the chart.
-     *
-     * @param x
-     * @param y
-     * @return
      */
     public MPPointD getPixelForValues(float x, float y) {
 

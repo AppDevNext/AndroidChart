@@ -57,9 +57,6 @@ public class ColorTemplate {
 
     /**
      * Converts the given hex-color-string to rgb.
-     *
-     * @param hex
-     * @return
      */
     public static int rgb(String hex) {
         int color = (int) Long.parseLong(hex.replace("#", ""), 16);
@@ -71,8 +68,6 @@ public class ColorTemplate {
 
     /**
      * Returns the Android ICS holo blue light color.
-     *
-     * @return
      */
     public static int getHoloBlue() {
         return Color.rgb(51, 181, 229);
@@ -80,10 +75,7 @@ public class ColorTemplate {
 
     /**
      * Sets the alpha component of the given color.
-     *
-     * @param color
      * @param alpha 0 - 255
-     * @return
      */
     public static int colorWithAlpha(int color, int alpha) {
         return (color & 0xffffff) | ((alpha & 0xff) << 24);
@@ -92,14 +84,11 @@ public class ColorTemplate {
     /**
      * turn an array of resource-colors (contains resource-id integers) into an
      * array list of actual color integers
-     *
-     * @param r
      * @param colors an integer array of resource id's of colors
-     * @return
      */
     public static List<Integer> createColors(Resources r, int[] colors) {
 
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
 
         for (int i : colors) {
             result.add(r.getColor(i));
@@ -109,15 +98,11 @@ public class ColorTemplate {
     }
 
     /**
-     * Turns an array of colors (integer color values) into an ArrayList of
-     * colors.
-     *
-     * @param colors
-     * @return
+     * Turns an array of colors (integer color values) into an ArrayList of colors.
      */
     public static List<Integer> createColors(int[] colors) {
 
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
 
         for (int i : colors) {
             result.add(i);
