@@ -51,7 +51,7 @@ class RadarChartActivity : DemoBase() {
 
         setData()
 
-        chart!!.animateXY(1400, 1400, Easing.EaseInOutQuad)
+        chart!!.animateXY(1400, 1400, Easing.easeInOutQuad)
 
         val xAxis = chart!!.xAxis
         xAxis.typeface = tfLight
@@ -219,7 +219,7 @@ class RadarChartActivity : DemoBase() {
             }
 
             R.id.actionToggleSpin -> {
-                chart!!.spin(2000, chart!!.rotationAngle, chart!!.rotationAngle + 360, Easing.EaseInOutCubic)
+                chart!!.spin(2000, chart!!.rotationAngle, chart!!.rotationAngle + 360, Easing.easeInOutCubic)
             }
 
             R.id.actionSave -> {

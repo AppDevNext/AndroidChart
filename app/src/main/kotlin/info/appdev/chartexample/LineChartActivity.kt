@@ -235,7 +235,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             }
 
             R.id.animateX -> binding.chart1.animateX(2000)
-            R.id.animateY -> binding.chart1.animateY(2000, Easing.EaseInCubic)
+            R.id.animateY -> binding.chart1.animateY(2000, Easing.easeInCubic)
             R.id.animateXY -> binding.chart1.animateXY(2000, 2000)
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {

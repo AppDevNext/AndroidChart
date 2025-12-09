@@ -93,7 +93,7 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
         seekBarX!!.progress = 4
         seekBarY!!.progress = 10
 
-        chart!!.animateY(1400, Easing.EaseInOutQuad)
+        chart!!.animateY(1400, Easing.easeInOutQuad)
 
         // chart.spin(2000, 0, 360);
         val l = chart!!.legend
@@ -247,7 +247,7 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
             }
 
             R.id.actionToggleSpin -> {
-                chart!!.spin(1000, chart!!.rotationAngle, chart!!.rotationAngle + 360, Easing.EaseInOutCubic)
+                chart!!.spin(1000, chart!!.rotationAngle, chart!!.rotationAngle + 360, Easing.easeInOutCubic)
             }
 
             R.id.actionSave -> {
