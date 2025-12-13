@@ -240,7 +240,7 @@ public interface IDataSet<T extends Entry> {
      * Performs a IndexOutOfBounds check by modulus.
      *
      */
-    int getColor(int index);
+    int getColorByIndex(int index);
 
     /**
      * returns true if highlighting of values is enabled, false if not

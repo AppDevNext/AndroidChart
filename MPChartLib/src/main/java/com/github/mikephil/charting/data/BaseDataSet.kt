@@ -123,7 +123,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
         return mColors[0]
     }
 
-    override fun getColor(index: Int): Int {
+    override fun getColorByIndex(index: Int): Int {
         return mColors[index % mColors.size]
     }
 

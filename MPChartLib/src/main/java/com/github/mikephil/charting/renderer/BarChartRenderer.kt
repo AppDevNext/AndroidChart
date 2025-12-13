@@ -189,7 +189,7 @@ open class BarChartRenderer(
             if (!isSingleColor) {
                 // Set the color for the currently drawn value. If the index
                 // is out of bounds, reuse colors.
-                paintRender.color = dataSet.getColor(pos)
+                paintRender.color = dataSet.getColorByIndex(pos)
             }
 
             if (isCustomFill) {

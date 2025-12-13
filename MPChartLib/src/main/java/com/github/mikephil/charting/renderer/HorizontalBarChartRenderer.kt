@@ -130,7 +130,7 @@ open class HorizontalBarChartRenderer(
             if (!isSingleColor) {
                 // Set the color for the currently drawn value. If the index
                 // is out of bounds, reuse colors.
-                paintRender.color = dataSet.getColor(j / 4)
+                paintRender.color = dataSet.getColorByIndex(j / 4)
             }
 
             if (isCustomFill) {

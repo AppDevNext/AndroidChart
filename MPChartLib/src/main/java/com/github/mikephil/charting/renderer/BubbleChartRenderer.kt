@@ -80,7 +80,7 @@ open class BubbleChartRenderer(
 
             if (!viewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf)) break
 
-            val color = dataSet.getColor(j)
+            val color = dataSet.getColorByIndex(j)
 
             paintRender.color = color
             canvas.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, paintRender)
@@ -238,7 +238,7 @@ open class BubbleChartRenderer(
 
             if (!viewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf)) break
 
-            val originalColor = set.getColor(bubbleEntry.x.toInt())
+            val originalColor = set.getColorByIndex(bubbleEntry.x.toInt())
 
             Color.RGBToHSV(
                 Color.red(originalColor), Color.green(originalColor),

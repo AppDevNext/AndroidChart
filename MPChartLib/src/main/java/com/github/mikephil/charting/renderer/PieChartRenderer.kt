@@ -228,10 +228,10 @@ open class PieChartRenderer(
 
             val accountForSliceSpacing = sliceSpace > 0f && sliceAngle <= 180f
 
-            paintRender.color = dataSet.getColor(j)
+            paintRender.color = dataSet.getColorByIndex(j)
 
             // Set current data set color to paint object
-            roundedCornerPaint.color = dataSet.getColor(j)
+            roundedCornerPaint.color = dataSet.getColorByIndex(j)
 
             val sliceSpaceAngleOuter = if (visibleAngleCount == 1) 0f else sliceSpace / (Utils.FDEG2RAD * radius)
             val startAngleOuter = rotationAngle + (angle + sliceSpaceAngleOuter / 2f) * phaseY
@@ -521,7 +521,7 @@ open class PieChartRenderer(
 
                         var lineColor = ColorTemplate.COLOR_NONE
 
-                        if (isUseValueColorForLineEnabled) lineColor = dataSet.getColor(j)
+                        if (isUseValueColorForLineEnabled) lineColor = dataSet.getColorByIndex(j)
                         else if (valueLineColor != ColorTemplate.COLOR_NONE) lineColor = valueLineColor
 
                         if (lineColor != ColorTemplate.COLOR_NONE) {
@@ -836,7 +836,7 @@ open class PieChartRenderer(
             val accountForSliceSpacing = sliceSpace > 0f && sliceAngle <= 180f
 
             var highlightColor = set.highlightColor
-            if (highlightColor == null) highlightColor = set.getColor(index)
+            if (highlightColor == null) highlightColor = set.getColorByIndex(index)
             paintRender.color = highlightColor
 
             val sliceSpaceAngleOuter = if (visibleAngleCount == 1) 0f else sliceSpace / (Utils.FDEG2RAD * radius)
@@ -994,7 +994,7 @@ open class PieChartRenderer(
                 val y = ((r - circleRadius)
                         * sin(v) + center.y).toFloat()
 
-                paintRender.color = dataSet.getColor(j)
+                paintRender.color = dataSet.getColorByIndex(j)
                 bitmapCanvas!!.drawCircle(x, y, circleRadius, paintRender)
             }
 
