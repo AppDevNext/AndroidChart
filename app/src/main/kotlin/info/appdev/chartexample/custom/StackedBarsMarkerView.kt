@@ -8,7 +8,6 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
-import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.formatNumber
 import info.appdev.chartexample.R
 
@@ -27,18 +26,17 @@ class StackedBarsMarkerView(context: Context?, layoutResource: Int) : MarkerView
 
             if (entry.yVals != null) {
                 // draw the stack value
-                tvContent.text = entry.yVals!![highlight.stackIndex].formatNumber( 0, true)
+                tvContent.text = entry.yVals!![highlight.stackIndex].formatNumber(0, true)
             } else {
-                tvContent.text = entry.y.formatNumber( 0, true)
+                tvContent.text = entry.y.formatNumber(0, true)
             }
         } else {
-            tvContent.text = entry.y.formatNumber( 0, true)
+            tvContent.text = entry.y.formatNumber(0, true)
         }
 
         super.refreshContent(entry, highlight)
     }
 
-    override fun getOffset(): MPPointF {
-        return MPPointF(-(width / 2).toFloat(), -height.toFloat())
-    }
+    override var offset: MPPointF = MPPointF()
+        get() = MPPointF(-(width / 2).toFloat(), -height.toFloat())
 }

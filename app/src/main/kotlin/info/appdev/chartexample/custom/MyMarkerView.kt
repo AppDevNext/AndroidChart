@@ -20,17 +20,17 @@ class MyMarkerView(context: Context?, layoutResource: Int) : MarkerView(context,
 
     // runs every time the MarkerView is redrawn, can be used to update the
     // content (user-interface)
-    override fun refreshContent(e: Entry, highlight: Highlight?) {
-        if (e is CandleEntry) {
-            tvContent.text = e.high.formatNumber(0, true)
+
+    override fun refreshContent(entry: Entry, highlight: Highlight) {
+        if (entry is CandleEntry) {
+            tvContent.text = entry.high.formatNumber(0, true)
         } else {
-            tvContent.text = e.y.formatNumber(0, true)
+            tvContent.text = entry.y.formatNumber(0, true)
         }
 
-        super.refreshContent(e, highlight)
+        super.refreshContent(entry, highlight)
     }
 
-    override fun getOffset(): MPPointF {
-        return MPPointF(-(width / 2).toFloat(), -height.toFloat())
-    }
+    override var offset: MPPointF = MPPointF()
+        get() = MPPointF(-(width / 2).toFloat(), -height.toFloat())
 }

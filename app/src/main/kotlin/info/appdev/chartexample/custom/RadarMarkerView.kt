@@ -25,13 +25,12 @@ class RadarMarkerView(context: Context, layoutResource: Int) : MarkerView(contex
 
     // runs every time the MarkerView is redrawn, can be used to update the
     // content (user-interface)
-    override fun refreshContent(e: Entry, highlight: Highlight?) {
-        tvContent.text = String.format("%s %%", format.format(e.y.toDouble()))
+    override fun refreshContent(entry: Entry, highlight: Highlight) {
+        tvContent.text = String.format("%s %%", format.format(entry.y.toDouble()))
 
-        super.refreshContent(e, highlight)
+        super.refreshContent(entry, highlight)
     }
 
-    override fun getOffset(): MPPointF {
-        return MPPointF(-(width / 2).toFloat(), (-height - 10).toFloat())
-    }
+    override var offset: MPPointF = MPPointF()
+        get() = MPPointF(-(width / 2).toFloat(), (-height - 10).toFloat())
 }
