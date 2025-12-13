@@ -45,9 +45,6 @@ public class RadarHighlighter extends PieRadarHighlighter<RadarChart> {
      * objects give information about the value at the selected index and the
      * DataSet it belongs to. INFORMATION: This method does calculations at
      * runtime. Do not over-use in performance critical situations.
-     *
-     * @param index
-     * @return
      */
     protected List<Highlight> getHighlightsAtIndex(int index) {
 

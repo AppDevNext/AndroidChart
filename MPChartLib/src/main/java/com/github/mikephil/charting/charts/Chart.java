@@ -1557,7 +1557,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
 	/**
 	 * Unbind all drawables to avoid memory leaks.
-	 * Link: http://stackoverflow.com/a/6779164/1590502
+	 * Link: <a href="http://stackoverflow.com/a/6779164/1590502">...</a>
 	 */
 	private void unbindDrawables(View view) {
 
@@ -1576,7 +1576,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 * Set this to true to enable "unbinding" of drawables. When a View is detached
 	 * from a window. This helps avoid memory leaks.
 	 * Default: false
-	 * Link: http://stackoverflow.com/a/6779164/1590502
+	 * Link: <a href="http://stackoverflow.com/a/6779164/1590502">...</a>
 	 */
 	public void setUnbindEnabled(boolean enabled) {
 		this.mUnbind = enabled;

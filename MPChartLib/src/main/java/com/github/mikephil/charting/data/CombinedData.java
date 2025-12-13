@@ -137,8 +137,6 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
 
     /**
      * Returns all data objects in row: line-bar-scatter-candle-bubble if not null.
-     *
-     * @return
      */
     public List<BarLineScatterCandleBubbleData> getAllData() {
 
@@ -179,8 +177,6 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
 
     /**
      * Get the Entry for a corresponding highlight object
-     *
-     * @param highlight
      * @return the entry that is highlighted
      */
     @Override

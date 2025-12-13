@@ -247,10 +247,6 @@ public class HorizontalBarChart extends BarChart {
 
     /**
      * Returns a recyclable MPPointF instance.
-     *
-     * @param e
-     * @param axis
-     * @return
      */
     @Override
     public MPPointF getPosition(Entry e, AxisDependency axis) {
@@ -270,10 +266,6 @@ public class HorizontalBarChart extends BarChart {
     /**
      * Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch point
      * inside the BarChart.
-     *
-     * @param x
-     * @param y
-     * @return
      */
     @Override
     public Highlight getHighlightByTouchPoint(float x, float y) {

@@ -94,8 +94,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     /**
      * This method is deprecated.
      * Use getFill(...) instead.
-     *
-     * @param index
      */
     @Deprecated
     public Fill getGradient(int index) {
@@ -104,9 +102,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     /**
      * Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
-     *
-     * @param startColor
-     * @param endColor
      */
     public void setGradientColor(int startColor, int endColor) {
         mFills.clear();
@@ -116,8 +111,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     /**
      * This method is deprecated.
      * Use setFills(...) instead.
-     *
-     * @param gradientColors
      */
     @Deprecated
     public void setGradientColors(List<Fill> gradientColors) {
@@ -126,8 +119,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     /**
      * Sets the fills for the bars in this dataset.
-     *
-     * @param fills
      */
     public void setFills(List<Fill> fills) {
         this.mFills = fills;
@@ -203,10 +194,7 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     }
 
     /**
-     * returns the overall entry count, including counting each stack-value
-     * individually
-     *
-     * @return
+     * returns the overall entry count, including counting each stack-value individually
      */
     public int getEntryCountStacks() {
         return mEntryCountStacks;
@@ -216,8 +204,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
      * Sets the color used for drawing the bar-shadows. The bar shadows is a
      * surface behind the bar that indicates the maximum value. Don't for get to
      * use getResources().getColor(...) to set this. Or Color.rgb(...).
-     *
-     * @param color
      */
     public void setBarShadowColor(int color) {
         mBarShadowColor = color;
@@ -231,8 +217,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     /**
      * Sets the width used for drawing borders around the bars.
      * If borderWidth == 0, no border will be drawn.
-     *
-     * @return
      */
     public void setBarBorderWidth(float width) {
         mBarBorderWidth = width;
@@ -241,8 +225,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     /**
      * Returns the width used for drawing borders around the bars.
      * If borderWidth == 0, no border will be drawn.
-     *
-     * @return
      */
     @Override
     public float getBarBorderWidth() {
@@ -251,8 +233,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     /**
      * Sets the color drawing borders around the bars.
-     *
-     * @return
      */
     public void setBarBorderColor(int color) {
         mBarBorderColor = color;
@@ -260,8 +240,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     /**
      * Returns the color drawing borders around the bars.
-     *
-     * @return
      */
     @Override
     public int getBarBorderColor() {
@@ -271,8 +249,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     /**
      * Set the alpha value (transparency) that is used for drawing the highlight
      * indicator bar. min = 0 (fully transparent), max = 255 (fully opaque)
-     *
-     * @param alpha
      */
     public void setHighLightAlpha(int alpha) {
         mHighLightAlpha = alpha;
@@ -285,8 +261,6 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
 
     /**
      * Sets labels for different values of bar-stacks, in case there are one.
-     *
-     * @param labels
      */
     public void setStackLabels(String[] labels) {
         mStackLabels = labels;
