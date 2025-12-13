@@ -48,7 +48,7 @@ open class BarBuffer(size: Int, dataSetCount: Int, containsStacks: Boolean) : Ab
                 ", containsStacks=" + containsStacks +
                 ", inverted=" + inverted +
                 ", barWidth=" + barWidth +
-                ", buffer=" + buffer.contentToString() +
+                ", buffer=" + buffer +
                 ", index=" + index +
                 '}'
     }

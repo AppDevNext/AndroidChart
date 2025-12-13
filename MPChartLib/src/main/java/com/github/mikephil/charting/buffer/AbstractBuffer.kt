@@ -12,7 +12,7 @@ abstract class AbstractBuffer<T>(size: Int) {
 
     /** float-buffer that holds the data points to draw, order: x,y,x,y,...  */
     @JvmField
-    val buffer: FloatArray
+    var buffer: MutableList<Float> = mutableListOf()
 
     /** animation phase x-axis  */
     @JvmField
@@ -30,7 +30,7 @@ abstract class AbstractBuffer<T>(size: Int) {
 
     init {
         index = 0
-        buffer = FloatArray(size)
+        buffer = FloatArray(size).toMutableList()
     }
 
     /** limits the drawing on the x-axis  */
