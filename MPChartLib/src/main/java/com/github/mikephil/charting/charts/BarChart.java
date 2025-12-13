@@ -94,9 +94,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
      * Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch
      * point
      * inside the BarChart.
-     *
-     * @param x
-     * @param y
 	 */
     @Override
     public Highlight getHighlightByTouchPoint(float x, float y) {
@@ -118,8 +115,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * Returns the bounding box of the specified Entry in the specified DataSet. Returns null if the Entry could not be
      * found in the charts data.  Performance-intensive code should use void getBarBounds(BarEntry, RectF) instead.
-     *
-     * @param barEntry
 	 */
     public RectF getBarBounds(BarEntry barEntry) {
 
@@ -132,8 +127,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * The passed outputRect will be assigned the values of the bounding box of the specified Entry in the specified DataSet.
      * The rect will be assigned Float.MIN_VALUE in all locations if the Entry could not be found in the charts data.
-     *
-     * @param barEntry
 	 */
     public void getBarBounds(BarEntry barEntry, RectF outputRect) {
 
@@ -214,9 +207,6 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     /**
      * Highlights the value at the given x-value in the given DataSet. Provide
      * -1 as the dataSetIndex to undo all highlighting.
-     *
-     * @param x
-     * @param dataSetIndex
      * @param stackIndex   the index inside the stack - only relevant for stacked entries
      */
     public void highlightValue(float x, int dataSetIndex, int stackIndex) {

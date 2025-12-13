@@ -47,10 +47,6 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
      * selected.
      *
      * @param high the Highlight to work with looking for stacked values
-     * @param set
-     * @param xVal
-     * @param yVal
-     * @return
      */
     public Highlight getStackedHighlight(Highlight high, IBarDataSet set, float xVal, float yVal) {
 
@@ -93,10 +89,6 @@ public class BarHighlighter extends ChartHighlighter<BarDataProvider> {
      * Returns the index of the closest value inside the values array / ranges (stacked barchart) to the value
      * given as
      * a parameter.
-     *
-     * @param ranges
-     * @param value
-     * @return
      */
     protected int getClosestStackIndex(Range[] ranges, float value) {
 

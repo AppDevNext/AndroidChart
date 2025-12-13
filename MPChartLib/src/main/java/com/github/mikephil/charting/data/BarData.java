@@ -32,8 +32,6 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
     /**
      * Sets the width each bar should have on the x-axis (in values, not pixels).
      * Default 0.85f
-     *
-     * @param mBarWidth
      */
     public void setBarWidth(float mBarWidth) {
         this.mBarWidth = mBarWidth;
@@ -108,10 +106,6 @@ public class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
 
     /**
      * In case of grouped bars, this method returns the space an individual group of bar needs on the x-axis.
-     *
-     * @param groupSpace
-     * @param barSpace
-     * @return
      */
     public float getGroupWidth(float groupSpace, float barSpace) {
         return mDataSets.size() * (mBarWidth + barSpace) + groupSpace;
