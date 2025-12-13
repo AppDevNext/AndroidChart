@@ -502,9 +502,9 @@ open class BarChartRenderer(
                 continue
             }
 
-            val e = set.getEntryForXValue(high.x, high.y)
+            val barEntry = set.getEntryForXValue(high.x, high.y)!!
 
-            if (!isInBoundsX(e, set)) {
+            if (!isInBoundsX(barEntry, set)) {
                 continue
             }
 
@@ -513,27 +513,27 @@ open class BarChartRenderer(
             paintHighlight.color = set.highLightColor
             paintHighlight.alpha = set.highLightAlpha
 
-            val isStack = high.stackIndex >= 0 && e.isStacked
+            val isStack = high.stackIndex >= 0 && barEntry.isStacked
 
             val y1: Float
             val y2: Float
 
             if (isStack) {
                 if (chart.isHighlightFullBarEnabled) {
-                    y1 = e.positiveSum
-                    y2 = -e.negativeSum
+                    y1 = barEntry.positiveSum
+                    y2 = -barEntry.negativeSum
                 } else {
-                    val range = e.ranges[high.stackIndex]
+                    val range = barEntry.ranges[high.stackIndex]
 
                     y1 = range?.from ?: 0f
                     y2 = range?.to ?: 0f
                 }
             } else {
-                y1 = e.y
+                y1 = barEntry.y
                 y2 = 0f
             }
 
-            prepareBarHighlight(e.x, y1, y2, barData.barWidth / 2f, trans!!)
+            prepareBarHighlight(barEntry.x, y1, y2, barData.barWidth / 2f, trans!!)
 
             setHighlightDrawPos(high, barRect)
 

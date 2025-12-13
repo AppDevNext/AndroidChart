@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Paint.Align
 import android.graphics.Path
+import androidx.core.graphics.withSave
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.Legend.LegendDirection
 import com.github.mikephil.charting.components.Legend.LegendForm
@@ -20,7 +21,6 @@ import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import java.util.Collections
 import kotlin.math.min
-import androidx.core.graphics.withSave
 
 @Suppress("MemberVisibilityCanBePrivate")
 open class LegendRenderer(

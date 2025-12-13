@@ -195,11 +195,11 @@ open class BubbleChartRenderer(
 
             if (set == null || !set.isHighlightEnabled) continue
 
-            val entry = set.getEntryForXValue(high.x, high.y)
+            val bubbleEntry = set.getEntryForXValue(high.x, high.y)!!
 
-            if (entry.y != high.y) continue
+            if (bubbleEntry.y != high.y) continue
 
-            if (!isInBoundsX(entry, set)) continue
+            if (!isInBoundsX(bubbleEntry, set)) continue
 
             val trans = chart.getTransformer(set.axisDependency)
 
@@ -217,14 +217,14 @@ open class BubbleChartRenderer(
             ).toFloat()
             val referenceSize = min(maxBubbleHeight.toDouble(), maxBubbleWidth.toDouble()).toFloat()
 
-            pointBuffer[0] = entry.x
-            pointBuffer[1] = (entry.y) * phaseY
+            pointBuffer[0] = bubbleEntry.x
+            pointBuffer[1] = (bubbleEntry.y) * phaseY
             trans.pointValuesToPixel(pointBuffer)
 
             high.setDraw(pointBuffer[0], pointBuffer[1])
 
             val shapeHalf = getShapeSize(
-                entry.size,
+                bubbleEntry.size,
                 set.maxSize,
                 referenceSize,
                 normalizeSize
@@ -238,7 +238,7 @@ open class BubbleChartRenderer(
 
             if (!viewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf)) break
 
-            val originalColor = set.getColor(entry.x.toInt())
+            val originalColor = set.getColor(bubbleEntry.x.toInt())
 
             Color.RGBToHSV(
                 Color.red(originalColor), Color.green(originalColor),
