@@ -19,6 +19,7 @@ import java.util.List;
  *
  * @author Philipp Jahoda
  */
+@SuppressWarnings("unused")
 public abstract class ChartData<T extends IDataSet<? extends Entry>> implements Serializable {
 
     /**
@@ -59,13 +60,11 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
      * Default constructor.
      */
     public ChartData() {
-        mDataSets = new ArrayList<T>();
+        mDataSets = new ArrayList<>();
     }
 
     /**
      * Constructor taking single or multiple DataSet objects.
-     *
-     * @param dataSets
      */
     public ChartData(T... dataSets) {
         mDataSets = arrayToList(dataSets);
@@ -74,9 +73,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Created because Arrays.asList(...) does not support modification.
-     *
-     * @param array
-     * @return
      */
     private List<T> arrayToList(T[] array) {
 
@@ -186,12 +182,8 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
         }
     }
 
-    /** ONLY GETTERS AND SETTERS BELOW THIS */
-
     /**
      * returns the number of LineDataSets this object contains
-     *
-     * @return
      */
     public int getDataSetCount() {
         if (mDataSets == null)
@@ -201,8 +193,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Returns the smallest y-value the data object contains.
-     *
-     * @return
      */
     public float getYMin() {
         return mYMin;
@@ -210,9 +200,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Returns the minimum y-value for the specified axis.
-     *
-     * @param axis
-     * @return
      */
     public float getYMin(AxisDependency axis) {
         if (axis == AxisDependency.LEFT) {
@@ -231,8 +218,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Returns the greatest y-value the data object contains.
-     *
-     * @return
      */
     public float getYMax() {
         return mYMax;
@@ -240,9 +225,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Returns the maximum y-value for the specified axis.
-     *
-     * @param axis
-     * @return
      */
     public float getYMax(AxisDependency axis) {
         if (axis == AxisDependency.LEFT) {
@@ -261,8 +243,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Returns the minimum x-value this data object contains.
-     *
-     * @return
      */
     public float getXMin() {
         return mXMin;
@@ -270,8 +250,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Returns the maximum x-value this data object contains.
-     *
-     * @return
      */
     public float getXMax() {
         return mXMax;
@@ -279,8 +257,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Returns all DataSet objects this ChartData object holds.
-     *
-     * @return
      */
     public List<T> getDataSets() {
         return mDataSets;
@@ -293,9 +269,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
      * situations.
      *
      * @param dataSets   the DataSet array to search
-     * @param label
      * @param ignorecase if true, the search is not case-sensitive
-     * @return
      */
     protected int getDataSetIndexByLabel(List<T> dataSets, String label,
                                          boolean ignorecase) {
@@ -315,8 +289,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Returns the labels of all DataSets as a string array.
-     *
-     * @return
      */
     public String[] getDataSetLabels() {
 
@@ -331,8 +303,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Get the Entry for a corresponding highlight object
-     *
-     * @param highlight
      * @return the entry that is highlighted
      */
     public Entry getEntryForHighlight(Highlight highlight) {
@@ -347,10 +317,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
      * Returns the DataSet object with the given label. Search can be case
      * sensitive or not. IMPORTANT: This method does calculations at runtime.
      * Use with care in performance critical situations.
-     *
-     * @param label
-     * @param ignorecase
-     * @return
      */
     public T getDataSetByLabel(String label, boolean ignorecase) {
 
@@ -372,8 +338,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Adds a DataSet dynamically.
-     *
-     * @param d
      */
     public void addDataSet(T d) {
 
@@ -389,8 +353,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
      * Removes the given DataSet from this data object. Also recalculates all
      * minimum and maximum values. Returns true if a DataSet was removed, false
      * if no DataSet could be removed.
-     *
-     * @param d
      */
     public boolean removeDataSet(T d) {
 
@@ -411,8 +373,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
      * Removes the DataSet at the given index in the DataSet array from the data
      * object. Also recalculates all minimum and maximum values. Returns true if
      * a DataSet was removed, false if no DataSet could be removed.
-     *
-     * @param index
      */
     public boolean removeDataSet(int index) {
 
@@ -426,9 +386,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Adds an Entry to the DataSet at the specified index.
      * Entries are added to the end of the list.
-     *
-     * @param e
-     * @param dataSetIndex
      */
     public void addEntry(Entry e, int dataSetIndex) {
 
@@ -448,9 +405,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Adjusts the current minimum and maximum values based on the provided Entry object.
-     *
-     * @param e
-     * @param axis
      */
     protected void calcMinMax(Entry e, AxisDependency axis) {
 
@@ -480,8 +434,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Adjusts the minimum and maximum values based on the given DataSet.
-     *
-     * @param d
      */
     protected void calcMinMax(T d) {
 
@@ -511,9 +463,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Removes the given Entry object from the DataSet at the specified index.
-     *
-     * @param e
-     * @param dataSetIndex
      */
     public boolean removeEntry(Entry e, int dataSetIndex) {
 
@@ -540,10 +489,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
      * Removes the Entry object closest to the given DataSet at the
      * specified index. Returns true if an Entry was removed, false if no Entry
      * was found that meets the specified requirements.
-     *
-     * @param xValue
-     * @param dataSetIndex
-     * @return
      */
     public boolean removeEntry(float xValue, int dataSetIndex) {
 
@@ -562,9 +507,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Returns the DataSet that contains the provided Entry, or null, if no
      * DataSet contains this Entry.
-     *
-     * @param e
-     * @return
      */
     public T getDataSetForEntry(Entry e) {
 
@@ -587,8 +529,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Returns all colors used across all DataSet objects this object
      * represents.
-     *
-     * @return
      */
     public int[] getColors() {
 
@@ -619,9 +559,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Returns the index of the provided DataSet in the DataSet array of this data object, or -1 if it does not exist.
-     *
-     * @param dataSet
-     * @return
      */
     public int getIndexOfDataSet(T dataSet) {
         return mDataSets.indexOf(dataSet);
@@ -630,8 +567,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Returns the first DataSet from the datasets-array that has it's dependency on the left axis.
      * Returns null if no DataSet with left dependency could be found.
-     *
-     * @return
      */
     protected T getFirstLeft(List<T> sets) {
         for (T dataSet : sets) {
@@ -644,8 +579,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Returns the first DataSet from the datasets-array that has it's dependency on the right axis.
      * Returns null if no DataSet with right dependency could be found.
-     *
-     * @return
      */
     public T getFirstRight(List<T> sets) {
         for (T dataSet : sets) {
@@ -657,15 +590,13 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Sets a custom IValueFormatter for all DataSets this data object contains.
-     *
-     * @param f
      */
-    public void setValueFormatter(IValueFormatter f) {
-        if (f == null)
+    public void setValueFormatter(IValueFormatter valueFormatter) {
+        if (valueFormatter == null)
             return;
         else {
             for (IDataSet set : mDataSets) {
-                set.setValueFormatter(f);
+                set.setValueFormatter(valueFormatter);
             }
         }
     }
@@ -673,8 +604,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Sets the color of the value-text (color in which the value-labels are
      * drawn) for all DataSets this data object contains.
-     *
-     * @param color
      */
     public void setValueTextColor(int color) {
         for (IDataSet set : mDataSets) {
@@ -685,8 +614,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Sets the same list of value-colors for all DataSets this
      * data object contains.
-     *
-     * @param colors
      */
     public void setValueTextColors(List<Integer> colors) {
         for (IDataSet set : mDataSets) {
@@ -697,8 +624,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Sets the Typeface for all value-labels for all DataSets this data object
      * contains.
-     *
-     * @param tf
      */
     public void setValueTypeface(Typeface tf) {
         for (IDataSet set : mDataSets) {
@@ -709,8 +634,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Sets the size (in dp) of the value-text for all DataSets this data object
      * contains.
-     *
-     * @param size
      */
     public void setValueTextSize(float size) {
         for (IDataSet set : mDataSets) {
@@ -721,8 +644,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Enables / disables drawing values (value-text) for all DataSets this data
      * object contains.
-     *
-     * @param enabled
      */
     public void setDrawValues(boolean enabled) {
         for (IDataSet set : mDataSets) {
@@ -744,8 +665,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Returns true if highlighting of all underlying values is enabled, false
      * if not.
-     *
-     * @return
      */
     public boolean isHighlightEnabled() {
         for (IDataSet set : mDataSets) {
@@ -769,9 +688,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
     /**
      * Checks if this data object contains the specified DataSet. Returns true
      * if so, false if not.
-     *
-     * @param dataSet
-     * @return
      */
     public boolean contains(T dataSet) {
 
@@ -785,8 +701,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Returns the total entry count across all DataSet objects this data object contains.
-     *
-     * @return
      */
     public int getEntryCount() {
 
@@ -801,8 +715,6 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 
     /**
      * Returns the DataSet object with the maximum number of entries or null if there are no DataSets.
-     *
-     * @return
      */
     public T getMaxEntryCountSet() {
 
