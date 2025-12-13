@@ -408,7 +408,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
         return mFillFormatter;
     }
 
-    public enum Mode {
+	public enum Mode {
         LINEAR,
         STEPPED,
         CUBIC_BEZIER,

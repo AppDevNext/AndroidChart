@@ -163,7 +163,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
         //noinspection unchecked
         List<Entry> entries = set.getEntriesForXValue(xVal);
-        if (entries.size() == 0) {
+        if (entries.isEmpty()) {
             // Try to find closest x-value and take all entries for that x-value
             final Entry closest = set.getEntryForXValue(xVal, Float.NaN, rounding);
             if (closest != null)
@@ -173,12 +173,12 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
             }
         }
 
-        if (entries.size() == 0)
+        if (entries.isEmpty())
             return highlights;
 
         for (Entry e : entries) {
             MPPointD pixels = mChart.getTransformer(
-                    set.getAxisDependency()).getPixelForValues(e.getX(), e.getY());
+					set.getAxisDependency()).getPixelForValues(e.getX(), e.getY());
 
             highlights.add(new Highlight(
                     e.getX(), e.getY(),

@@ -811,7 +811,7 @@ public class Legend extends ComponentBase {
                 mNeededHeight = labelLineHeight
                         * (float) (mCalculatedLineSizes.size())
                         + labelLineSpacing *
-                        (float) (mCalculatedLineSizes.size() == 0
+                        (float) (mCalculatedLineSizes.isEmpty()
                                 ? 0
                                 : (mCalculatedLineSizes.size() - 1));
 
