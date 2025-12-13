@@ -62,8 +62,6 @@ public class XAxis extends AxisBase {
 
     /**
      * sets the position of the x-labels
-     *
-     * @param pos
      */
     public void setPosition(XAxisPosition pos) {
         mPosition = pos;
@@ -88,8 +86,6 @@ public class XAxis extends AxisBase {
     /**
      * if set to true, the chart will avoid that the first and last label entry
      * in the chart "clip" off the edge of the chart or the screen
-     *
-     * @param enabled
      */
     public void setAvoidFirstLastClipping(boolean enabled) {
         mAvoidFirstLastClipping = enabled;
@@ -97,8 +93,6 @@ public class XAxis extends AxisBase {
 
     /**
      * returns true if avoid-first-lastclipping is enabled, false if not
-     *
-     * @return
      */
     public boolean isAvoidFirstLastClippingEnabled() {
         return mAvoidFirstLastClipping;

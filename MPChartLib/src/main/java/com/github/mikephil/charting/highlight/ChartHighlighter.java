@@ -49,8 +49,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
     protected MPPointD getValsForTouch(float x, float y) {
 
         // take any transformer to determine the x-axis value
-        MPPointD pos = mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, y);
-        return pos;
+		return mChart.getTransformer(YAxis.AxisDependency.LEFT).getValuesByTouchPoint(x, y);
     }
 
     /**
@@ -69,9 +68,7 @@ public class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider> 
 
         YAxis.AxisDependency axis = leftAxisMinDist < rightAxisMinDist ? YAxis.AxisDependency.LEFT : YAxis.AxisDependency.RIGHT;
 
-        Highlight detail = getClosestHighlightByPixel(closestValues, x, y, axis, mChart.getMaxHighlightDistance());
-
-        return detail;
+		return getClosestHighlightByPixel(closestValues, x, y, axis, mChart.getMaxHighlightDistance());
     }
 
     /**
