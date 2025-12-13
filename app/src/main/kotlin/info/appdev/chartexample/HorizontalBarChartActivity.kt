@@ -76,20 +76,20 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         xl.typeface = tfLight
         xl.setDrawAxisLine(true)
         xl.setDrawGridLines(false)
-        xl.setGranularity(10f)
+        xl.granularity = 10f
 
         val yl = chart!!.axisLeft
         yl.typeface = tfLight
         yl.setDrawAxisLine(true)
         yl.setDrawGridLines(true)
-        yl.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        yl.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         //        yl.setInverted(true);
         val yr = chart!!.axisRight
         yr.typeface = tfLight
         yr.setDrawAxisLine(true)
         yr.setDrawGridLines(false)
-        yr.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        yr.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         //        yr.setInverted(true);
         chart!!.setFitBars(true)
@@ -136,7 +136,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         } else {
             set1 = BarDataSet(values, "DataSet 1")
 
-            set1.setDrawIcons(false)
+            set1.isDrawIcons = false
 
             val dataSets = ArrayList<IBarDataSet?>()
             dataSets.add(set1)
@@ -168,7 +168,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
                     .dataSets
 
                 for (iSet in sets) {
-                    iSet.setDrawValues(!iSet.isDrawValuesEnabled())
+                    iSet.setDrawValues(!iSet.isDrawValues)
                 }
 
                 chart!!.invalidate()
@@ -179,7 +179,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
                     .dataSets
 
                 for (iSet in sets) {
-                    iSet.setDrawIcons(!iSet.isDrawIconsEnabled())
+                    iSet.isDrawIcons = !iSet.isDrawIcons
                 }
 
                 chart!!.invalidate()
@@ -257,7 +257,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
 
         val position = chart!!.getPosition(
             entry, chart!!.data!!.getDataSetByIndex(highlight.dataSetIndex)
-                .getAxisDependency()
+                .axisDependency
         )
 
         Log.i("bounds", bounds.toString())

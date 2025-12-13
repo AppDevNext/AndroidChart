@@ -246,9 +246,9 @@ open class CandleStickChartRenderer(
                         continue
                     }
 
-                    val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
+                    val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)!!
 
-                    if (dataSet.isDrawValuesEnabled) {
+                    if (dataSet.isDrawValues) {
                         drawValue(
                             canvas,
                             dataSet.valueFormatter,
@@ -257,12 +257,11 @@ open class CandleStickChartRenderer(
                             i,
                             x,
                             y - yOffset,
-                            dataSet
-                                .getValueTextColor(j / 2)
+                            dataSet.getValueTextColor(j / 2)
                         )
                     }
 
-                    if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                    if (entry.icon != null && dataSet.isDrawIcons) {
                         val icon = entry.icon
 
                         icon?.let {
@@ -292,20 +291,20 @@ open class CandleStickChartRenderer(
 
             if (set == null || !set.isHighlightEnabled) continue
 
-            val e = set.getEntryForXValue(high.x, high.y)
+            val candleEntry = set.getEntryForXValue(high.x, high.y)
 
-            if (!isInBoundsX(e, set)) continue
+            if (!isInBoundsX(candleEntry, set)) continue
+            candleEntry?.let {
+                val lowValue = it.low * animator.phaseY
+                val highValue = it.high * animator.phaseY
+                val y = (lowValue + highValue) / 2f
+                val pix = chart.getTransformer(set.axisDependency)!!.getPixelForValues(it.x, y)
 
-            val lowValue = e.low * animator.phaseY
-            val highValue = e.high * animator.phaseY
-            val y = (lowValue + highValue) / 2f
+                high.setDraw(pix.x.toFloat(), pix.y.toFloat())
 
-            val pix = chart.getTransformer(set.axisDependency)!!.getPixelForValues(e.x, y)
-
-            high.setDraw(pix.x.toFloat(), pix.y.toFloat())
-
-            // draw the lines
-            drawHighlightLines(canvas, pix.x.toFloat(), pix.y.toFloat(), set)
+                // draw the lines
+                drawHighlightLines(canvas, pix.x.toFloat(), pix.y.toFloat(), set)
+            }
         }
     }
 }

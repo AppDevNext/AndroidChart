@@ -81,7 +81,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         xAxis.setDrawGridLines(true)
         xAxis.textColor = Color.rgb(255, 192, 56)
         xAxis.setCenterAxisLabels(true)
-        xAxis.setGranularity(1f) // one hour
+        xAxis.granularity = 1f // one hour
         xAxis.valueFormatter = object : IAxisValueFormatter {
             private val mFormat = SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH)
 
@@ -97,8 +97,8 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         leftAxis.textColor = ColorTemplate.getHoloBlue()
         leftAxis.setDrawGridLines(true)
         leftAxis.isGranularityEnabled = true
-        leftAxis.setAxisMinimum(0f)
-        leftAxis.setAxisMaximum(170f)
+        leftAxis.axisMinimum = 0f
+        leftAxis.axisMaximum = 170f
         leftAxis.yOffset = -9f
         leftAxis.textColor = Color.rgb(255, 192, 56)
 
@@ -122,7 +122,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         while (x < to) {
             val y: Float
             if (count == 100)  // initial
-                y = (valuesData[Math.round(x)])!!.toFloat() * 50 + 50
+                y = (valuesData[x.roundToInt()])!!.toFloat() * 50 + 50
             else y = (Math.random() * 50 + 50).toFloat() // manually triggered
 
             values.add(Entry(x, y)) // add one entry per hour
@@ -132,8 +132,8 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         // create a dataset and give it a type
         val set1 = LineDataSet(values, "DataSet 1")
         set1.axisDependency = AxisDependency.LEFT
-        set1.setColor(ColorTemplate.getHoloBlue())
-        set1.setValueTextColor(ColorTemplate.getHoloBlue())
+        set1.color = ColorTemplate.getHoloBlue()
+        set1.setSingleValueTextColor(ColorTemplate.getHoloBlue())
         set1.setLineWidth(1.5f)
         set1.setDrawCircles(false)
         set1.setDrawValues(false)
@@ -171,7 +171,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                    set.setDrawValues(!set.isDrawValues)
                 }
 
                 chart!!.invalidate()

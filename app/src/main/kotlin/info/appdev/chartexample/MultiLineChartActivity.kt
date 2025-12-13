@@ -112,7 +112,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             d.circleRadius = 4f
 
             val color = colors[z % colors.size]
-            d.setColor(color)
+            d.color = color
             d.setCircleColor(color)
             dataSets.add(d)
         }
@@ -148,7 +148,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                    set.setDrawValues(!set.isDrawValues)
                 }
 
                 chart!!.invalidate()

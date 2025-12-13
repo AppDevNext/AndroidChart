@@ -13,6 +13,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.components.YAxis.AxisDependency
@@ -21,7 +22,6 @@ import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
     private var chart: CandleStickChart? = null
@@ -117,7 +117,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
 
         val set1 = CandleDataSet(values, "Data Set")
 
-        set1.setDrawIcons(false)
+        set1.isDrawIcons = false
         set1.axisDependency = AxisDependency.LEFT
         //        set1.setColor(Color.rgb(80, 80, 80));
         set1.shadowColor = Color.DKGRAY
@@ -150,13 +150,14 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                for (set in chart!!.data!!.dataSets) set.setDrawValues(!set.isDrawValuesEnabled())
+                for (set in chart!!.data!!.dataSets) set.setDrawValues(!set.isDrawValues)
 
                 chart!!.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                for (set in chart!!.data!!.dataSets) set.setDrawIcons(!set.isDrawIconsEnabled())
+                for (set in chart!!.data!!.dataSets)
+                    set.isDrawIcons = !set.isDrawIcons
 
                 chart!!.invalidate()
             }

@@ -39,7 +39,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     protected var mAxisDependency: AxisDependency = AxisDependency.LEFT
 
     /**
-     * if true, value highlightning is enabled
+     * if true, value highlighting is enabled
      */
     protected var mHighlightEnabled: Boolean = true
 
@@ -58,6 +58,9 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     private var mFormSize = Float.NaN
     private var mFormLineWidth = Float.NaN
     private var mFormLineDashEffect: DashPathEffect? = null
+    private var mIsVisible = true
+    private var mIsDrawValues = true
+    private var mIsDrawIcons = true
 
     /**
      * if true, y-values are drawn on the chart
@@ -84,9 +87,6 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
      */
     protected var mVisible: Boolean = true
 
-    /**
-     * Default constructor.
-     */
     init {
         mColors = ArrayList()
         mValueColors = ArrayList()
@@ -96,11 +96,6 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
         mValueColors.add(Color.BLACK)
     }
 
-    /**
-     * Constructor with label.
-     *
-     * @param label
-     */
     constructor(label: String) : this() {
         this.mLabel = label
     }
@@ -112,24 +107,58 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
         calcMinMax()
     }
 
-    override fun getColors(): List<Int> {
-        return mColors
+    /**
+     * Sets a color with a specific alpha value.
+     *
+     * @param color
+     * @param alpha from 0-255
+     */
+    fun setColor(color: Int, alpha: Int) {
+        mColors.clear()
+        mColors.add(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)))
     }
 
-    val valueColors: List<Int>
-        get() = mValueColors
+    override var color: Int
+        get() = mColors[0]
+        set(value) {
+            mColors.clear()
+            mColors.add(value)
+        }
 
-    override fun getColor(): Int {
-        return mColors[0]
-    }
+    override val colors: MutableList<Int>
+        get() = mColors
 
     override fun getColorByIndex(index: Int): Int {
         return mColors[index % mColors.size]
     }
 
-    /**
-     * ###### ###### COLOR SETTING RELATED METHODS ##### ######
-     */
+    override var formLineDashEffect: DashPathEffect?
+        get() = mFormLineDashEffect
+        set(value) {
+            mFormLineDashEffect = value
+        }
+
+    override val isDrawValues: Boolean
+        get() = mIsDrawValues
+
+    override var isDrawIcons: Boolean
+        get() = mIsDrawIcons
+        set(value) {
+            mIsDrawIcons = value
+        }
+
+    override var iconsOffset: MPPointF
+        get() = mIconsOffset
+        set(value) {
+            mIconsOffset = value
+        }
+
+    override var formLineWidth: Float
+        get() = mFormLineWidth
+        set(value) {
+            mFormLineWidth = value
+        }
+
     /**
      * Sets the colors that should be used fore this DataSet. Colors are reused
      * as soon as the number of Entries the DataSet represents is higher than
@@ -184,27 +213,6 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     }
 
     /**
-     * Sets the one and ONLY color that should be used for this DataSet.
-     * Internally, this recreates the colors array and adds the specified color.
-     *
-     * @param color
-     */
-    fun setColor(color: Int) {
-        resetColors()
-        mColors.add(color)
-    }
-
-    /**
-     * Sets a color with a specific alpha value.
-     *
-     * @param color
-     * @param alpha from 0-255
-     */
-    fun setColor(color: Int, alpha: Int) {
-        setColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)))
-    }
-
-    /**
      * Sets colors with a specific alpha value.
      *
      * @param colors
@@ -224,149 +232,87 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
         mColors.clear()
     }
 
-    /**
-     * ###### ###### OTHER STYLING RELATED METHODS ##### ######
-     */
-    override fun setLabel(label: String) {
-        mLabel = label
-    }
+    override var label: String?
+        get() = mLabel
+        set(value) {
+            if (value != null) {
+                mLabel = value
+            }
+        }
+    override var axisDependency: AxisDependency
+        get() = mAxisDependency
+        set(value) {
+            mAxisDependency = value
+        }
 
-    override fun getLabel(): String {
-        return mLabel
-    }
+    override var isHighlightEnabled: Boolean
+        get() = mHighlightEnabled
+        set(value) {
+            mHighlightEnabled = value
+        }
 
-    override fun setHighlightEnabled(enabled: Boolean) {
-        mHighlightEnabled = enabled
-    }
-
-    override fun isHighlightEnabled(): Boolean {
-        return mHighlightEnabled
-    }
-
-    override fun setValueFormatter(f: IValueFormatter?) {
-        if (f == null) return
-        else mValueFormatter = f
-    }
-
-    override fun getValueFormatter(): IValueFormatter {
-        if (needsFormatter()) return Utils.getDefaultValueFormatter()
-        return mValueFormatter!!
-    }
+    override var valueFormatter: IValueFormatter
+        get() = if (needsFormatter())
+            Utils.getDefaultValueFormatter()
+        else
+            mValueFormatter!!
+        set(value) {
+            mValueFormatter = value
+        }
 
     override fun needsFormatter(): Boolean {
         return mValueFormatter == null
     }
 
-    override fun setValueTextColor(color: Int) {
-        mValueColors.clear()
-        mValueColors.add(color)
+    override fun setSingleValueTextColor(value: Int) {
+            mValueColors.clear()
+            mValueColors.add(value)
     }
 
-    override fun setValueTextColors(colors: MutableList<Int>) {
-        mValueColors = colors
-    }
-
-    override fun setValueTypeface(tf: Typeface?) {
-        mValueTypeface = tf
-    }
-
-    override fun setValueTextSize(size: Float) {
-        mValueTextSize = Utils.convertDpToPixel(size)
-    }
-
-    override fun getValueTextColor(): Int {
-        return mValueColors[0]
-    }
+    override var valueTextColors: MutableList<Int>
+        get() = mValueColors
+        set(value) {
+            mValueColors = value
+        }
 
     override fun getValueTextColor(index: Int): Int {
         return mValueColors[index % mValueColors.size]
     }
 
-    override fun getValueTypeface(): Typeface? {
-        return mValueTypeface
-    }
+    override var valueTypeface: Typeface?
+        get() = mValueTypeface
+        set(value) {
+            mValueTypeface = value
+        }
 
-    override fun getValueTextSize(): Float {
-        return mValueTextSize
-    }
+    override var valueTextSize: Float
+        get() = mValueTextSize
+        set(value) {
+            mValueTextSize = Utils.convertDpToPixel(value)
+        }
 
-    fun setForm(form: LegendForm) {
-        mForm = form
-    }
+    override var form: LegendForm
+        get() = mForm
+        set(value) {
+            mForm = value
+        }
 
-    override fun getForm(): LegendForm {
-        return mForm
-    }
+    override var formSize: Float
+        get() = mFormSize
+        set(value) {
+            mFormSize = value
+        }
 
-    fun setFormSize(formSize: Float) {
-        mFormSize = formSize
-    }
-
-    override fun getFormSize(): Float {
-        return mFormSize
-    }
-
-    fun setFormLineWidth(formLineWidth: Float) {
-        mFormLineWidth = formLineWidth
-    }
-
-    override fun getFormLineWidth(): Float {
-        return mFormLineWidth
-    }
-
-    fun setFormLineDashEffect(dashPathEffect: DashPathEffect?) {
-        mFormLineDashEffect = dashPathEffect
-    }
-
-    override fun getFormLineDashEffect(): DashPathEffect? {
-        return mFormLineDashEffect
-    }
+    override var isVisible: Boolean
+        get() = mIsVisible
+        set(value) {
+            mIsVisible = value
+        }
 
     override fun setDrawValues(enabled: Boolean) {
         this.mDrawValues = enabled
     }
 
-    override fun isDrawValuesEnabled(): Boolean {
-        return mDrawValues
-    }
-
-    override fun setDrawIcons(enabled: Boolean) {
-        mDrawIcons = enabled
-    }
-
-    override fun isDrawIconsEnabled(): Boolean {
-        return mDrawIcons
-    }
-
-    override fun setIconsOffset(offsetDp: MPPointF) {
-        mIconsOffset.x = offsetDp.x
-        mIconsOffset.y = offsetDp.y
-    }
-
-    override fun getIconsOffset(): MPPointF {
-        return mIconsOffset
-    }
-
-    override fun setVisible(visible: Boolean) {
-        mVisible = visible
-    }
-
-    override fun isVisible(): Boolean {
-        return mVisible
-    }
-
-    override fun getAxisDependency(): AxisDependency {
-        return mAxisDependency
-    }
-
-    override fun setAxisDependency(dependency: AxisDependency) {
-        mAxisDependency = dependency
-    }
-
-
-    /**
-     * ###### ###### DATA RELATED METHODS ###### ######
-     */
     override fun getIndexInEntries(xIndex: Int): Int {
         for (i in 0..<entryCount) {
             if (xIndex.toFloat() == getEntryForIndex(i)!!.x) return i
@@ -378,30 +324,30 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     override fun removeFirst(): Boolean {
         if (entryCount > 0) {
             val entry = getEntryForIndex(0)
-            return removeEntry(entry)
+            return if (entry != null) removeEntry(entry) else false
         } else return false
     }
 
     override fun removeLast(): Boolean {
         if (entryCount > 0) {
-            val e = getEntryForIndex(entryCount - 1)
-            return removeEntry(e)
+            val entry = getEntryForIndex(entryCount - 1)
+            return if (entry != null) removeEntry(entry) else false
         } else return false
     }
 
     override fun removeEntryByXValue(xValue: Float): Boolean {
-        val e = getEntryForXValue(xValue, Float.NaN)
-        return removeEntry(e)
+        val entry = getEntryForXValue(xValue, Float.NaN)
+        return if (entry != null) removeEntry(entry) else false
     }
 
     override fun removeEntry(index: Int): Boolean {
-        val e = getEntryForIndex(index)
-        return removeEntry(e)
+        val entry = getEntryForIndex(index)
+        return if (entry != null) removeEntry(entry) else false
     }
 
-    override fun contains(e: T): Boolean {
+    override fun contains(entry: T): Boolean {
         for (i in 0..<entryCount) {
-            if (getEntryForIndex(i) == e) return true
+            if (getEntryForIndex(i) == entry) return true
         }
 
         return false
@@ -414,7 +360,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
         baseDataSet.mDrawValues = mDrawValues
         baseDataSet.mForm = mForm
         baseDataSet.mFormLineDashEffect = mFormLineDashEffect
-        baseDataSet.mFormLineWidth = mFormLineWidth
+        baseDataSet.formLineWidth = formLineWidth
         baseDataSet.mFormSize = mFormSize
         baseDataSet.mHighlightEnabled = mHighlightEnabled
         baseDataSet.mIconsOffset = mIconsOffset

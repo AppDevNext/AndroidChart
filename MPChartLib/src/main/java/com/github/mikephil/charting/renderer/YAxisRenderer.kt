@@ -268,7 +268,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
      */
     override fun renderLimitLines(canvas: Canvas) {
         val limitLines = yAxis.limitLines
-        if (limitLines != null && limitLines.isNotEmpty()) {
+        if (limitLines.isNotEmpty()) {
             val pts = renderLimitLinesBuffer
             pts[0] = 0f
             pts[1] = 0f
@@ -276,7 +276,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
             limitLinePath.reset()
 
             for (i in limitLines.indices) {
-                val limitLine = limitLines[i]
+                val limitLine = limitLines[i]!!
 
                 if (!limitLine.isEnabled)
                     continue
@@ -361,7 +361,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
         // Now the ranges
         val limitRanges = yAxis.limitRanges
-        if (limitRanges != null && limitRanges.isNotEmpty()) {
+        if (limitRanges.isNotEmpty()) {
             val ptsr = FloatArray(2)
             ptsr[0] = 0f
             ptsr[1] = 0f
@@ -374,7 +374,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
             limitRangePathFill.reset()
 
             for (limitRangeIndex in limitRanges.indices) {
-                val limitRange = limitRanges[limitRangeIndex]
+                val limitRange = limitRanges[limitRangeIndex]!!
 
                 if (!limitRange.isEnabled)
                     continue

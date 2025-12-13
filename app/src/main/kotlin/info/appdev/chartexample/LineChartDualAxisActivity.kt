@@ -107,16 +107,16 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         val leftAxis = chart!!.axisLeft
         leftAxis.typeface = tfLight
         leftAxis.textColor = ColorTemplate.getHoloBlue()
-        leftAxis.setAxisMaximum(200f)
-        leftAxis.setAxisMinimum(0f)
+        leftAxis.axisMaximum = 200f
+        leftAxis.axisMinimum = 0f
         leftAxis.setDrawGridLines(true)
         leftAxis.isGranularityEnabled = true
 
         val rightAxis = chart!!.axisRight
         rightAxis.typeface = tfLight
         rightAxis.textColor = Color.MAGENTA
-        rightAxis.setAxisMaximum(900f)
-        rightAxis.setAxisMinimum(-200f)
+        rightAxis.axisMaximum = 900f
+        rightAxis.axisMinimum = -200f
         rightAxis.setDrawGridLines(false)
         rightAxis.setDrawZeroLine(false)
         rightAxis.isGranularityEnabled = false
@@ -165,7 +165,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set1 = LineDataSet(values1, "DataSet 1")
 
             set1.axisDependency = AxisDependency.LEFT
-            set1.setColor(ColorTemplate.getHoloBlue())
+            set1.color = ColorTemplate.getHoloBlue()
             set1.setCircleColor(Color.WHITE)
             set1.setLineWidth(2f)
             set1.circleRadius = 3f
@@ -182,7 +182,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             // create a dataset and give it a type
             set2 = LineDataSet(values2, "DataSet 2")
             set2.axisDependency = AxisDependency.RIGHT
-            set2.setColor(Color.MAGENTA)
+            set2.color = Color.MAGENTA
             set2.setCircleColor(Color.WHITE)
             set2.setLineWidth(2f)
             set2.circleRadius = 3f
@@ -194,7 +194,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             //set2.setFillFormatter(new MyFillFormatter(900f));
             set3 = LineDataSet(values3, "DataSet 3")
             set3.axisDependency = AxisDependency.RIGHT
-            set3.setColor(Color.YELLOW)
+            set3.color = Color.YELLOW
             set3.setCircleColor(Color.WHITE)
             set3.setLineWidth(2f)
             set3.circleRadius = 3f
@@ -233,7 +233,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                    set.setDrawValues(!set.isDrawValues)
                 }
 
                 chart!!.invalidate()
@@ -363,7 +363,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
         chart!!.centerViewToAnimated(
             entry.x, entry.y, chart!!.data!!.getDataSetByIndex(highlight.dataSetIndex)
-                .getAxisDependency(), 500
+                .axisDependency, 500
         )
         //chart.zoomAndCenterAnimated(2.5f, 2.5f, e.getX(), e.getY(), chart.getData().getDataSetByIndex(dataSetIndex)
         // .getAxisDependency(), 1000);

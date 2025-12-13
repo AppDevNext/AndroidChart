@@ -86,7 +86,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                    set.setDrawValues(!set.isDrawValues)
                 }
 
                 binding.chart1.invalidate()

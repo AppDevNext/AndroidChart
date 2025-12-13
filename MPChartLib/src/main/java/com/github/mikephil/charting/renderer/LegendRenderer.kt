@@ -51,13 +51,11 @@ open class LegendRenderer(
 
                 val clrs = dataSet.colors
                 val entryCount = dataSet.entryCount
-
                 // if we have a barchart with stacked bars
                 if (dataSet is IBarDataSet && dataSet.isStacked) {
-                    val bds = dataSet
-                    val sLabels = bds.stackLabels
+                    val sLabels = dataSet.stackLabels
 
-                    val minEntries = min(clrs.size.toDouble(), bds.stackSize.toDouble()).toInt()
+                    val minEntries = min(clrs.size.toDouble(), dataSet.stackSize.toDouble()).toInt()
 
                     for (j in 0..<minEntries) {
                         val label: String?
@@ -71,20 +69,20 @@ open class LegendRenderer(
                         computedEntries.add(
                             LegendEntry(
                                 label,
-                                dataSet.getForm(),
-                                dataSet.getFormSize(),
-                                dataSet.getFormLineWidth(),
-                                dataSet.getFormLineDashEffect(),
+                                dataSet.form,
+                                dataSet.formSize,
+                                dataSet.formLineWidth,
+                                dataSet.formLineDashEffect,
                                 clrs[j]
                             )
                         )
                     }
 
-                    if (bds.label != null) {
+                    if (dataSet.label != null) {
                         // add the legend description label
                         computedEntries.add(
                             LegendEntry(
-                                dataSet.getLabel(),
+                                dataSet.label,
                                 LegendForm.NONE,
                                 Float.NaN,
                                 Float.NaN,
@@ -94,28 +92,29 @@ open class LegendRenderer(
                         )
                     }
                 } else if (dataSet is IPieDataSet) {
-                    val pds = dataSet
 
                     var j = 0
                     while (j < clrs.size && j < entryCount) {
-                        computedEntries.add(
-                            LegendEntry(
-                                pds.getEntryForIndex(j).label,
-                                dataSet.getForm(),
-                                dataSet.getFormSize(),
-                                dataSet.getFormLineWidth(),
-                                dataSet.getFormLineDashEffect(),
-                                clrs[j]
+                        dataSet.getEntryForIndex(j)?.let { pieEntry ->
+                            computedEntries.add(
+                                LegendEntry(
+                                    pieEntry.label,
+                                    dataSet.form,
+                                    dataSet.formSize,
+                                    dataSet.formLineWidth,
+                                    dataSet.formLineDashEffect,
+                                    clrs[j]
+                                )
                             )
-                        )
+                        }
                         j++
                     }
 
-                    if (pds.label != null) {
+                    if (dataSet.label != null) {
                         // add the legend description label
                         computedEntries.add(
                             LegendEntry(
-                                dataSet.getLabel(),
+                                dataSet.label,
                                 LegendForm.NONE,
                                 Float.NaN,
                                 Float.NaN,
@@ -133,21 +132,21 @@ open class LegendRenderer(
                     computedEntries.add(
                         LegendEntry(
                             null,
-                            dataSet.getForm(),
-                            dataSet.getFormSize(),
-                            dataSet.getFormLineWidth(),
-                            dataSet.getFormLineDashEffect(),
+                            dataSet.form,
+                            dataSet.formSize,
+                            dataSet.formLineWidth,
+                            dataSet.formLineDashEffect,
                             decreasingColor
                         )
                     )
 
                     computedEntries.add(
                         LegendEntry(
-                            dataSet.getLabel(),
-                            dataSet.getForm(),
-                            dataSet.getFormSize(),
-                            dataSet.getFormLineWidth(),
-                            dataSet.getFormLineDashEffect(),
+                            dataSet.label,
+                            dataSet.form,
+                            dataSet.formSize,
+                            dataSet.formLineWidth,
+                            dataSet.formLineDashEffect,
                             increasingColor
                         )
                     )
@@ -256,7 +255,7 @@ open class LegendRenderer(
                 else
                     -xOffset)
 
-                // Horizontally layed out legends do the center offset on a line basis,
+                // Horizontally laid out legends do the center offset on a line basis,
                 // So here we offset the vertical ones only.
                 if (orientation == LegendOrientation.VERTICAL) {
                     originPosX += (if (direction == LegendDirection.LEFT_TO_RIGHT)
