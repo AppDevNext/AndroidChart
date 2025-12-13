@@ -120,7 +120,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
                 }
 
                 // Set the color for the currently drawn value. If the index
-                paintRender.color = dataSet.getColor(j / 4)
+                paintRender.color = dataSet.getColorByIndex(j / 4)
 
                 if (roundedPositiveDataSetRadius > 0) {
                     canvas.drawRoundRect(
@@ -187,7 +187,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
 
         val isSingleColor = dataSet.colors.size == 1
         if (isSingleColor) {
-            paintRender.color = dataSet.getColor(index)
+            paintRender.color = dataSet.getColorByIndex(index)
         }
 
         var j = 0
@@ -202,7 +202,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
             }
 
             if (!isSingleColor) {
-                paintRender.color = dataSet.getColor(j / 4)
+                paintRender.color = dataSet.getColorByIndex(j / 4)
             }
 
             if ((dataSet.getEntryForIndex(j / 4).y < 0 && roundedNegativeDataSetRadius > 0)) {

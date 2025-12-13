@@ -331,7 +331,7 @@ class LineChartRenderer(
                 ) continue
 
                 // get the color that is set for this line-segment
-                paintRender.color = dataSet.getColor(j)
+                paintRender.color = dataSet.getColorByIndex(j)
 
                 canvas!!.drawLines(lineBuffer, 0, pointsPerEntryPair * 2, paintRender)
             }

@@ -85,12 +85,12 @@ open class CandleStickChartRenderer(
                 // draw the shadows
                 if (dataSet.shadowColorSameAsCandle) {
                     if (open > close) paintRender.color =
-                        if (dataSet.decreasingColor == ColorTemplate.COLOR_NONE) dataSet.getColor(j) else dataSet.decreasingColor
+                        if (dataSet.decreasingColor == ColorTemplate.COLOR_NONE) dataSet.getColorByIndex(j) else dataSet.decreasingColor
                     else if (open < close) paintRender.color =
-                        if (dataSet.increasingColor == ColorTemplate.COLOR_NONE) dataSet.getColor(j) else dataSet.increasingColor
-                    else paintRender.color = if (dataSet.neutralColor == ColorTemplate.COLOR_NONE) dataSet.getColor(j) else dataSet.neutralColor
+                        if (dataSet.increasingColor == ColorTemplate.COLOR_NONE) dataSet.getColorByIndex(j) else dataSet.increasingColor
+                    else paintRender.color = if (dataSet.neutralColor == ColorTemplate.COLOR_NONE) dataSet.getColorByIndex(j) else dataSet.neutralColor
                 } else {
-                    paintRender.color = if (dataSet.shadowColor == ColorTemplate.COLOR_NONE) dataSet.getColor(j) else dataSet.shadowColor
+                    paintRender.color = if (dataSet.shadowColor == ColorTemplate.COLOR_NONE) dataSet.getColorByIndex(j) else dataSet.shadowColor
                 }
 
                 paintRender.style = Paint.Style.STROKE
@@ -109,7 +109,7 @@ open class CandleStickChartRenderer(
                 if (open > close) { // decreasing
 
                     if (dataSet.decreasingColor == ColorTemplate.COLOR_NONE) {
-                        paintRender.color = dataSet.getColor(j)
+                        paintRender.color = dataSet.getColorByIndex(j)
                     } else {
                         paintRender.color = dataSet.decreasingColor
                     }
@@ -123,7 +123,7 @@ open class CandleStickChartRenderer(
                     )
                 } else if (open < close) {
                     if (dataSet.increasingColor == ColorTemplate.COLOR_NONE) {
-                        paintRender.color = dataSet.getColor(j)
+                        paintRender.color = dataSet.getColorByIndex(j)
                     } else {
                         paintRender.color = dataSet.increasingColor
                     }
@@ -138,7 +138,7 @@ open class CandleStickChartRenderer(
                 } else { // equal values
 
                     if (dataSet.neutralColor == ColorTemplate.COLOR_NONE) {
-                        paintRender.color = dataSet.getColor(j)
+                        paintRender.color = dataSet.getColorByIndex(j)
                     } else {
                         paintRender.color = dataSet.neutralColor
                     }
@@ -171,15 +171,15 @@ open class CandleStickChartRenderer(
 
                 // draw the ranges
                 val barColor = if (open > close) if (dataSet.decreasingColor == ColorTemplate.COLOR_NONE)
-                    dataSet.getColor(j)
+                    dataSet.getColorByIndex(j)
                 else
                     dataSet.decreasingColor
                 else if (open < close) if (dataSet.increasingColor == ColorTemplate.COLOR_NONE)
-                    dataSet.getColor(j)
+                    dataSet.getColorByIndex(j)
                 else
                     dataSet.increasingColor
                 else if (dataSet.neutralColor == ColorTemplate.COLOR_NONE)
-                    dataSet.getColor(j)
+                    dataSet.getColorByIndex(j)
                 else
                     dataSet.neutralColor
 

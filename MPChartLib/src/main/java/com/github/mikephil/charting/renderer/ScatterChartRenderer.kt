@@ -62,7 +62,7 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
                 || !viewPortHandler.isInBoundsY(pixelBuffer[1])
             ) continue
 
-            paintRender.color = dataSet.getColor(i / 2)
+            paintRender.color = dataSet.getColorByIndex(i / 2)
             renderer.renderShape(
                 canvas, dataSet, this.viewPortHandler,
                 pixelBuffer[0], pixelBuffer[1],

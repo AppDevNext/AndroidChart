@@ -119,7 +119,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                 }
 
                 // Set the color for the currently drawn value. If the index
-                paintRender.color = dataSet.getColor(j / 4)
+                paintRender.color = dataSet.getColorByIndex(j / 4)
 
                 if (roundedPositiveDataSetRadius > 0) {
                     canvas.drawRoundRect(
@@ -187,7 +187,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
 
         val isSingleColor = dataSet.colors.size == 1
         if (isSingleColor) {
-            paintRender.color = dataSet.getColor(index)
+            paintRender.color = dataSet.getColorByIndex(index)
         }
 
         var j = 0
@@ -202,7 +202,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
             }
 
             if (!isSingleColor) {
-                paintRender.color = dataSet.getColor(j / 4)
+                paintRender.color = dataSet.getColorByIndex(j / 4)
             }
 
             paintRender.setShader(
@@ -211,8 +211,8 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                     buffer.buffer[j + 3],
                     buffer.buffer[j],
                     buffer.buffer[j + 1],
-                    dataSet.getColor(j / 4),
-                    dataSet.getColor(j / 4),
+                    dataSet.getColorByIndex(j / 4),
+                    dataSet.getColorByIndex(j / 4),
                     Shader.TileMode.MIRROR
                 )
             )
@@ -223,8 +223,8 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, 
                     buffer.buffer[j + 3],
                     buffer.buffer[j],
                     buffer.buffer[j + 1],
-                    dataSet.getColor(j / 4),
-                    dataSet.getColor(j / 4),
+                    dataSet.getColorByIndex(j / 4),
+                    dataSet.getColorByIndex(j / 4),
                     Shader.TileMode.MIRROR
                 )
             )

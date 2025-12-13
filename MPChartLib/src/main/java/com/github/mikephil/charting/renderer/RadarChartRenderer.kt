@@ -69,7 +69,7 @@ open class RadarChartRenderer(
         var hasMovedToPoint = false
 
         for (j in 0..<dataSet.entryCount) {
-            paintRender.color = dataSet.getColor(j)
+            paintRender.color = dataSet.getColorByIndex(j)
 
             val e = dataSet.getEntryForIndex(j)
 
@@ -322,7 +322,7 @@ open class RadarChartRenderer(
                 if (!java.lang.Float.isNaN(pOut.x) && !java.lang.Float.isNaN(pOut.y)) {
                     var strokeColor = set.highlightCircleStrokeColor
                     if (strokeColor == ColorTemplate.COLOR_NONE) {
-                        strokeColor = set.getColor(0)
+                        strokeColor = set.getColorByIndex(0)
                     }
 
                     if (set.highlightCircleStrokeAlpha < 255) {
