@@ -17,7 +17,7 @@ import com.github.mikephil.charting.utils.Utils
  * This is the base dataset of all DataSets. It's purpose is to implement critical methods
  * provided by the IDataSet interface.
  */
-abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
+abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     /**
      * List representing all colors that are used for this DataSet
      */
