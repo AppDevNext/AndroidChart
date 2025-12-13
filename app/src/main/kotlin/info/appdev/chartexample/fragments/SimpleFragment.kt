@@ -99,7 +99,7 @@ abstract class SimpleFragment : Fragment() {
         val ds1 = PieDataSet(entries1, "Quarterly Revenues 2015")
         ds1.setColors(*ColorTemplate.VORDIPLOM_COLORS)
         ds1.setSliceSpace(2f)
-        ds1.setValueTextColor(Color.WHITE)
+        ds1.setSingleValueTextColor(Color.WHITE)
         ds1.valueTextSize = 12f
 
         val d = PieData(ds1)
@@ -119,8 +119,8 @@ abstract class SimpleFragment : Fragment() {
         ds1.setDrawCircles(false)
         ds2.setDrawCircles(false)
 
-        ds1.setColor(ColorTemplate.VORDIPLOM_COLORS[0])
-        ds2.setColor(ColorTemplate.VORDIPLOM_COLORS[1])
+        ds1.color = ColorTemplate.VORDIPLOM_COLORS[0]
+        ds2.color = ColorTemplate.VORDIPLOM_COLORS[1]
 
         // load DataSets from files in assets folder
         sets.add(ds1)
@@ -144,10 +144,10 @@ abstract class SimpleFragment : Fragment() {
             val ds4 =
                 LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "three.txt"), "O(n\u00B3)")
 
-            ds1.setColor(ColorTemplate.VORDIPLOM_COLORS[0])
-            ds2.setColor(ColorTemplate.VORDIPLOM_COLORS[1])
-            ds3.setColor(ColorTemplate.VORDIPLOM_COLORS[2])
-            ds4.setColor(ColorTemplate.VORDIPLOM_COLORS[3])
+            ds1.color = ColorTemplate.VORDIPLOM_COLORS[0]
+            ds2.color = ColorTemplate.VORDIPLOM_COLORS[1]
+            ds3.color = ColorTemplate.VORDIPLOM_COLORS[2]
+            ds4.color = ColorTemplate.VORDIPLOM_COLORS[3]
 
             ds1.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0])
             ds2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[1])

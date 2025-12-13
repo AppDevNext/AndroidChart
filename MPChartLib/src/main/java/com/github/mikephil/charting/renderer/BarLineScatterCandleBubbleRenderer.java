@@ -23,7 +23,7 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
      * Returns true if the DataSet values should be drawn, false if not.
      */
     protected boolean shouldDrawValues(IDataSet set) {
-        return set.isVisible() && (set.isDrawValuesEnabled() || set.isDrawIconsEnabled());
+        return set.isVisible() && (set.isDrawValues() || set.isDrawIcons());
     }
 
     /**

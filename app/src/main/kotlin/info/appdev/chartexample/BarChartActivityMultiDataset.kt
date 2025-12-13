@@ -88,7 +88,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
 
         val xAxis = chart!!.xAxis
         xAxis.typeface = tfLight
-        xAxis.setGranularity(1f)
+        xAxis.granularity = 1f
         xAxis.setCenterAxisLabels(true)
         xAxis.valueFormatter = object : IAxisValueFormatter {
             override fun getFormattedValue(value: Float, axis: AxisBase?): String {
@@ -101,7 +101,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         leftAxis.valueFormatter = LargeValueFormatter()
         leftAxis.setDrawGridLines(false)
         leftAxis.spaceTop = 35f
-        leftAxis.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         chart!!.axisRight.isEnabled = false
     }
@@ -153,13 +153,13 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         } else {
             // create 4 DataSets
             set1 = BarDataSet(values1, "Company A")
-            set1.setColor(Color.rgb(104, 241, 175))
+            set1.color = Color.rgb(104, 241, 175)
             set2 = BarDataSet(values2, "Company B")
-            set2.setColor(Color.rgb(164, 228, 251))
+            set2.color = Color.rgb(164, 228, 251)
             set3 = BarDataSet(values3, "Company C")
-            set3.setColor(Color.rgb(242, 247, 158))
+            set3.color = Color.rgb(242, 247, 158)
             set4 = BarDataSet(values4, "Company D")
-            set4.setColor(Color.rgb(255, 102, 0))
+            set4.color = Color.rgb(255, 102, 0)
 
             val data = BarData(set1, set2, set3, set4)
             data.setValueFormatter(LargeValueFormatter())
@@ -172,10 +172,10 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         chart!!.barData.barWidth = barWidth
 
         // restrict the x-axis range
-        chart!!.xAxis.setAxisMinimum(startYear.toFloat())
+        chart!!.xAxis.axisMinimum = startYear.toFloat()
 
         // barData.getGroupWith(...) is a helper that calculates the width each group needs based on the provided parameters
-        chart!!.xAxis.setAxisMaximum(startYear + chart!!.barData.getGroupWidth(groupSpace, barSpace) * groupCount)
+        chart!!.xAxis.axisMaximum = startYear + chart!!.barData.getGroupWidth(groupSpace, barSpace) * groupCount
         chart!!.groupBars(startYear.toFloat(), groupSpace, barSpace)
         chart!!.invalidate()
     }
@@ -195,7 +195,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             }
 
             R.id.actionToggleValues -> {
-                for (set in chart!!.data!!.dataSets) set.setDrawValues(!set.isDrawValuesEnabled())
+                for (set in chart!!.data!!.dataSets) set.setDrawValues(!set.isDrawValues)
 
                 chart!!.invalidate()
             }

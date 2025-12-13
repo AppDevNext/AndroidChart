@@ -67,16 +67,16 @@ class CombinedChartActivity : DemoBase() {
 
         val rightAxis = chart!!.axisRight
         rightAxis.setDrawGridLines(false)
-        rightAxis.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        rightAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         val leftAxis = chart!!.axisLeft
         leftAxis.setDrawGridLines(false)
-        leftAxis.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         val xAxis = chart!!.xAxis
         xAxis.position = XAxisPosition.BOTH_SIDED
-        xAxis.setAxisMinimum(0f)
-        xAxis.setGranularity(1f)
+        xAxis.axisMinimum = 0f
+        xAxis.granularity = 1f
         xAxis.valueFormatter = object : IAxisValueFormatter {
             override fun getFormattedValue(value: Float, axis: AxisBase?): String {
                 return months[value.toInt() % months.size]
@@ -92,7 +92,7 @@ class CombinedChartActivity : DemoBase() {
         data.setData(generateCandleData())
         data.setValueTypeface(tfLight)
 
-        xAxis.setAxisMaximum(data.xMax + 0.25f)
+        xAxis.axisMaximum = data.xMax + 0.25f
 
         chart!!.setData(data)
         chart!!.invalidate()
@@ -106,7 +106,7 @@ class CombinedChartActivity : DemoBase() {
         for (index in 0..<sampleCount) entries.add(Entry(index + 0.5f, values[index]!!.toFloat() * 15 + 5))
 
         val set = LineDataSet(entries, "Line DataSet")
-        set.setColor(Color.rgb(240, 238, 70))
+        set.color = Color.rgb(240, 238, 70)
         set.setLineWidth(2.5f)
         set.setCircleColor(Color.rgb(240, 238, 70))
         set.circleRadius = 5f
@@ -114,7 +114,7 @@ class CombinedChartActivity : DemoBase() {
         set.mode = LineDataSet.Mode.CUBIC_BEZIER
         set.setDrawValues(true)
         set.valueTextSize = 10f
-        set.setValueTextColor(Color.rgb(240, 238, 70))
+        set.setSingleValueTextColor(Color.rgb(240, 238, 70))
 
         set.axisDependency = YAxis.AxisDependency.LEFT
         d.addDataSet(set)
@@ -134,15 +134,15 @@ class CombinedChartActivity : DemoBase() {
         }
 
         val set1 = BarDataSet(entries1, "Bar 1")
-        set1.setColor(Color.rgb(60, 220, 78))
-        set1.setValueTextColor(Color.rgb(60, 220, 78))
+        set1.color = Color.rgb(60, 220, 78)
+        set1.setSingleValueTextColor(Color.rgb(60, 220, 78))
         set1.valueTextSize = 10f
         set1.axisDependency = YAxis.AxisDependency.LEFT
 
         val set2 = BarDataSet(entries2, "")
         set2.stackLabels = arrayOf("Stack 1", "Stack 2")
         set2.setColors(Color.rgb(61, 165, 255), Color.rgb(23, 197, 255))
-        set2.setValueTextColor(Color.rgb(61, 165, 255))
+        set2.setSingleValueTextColor(Color.rgb(61, 165, 255))
         set2.valueTextSize = 10f
         set2.axisDependency = YAxis.AxisDependency.LEFT
 
@@ -217,7 +217,7 @@ class CombinedChartActivity : DemoBase() {
         val set = BubbleDataSet(entries, "Bubble DataSet")
         set.setColors(*ColorTemplate.VORDIPLOM_COLORS)
         set.valueTextSize = 10f
-        set.setValueTextColor(Color.WHITE)
+        set.setSingleValueTextColor(Color.WHITE)
         set.highlightCircleWidth = 1.5f
         set.setDrawValues(true)
         bd.addDataSet(set)
@@ -241,7 +241,7 @@ class CombinedChartActivity : DemoBase() {
 
             R.id.actionToggleLineValues -> {
                 for (set in chart!!.data!!.dataSets) {
-                    if (set is LineDataSet) set.setDrawValues(!set.isDrawValuesEnabled)
+                    if (set is LineDataSet) set.setDrawValues(!set.isDrawValues)
                 }
 
                 chart!!.invalidate()
@@ -249,7 +249,7 @@ class CombinedChartActivity : DemoBase() {
 
             R.id.actionToggleBarValues -> {
                 for (set in chart!!.data!!.dataSets) {
-                    if (set is BarDataSet) set.setDrawValues(!set.isDrawValuesEnabled)
+                    if (set is BarDataSet) set.setDrawValues(!set.isDrawValues)
                 }
 
                 chart!!.invalidate()

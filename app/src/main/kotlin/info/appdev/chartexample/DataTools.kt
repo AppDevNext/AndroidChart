@@ -176,7 +176,7 @@ class DataTools {
         ) {
             // create a dataset and give it a type
             val lineDataSet01 = LineDataSet(values, "DataSet 1")
-            lineDataSet01.setDrawIcons(false)
+            lineDataSet01.isDrawIcons = false
 
             // draw dashed line
             lineDataSet01.enableDashedLine(10f, 5f, 0f)
@@ -194,7 +194,7 @@ class DataTools {
 
             // customize legend entry
             lineDataSet01.formLineWidth = 1f
-            lineDataSet01.setFormLineDashEffect(DashPathEffect(floatArrayOf(10f, 5f), 0f))
+            lineDataSet01.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
             lineDataSet01.formSize = 15f
 
             // text size of values

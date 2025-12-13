@@ -73,7 +73,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         // change the position of the y-labels
         val leftAxis = chart!!.axisLeft
         leftAxis.valueFormatter = MyAxisValueFormatter()
-        leftAxis.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
         chart!!.axisRight.isEnabled = false
 
         val xLabels = chart!!.xAxis
@@ -130,7 +130,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             chart!!.notifyDataSetChanged()
         } else {
             set1 = BarDataSet(values, "Statistics Vienna 2014")
-            set1.setDrawIcons(false)
+            set1.isDrawIcons = false
             set1.setColors(*this.colors)
             set1.stackLabels = arrayOf("Births", "Divorces", "Marriages")
 
@@ -167,7 +167,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
                 for (iSet in sets) {
                     val set = iSet as BarDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                    set.setDrawValues(!set.isDrawValues)
                 }
 
                 chart!!.invalidate()
@@ -179,7 +179,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
                 for (iSet in sets) {
                     val set = iSet as BarDataSet
-                    set.setDrawIcons(!set.isDrawIconsEnabled)
+                    set.isDrawIcons = !set.isDrawIcons
                 }
 
                 chart!!.invalidate()

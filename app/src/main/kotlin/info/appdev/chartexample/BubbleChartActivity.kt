@@ -124,13 +124,13 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
 
         // create a dataset and give it a type
         val set1 = BubbleDataSet(values1, "DS 1")
-        set1.setDrawIcons(false)
+        set1.isDrawIcons = false
         set1.setColor(ColorTemplate.COLORFUL_COLORS[0], 130)
         set1.setDrawValues(true)
 
         val set2 = BubbleDataSet(values2, "DS 2")
-        set2.setDrawIcons(false)
-        set2.setIconsOffset(MPPointF(0f, 15f))
+        set2.isDrawIcons = false
+        set2.iconsOffset = MPPointF(0f, 15f)
         set2.setColor(ColorTemplate.COLORFUL_COLORS[1], 130)
         set2.setDrawValues(true)
 
@@ -169,13 +169,14 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
             }
 
             R.id.actionToggleValues -> {
-                for (set in chart!!.data!!.dataSets) set.setDrawValues(!set.isDrawValuesEnabled())
+                for (set in chart!!.data!!.dataSets) set.setDrawValues(!set.isDrawValues)
 
                 chart!!.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                for (set in chart!!.data!!.dataSets) set.setDrawIcons(!set.isDrawIconsEnabled())
+                for (set in chart!!.data!!.dataSets)
+                    set.isDrawIcons = !set.isDrawIcons
 
                 chart!!.invalidate()
             }

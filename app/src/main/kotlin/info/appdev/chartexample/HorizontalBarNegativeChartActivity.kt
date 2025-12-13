@@ -76,7 +76,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
         xl.typeface = tfLight
         xl.setDrawAxisLine(true)
         xl.setDrawGridLines(false)
-        xl.setGranularity(10f)
+        xl.granularity = 10f
 
         val yl = chart!!.axisLeft
         yl.typeface = tfLight
@@ -134,7 +134,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
         } else {
             set1 = BarDataSet(values, "DataSet 1")
 
-            set1.setDrawIcons(false)
+            set1.isDrawIcons = false
 
             val dataSets = ArrayList<IBarDataSet?>()
             dataSets.add(set1)
@@ -166,7 +166,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
                     .dataSets
 
                 for (iSet in sets) {
-                    iSet.setDrawValues(!iSet.isDrawValuesEnabled())
+                    iSet.setDrawValues(!iSet.isDrawValues)
                 }
 
                 chart!!.invalidate()
@@ -177,7 +177,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
                     .dataSets
 
                 for (iSet in sets) {
-                    iSet.setDrawIcons(!iSet.isDrawIconsEnabled())
+                    iSet.isDrawIcons = !iSet.isDrawIcons
                 }
 
                 chart!!.invalidate()
@@ -255,7 +255,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
         val position = chart!!.getPosition(
             entry, chart!!.data!!.getDataSetByIndex(highlight.dataSetIndex)
-                .getAxisDependency()
+                .axisDependency
         )
 
         Log.i("bounds", bounds.toString())

@@ -49,25 +49,26 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
         )).toInt()
 
         for (i in 0..<max) {
-            val e = dataSet.getEntryForIndex(i)
+            dataSet.getEntryForIndex(i)?.let { entry ->
 
-            pixelBuffer[0] = e.x
-            pixelBuffer[1] = e.y * phaseY
+                pixelBuffer[0] = entry.x
+                pixelBuffer[1] = entry.y * phaseY
 
-            trans!!.pointValuesToPixel(pixelBuffer)
+                trans!!.pointValuesToPixel(pixelBuffer)
 
-            if (!viewPortHandler.isInBoundsRight(pixelBuffer[0])) break
+                if (!viewPortHandler.isInBoundsRight(pixelBuffer[0])) break
 
-            if (!viewPortHandler.isInBoundsLeft(pixelBuffer[0])
-                || !viewPortHandler.isInBoundsY(pixelBuffer[1])
-            ) continue
+                if (!viewPortHandler.isInBoundsLeft(pixelBuffer[0])
+                    || !viewPortHandler.isInBoundsY(pixelBuffer[1])
+                ) continue
 
-            paintRender.color = dataSet.getColorByIndex(i / 2)
-            renderer.renderShape(
-                canvas, dataSet, this.viewPortHandler,
-                pixelBuffer[0], pixelBuffer[1],
-                paintRender
-            )
+                paintRender.color = dataSet.getColorByIndex(i / 2)
+                renderer.renderShape(
+                    canvas, dataSet, this.viewPortHandler,
+                    pixelBuffer[0], pixelBuffer[1],
+                    paintRender
+                )
+            }
         }
     }
 
@@ -115,31 +116,32 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
                         continue
                     }
 
-                    val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
+                    dataSet.getEntryForIndex(j / 2 + xBounds.min)?.let { entry ->
 
-                    if (dataSet.isDrawValuesEnabled) {
-                        drawValue(
-                            canvas,
-                            dataSet.valueFormatter,
-                            entry.y,
-                            entry,
-                            i,
-                            positions[j],
-                            positions[j + 1] - shapeSize,
-                            dataSet.getValueTextColor(j / 2 + xBounds.min)
-                        )
-                    }
-
-                    if (entry.icon != null && dataSet.isDrawIconsEnabled) {
-                        val icon = entry.icon
-
-                        icon?.let {
-                            Utils.drawImage(
+                        if (dataSet.isDrawValues) {
+                            drawValue(
                                 canvas,
-                                it,
-                                (positions[j] + iconsOffset.x).toInt(),
-                                (positions[j + 1] + iconsOffset.y).toInt()
+                                dataSet.valueFormatter,
+                                entry.y,
+                                entry,
+                                i,
+                                positions[j],
+                                positions[j + 1] - shapeSize,
+                                dataSet.getValueTextColor(j / 2 + xBounds.min)
                             )
+                        }
+
+                        if (entry.icon != null && dataSet.isDrawIcons) {
+                            val icon = entry.icon
+
+                            icon?.let {
+                                Utils.drawImage(
+                                    canvas,
+                                    it,
+                                    (positions[j] + iconsOffset.x).toInt(),
+                                    (positions[j + 1] + iconsOffset.y).toInt()
+                                )
+                            }
                         }
                     }
                     j += 2
@@ -161,19 +163,20 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
 
             if (set == null || !set.isHighlightEnabled) continue
 
-            val e = set.getEntryForXValue(high.x, high.y)
+            set.getEntryForXValue(high.x, high.y)?.let { entry ->
 
-            if (!isInBoundsX(e, set)) continue
+                if (!isInBoundsX(entry, set)) continue
 
-            val pix = chart.getTransformer(set.axisDependency)!!.getPixelForValues(
-                e.x, e.y * animator
-                    .phaseY
-            )
+                val pix = chart.getTransformer(set.axisDependency)!!.getPixelForValues(
+                    entry.x, entry.y * animator
+                        .phaseY
+                )
 
-            high.setDraw(pix.x.toFloat(), pix.y.toFloat())
+                high.setDraw(pix.x.toFloat(), pix.y.toFloat())
 
-            // draw the lines
-            drawHighlightLines(canvas, pix.x.toFloat(), pix.y.toFloat(), set)
+                // draw the lines
+                drawHighlightLines(canvas, pix.x.toFloat(), pix.y.toFloat(), set)
+            }
         }
     }
 }

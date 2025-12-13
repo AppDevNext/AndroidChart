@@ -17,7 +17,6 @@ class Highlight : Serializable {
      * the y-value of the highlighted value
      */
     var y: Float = Float.NaN
-        private set
 
     /**
      * the x-pixel of the highlight

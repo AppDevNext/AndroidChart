@@ -50,13 +50,13 @@ class BarChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {
         leftAxis.typeface = typeface
         leftAxis.setLabelCount(5, false)
         leftAxis.spaceTop = 20f
-        leftAxis.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         val rightAxis = holder.chart!!.axisRight
         rightAxis.typeface = typeface
         rightAxis.setLabelCount(5, false)
         rightAxis.spaceTop = 20f
-        rightAxis.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        rightAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         chartData.setValueTypeface(typeface)
 

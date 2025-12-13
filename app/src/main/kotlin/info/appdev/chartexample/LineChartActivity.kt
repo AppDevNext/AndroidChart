@@ -27,7 +27,7 @@ import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 
 /**
- * Example of a heavily customized [LineChart] with limit lines, custom line shapes, etc.
+ * Example of a heavily customized [com.github.mikephil.charting.charts.LineChart] with limit lines, custom line shapes, etc.
  */
 class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
 
@@ -164,7 +164,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleValues -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                    set.setDrawValues(!set.isDrawValues)
                 }
                 binding.chart1.invalidate()
             }
@@ -172,7 +172,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleIcons -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawIcons(!set.isDrawIconsEnabled)
+                    set.isDrawIcons = !set.isDrawIcons
                     binding.chart1.invalidate()
                 }
             }

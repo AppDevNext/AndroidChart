@@ -56,10 +56,11 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
             var i = 0
             val count = min((dataSet.entryCount.toFloat() * phaseX).toDouble().toInt().toDouble(), dataSet.entryCount.toDouble())
             while (i < count) {
-                val e = dataSet.getEntryForIndex(i)
-                x = e.x
-                mBarShadowRectBuffer.top = x - barWidthHalf
-                mBarShadowRectBuffer.bottom = x + barWidthHalf
+                dataSet.getEntryForIndex(i)?.let { barEntry ->
+                    x = barEntry.x
+                    mBarShadowRectBuffer.top = x - barWidthHalf
+                    mBarShadowRectBuffer.bottom = x + barWidthHalf
+                }
                 trans!!.rectValueToPixel(mBarShadowRectBuffer)
                 if (!viewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
                     i++
@@ -205,27 +206,29 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
                 paintRender.color = dataSet.getColorByIndex(j / 4)
             }
 
-            if ((dataSet.getEntryForIndex(j / 4).y < 0 && roundedNegativeDataSetRadius > 0)) {
-                val path2 = roundRect(
-                    RectF(
+            dataSet.getEntryForIndex(j / 4)?.let { barEntry ->
+                if ((barEntry.y < 0 && roundedNegativeDataSetRadius > 0)) {
+                    val path2 = roundRect(
+                        RectF(
+                            buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                            buffer.buffer[j + 3]
+                        ), roundedNegativeDataSetRadius, roundedNegativeDataSetRadius, true, true, true, true
+                    )
+                    canvas.drawPath(path2, paintRender)
+                } else if ((barEntry.y > 0 && roundedPositiveDataSetRadius > 0)) {
+                    val path2 = roundRect(
+                        RectF(
+                            buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                            buffer.buffer[j + 3]
+                        ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, true, true, true, true
+                    )
+                    canvas.drawPath(path2, paintRender)
+                } else {
+                    canvas.drawRect(
                         buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3]
-                    ), roundedNegativeDataSetRadius, roundedNegativeDataSetRadius, true, true, true, true
-                )
-                canvas.drawPath(path2, paintRender)
-            } else if ((dataSet.getEntryForIndex(j / 4).y > 0 && roundedPositiveDataSetRadius > 0)) {
-                val path2 = roundRect(
-                    RectF(
-                        buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3]
-                    ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, true, true, true, true
-                )
-                canvas.drawPath(path2, paintRender)
-            } else {
-                canvas.drawRect(
-                    buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                    buffer.buffer[j + 3], paintRender
-                )
+                        buffer.buffer[j + 3], paintRender
+                    )
+                }
             }
             j += 4
         }

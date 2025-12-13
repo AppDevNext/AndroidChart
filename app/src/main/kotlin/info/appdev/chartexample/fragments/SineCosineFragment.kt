@@ -31,8 +31,8 @@ class SineCosineFragment : SimpleFragment() {
 
         val leftAxis = chart!!.axisLeft
         leftAxis.typeface = tf
-        leftAxis.setAxisMaximum(1.2f)
-        leftAxis.setAxisMinimum(-1.2f)
+        leftAxis.axisMaximum = 1.2f
+        leftAxis.axisMinimum = -1.2f
 
         chart!!.axisRight.isEnabled = false
 
