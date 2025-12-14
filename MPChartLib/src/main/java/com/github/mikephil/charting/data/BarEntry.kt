@@ -56,7 +56,7 @@ open class BarEntry : Entry {
      * @param y
      * @param icon - icon image
      */
-    constructor(x: Float, y: Float, icon: Drawable?) : super(x, y, icon)
+    constructor(x: Float, y: Float, icon: Drawable) : super(x, y, icon)
 
     /**
      * Constructor for normal bars (not stacked).
@@ -66,7 +66,7 @@ open class BarEntry : Entry {
      * @param icon - icon image
      * @param data - Spot for additional data this Entry represents.
      */
-    constructor(x: Float, y: Float, icon: Drawable?, data: Any?) : super(x, y, icon, data)
+    constructor(x: Float, y: Float, icon: Drawable, data: Any) : super(x, y, icon, data)
 
     /**
      * Constructor for stacked bar entries. One data object for whole stack
@@ -87,7 +87,7 @@ open class BarEntry : Entry {
      * @param vals - the stack values, use at least 2
      * @param data - Spot for additional data this Entry represents.
      */
-    constructor(x: Float, vals: FloatArray?, data: Any?) : super(x, calcSum(vals), data) {
+    constructor(x: Float, vals: FloatArray?, data: Any) : super(x, calcSum(vals), data) {
         this.yVals = vals
         calcPosNegSum()
         calcRanges()
@@ -114,7 +114,7 @@ open class BarEntry : Entry {
      * @param icon - icon image
      * @param data - Spot for additional data this Entry represents.
      */
-    constructor(x: Float, vals: FloatArray?, icon: Drawable?, data: Any?) : super(x, calcSum(vals), icon, data) {
+    constructor(x: Float, vals: FloatArray?, icon: Drawable, data: Any) : super(x, calcSum(vals), icon, data) {
         this.yVals = vals
         calcPosNegSum()
         calcRanges()
