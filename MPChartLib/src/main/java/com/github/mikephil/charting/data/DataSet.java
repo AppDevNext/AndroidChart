@@ -45,16 +45,13 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
      * Creates a new DataSet object with the given values (entries) it represents. Also, a
      * label that describes the DataSet can be specified. The label can also be
      * used to retrieve the DataSet from a ChartData object.
-     *
-     * @param entries
-     * @param label
      */
     public DataSet(List<T> entries, String label) {
         super(label);
         this.mEntries = entries;
 
         if (mEntries == null)
-            mEntries = new ArrayList<T>();
+            mEntries = new ArrayList<>();
 
         calcMinMax();
     }
@@ -97,8 +94,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
 
     /**
      * Updates the min and max x and y value of this DataSet based on the given Entry.
-     *
-     * @param e
      */
     protected void calcMinMax(T e) {
 
@@ -136,8 +131,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
     /**
      * This method is deprecated.
      * Use getEntries() instead.
-     *
-     * @return
      */
     @Deprecated
     public List<T> getValues() {
@@ -146,8 +139,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
 
     /**
      * Returns the array of entries that this DataSet represents.
-     *
-     * @return
      */
     public List<T> getEntries() {
         return mEntries;
@@ -156,8 +147,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
     /**
      * This method is deprecated.
      * Use setEntries(...) instead.
-     *
-     * @param values
      */
     @Deprecated
     public void setValues(List<T> values) {
@@ -166,8 +155,6 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
 
     /**
      * Sets the array of entries that this DataSet represents, and calls notifyDataSetChanged()
-     *
-     * @return
      */
     public void setEntries(List<T> entries) {
         mEntries = entries;
@@ -176,24 +163,19 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
 
     /**
      * Provides an exact copy of the DataSet this method is used on.
-     *
-     * @return
      */
     public abstract DataSet<T> copy();
 
-    /**
-     * @param dataSet
-     */
     protected void copy(DataSet dataSet) {
         super.copy(dataSet);
     }
 
     @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append(toSimpleString());
         for (int i = 0; i < mEntries.size(); i++) {
-            buffer.append(mEntries.get(i).toString() + " ");
+            buffer.append(mEntries.get(i).toString()).append(" ");
         }
         return buffer.toString();
     }
@@ -201,11 +183,9 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
     /**
      * Returns a simple string representation of the DataSet with the type and
      * the number of Entries.
-     *
-     * @return
      */
     public String toSimpleString() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append("DataSet, label: " + (getLabel() == null ? "" : getLabel()) + ", entries: " + mEntries.size() +
                 "\n");
         return buffer.toString();
@@ -238,12 +218,12 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
             return;
 
         if (mEntries == null) {
-            mEntries = new ArrayList<T>();
+            mEntries = new ArrayList<>();
         }
 
         calcMinMax(e);
 
-        if (mEntries.size() > 0 && mEntries.get(mEntries.size() - 1).getX() > e.getX()) {
+        if (!mEntries.isEmpty() && mEntries.get(mEntries.size() - 1).getX() > e.getX()) {
             int closestIndex = getEntryIndex(e.getX(), e.getY(), Rounding.UP);
             mEntries.add(closestIndex, e);
         } else {
@@ -294,8 +274,8 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
     }
 
     @Override
-    public int getEntryIndex(Entry e) {
-        return mEntries.indexOf(e);
+    public int getEntryIndex(Entry entry) {
+        return mEntries.indexOf(entry);
     }
 
     @Override
@@ -424,7 +404,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
     @Override
     public List<T> getEntriesForXValue(float xValue) {
 
-        List<T> entries = new ArrayList<T>();
+        List<T> entries = new ArrayList<>();
 
         int low = 0;
         int high = mEntries.size() - 1;
