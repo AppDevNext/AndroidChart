@@ -72,9 +72,7 @@ class StartTest {
                 try {
                     // Use description to uniquely identify items since names can be duplicated
                     // If description exists, use it; otherwise fall back to name
-                    val searchText = if (contentItem.desc.isNotEmpty()) {
-                        contentItem.desc
-                    } else {
+                    val searchText = contentItem.desc.ifEmpty {
                         contentItem.name
                     }
 
@@ -83,7 +81,8 @@ class StartTest {
                     // Scroll to the item in the LazyColumn by index
                     // This ensures the item is composed and visible
                     try {
-                        composeTestRule.onNodeWithTag("menuList")
+                        composeTestRule
+                            .onNodeWithTag("menuList")
                             .performScrollToIndex(index)
                         composeTestRule.waitForIdle()
                     } catch (e: Exception) {
@@ -91,7 +90,8 @@ class StartTest {
                     }
 
                     // Now click the item using its test tag
-                    composeTestRule.onNodeWithTag("menuItem_$index")
+                    composeTestRule
+                        .onNodeWithTag("menuItem_$index")
                         .assertExists("Could not find menu item at index $index")
                         .performClick()
 

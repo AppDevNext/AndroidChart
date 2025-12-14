@@ -113,10 +113,10 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         val sampleValues = getValues(100)
 
         for (i in 0..<count) {
-            val `val` = sampleValues[i]!!.toFloat() * range
+            val yValue = sampleValues[i]!!.toFloat() * range
             values.add(
                 BarEntry(
-                    i * spaceForBar, `val`,
+                    i * spaceForBar, yValue,
                     ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )
