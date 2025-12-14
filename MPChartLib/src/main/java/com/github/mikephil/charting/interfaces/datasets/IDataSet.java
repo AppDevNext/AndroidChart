@@ -117,7 +117,7 @@ public interface IDataSet<T extends Entry> {
      * Returns -1 if doesn't exist.
      *
      */
-    int getEntryIndex(T e);
+    int getEntryIndex(T entry);
 
 
     /**
@@ -136,7 +136,7 @@ public interface IDataSet<T extends Entry> {
      * values of the DataSet and the value-sum.
      *
      */
-    boolean addEntry(T e);
+    boolean addEntry(T entry);
 
 
     /**
@@ -146,7 +146,7 @@ public interface IDataSet<T extends Entry> {
      * values of the DataSet and the value-sum.
      *
      */
-    void addEntryOrdered(T e);
+    void addEntryOrdered(T entry);
 
     /**
      * Removes the first Entry (at index 0) of this DataSet from the entries array.
@@ -169,7 +169,7 @@ public interface IDataSet<T extends Entry> {
      * be removed.
      *
      */
-    boolean removeEntry(T e);
+    boolean removeEntry(T entry);
 
     /**
      * Removes the Entry object closest to the given x-value from the DataSet.

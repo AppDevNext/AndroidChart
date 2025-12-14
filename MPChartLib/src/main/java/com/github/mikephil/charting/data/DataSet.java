@@ -95,32 +95,31 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
     /**
      * Updates the min and max x and y value of this DataSet based on the given Entry.
      */
-    protected void calcMinMax(T e) {
+    protected void calcMinMax(T entry) {
 
-        if (e == null)
+        if (entry == null)
             return;
 
-        calcMinMaxX(e);
-
-        calcMinMaxY(e);
+        calcMinMaxX(entry);
+        calcMinMaxY(entry);
     }
 
-    protected void calcMinMaxX(T e) {
+    protected void calcMinMaxX(T entry) {
 
-        if (e.getX() < mXMin)
-            mXMin = e.getX();
+        if (entry.getX() < mXMin)
+            mXMin = entry.getX();
 
-        if (e.getX() > mXMax)
-            mXMax = e.getX();
+        if (entry.getX() > mXMax)
+            mXMax = entry.getX();
     }
 
-    protected void calcMinMaxY(T e) {
+    protected void calcMinMaxY(T entry) {
 
-        if (e.getY() < mYMin)
-            mYMin = e.getY();
+        if (entry.getY() < mYMin)
+            mYMin = entry.getY();
 
-        if (e.getY() > mYMax)
-            mYMax = e.getY();
+        if (entry.getY() > mYMax)
+            mYMax = entry.getY();
     }
 
     @Override
@@ -212,22 +211,22 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
     }
 
     @Override
-    public void addEntryOrdered(T e) {
+    public void addEntryOrdered(T entry) {
 
-        if (e == null)
+        if (entry == null)
             return;
 
         if (mEntries == null) {
             mEntries = new ArrayList<>();
         }
 
-        calcMinMax(e);
+        calcMinMax(entry);
 
-        if (!mEntries.isEmpty() && mEntries.get(mEntries.size() - 1).getX() > e.getX()) {
-            int closestIndex = getEntryIndex(e.getX(), e.getY(), Rounding.UP);
-            mEntries.add(closestIndex, e);
+        if (!mEntries.isEmpty() && mEntries.get(mEntries.size() - 1).getX() > entry.getX()) {
+            int closestIndex = getEntryIndex(entry.getX(), entry.getY(), Rounding.UP);
+            mEntries.add(closestIndex, entry);
         } else {
-            mEntries.add(e);
+            mEntries.add(entry);
         }
     }
 
@@ -238,9 +237,9 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
     }
 
     @Override
-    public boolean addEntry(T e) {
+    public boolean addEntry(T entry) {
 
-        if (e == null)
+        if (entry == null)
             return false;
 
         List<T> values = getEntries();
@@ -248,23 +247,23 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
             values = new ArrayList<>();
         }
 
-        calcMinMax(e);
+        calcMinMax(entry);
 
         // add the entry
-        return values.add(e);
+        return values.add(entry);
     }
 
     @Override
-    public boolean removeEntry(T e) {
+    public boolean removeEntry(T entry) {
 
-        if (e == null)
+        if (entry == null)
             return false;
 
         if (mEntries == null)
             return false;
 
         // remove the entry
-        boolean removed = mEntries.remove(e);
+        boolean removed = mEntries.remove(entry);
 
         if (removed) {
             calcMinMax();

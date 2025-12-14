@@ -116,19 +116,19 @@ public class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry> im
     }
 
     @Override
-    protected void calcMinMaxY(CandleEntry e) {
+    protected void calcMinMaxY(CandleEntry entry) {
 
-        if (e.getHigh() < mYMin)
-            mYMin = e.getHigh();
+        if (entry.getHigh() < mYMin)
+            mYMin = entry.getHigh();
 
-        if (e.getHigh() > mYMax)
-            mYMax = e.getHigh();
+        if (entry.getHigh() > mYMax)
+            mYMax = entry.getHigh();
 
-        if (e.getLow() < mYMin)
-            mYMin = e.getLow();
+        if (entry.getLow() < mYMin)
+            mYMin = entry.getLow();
 
-        if (e.getLow() > mYMax)
-            mYMax = e.getLow();
+        if (entry.getLow() > mYMax)
+            mYMax = entry.getLow();
     }
 
     /**
