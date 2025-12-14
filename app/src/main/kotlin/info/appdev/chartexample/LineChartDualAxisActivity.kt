@@ -43,8 +43,6 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_linechart)
 
-        title = "LineChart DualAxis"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

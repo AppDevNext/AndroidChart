@@ -36,8 +36,6 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         val view = binding.root
         setContentView(view)
 
-        title = "CubicLineChartActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

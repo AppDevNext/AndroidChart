@@ -31,8 +31,6 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_realtime_linechart)
 
-        title = "RealtimeLineChartActivity"
-
         chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
 

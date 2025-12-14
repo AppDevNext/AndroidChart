@@ -36,8 +36,6 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scatterchart)
 
-        title = "ScatterChartActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

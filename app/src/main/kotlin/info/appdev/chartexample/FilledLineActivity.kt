@@ -32,8 +32,6 @@ class FilledLineActivity : DemoBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_linechart_noseekbar)
 
-        title = "FilledLineActivity"
-
         chart = findViewById(R.id.chart1)
         chart!!.setBackgroundColor(Color.WHITE)
         chart!!.setGridBackgroundColor(fillColor)

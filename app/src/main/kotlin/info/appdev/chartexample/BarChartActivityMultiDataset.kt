@@ -40,8 +40,6 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barchart)
 
-        title = "BarChartActivityMultiDataset"
-
         tvX = findViewById(R.id.tvXMax)
         tvX!!.textSize = 10f
         tvY = findViewById(R.id.tvYMax)

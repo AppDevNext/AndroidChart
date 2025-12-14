@@ -32,8 +32,6 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barchart)
 
-        title = "AnotherBarActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

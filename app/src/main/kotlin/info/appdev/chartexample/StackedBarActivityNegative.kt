@@ -36,8 +36,6 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_age_distribution)
 
-        title = "StackedBarActivityNegative"
-
         chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
         chart!!.setDrawGridBackground(false)

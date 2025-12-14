@@ -28,8 +28,6 @@ class BarChartPositiveNegative : DemoBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barchart_noseekbar)
 
-        title = "BarChartPositiveNegative"
-
         chart = findViewById(R.id.chart1)
         chart!!.setBackgroundColor(Color.WHITE)
         chart!!.extraTopOffset = -30f

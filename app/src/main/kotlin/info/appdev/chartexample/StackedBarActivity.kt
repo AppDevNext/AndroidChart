@@ -41,8 +41,6 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barchart)
 
-        title = "StackedBarActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

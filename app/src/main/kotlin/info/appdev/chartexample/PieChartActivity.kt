@@ -45,8 +45,6 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_piechart)
 
-        title = "PieChartActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

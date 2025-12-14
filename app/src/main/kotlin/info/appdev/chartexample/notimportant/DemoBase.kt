@@ -14,12 +14,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.get
+import androidx.core.view.size
 import com.github.mikephil.charting.charts.Chart
 import com.google.android.material.snackbar.Snackbar
 import info.appdev.chartexample.R
 import java.text.DateFormatSymbols
-import androidx.core.view.size
-import androidx.core.view.get
 
 abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -41,6 +41,8 @@ abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissio
 
         tfRegular = Typeface.createFromAsset(assets, "OpenSans-Regular.ttf")
         tfLight = Typeface.createFromAsset(assets, "OpenSans-Light.ttf")
+
+        title = this.javaClass.asSubclass(this.javaClass).simpleName.replace("Activity", "")
 
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
@@ -125,6 +127,7 @@ abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissio
 
     companion object {
         private const val PERMISSION_STORAGE = 0
+
         //  Jan, Feb,... Dec
         val months = DateFormatSymbols().months.toList().map { it.take(3) }
         val optionMenus: MutableList<String> = mutableListOf()

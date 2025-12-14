@@ -38,8 +38,6 @@ class ListViewMultiChartActivity : DemoBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listview_chart)
 
-        title = "ListViewMultiChartActivity"
-
         val lv = findViewById<ListView>(R.id.listViewMain)
 
         val list = ArrayList<ChartItem?>()

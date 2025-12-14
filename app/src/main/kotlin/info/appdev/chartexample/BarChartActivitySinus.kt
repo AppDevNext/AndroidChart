@@ -32,8 +32,6 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barchart_sinus)
 
-        title = "BarChartActivitySinus"
-
         data = FileUtils.loadBarEntriesFromAssets(assets, "othersine.txt")
 
         tvX = findViewById(R.id.tvValueCount)
