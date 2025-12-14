@@ -9,7 +9,7 @@ import kotlin.math.abs
  * Entry class for the BarChart. (especially stacked bars)
  */
 @SuppressLint("ParcelCreator")
-class BarEntry : Entry {
+open class BarEntry : Entry {
     /**
      * Returns the stacked values this BarEntry represents, or null, if only a single value is represented (then, use
      * getY()).
