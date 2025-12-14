@@ -36,8 +36,6 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_linechart)
 
-        title = "InvertedLineChartActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

@@ -34,8 +34,6 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_candlechart)
 
-        title = "CandleStickChartActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

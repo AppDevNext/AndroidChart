@@ -30,8 +30,6 @@ class RadarChartActivity : DemoBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_radarchart)
 
-        title = "RadarChartActivity"
-
         chart = findViewById(R.id.chart1)
         chart!!.setBackgroundColor(Color.rgb(60, 65, 82))
 

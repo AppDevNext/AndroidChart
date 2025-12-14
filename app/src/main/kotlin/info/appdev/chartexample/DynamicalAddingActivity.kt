@@ -29,8 +29,6 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_linechart_noseekbar)
 
-        title = "DynamicalAddingActivity"
-
         chart = findViewById(R.id.chart1)
         chart!!.setOnChartValueSelectedListener(this)
         chart!!.setDrawGridBackground(false)

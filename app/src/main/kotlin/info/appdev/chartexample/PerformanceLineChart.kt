@@ -25,8 +25,6 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_performance_linechart)
 
-        title = "PerformanceLineChart"
-
         tvCount = findViewById(R.id.tvValueCount)
         seekBarValues = findViewById(R.id.seekbarValues)
         seekBarValues!!.setOnSeekBarChangeListener(this)

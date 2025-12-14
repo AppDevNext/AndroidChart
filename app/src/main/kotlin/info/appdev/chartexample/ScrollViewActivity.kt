@@ -21,8 +21,6 @@ class ScrollViewActivity : DemoBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scrollview)
 
-        title = "ScrollViewActivity"
-
         chart = findViewById(R.id.chart1)
 
         chart!!.description.isEnabled = false

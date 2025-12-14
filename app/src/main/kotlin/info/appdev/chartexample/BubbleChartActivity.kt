@@ -40,8 +40,6 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bubblechart)
 
-        title = "BubbleChartActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

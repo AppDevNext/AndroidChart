@@ -32,8 +32,6 @@ class ListViewBarChartActivity : DemoBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listview_chart)
 
-        title = "ListViewBarChartActivity"
-
         val lv = findViewById<ListView>(R.id.listViewMain)
 
         val list = ArrayList<BarData?>()

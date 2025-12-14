@@ -47,8 +47,6 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barchart)
 
-        title = "BarChartActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

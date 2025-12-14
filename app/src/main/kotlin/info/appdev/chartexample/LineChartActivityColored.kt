@@ -21,8 +21,6 @@ class LineChartActivityColored : DemoBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_colored_lines)
 
-        title = "LineChartActivityColored"
-
         charts[0] = findViewById<LineChart?>(R.id.chart1)
         charts[1] = findViewById<LineChart?>(R.id.chart2)
         charts[2] = findViewById<LineChart?>(R.id.chart3)

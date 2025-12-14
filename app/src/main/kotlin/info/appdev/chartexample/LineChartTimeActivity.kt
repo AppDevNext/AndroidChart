@@ -39,8 +39,6 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_linechart_time)
 
-        title = "LineChartTime"
-
         tvX = findViewById(R.id.tvXMax)
         seekBarX = findViewById(R.id.seekBarX)
         seekBarX!!.setOnSeekBarChangeListener(this)

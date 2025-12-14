@@ -32,8 +32,6 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         val view = binding.root
         setContentView(view)
 
-        title = "DrawChartActivity"
-
         // listener for selecting and drawing
         binding.chart1.setOnChartValueSelectedListener(this)
         binding.chart1.setOnDrawListener(this)

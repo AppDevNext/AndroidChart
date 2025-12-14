@@ -39,8 +39,6 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_horizontalbarchart)
 
-        title = "HorizontalBarChartActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

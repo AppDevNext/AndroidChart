@@ -45,8 +45,6 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_piechart)
 
-        title = "PiePolylineChartActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 

@@ -42,8 +42,6 @@ class CombinedChartActivity : DemoBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_combined)
 
-        title = "CombinedChartActivity"
-
         chart = findViewById(R.id.chart1)
         chart!!.description.isEnabled = false
         chart!!.setBackgroundColor(Color.WHITE)

@@ -31,8 +31,6 @@ class HalfPieChartActivity : DemoBase() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_piechart_half)
 
-        title = "HalfPieChartActivity"
-
         chart = findViewById<PieChart>(R.id.chart1)
         chart!!.setBackgroundColor(Color.WHITE)
 

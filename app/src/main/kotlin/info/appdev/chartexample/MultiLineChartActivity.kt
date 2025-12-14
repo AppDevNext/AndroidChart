@@ -38,8 +38,6 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_linechart)
 
-        title = "MultiLineChartActivity"
-
         tvX = findViewById(R.id.tvXMax)
         tvY = findViewById(R.id.tvYMax)
 
