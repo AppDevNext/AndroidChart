@@ -1,10 +1,8 @@
 package info.appdev.chartexample
 
 import android.graphics.Bitmap
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.test.core.graphics.writeToTestStorage
@@ -20,6 +18,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.chartexample.notimportant.DemoBase.Companion.optionMenus
 import info.appdev.chartexample.notimportant.MainActivity
 import info.hannes.timber.DebugFormatTree
@@ -103,11 +102,18 @@ class StartTest {
                     onView(ViewMatchers.isRoot())
                         .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-1SampleClick") })
 
-                    optionMenu = ""
-                    optionMenus.filter { plain -> Character.isDigit(plain.first()) }.forEach { filteredTitle ->
-                        optionMenu = "$index->$filteredTitle"
-                        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-                        screenshotOfOptionMenu("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}", filteredTitle)
+                    // Only test option menus for DemoBase activities (not DemoBaseCompose)
+                    if (DemoBase::class.java.isAssignableFrom(it)) {
+                        optionMenu = ""
+                        optionMenus.filter { plain -> plain.isNotEmpty() && Character.isDigit(plain.first()) }.forEach { filteredTitle ->
+                            optionMenu = "$index->$filteredTitle"
+                            Timber.d("optionMenu=$optionMenu")
+                            openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+                            Timber.d("screenshot optionMenu=$optionMenu")
+                            screenshotOfOptionMenu("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}", filteredTitle)
+                        }
+                    } else {
+                        Timber.d("Skipping option menu test for Compose activity: ${it.simpleName}")
                     }
 
                     //Thread.sleep(100)
