@@ -81,15 +81,16 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         seekBarX!!.setOnSeekBarChangeListener(this)
         seekBarX!!.progress = 150 // set data
 
-        val l = chart!!.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-        l.orientation = Legend.LegendOrientation.HORIZONTAL
-        l.setDrawInside(false)
-        l.form = LegendForm.SQUARE
-        l.formSize = 9f
-        l.textSize = 11f
-        l.xEntrySpace = 4f
+        chart!!.legend.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+            orientation = Legend.LegendOrientation.HORIZONTAL
+            setDrawInside(false)
+            form = LegendForm.SQUARE
+            formSize = 9f
+            textSize = 11f
+            xEntrySpace = 4f
+        }
 
         chart!!.animateXY(1500, 1500)
     }
@@ -198,11 +199,9 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         chart!!.invalidate()
     }
 
-    override fun saveToGallery() {
-        saveToGallery(chart, "BarChartActivitySinus")
-    }
+    override fun saveToGallery() = saveToGallery(chart, "BarChartActivitySinus")
 
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
 
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
 }
