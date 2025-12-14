@@ -1,6 +1,7 @@
 package info.appdev.chartexample
 
 import android.graphics.Bitmap
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -20,6 +21,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.chartexample.notimportant.DemoBase.Companion.optionMenus
+import info.appdev.chartexample.notimportant.DemoBaseCompose
 import info.appdev.chartexample.notimportant.MainActivity
 import info.hannes.timber.DebugFormatTree
 import org.junit.After
@@ -102,8 +104,9 @@ class StartTest {
                     onView(ViewMatchers.isRoot())
                         .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-1SampleClick") })
 
-                    // Only test option menus for DemoBase activities (not DemoBaseCompose)
+                    // Test option menus based on activity type
                     if (DemoBase::class.java.isAssignableFrom(it)) {
+                        // Test traditional ActionBar menu for DemoBase activities
                         optionMenu = ""
                         optionMenus.filter { plain -> plain.isNotEmpty() && Character.isDigit(plain.first()) }.forEach { filteredTitle ->
                             optionMenu = "$index->$filteredTitle"
@@ -112,8 +115,86 @@ class StartTest {
                             Timber.d("screenshot optionMenu=$optionMenu")
                             screenshotOfOptionMenu("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}", filteredTitle)
                         }
+                    } else if (DemoBaseCompose::class.java.isAssignableFrom(it)) {
+                        // Test Compose dropdown menu for DemoBaseCompose activities
+                        Timber.d("Testing Compose menu for: ${it.simpleName}")
+                        optionMenu = ""
+
+                        try {
+                            // Click the menu button to open dropdown
+                            composeTestRule
+                                .onNodeWithTag("menuButton")
+                                .assertIsDisplayed()
+                                .performClick()
+                            composeTestRule.waitForIdle()
+                            Thread.sleep(100) // Wait for dropdown to appear
+
+                            // Define menu items to test (those starting with numbers in traditional menus)
+                            val composeMenuItems = listOf(
+                                "Toggle Values",
+                                "Toggle Icons",
+                                "Toggle Highlight",
+                                "Toggle Pinch Zoom",
+                                "Toggle Auto Scale MinMax",
+                                "Toggle Bar Borders",
+//                                "Animate X",
+//                                "Animate Y",
+//                                "Animate XY",
+//                                "Save to Gallery"
+                            )
+
+                            composeMenuItems.forEach { menuTitle ->
+                                try {
+                                    optionMenu = "$index->$menuTitle"
+                                    Timber.d("Testing Compose menu item: $optionMenu")
+
+                                    // Click the menu item
+                                    composeTestRule
+                                        .onNodeWithTag("menuItem_$menuTitle")
+                                        .performClick()
+                                    composeTestRule.waitForIdle()
+                                    Thread.sleep(150) // Wait for action to complete
+                                    onView(ViewMatchers.isRoot())
+                                        .perform(captureToBitmap { bitmap: Bitmap ->
+                                            bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-${menuTitle
+                                                .replace(" ","")
+                                            }")
+                                        })
+
+                                    // Reopen menu for next item
+                                    composeTestRule
+                                        .onNodeWithTag("menuButton")
+                                        .performClick()
+                                    composeTestRule.waitForIdle()
+                                    Thread.sleep(100)
+                                } catch (e: Exception) {
+                                    Timber.w("Could not test menu item '$menuTitle': ${e.message}")
+                                    // Try to reopen menu if it closed unexpectedly
+                                    try {
+                                        composeTestRule
+                                            .onNodeWithTag("menuButton")
+                                            .performClick()
+                                        composeTestRule.waitForIdle()
+                                    } catch (_: Exception) {
+                                        // Menu button might not be available
+                                    }
+                                }
+                            }
+
+                            // Close the menu before going back
+                            try {
+                                // Click outside to close menu or press back
+                                Espresso.pressBack()
+                                composeTestRule.waitForIdle()
+                            } catch (_: Exception) {
+                                // Menu might already be closed
+                            }
+
+                        } catch (e: Exception) {
+                            Timber.e("Error testing Compose menu: ${e.message}", e)
+                        }
                     } else {
-                        Timber.d("Skipping option menu test for Compose activity: ${it.simpleName}")
+                        Timber.d("Unknown activity type: ${it.simpleName}")
                     }
 
                     //Thread.sleep(100)

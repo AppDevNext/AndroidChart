@@ -33,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
@@ -87,7 +88,10 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
                     ),
                     actions = {
                         Box {
-                            IconButton(onClick = { showMenu = true }) {
+                            IconButton(
+                                onClick = { showMenu = true },
+                                modifier = Modifier.testTag("menuButton")
+                            ) {
                                 Icon(
                                     Icons.Default.MoreVert,
                                     contentDescription = "Menu",
@@ -96,42 +100,48 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
                             }
                             DropdownMenu(
                                 expanded = showMenu,
-                                onDismissRequest = { showMenu = false }
+                                onDismissRequest = { showMenu = false },
+                                modifier = Modifier.testTag("dropdownMenu")
                             ) {
                                 DropdownMenuItem(
                                     text = { Text("View on GitHub") },
                                     onClick = {
                                         showMenu = false
                                         onViewGithub()
-                                    }
+                                    },
+                                    modifier = Modifier.testTag("menuItem_View on GitHub")
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Toggle Values") },
                                     onClick = {
                                         showMenu = false
                                         toggleValues()
-                                    }
+                                    },
+                                    modifier = Modifier.testTag("menuItem_Toggle Values")
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Toggle Icons") },
                                     onClick = {
                                         showMenu = false
                                         toggleIcons()
-                                    }
+                                    },
+                                    modifier = Modifier.testTag("menuItem_Toggle Icons")
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Toggle Highlight") },
                                     onClick = {
                                         showMenu = false
                                         toggleHighlight()
-                                    }
+                                    },
+                                    modifier = Modifier.testTag("menuItem_Toggle Highlight")
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Toggle Pinch Zoom") },
                                     onClick = {
                                         showMenu = false
                                         togglePinchZoom()
-                                    }
+                                    },
+                                    modifier = Modifier.testTag("menuItem_Toggle Pinch Zoom")
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Toggle Auto Scale MinMax") },
@@ -146,35 +156,40 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
                                     onClick = {
                                         showMenu = false
                                         toggleBarBorders()
-                                    }
+                                    },
+                                    modifier = Modifier.testTag("menuItem_Toggle Bar Borders")
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Animate X") },
                                     onClick = {
                                         showMenu = false
                                         animateX()
-                                    }
+                                    },
+                                    modifier = Modifier.testTag("menuItem_Animate X")
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Animate Y") },
                                     onClick = {
                                         showMenu = false
                                         animateY()
-                                    }
+                                    },
+                                    modifier = Modifier.testTag("menuItem_Animate Y")
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Animate XY") },
                                     onClick = {
                                         showMenu = false
                                         animateXY()
-                                    }
+                                    },
+                                    modifier = Modifier.testTag("menuItem_Animate XY")
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Save to Gallery") },
                                     onClick = {
                                         showMenu = false
                                         onSaveToGallery()
-                                    }
+                                    },
+                                    modifier = Modifier.testTag("menuItem_Save to Gallery")
                                 )
                             }
                         }
