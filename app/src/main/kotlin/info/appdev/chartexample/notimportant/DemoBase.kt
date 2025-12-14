@@ -23,7 +23,6 @@ import androidx.core.view.get
 
 abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
-    @JvmField
     protected val parties: Array<String> = arrayOf(
         "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
         "Party I", "Party J", "Party K", "Party L", "Party M", "Party N", "Party O", "Party P",
@@ -31,10 +30,8 @@ abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissio
         "Party Y", "Party Z"
     )
 
-    @JvmField
     protected var tfRegular: Typeface? = null
 
-    @JvmField
     protected var tfLight: Typeface? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

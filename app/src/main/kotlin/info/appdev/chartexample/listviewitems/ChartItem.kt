@@ -8,7 +8,7 @@ import com.github.mikephil.charting.data.ChartData
  * Base class of the Chart ListView items
  */
 @Suppress("unused")
-abstract class ChartItem internal constructor(@JvmField var chartData: ChartData<*>) {
+abstract class ChartItem internal constructor(var chartData: ChartData<*>) {
     abstract val itemType: Int
 
     abstract fun getView(position: Int, convertView: View?, c: Context?): View?

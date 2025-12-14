@@ -1,13 +1,9 @@
 package info.appdev.chartexample.notimportant
 
 class ContentItem<T : DemoBase> {
-    @JvmField
     val name: String
-    @JvmField
     val desc: String
-    @JvmField
     var isSection = false
-    @JvmField
     var clazz: Class<T>? = null
 
     constructor(n: String) {
@@ -16,9 +12,9 @@ class ContentItem<T : DemoBase> {
         isSection = true
     }
 
-    constructor(n: String, d: String, clazzName: Class<T>) {
-        name = n
-        desc = d
+    constructor(name: String, description: String, clazzName: Class<T>) {
+        this.name = name
+        desc = description
         clazz = clazzName
     }
 }
