@@ -22,7 +22,7 @@ import info.appdev.chartexample.notimportant.DemoBase
 
 class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
 
-    private var dataSinus: MutableList<BarEntry?>? = null
+    private lateinit var dataSinus: MutableList<BarEntry?>
 
     private lateinit var binding: ActivityBarchartSinusBinding
 
@@ -92,7 +92,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         val entries = ArrayList<BarEntry?>()
 
         for (i in 0..<count) {
-            entries.add(dataSinus!![i])
+            entries.add(dataSinus[i])
         }
 
         val set: BarDataSet
@@ -145,7 +145,8 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionTogglePinch -> {
-                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
+                if (binding.chart1.isPinchZoomEnabled)
+                    binding.chart1.setPinchZoom(false)
                 else binding.chart1.setPinchZoom(true)
 
                 binding.chart1.invalidate()
