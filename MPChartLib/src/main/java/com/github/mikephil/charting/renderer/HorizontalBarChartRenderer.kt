@@ -22,8 +22,8 @@ import kotlin.math.min
  */
 @Suppress("MemberVisibilityCanBePrivate")
 open class HorizontalBarChartRenderer(
-    chart: BarDataProvider, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    chart: BarDataProvider, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : BarChartRenderer(chart, animator, viewPortHandler) {
     override fun initBuffers() {
         val barData = chart.barData

@@ -19,8 +19,8 @@ import kotlin.math.min
 
 open class BarChartRenderer(
     @JvmField var chart: BarDataProvider,
-    animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
     /**
      * the rect object that is used for drawing the bars
@@ -48,8 +48,8 @@ open class BarChartRenderer(
     private var roundedBarRadius = 0f
 
     constructor(
-        chart: BarDataProvider, animator: ChartAnimator?,
-        viewPortHandler: ViewPortHandler?, mDrawRoundedBars: Boolean, mRoundedBarRadius: Float
+        chart: BarDataProvider, animator: ChartAnimator,
+        viewPortHandler: ViewPortHandler, mDrawRoundedBars: Boolean, mRoundedBarRadius: Float
     ) : this(chart, animator, viewPortHandler) {
         this.drawRoundedBars = mDrawRoundedBars
         this.roundedBarRadius = mRoundedBarRadius

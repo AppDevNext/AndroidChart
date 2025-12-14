@@ -12,7 +12,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 import kotlin.math.ceil
 import kotlin.math.min
 
-open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider, animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
+open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     LineScatterCandleRadarRenderer(animator, viewPortHandler) {
     override fun initBuffers() {
     }
@@ -159,12 +159,12 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
 
             if (set == null || !set.isHighlightEnabled) continue
 
-            val e = set.getEntryForXValue(high.x, high.y)
+            val entry = set.getEntryForXValue(high.x, high.y)
 
-            if (!isInBoundsX(e, set)) continue
+            if (!isInBoundsX(entry, set)) continue
 
             val pix = dataProvider.getTransformer(set.axisDependency)!!.getPixelForValues(
-                e.x, e.y * animator
+                entry.x, entry.y * animator
                     .phaseY
             )
 

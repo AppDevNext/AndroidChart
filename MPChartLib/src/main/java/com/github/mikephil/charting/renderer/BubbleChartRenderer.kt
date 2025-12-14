@@ -19,8 +19,8 @@ import kotlin.math.sqrt
 @Suppress("MemberVisibilityCanBePrivate")
 open class BubbleChartRenderer(
     @JvmField
-    var dataProvider: BubbleDataProvider, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    var dataProvider: BubbleDataProvider, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
     override fun initBuffers() {
     }

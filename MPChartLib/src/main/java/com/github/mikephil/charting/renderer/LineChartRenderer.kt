@@ -23,8 +23,8 @@ import kotlin.math.max
 import kotlin.math.min
 
 open class LineChartRenderer(
-    @JvmField var dataProvider: LineDataProvider, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    @JvmField var dataProvider: LineDataProvider, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : LineRadarRenderer(animator, viewPortHandler) {
     /**
      * paint for the inner circle of the value indicators
