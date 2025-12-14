@@ -169,7 +169,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
         super.copy(dataSet);
     }
 
-    @Override
+	@Override
     public String toString() {
         StringBuilder buffer = new StringBuilder();
         buffer.append(toSimpleString());
@@ -184,11 +184,12 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
      * the number of Entries.
      */
     public String toSimpleString() {
-        StringBuilder buffer = new StringBuilder();
-        buffer.append("DataSet, label: " + (getLabel() == null ? "" : getLabel()) + ", entries: " + mEntries.size() +
-                "\n");
-        return buffer.toString();
-    }
+        return "DataSet, label: " +
+				(getLabel() == null ? "" : getLabel()) +
+				", entries: " +
+				mEntries.size() +
+				"\n";
+	}
 
     @Override
     public float getYMin() {
@@ -210,11 +211,8 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
         return mXMax;
     }
 
-    @Override
-    public void addEntryOrdered(T entry) {
-
-        if (entry == null)
-            return;
+	@Override
+	public void addEntryOrdered(T entry) {
 
         if (mEntries == null) {
             mEntries = new ArrayList<>();
@@ -236,16 +234,12 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
         notifyDataSetChanged();
     }
 
-    @Override
-    public boolean addEntry(T entry) {
-
-        if (entry == null)
-            return false;
-
-        List<T> values = getEntries();
-        if (values == null) {
-            values = new ArrayList<>();
-        }
+	@Override
+	public boolean addEntry(T entry) {
+		List<T> values = getEntries();
+		if (values == null) {
+			values = new ArrayList<>();
+		}
 
         calcMinMax(entry);
 
@@ -253,11 +247,8 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
         return values.add(entry);
     }
 
-    @Override
-    public boolean removeEntry(T entry) {
-
-        if (entry == null)
-            return false;
+	@Override
+	public boolean removeEntry(T entry) {
 
         if (mEntries == null)
             return false;

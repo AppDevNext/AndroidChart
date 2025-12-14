@@ -4,11 +4,11 @@ import android.graphics.drawable.Drawable
 
 abstract class BaseEntry {
 
-    protected var _y: Float = 0f
+    protected var yBase: Float = 0f
     open var y: Float
-        get() = _y
+        get() = yBase
         set(value) {
-            _y = value
+            yBase = value
         }
 
     var data: Any? = null
@@ -18,7 +18,7 @@ abstract class BaseEntry {
     constructor()
 
     constructor(y: Float) {
-        this._y = y
+        this.yBase = y
     }
 
     constructor(y: Float, data: Any?) : this(y) {

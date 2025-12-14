@@ -125,7 +125,7 @@ open class Entry : BaseEntry, Parcelable, Serializable {
 
     protected constructor(`in`: Parcel) {
         this._x = `in`.readFloat()
-        this._y = `in`.readFloat()
+        this.yBase = `in`.readFloat()
         if (`in`.readInt() == 1) {
             this.data = `in`.readParcelable(Any::class.java.classLoader)
         }
