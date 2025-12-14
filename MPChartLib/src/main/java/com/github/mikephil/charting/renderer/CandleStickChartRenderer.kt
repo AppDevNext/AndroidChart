@@ -39,7 +39,7 @@ open class CandleStickChartRenderer(
         val barSpace = dataSet.barSpace
         val showCandleBar = dataSet.showCandleBar
 
-        xBounds[dataProvider] = dataSet
+        xBounds.set(dataProvider, dataSet)
 
         paintRender.strokeWidth = dataSet.shadowWidth
 
@@ -222,7 +222,7 @@ open class CandleStickChartRenderer(
 
                 val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-                xBounds[dataProvider] = dataSet
+                xBounds.set(dataProvider, dataSet)
 
                 val positions = trans!!.generateTransformedValuesCandle(
                     dataSet, animator.phaseX, animator.phaseY, xBounds.min, xBounds.max

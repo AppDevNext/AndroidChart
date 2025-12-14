@@ -88,7 +88,7 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet)
 
-                xBounds[dataProvider] = dataSet
+                xBounds.set(dataProvider, dataSet)
 
                 val positions = dataProvider.getTransformer(dataSet.axisDependency)!!.generateTransformedValuesScatter(
                     dataSet,

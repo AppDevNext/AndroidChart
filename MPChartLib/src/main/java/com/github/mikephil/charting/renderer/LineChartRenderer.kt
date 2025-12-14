@@ -104,7 +104,7 @@ open class LineChartRenderer(
 
         val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-        xBounds[dataProvider] = dataSet
+        xBounds.set(dataProvider, dataSet)
 
         cubicPath.reset()
 
@@ -154,7 +154,7 @@ open class LineChartRenderer(
 
         val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-        xBounds[dataProvider] = dataSet
+        xBounds.set(dataProvider, dataSet)
 
         val intensity = dataSet.cubicIntensity
 
@@ -263,7 +263,7 @@ open class LineChartRenderer(
             c
         }
 
-        xBounds[dataProvider] = dataSet
+        xBounds.set(dataProvider, dataSet)
 
         // if drawing filled is enabled
         if (dataSet.isDrawFilledEnabled && entryCount > 0) {
@@ -507,7 +507,7 @@ open class LineChartRenderer(
 
                 if (!dataSet.isDrawCirclesEnabled) valOffset = valOffset / 2
 
-                xBounds[dataProvider] = dataSet
+                xBounds.set(dataProvider, dataSet)
 
                 val positions = trans!!.generateTransformedValuesLine(
                     dataSet, animator.phaseX, animator
@@ -599,7 +599,7 @@ open class LineChartRenderer(
 
             val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-            xBounds[dataProvider] = dataSet
+            xBounds.set(dataProvider, dataSet)
 
             val circleRadius = dataSet.circleRadius
             val circleHoleRadius = dataSet.circleHoleRadius
