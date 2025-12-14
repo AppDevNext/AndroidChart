@@ -191,6 +191,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
 		super.copy(dataSet);
 	}
 
+	@NonNull
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
@@ -207,9 +208,11 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
 	 */
 
 	public String toSimpleString() {
-		return"DataSet, label: " + (getLabel() == null ? "" : getLabel()) + ", entries: " + mEntries.size() +
+		return "DataSet, label: " +
+				(getLabel() == null ? "" : getLabel()) +
+				", entries: " +
+				mEntries.size() +
 				"\n";
-
 	}
 
 	@Override
@@ -233,9 +236,9 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
 	}
 
 	@Override
-	public void addEntryOrdered(T entry) {
+	public void addEntryOrdered(@NonNull T entry) {
 
-        if (mEntries == null) {
+		if (mEntries == null) {
             mEntries = new ArrayList<>();
         }
 
@@ -269,9 +272,9 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
 	}
 
 	@Override
-	public boolean removeEntry(T entry) {
+	public boolean removeEntry(@NonNull T entry) {
 
-        if (mEntries == null)
+		if (mEntries == null)
             return false;
 
 		// remove the entry
@@ -285,7 +288,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
 	}
 
 	@Override
-	public int getEntryIndex(Entry entry) {
+	public int getEntryIndex(@NonNull Entry entry) {
 		return mEntries.indexOf(entry);
 	}
 

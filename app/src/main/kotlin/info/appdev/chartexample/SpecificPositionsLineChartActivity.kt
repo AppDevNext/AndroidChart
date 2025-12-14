@@ -264,7 +264,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         set11.enableDashedHighlightLine(10f, 5f, 0f)
         set11.color = Color.BLACK
         set11.setCircleColor(Color.BLACK)
-        set11.lineWidth = 1f
+        set11.setLineWidth(1f)
         set11.circleRadius = 3f
         set11.setDrawCircleHole(false)
         set11.valueTextSize = 9f
@@ -275,9 +275,9 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         if (getSDKInt() >= 18) {
             // fill drawable only supported on api level 18 and above
             val drawable = ContextCompat.getDrawable(this, R.drawable.fade_blue)
-            set11.fillDrawable = drawable
+            set11.setFillDrawable(drawable)
         } else {
-            set11.fillColor = Color.BLACK
+            set11.setFillColor(Color.BLACK)
         }
         val dataSets = ArrayList<ILineDataSet>()
         dataSets.add(set11) // add the datasets

@@ -105,7 +105,7 @@ class FilledLineActivity : DemoBase() {
             set1.setDrawCircles(false)
             set1.setLineWidth(2f)
             set1.circleRadius = 3f
-            set1.fillAlpha = 255
+            set1.setFillAlpha(255)
             set1.setDrawFilled(true)
             set1.setFillColor(Color.WHITE)
             set1.setHighLightColor(Color.rgb(244, 117, 117))
@@ -125,7 +125,7 @@ class FilledLineActivity : DemoBase() {
             set2.setDrawCircles(false)
             set2.setLineWidth(2f)
             set2.circleRadius = 3f
-            set2.fillAlpha = 255
+            set2.setFillAlpha(255)
             set2.setDrawFilled(true)
             set2.setFillColor(Color.WHITE)
             set2.setDrawCircleHole(false)

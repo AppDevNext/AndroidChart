@@ -123,7 +123,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         set.setCircleColor(Color.WHITE)
         set.setLineWidth(2f)
         set.circleRadius = 4f
-        set.fillAlpha = 65
+        set.setFillAlpha(65)
         set.setFillColor(ColorTemplate.getHoloBlue())
         set.setHighLightColor(Color.rgb(244, 117, 117))
         set.setSingleValueTextColor(Color.WHITE)

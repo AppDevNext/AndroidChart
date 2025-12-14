@@ -167,7 +167,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set1.setCircleColor(Color.WHITE)
             set1.setLineWidth(2f)
             set1.circleRadius = 3f
-            set1.fillAlpha = 65
+            set1.setFillAlpha(65)
             set1.setFillColor(ColorTemplate.getHoloBlue())
             set1.setHighLightColor(Color.rgb(244, 117, 117))
             set1.setDrawCircleHole(false)
@@ -184,7 +184,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set2.setCircleColor(Color.WHITE)
             set2.setLineWidth(2f)
             set2.circleRadius = 3f
-            set2.fillAlpha = 65
+            set2.setFillAlpha(65)
             set2.setFillColor(Color.BLUE)
             set2.setDrawCircleHole(false)
             set2.setHighLightColor(Color.rgb(244, 117, 117))
@@ -196,7 +196,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set3.setCircleColor(Color.WHITE)
             set3.setLineWidth(2f)
             set3.circleRadius = 3f
-            set3.fillAlpha = 65
+            set3.setFillAlpha(65)
             set3.setFillColor(ColorTemplate.colorWithAlpha(Color.YELLOW, 200))
             set3.setDrawCircleHole(false)
             set3.setHighLightColor(Color.rgb(244, 117, 117))

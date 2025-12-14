@@ -115,13 +115,13 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             set1.cubicIntensity = 0.2f
             set1.setDrawFilled(true)
             set1.setDrawCircles(false)
-            set1.lineWidth = 1.8f
+            set1.setLineWidth(1.8f)
             set1.circleRadius = 4f
             set1.setCircleColor(Color.WHITE)
             set1.setHighLightColor(Color.rgb(244, 117, 117))
             set1.color = Color.WHITE
-            set1.fillColor = Color.WHITE
-            set1.fillAlpha = 100
+            set1.setFillColor(Color.WHITE)
+            set1.setFillAlpha(100)
             set1.setDrawHorizontalHighlightIndicator(false)
             set1.fillFormatter = object : IFillFormatter {
                 override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {

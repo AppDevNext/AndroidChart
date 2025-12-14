@@ -107,7 +107,7 @@ class RadarChartActivity : DemoBase() {
         set1.color = Color.rgb(103, 110, 129)
         set1.setFillColor(Color.rgb(103, 110, 129))
         set1.setDrawFilled(true)
-        set1.fillAlpha = 180
+        set1.setFillAlpha(180)
         set1.setLineWidth(2f)
         set1.isDrawHighlightCircleEnabled = true
         set1.setDrawHighlightIndicators(false)
@@ -116,7 +116,7 @@ class RadarChartActivity : DemoBase() {
         set2.color = Color.rgb(121, 162, 175)
         set2.setFillColor(Color.rgb(121, 162, 175))
         set2.setDrawFilled(true)
-        set2.fillAlpha = 180
+        set2.setFillAlpha(180)
         set2.setLineWidth(2f)
         set2.isDrawHighlightCircleEnabled = true
         set2.setDrawHighlightIndicators(false)
@@ -177,7 +177,7 @@ class RadarChartActivity : DemoBase() {
 
             R.id.actionToggleFilled -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawFilled(!set.isDrawFilledEnabled())
+                    set.setDrawFilled(!set.isDrawFilledEnabled)
                 }
                 chart!!.invalidate()
             }

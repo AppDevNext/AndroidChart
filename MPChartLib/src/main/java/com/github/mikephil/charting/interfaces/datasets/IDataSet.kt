@@ -32,7 +32,7 @@ interface IDataSet<T : Entry> {
 
     /**
      * Returns the number of y-values this DataSet represents -> the size of the y-values array
-     * -> yvals.size()
+     * -> yVals.size()
      */
     val entryCount: Int
 
@@ -107,7 +107,7 @@ interface IDataSet<T : Entry> {
      * Returns the position of the provided entry in the DataSets Entry array.
      * Returns -1 if doesn't exist.
      */
-    fun getEntryIndex(entry: T): Int
+    fun getEntryIndex(e: T): Int
 
     /**
      * This method returns the actual
