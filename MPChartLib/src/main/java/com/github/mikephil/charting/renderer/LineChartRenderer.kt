@@ -22,8 +22,8 @@ import java.lang.ref.WeakReference
 import kotlin.math.max
 import kotlin.math.min
 
-class LineChartRenderer(
-    @JvmField var chart: LineDataProvider, animator: ChartAnimator?,
+open class LineChartRenderer(
+    @JvmField var dataProvider: LineDataProvider, animator: ChartAnimator?,
     viewPortHandler: ViewPortHandler?
 ) : LineRadarRenderer(animator, viewPortHandler) {
     /**
@@ -74,7 +74,7 @@ class LineChartRenderer(
 
         drawBitmapLocal.eraseColor(Color.TRANSPARENT)
 
-        val lineData = chart.lineData
+        val lineData = dataProvider.lineData
 
         for (set in lineData.dataSets) {
             if (set.isVisible) drawDataSet(canvas, set)
@@ -102,9 +102,9 @@ class LineChartRenderer(
     protected fun drawHorizontalBezier(dataSet: ILineDataSet) {
         val phaseY = animator.phaseY
 
-        val trans = chart.getTransformer(dataSet.axisDependency)
+        val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-        xBounds[chart] = dataSet
+        xBounds[dataProvider] = dataSet
 
         cubicPath.reset()
 
@@ -152,9 +152,9 @@ class LineChartRenderer(
     protected fun drawCubicBezier(dataSet: ILineDataSet) {
         val phaseY = animator.phaseY
 
-        val trans = chart.getTransformer(dataSet.axisDependency)
+        val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-        xBounds[chart] = dataSet
+        xBounds[dataProvider] = dataSet
 
         val intensity = dataSet.cubicIntensity
 
@@ -225,7 +225,7 @@ class LineChartRenderer(
     }
 
     protected fun drawCubicFill(canvas: Canvas, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
-        val fillMin = dataSet.fillFormatter.getFillLinePosition(dataSet, chart)
+        val fillMin = dataSet.fillFormatter.getFillLinePosition(dataSet, dataProvider)
 
         spline.lineTo(dataSet.getEntryForIndex(bounds.min + bounds.range).x, fillMin)
         spline.lineTo(dataSet.getEntryForIndex(bounds.min).x, fillMin)
@@ -250,7 +250,7 @@ class LineChartRenderer(
         val isDrawSteppedEnabled = dataSet.isDrawSteppedEnabled
         val pointsPerEntryPair = if (isDrawSteppedEnabled) 4 else 2
 
-        val trans = chart.getTransformer(dataSet.axisDependency)
+        val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
         val phaseY = animator.phaseY
 
@@ -263,7 +263,7 @@ class LineChartRenderer(
             c
         }
 
-        xBounds[chart] = dataSet
+        xBounds[dataProvider] = dataSet
 
         // if drawing filled is enabled
         if (dataSet.isDrawFilledEnabled && entryCount > 0) {
@@ -447,7 +447,7 @@ class LineChartRenderer(
      * @return
      */
     private fun generateFilledPath(dataSet: ILineDataSet, startIndex: Int, endIndex: Int, outputPath: Path) {
-        val fillMin = dataSet.fillFormatter.getFillLinePosition(dataSet, chart)
+        val fillMin = dataSet.fillFormatter.getFillLinePosition(dataSet, dataProvider)
         val phaseY = animator.phaseY
         val isDrawSteppedEnabled = dataSet.mode == LineDataSet.Mode.STEPPED
 
@@ -485,8 +485,8 @@ class LineChartRenderer(
     }
 
     override fun drawValues(canvas: Canvas) {
-        if (isDrawingValuesAllowed(chart)) {
-            val dataSets = chart.lineData.dataSets
+        if (isDrawingValuesAllowed(dataProvider)) {
+            val dataSets = dataProvider.lineData.dataSets
 
             for (i in dataSets.indices) {
                 val dataSet = dataSets[i]
@@ -500,14 +500,14 @@ class LineChartRenderer(
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet)
 
-                val trans = chart.getTransformer(dataSet.axisDependency)
+                val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
                 // make sure the values do not interfear with the circles
                 var valOffset = (dataSet.circleRadius * 1.75f).toInt()
 
                 if (!dataSet.isDrawCirclesEnabled) valOffset = valOffset / 2
 
-                xBounds[chart] = dataSet
+                xBounds[dataProvider] = dataSet
 
                 val positions = trans!!.generateTransformedValuesLine(
                     dataSet, animator.phaseX, animator
@@ -588,7 +588,7 @@ class LineChartRenderer(
         mCirclesBuffer[0] = 0f
         mCirclesBuffer[1] = 0f
 
-        val dataSets = chart.lineData.dataSets
+        val dataSets = dataProvider.lineData.dataSets
 
         for (i in dataSets.indices) {
             val dataSet = dataSets[i]
@@ -597,9 +597,9 @@ class LineChartRenderer(
 
             circlePaintInner.color = dataSet.circleHoleColor
 
-            val trans = chart.getTransformer(dataSet.axisDependency)
+            val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-            xBounds[chart] = dataSet
+            xBounds[dataProvider] = dataSet
 
             val circleRadius = dataSet.circleRadius
             val circleHoleRadius = dataSet.circleHoleRadius
@@ -649,7 +649,7 @@ class LineChartRenderer(
     }
 
     override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
-        val lineData = chart.lineData
+        val lineData = dataProvider.lineData
 
         for (high in indices) {
             val set = lineData.getDataSetByIndex(high.dataSetIndex)
@@ -660,7 +660,7 @@ class LineChartRenderer(
 
             if (!isInBoundsX(e, set)) continue
 
-            val pix = chart.getTransformer(set.axisDependency)!!.getPixelForValues(
+            val pix = dataProvider.getTransformer(set.axisDependency)!!.getPixelForValues(
                 e.x, e.y * animator
                     .phaseY
             )
@@ -673,7 +673,7 @@ class LineChartRenderer(
     }
 
     /**
-     * Releases the drawing bitmap. This should be called when [LineChart.onDetachedFromWindow].
+     * Releases the drawing bitmap. This should be called when [com.github.mikephil.charting.charts.LineChart.onDetachedFromWindow].
      */
     fun releaseBitmap() {
         bitmapCanvas?.setBitmap(null)

@@ -19,14 +19,14 @@ import kotlin.math.sqrt
 @Suppress("MemberVisibilityCanBePrivate")
 open class BubbleChartRenderer(
     @JvmField
-    var chart: BubbleDataProvider, animator: ChartAnimator?,
+    var dataProvider: BubbleDataProvider, animator: ChartAnimator?,
     viewPortHandler: ViewPortHandler?
 ) : BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
     override fun initBuffers() {
     }
 
     override fun drawData(canvas: Canvas) {
-        val bubbleData = chart.bubbleData
+        val bubbleData = dataProvider.bubbleData
 
         for (set in bubbleData.dataSets) {
             if (set.isVisible) drawDataSet(canvas, set)
@@ -45,11 +45,11 @@ open class BubbleChartRenderer(
     protected fun drawDataSet(canvas: Canvas, dataSet: IBubbleDataSet) {
         if (dataSet.entryCount < 1) return
 
-        val trans = chart.getTransformer(dataSet.axisDependency)
+        val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
         val phaseY = animator.phaseY
 
-        xBounds[chart] = dataSet
+        xBounds[dataProvider] = dataSet
 
         sizeBuffer[0] = 0f
         sizeBuffer[2] = 1f
@@ -88,10 +88,10 @@ open class BubbleChartRenderer(
     }
 
     override fun drawValues(canvas: Canvas) {
-        val bubbleData = chart.bubbleData ?: return
+        val bubbleData = dataProvider.bubbleData ?: return
 
         // if values are drawn
-        if (isDrawingValuesAllowed(chart)) {
+        if (isDrawingValuesAllowed(dataProvider)) {
             val dataSets = bubbleData.dataSets
 
             val lineHeight = Utils.calcTextHeight(paintValues, "1").toFloat()
@@ -111,9 +111,9 @@ open class BubbleChartRenderer(
                 val phaseX = max(0.0, min(1.0, animator.phaseX.toDouble())).toFloat()
                 val phaseY = animator.phaseY
 
-                xBounds[chart] = dataSet
+                xBounds[dataProvider] = dataSet
 
-                chart.getTransformer(dataSet.axisDependency)?.let { transformer ->
+                dataProvider.getTransformer(dataSet.axisDependency)?.let { transformer ->
                     val positions = transformer.generateTransformedValuesBubble(dataSet, phaseY, xBounds.min, xBounds.max)
 
                     val alpha = if (phaseX == 1f)
@@ -186,7 +186,7 @@ open class BubbleChartRenderer(
     }
 
     override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
-        val bubbleData = chart.bubbleData
+        val bubbleData = dataProvider.bubbleData
 
         val phaseY = animator.phaseY
 
@@ -201,7 +201,7 @@ open class BubbleChartRenderer(
 
             if (!isInBoundsX(bubbleEntry, set)) continue
 
-            val trans = chart.getTransformer(set.axisDependency)
+            val trans = dataProvider.getTransformer(set.axisDependency)
 
             sizeBuffer[0] = 0f
             sizeBuffer[2] = 1f

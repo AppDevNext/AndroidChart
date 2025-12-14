@@ -13,7 +13,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 
 open class CandleStickChartRenderer(
     @JvmField
-    var chart: CandleDataProvider, animator: ChartAnimator?,
+    var dataProvider: CandleDataProvider, animator: ChartAnimator?,
     viewPortHandler: ViewPortHandler?
 ) : LineScatterCandleRadarRenderer(animator, viewPortHandler) {
     private val shadowBuffers = FloatArray(8)
@@ -25,7 +25,7 @@ open class CandleStickChartRenderer(
     override fun initBuffers() = Unit
 
     override fun drawData(canvas: Canvas) {
-        val candleData = chart.candleData
+        val candleData = dataProvider.candleData
 
         for (set in candleData.dataSets) {
             if (set.isVisible) drawDataSet(canvas, set)
@@ -33,13 +33,13 @@ open class CandleStickChartRenderer(
     }
 
     protected fun drawDataSet(canvas: Canvas, dataSet: ICandleDataSet) {
-        val trans = chart.getTransformer(dataSet.axisDependency)
+        val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
         val phaseY = animator.phaseY
         val barSpace = dataSet.barSpace
         val showCandleBar = dataSet.showCandleBar
 
-        xBounds[chart] = dataSet
+        xBounds[dataProvider] = dataSet
 
         paintRender.strokeWidth = dataSet.shadowWidth
 
@@ -205,8 +205,8 @@ open class CandleStickChartRenderer(
 
     override fun drawValues(canvas: Canvas) {
         // if values are drawn
-        if (isDrawingValuesAllowed(chart)) {
-            val dataSets = chart.candleData.dataSets
+        if (isDrawingValuesAllowed(dataProvider)) {
+            val dataSets = dataProvider.candleData.dataSets
 
             for (i in dataSets.indices) {
                 val dataSet = dataSets[i]
@@ -220,9 +220,9 @@ open class CandleStickChartRenderer(
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet)
 
-                val trans = chart.getTransformer(dataSet.axisDependency)
+                val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-                xBounds[chart] = dataSet
+                xBounds[dataProvider] = dataSet
 
                 val positions = trans!!.generateTransformedValuesCandle(
                     dataSet, animator.phaseX, animator.phaseY, xBounds.min, xBounds.max
@@ -285,7 +285,7 @@ open class CandleStickChartRenderer(
     override fun drawExtras(canvas: Canvas) = Unit
 
     override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
-        val candleData = chart.candleData
+        val candleData = dataProvider.candleData
 
         for (high in indices) {
             val set = candleData.getDataSetByIndex(high.dataSetIndex)
@@ -300,7 +300,7 @@ open class CandleStickChartRenderer(
             val highValue = e.high * animator.phaseY
             val y = (lowValue + highValue) / 2f
 
-            val pix = chart.getTransformer(set.axisDependency)!!.getPixelForValues(e.x, y)
+            val pix = dataProvider.getTransformer(set.axisDependency)!!.getPixelForValues(e.x, y)
 
             high.setDraw(pix.x.toFloat(), pix.y.toFloat())
 

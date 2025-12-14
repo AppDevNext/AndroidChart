@@ -12,13 +12,13 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 import kotlin.math.ceil
 import kotlin.math.min
 
-open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
+open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider, animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
     LineScatterCandleRadarRenderer(animator, viewPortHandler) {
     override fun initBuffers() {
     }
 
     override fun drawData(canvas: Canvas) {
-        val scatterData = chart.scatterData
+        val scatterData = dataProvider.scatterData
 
         for (set in scatterData.dataSets) {
             if (set.isVisible) drawDataSet(canvas, set)
@@ -33,7 +33,7 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
 
         val viewPortHandler = this.viewPortHandler
 
-        val trans = chart.getTransformer(dataSet.axisDependency)
+        val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
         val phaseY = animator.phaseY
 
@@ -43,23 +43,23 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
             return
         }
 
-        val max = (min(
+        val max = min(
             ceil((dataSet.entryCount.toFloat() * animator.phaseX).toDouble()),
             dataSet.entryCount.toFloat().toDouble()
-        )).toInt()
+        ).toInt()
 
         for (i in 0..<max) {
-            val e = dataSet.getEntryForIndex(i)
+            val entry = dataSet.getEntryForIndex(i)
 
-            pixelBuffer[0] = e.x
-            pixelBuffer[1] = e.y * phaseY
+            pixelBuffer[0] = entry.x
+            pixelBuffer[1] = entry.y * phaseY
 
             trans!!.pointValuesToPixel(pixelBuffer)
 
-            if (!viewPortHandler.isInBoundsRight(pixelBuffer[0])) break
+            if (!viewPortHandler.isInBoundsRight(pixelBuffer[0]))
+                break
 
-            if (!viewPortHandler.isInBoundsLeft(pixelBuffer[0])
-                || !viewPortHandler.isInBoundsY(pixelBuffer[1])
+            if (!viewPortHandler.isInBoundsLeft(pixelBuffer[0]) || !viewPortHandler.isInBoundsY(pixelBuffer[1])
             ) continue
 
             paintRender.color = dataSet.getColorByIndex(i / 2)
@@ -72,12 +72,10 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
     }
 
     override fun drawValues(canvas: Canvas) {
-        // if values are drawn
+        if (isDrawingValuesAllowed(dataProvider)) {
+            val dataSets = dataProvider.scatterData.dataSets
 
-        if (isDrawingValuesAllowed(chart)) {
-            val dataSets = chart.scatterData.dataSets
-
-            for (i in 0..<chart.scatterData.dataSetCount) {
+            for (i in 0..<dataProvider.scatterData.dataSetCount) {
                 val dataSet = dataSets[i]
 
                 if (dataSet.entryCount == 0) {
@@ -90,9 +88,9 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet)
 
-                xBounds[chart] = dataSet
+                xBounds[dataProvider] = dataSet
 
-                val positions = chart.getTransformer(dataSet.axisDependency)!!.generateTransformedValuesScatter(
+                val positions = dataProvider.getTransformer(dataSet.axisDependency)!!.generateTransformedValuesScatter(
                     dataSet,
                     animator.phaseX, animator.phaseY, xBounds.min, xBounds.max
                 )
@@ -154,7 +152,7 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
     }
 
     override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
-        val scatterData = chart.scatterData
+        val scatterData = dataProvider.scatterData
 
         for (high in indices) {
             val set = scatterData.getDataSetByIndex(high.dataSetIndex)
@@ -165,7 +163,7 @@ open class ScatterChartRenderer(@JvmField var chart: ScatterDataProvider, animat
 
             if (!isInBoundsX(e, set)) continue
 
-            val pix = chart.getTransformer(set.axisDependency)!!.getPixelForValues(
+            val pix = dataProvider.getTransformer(set.axisDependency)!!.getPixelForValues(
                 e.x, e.y * animator
                     .phaseY
             )

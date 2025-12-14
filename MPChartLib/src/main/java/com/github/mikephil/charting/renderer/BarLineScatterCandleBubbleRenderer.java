@@ -66,11 +66,11 @@ public abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
         /**
          * Calculates the minimum and maximum x values as well as the range between them.
          */
-        public void set(BarLineScatterCandleBubbleDataProvider chart, IBarLineScatterCandleBubbleDataSet dataSet) {
+        public void set(BarLineScatterCandleBubbleDataProvider barLineScatterCandleBubbleDataProvider, IBarLineScatterCandleBubbleDataSet dataSet) {
             float phaseX = Math.max(0.f, Math.min(1.f, animator.getPhaseX()));
 
-            float low = chart.getLowestVisibleX();
-            float high = chart.getHighestVisibleX();
+            float low = barLineScatterCandleBubbleDataProvider.getLowestVisibleX();
+            float high = barLineScatterCandleBubbleDataProvider.getHighestVisibleX();
 
             Entry entryFrom = dataSet.getEntryForXValue(low, Float.NaN, DataSet.Rounding.DOWN);
             Entry entryTo = dataSet.getEntryForXValue(high, Float.NaN, DataSet.Rounding.UP);
