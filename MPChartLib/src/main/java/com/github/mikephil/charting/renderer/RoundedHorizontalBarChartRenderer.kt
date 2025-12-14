@@ -14,7 +14,7 @@ import kotlin.math.min
 /**
  * @noinspection unused
  */
-class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator?, viewPortHandler: ViewPortHandler?) :
+class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     HorizontalBarChartRenderer(chart, animator, viewPortHandler) {
     private val mBarShadowRectBuffer = RectF()
     private var roundedShadowRadius = 0f

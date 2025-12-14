@@ -15,8 +15,8 @@ import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 
 open class RadarChartRenderer(
-    protected var chart: RadarChart, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    protected var chart: RadarChart, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : LineRadarRenderer(animator, viewPortHandler) {
     var webPaint: Paint
         protected set
@@ -300,11 +300,11 @@ open class RadarChartRenderer(
 
             if (set == null || !set.isHighlightEnabled) continue
 
-            val e = set.getEntryForIndex(high.x.toInt())
+            val radarEntry = set.getEntryForIndex(high.x.toInt())
 
-            if (!isInBoundsX(e, set)) continue
+            if (!isInBoundsX(radarEntry, set)) continue
 
-            val y = (e.y - chart.yChartMin)
+            val y = (radarEntry.y - chart.yChartMin)
 
             Utils.getPosition(
                 center,

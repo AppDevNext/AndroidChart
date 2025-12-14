@@ -13,8 +13,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 
 open class CandleStickChartRenderer(
     @JvmField
-    var dataProvider: CandleDataProvider, animator: ChartAnimator?,
-    viewPortHandler: ViewPortHandler?
+    var dataProvider: CandleDataProvider, animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
 ) : LineScatterCandleRadarRenderer(animator, viewPortHandler) {
     private val shadowBuffers = FloatArray(8)
     private val bodyBuffers = FloatArray(4)
@@ -39,6 +39,7 @@ open class CandleStickChartRenderer(
         val barSpace = dataSet.barSpace
         val showCandleBar = dataSet.showCandleBar
 
+        this.xBounds
         xBounds.set(dataProvider, dataSet)
 
         paintRender.strokeWidth = dataSet.shadowWidth
