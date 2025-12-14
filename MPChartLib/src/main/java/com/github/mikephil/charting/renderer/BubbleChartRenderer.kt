@@ -49,7 +49,7 @@ open class BubbleChartRenderer(
 
         val phaseY = animator.phaseY
 
-        xBounds[dataProvider] = dataSet
+        xBounds.set(dataProvider, dataSet)
 
         sizeBuffer[0] = 0f
         sizeBuffer[2] = 1f
@@ -111,7 +111,7 @@ open class BubbleChartRenderer(
                 val phaseX = max(0.0, min(1.0, animator.phaseX.toDouble())).toFloat()
                 val phaseY = animator.phaseY
 
-                xBounds[dataProvider] = dataSet
+                xBounds.set(dataProvider, dataSet)
 
                 dataProvider.getTransformer(dataSet.axisDependency)?.let { transformer ->
                     val positions = transformer.generateTransformedValuesBubble(dataSet, phaseY, xBounds.min, xBounds.max)
