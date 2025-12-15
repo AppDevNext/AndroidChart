@@ -75,6 +75,7 @@ import info.appdev.chartexample.ScrollViewActivity
 import info.appdev.chartexample.SpecificPositionsLineChartActivity
 import info.appdev.chartexample.StackedBarActivity
 import info.appdev.chartexample.StackedBarActivityNegative
+import info.appdev.chartexample.compose.HorizontalBarComposeActivity
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
 
 class MainActivity : ComponentActivity() {
@@ -202,6 +203,9 @@ class MainActivity : ComponentActivity() {
             add(ContentItem("Realtime", "Add data points in realtime.", RealtimeLineChartActivity::class.java))
             add(ContentItem("Hourly", "Uses the current time to add a data point for each hour.", LineChartTimeActivity::class.java))
             //add(new ContentItem("Realm.io Examples", "See more examples that use Realm.io mobile database."));
+
+            add(ContentItem("Compose Horizontal"))
+            add(ComposeItem("Horizontal", "Render bar chart horizontally.", HorizontalBarComposeActivity::class.java).toDemoBase())
         }
     }
 }
