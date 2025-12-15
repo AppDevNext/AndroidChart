@@ -32,7 +32,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         val view = binding.root
         setContentView(view)
 
-        dataSinus = FileUtils.loadBarEntriesFromAssets(assets, "othersine.txt")
+        dataSinus = FileUtils.loadBarEntriesFromAssets(assets, "sinus_values.txt")
         binding.chart1.setDrawBarShadow(false)
         binding.chart1.setDrawValueAboveBar(true)
 
