@@ -102,7 +102,12 @@ class StartTest {
 
                     Intents.intended(hasComponent(it.name))
                     onView(ViewMatchers.isRoot())
-                        .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-1SampleClick") })
+                        .perform(captureToBitmap { bitmap: Bitmap ->
+                            bitmap.writeToTestStorage(
+                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-1SampleClick"
+                                    .replace(" ", "")
+                            )
+                        })
 
                     // Test option menus based on activity type
                     if (DemoBase::class.java.isAssignableFrom(it)) {
