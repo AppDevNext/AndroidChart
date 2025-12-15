@@ -160,9 +160,8 @@ class StartTest {
                                     onView(ViewMatchers.isRoot())
                                         .perform(captureToBitmap { bitmap: Bitmap ->
                                             bitmap.writeToTestStorage(
-                                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-${
-                                                    menuTitle.replace(" ", "")
-                                                }"
+                                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-${menuTitle}"
+                                                    .replace(" ", "")
                                             )
                                         })
 
@@ -211,7 +210,12 @@ class StartTest {
                 } catch (e: Exception) {
                     Timber.e("Error at index $index: $optionMenu - ${e.message}", e)
                     onView(ViewMatchers.isRoot())
-                        .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-Error") })
+                        .perform(captureToBitmap { bitmap: Bitmap ->
+                            bitmap.writeToTestStorage(
+                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-Error"
+                                    .replace(" ", "")
+                            )
+                        })
                 }
             }
         }
@@ -222,7 +226,7 @@ class StartTest {
         Timber.d("screenshotOfOptionMenu ${menuTitle}-${simpleName}")
         onView(ViewMatchers.isRoot())
             .perform(captureToBitmap { bitmap: Bitmap ->
-                bitmap.writeToTestStorage("${simpleName}-2menu-click-${menuTitle.replace(" ", "")}")
+                bitmap.writeToTestStorage("${simpleName}-2menu-click-${menuTitle}".replace(" ", ""))
             }
             )
     }
