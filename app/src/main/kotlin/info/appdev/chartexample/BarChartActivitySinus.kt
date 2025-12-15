@@ -22,47 +22,47 @@ import com.github.mikephil.charting.utils.FileUtils
 import info.appdev.chartexample.notimportant.DemoBase
 
 class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
-    private var chart: BarChart? = null
-    private var seekBarX: SeekBar? = null
-    private var tvX: TextView? = null
+    private var chart1: BarChart? = null
+    private var seekbarValues: SeekBar? = null
+    private var tvValueCount: TextView? = null
 
-    private var data: MutableList<BarEntry?>? = null
+    private var dataSinus: MutableList<BarEntry?>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barchart_sinus)
 
-        data = FileUtils.loadBarEntriesFromAssets(assets, "othersine.txt")
+        dataSinus = FileUtils.loadBarEntriesFromAssets(assets, "othersine.txt")
 
-        tvX = findViewById(R.id.tvValueCount)
+        tvValueCount = findViewById(R.id.tvValueCount)
 
-        seekBarX = findViewById(R.id.seekbarValues)
+        seekbarValues = findViewById(R.id.seekbarValues)
 
-        chart = findViewById(R.id.chart1)
+        chart1 = findViewById(R.id.chart1)
 
-        chart!!.setDrawBarShadow(false)
-        chart!!.setDrawValueAboveBar(true)
+        chart1!!.setDrawBarShadow(false)
+        chart1!!.setDrawValueAboveBar(true)
 
-        chart!!.description.isEnabled = false
+        chart1!!.description.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
-        chart!!.setMaxVisibleValueCount(60)
+        chart1!!.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        chart!!.setPinchZoom(false)
+        chart1!!.setPinchZoom(false)
 
         // draw shadows for each bar that show the maximum value
         // chart.setDrawBarShadow(true);
 
         // chart.setDrawXLabels(false);
-        chart!!.setDrawGridBackground(false)
+        chart1!!.setDrawGridBackground(false)
 
         // chart.setDrawYLabels(false);
-        val xAxis = chart!!.xAxis
+        val xAxis = chart1!!.xAxis
         xAxis.isEnabled = false
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = chart1!!.axisLeft
         leftAxis.typeface = tfLight
         leftAxis.setLabelCount(6, false)
         leftAxis.setAxisMinimum(-2.5f)
@@ -70,7 +70,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         leftAxis.isGranularityEnabled = true
         leftAxis.setGranularity(0.1f)
 
-        val rightAxis = chart!!.axisRight
+        val rightAxis = chart1!!.axisRight
         rightAxis.setDrawGridLines(false)
         rightAxis.typeface = tfLight
         rightAxis.setLabelCount(6, false)
@@ -78,10 +78,10 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         rightAxis.setAxisMaximum(2.5f)
         rightAxis.setGranularity(0.1f)
 
-        seekBarX!!.setOnSeekBarChangeListener(this)
-        seekBarX!!.progress = 150 // set data
+        seekbarValues!!.setOnSeekBarChangeListener(this)
+        seekbarValues!!.progress = 150 // set data
 
-        chart!!.legend.apply {
+        chart1!!.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
             orientation = Legend.LegendOrientation.HORIZONTAL
@@ -92,25 +92,25 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
             xEntrySpace = 4f
         }
 
-        chart!!.animateXY(1500, 1500)
+        chart1!!.animateXY(1500, 1500)
     }
 
     private fun setData(count: Int) {
         val entries = ArrayList<BarEntry?>()
 
         for (i in 0..<count) {
-            entries.add(data!![i])
+            entries.add(dataSinus!![i])
         }
 
         val set: BarDataSet
 
-        if (chart!!.data != null &&
-            chart!!.data!!.getDataSetCount() > 0
+        if (chart1!!.data != null &&
+            chart1!!.data!!.getDataSetCount() > 0
         ) {
-            set = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
+            set = chart1!!.data!!.getDataSetByIndex(0) as BarDataSet
             set.setEntries(entries)
-            chart!!.data!!.notifyDataChanged()
-            chart!!.notifyDataSetChanged()
+            chart1!!.data!!.notifyDataChanged()
+            chart1!!.notifyDataSetChanged()
         } else {
             set = BarDataSet(entries, "Sinus Function")
             set.setColor(Color.BLUE)
@@ -122,7 +122,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         data.setDrawValues(false)
         data.barWidth = 0.8f
 
-        chart!!.setData(data)
+        chart1!!.setData(data)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -139,53 +139,53 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                for (set in chart!!.data!!.dataSets) set.setDrawValues(!set.isDrawValuesEnabled())
+                for (set in chart1!!.data!!.dataSets) set.setDrawValues(!set.isDrawValuesEnabled())
 
-                chart!!.invalidate()
+                chart1!!.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                if (chart1!!.data != null) {
+                    chart1!!.data!!.isHighlightEnabled = !chart1!!.data!!.isHighlightEnabled()
+                    chart1!!.invalidate()
                 }
             }
 
             R.id.actionTogglePinch -> {
-                if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
-                else chart!!.setPinchZoom(true)
+                if (chart1!!.isPinchZoomEnabled) chart1!!.setPinchZoom(false)
+                else chart1!!.setPinchZoom(true)
 
-                chart!!.invalidate()
+                chart1!!.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart1!!.isAutoScaleMinMaxEnabled = !chart1!!.isAutoScaleMinMaxEnabled
+                chart1!!.notifyDataSetChanged()
             }
 
             R.id.actionToggleBarBorders -> {
-                for (set in chart!!.data!!.dataSets) (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
+                for (set in chart1!!.data!!.dataSets) (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
 
-                chart!!.invalidate()
+                chart1!!.invalidate()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(2000)
+                chart1!!.animateX(2000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(2000)
+                chart1!!.animateY(2000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(2000, 2000)
+                chart1!!.animateXY(2000, 2000)
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(chart1)
                 }
             }
         }
@@ -193,13 +193,13 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        tvX!!.text = seekBarX!!.progress.toString()
+        tvValueCount!!.text = seekbarValues!!.progress.toString()
 
-        setData(seekBarX!!.progress)
-        chart!!.invalidate()
+        setData(seekbarValues!!.progress)
+        chart1!!.invalidate()
     }
 
-    override fun saveToGallery() = saveToGallery(chart, "BarChartActivitySinus")
+    override fun saveToGallery() = saveToGallery(chart1, "BarChartActivitySinus")
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
 
