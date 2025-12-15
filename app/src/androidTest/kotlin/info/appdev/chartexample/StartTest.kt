@@ -113,7 +113,10 @@ class StartTest {
                             Timber.d("optionMenu=$optionMenu")
                             openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
                             Timber.d("screenshot optionMenu=$optionMenu")
-                            screenshotOfOptionMenu("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}", filteredTitle)
+                            screenshotOfOptionMenu(
+                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}",
+                                filteredTitle
+                            )
                         }
                     } else if (DemoBaseCompose::class.java.isAssignableFrom(it)) {
                         // Test Compose dropdown menu for DemoBaseCompose activities
@@ -156,9 +159,11 @@ class StartTest {
                                     Thread.sleep(150) // Wait for action to complete
                                     onView(ViewMatchers.isRoot())
                                         .perform(captureToBitmap { bitmap: Bitmap ->
-                                            bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-${menuTitle
-                                                .replace(" ","")
-                                            }")
+                                            bitmap.writeToTestStorage(
+                                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-${
+                                                    menuTitle.replace(" ", "")
+                                                }"
+                                            )
                                         })
 
                                     // Reopen menu for next item
@@ -216,7 +221,10 @@ class StartTest {
         onView(withText(menuTitle)).perform(click())
         Timber.d("screenshotOfOptionMenu ${menuTitle}-${simpleName}")
         onView(ViewMatchers.isRoot())
-            .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${simpleName}-2menu-click-$menuTitle") })
+            .perform(captureToBitmap { bitmap: Bitmap ->
+                bitmap.writeToTestStorage("${simpleName}-2menu-click-${menuTitle.replace(" ", "")}")
+            }
+            )
     }
 
 }
