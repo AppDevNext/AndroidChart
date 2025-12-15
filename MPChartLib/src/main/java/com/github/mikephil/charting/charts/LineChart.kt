@@ -20,10 +20,8 @@ open class LineChart : BarLineChartBase<LineData?>, LineDataProvider {
 
     override val lineData: LineData
         get() {
-            mData?.let {
-                return it
-            } ?: run {
-                return LineData()
+            return mData ?: run {
+                LineData()
             }
         }
 
