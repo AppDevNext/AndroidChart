@@ -12,8 +12,8 @@ class BarDataTest {
         val groupSpace = 5f
         val barSpace = 1f
 
-        val values1: MutableList<BarEntry> = ArrayList()
-        val values2: MutableList<BarEntry> = ArrayList()
+        val values1: MutableList<BarEntry?> = ArrayList()
+        val values2: MutableList<BarEntry?> = ArrayList()
 
         for (i in 0..4) {
             values1.add(BarEntry(i.toFloat(), 50f))
@@ -29,23 +29,23 @@ class BarDataTest {
         var groupWidth = data.getGroupWidth(groupSpace, barSpace)
         Assert.assertEquals(27f, groupWidth, 0.01f)
 
-        Assert.assertEquals(0f, values1[0].x, 0.01f)
-        Assert.assertEquals(1f, values1[1].x, 0.01f)
+        Assert.assertEquals(0f, values1[0]!!.x, 0.01f)
+        Assert.assertEquals(1f, values1[1]!!.x, 0.01f)
 
         data.groupBars(1000f, groupSpace, barSpace)
 
         // 1000 + 2.5 + 0.5 + 5
-        Assert.assertEquals(1008f, values1[0].x, 0.01f)
-        Assert.assertEquals(1019f, values2[0].x, 0.01f)
-        Assert.assertEquals(1035f, values1[1].x, 0.01f)
-        Assert.assertEquals(1046f, values2[1].x, 0.01f)
+        Assert.assertEquals(1008f, values1[0]!!.x, 0.01f)
+        Assert.assertEquals(1019f, values2[0]!!.x, 0.01f)
+        Assert.assertEquals(1035f, values1[1]!!.x, 0.01f)
+        Assert.assertEquals(1046f, values2[1]!!.x, 0.01f)
 
         data.groupBars(-1000f, groupSpace, barSpace)
 
-        Assert.assertEquals(-992f, values1[0].x, 0.01f)
-        Assert.assertEquals(-981f, values2[0].x, 0.01f)
-        Assert.assertEquals(-965f, values1[1].x, 0.01f)
-        Assert.assertEquals(-954f, values2[1].x, 0.01f)
+        Assert.assertEquals(-992f, values1[0]!!.x, 0.01f)
+        Assert.assertEquals(-981f, values2[0]!!.x, 0.01f)
+        Assert.assertEquals(-965f, values1[1]!!.x, 0.01f)
+        Assert.assertEquals(-954f, values2[1]!!.x, 0.01f)
 
         data.barWidth = 20f
         groupWidth = data.getGroupWidth(groupSpace, barSpace)
@@ -54,9 +54,9 @@ class BarDataTest {
         data.barWidth = 10f
         data.groupBars(-20f, groupSpace, barSpace)
 
-        Assert.assertEquals(-12f, values1[0].x, 0.01f)
-        Assert.assertEquals(-1f, values2[0].x, 0.01f)
-        Assert.assertEquals(15f, values1[1].x, 0.01f)
-        Assert.assertEquals(26f, values2[1].x, 0.01f)
+        Assert.assertEquals(-12f, values1[0]!!.x, 0.01f)
+        Assert.assertEquals(-1f, values2[0]!!.x, 0.01f)
+        Assert.assertEquals(15f, values1[1]!!.x, 0.01f)
+        Assert.assertEquals(26f, values2[1]!!.x, 0.01f)
     }
 }
