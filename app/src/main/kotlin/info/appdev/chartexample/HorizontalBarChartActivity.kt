@@ -10,10 +10,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.data.BarData
@@ -27,77 +25,70 @@ import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
 import androidx.core.net.toUri
+import info.appdev.chartexample.databinding.ActivityHorizontalbarchartBinding
 
 class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
-    private var chart: HorizontalBarChart? = null
-    private var seekBarX: SeekBar? = null
-    private var seekBarY: SeekBar? = null
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
+
+    private lateinit var binding: ActivityHorizontalbarchartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_horizontalbarchart)
+        binding = ActivityHorizontalbarchartBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        tvX = findViewById(R.id.tvXMax)
-        tvY = findViewById(R.id.tvYMax)
+        binding.seekBarY.setOnSeekBarChangeListener(this)
+        binding.seekBarX.setOnSeekBarChangeListener(this)
 
-        seekBarX = findViewById(R.id.seekBarX)
-        seekBarY = findViewById(R.id.seekBarY)
-
-        seekBarY!!.setOnSeekBarChangeListener(this)
-        seekBarX!!.setOnSeekBarChangeListener(this)
-
-        chart = findViewById(R.id.chart1)
-        chart!!.setOnChartValueSelectedListener(this)
+        binding.chart1.setOnChartValueSelectedListener(this)
 
         // chart.setHighlightEnabled(false);
-        chart!!.setDrawBarShadow(false)
+        binding.chart1.setDrawBarShadow(false)
 
-        chart!!.setDrawValueAboveBar(true)
+        binding.chart1.setDrawValueAboveBar(true)
 
-        chart!!.description.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
-        chart!!.setMaxVisibleValueCount(60)
+        binding.chart1.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        chart!!.setPinchZoom(false)
+        binding.chart1.setPinchZoom(false)
 
         // draw shadows for each bar that show the maximum value
         // chart.setDrawBarShadow(true);
-        chart!!.setDrawGridBackground(false)
+        binding.chart1.setDrawGridBackground(false)
 
-        val xl = chart!!.xAxis
+        val xl = binding.chart1.xAxis
         xl.position = XAxisPosition.BOTTOM
         xl.typeface = tfLight
         xl.setDrawAxisLine(true)
         xl.setDrawGridLines(false)
         xl.setGranularity(10f)
 
-        val yl = chart!!.axisLeft
+        val yl = binding.chart1.axisLeft
         yl.typeface = tfLight
         yl.setDrawAxisLine(true)
         yl.setDrawGridLines(true)
         yl.setAxisMinimum(0f) // this replaces setStartAtZero(true)
 
         //        yl.setInverted(true);
-        val yr = chart!!.axisRight
+        val yr = binding.chart1.axisRight
         yr.typeface = tfLight
         yr.setDrawAxisLine(true)
         yr.setDrawGridLines(false)
         yr.setAxisMinimum(0f) // this replaces setStartAtZero(true)
 
         //        yr.setInverted(true);
-        chart!!.setFitBars(true)
-        chart!!.animateY(2500)
+        binding.chart1.setFitBars(true)
+        binding.chart1.animateY(2500)
 
         // setting data
-        seekBarY!!.progress = 50
-        seekBarX!!.progress = 12
+        binding.seekBarY.progress = 50
+        binding.seekBarX.progress = 12
 
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
         l.orientation = Legend.LegendOrientation.HORIZONTAL
@@ -124,13 +115,13 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
 
         val set1: BarDataSet
 
-        if (chart!!.data != null &&
-            chart!!.data!!.getDataSetCount() > 0
+        if (binding.chart1.data != null &&
+            binding.chart1.data!!.getDataSetCount() > 0
         ) {
-            set1 = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
+            set1 = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
             set1.setEntries(values)
-            chart!!.data!!.notifyDataChanged()
-            chart!!.notifyDataSetChanged()
+            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.notifyDataSetChanged()
         } else {
             set1 = BarDataSet(values, "DataSet 1")
 
@@ -143,7 +134,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
             data.setValueTextSize(10f)
             data.setValueTypeface(tfLight)
             data.barWidth = barWidth
-            chart!!.setData(data)
+            binding.chart1.setData(data)
         }
     }
 
@@ -162,68 +153,68 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
             }
 
             R.id.actionToggleValues -> {
-                val sets = chart!!.data!!
+                val sets = binding.chart1.data!!
                     .dataSets
 
                 for (iSet in sets) {
                     iSet.setDrawValues(!iSet.isDrawValuesEnabled())
                 }
 
-                chart!!.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                val sets = chart!!.data!!
+                val sets = binding.chart1.data!!
                     .dataSets
 
                 for (iSet in sets) {
                     iSet.setDrawIcons(!iSet.isDrawIconsEnabled())
                 }
 
-                chart!!.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionTogglePinch -> {
-                chart!!.setPinchZoom(!chart!!.isPinchZoomEnabled)
+                binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled)
 
-                chart!!.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
             R.id.actionToggleBarBorders -> {
-                for (set in chart!!.data!!.dataSets) (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
+                for (set in binding.chart1.data!!.dataSets) (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
 
-                chart!!.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(2000)
+                binding.chart1.animateX(2000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(2000)
+                binding.chart1.animateY(2000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(2000, 2000)
+                binding.chart1.animateXY(2000, 2000)
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -231,16 +222,16 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        tvX!!.text = seekBarX!!.progress.toString()
-        tvY!!.text = seekBarY!!.progress.toString()
+        binding.tvXMax.text = binding.seekBarX.progress.toString()
+        binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        setData(seekBarX!!.progress, seekBarY!!.progress.toFloat())
-        chart!!.setFitBars(true)
-        chart!!.invalidate()
+        setData(binding.seekBarX.progress, binding.seekBarY.progress.toFloat())
+        binding.chart1.setFitBars(true)
+        binding.chart1.invalidate()
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "HorizontalBarChartActivity")
+        saveToGallery(binding.chart1, "HorizontalBarChartActivity")
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -251,10 +242,10 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         val bounds = mOnValueSelectedRectF
-        chart!!.getBarBounds(entry as BarEntry, bounds)
+        binding.chart1.getBarBounds(entry as BarEntry, bounds)
 
-        val position = chart!!.getPosition(
-            entry, chart!!.data!!.getDataSetByIndex(highlight.dataSetIndex)
+        val position = binding.chart1.getPosition(
+            entry, binding.chart1.data!!.getDataSetByIndex(highlight.dataSetIndex)
                 .getAxisDependency()
         )
 
