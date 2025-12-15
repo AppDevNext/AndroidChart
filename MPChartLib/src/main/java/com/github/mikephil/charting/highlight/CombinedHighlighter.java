@@ -13,81 +13,61 @@ import java.util.List;
 /**
  * Created by Philipp Jahoda on 12/09/15.
  */
-public class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider> implements IHighlighter
-{
+public class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider> implements IHighlighter {
 
-    /**
-     * bar highlighter for supporting stacked highlighting
-     */
-    protected BarHighlighter barHighlighter;
+	/**
+	 * bar highlighter for supporting stacked highlighting
+	 */
+	protected BarHighlighter barHighlighter;
 
-    public CombinedHighlighter(CombinedDataProvider chart, BarDataProvider barChart) {
-        super(chart);
+	public CombinedHighlighter(CombinedDataProvider chart, BarDataProvider barChart) {
+		super(chart);
 
-        // if there is BarData, create a BarHighlighter
-        barHighlighter = barChart.getBarData() == null ? null : new BarHighlighter(barChart);
-    }
+		// if there is BarData, create a BarHighlighter
+		barChart.getBarData();
+		barHighlighter = new BarHighlighter(barChart);
+	}
 
-    @Override
-    protected List<Highlight> getHighlightsAtXValue(float xVal, float x, float y) {
+	@Override
+	protected List<Highlight> getHighlightsAtXValue(float xVal, float x, float y) {
 
-        mHighlightBuffer.clear();
+		mHighlightBuffer.clear();
 
-        List<BarLineScatterCandleBubbleData> dataObjects = mChart.getCombinedData().getAllData();
+		List<BarLineScatterCandleBubbleData> dataObjects = mChart.getCombinedData().getAllData();
 
-        for (int i = 0; i < dataObjects.size(); i++) {
+		for (int i = 0; i < dataObjects.size(); i++) {
 
-            ChartData dataObject = dataObjects.get(i);
+			ChartData dataObject = dataObjects.get(i);
 
-            // in case of BarData, let the BarHighlighter take over
-            if (barHighlighter != null && dataObject instanceof BarData) {
-                Highlight high = barHighlighter.getHighlight(x, y);
+			// in case of BarData, let the BarHighlighter take over
+			if (barHighlighter != null && dataObject instanceof BarData) {
+				Highlight high = barHighlighter.getHighlight(x, y);
 
-                if (high != null) {
-                    high.setDataIndex(i);
-                    mHighlightBuffer.add(high);
-                }
-            } else {
+				if (high != null) {
+					high.setDataIndex(i);
+					mHighlightBuffer.add(high);
+				}
+			} else {
 
-                for (int j = 0, dataSetCount = dataObject.getDataSetCount(); j < dataSetCount; j++) {
+				for (int j = 0, dataSetCount = dataObject.getDataSetCount(); j < dataSetCount; j++) {
 
-                    IDataSet dataSet = dataObjects.get(i).getDataSetByIndex(j);
+					IDataSet dataSet = dataObjects.get(i).getDataSetByIndex(j);
 
-                    // don't include datasets that cannot be highlighted
-                    if (!dataSet.isHighlightEnabled())
-                        continue;
+					// don't include datasets that cannot be highlighted
+					if (!dataSet.isHighlightEnabled()) {
+						continue;
+					}
 
-                    List<Highlight> highs = buildHighlights(dataSet, j, xVal, DataSet.Rounding.CLOSEST);
-                    for (Highlight high : highs)
-                    {
-                        high.setDataIndex(i);
-                        mHighlightBuffer.add(high);
-                    }
-                }
-            }
-        }
+					List<Highlight> highs = buildHighlights(dataSet, j, xVal, DataSet.Rounding.CLOSEST);
+					for (Highlight high : highs) {
+						high.setDataIndex(i);
+						mHighlightBuffer.add(high);
+					}
+				}
+			}
+		}
 
-        return mHighlightBuffer;
-    }
+		return mHighlightBuffer;
+	}
 
-//    protected Highlight getClosest(float x, float y, Highlight... highs) {
-//
-//        Highlight closest = null;
-//        float minDistance = Float.MAX_VALUE;
-//
-//        for (Highlight high : highs) {
-//
-//            if (high == null)
-//                continue;
-//
-//            float tempDistance = getDistance(x, y, high.getXPx(), high.getYPx());
-//
-//            if (tempDistance < minDistance) {
-//                minDistance = tempDistance;
-//                closest = high;
-//            }
-//        }
-//
-//        return closest;
-//    }
 }

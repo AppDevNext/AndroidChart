@@ -185,6 +185,17 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         return mDrawBarShadow;
     }
 
+	@Override
+	public void setDrawBarShadowEnabled(boolean value) {
+		mDrawBarShadow = value;
+
+	}
+
+	@Override
+	public void setDrawValueAboveBarEnabled(boolean value) {
+		mDrawValueAboveBar = value;
+	}
+
     /**
      * Set this to true to make the highlight operation full-bar oriented, false to make it highlight single values (relevant
      * only for stacked). If enabled, highlighting operations will highlight the whole bar, even if only a single stack entry
