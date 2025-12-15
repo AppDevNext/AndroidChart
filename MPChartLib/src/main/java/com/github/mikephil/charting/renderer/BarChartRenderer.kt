@@ -77,10 +77,10 @@ open class BarChartRenderer(
         val barData = chart.barData
 
         for (i in 0..<barData.dataSetCount) {
-            val set = barData.getDataSetByIndex(i)
+            val dataSet = barData.getDataSetByIndex(i)
 
-            if (set.isVisible) {
-                drawDataSet(canvas, set, i)
+            if (dataSet.isVisible) {
+                drawDataSet(canvas, dataSet, i)
             }
         }
     }

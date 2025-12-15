@@ -173,6 +173,16 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
 		return mDrawValueAboveBar;
 	}
 
+	@Override
+	public void setDrawBarShadowEnabled(boolean value) {
+		mDrawBarShadow = value;
+	}
+
+	@Override
+	public void setDrawValueAboveBarEnabled(boolean value) {
+		mDrawValueAboveBar = value;
+	}
+
 	/**
 	 * If set to true, all values are drawn above their bars, instead of below
 	 * their top.
@@ -186,8 +196,8 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
 	 * If set to true, a grey area is drawn behind each bar that indicates the
 	 * maximum value. Enabling his will reduce performance by about 50%.
 	 */
-	public void setDrawBarShadow(boolean enabled) {
-		mDrawBarShadow = enabled;
+	public void setDrawBarShadow(boolean value) {
+		mDrawBarShadow = value;
 	}
 
 	/**
