@@ -58,7 +58,7 @@ jobs:
           cmdOptions: -noaudio -no-boot-anim -no-window -metrics-collection
           disableAnimations: true
       - name: Archive Espresso results
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: ${{ always() }}
         with:
           name: Chart-Espresso-report-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
@@ -66,7 +66,7 @@ jobs:
           if-no-files-found: error
       - name: Archive screenshots
         if: ${{ always() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: Chart-Screenshots-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
           path: |
@@ -84,7 +84,7 @@ jobs:
           ./screenShotScript/screenShotCompare.sh
       - name: Archive screenshots diffs
         if: ${{ always() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: Chart-Screenshots-diffs-${{ matrix.api }}-${{ matrix.tag }}-${{ matrix.abi }}-${{ matrix.emulatorApi }}
           path: |
@@ -121,7 +121,7 @@ jobs:
       - name: Code checks
         run: ./gradlew check
       - name: Archive Lint report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: ${{ always() }}
         with:
           name: Chart-Lint-report
