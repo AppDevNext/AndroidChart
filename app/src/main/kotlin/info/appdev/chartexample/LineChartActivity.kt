@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
@@ -25,6 +24,7 @@ import info.appdev.chartexample.DataTools.Companion.setData
 import info.appdev.chartexample.custom.MyMarkerView
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
+import timber.log.Timber
 
 /**
  * Example of a heavily customized [LineChart] with limit lines, custom line shapes, etc.
@@ -135,7 +135,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         // add data
         binding.seekBarX.progress = 45
         binding.seekBarY.progress = 180
-        Log.d("setDataCreate", "count=45 range=180f")
+        Timber.d("count=45 range=180f")
         setData(this, binding.chart1, 45, 180f)
 
         // draw points over time
@@ -263,15 +263,10 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
     override fun onStartTrackingTouch(seekBar: SeekBar) {}
     override fun onStopTrackingTouch(seekBar: SeekBar) {}
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Log.i("Entry selected", entry.toString())
-        Log.i("LOW HIGH", "low: " + binding.chart1.lowestVisibleX + ", high: " + binding.chart1.highestVisibleX)
-        Log.i(
-            "MIN MAX",
-            "xMin: " + binding.chart1.xChartMin + ", xMax: " + binding.chart1.xChartMax + ", yMin: " + binding.chart1.yChartMin + ", yMax: " + binding.chart1.yChartMax
-        )
+        Timber.i(entry.toString())
+        Timber.i("LOW HIGH low: " + binding.chart1.lowestVisibleX + ", high: " + binding.chart1.highestVisibleX)
+        Timber.i("MIN MAX xMin: " + binding.chart1.xChartMin + ", xMax: " + binding.chart1.xChartMax + ", yMin: " + binding.chart1.yChartMin + ", yMax: " + binding.chart1.yChartMax)
     }
 
-    override fun onNothingSelected() {
-        Log.i("Nothing selected", "Nothing selected.")
-    }
+    override fun onNothingSelected() = Unit
 }

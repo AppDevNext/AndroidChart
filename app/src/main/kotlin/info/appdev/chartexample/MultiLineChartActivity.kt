@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -26,6 +25,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
+import timber.log.Timber
 
 class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestureListener, OnChartValueSelectedListener {
     private var chart: LineChart? = null
@@ -265,42 +265,42 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
     }
 
     override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
-        Log.i("Gesture", "START, x: " + me.x + ", y: " + me.y)
+        Timber.i("START, x: " + me.x + ", y: " + me.y)
     }
 
     override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
-        Log.i("Gesture", "END, lastGesture: $lastPerformedGesture")
+        Timber.i("END, lastGesture: $lastPerformedGesture")
 
         // un-highlight values after the gesture is finished and no single-tap
         if (lastPerformedGesture != ChartGesture.SINGLE_TAP) chart!!.highlightValues(null) // or highlightTouch(null) for callback to onNothingSelected(...)
     }
 
     override fun onChartLongPressed(me: MotionEvent) {
-        Log.i("LongPress", "Chart long pressed.")
+        Timber.i("Chart long pressed.")
     }
 
     override fun onChartDoubleTapped(me: MotionEvent) {
-        Log.i("DoubleTap", "Chart double-tapped.")
+        Timber.i("Chart double-tapped.")
     }
 
     override fun onChartSingleTapped(me: MotionEvent) {
-        Log.i("SingleTap", "Chart single-tapped.")
+        Timber.i("Chart single-tapped.")
     }
 
     override fun onChartFling(me1: MotionEvent?, me2: MotionEvent, velocityX: Float, velocityY: Float) {
-        Log.i("Fling", "Chart fling. VelocityX: $velocityX, VelocityY: $velocityY")
+        Timber.i("Chart fling. VelocityX: $velocityX, VelocityY: $velocityY")
     }
 
     override fun onChartScale(me: MotionEvent, scaleX: Float, scaleY: Float) {
-        Log.i("Scale / Zoom", "ScaleX: $scaleX, ScaleY: $scaleY")
+        Timber.i("ScaleX: $scaleX, ScaleY: $scaleY")
     }
 
     override fun onChartTranslate(me: MotionEvent, dX: Float, dY: Float) {
-        Log.i("Translate / Move", "dX: $dX, dY: $dY")
+        Timber.i("dX: $dX, dY: $dY")
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Log.i("VAL SELECTED", "Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex)
+        Timber.i("Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex)
     }
 
     override fun onNothingSelected() = Unit

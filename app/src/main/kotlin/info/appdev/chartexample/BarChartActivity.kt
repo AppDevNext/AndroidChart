@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.RectF
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
@@ -31,10 +30,11 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.Fill
 import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.custom.XYMarkerView
 import info.appdev.chartexample.formatter.DayAxisValueFormatter
 import info.appdev.chartexample.formatter.MyAxisValueFormatter
-import info.appdev.chartexample.custom.XYMarkerView
 import info.appdev.chartexample.notimportant.DemoBase
+import timber.log.Timber
 
 class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
     private var chart: BarChart? = null
@@ -296,17 +296,12 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         chart!!.getBarBounds(entry as BarEntry, bounds)
         val position = chart!!.getPosition(entry, AxisDependency.LEFT)
 
-        Log.i("bounds", bounds.toString())
-        Log.i("position", position.toString())
-
-        Log.i(
-            "x-index",
-            ("low: " + chart!!.lowestVisibleX + ", high: "
-                    + chart!!.highestVisibleX)
-        )
+        Timber.i("bounds $bounds")
+        Timber.i("position = $position")
+        Timber.i("x-index low: ${+chart!!.lowestVisibleX}, high: ${+chart!!.highestVisibleX}")
 
         MPPointF.recycleInstance(position)
     }
 
-    override fun onNothingSelected() {}
+    override fun onNothingSelected() = Unit
 }

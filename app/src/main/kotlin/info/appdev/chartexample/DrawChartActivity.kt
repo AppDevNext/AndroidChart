@@ -4,11 +4,9 @@ package info.appdev.chartexample
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
-import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.data.DataSet
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -18,6 +16,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.listener.OnDrawListener
 import info.appdev.chartexample.databinding.ActivityDrawChartBinding
 import info.appdev.chartexample.notimportant.DemoBase
+import timber.log.Timber
 
 /**
  * This Activity demonstrates drawing into the Chart with the finger. Both line,
@@ -125,25 +124,25 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Log.i("VAL SELECTED", ("Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex))
+        Timber.i(("Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex))
     }
 
     override fun onNothingSelected() = Unit
 
     /** callback for each new entry drawn with the finger  */
     override fun onEntryAdded(entry: Entry) {
-        Log.i(Chart.LOG_TAG, entry.toString())
+        Timber.i(entry.toString())
     }
 
     /** callback when a DataSet has been drawn (when lifting the finger)  */
     override fun onDrawFinished(dataSet: DataSet<*>) {
-        Log.i(Chart.LOG_TAG, "DataSet drawn. " + dataSet.toSimpleString())
+        Timber.i("DataSet drawn. " + dataSet.toSimpleString())
 
         // prepare the legend again
         binding.chart1.data?.let { binding.chart1.legendRenderer.computeLegend(it) }
     }
 
     override fun onEntryMoved(entry: Entry) {
-        Log.i(Chart.LOG_TAG, "Point moved $entry")
+        Timber.i("Point moved $entry")
     }
 }

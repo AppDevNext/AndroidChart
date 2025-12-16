@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
@@ -23,6 +22,7 @@ import com.github.mikephil.charting.utils.EntryXComparator
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.MyMarkerView
 import info.appdev.chartexample.notimportant.DemoBase
+import timber.log.Timber
 import java.util.Collections
 
 class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
@@ -232,12 +232,12 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Log.i("VAL SELECTED", "Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex)
+        Timber.i("Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex)
     }
 
-    override fun onNothingSelected() {}
+    override fun onNothingSelected() = Unit
 
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
 
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
 }

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.RectF
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
@@ -26,6 +25,7 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
 import androidx.core.net.toUri
 import info.appdev.chartexample.databinding.ActivityHorizontalbarchartBinding
+import timber.log.Timber
 
 class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
 
@@ -249,8 +249,8 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
                 .getAxisDependency()
         )
 
-        Log.i("bounds", bounds.toString())
-        Log.i("position", position.toString())
+        Timber.i(bounds.toString())
+        Timber.i(position.toString())
 
         MPPointF.recycleInstance(position)
     }

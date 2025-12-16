@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -22,6 +21,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
+import timber.log.Timber
 
 class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
     private var chart: LineChart? = null
@@ -199,12 +199,10 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Log.i("Entry selected", entry.toString())
+        Timber.i(entry.toString())
     }
 
-    override fun onNothingSelected() {
-        Log.i("Nothing selected", "Nothing selected.")
-    }
+    override fun onNothingSelected() = Unit
 
     override fun onPause() {
         super.onPause()

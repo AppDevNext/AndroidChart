@@ -2,7 +2,6 @@ package info.appdev.chartexample.compose
 
 import android.graphics.RectF
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -49,8 +48,10 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.DataTools.Companion.setData
 import info.appdev.chartexample.R
 import info.appdev.chartexample.notimportant.DemoBaseCompose
+import timber.log.Timber
 
 class HorizontalBarComposeActivity : DemoBaseCompose() {
     private var chart: HorizontalBarChart? = null
@@ -279,8 +280,8 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
                             .axisDependency
                     )
 
-                    Log.i("bounds", bounds.toString())
-                    Log.i("position", position.toString())
+                    Timber.tag("bounds $bounds")
+                    Timber.tag("position $position")
 
                     MPPointF.recycleInstance(position)
                 }
@@ -344,7 +345,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
                 i * spaceForBar, value,
                 ResourcesCompat.getDrawable(resources, R.drawable.star, null)
             )
-            Log.d("values", "x=${barEntry.x} y=${barEntry.y}")
+            Timber.d("x=${barEntry.x} y=${barEntry.y}")
             values.add(barEntry)
         }
 
