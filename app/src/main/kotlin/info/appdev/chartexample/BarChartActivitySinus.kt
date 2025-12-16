@@ -38,8 +38,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
 
         binding.chart1.description.isEnabled = false
 
-        // if more than 60 entries are displayed in the chart, no values will be
-        // drawn
+        // if more than 60 entries are displayed in the chart, no values will be drawn
         binding.chart1.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
