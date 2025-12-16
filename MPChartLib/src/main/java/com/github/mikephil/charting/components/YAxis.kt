@@ -2,7 +2,7 @@ package com.github.mikephil.charting.components
 
 import android.graphics.Color
 import android.graphics.Paint
-import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.calcTextWidth
 import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.abs
@@ -263,7 +263,7 @@ class YAxis : AxisBase {
         p.textSize = mTextSize
 
         val label = getLongestLabel(p)
-        return Utils.calcTextHeight(p, label).toFloat() + yOffset * 2f
+        return p.calcTextHeight(label).toFloat() + yOffset * 2f
     }
 
     /**

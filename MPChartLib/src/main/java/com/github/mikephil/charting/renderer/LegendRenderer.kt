@@ -20,6 +20,7 @@ import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.calcTextWidth
 import com.github.mikephil.charting.utils.convertDpToPixel
 import java.util.Collections
@@ -212,7 +213,7 @@ open class LegendRenderer(
         val labelLineHeight = Utils.getLineHeight(labelPaint, legendFontMetrics)
         val labelLineSpacing = (Utils.getLineSpacing(labelPaint, legendFontMetrics)
                 + legend.yEntrySpace.convertDpToPixel())
-        val formYOffset = labelLineHeight - Utils.calcTextHeight(labelPaint, "ABC") / 2f
+        val formYOffset = labelLineHeight - labelPaint.calcTextHeight("ABC") / 2f
 
         val entries = legend.entries
 

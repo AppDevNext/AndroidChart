@@ -15,6 +15,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.roundToInt
 
@@ -250,7 +251,7 @@ open class XAxisRendererHorizontalBarChart(
                     limitLinePaint.strokeWidth = 0.5f
                     limitLinePaint.textSize = limitLine.textSize
 
-                    val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                    val labelLineHeight = limitLinePaint.calcTextHeight(label).toFloat()
                     val xOffset = 4f.convertDpToPixel() + limitLine.xOffset
                     val yOffset = limitLine.lineWidth + labelLineHeight + limitLine.yOffset
 

@@ -22,6 +22,17 @@ val FDEG2RAD: Float = (Math.PI.toFloat() / 180f)
 fun Paint.calcTextWidth(demoText: String?) = this.measureText(demoText).toInt()
 
 /**
+ * calculates the approximate height of a text, depending on a demo text
+ * avoid repeated calls (e.g. inside drawing methods)
+ */
+fun Paint.calcTextHeight(demoText: String): Int {
+    val rect = Rect()
+    rect.set(0, 0, 0, 0)
+    this.getTextBounds(demoText, 0, demoText.length, rect)
+    return rect.height()
+}
+
+/**
  * Utilities class that has some helper methods. Needs to be initialized by
  * calling Utils.init(...) before usage. Inside the Chart.init() method, this is
  * done, if the Utils are used before that, Utils.init(...) needs to be called

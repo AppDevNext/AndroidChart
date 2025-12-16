@@ -47,20 +47,6 @@ public abstract class Utils {
 		maximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
 	}
 
-	private static final Rect mCalcTextHeightRect = new Rect();
-
-	/**
-	 * calculates the approximate height of a text, depending on a demo text
-	 * avoid repeated calls (e.g. inside drawing methods)
-	 */
-	public static int calcTextHeight(Paint paint, String demoText) {
-
-		Rect r = mCalcTextHeightRect;
-		r.set(0, 0, 0, 0);
-		paint.getTextBounds(demoText, 0, demoText.length(), r);
-		return r.height();
-	}
-
 	private static final Paint.FontMetrics mFontMetrics = new Paint.FontMetrics();
 
 	public static float getLineHeight(Paint paint) {

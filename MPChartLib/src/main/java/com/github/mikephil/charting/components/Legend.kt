@@ -6,6 +6,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.FSize
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.calcTextWidth
 import com.github.mikephil.charting.utils.convertDpToPixel
 import java.lang.Float
@@ -14,9 +15,6 @@ import kotlin.Boolean
 import kotlin.IntArray
 import kotlin.String
 import kotlin.arrayOf
-import kotlin.collections.ArrayList
-import kotlin.collections.MutableList
-import kotlin.collections.toTypedArray
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.requireNotNull
@@ -304,10 +302,9 @@ class Legend() : ComponentBase() {
         var max = 0f
 
         for (entry in this.entries) {
-            val label = entry.label
-            if (label == null) continue
+            val label = entry.label ?: continue
 
-            val length = Utils.calcTextHeight(p, label).toFloat()
+            val length = p.calcTextHeight(label).toFloat()
 
             if (length > max) max = length
         }

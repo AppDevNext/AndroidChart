@@ -14,6 +14,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.calcTextWidth
 import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.ceil
@@ -188,7 +189,7 @@ open class HorizontalBarChartRenderer(
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet)
-                val halfTextHeight = Utils.calcTextHeight(paintValues, "10") / 2f
+                val halfTextHeight = paintValues.calcTextHeight("10") / 2f
 
                 val formatter = dataSet.valueFormatter
 
