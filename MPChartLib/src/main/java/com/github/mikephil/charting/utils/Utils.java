@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
@@ -30,7 +29,6 @@ import androidx.annotation.NonNull;
 @SuppressWarnings("JavaDoc")
 public abstract class Utils {
 
-	private static DisplayMetrics mMetrics;
 	public static int minimumFlingVelocity = 50;
 	public static int maximumFlingVelocity = 8000;
 	public final static double DEG2RAD = (Math.PI / 180.0);
@@ -50,8 +48,6 @@ public abstract class Utils {
 		ViewConfiguration viewConfiguration = ViewConfiguration.get(context);
 		minimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
 		maximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
-
-		mMetrics = context.getResources().getDisplayMetrics();
 	}
 
 	/**
@@ -406,22 +402,6 @@ public abstract class Utils {
 		}
 
 		paint.setTextAlign(originalTextAlign);
-	}
-
-	public static void drawMultilineText(Canvas c, String text,
-										 float x, float y,
-										 TextPaint paint,
-										 FSize constrainedToSize,
-										 MPPointF anchor, float angleDegrees) {
-
-		StaticLayout textLayout = new StaticLayout(
-				text, 0, text.length(),
-				paint,
-				(int) Math.max(Math.ceil(constrainedToSize.width), 1.f),
-				Layout.Alignment.ALIGN_NORMAL, 1.f, 0.f, false);
-
-
-		drawMultilineText(c, textLayout, x, y, paint, anchor, angleDegrees);
 	}
 
 	/**
