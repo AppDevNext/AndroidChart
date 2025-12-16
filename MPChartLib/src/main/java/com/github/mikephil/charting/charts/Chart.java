@@ -366,7 +366,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 			reference = Math.abs(max - min);
 		}
 
-		int digits = Utils.getDecimals(reference);
+		int digits = UtilsKtKt.getDecimals(reference);
 
 		// setup the formatter with a new number of digits
 		mDefaultValueFormatter.setup(digits);

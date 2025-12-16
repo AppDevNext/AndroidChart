@@ -83,7 +83,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
                         if (decelerationAngularVelocity != 0f) {
                             decelerationLastTime = AnimationUtils.currentAnimationTimeMillis()
 
-                            Utils.postInvalidateOnAnimation(chart) // This causes computeScroll to fire, recommended for this by Google
+                            chart?.postInvalidateOnAnimation() // This causes computeScroll to fire, recommended for this by Google
                         }
                     }
 
@@ -242,7 +242,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
         decelerationLastTime = currentTime
 
         if (abs(decelerationAngularVelocity) >= 0.001) {
-            Utils.postInvalidateOnAnimation(chart) // This causes computeScroll to fire, recommended for this by Google
+            chart?.postInvalidateOnAnimation() // This causes computeScroll to fire, recommended for this by Google
         } else {
             stopDeceleration()
         }

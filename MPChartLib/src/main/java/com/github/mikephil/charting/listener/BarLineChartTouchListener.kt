@@ -222,7 +222,7 @@ class BarLineChartTouchListener(
                             decelerationVelocity.y = velocityY
 
                             // This causes computeScroll to fire, recommended for this by Google
-                            Utils.postInvalidateOnAnimation(chart!!)
+                            chart?.postInvalidateOnAnimation()
                         }
                     }
 
@@ -598,13 +598,14 @@ class BarLineChartTouchListener(
 
         decelerationLastTime = currentTime
 
-        if (abs(decelerationVelocity.x.toDouble()) >= 0.01 || abs(decelerationVelocity.y.toDouble()) >= 0.01) Utils.postInvalidateOnAnimation(chart) // This causes computeScroll to fire, recommended for this by Google
+        if (abs(decelerationVelocity.x.toDouble()) >= 0.01 || abs(decelerationVelocity.y.toDouble()) >= 0.01)
+            chart?.postInvalidateOnAnimation() // This causes computeScroll to fire, recommended for this by Google
         else {
             // Range might have changed, which means that Y-axis labels
             // could have changed in size, affecting Y-axis size.
             // So we need to recalculate offsets.
-            chart!!.calculateOffsets()
-            chart!!.postInvalidate()
+            chart?.calculateOffsets()
+            chart?.postInvalidate()
 
             stopDeceleration()
         }

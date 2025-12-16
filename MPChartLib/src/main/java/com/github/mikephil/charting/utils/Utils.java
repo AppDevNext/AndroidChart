@@ -1,7 +1,6 @@
 
 package com.github.mikephil.charting.utils;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,10 +10,8 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
-import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
@@ -183,23 +180,6 @@ public abstract class Utils {
 	}
 
 	/**
-	 * Returns the appropriate number of decimals to be used for the provided
-	 * number.
-	 *
-	 * @param number
-	 * @return
-	 */
-	public static int getDecimals(float number) {
-		float i = roundToNextSignificant(number);
-
-		if (Float.isInfinite(i)) {
-			return 0;
-		}
-
-		return (int) Math.ceil(-Math.log10(i)) + 2;
-	}
-
-	/**
 	 * Returns a recyclable MPPointF instance.
 	 * Calculates the position around a center point, depending on the distance
 	 * from the center, and the angle of the position around the center.
@@ -247,17 +227,6 @@ public abstract class Utils {
 	}
 
 	/**
-	 * Original method view.postInvalidateOnAnimation() only supportd in API >=
-	 * 16, This is a replica of the code from ViewCompat.
-	 *
-	 * @param view
-	 */
-	@SuppressLint("NewApi")
-	public static void postInvalidateOnAnimation(View view) {
-		view.postInvalidateOnAnimation();
-	}
-
-	/**
 	 * returns an angle between 0.f < 360.f (not less than zero, less than 360)
 	 */
 	public static float getNormalizedAngle(float angle) {
@@ -270,9 +239,7 @@ public abstract class Utils {
 
 	private static final Rect mDrawableBoundsCache = new Rect();
 
-	public static void drawImage(Canvas canvas,
-								 Drawable drawable,
-								 int x, int y) {
+	public static void drawImage(Canvas canvas, Drawable drawable, int x, int y) {
 
 		int width = drawable.getIntrinsicWidth();
 		int height = drawable.getIntrinsicHeight();

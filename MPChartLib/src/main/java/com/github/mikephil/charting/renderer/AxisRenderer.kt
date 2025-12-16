@@ -8,6 +8,7 @@ import com.github.mikephil.charting.utils.MPPointD
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.roundToNextSignificant
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -134,14 +135,14 @@ abstract class AxisRenderer(
 
         // Find out how much spacing (in y value space) between axis values
         val rawInterval = range / labelCount
-        var interval = Utils.roundToNextSignificant(rawInterval).toDouble()
+        var interval = rawInterval.roundToNextSignificant().toDouble()
 
         // If granularity is enabled, then do not allow the interval to go below specified granularity.
         // This is used to avoid repeated values when rounding values for display.
         if (axis.isGranularityEnabled) interval = if (interval < axis.granularity) axis.granularity.toDouble() else interval
 
         // Normalize interval
-        val intervalMagnitude = Utils.roundToNextSignificant(10.0.pow(log10(interval).toInt().toDouble())).toDouble()
+        val intervalMagnitude = 10.0.pow(log10(interval).toInt().toDouble()).roundToNextSignificant().toDouble()
         val intervalSigDigit = (interval / intervalMagnitude).toInt()
         if (intervalSigDigit > 5) {
             // Use one order of magnitude higher, to avoid intervals like 0.9 or 90
