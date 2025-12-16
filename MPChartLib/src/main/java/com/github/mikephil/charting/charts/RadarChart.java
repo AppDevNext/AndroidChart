@@ -15,6 +15,7 @@ import com.github.mikephil.charting.renderer.RadarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererRadarChart;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 import java.util.List;
 
@@ -92,8 +93,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         mYAxis = new YAxis(AxisDependency.LEFT);
         mYAxis.setLabelXOffset(10f);
 
-        mWebLineWidth = Utils.convertDpToPixel(1.5f);
-        mInnerWebLineWidth = Utils.convertDpToPixel(0.75f);
+        mWebLineWidth = UtilsKtKt.convertDpToPixel(1.5f);
+        mInnerWebLineWidth = UtilsKtKt.convertDpToPixel(0.75f);
 
         mRenderer = new RadarChartRenderer(this, mAnimator, mViewPortHandler);
         mYAxisRenderer = new YAxisRendererRadarChart(mViewPortHandler, mYAxis, this);
@@ -240,7 +241,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      *
 	 */
     public void setWebLineWidth(float width) {
-        mWebLineWidth = Utils.convertDpToPixel(width);
+        mWebLineWidth = UtilsKtKt.convertDpToPixel(width);
     }
 
     public float getWebLineWidth() {
@@ -253,7 +254,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
      *
 	 */
     public void setWebLineWidthInner(float width) {
-        mInnerWebLineWidth = Utils.convertDpToPixel(width);
+        mInnerWebLineWidth = UtilsKtKt.convertDpToPixel(width);
     }
 
     public float getWebLineWidthInner() {
@@ -342,7 +343,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     protected float getRequiredBaseOffset() {
         return mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled() ?
                 mXAxis.mLabelWidth :
-                Utils.convertDpToPixel(10f);
+                UtilsKtKt.convertDpToPixel(10f);
     }
 
     @Override

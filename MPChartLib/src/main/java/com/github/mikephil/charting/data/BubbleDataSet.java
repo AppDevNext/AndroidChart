@@ -2,7 +2,7 @@
 package com.github.mikephil.charting.data;
 
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
-import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
 
     @Override
     public void setHighlightCircleWidth(float width) {
-        mHighlightCircleWidth = Utils.convertDpToPixel(width);
+        mHighlightCircleWidth = UtilsKtKt.convertDpToPixel(width);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry
 
     @Override
     public DataSet<BubbleEntry> copy() {
-        List<BubbleEntry> entries = new ArrayList<BubbleEntry>();
+        List<BubbleEntry> entries = new ArrayList<>();
         for (int i = 0; i < mEntries.size(); i++) {
             entries.add(mEntries.get(i).copy());
         }

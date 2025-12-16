@@ -18,6 +18,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.convertDpToPixel
 import java.lang.ref.WeakReference
 import kotlin.math.max
 import kotlin.math.min
@@ -515,8 +516,8 @@ open class LineChartRenderer(
                 )
 
                 val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
-                iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x)
-                iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y)
+                iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
                 var j = 0
                 while (j < positions.size) {

@@ -15,6 +15,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBub
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -90,9 +91,9 @@ class BarLineChartTouchListener(
     init {
         this.matrix = touchMatrix
 
-        this.dragTriggerDist = Utils.convertDpToPixel(dragTriggerDistance)
+        this.dragTriggerDist = dragTriggerDistance.convertDpToPixel()
 
-        this.minScalePointerDistance = Utils.convertDpToPixel(3.5f)
+        this.minScalePointerDistance = 3.5f.convertDpToPixel()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -221,7 +222,7 @@ class BarLineChartTouchListener(
                             decelerationVelocity.y = velocityY
 
                             // This causes computeScroll to fire, recommended for this by Google
-                            Utils.postInvalidateOnAnimation(chart!!)
+                            chart?.postInvalidateOnAnimation()
                         }
                     }
 
@@ -493,7 +494,7 @@ class BarLineChartTouchListener(
      * @param dragTriggerDistance
      */
     fun setDragTriggerDist(dragTriggerDistance: Float) {
-        this.dragTriggerDist = Utils.convertDpToPixel(dragTriggerDistance)
+        this.dragTriggerDist = dragTriggerDistance.convertDpToPixel()
     }
 
     override fun onDoubleTap(e: MotionEvent): Boolean {
@@ -597,13 +598,14 @@ class BarLineChartTouchListener(
 
         decelerationLastTime = currentTime
 
-        if (abs(decelerationVelocity.x.toDouble()) >= 0.01 || abs(decelerationVelocity.y.toDouble()) >= 0.01) Utils.postInvalidateOnAnimation(chart) // This causes computeScroll to fire, recommended for this by Google
+        if (abs(decelerationVelocity.x.toDouble()) >= 0.01 || abs(decelerationVelocity.y.toDouble()) >= 0.01)
+            chart?.postInvalidateOnAnimation() // This causes computeScroll to fire, recommended for this by Google
         else {
             // Range might have changed, which means that Y-axis labels
             // could have changed in size, affecting Y-axis size.
             // So we need to recalculate offsets.
-            chart!!.calculateOffsets()
-            chart!!.postInvalidate()
+            chart?.calculateOffsets()
+            chart?.postInvalidate()
 
             stopDeceleration()
         }

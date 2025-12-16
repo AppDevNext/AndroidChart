@@ -7,8 +7,8 @@ import android.graphics.RectF
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
-import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.min
 
 /**
@@ -41,7 +41,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
         initBuffers()
         val trans = chart.getTransformer(dataSet.axisDependency)
         barBorderPaint.color = dataSet.barBorderColor
-        barBorderPaint.strokeWidth = Utils.convertDpToPixel(dataSet.barBorderWidth)
+        barBorderPaint.strokeWidth = dataSet.barBorderWidth.convertDpToPixel()
         shadowPaint.color = dataSet.barShadowColor
         val drawBorder = dataSet.barBorderWidth > 0f
         val phaseX = animator.phaseX

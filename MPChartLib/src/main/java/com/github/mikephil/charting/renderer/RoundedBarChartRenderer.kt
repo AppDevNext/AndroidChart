@@ -9,8 +9,8 @@ import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
-import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.min
 
 /** @noinspection unused
@@ -39,7 +39,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
         initBuffers()
         val trans = chart.getTransformer(dataSet.axisDependency)
         barBorderPaint.color = dataSet.barBorderColor
-        barBorderPaint.strokeWidth = Utils.convertDpToPixel(dataSet.barBorderWidth)
+        barBorderPaint.strokeWidth = dataSet.barBorderWidth.convertDpToPixel()
         shadowPaint.color = dataSet.barShadowColor
         val drawBorder = dataSet.barBorderWidth > 0f
         val phaseX = animator.phaseX
@@ -79,7 +79,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
             }
         }
 
-        val buffer = barBuffers!![index]!!
+        val buffer = barBuffers[index]!!
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
         buffer.setInverted(chart.isInverted(dataSet.axisDependency))

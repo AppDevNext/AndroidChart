@@ -12,6 +12,7 @@ import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.convertDpToPixel
 
 /**
  * Superclass of all render classes for the different data types (line, bar, ...).
@@ -50,7 +51,7 @@ abstract class DataRenderer(
         paintValues = Paint(Paint.ANTI_ALIAS_FLAG)
         paintValues.color = Color.rgb(63, 63, 63)
         paintValues.textAlign = Align.CENTER
-        paintValues.textSize = Utils.convertDpToPixel(9f)
+        paintValues.textSize = 9f.convertDpToPixel()
 
         paintHighlight = Paint(Paint.ANTI_ALIAS_FLAG)
         paintHighlight.style = Paint.Style.STROKE

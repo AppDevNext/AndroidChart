@@ -2,7 +2,7 @@ package com.github.mikephil.charting.components
 
 import android.graphics.Paint.Align
 import com.github.mikephil.charting.utils.MPPointF
-import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.convertDpToPixel
 
 class Description : ComponentBase() {
     /**
@@ -35,7 +35,7 @@ class Description : ComponentBase() {
 
     init {
         // default size
-        mTextSize = Utils.convertDpToPixel(8f)
+        mTextSize = 8f.convertDpToPixel()
     }
 
     /**

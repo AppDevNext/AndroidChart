@@ -1,7 +1,7 @@
 
 package com.github.mikephil.charting.components;
 
-import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 /**
  * Class representing the x-axis labels settings. Only use the setter methods to
@@ -50,7 +50,7 @@ public class XAxis extends AxisBase {
     public XAxis() {
         super();
 
-        mYOffset = Utils.convertDpToPixel(4.f); // -3
+        mYOffset = UtilsKtKt.convertDpToPixel(4.f); // -3
     }
 
     /**
@@ -92,7 +92,7 @@ public class XAxis extends AxisBase {
     }
 
     /**
-     * returns true if avoid-first-lastclipping is enabled, false if not
+     * returns true if avoid-first-last clipping is enabled, false if not
      */
     public boolean isAvoidFirstLastClippingEnabled() {
         return mAvoidFirstLastClipping;

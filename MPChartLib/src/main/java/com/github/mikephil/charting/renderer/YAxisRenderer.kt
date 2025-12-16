@@ -15,6 +15,7 @@ import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import androidx.core.graphics.withSave
 import androidx.core.graphics.withClip
+import com.github.mikephil.charting.utils.convertDpToPixel
 
 open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected var yAxis: YAxis, trans: Transformer?) :
     AxisRenderer(viewPortHandler, trans, yAxis) {
@@ -259,7 +260,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
     init {
         paintAxisLabels.apply {
             color = Color.BLACK
-            textSize = Utils.convertDpToPixel(10f)
+            textSize = 10f.convertDpToPixel()
         }
     }
 
@@ -314,7 +315,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                         limitLinePaint.textSize = limitLine.textSize
 
                         val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                        val xOffset = Utils.convertDpToPixel(4f) + limitLine.xOffset
+                        val xOffset = 4f.convertDpToPixel() + limitLine.xOffset
                         val yOffset = limitLine.lineWidth + labelLineHeight + limitLine.yOffset
 
                         val position = limitLine.labelPosition
@@ -433,7 +434,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                     limitRangePaint.textSize = limitRange.textSize
 
                     val labelLineHeight = Utils.calcTextHeight(limitRangePaint, label).toFloat()
-                    val xOffset = Utils.convertDpToPixel(4f) + limitRange.xOffset
+                    val xOffset = 4f.convertDpToPixel() + limitRange.xOffset
                     val yOffset = limitRange.lineWidth + labelLineHeight + limitRange.yOffset
 
                     val position = limitRange.labelPosition

@@ -18,6 +18,7 @@ import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.renderer.PieChartRenderer;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 import java.util.List;
 import java.util.Locale;
@@ -512,7 +513,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
 	 */
     public void setCenterTextSize(float sizeDp) {
         ((PieChartRenderer) mRenderer).getPaintCenterText().setTextSize(
-                Utils.convertDpToPixel(sizeDp));
+                UtilsKtKt.convertDpToPixel(sizeDp));
     }
 
     /**
@@ -528,8 +529,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
      *
 	 */
     public void setCenterTextOffset(float x, float y) {
-        mCenterTextOffset.x = Utils.convertDpToPixel(x);
-        mCenterTextOffset.y = Utils.convertDpToPixel(y);
+        mCenterTextOffset.x = UtilsKtKt.convertDpToPixel(x);
+        mCenterTextOffset.y = UtilsKtKt.convertDpToPixel(y);
     }
 
     /**
@@ -650,7 +651,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      *
 	 */
     public void setEntryLabelTextSize(float size) {
-        ((PieChartRenderer) mRenderer).getPaintEntryLabels().setTextSize(Utils.convertDpToPixel(size));
+        ((PieChartRenderer) mRenderer).getPaintEntryLabels().setTextSize(UtilsKtKt.convertDpToPixel(size));
     }
 
     /**

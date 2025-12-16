@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.FSize;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
@@ -147,9 +148,9 @@ public class Legend extends ComponentBase {
      */
     public Legend() {
 
-        this.mTextSize = Utils.convertDpToPixel(10f);
-        this.mXOffset = Utils.convertDpToPixel(5f);
-        this.mYOffset = Utils.convertDpToPixel(3f); // 2
+        this.mTextSize = UtilsKtKt.convertDpToPixel(10f);
+        this.mXOffset = UtilsKtKt.convertDpToPixel(5f);
+        this.mYOffset = UtilsKtKt.convertDpToPixel(3f); // 2
     }
 
     /**
@@ -186,10 +187,10 @@ public class Legend extends ComponentBase {
 
         float max = 0f;
         float maxFormSize = 0f;
-        float formToTextSpace = Utils.convertDpToPixel(mFormToTextSpace);
+        float formToTextSpace = UtilsKtKt.convertDpToPixel(mFormToTextSpace);
 
         for (LegendEntry entry : mEntries) {
-            final float formSize = Utils.convertDpToPixel(
+            final float formSize = UtilsKtKt.convertDpToPixel(
                     Float.isNaN(entry.formSize)
                     ? mFormSize : entry.formSize);
             if (formSize > maxFormSize)
@@ -585,11 +586,11 @@ public class Legend extends ComponentBase {
      */
     public void calculateDimensions(Paint labelpaint, ViewPortHandler viewPortHandler) {
 
-        float defaultFormSize = Utils.convertDpToPixel(mFormSize);
-        float stackSpace = Utils.convertDpToPixel(mStackSpace);
-        float formToTextSpace = Utils.convertDpToPixel(mFormToTextSpace);
-        float xEntrySpace = Utils.convertDpToPixel(mXEntrySpace);
-        float yEntrySpace = Utils.convertDpToPixel(mYEntrySpace);
+        float defaultFormSize = UtilsKtKt.convertDpToPixel(mFormSize);
+        float stackSpace = UtilsKtKt.convertDpToPixel(mStackSpace);
+        float formToTextSpace = UtilsKtKt.convertDpToPixel(mFormToTextSpace);
+        float xEntrySpace = UtilsKtKt.convertDpToPixel(mXEntrySpace);
+        float yEntrySpace = UtilsKtKt.convertDpToPixel(mYEntrySpace);
         boolean wordWrapEnabled = mWordWrapEnabled;
         LegendEntry[] entries = mEntries;
         int entryCount = entries.length;
@@ -610,7 +611,7 @@ public class Legend extends ComponentBase {
                     boolean drawingForm = e.form != LegendForm.NONE;
                     float formSize = Float.isNaN(e.formSize)
                             ? defaultFormSize
-                            : Utils.convertDpToPixel(e.formSize);
+                            : UtilsKtKt.convertDpToPixel(e.formSize);
                     String label = e.label;
 
                     if (!wasStacked)
@@ -675,7 +676,7 @@ public class Legend extends ComponentBase {
                     boolean drawingForm = e.form != LegendForm.NONE;
                     float formSize = Float.isNaN(e.formSize)
                             ? defaultFormSize
-                            : Utils.convertDpToPixel(e.formSize);
+                            : UtilsKtKt.convertDpToPixel(e.formSize);
                     String label = e.label;
 
                     mCalculatedLabelBreakPoints.add(false);
