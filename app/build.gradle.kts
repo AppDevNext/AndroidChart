@@ -65,6 +65,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.activity:activity-compose:1.12.1")
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("com.github.AppDevNext.Logcat:LogcatCoreLib:3.4")
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     // Compose testing

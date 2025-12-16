@@ -2,7 +2,6 @@ package info.appdev.chartexample.fragments
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -14,6 +13,7 @@ import com.github.mikephil.charting.listener.ChartTouchListener.ChartGesture
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import info.appdev.chartexample.R
 import info.appdev.chartexample.custom.MyMarkerView
+import timber.log.Timber
 
 class BarChartFrag : SimpleFragment(), OnChartGestureListener {
     private var chart: BarChart? = null
@@ -57,36 +57,36 @@ class BarChartFrag : SimpleFragment(), OnChartGestureListener {
     }
 
     override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
-        Log.i("Gesture", "START")
+        Timber.i("START")
     }
 
     override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
-        Log.i("Gesture", "END")
+        Timber.i("END")
         chart!!.highlightValues(null)
     }
 
     override fun onChartLongPressed(me: MotionEvent) {
-        Log.i("LongPress", "Chart long pressed.")
+        Timber.i("Chart long pressed.")
     }
 
     override fun onChartDoubleTapped(me: MotionEvent) {
-        Log.i("DoubleTap", "Chart double-tapped.")
+        Timber.i("Chart double-tapped.")
     }
 
     override fun onChartSingleTapped(me: MotionEvent) {
-        Log.i("SingleTap", "Chart single-tapped.")
+        Timber.i("Chart single-tapped.")
     }
 
     override fun onChartFling(me1: MotionEvent?, me2: MotionEvent, velocityX: Float, velocityY: Float) {
-        Log.i("Fling", "Chart fling. VelocityX: $velocityX, VelocityY: $velocityY")
+        Timber.i("Chart fling. VelocityX: $velocityX, VelocityY: $velocityY")
     }
 
     override fun onChartScale(me: MotionEvent, scaleX: Float, scaleY: Float) {
-        Log.i("Scale / Zoom", "ScaleX: $scaleX, ScaleY: $scaleY")
+        Timber.i("ScaleX: $scaleX, ScaleY: $scaleY")
     }
 
     override fun onChartTranslate(me: MotionEvent, dX: Float, dY: Float) {
-        Log.i("Translate / Move", "dX: $dX, dY: $dY")
+        Timber.i("dX: $dX, dY: $dY")
     }
 
     companion object {

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
@@ -26,6 +25,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ViewPortHandler
 import info.appdev.chartexample.notimportant.DemoBase
+import timber.log.Timber
 import java.text.DecimalFormat
 import kotlin.math.abs
 
@@ -208,12 +208,10 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         val barEntry = entry as BarEntry
-        Log.i("VAL SELECTED", "Value: " + abs(barEntry.yVals!![highlight.stackIndex]))
+        Timber.i("Value: " + abs(barEntry.yVals!![highlight.stackIndex]))
     }
 
-    override fun onNothingSelected() {
-        Log.i("NOTING SELECTED", "")
-    }
+    override fun onNothingSelected() = Unit
 
     private class CustomFormatter : IValueFormatter, IAxisValueFormatter {
         private val decimalFormat: DecimalFormat = DecimalFormat("###")

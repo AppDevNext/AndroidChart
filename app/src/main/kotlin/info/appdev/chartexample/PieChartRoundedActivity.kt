@@ -10,7 +10,6 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
@@ -34,6 +33,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
+import timber.log.Timber
 
 class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
     private var chart: PieChart? = null
@@ -282,12 +282,10 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Log.i("VAL SELECTED", "Value: " + entry.y + ", index: " + highlight.x + ", DataSet index: " + highlight.dataSetIndex)
+        Timber.i("Value: " + entry.y + ", index: " + highlight.x + ", DataSet index: " + highlight.dataSetIndex)
     }
 
-    override fun onNothingSelected() {
-        Log.i("PieChart", "nothing selected")
-    }
+    override fun onNothingSelected() = Unit
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 

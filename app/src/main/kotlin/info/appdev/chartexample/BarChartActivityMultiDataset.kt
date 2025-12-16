@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
@@ -27,6 +26,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.MyMarkerView
 import info.appdev.chartexample.notimportant.DemoBase
+import timber.log.Timber
 import java.util.Locale
 
 class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
@@ -255,10 +255,8 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
     override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Log.i("Activity", "Selected: " + entry.toString() + ", dataSet: " + highlight.dataSetIndex)
+        Timber.i("Selected: $entry, dataSet: ${highlight.dataSetIndex}")
     }
 
-    override fun onNothingSelected() {
-        Log.i("Activity", "Nothing selected.")
-    }
+    override fun onNothingSelected() = Unit
 }

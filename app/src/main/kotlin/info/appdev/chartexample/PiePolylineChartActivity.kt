@@ -10,7 +10,6 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
@@ -31,6 +30,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
+import timber.log.Timber
 
 class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
     private var chart: PieChart? = null
@@ -265,12 +265,10 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Log.i("VAL SELECTED", "Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex)
+        Timber.i("Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex)
     }
 
-    override fun onNothingSelected() {
-        Log.i("PieChart", "nothing selected")
-    }
+    override fun onNothingSelected() = Unit
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 

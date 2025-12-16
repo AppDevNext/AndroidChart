@@ -3,7 +3,6 @@ package info.appdev.chartexample
 import android.content.Context
 import android.graphics.Color
 import android.graphics.DashPathEffect
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
@@ -13,6 +12,7 @@ import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.getSDKInt
+import timber.log.Timber
 
 class DataTools {
     companion object {
@@ -143,7 +143,7 @@ class DataTools {
         }
 
         fun setData(context: Context, lineChart: LineChart, count: Int = VAL_COUNT, range: Float = VAL_RANGE) {
-            Log.d("setData", "$count= range=$range")
+            Timber.d("count=$count range=$range")
             val values = ArrayList<Entry>()
             if (count == VAL_COUNT) {
                 VAL_FIX.forEachIndexed { index, d ->

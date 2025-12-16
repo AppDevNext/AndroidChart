@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
@@ -29,6 +28,7 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.formatter.MyAxisValueFormatter
 import info.appdev.chartexample.formatter.MyValueFormatter
 import info.appdev.chartexample.notimportant.DemoBase
+import timber.log.Timber
 
 class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
     private var chart: BarChart? = null
@@ -242,9 +242,9 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         val barEntry = entry as BarEntry
 
         if (barEntry.yVals != null)
-            Log.i("VAL SELECTED", "Value: " + barEntry.yVals!![highlight.stackIndex])
+            Timber.i("Value: " + barEntry.yVals!![highlight.stackIndex])
         else
-            Log.i("VAL SELECTED", "Value: " + barEntry.y)
+            Timber.i("Value: " + barEntry.y)
     }
 
     override fun onNothingSelected() {}
