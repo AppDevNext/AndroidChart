@@ -18,7 +18,9 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextWidth
 import com.github.mikephil.charting.utils.convertDpToPixel
+import com.github.mikephil.charting.utils.drawXAxisValue
 import kotlin.math.roundToInt
 
 open class XAxisRenderer(
@@ -205,7 +207,7 @@ open class XAxisRenderer(
                     // avoid clipping of the last
 
                     if (i / 2 == xAxis.mEntryCount - 1 && xAxis.mEntryCount > 1) {
-                        val width = Utils.calcTextWidth(paintAxisLabels, label).toFloat()
+                        val width = paintAxisLabels.calcTextWidth(label).toFloat()
 
                         if (width > viewPortHandler.offsetRight() * 2
                             && x + width > viewPortHandler.chartWidth
@@ -213,7 +215,7 @@ open class XAxisRenderer(
 
                         // avoid clipping of the first
                     } else if (i == 0) {
-                        val width = Utils.calcTextWidth(paintAxisLabels, label).toFloat()
+                        val width = paintAxisLabels.calcTextWidth(label).toFloat()
                         x += width / 2
                     }
                 }
@@ -225,7 +227,7 @@ open class XAxisRenderer(
     }
 
     protected fun drawLabel(canvas: Canvas, formattedLabel: String?, x: Float, y: Float, anchor: MPPointF, angleDegrees: Float) {
-        Utils.drawXAxisValue(canvas, formattedLabel, x, y, paintAxisLabels, anchor, angleDegrees)
+        canvas.drawXAxisValue(formattedLabel, x, y, paintAxisLabels, anchor, angleDegrees)
     }
 
     protected open var mRenderGridLinesPath: Path = Path()

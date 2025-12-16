@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.utils
 
 import android.content.Context
+import android.graphics.Paint
 import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
@@ -15,9 +16,11 @@ import kotlin.Int
 import kotlin.String
 import kotlin.code
 import kotlin.math.ceil
+import kotlin.math.cos
 import kotlin.math.log10
 import kotlin.math.pow
 import kotlin.math.roundToInt
+import kotlin.math.sin
 import kotlin.time.times
 
 var metrics: DisplayMetrics? = null
@@ -85,6 +88,13 @@ fun Float.convertDpToPixel(): Float {
 fun getSDKInt() = Build.VERSION.SDK_INT
 
 fun Context.convertDpToPixel(dp: Float) = dp * this.resources.displayMetrics.density
+
+fun MPPointF.getPosition(dist: Float, angle: Float) :MPPointF {
+    return MPPointF().apply {
+        x = (this.x + dist * cos(Math.toRadians(angle.toDouble()))).toFloat()
+        y = (this.y + dist * sin(Math.toRadians(angle.toDouble()))).toFloat()
+    }
+}
 
 fun Float.formatNumber(digitCount: Int, separateThousands: Boolean, separateChar: Char = '.'): String {
     var number = this

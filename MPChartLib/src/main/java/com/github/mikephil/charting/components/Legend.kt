@@ -6,6 +6,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.FSize
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextWidth
 import com.github.mikephil.charting.utils.convertDpToPixel
 import java.lang.Float
 import kotlin.Array
@@ -284,10 +285,9 @@ class Legend() : ComponentBase() {
                 entry.formSize).convertDpToPixel()
             if (formSize > maxFormSize) maxFormSize = formSize
 
-            val label = entry.label
-            if (label == null) continue
+            val label = entry.label ?: continue
 
-            val length = Utils.calcTextWidth(p, label).toFloat()
+            val length = p.calcTextWidth(label).toFloat()
 
             if (length > max) max = length
         }
@@ -491,7 +491,7 @@ class Legend() : ComponentBase() {
                             wasStacked = false
                         }
 
-                        width += Utils.calcTextWidth(labelpaint, label).toFloat()
+                        width += labelpaint.calcTextWidth(label).toFloat()
 
                         maxHeight += labelLineHeight + yEntrySpace
                     } else {

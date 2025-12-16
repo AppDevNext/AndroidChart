@@ -47,14 +47,6 @@ public abstract class Utils {
 		maximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
 	}
 
-	/**
-	 * calculates the approximate width of a text, depending on a demo text
-	 * avoid repeated calls (e.g. inside drawing methods)
-	 */
-	public static int calcTextWidth(Paint paint, String demoText) {
-		return (int) paint.measureText(demoText);
-	}
-
 	private static final Rect mCalcTextHeightRect = new Rect();
 
 	/**
@@ -225,75 +217,6 @@ public abstract class Utils {
 		canvas.translate(drawOffset.getX(), drawOffset.getY());
 		drawable.draw(canvas);
 		canvas.restoreToCount(saveId);
-	}
-
-	private static final Rect mDrawTextRectBuffer = new Rect();
-	private static final Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
-
-	public static void drawXAxisValue(Canvas canvas, String text, float x, float y,
-									  Paint paint,
-									  MPPointF anchor, float angleDegrees) {
-
-		float drawOffsetX = 0.f;
-		float drawOffsetY = 0.f;
-
-		final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
-		paint.getTextBounds(text, 0, text.length(), mDrawTextRectBuffer);
-
-		// Android sometimes has pre-padding
-		drawOffsetX -= mDrawTextRectBuffer.left;
-
-		// Android does not snap the bounds to line boundaries,
-		//  and draws from bottom to top.
-		// And we want to normalize it.
-		drawOffsetY -= mFontMetricsBuffer.ascent;
-
-		// To have a consistent point of reference, we always draw left-aligned
-		Paint.Align originalTextAlign = paint.getTextAlign();
-		paint.setTextAlign(Paint.Align.LEFT);
-
-		if (angleDegrees != 0.f) {
-
-			// Move the text drawing rect in a way that it always rotates around its center
-			drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f;
-			drawOffsetY -= lineHeight * 0.5f;
-
-			float translateX = x;
-			float translateY = y;
-
-			// Move the "outer" rect relative to the anchor, assuming its centered
-			if (anchor.getX() != 0.5f || anchor.getY() != 0.5f) {
-				final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
-						mDrawTextRectBuffer.width(),
-						lineHeight,
-						angleDegrees);
-
-				translateX -= rotatedSize.getWidth() * (anchor.getX() - 0.5f);
-				translateY -= rotatedSize.getHeight() * (anchor.getY() - 0.5f);
-				FSize.Companion.recycleInstance(rotatedSize);
-			}
-
-			canvas.save();
-			canvas.translate(translateX, translateY);
-			canvas.rotate(angleDegrees);
-
-			canvas.drawText(text, drawOffsetX, drawOffsetY, paint);
-
-			canvas.restore();
-		} else {
-			if (anchor.getX() != 0.f || anchor.getY() != 0.f) {
-
-				drawOffsetX -= mDrawTextRectBuffer.width() * anchor.getX();
-				drawOffsetY -= lineHeight * anchor.getY();
-			}
-
-			drawOffsetX += x;
-			drawOffsetY += y;
-
-			canvas.drawText(text, drawOffsetX, drawOffsetY, paint);
-		}
-
-		paint.setTextAlign(originalTextAlign);
 	}
 
 	/**

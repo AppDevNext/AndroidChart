@@ -14,6 +14,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.github.mikephil.charting.utils.convertDpToPixel
+import com.github.mikephil.charting.utils.getPosition
 
 open class RadarChartRenderer(
     protected var chart: RadarChart, animator: ChartAnimator,
@@ -60,7 +61,7 @@ open class RadarChartRenderer(
         val factor = chart.factor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
+        var pOut = MPPointF.getInstance(0f, 0f)
         val surface = drawDataSetSurfacePathBuffer
         surface.reset()
 
@@ -71,10 +72,9 @@ open class RadarChartRenderer(
 
             dataSet.getEntryForIndex(j)?.let { e ->
 
-                Utils.getPosition(
-                    center,
+                pOut = center.getPosition(
                     (e.y - chart.yChartMin) * factor * phaseY,
-                    sliceAngle * j * phaseX + chart.rotationAngle, pOut
+                sliceAngle * j * phaseX + chart.rotationAngle
                 )
             }
             if (java.lang.Float.isNaN(pOut.x)) continue
@@ -122,8 +122,8 @@ open class RadarChartRenderer(
         val factor = chart.factor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
-        val pIcon = MPPointF.getInstance(0f, 0f)
+        var pOut = MPPointF.getInstance(0f, 0f)
+        var pIcon = MPPointF.getInstance(0f, 0f)
 
         val yOffset = 5f.convertDpToPixel()
 
@@ -146,12 +146,10 @@ open class RadarChartRenderer(
             for (j in 0..<dataSet.entryCount) {
                 dataSet.getEntryForIndex(j)?.let { entry ->
 
-                    Utils.getPosition(
-                        center,
+                    pOut = center.getPosition(
                         (entry.y - chart.yChartMin) * factor * phaseY,
-                        sliceAngle * j * phaseX + chart.rotationAngle,
-                        pOut
-                    )
+                        sliceAngle * j * phaseX + chart.rotationAngle
+                )
 
                     if (dataSet.isDrawValues) {
                         drawValue(
@@ -169,12 +167,10 @@ open class RadarChartRenderer(
                     if (entry.icon != null && dataSet.isDrawIcons) {
                         val icon = entry.icon
 
-                        Utils.getPosition(
-                            center,
+                        pIcon = center.getPosition(
                             (entry.y) * factor * phaseY + iconsOffset.y,
-                            sliceAngle * j * phaseX + chart.rotationAngle,
-                            pIcon
-                        )
+                            sliceAngle * j * phaseX + chart.rotationAngle
+                    )
 
                         pIcon.y += iconsOffset.x
 
@@ -220,14 +216,12 @@ open class RadarChartRenderer(
         val xIncrements = 1 + chart.skipWebLineCount
         val maxEntryCount = chart.data!!.maxEntryCountSet.entryCount
 
-        val p = MPPointF.getInstance(0f, 0f)
+        var p = MPPointF.getInstance(0f, 0f)
         var i = 0
         while (i < maxEntryCount) {
-            Utils.getPosition(
-                center,
+            p = center.getPosition(
                 chart.yRange * factor,
-                sliceAngle * i + rotationAngle,
-                p
+                sliceAngle * i + rotationAngle
             )
 
             canvas.drawLine(center.x, center.y, p.x, p.y, webPaint)
@@ -242,8 +236,8 @@ open class RadarChartRenderer(
 
         val labelCount = chart.yAxis.mEntryCount
 
-        val p1out = MPPointF.getInstance(0f, 0f)
-        val p2out = MPPointF.getInstance(0f, 0f)
+        var p1out = MPPointF.getInstance(0f, 0f)
+        var p2out = MPPointF.getInstance(0f, 0f)
         for (j in 0..<labelCount) {
             if (chart.isCustomLayerColorEnable) {
                 innerAreaPath.rewind()
@@ -252,8 +246,8 @@ open class RadarChartRenderer(
             for (i in 0..<chart.data!!.entryCount) {
                 val r = (chart.yAxis.mEntries[j] - chart.yChartMin) * factor
 
-                Utils.getPosition(center, r, sliceAngle * i + rotationAngle, p1out)
-                Utils.getPosition(center, r, sliceAngle * (i + 1) + rotationAngle, p2out)
+                p1out = center.getPosition(r, sliceAngle * i + rotationAngle)
+                p2out = center.getPosition(r, sliceAngle * (i + 1) + rotationAngle)
 
                 canvas.drawLine(p1out.x, p1out.y, p2out.x, p2out.y, webPaint)
                 if (chart.isCustomLayerColorEnable) {
@@ -290,7 +284,7 @@ open class RadarChartRenderer(
         val factor = chart.factor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
+        var pOut = MPPointF.getInstance(0f, 0f)
 
         val radarData = chart.data
 
@@ -307,11 +301,9 @@ open class RadarChartRenderer(
 
                 val y = (radarEntry.y - chart.yChartMin)
 
-                Utils.getPosition(
-                    center,
+                pOut = center.getPosition(
                     y * factor * animator.phaseY,
-                    sliceAngle * high.x * animator.phaseX + chart.rotationAngle,
-                    pOut
+                    sliceAngle * high.x * animator.phaseX + chart.rotationAngle
                 )
             }
             high.setDraw(pOut.x, pOut.y)

@@ -20,6 +20,7 @@ import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextWidth
 import com.github.mikephil.charting.utils.convertDpToPixel
 import java.util.Collections
 import kotlin.math.min
@@ -396,7 +397,7 @@ open class LegendRenderer(
                             -formToTextSpace
                         else if (wasStacked) posX = originPosX
 
-                        if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= Utils.calcTextWidth(labelPaint, e.label).toFloat()
+                        if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= labelPaint.calcTextWidth(e.label).toFloat()
 
                         if (e.label != null)
                             if (!wasStacked) {

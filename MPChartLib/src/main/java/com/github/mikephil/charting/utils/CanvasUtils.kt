@@ -17,6 +17,11 @@ val DEG2RAD: Double = (Math.PI / 180.0)
 val FDEG2RAD: Float = (Math.PI.toFloat() / 180f)
 
 /**
+ * calculates the approximate width of a text, depending on a demo text avoid repeated calls (e.g. inside drawing methods)
+ */
+fun Paint.calcTextWidth(demoText: String?) = this.measureText(demoText).toInt()
+
+/**
  * Utilities class that has some helper methods. Needs to be initialized by
  * calling Utils.init(...) before usage. Inside the Chart.init() method, this is
  * done, if the Utils are used before that, Utils.init(...) needs to be called
