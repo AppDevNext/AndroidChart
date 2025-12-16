@@ -43,8 +43,6 @@ open class LargeValueFormatter() : IValueFormatter, IAxisValueFormatter {
 
     /**
      * Set an appendix text to be added at the end of the formatted value.
-     *
-     * @param appendix
      */
     fun setAppendix(appendix: String) {
         text = appendix
