@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.interfaces.datasets.ILineRadarDataSet;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 import java.util.List;
 
@@ -106,7 +107,7 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
             width = 0.0f;
         if (width > 10.0f)
             width = 10.0f;
-        mLineWidth = Utils.convertDpToPixel(width);
+        mLineWidth = UtilsKtKt.convertDpToPixel(width);
     }
 
     @Override

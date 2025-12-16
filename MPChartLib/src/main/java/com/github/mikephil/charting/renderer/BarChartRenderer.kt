@@ -14,6 +14,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.ceil
 import kotlin.math.min
 
@@ -105,7 +106,7 @@ open class BarChartRenderer(
         val trans = chart.getTransformer(dataSet.axisDependency)
 
         barBorderPaint.color = dataSet.barBorderColor
-        barBorderPaint.strokeWidth = Utils.convertDpToPixel(dataSet.barBorderWidth)
+        barBorderPaint.strokeWidth = dataSet.barBorderWidth.convertDpToPixel()
 
         val drawBorder = dataSet.barBorderWidth > 0f
 
@@ -254,7 +255,7 @@ open class BarChartRenderer(
         if (isDrawingValuesAllowed(chart)) {
             val dataSets = chart.barData.dataSets
 
-            val valueOffsetPlus = Utils.convertDpToPixel(4.5f)
+            val valueOffsetPlus = 4.5f.convertDpToPixel()
             var posOffset: Float
             var negOffset: Float
             val drawValueAboveBar = chart.isDrawValueAboveBarEnabled
@@ -290,8 +291,8 @@ open class BarChartRenderer(
                 val phaseY = animator.phaseY
 
                 val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
-                iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x)
-                iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y)
+                iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
                 // if only single values are drawn (sum)
                 if (!dataSet.isStacked) {

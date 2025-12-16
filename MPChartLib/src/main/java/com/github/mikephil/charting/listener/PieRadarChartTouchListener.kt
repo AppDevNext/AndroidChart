@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils
 import com.github.mikephil.charting.charts.PieRadarChartBase
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.abs
 
 class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListener<PieRadarChartBase<*>?>(chart) {
@@ -58,7 +59,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
 
                     if (touchMode == NONE
                         && (distance(x, touchStartPoint.x, y, touchStartPoint.y)
-                                > Utils.convertDpToPixel(8f))
+                                > 8f.convertDpToPixel())
                     ) {
                         lastGesture = ChartGesture.ROTATE
                         touchMode = ROTATE

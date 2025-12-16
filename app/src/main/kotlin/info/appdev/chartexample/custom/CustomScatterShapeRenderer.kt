@@ -4,8 +4,8 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet
 import com.github.mikephil.charting.renderer.scatter.IShapeRenderer
-import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.convertDpToPixel
 
 /**
  * Custom shape renderer that draws a single line.
@@ -15,7 +15,7 @@ class CustomScatterShapeRenderer : IShapeRenderer {
         canvas: Canvas, dataSet: IScatterDataSet, viewPortHandler: ViewPortHandler?,
         posX: Float, posY: Float, renderPaint: Paint
     ) {
-        val shapeHalf = Utils.convertDpToPixel(dataSet.getScatterShapeSize()) / 2f
+        val shapeHalf = dataSet.getScatterShapeSize().convertDpToPixel() / 2f
 
         canvas.drawLine(
             posX - shapeHalf,

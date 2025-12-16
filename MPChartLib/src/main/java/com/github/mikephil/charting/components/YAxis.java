@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 /**
  * Class representing the y-axis labels settings and its entries. Only use the setter methods to
@@ -297,7 +298,7 @@ public class YAxis extends AxisBase {
      * Sets the width of the zero line in dp
      */
     public void setZeroLineWidth(float width) {
-        this.mZeroLineWidth = Utils.convertDpToPixel(width);
+        this.mZeroLineWidth = UtilsKtKt.convertDpToPixel(width);
     }
 
     /**
@@ -314,10 +315,10 @@ public class YAxis extends AxisBase {
         float maxWidth = getMaxWidth();
 
         if (minWidth > 0.f)
-            minWidth = Utils.convertDpToPixel(minWidth);
+            minWidth = UtilsKtKt.convertDpToPixel(minWidth);
 
         if (maxWidth > 0.f && maxWidth != Float.POSITIVE_INFINITY)
-            maxWidth = Utils.convertDpToPixel(maxWidth);
+            maxWidth = UtilsKtKt.convertDpToPixel(maxWidth);
 
         width = Math.max(minWidth, Math.min(width, maxWidth > 0.0 ? maxWidth : width));
 

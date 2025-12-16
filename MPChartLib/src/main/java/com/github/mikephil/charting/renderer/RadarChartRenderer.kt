@@ -13,6 +13,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.convertDpToPixel
 
 open class RadarChartRenderer(
     protected var chart: RadarChart, animator: ChartAnimator,
@@ -127,7 +128,7 @@ open class RadarChartRenderer(
         val pOut = MPPointF.getInstance(0f, 0f)
         val pIcon = MPPointF.getInstance(0f, 0f)
 
-        val yOffset = Utils.convertDpToPixel(5f)
+        val yOffset = 5f.convertDpToPixel()
 
         for (i in 0..<chart.data!!.dataSetCount) {
             val dataSet = chart.data!!.getDataSetByIndex(i)
@@ -142,8 +143,8 @@ open class RadarChartRenderer(
             applyValueTextStyle(dataSet)
 
             val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
-            iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x)
-            iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y)
+            iconsOffset.x = iconsOffset.x.convertDpToPixel()
+            iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
             for (j in 0..<dataSet.entryCount) {
                 val entry = dataSet.getEntryForIndex(j)
@@ -376,8 +377,8 @@ open class RadarChartRenderer(
         var innerRadiusLocal = innerRadius
         var outerRadiusLocal = outerRadius
         canvas.withSave {
-            outerRadiusLocal = Utils.convertDpToPixel(outerRadiusLocal)
-            innerRadiusLocal = Utils.convertDpToPixel(innerRadiusLocal)
+            outerRadiusLocal = outerRadiusLocal.convertDpToPixel()
+            innerRadiusLocal = innerRadiusLocal.convertDpToPixel()
 
             if (fillColor != ColorTemplate.COLOR_NONE) {
                 val p = mDrawHighlightCirclePathBuffer
@@ -394,7 +395,7 @@ open class RadarChartRenderer(
             if (strokeColor != ColorTemplate.COLOR_NONE) {
                 highlightCirclePaint.color = strokeColor
                 highlightCirclePaint.style = Paint.Style.STROKE
-                highlightCirclePaint.strokeWidth = Utils.convertDpToPixel(strokeWidth)
+                highlightCirclePaint.strokeWidth = strokeWidth.convertDpToPixel()
                 drawCircle(point.x, point.y, outerRadiusLocal, highlightCirclePaint)
             }
 

@@ -540,7 +540,7 @@ open class ViewPortHandler {
      * bounds on the x-axis.
      */
     fun setDragOffsetX(offset: Float) {
-        transOffsetX = Utils.convertDpToPixel(offset)
+        transOffsetX = offset.convertDpToPixel()
     }
 
     /**
@@ -548,7 +548,7 @@ open class ViewPortHandler {
      * bounds on the y-axis.
      */
     fun setDragOffsetY(offset: Float) {
-        transOffsetY = Utils.convertDpToPixel(offset)
+        transOffsetY = offset.convertDpToPixel()
     }
 
     /**

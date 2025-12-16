@@ -58,24 +58,6 @@ public abstract class Utils {
 	}
 
 	/**
-	 * This method converts dp unit to equivalent pixels, depending on device
-	 * density. NEEDS UTILS TO BE INITIALIZED BEFORE USAGE.
-	 *
-	 * @param dp A value in dp (density independent pixels) unit. Which we need
-	 *           to convert into pixels
-	 * @return A float value to represent px equivalent to dp depending on
-	 * device density
-	 */
-	public static float convertDpToPixel(float dp) {
-		if (mMetrics == null) {
-			Log.e("chartLib-Utils", "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place.");
-			return dp;
-		}
-
-		return dp * mMetrics.density;
-	}
-
-	/**
 	 * calculates the approximate width of a text, depending on a demo text
 	 * avoid repeated calls (e.g. inside drawing methods)
 	 *

@@ -3,7 +3,7 @@ package com.github.mikephil.charting.data;
 import android.graphics.DashPathEffect;
 
 import com.github.mikephil.charting.interfaces.datasets.ILineScatterCandleRadarDataSet;
-import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public abstract class LineScatterCandleRadarDataSet<T extends Entry> extends Bar
     protected boolean mDrawHorizontalHighlightIndicator = true;
 
     /** the width of the highlight indicator lines */
-    protected float mHighlightLineWidth = 0.5f;
+    protected float mHighlightLineWidth;
 
     /** the path effect for dashed highlight-lines */
     protected DashPathEffect mHighlightDashPathEffect = null;
@@ -24,7 +24,7 @@ public abstract class LineScatterCandleRadarDataSet<T extends Entry> extends Bar
 
     public LineScatterCandleRadarDataSet(List<T> yVals, String label) {
         super(yVals, label);
-        mHighlightLineWidth = Utils.convertDpToPixel(0.5f);
+        mHighlightLineWidth = UtilsKtKt.convertDpToPixel(0.5f);
     }
 
     /**
@@ -63,7 +63,7 @@ public abstract class LineScatterCandleRadarDataSet<T extends Entry> extends Bar
      * Sets the width of the highlight line in dp.
      */
     public void setHighlightLineWidth(float width) {
-        mHighlightLineWidth = Utils.convertDpToPixel(width);
+        mHighlightLineWidth = UtilsKtKt.convertDpToPixel(width);
     }
 
     @Override

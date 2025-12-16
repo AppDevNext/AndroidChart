@@ -2,7 +2,7 @@ package com.github.mikephil.charting.components
 
 import android.graphics.Color
 import android.graphics.Typeface
-import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.convertDpToPixel
 
 /**
  * This class encapsulates everything both Axis, Legend and LimitLines have in common.
@@ -35,7 +35,7 @@ abstract class ComponentBase {
      * the text size of the labels
      */
     @JvmField
-    protected var mTextSize: Float = Utils.convertDpToPixel(10f)
+    protected var mTextSize: Float = 10f.convertDpToPixel()
 
     /**
      * the text color to use for the labels
@@ -49,7 +49,7 @@ abstract class ComponentBase {
     var xOffset: Float
         get() = mXOffset
         set(xOffset) {
-            mXOffset = Utils.convertDpToPixel(xOffset)
+            mXOffset = xOffset.convertDpToPixel()
         }
 
     /**
@@ -59,7 +59,7 @@ abstract class ComponentBase {
     var yOffset: Float
         get() = mYOffset
         set(yOffset) {
-            mYOffset = Utils.convertDpToPixel(yOffset)
+            mYOffset = yOffset.convertDpToPixel()
         }
 
     /**
@@ -72,6 +72,6 @@ abstract class ComponentBase {
             if (sizeLocal > 24f) sizeLocal = 24f
             if (sizeLocal < 6f) sizeLocal = 6f
 
-            mTextSize = Utils.convertDpToPixel(sizeLocal)
+            mTextSize = sizeLocal.convertDpToPixel()
         }
 }

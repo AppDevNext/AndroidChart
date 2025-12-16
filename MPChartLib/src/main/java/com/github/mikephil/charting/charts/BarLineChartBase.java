@@ -33,6 +33,7 @@ import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 import androidx.annotation.NonNull;
 
@@ -181,7 +182,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 		mBorderPaint = new Paint();
 		mBorderPaint.setStyle(Style.STROKE);
 		mBorderPaint.setColor(Color.BLACK);
-		mBorderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
+		mBorderPaint.setStrokeWidth(UtilsKtKt.convertDpToPixel(1f));
 	}
 
 	// for performance tracking
@@ -515,7 +516,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 			offsetBottom += getExtraBottomOffset();
 			offsetLeft += getExtraLeftOffset();
 
-			float minOffset = Utils.convertDpToPixel(mMinOffset);
+			float minOffset = UtilsKtKt.convertDpToPixel(mMinOffset);
 
 			mViewPortHandler.restrainViewPort(Math.max(minOffset, offsetLeft), Math.max(minOffset, offsetTop), Math.max(minOffset, offsetRight), Math.max(minOffset, offsetBottom));
 
@@ -549,8 +550,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 	 * Returns the Transformer class that contains all matrices and is
 	 * responsible for transforming values into pixels on the screen and
 	 * backwards.
-	 *
-	 * @return
 	 */
 	public Transformer getTransformer(AxisDependency which) {
 		if (which == AxisDependency.LEFT) {
@@ -1165,7 +1164,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 	 * Sets the width of the border lines in dp.
 	 */
 	public void setBorderWidth(float width) {
-		mBorderPaint.setStrokeWidth(Utils.convertDpToPixel(width));
+		mBorderPaint.setStrokeWidth(UtilsKtKt.convertDpToPixel(width));
 	}
 
 	/**

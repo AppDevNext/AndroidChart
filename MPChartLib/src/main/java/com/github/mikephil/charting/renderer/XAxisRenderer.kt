@@ -18,6 +18,7 @@ import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import androidx.core.graphics.withClip
 import androidx.core.graphics.withSave
+import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.roundToInt
 
 open class XAxisRenderer(
@@ -292,7 +293,7 @@ open class XAxisRenderer(
     init {
         paintAxisLabels.color = Color.BLACK
         paintAxisLabels.textAlign = Align.CENTER
-        paintAxisLabels.textSize = Utils.convertDpToPixel(10f)
+        paintAxisLabels.textSize = 10f.convertDpToPixel()
     }
 
     /**

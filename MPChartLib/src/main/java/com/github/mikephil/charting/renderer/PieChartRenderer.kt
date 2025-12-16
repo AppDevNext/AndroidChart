@@ -22,6 +22,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.convertDpToPixel
 import java.lang.ref.WeakReference
 import kotlin.math.abs
 import kotlin.math.ceil
@@ -389,7 +390,7 @@ open class PieChartRenderer(
         var xIndex = 0
 
         canvas.withSave {
-            val offset = Utils.convertDpToPixel(5f)
+            val offset = 5f.convertDpToPixel()
 
             for (i in dataSets.indices) {
                 val dataSet = dataSets[i]
@@ -408,7 +409,7 @@ open class PieChartRenderer(
                 applyValueTextStyle(dataSet)
 
                 val lineHeight = (Utils.calcTextHeight(paintValues, "Q")
-                        + Utils.convertDpToPixel(4f))
+                        + 4f.convertDpToPixel())
 
                 val formatter = dataSet.valueFormatter
 
@@ -417,13 +418,13 @@ open class PieChartRenderer(
                 val isUseValueColorForLineEnabled = dataSet.isUseValueColorForLineEnabled
                 val valueLineColor = dataSet.valueLineColor
 
-                valueLinePaint.strokeWidth = Utils.convertDpToPixel(dataSet.valueLineWidth)
+                valueLinePaint.strokeWidth = dataSet.valueLineWidth.convertDpToPixel()
 
                 val sliceSpace = getSliceSpace(dataSet)
 
                 val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
-                iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x)
-                iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y)
+                iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
                 for (j in 0..<entryCount) {
                     val entry = dataSet.getEntryForIndex(j)
@@ -749,16 +750,16 @@ open class PieChartRenderer(
 
         paintCenterText = TextPaint(Paint.ANTI_ALIAS_FLAG)
         paintCenterText.color = Color.BLACK
-        paintCenterText.textSize = Utils.convertDpToPixel(12f)
+        paintCenterText.textSize = 12f.convertDpToPixel()
 
-        paintValues.textSize = Utils.convertDpToPixel(13f)
+        paintValues.textSize = 13f.convertDpToPixel()
         paintValues.color = Color.WHITE
         paintValues.textAlign = Align.CENTER
 
         paintEntryLabels = Paint(Paint.ANTI_ALIAS_FLAG)
         paintEntryLabels.color = Color.WHITE
         paintEntryLabels.textAlign = Align.CENTER
-        paintEntryLabels.textSize = Utils.convertDpToPixel(13f)
+        paintEntryLabels.textSize = 13f.convertDpToPixel()
 
         valueLinePaint = Paint(Paint.ANTI_ALIAS_FLAG)
         valueLinePaint.style = Paint.Style.STROKE
@@ -944,7 +945,7 @@ open class PieChartRenderer(
     /**
      * This gives all pie-slices a rounded edge.
      */
-    protected fun drawRoundedSlices(canvas: Canvas?) {
+    protected fun drawRoundedSlices() {
         if (!chart.isDrawRoundedSlicesEnabled) return
 
         val dataSet = chart.data!!.dataSet

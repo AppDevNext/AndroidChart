@@ -20,6 +20,7 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 /**
  * Baseclass of PieChart and RadarChart.
@@ -125,13 +126,13 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
                             || mLegend.getHorizontalAlignment() == Legend.LegendHorizontalAlignment.RIGHT) {
                         if (mLegend.getVerticalAlignment() == Legend.LegendVerticalAlignment.CENTER) {
                             // this is the space between the legend and the chart
-                            final float spacing = Utils.convertDpToPixel(13f);
+                            final float spacing = UtilsKtKt.convertDpToPixel(13f);
 
                             xLegendOffset = fullLegendWidth + spacing;
 
                         } else {
                             // this is the space between the legend and the chart
-                            float spacing = Utils.convertDpToPixel(8f);
+                            float spacing = UtilsKtKt.convertDpToPixel(8f);
 
                             float legendWidth = fullLegendWidth + spacing;
                             float legendHeight = mLegend.mNeededHeight + mLegend.mTextHeightMax;
@@ -149,7 +150,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
                                     getAngleForPoint(bottomX, bottomY));
 
                             float distReference = distanceToCenter(reference.x, reference.y);
-                            float minOffset = Utils.convertDpToPixel(5f);
+                            float minOffset = UtilsKtKt.convertDpToPixel(5f);
 
                             if (bottomY >= center.y && getHeight() - legendWidth > getWidth()) {
                                 xLegendOffset = legendWidth;
@@ -190,7 +191,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
                 break;
 
                 case HORIZONTAL:
-                    float yLegendOffset = 0.f;
+                    float yLegendOffset;
 
                     if (mLegend.getVerticalAlignment() == Legend.LegendVerticalAlignment.TOP ||
                             mLegend.getVerticalAlignment() == Legend.LegendVerticalAlignment.BOTTOM) {
@@ -221,7 +222,7 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
             legendBottom += getRequiredBaseOffset();
         }
 
-        float minOffset = Utils.convertDpToPixel(mMinOffset);
+        float minOffset = UtilsKtKt.convertDpToPixel(mMinOffset);
 
         if (this instanceof RadarChart) {
             XAxis x = this.getXAxis();
@@ -303,10 +304,10 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
         MPPointF c = getCenterOffsets();
 
-        float dist = 0f;
+        float dist;
 
-        float xDist = 0f;
-        float yDist = 0f;
+        float xDist;
+        float yDist;
 
         if (x > c.x) {
             xDist = x - c.x;

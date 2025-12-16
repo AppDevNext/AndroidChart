@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
 
     public PieDataSet(List<PieEntry> yVals, String label) {
         super(yVals, label);
-//        mShift = Utils.convertDpToPixel(12f);
+//        mShift = UtilsKtKt.convertDpToPixel(12f);
     }
 
     @Override
@@ -73,7 +74,7 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
         if (spaceDp < 0)
             spaceDp = 0f;
 
-        mSliceSpace = Utils.convertDpToPixel(spaceDp);
+        mSliceSpace = UtilsKtKt.convertDpToPixel(spaceDp);
     }
 
     @Override
@@ -103,7 +104,7 @@ public class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
      * "shifted" away from the center of the chart, default 12f
      */
     public void setSelectionShift(float shift) {
-        mShift = Utils.convertDpToPixel(shift);
+        mShift = UtilsKtKt.convertDpToPixel(shift);
     }
 
     @Override

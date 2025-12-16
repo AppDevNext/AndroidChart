@@ -15,6 +15,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBub
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -90,9 +91,9 @@ class BarLineChartTouchListener(
     init {
         this.matrix = touchMatrix
 
-        this.dragTriggerDist = Utils.convertDpToPixel(dragTriggerDistance)
+        this.dragTriggerDist = dragTriggerDistance.convertDpToPixel()
 
-        this.minScalePointerDistance = Utils.convertDpToPixel(3.5f)
+        this.minScalePointerDistance = 3.5f.convertDpToPixel()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -493,7 +494,7 @@ class BarLineChartTouchListener(
      * @param dragTriggerDistance
      */
     fun setDragTriggerDist(dragTriggerDistance: Float) {
-        this.dragTriggerDist = Utils.convertDpToPixel(dragTriggerDistance)
+        this.dragTriggerDist = dragTriggerDistance.convertDpToPixel()
     }
 
     override fun onDoubleTap(e: MotionEvent): Boolean {

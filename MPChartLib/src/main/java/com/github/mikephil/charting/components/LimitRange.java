@@ -4,8 +4,7 @@ package com.github.mikephil.charting.components;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-
-import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 /**
  * The limit line is an additional feature for all Line-, Bar- and
@@ -105,8 +104,6 @@ public class LimitRange extends ComponentBase {
 
 	/**
 	 * Returns the limit that is set for this line.
-	 *
-	 * @return
 	 */
 	public Range getLimit() {
 		return mLimit;
@@ -115,20 +112,16 @@ public class LimitRange extends ComponentBase {
 	/**
 	 * set the line width of the chart (min = 0.2f, max = 12f); default 2f NOTE:
 	 * thinner line == better performance, thicker line == worse performance
-	 *
-	 * @param width
 	 */
 	public void setLineWidth(float width) {
         if (width > 12.0f) {
             width = 12.0f;
         }
-		mLineWidth = Utils.convertDpToPixel(width);
+		mLineWidth = UtilsKtKt.convertDpToPixel(width);
 	}
 
 	/**
 	 * returns the width of limit line
-	 *
-	 * @return
 	 */
 	public float getLineWidth() {
 		return mLineWidth;
@@ -137,8 +130,6 @@ public class LimitRange extends ComponentBase {
 	/**
 	 * Sets the linecolor for this LimitLine. Make sure to use
 	 * getResources().getColor(...)
-	 *
-	 * @param color
 	 */
 	public void setLineColor(int color) {
 		mLineColor = color;
@@ -147,8 +138,6 @@ public class LimitRange extends ComponentBase {
 	/**
 	 * Sets the range color for this LimitRange. Make sure to use
 	 * getResources().getColor(...)
-	 *
-	 * @param color
 	 */
 	public void setRangeColor(int color) {
 		mRangeColor = color;
@@ -156,8 +145,6 @@ public class LimitRange extends ComponentBase {
 
 	/**
 	 * Returns the color that is used for this LimitLine
-	 *
-	 * @return
 	 */
 	public int getLineColor() {
 		return mLineColor;
@@ -165,8 +152,6 @@ public class LimitRange extends ComponentBase {
 
 	/**
 	 * Returns the color that is used for this LimitRange
-	 *
-	 * @return
 	 */
 	public int getRangeColor() {
 		return mRangeColor;
@@ -195,8 +180,6 @@ public class LimitRange extends ComponentBase {
 	/**
 	 * Returns true if the dashed-line effect is enabled, false if not. Default:
 	 * disabled
-	 *
-	 * @return
 	 */
 	public boolean isDashedLineEnabled() {
 		return mDashPathEffect == null ? false : true;
@@ -204,8 +187,6 @@ public class LimitRange extends ComponentBase {
 
 	/**
 	 * returns the DashPathEffect that is set for this LimitLine
-	 *
-	 * @return
 	 */
 	public DashPathEffect getDashPathEffect() {
 		return mDashPathEffect;
@@ -214,8 +195,6 @@ public class LimitRange extends ComponentBase {
 	/**
 	 * Sets the color of the value-text that is drawn next to the LimitLine.
 	 * Default: Paint.Style.FILL_AND_STROKE
-	 *
-	 * @param style
 	 */
 	public void setTextStyle(Paint.Style style) {
 		this.mTextStyle = style;
@@ -223,8 +202,6 @@ public class LimitRange extends ComponentBase {
 
 	/**
 	 * Returns the color of the value-text that is drawn next to the LimitLine.
-	 *
-	 * @return
 	 */
 	public Paint.Style getTextStyle() {
 		return mTextStyle;
@@ -233,8 +210,6 @@ public class LimitRange extends ComponentBase {
 	/**
 	 * Sets the position of the LimitLine value label (either on the right or on
 	 * the left edge of the chart). Not supported for RadarChart.
-	 *
-	 * @param pos
 	 */
 	public void setLabelPosition(LimitLine.LimitLabelPosition pos) {
 		mLabelPosition = pos;
@@ -242,8 +217,6 @@ public class LimitRange extends ComponentBase {
 
 	/**
 	 * Returns the position of the LimitLine label (value).
-	 *
-	 * @return
 	 */
 	public LimitLine.LimitLabelPosition getLabelPosition() {
 		return mLabelPosition;
@@ -252,8 +225,6 @@ public class LimitRange extends ComponentBase {
 	/**
 	 * Sets the label that is drawn next to the limit line. Provide "" if no
 	 * label is required.
-	 *
-	 * @param label
 	 */
 	public void setLabel(String label) {
 		mLabel = label;
@@ -261,8 +232,6 @@ public class LimitRange extends ComponentBase {
 
 	/**
 	 * Returns the label that is drawn next to the limit line.
-	 *
-	 * @return
 	 */
 	public String getLabel() {
 		return mLabel;

@@ -14,6 +14,7 @@ import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import androidx.core.graphics.withSave
+import com.github.mikephil.charting.utils.convertDpToPixel
 
 @Suppress("MemberVisibilityCanBePrivate")
 open class YAxisRendererHorizontalBarChart(
@@ -73,7 +74,7 @@ open class YAxisRendererHorizontalBarChart(
         paintAxisLabels.color = yAxis.textColor
         paintAxisLabels.textAlign = Align.CENTER
 
-        val baseYOffset = Utils.convertDpToPixel(2.5f)
+        val baseYOffset = 2.5f.convertDpToPixel()
         val textHeight = Utils.calcTextHeight(paintAxisLabels, "Q").toFloat()
 
         val dependency = yAxis.axisDependency
@@ -271,7 +272,7 @@ open class YAxisRendererHorizontalBarChart(
                     limitLinePaint.textSize = l.textSize
 
                     val xOffset = l.lineWidth + l.xOffset
-                    val yOffset = Utils.convertDpToPixel(2f) + l.yOffset
+                    val yOffset = 2f.convertDpToPixel() + l.yOffset
 
                     val position = l.labelPosition
 

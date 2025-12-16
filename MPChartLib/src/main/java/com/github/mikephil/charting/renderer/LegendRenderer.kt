@@ -19,6 +19,7 @@ import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.convertDpToPixel
 import java.util.Collections
 import kotlin.math.min
 
@@ -54,10 +55,9 @@ open class LegendRenderer(
 
                 // if we have a barchart with stacked bars
                 if (dataSet is IBarDataSet && dataSet.isStacked) {
-                    val bds = dataSet
-                    val sLabels = bds.stackLabels
+                    val sLabels = dataSet.stackLabels
 
-                    val minEntries = min(clrs.size.toDouble(), bds.stackSize.toDouble()).toInt()
+                    val minEntries = min(clrs.size.toDouble(), dataSet.stackSize.toDouble()).toInt()
 
                     for (j in 0..<minEntries) {
                         val label: String?
@@ -80,7 +80,7 @@ open class LegendRenderer(
                         )
                     }
 
-                    if (bds.label != null) {
+                    if (dataSet.label != null) {
                         // add the legend description label
                         computedEntries.add(
                             LegendEntry(
@@ -94,13 +94,12 @@ open class LegendRenderer(
                         )
                     }
                 } else if (dataSet is IPieDataSet) {
-                    val pds = dataSet
 
                     var j = 0
                     while (j < clrs.size && j < entryCount) {
                         computedEntries.add(
                             LegendEntry(
-                                pds.getEntryForIndex(j).label,
+                                dataSet.getEntryForIndex(j).label,
                                 dataSet.getForm(),
                                 dataSet.getFormSize(),
                                 dataSet.getFormLineWidth(),
@@ -111,7 +110,7 @@ open class LegendRenderer(
                         j++
                     }
 
-                    if (pds.label != null) {
+                    if (dataSet.label != null) {
                         // add the legend description label
                         computedEntries.add(
                             LegendEntry(
@@ -209,21 +208,21 @@ open class LegendRenderer(
 
         val labelLineHeight = Utils.getLineHeight(labelPaint, legendFontMetrics)
         val labelLineSpacing = (Utils.getLineSpacing(labelPaint, legendFontMetrics)
-                + Utils.convertDpToPixel(legend.yEntrySpace))
+                + legend.yEntrySpace.convertDpToPixel())
         val formYOffset = labelLineHeight - Utils.calcTextHeight(labelPaint, "ABC") / 2f
 
         val entries = legend.entries
 
-        val formToTextSpace = Utils.convertDpToPixel(legend.formToTextSpace)
-        val xEntrySpace = Utils.convertDpToPixel(legend.xEntrySpace)
+        val formToTextSpace = legend.formToTextSpace.convertDpToPixel()
+        val xEntrySpace = legend.xEntrySpace.convertDpToPixel()
         val orientation = legend.orientation
         val horizontalAlignment = legend.horizontalAlignment
         val verticalAlignment = legend.verticalAlignment
         val direction = legend.direction
-        val defaultFormSize = Utils.convertDpToPixel(legend.formSize)
+        val defaultFormSize = legend.formSize.convertDpToPixel()
 
         // space between the entries
-        val stackSpace = Utils.convertDpToPixel(legend.stackSpace)
+        val stackSpace = legend.stackSpace.convertDpToPixel()
 
         val yOffset = legend.yOffset
         val xOffset = legend.xOffset
@@ -256,7 +255,7 @@ open class LegendRenderer(
                 else
                     -xOffset)
 
-                // Horizontally layed out legends do the center offset on a line basis,
+                // Horizontally laid out legends do the center offset on a line basis,
                 // So here we offset the vertical ones only.
                 if (orientation == LegendOrientation.VERTICAL) {
                     originPosX += (if (direction == LegendDirection.LEFT_TO_RIGHT)
@@ -288,7 +287,7 @@ open class LegendRenderer(
                 while (i < count) {
                     val e = entries[i]
                     val drawingForm = e.form != LegendForm.NONE
-                    val formSize = if (java.lang.Float.isNaN(e.formSize)) defaultFormSize else Utils.convertDpToPixel(e.formSize)
+                    val formSize = if (java.lang.Float.isNaN(e.formSize)) defaultFormSize else e.formSize.convertDpToPixel()
 
                     if (i < calculatedLabelBreakPoints.size && calculatedLabelBreakPoints[i]) {
                         posX = originPosX
@@ -360,7 +359,7 @@ open class LegendRenderer(
                 while (i < entries.size) {
                     val e = entries[i]
                     val drawingForm = e.form != LegendForm.NONE
-                    val formSize = if (java.lang.Float.isNaN(e.formSize)) defaultFormSize else Utils.convertDpToPixel(e.formSize)
+                    val formSize = if (java.lang.Float.isNaN(e.formSize)) defaultFormSize else e.formSize.convertDpToPixel()
 
                     var posX = originPosX
 
@@ -406,7 +405,7 @@ open class LegendRenderer(
 
     init {
         labelPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        labelPaint.textSize = Utils.convertDpToPixel(9f)
+        labelPaint.textSize = 9f.convertDpToPixel()
         labelPaint.textAlign = Align.LEFT
 
         formPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -438,12 +437,12 @@ open class LegendRenderer(
 
             formPaint.color = entry.formColor
 
-            val formSize = Utils.convertDpToPixel(
-                if (java.lang.Float.isNaN(entry.formSize))
-                    legend.formSize
-                else
-                    entry.formSize
-            )
+            val formSize = (
+                    if (java.lang.Float.isNaN(entry.formSize))
+                        legend.formSize
+                    else
+                        entry.formSize
+                    ).convertDpToPixel()
             val half = formSize / 2f
 
             when (form) {
@@ -460,12 +459,12 @@ open class LegendRenderer(
                 }
 
                 LegendForm.LINE -> {
-                    val formLineWidth = Utils.convertDpToPixel(
-                        if (java.lang.Float.isNaN(entry.formLineWidth))
-                            legend.formLineWidth
-                        else
-                            entry.formLineWidth
-                    )
+                    val formLineWidth = (
+                            if (java.lang.Float.isNaN(entry.formLineWidth))
+                                legend.formLineWidth
+                            else
+                                entry.formLineWidth
+                            ).convertDpToPixel()
                     val formLineDashEffect = if (entry.formLineDashEffect == null)
                         legend.formLineDashEffect
                     else

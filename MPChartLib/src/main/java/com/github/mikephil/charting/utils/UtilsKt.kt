@@ -2,13 +2,41 @@ package com.github.mikephil.charting.utils
 
 import android.content.Context
 import android.os.Build
-import kotlin.Boolean
-import kotlin.Char
-import kotlin.CharArray
-import kotlin.Float
-import kotlin.Int
-import kotlin.String
-import kotlin.code
+import android.util.DisplayMetrics
+import android.util.Log
+import android.view.ViewConfiguration
+
+var metrics: DisplayMetrics? = null
+var minimumFlingVelocity = 0
+var maximumFlingVelocity = 0
+
+fun Context.initUtils() {
+    val viewConfiguration = ViewConfiguration.get(this)
+    minimumFlingVelocity = viewConfiguration.scaledMinimumFlingVelocity
+    maximumFlingVelocity = viewConfiguration.scaledMaximumFlingVelocity
+
+    metrics = this.resources.displayMetrics
+}
+
+/**
+ * This method converts dp unit to equivalent pixels, depending on device
+ * density. NEEDS UTILS TO BE INITIALIZED BEFORE USAGE.
+ *
+ * @param dp A value in dp (density independent pixels) unit. Which we need
+ * to convert into pixels
+ * @return A float value to represent px equivalent to dp depending on
+ * device density
+ */
+fun Float.convertDpToPixel(): Float {
+    if (metrics == null) {
+        Log.e(
+            "chartLib-Utils",
+            "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place."
+        )
+        return this
+    } else
+        return this * metrics!!.density
+}
 
 fun getSDKInt() = Build.VERSION.SDK_INT
 

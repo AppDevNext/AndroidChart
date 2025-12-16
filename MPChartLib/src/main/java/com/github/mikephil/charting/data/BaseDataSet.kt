@@ -12,6 +12,7 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.convertDpToPixel
 
 /**
  * This is the base dataset of all DataSets. It's purpose is to implement critical methods
@@ -271,7 +272,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     }
 
     override fun setValueTextSize(size: Float) {
-        mValueTextSize = Utils.convertDpToPixel(size)
+        mValueTextSize = size.convertDpToPixel()
     }
 
     override fun getValueTextColor(): Int {

@@ -11,6 +11,7 @@ import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.UtilsKtKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +69,8 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     public LineDataSet(List<Entry> yVals, String label) {
         super(yVals, label);
 
-        // mCircleRadius = Utils.convertDpToPixel(4f);
-        // mLineWidth = Utils.convertDpToPixel(1f);
+        // mCircleRadius = UtilsKtKt.convertDpToPixel(4f);
+        // mLineWidth = UtilsKtKt.convertDpToPixel(1f);
 
         if (mCircleColors == null) {
             mCircleColors = new ArrayList<>();
@@ -149,7 +150,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     public void setCircleRadius(float radius) {
 
         if (radius >= 1f) {
-            mCircleRadius = Utils.convertDpToPixel(radius);
+            mCircleRadius = UtilsKtKt.convertDpToPixel(radius);
         } else {
             Log.e("LineDataSet", "Circle radius cannot be < 1");
         }
@@ -167,7 +168,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
     public void setCircleHoleRadius(float holeRadius) {
 
         if (holeRadius >= 0.5f) {
-            mCircleHoleRadius = Utils.convertDpToPixel(holeRadius);
+            mCircleHoleRadius = UtilsKtKt.convertDpToPixel(holeRadius);
         } else {
             Log.e("LineDataSet", "Circle radius cannot be < 0.5");
         }
