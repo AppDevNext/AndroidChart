@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.components.YAxis.AxisDependency
@@ -28,6 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import com.github.mikephil.charting.components.AxisBase
 import kotlin.math.roundToInt
 
 class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
@@ -79,7 +79,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         xAxis.setDrawGridLines(true)
         xAxis.textColor = Color.rgb(255, 192, 56)
         xAxis.setCenterAxisLabels(true)
-        xAxis.setGranularity(1f) // one hour
+        xAxis.granularity = 1f // one hour
         xAxis.valueFormatter = object : IAxisValueFormatter {
             private val mFormat = SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH)
 
@@ -95,8 +95,8 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         leftAxis.textColor = ColorTemplate.getHoloBlue()
         leftAxis.setDrawGridLines(true)
         leftAxis.isGranularityEnabled = true
-        leftAxis.setAxisMinimum(0f)
-        leftAxis.setAxisMaximum(170f)
+        leftAxis.axisMinimum = 0f
+        leftAxis.axisMaximum = 170f
         leftAxis.yOffset = -9f
         leftAxis.textColor = Color.rgb(255, 192, 56)
 
@@ -130,11 +130,11 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         // create a dataset and give it a type
         val set1 = LineDataSet(values, "DataSet 1")
         set1.axisDependency = AxisDependency.LEFT
-        set1.setColor(ColorTemplate.getHoloBlue())
-        set1.setValueTextColor(ColorTemplate.getHoloBlue())
+        set1.color = ColorTemplate.getHoloBlue()
+        set1.setSingleValueTextColor(ColorTemplate.getHoloBlue())
         set1.setLineWidth(1.5f)
         set1.setDrawCircles(false)
-        set1.setDrawValues(false)
+        set1.isDrawValues = false
         set1.fillAlpha = 65
         set1.setFillColor(ColorTemplate.getHoloBlue())
         set1.setHighLightColor(Color.rgb(244, 117, 117))
@@ -165,7 +165,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleValues -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues)
+                    set.isDrawValues = !set.isDrawValues
                 }
                 chart!!.invalidate()
             }

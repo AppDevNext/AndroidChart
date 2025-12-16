@@ -154,8 +154,8 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues())
+                binding.chart1.data!!.dataSets.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }

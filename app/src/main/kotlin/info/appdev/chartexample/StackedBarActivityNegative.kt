@@ -49,8 +49,8 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         chart!!.isHighlightFullBarEnabled = false
 
         chart!!.axisLeft.isEnabled = false
-        chart!!.axisRight.setAxisMaximum(25f)
-        chart!!.axisRight.setAxisMinimum(-25f)
+        chart!!.axisRight.axisMaximum = 25f
+        chart!!.axisRight.axisMinimum = -25f
         chart!!.axisRight.setDrawGridLines(false)
         chart!!.axisRight.setDrawZeroLine(true)
         chart!!.axisRight.setLabelCount(7, false)
@@ -62,11 +62,11 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         xAxis.setDrawGridLines(false)
         xAxis.setDrawAxisLine(false)
         xAxis.textSize = 9f
-        xAxis.setAxisMinimum(0f)
-        xAxis.setAxisMaximum(110f)
+        xAxis.axisMinimum = 0f
+        xAxis.axisMaximum = 110f
         xAxis.setCenterAxisLabels(true)
-        xAxis.setLabelCount(12)
-        xAxis.setGranularity(10f)
+        xAxis.labelCount = 12
+        xAxis.granularity = 10f
         xAxis.valueFormatter = object : IAxisValueFormatter {
             private val format = DecimalFormat("###")
 
@@ -100,8 +100,8 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         values.add(BarEntry(105f, floatArrayOf(-1f, 2f)))
 
         val set = BarDataSet(values, "Age Distribution")
-        set.setDrawIcons(false)
-        set.setValueFormatter(CustomFormatter())
+        set.isDrawIcons = false
+        set.valueFormatter = CustomFormatter()
         set.valueTextSize = 7f
         set.axisDependency = YAxis.AxisDependency.RIGHT
         set.setColors(Color.rgb(67, 67, 72), Color.rgb(124, 181, 236))
@@ -128,15 +128,15 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues)
+                chart!!.data!!.dataSets.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
                 chart!!.invalidate()
             }
 
             R.id.actionToggleIcons -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawIcons(!set.isDrawIcons)
+                    set.isDrawIcons = !set.isDrawIcons
                 }
 
                 chart!!.invalidate()

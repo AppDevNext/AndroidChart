@@ -138,8 +138,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionToggleValues -> {
-                mChart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues())
+                mChart!!.data?.dataSets?.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
                 mChart!!.invalidate()
             }
@@ -270,7 +270,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         set11.valueTextSize = 9f
         set11.setDrawFilled(true)
         set11.formLineWidth = 1f
-        set11.setFormLineDashEffect(DashPathEffect(floatArrayOf(10f, 5f), 0f))
+        set11.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
         set11.formSize = 15f
         if (getSDKInt() >= 18) {
             // fill drawable only supported on api level 18 and above

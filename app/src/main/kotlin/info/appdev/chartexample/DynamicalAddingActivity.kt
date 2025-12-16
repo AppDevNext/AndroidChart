@@ -61,11 +61,11 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         val lastDataSetIndex = data.getDataSetCount() - 1 // add data only to the last
         val lastSet = data.getDataSetByIndex(lastDataSetIndex)
 
-        val cycleValue = (lastSet.getEntryCount() % 100.0).toInt()
+        val cycleValue = (lastSet.entryCount % 100.0).toInt()
 
         val value = (sampleValues[cycleValue]!!.toFloat() * 50) + 50f * (lastDataSetIndex + 1)
 
-        data.addEntry(Entry(lastSet.getEntryCount().toFloat(), value), lastDataSetIndex)
+        data.addEntry(Entry(lastSet.entryCount.toFloat(), value), lastDataSetIndex)
         data.notifyDataChanged()
 
         // let the chart know it's data has changed
@@ -85,7 +85,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             val set = data.getDataSetByIndex(0)
 
             if (set != null) {
-                val e = set.getEntryForXValue((set.getEntryCount() - 1).toFloat(), Float.NaN)
+                val e = set.getEntryForXValue((set.entryCount - 1).toFloat(), Float.NaN)
 
                 data.removeEntry(e, 0)
                 // or remove by index
@@ -104,7 +104,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             chart!!.setData(LineData())
         } else {
             val count = (data.getDataSetCount() + 1)
-            val amount = data.getDataSetByIndex(0).getEntryCount()
+            val amount = data.getDataSetByIndex(0).entryCount
 
             val values = ArrayList<Entry?>()
 
@@ -120,11 +120,11 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
 
             val color = colors[count % colors.size]
 
-            set.setColor(color)
+            set.color = color
             set.setCircleColor(color)
             set.setHighLightColor(color)
             set.valueTextSize = 10f
-            set.setValueTextColor(color)
+            set.setSingleValueTextColor(color)
 
             data.addDataSet(set)
             data.notifyDataChanged()
@@ -148,7 +148,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         val set = LineDataSet(null, "DataSet 1")
         set.setLineWidth(2.5f)
         set.circleRadius = 4.5f
-        set.setColor(Color.rgb(240, 99, 99))
+        set.color = Color.rgb(240, 99, 99)
         set.setCircleColor(Color.rgb(240, 99, 99))
         set.setHighLightColor(Color.rgb(190, 190, 190))
         set.axisDependency = AxisDependency.LEFT

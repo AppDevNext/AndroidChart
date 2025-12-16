@@ -65,20 +65,20 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         xl.typeface = tfLight
         xl.setDrawAxisLine(true)
         xl.setDrawGridLines(false)
-        xl.setGranularity(10f)
+        xl.granularity = 10f
 
         val yl = binding.chart1.axisLeft
         yl.typeface = tfLight
         yl.setDrawAxisLine(true)
         yl.setDrawGridLines(true)
-        yl.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        yl.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         //        yl.setInverted(true);
         val yr = binding.chart1.axisRight
         yr.typeface = tfLight
         yr.setDrawAxisLine(true)
         yr.setDrawGridLines(false)
-        yr.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        yr.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         //        yr.setInverted(true);
         binding.chart1.setFitBars(true)
@@ -125,7 +125,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         } else {
             set1 = BarDataSet(values, "DataSet 1")
 
-            set1.setDrawIcons(false)
+            set1.isDrawIcons = false
 
             val dataSets = ArrayList<IBarDataSet?>()
             dataSets.add(set1)
@@ -153,8 +153,8 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues())
+                binding.chart1.data!!.dataSets.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
@@ -164,7 +164,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
                     .dataSets
 
                 for (iSet in sets) {
-                    iSet.setDrawIcons(!iSet.isDrawIcons())
+                    iSet.isDrawIcons = !iSet.isDrawIcons
                 }
 
                 binding.chart1.invalidate()
@@ -242,7 +242,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
 
         val position = binding.chart1.getPosition(
             entry, binding.chart1.data!!.getDataSetByIndex(highlight.dataSetIndex)
-                .getAxisDependency()
+                .axisDependency
         )
 
         Timber.i(bounds.toString())

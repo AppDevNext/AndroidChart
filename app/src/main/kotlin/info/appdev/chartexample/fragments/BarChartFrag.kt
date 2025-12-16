@@ -42,7 +42,7 @@ class BarChartFrag : SimpleFragment(), OnChartGestureListener {
 
         val leftAxis = chart!!.axisLeft
         leftAxis.typeface = tf
-        leftAxis.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         chart!!.axisRight.isEnabled = false
 

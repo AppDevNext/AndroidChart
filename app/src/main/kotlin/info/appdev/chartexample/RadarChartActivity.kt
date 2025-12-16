@@ -69,8 +69,8 @@ class RadarChartActivity : DemoBase() {
         yAxis.typeface = tfLight
         yAxis.setLabelCount(5, false)
         yAxis.textSize = 9f
-        yAxis.setAxisMinimum(0f)
-        yAxis.setAxisMaximum(80f)
+        yAxis.axisMinimum = 0f
+        yAxis.axisMaximum = 80f
         yAxis.setDrawLabels(false)
 
         val l = chart!!.legend
@@ -104,7 +104,7 @@ class RadarChartActivity : DemoBase() {
         }
 
         val set1 = RadarDataSet(entries1, "Last Week")
-        set1.setColor(Color.rgb(103, 110, 129))
+        set1.color = Color.rgb(103, 110, 129)
         set1.setFillColor(Color.rgb(103, 110, 129))
         set1.setDrawFilled(true)
         set1.fillAlpha = 180
@@ -113,7 +113,7 @@ class RadarChartActivity : DemoBase() {
         set1.setDrawHighlightIndicators(false)
 
         val set2 = RadarDataSet(entries2, "This Week")
-        set2.setColor(Color.rgb(121, 162, 175))
+        set2.color = Color.rgb(121, 162, 175)
         set2.setFillColor(Color.rgb(121, 162, 175))
         set2.setDrawFilled(true)
         set2.fillAlpha = 180
@@ -156,9 +156,10 @@ class RadarChartActivity : DemoBase() {
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues())
+                chart!!.data!!.dataSets.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
+
                 chart!!.invalidate()
             }
 

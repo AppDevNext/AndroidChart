@@ -57,18 +57,18 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         val leftAxis = binding.chart1.axisLeft
         leftAxis.typeface = tfLight
         leftAxis.setLabelCount(6, false)
-        leftAxis.setAxisMinimum(-2.5f)
-        leftAxis.setAxisMaximum(2.5f)
+        leftAxis.axisMinimum = -2.5f
+        leftAxis.axisMaximum = 2.5f
         leftAxis.isGranularityEnabled = true
-        leftAxis.setGranularity(0.1f)
+        leftAxis.granularity = 0.1f
 
         val rightAxis = binding.chart1.axisRight
         rightAxis.setDrawGridLines(false)
         rightAxis.typeface = tfLight
         rightAxis.setLabelCount(6, false)
-        rightAxis.setAxisMinimum(-2.5f)
-        rightAxis.setAxisMaximum(2.5f)
-        rightAxis.setGranularity(0.1f)
+        rightAxis.axisMinimum  = -2.5f
+        rightAxis.axisMaximum = 2.5f
+        rightAxis.granularity = 0.1f
 
         binding.seekbarValues.setOnSeekBarChangeListener(this)
         binding.seekbarValues.progress = 150 // set data
@@ -105,7 +105,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
             binding.chart1.notifyDataSetChanged()
         } else {
             set = BarDataSet(entries, "Sinus Function")
-            set.setColor(Color.BLUE)
+            set.color = Color.BLUE
         }
 
         val data = BarData(set)
@@ -131,9 +131,10 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues())
+                binding.chart1.data!!.dataSets.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
+
                 binding.chart1.invalidate()
             }
 

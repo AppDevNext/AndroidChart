@@ -52,9 +52,9 @@ class BarChartPositiveNegative : DemoBase() {
         xAxis.setDrawAxisLine(false)
         xAxis.textColor = Color.LTGRAY
         xAxis.textSize = 13f
-        xAxis.setLabelCount(5)
+        xAxis.labelCount = 5
         xAxis.setCenterAxisLabels(true)
-        xAxis.setGranularity(1f)
+        xAxis.granularity = 1f
 
         val left = chart!!.axisLeft
         left.setDrawLabels(false)
@@ -114,7 +114,7 @@ class BarChartPositiveNegative : DemoBase() {
         } else {
             set = BarDataSet(values, "Values")
             set.setColors(colors)
-            set.setValueTextColors(colors)
+            set.valueTextColors = colors
 
             val data = BarData(set)
             data.setValueTextSize(13f)

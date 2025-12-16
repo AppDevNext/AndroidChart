@@ -162,15 +162,15 @@ open class XAxisRenderer(
         val labelRotationAngleDegrees = xAxis.labelRotationAngle
         val centeringEnabled = xAxis.isCenterAxisLabelsEnabled
 
-        val positions: FloatArray
+        var positions: FloatArray
 
         if (xAxis.isShowSpecificPositions) {
-            positions = FloatArray(xAxis.specificPositions.size * 2)
-            var i = 0
-            while (i < positions.size) {
-                positions[i] = xAxis.specificPositions[i / 2]
-                i += 2
-            }
+                positions = FloatArray(xAxis.specificPositions.size * 2)
+                var i = 0
+                while (i < positions.size) {
+                    positions[i] = xAxis.specificPositions[i / 2]
+                    i += 2
+                }
         } else {
             positions = FloatArray(xAxis.mEntryCount * 2)
             var i = 0
@@ -340,29 +340,29 @@ open class XAxisRenderer(
     override fun renderLimitLines(canvas: Canvas) {
         val limitLines = xAxis.limitLines
 
-        if (limitLines == null || limitLines.isEmpty()) return
+        if (limitLines.isEmpty()) return
 
         val position = mRenderLimitLinesBuffer
         position[0] = 0f
         position[1] = 0f
 
         for (i in limitLines.indices) {
-            val l = limitLines[i]
+            val limitLine = limitLines[i]!!
 
-            if (!l.isEnabled) continue
+            if (!limitLine.isEnabled) continue
 
             canvas.withSave {
                 mLimitLineClippingRect.set(viewPortHandler.contentRect)
-                mLimitLineClippingRect.inset(-l.lineWidth, 0f)
+                mLimitLineClippingRect.inset(-limitLine.lineWidth, 0f)
                 canvas.clipRect(mLimitLineClippingRect)
 
-                position[0] = l.limit
+                position[0] = limitLine.limit
                 position[1] = 0f
 
                 transformer!!.pointValuesToPixel(position)
 
-                renderLimitLineLine(canvas, l, position)
-                renderLimitLineLabel(canvas, l, position, 2f + l.yOffset)
+                renderLimitLineLine(canvas, limitLine, position)
+                renderLimitLineLabel(canvas, limitLine, position, 2f + limitLine.yOffset)
 
             }
         }

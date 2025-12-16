@@ -50,25 +50,26 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
         ).toInt()
 
         for (i in 0..<max) {
-            val entry = dataSet.getEntryForIndex(i)
+            dataSet.getEntryForIndex(i)?.let { entry ->
 
-            pixelBuffer[0] = entry.x
-            pixelBuffer[1] = entry.y * phaseY
+                pixelBuffer[0] = entry.x
+                pixelBuffer[1] = entry.y * phaseY
 
-            trans!!.pointValuesToPixel(pixelBuffer)
+                trans!!.pointValuesToPixel(pixelBuffer)
 
-            if (!viewPortHandler.isInBoundsRight(pixelBuffer[0]))
-                break
+                if (!viewPortHandler.isInBoundsRight(pixelBuffer[0]))
+                    break
 
-            if (!viewPortHandler.isInBoundsLeft(pixelBuffer[0]) || !viewPortHandler.isInBoundsY(pixelBuffer[1])
-            ) continue
+                if (!viewPortHandler.isInBoundsLeft(pixelBuffer[0]) || !viewPortHandler.isInBoundsY(pixelBuffer[1]))
+                    continue
 
-            paintRender.color = dataSet.getColorByIndex(i / 2)
-            renderer.renderShape(
-                canvas, dataSet, this.viewPortHandler,
-                pixelBuffer[0], pixelBuffer[1],
-                paintRender
-            )
+                paintRender.color = dataSet.getColorByIndex(i / 2)
+                renderer.renderShape(
+                    canvas, dataSet, this.viewPortHandler,
+                    pixelBuffer[0], pixelBuffer[1],
+                    paintRender
+                )
+            }
         }
     }
 
@@ -104,7 +105,8 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
 
                 var j = 0
                 while (j < positions.size) {
-                    if (!viewPortHandler.isInBoundsRight(positions[j])) break
+                    if (!viewPortHandler.isInBoundsRight(positions[j]))
+                        break
 
                     // make sure the lines don't do shitty things outside bounds
                     if ((!viewPortHandler.isInBoundsLeft(positions[j])
@@ -114,31 +116,32 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
                         continue
                     }
 
-                    val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
+                    dataSet.getEntryForIndex(j / 2 + xBounds.min)?.let { entry ->
 
-                    if (dataSet.isDrawValues) {
-                        drawValue(
-                            canvas,
-                            dataSet.valueFormatter,
-                            entry.y,
-                            entry,
-                            i,
-                            positions[j],
-                            positions[j + 1] - shapeSize,
-                            dataSet.getValueTextColor(j / 2 + xBounds.min)
-                        )
-                    }
-
-                    if (entry.icon != null && dataSet.isDrawIcons) {
-                        val icon = entry.icon
-
-                        icon?.let {
-                            Utils.drawImage(
+                        if (dataSet.isDrawValues) {
+                            drawValue(
                                 canvas,
-                                it,
-                                (positions[j] + iconsOffset.x).toInt(),
-                                (positions[j + 1] + iconsOffset.y).toInt()
+                                dataSet.valueFormatter,
+                                entry.y,
+                                entry,
+                                i,
+                                positions[j],
+                                positions[j + 1] - shapeSize,
+                                dataSet.getValueTextColor(j / 2 + xBounds.min)
                             )
+                        }
+
+                        if (entry.icon != null && dataSet.isDrawIcons) {
+                            val icon = entry.icon
+
+                            icon?.let {
+                                Utils.drawImage(
+                                    canvas,
+                                    it,
+                                    (positions[j] + iconsOffset.x).toInt(),
+                                    (positions[j + 1] + iconsOffset.y).toInt()
+                                )
+                            }
                         }
                     }
                     j += 2
@@ -160,19 +163,20 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
 
             if (set == null || !set.isHighlightEnabled) continue
 
-            val entry = set.getEntryForXValue(high.x, high.y)
+            set.getEntryForXValue(high.x, high.y)?.let { entry ->
 
-            if (!isInBoundsX(entry, set)) continue
+                if (!isInBoundsX(entry, set)) continue
 
-            val pix = dataProvider.getTransformer(set.axisDependency)!!.getPixelForValues(
-                entry.x, entry.y * animator
-                    .phaseY
-            )
+                val pix = dataProvider.getTransformer(set.axisDependency)!!.getPixelForValues(
+                    entry.x, entry.y * animator
+                        .phaseY
+                )
 
-            high.setDraw(pix.x.toFloat(), pix.y.toFloat())
+                high.setDraw(pix.x.toFloat(), pix.y.toFloat())
 
-            // draw the lines
-            drawHighlightLines(canvas, pix.x.toFloat(), pix.y.toFloat(), set)
+                // draw the lines
+                drawHighlightLines(canvas, pix.x.toFloat(), pix.y.toFloat(), set)
+            }
         }
     }
 }

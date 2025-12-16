@@ -68,9 +68,9 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         // create a dataset and give it a type
         val set1 = LineDataSet(values, "DataSet 1")
 
-        set1.setColor(Color.BLACK)
+        set1.color = Color.BLACK
         set1.setLineWidth(0.5f)
-        set1.setDrawValues(false)
+        set1.isDrawValues = false
         set1.setDrawCircles(false)
         set1.lineMode = LineDataSet.Mode.LINEAR
         set1.setDrawFilled(false)
