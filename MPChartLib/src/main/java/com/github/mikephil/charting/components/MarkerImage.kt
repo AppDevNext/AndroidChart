@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.os.Build
 import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
@@ -32,11 +31,7 @@ class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMar
      * @param drawableResourceId the drawable resource to render
      */
     init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable = mContext.resources.getDrawable(drawableResourceId, null)
-        } else {
-            drawable = mContext.resources.getDrawable(drawableResourceId)
-        }
+        drawable = mContext.resources.getDrawable(drawableResourceId, null)
     }
 
     fun setOffset(offsetX: Float, offsetY: Float) {
