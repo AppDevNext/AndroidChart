@@ -388,7 +388,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
         chart?.let {
             val sets = it.data?.dataSets ?: return
             for (iSet in sets) {
-                iSet.setDrawIcons(!iSet.isDrawIconsEnabled)
+                iSet.setDrawIcons(!iSet.isDrawIcons)
             }
             it.invalidate()
         }

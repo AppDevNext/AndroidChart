@@ -153,7 +153,7 @@ open class BubbleChartRenderer(
                             )
                         }
 
-                        if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                        if (entry.icon != null && dataSet.isDrawIcons) {
                             val icon = entry.icon
 
                             icon?.let {

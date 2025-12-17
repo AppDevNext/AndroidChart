@@ -322,7 +322,7 @@ open class BarChartRenderer(
                             )
                         }
 
-                        if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                        if (entry.icon != null && dataSet.isDrawIcons) {
                             val icon = entry.icon
 
                             var px = x
@@ -381,7 +381,7 @@ open class BarChartRenderer(
                                 )
                             }
 
-                            if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                            if (entry.icon != null && dataSet.isDrawIcons) {
                                 val icon = entry.icon
 
                                 var px = x
@@ -467,7 +467,7 @@ open class BarChartRenderer(
                                     )
                                 }
 
-                                if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                                if (entry.icon != null && dataSet.isDrawIcons) {
                                     val icon = entry.icon
 
                                     icon?.let {

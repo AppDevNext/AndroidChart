@@ -327,7 +327,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
         mDrawIcons = enabled
     }
 
-    override fun isDrawIconsEnabled(): Boolean {
+    override fun isDrawIcons(): Boolean {
         return mDrawIcons
     }
 

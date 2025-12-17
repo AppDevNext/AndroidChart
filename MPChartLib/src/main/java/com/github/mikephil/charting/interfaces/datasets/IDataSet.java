@@ -342,7 +342,7 @@ public interface IDataSet<T extends Entry> {
     /**
      * Returns true if y-icon drawing is enabled, false if not
      */
-    boolean isDrawIconsEnabled();
+    boolean isDrawIcons();
 
     /**
      * Offset of icons drawn on the chart.

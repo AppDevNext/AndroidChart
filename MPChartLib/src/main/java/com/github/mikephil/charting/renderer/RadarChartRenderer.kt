@@ -169,7 +169,7 @@ open class RadarChartRenderer(
                     )
                 }
 
-                if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                if (entry.icon != null && dataSet.isDrawIcons) {
                     val icon = entry.icon
 
                     Utils.getPosition(

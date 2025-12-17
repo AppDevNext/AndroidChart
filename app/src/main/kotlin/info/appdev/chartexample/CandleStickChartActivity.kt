@@ -155,7 +155,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleIcons -> {
-                for (set in chart!!.data!!.dataSets) set.setDrawIcons(!set.isDrawIconsEnabled())
+                for (set in chart!!.data!!.dataSets) set.setDrawIcons(!set.isDrawIcons())
 
                 chart!!.invalidate()
             }

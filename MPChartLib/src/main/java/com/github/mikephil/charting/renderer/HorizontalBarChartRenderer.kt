@@ -244,7 +244,7 @@ open class HorizontalBarChartRenderer(
                             )
                         }
 
-                        if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                        if (entry.icon != null && dataSet.isDrawIcons) {
                             val icon = entry.icon
 
                             var px = buffer.buffer[j + 2] + (if (`val` >= 0) posOffset else negOffset)
@@ -319,7 +319,7 @@ open class HorizontalBarChartRenderer(
                                 )
                             }
 
-                            if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                            if (entry.icon != null && dataSet.isDrawIcons) {
                                 val icon = entry.icon
 
                                 var px = (buffer.buffer[bufferIndex + 2]
@@ -414,7 +414,7 @@ open class HorizontalBarChartRenderer(
                                     drawValue(canvas, formattedValue!!, x, y + halfTextHeight, color)
                                 }
 
-                                if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                                if (entry.icon != null && dataSet.isDrawIcons) {
                                     val icon = entry.icon
 
                                     icon?.let {

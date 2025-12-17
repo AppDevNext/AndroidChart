@@ -210,7 +210,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
             R.id.actionToggleIcons -> {
                 for (set in chart!!.data!!.dataSets)
-                    set.setDrawIcons(!set.isDrawIconsEnabled())
+                    set.setDrawIcons(!set.isDrawIcons())
 
                 chart!!.invalidate()
             }

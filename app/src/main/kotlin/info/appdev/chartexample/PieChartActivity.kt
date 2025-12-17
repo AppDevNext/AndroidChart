@@ -184,7 +184,7 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             }
 
             R.id.actionToggleIcons -> {
-                for (set in chart!!.data!!.getDataSets()) set.setDrawIcons(!set.isDrawIconsEnabled())
+                for (set in chart!!.data!!.getDataSets()) set.setDrawIcons(!set.isDrawIcons())
 
                 chart!!.invalidate()
             }

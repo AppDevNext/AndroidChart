@@ -168,7 +168,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
             R.id.actionToggleIcons -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawIcons(!set.isDrawIconsEnabled)
+                    set.setDrawIcons(!set.isDrawIcons)
                 }
                 chart!!.invalidate()
             }

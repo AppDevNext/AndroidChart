@@ -586,7 +586,7 @@ open class PieChartRenderer(
                         }
                     }
 
-                    if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                    if (entry.icon != null && dataSet.isDrawIcons) {
                         val icon = entry.icon
 
                         val x = (labelRadius + iconsOffset.y) * sliceXBase + center.x

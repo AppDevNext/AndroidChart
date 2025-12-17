@@ -264,7 +264,7 @@ open class CandleStickChartRenderer(
                         )
                     }
 
-                    if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                    if (entry.icon != null && dataSet.isDrawIcons) {
                         val icon = entry.icon
 
                         icon?.let {

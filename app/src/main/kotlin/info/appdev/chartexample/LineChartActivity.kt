@@ -162,7 +162,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
             R.id.actionToggleIcons -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.setDrawIcons(!set.isDrawIconsEnabled)
+                    set.setDrawIcons(!set.isDrawIcons)
                     binding.chart1.invalidate()
                 }
             }
