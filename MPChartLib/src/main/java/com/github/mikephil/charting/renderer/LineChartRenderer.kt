@@ -172,7 +172,6 @@ open class LineChartRenderer(
             // So in the starting `prev` and `cur`, go -2, -1
             // And in the `lastIndex`, add +1
             val firstIndex = xBounds.min + 1
-            val lastIndex = xBounds.min + xBounds.range
 
             var prevPrev: Entry?
             var prev = dataSet.getEntryForIndex(max((firstIndex - 2).toDouble(), 0.0).toInt())
