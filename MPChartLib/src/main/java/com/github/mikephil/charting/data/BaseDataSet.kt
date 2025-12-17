@@ -40,7 +40,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     protected var mAxisDependency: AxisDependency = AxisDependency.LEFT
 
     /**
-     * if true, value highlightning is enabled
+     * if true, value highlighting is enabled
      */
     protected var mHighlightEnabled: Boolean = true
 
@@ -85,9 +85,6 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
      */
     protected var mVisible: Boolean = true
 
-    /**
-     * Default constructor.
-     */
     init {
         mColors = ArrayList()
         mValueColors = ArrayList()
@@ -97,11 +94,6 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
         mValueColors.add(Color.BLACK)
     }
 
-    /**
-     * Constructor with label.
-     *
-     * @param label
-     */
     constructor(label: String) : this() {
         this.mLabel = label
     }
