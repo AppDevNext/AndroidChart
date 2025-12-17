@@ -110,26 +110,24 @@ open class LineChartRenderer(
         cubicPath.reset()
 
         if (xBounds.range >= 1) {
-            var prev = dataSet.getEntryForIndex(xBounds.min)
-            val cur = prev
+            var prev = dataSet.getEntryForIndex(xBounds.min)!!
+            var cur = prev
 
-            cur?.let {
-                // let the spline start
-                cubicPath.moveTo(it.x, it.y * phaseY)
+            // let the spline start
+            cubicPath.moveTo(cur.x, cur.y * phaseY)
 
-                for (j in xBounds.min + 1..xBounds.range + xBounds.min) {
-                    prev = it
-                    dataSet.getEntryForIndex(j)?.let { cur ->
+            for (j in xBounds.min + 1..xBounds.range + xBounds.min) {
+                prev = cur
+                cur = dataSet.getEntryForIndex(j)!!
 
-                        val cpx = ((prev.x) + (cur.x - prev.x) / 2.0f)
+                val cpx = ((prev.x)
+                        + (cur.x - prev.x) / 2.0f)
 
-                        cubicPath.cubicTo(
-                            cpx, prev.y * phaseY,
-                            cpx, cur.y * phaseY,
-                            cur.x, cur.y * phaseY
-                        )
-                    }
-                }
+                cubicPath.cubicTo(
+                    cpx, prev.y * phaseY,
+                    cpx, cur.y * phaseY,
+                    cur.x, cur.y * phaseY
+                )
             }
         }
 
@@ -181,29 +179,29 @@ open class LineChartRenderer(
             var next = cur
             var nextIndex = -1
 
-            cur?.let {
-                // let the spline start
-                cubicPath.moveTo(it.x, it.y * phaseY)
+            if (cur == null) return
 
-                for (j in xBounds.min + 1..xBounds.range + xBounds.min) {
-                    prevPrev = prev
-                    prev = it
-                    cur = if (nextIndex == j) next else dataSet.getEntryForIndex(j)!!
+            // let the spline start
+            cubicPath.moveTo(cur.x, cur.y * phaseY)
 
-                    nextIndex = if (j + 1 < dataSet.entryCount) j + 1 else j
-                    next = dataSet.getEntryForIndex(nextIndex)!!
+            for (j in xBounds.min + 1..xBounds.range + xBounds.min) {
+                prevPrev = prev
+                prev = cur
+                cur = if (nextIndex == j) next else dataSet.getEntryForIndex(j)
 
-                    prevDx = (cur!!.x - prevPrev!!.x) * intensity
-                    prevDy = (cur.y - prevPrev.y) * intensity
-                    curDx = (next.x - prev.x) * intensity
-                    curDy = (next.y - prev.y) * intensity
+                nextIndex = if (j + 1 < dataSet.entryCount) j + 1 else j
+                next = dataSet.getEntryForIndex(nextIndex)!!
 
-                    cubicPath.cubicTo(
-                        prev.x + prevDx, (prev.y + prevDy) * phaseY,
-                        cur.x - curDx,
-                        (cur.y - curDy) * phaseY, cur.x, cur.y * phaseY
-                    )
-                }
+                prevDx = (cur!!.x - prevPrev!!.x) * intensity
+                prevDy = (cur.y - prevPrev.y) * intensity
+                curDx = (next.x - prev!!.x) * intensity
+                curDy = (next.y - prev.y) * intensity
+
+                cubicPath.cubicTo(
+                    prev.x + prevDx, (prev.y + prevDy) * phaseY,
+                    cur.x - curDx,
+                    (cur.y - curDy) * phaseY, cur.x, cur.y * phaseY
+                )
             }
         }
 
