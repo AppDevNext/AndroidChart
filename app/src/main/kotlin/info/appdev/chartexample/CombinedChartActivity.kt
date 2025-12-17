@@ -110,7 +110,7 @@ class CombinedChartActivity : DemoBase() {
         set.circleRadius = 5f
         set.setFillColor(Color.rgb(240, 238, 70))
         set.lineMode = LineDataSet.Mode.CUBIC_BEZIER
-        set.setDrawValues(true)
+        set.isDrawValues = true
         set.valueTextSize = 10f
         set.setValueTextColor(Color.rgb(240, 238, 70))
 
@@ -172,7 +172,7 @@ class CombinedChartActivity : DemoBase() {
         val set = ScatterDataSet(entries, "Scatter DataSet")
         set.setColors(*ColorTemplate.MATERIAL_COLORS)
         set.scatterShapeSize = 7.5f
-        set.setDrawValues(false)
+        set.isDrawValues = false
         set.valueTextSize = 10f
         d.addDataSet(set)
 
@@ -195,7 +195,7 @@ class CombinedChartActivity : DemoBase() {
         set.shadowColor = Color.DKGRAY
         set.setBarSpace(0.3f)
         set.valueTextSize = 10f
-        set.setDrawValues(false)
+        set.isDrawValues = false
         d.addDataSet(set)
 
         return d
@@ -217,7 +217,7 @@ class CombinedChartActivity : DemoBase() {
         set.valueTextSize = 10f
         set.setValueTextColor(Color.WHITE)
         set.highlightCircleWidth = 1.5f
-        set.setDrawValues(true)
+        set.isDrawValues = true
         bd.addDataSet(set)
 
         return bd
@@ -239,7 +239,7 @@ class CombinedChartActivity : DemoBase() {
 
             R.id.actionToggleLineValues -> {
                 for (set in chart!!.data!!.dataSets) {
-                    if (set is LineDataSet) set.setDrawValues(!set.isDrawValues)
+                    if (set is LineDataSet) set.isDrawValues = !set.isDrawValues
                 }
 
                 chart!!.invalidate()
@@ -247,7 +247,7 @@ class CombinedChartActivity : DemoBase() {
 
             R.id.actionToggleBarValues -> {
                 for (set in chart!!.data!!.dataSets) {
-                    if (set is BarDataSet) set.setDrawValues(!set.isDrawValues)
+                    if (set is BarDataSet) set.isDrawValues = !set.isDrawValues
                 }
                 chart!!.invalidate()
             }

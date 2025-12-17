@@ -163,7 +163,6 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
                 chart!!.data!!.dataSets.forEach { set ->
                     set.setDrawValues(!set.isDrawValues)
                 }
-
                 chart!!.invalidate()
             }
 
@@ -171,7 +170,6 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
                 chart!!.data!!.dataSets.forEach { set ->
                     set.setDrawIcons(!set.isDrawIconsEnabled)
                 }
-
                 chart!!.invalidate()
             }
 

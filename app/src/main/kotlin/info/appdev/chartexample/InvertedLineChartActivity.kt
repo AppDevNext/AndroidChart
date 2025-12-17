@@ -146,7 +146,6 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                 chart!!.data!!.dataSets.forEach { iSet ->
                     iSet.setDrawValues(!iSet.isDrawValues)
                 }
-
                 chart!!.invalidate()
             }
 

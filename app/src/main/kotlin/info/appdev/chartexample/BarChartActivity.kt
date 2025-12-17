@@ -202,9 +202,9 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             }
 
             R.id.actionToggleValues -> {
-                for (set in chart!!.data!!.dataSets)
+                chart!!.data!!.dataSets.forEach { set ->
                     set.setDrawValues(!set.isDrawValues())
-
+                }
                 chart!!.invalidate()
             }
 

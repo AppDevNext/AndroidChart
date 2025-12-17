@@ -153,13 +153,9 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
             }
 
             R.id.actionToggleValues -> {
-                val sets = binding.chart1.data!!
-                    .dataSets
-
-                for (iSet in sets) {
-                    iSet.setDrawValues(!iSet.isDrawValues())
+                binding.chart1.data!!.dataSets.forEach { set ->
+                    set.setDrawValues(!set.isDrawValues())
                 }
-
                 binding.chart1.invalidate()
             }
 

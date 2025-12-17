@@ -134,7 +134,6 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
                 binding.chart1.data!!.dataSets.forEach { set ->
                     set.setDrawValues(!set.isDrawValues)
                 }
-
                 binding.chart1.invalidate()
             }
 

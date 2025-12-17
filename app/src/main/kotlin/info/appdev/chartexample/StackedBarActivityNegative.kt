@@ -131,7 +131,6 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
                 chart!!.data!!.dataSets.forEach { set ->
                     set.setDrawValues(!set.isDrawValues)
                 }
-
                 chart!!.invalidate()
             }
 

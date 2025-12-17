@@ -124,8 +124,9 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                for (set in chart!!.data!!.dataSets) set.setDrawValues(!set.isDrawValues())
-
+                chart!!.data!!.dataSets.forEach { set ->
+                    set.setDrawValues(!set.isDrawValues())
+                }
                 chart!!.invalidate()
             }
 

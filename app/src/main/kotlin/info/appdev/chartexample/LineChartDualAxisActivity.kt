@@ -229,7 +229,6 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                 chart!!.data!!.dataSets.forEach { set ->
                     set.setDrawValues(!set.isDrawValues)
                 }
-
                 chart!!.invalidate()
             }
 

@@ -167,7 +167,6 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
                 chart!!.data!!.dataSets.forEach { set ->
                     set.setDrawValues(!set.isDrawValues)
                 }
-
                 chart!!.invalidate()
             }
 

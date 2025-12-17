@@ -377,9 +377,8 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
 
     private fun toggleValues() {
         chart?.let {
-            val sets = it.data?.dataSets ?: return
-            for (iSet in sets) {
-                iSet.setDrawValues(!iSet.isDrawValues)
+            chart!!.data!!.dataSets.forEach { set ->
+                set.setDrawValues(!set.isDrawValues())
             }
             it.invalidate()
         }
