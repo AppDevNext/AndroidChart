@@ -109,7 +109,7 @@ class CombinedChartActivity : DemoBase() {
         set.setCircleColor(Color.rgb(240, 238, 70))
         set.circleRadius = 5f
         set.setFillColor(Color.rgb(240, 238, 70))
-        set.mode = LineDataSet.Mode.CUBIC_BEZIER
+        set.lineMode = LineDataSet.Mode.CUBIC_BEZIER
         set.setDrawValues(true)
         set.valueTextSize = 10f
         set.setValueTextColor(Color.rgb(240, 238, 70))

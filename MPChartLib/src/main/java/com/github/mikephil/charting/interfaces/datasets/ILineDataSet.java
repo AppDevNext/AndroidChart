@@ -14,7 +14,7 @@ public interface ILineDataSet extends ILineRadarDataSet<Entry> {
     /**
      * Returns the drawing mode for this line dataset
      */
-    LineDataSet.Mode getMode();
+    LineDataSet.Mode getLineMode();
 
     /**
      * Returns the intensity of the cubic lines (the effect intensity).

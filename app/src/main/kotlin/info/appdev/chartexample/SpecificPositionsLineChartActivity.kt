@@ -171,7 +171,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleCubic -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER
                 }
                 mChart!!.invalidate()
             }
@@ -179,7 +179,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleStepped -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED
                 }
                 mChart!!.invalidate()
             }
@@ -187,7 +187,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleHorizontalCubic -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER
                 }
                 mChart!!.invalidate()
             }

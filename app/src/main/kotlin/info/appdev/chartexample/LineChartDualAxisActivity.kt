@@ -262,7 +262,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.CUBIC_BEZIER)
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
                         LineDataSet.Mode.CUBIC_BEZIER
@@ -275,7 +275,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.STEPPED)
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED)
                         LineDataSet.Mode.LINEAR
                     else
                         LineDataSet.Mode.STEPPED
@@ -288,7 +288,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER)
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
                         LineDataSet.Mode.HORIZONTAL_BEZIER

@@ -111,14 +111,14 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 	 * Returns the drawing mode for this line dataset
 	 */
 	@Override
-	public LineDataSet.Mode getMode() {
+	public LineDataSet.Mode getLineMode() {
 		return mLineDataSetMode;
 	}
 
 	/**
 	 * Returns the drawing mode for this LineDataSet
 	 */
-	public void setMode(LineDataSet.Mode mode) {
+	public void setLineMode(LineDataSet.Mode mode) {
 		mLineDataSetMode = mode;
 	}
 
