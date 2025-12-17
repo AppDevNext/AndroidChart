@@ -23,6 +23,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
 import androidx.core.net.toUri
+import androidx.window.layout.WindowMetricsCalculator
 
 class HalfPieChartActivity : DemoBase() {
     private var chart: PieChart? = null
@@ -117,15 +118,12 @@ class HalfPieChartActivity : DemoBase() {
     }
 
     private fun moveOffScreen() {
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-
-        val height = displayMetrics.heightPixels
+        val windowMetrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this)
+        val height = windowMetrics.bounds.height()
 
         val offset = (height * 0.65).toInt() /* percent to move */
 
-        val rlParams =
-            chart!!.layoutParams as RelativeLayout.LayoutParams
+        val rlParams = chart!!.layoutParams as RelativeLayout.LayoutParams
         rlParams.setMargins(0, 0, 0, -offset)
         chart!!.layoutParams = rlParams
     }
