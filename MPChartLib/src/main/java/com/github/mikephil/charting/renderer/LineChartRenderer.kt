@@ -274,7 +274,7 @@ open class LineChartRenderer(
         }
 
         // more than 1 color
-            if (dataSet.color > 1) {
+            if (dataSet.colors.size > 1) {
                 val numberOfFloats = pointsPerEntryPair * 2
 
                 if (lineBuffer.size <= numberOfFloats)
