@@ -248,8 +248,7 @@ open class LineChartRenderer(
     protected fun drawLinear(c: Canvas, dataSet: ILineDataSet) {
         val entryCount = dataSet.entryCount
 
-        val isDrawSteppedEnabled = dataSet.isDrawSteppedEnabled
-        val pointsPerEntryPair = if (isDrawSteppedEnabled) 4 else 2
+        val pointsPerEntryPair = if (dataSet.isDrawSteppedEnabled) 4 else 2
 
         val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
@@ -289,7 +288,7 @@ open class LineChartRenderer(
                 if (j < xBounds.max) {
                     entry = dataSet.getEntryForIndex(j + 1)
 
-                    if (isDrawSteppedEnabled) {
+                    if (dataSet.isDrawSteppedEnabled) {
                         lineBuffer[2] = entry.x
                         lineBuffer[3] = lineBuffer[1]
                         lineBuffer[4] = lineBuffer[2]
@@ -358,7 +357,7 @@ open class LineChartRenderer(
                     lineBuffer[j++] = e1.x
                     lineBuffer[j++] = e1.y * phaseY
 
-                    if (isDrawSteppedEnabled) {
+                    if (dataSet.isDrawSteppedEnabled) {
                         lineBuffer[j++] = e2.x
                         lineBuffer[j++] = e1.y * phaseY
                         lineBuffer[j++] = e2.x
