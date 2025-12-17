@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 /**
  * The DataSet class represents one group or type of entries (Entry) in the
  * Chart that belong together. It is designed to logically separate different
@@ -254,7 +256,7 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> implements
 	}
 
 	@Override
-	public boolean addEntry(T entry) {
+	public boolean addEntry(@NonNull T entry) {
 		List<T> values = getEntries();
 		if (values == null) {
 			values = new ArrayList<>();

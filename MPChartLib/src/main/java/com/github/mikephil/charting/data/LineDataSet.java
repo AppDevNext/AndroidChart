@@ -226,7 +226,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 
 	@Override
 	public boolean isDashedLineEnabled() {
-		return mDashPathEffect == null ? false : true;
+		return mDashPathEffect != null;
 	}
 
 	@Override
