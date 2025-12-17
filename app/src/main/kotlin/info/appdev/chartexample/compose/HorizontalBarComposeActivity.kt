@@ -48,7 +48,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.DataTools.Companion.setData
 import info.appdev.chartexample.R
 import info.appdev.chartexample.notimportant.DemoBaseCompose
 import timber.log.Timber
@@ -380,7 +379,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
         chart?.let {
             val sets = it.data?.dataSets ?: return
             for (iSet in sets) {
-                iSet.setDrawValues(!iSet.isDrawValuesEnabled)
+                iSet.setDrawValues(!iSet.isDrawValues)
             }
             it.invalidate()
         }

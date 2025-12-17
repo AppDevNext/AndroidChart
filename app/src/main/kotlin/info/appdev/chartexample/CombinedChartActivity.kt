@@ -239,7 +239,7 @@ class CombinedChartActivity : DemoBase() {
 
             R.id.actionToggleLineValues -> {
                 for (set in chart!!.data!!.dataSets) {
-                    if (set is LineDataSet) set.setDrawValues(!set.isDrawValuesEnabled)
+                    if (set is LineDataSet) set.setDrawValues(!set.isDrawValues)
                 }
 
                 chart!!.invalidate()
@@ -247,7 +247,7 @@ class CombinedChartActivity : DemoBase() {
 
             R.id.actionToggleBarValues -> {
                 for (set in chart!!.data!!.dataSets) {
-                    if (set is BarDataSet) set.setDrawValues(!set.isDrawValuesEnabled)
+                    if (set is BarDataSet) set.setDrawValues(!set.isDrawValues)
                 }
                 chart!!.invalidate()
             }

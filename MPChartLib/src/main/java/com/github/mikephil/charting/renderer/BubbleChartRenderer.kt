@@ -146,7 +146,7 @@ open class BubbleChartRenderer(
 
                         val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
 
-                        if (dataSet.isDrawValuesEnabled) {
+                        if (dataSet.isDrawValues) {
                             drawValue(
                                 canvas, dataSet.valueFormatter, entry.size, entry, i, x,
                                 y + (0.5f * lineHeight), valueTextColor

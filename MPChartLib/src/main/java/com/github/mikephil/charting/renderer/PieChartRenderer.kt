@@ -397,7 +397,7 @@ open class PieChartRenderer(
                 if (dataSet.entryCount == 0) {
                     continue
                 }
-                val drawValues = dataSet.isDrawValuesEnabled
+                val drawValues = dataSet.isDrawValues
                 if (!drawValues && !drawEntryLabels) {
                     continue
                 }

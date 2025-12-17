@@ -157,7 +157,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
                     .dataSets
 
                 for (iSet in sets) {
-                    iSet.setDrawValues(!iSet.isDrawValuesEnabled())
+                    iSet.setDrawValues(!iSet.isDrawValues())
                 }
 
                 binding.chart1.invalidate()

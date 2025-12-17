@@ -156,7 +156,7 @@ class RadarChartActivity : DemoBase() {
             }
 
             R.id.actionToggleValues -> {
-                for (set in chart!!.data!!.dataSets) set.setDrawValues(!set.isDrawValuesEnabled())
+                for (set in chart!!.data!!.dataSets) set.setDrawValues(!set.isDrawValues())
 
                 chart!!.invalidate()
             }

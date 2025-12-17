@@ -156,7 +156,7 @@ open class RadarChartRenderer(
                     pOut
                 )
 
-                if (dataSet.isDrawValuesEnabled) {
+                if (dataSet.isDrawValues) {
                     drawValue(
                         canvas,
                         dataSet.valueFormatter,

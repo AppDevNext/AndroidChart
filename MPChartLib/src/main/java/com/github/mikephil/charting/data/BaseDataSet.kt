@@ -319,7 +319,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
         this.mDrawValues = enabled
     }
 
-    override fun isDrawValuesEnabled(): Boolean {
+    override fun isDrawValues(): Boolean {
         return mDrawValues
     }
 

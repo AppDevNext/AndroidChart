@@ -140,7 +140,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleValues -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                    set.setDrawValues(!set.isDrawValues)
                 }
                 mChart!!.invalidate()
             }

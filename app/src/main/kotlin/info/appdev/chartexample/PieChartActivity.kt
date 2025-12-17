@@ -177,7 +177,7 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             }
 
             R.id.actionToggleValues -> {
-                for (set in chart!!.data!!.getDataSets()) set.setDrawValues(!set.isDrawValuesEnabled())
+                for (set in chart!!.data!!.getDataSets()) set.setDrawValues(!set.isDrawValues())
 
                 chart!!.invalidate()
             }

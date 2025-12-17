@@ -250,7 +250,7 @@ open class CandleStickChartRenderer(
 
                     val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
 
-                    if (dataSet.isDrawValuesEnabled) {
+                    if (dataSet.isDrawValues) {
                         drawValue(
                             canvas,
                             dataSet.valueFormatter,

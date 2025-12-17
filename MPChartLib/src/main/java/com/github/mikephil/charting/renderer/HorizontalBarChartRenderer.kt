@@ -234,7 +234,7 @@ open class HorizontalBarChartRenderer(
                             negOffset = -negOffset - valueTextWidth
                         }
 
-                        if (dataSet.isDrawValuesEnabled) {
+                        if (dataSet.isDrawValues) {
                             drawValue(
                                 canvas,
                                 formattedValue!!,
@@ -310,7 +310,7 @@ open class HorizontalBarChartRenderer(
                                 negOffset = -negOffset - valueTextWidth
                             }
 
-                            if (dataSet.isDrawValuesEnabled) {
+                            if (dataSet.isDrawValues) {
                                 drawValue(
                                     canvas, formattedValue!!,
                                     buffer.buffer[bufferIndex + 2]
@@ -410,7 +410,7 @@ open class HorizontalBarChartRenderer(
                                     continue
                                 }
 
-                                if (dataSet.isDrawValuesEnabled) {
+                                if (dataSet.isDrawValues) {
                                     drawValue(canvas, formattedValue!!, x, y + halfTextHeight, color)
                                 }
 

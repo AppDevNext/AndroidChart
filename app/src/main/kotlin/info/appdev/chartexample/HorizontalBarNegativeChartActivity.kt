@@ -161,7 +161,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
             R.id.actionToggleValues -> {
                 chart!!.data!!.dataSets.forEach {
-                    it.setDrawValues(!it.isDrawValuesEnabled())
+                    it.setDrawValues(!it.isDrawValues())
                 }
 
                 chart!!.invalidate()

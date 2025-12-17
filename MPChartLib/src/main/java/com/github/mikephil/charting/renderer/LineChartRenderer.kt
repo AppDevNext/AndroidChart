@@ -88,7 +88,7 @@ open class LineChartRenderer(
             return
 
         paintRender.strokeWidth = dataSet.lineWidth
-        paintRender.setPathEffect(dataSet.dashPathEffect)
+        paintRender.pathEffect = dataSet.dashPathEffect
 
         when (dataSet.lineMode) {
             LineDataSet.Mode.LINEAR, LineDataSet.Mode.STEPPED -> drawLinear(canvas, dataSet)
@@ -97,7 +97,7 @@ open class LineChartRenderer(
             else -> drawLinear(canvas, dataSet)
         }
 
-        paintRender.setPathEffect(null)
+        paintRender.pathEffect = null
     }
 
     protected fun drawHorizontalBezier(dataSet: ILineDataSet) {
@@ -147,7 +147,7 @@ open class LineChartRenderer(
 
         bitmapCanvas!!.drawPath(cubicPath, paintRender)
 
-        paintRender.setPathEffect(null)
+        paintRender.pathEffect = null
     }
 
     protected fun drawCubicBezier(dataSet: ILineDataSet) {
@@ -221,7 +221,7 @@ open class LineChartRenderer(
 
         bitmapCanvas!!.drawPath(cubicPath, paintRender)
 
-        paintRender.setPathEffect(null)
+        paintRender.pathEffect = null
     }
 
     protected fun drawCubicFill(canvas: Canvas, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
@@ -379,7 +379,7 @@ open class LineChartRenderer(
             }
         }
 
-        paintRender.setPathEffect(null)
+        paintRender.pathEffect = null
     }
 
     protected var mGenerateFilledPathBuffer: Path = Path()
@@ -532,7 +532,7 @@ open class LineChartRenderer(
                     val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
 
                     if (entry != null) {
-                        if (dataSet.isDrawValuesEnabled) {
+                        if (dataSet.isDrawValues) {
                             drawValue(
                                 canvas, dataSet.valueFormatter, entry.y, entry, i, x,
                                 y - valOffset, dataSet.getValueTextColor(j / 2)
