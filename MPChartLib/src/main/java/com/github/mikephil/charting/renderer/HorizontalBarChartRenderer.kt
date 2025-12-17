@@ -220,8 +220,8 @@ open class HorizontalBarChartRenderer(
                         }
 
                         val entry = dataSet.getEntryForIndex(j / 4)
-                        val `val` = entry.y
-                        val formattedValue = formatter.getFormattedValue(`val`, entry, i, viewPortHandler)
+                        val valueY = entry.y
+                        val formattedValue = formatter.getFormattedValue(valueY, entry, i, viewPortHandler)
 
                         // calculate the correct offset depending on the draw position of the value
                         val valueTextWidth = Utils.calcTextWidth(paintValues, formattedValue).toFloat()
@@ -238,7 +238,7 @@ open class HorizontalBarChartRenderer(
                             drawValue(
                                 canvas,
                                 formattedValue!!,
-                                buffer.buffer[j + 2] + (if (`val` >= 0) posOffset else negOffset),
+                                buffer.buffer[j + 2] + (if (valueY >= 0) posOffset else negOffset),
                                 y + halfTextHeight,
                                 dataSet.getValueTextColor(j / 2)
                             )
@@ -247,7 +247,7 @@ open class HorizontalBarChartRenderer(
                         if (entry.icon != null && dataSet.isDrawIcons) {
                             val icon = entry.icon
 
-                            var px = buffer.buffer[j + 2] + (if (`val` >= 0) posOffset else negOffset)
+                            var px = buffer.buffer[j + 2] + (if (valueY >= 0) posOffset else negOffset)
                             var py = y
 
                             px += iconsOffset.x
@@ -294,9 +294,9 @@ open class HorizontalBarChartRenderer(
                                 continue
                             }
 
-                            val `val` = entry.y
+                            val valueY = entry.y
                             val formattedValue = formatter.getFormattedValue(
-                                `val`,
+                                valueY,
                                 entry, i, viewPortHandler
                             )
 
@@ -372,9 +372,9 @@ open class HorizontalBarChartRenderer(
 
                             var k = 0
                             while (k < transformed.size) {
-                                val `val` = vals[k / 2]
+                                val valueY = vals[k / 2]
                                 val formattedValue = formatter.getFormattedValue(
-                                    `val`,
+                                    valueY,
                                     entry, i, viewPortHandler
                                 )
 
@@ -389,8 +389,8 @@ open class HorizontalBarChartRenderer(
                                 }
 
                                 val drawBelow =
-                                    (`val` == 0.0f && negY == 0.0f && posY > 0.0f) ||
-                                            `val` < 0.0f
+                                    (valueY == 0.0f && negY == 0.0f && posY > 0.0f) ||
+                                            valueY < 0.0f
 
                                 val x = (transformed[k]
                                         + (if (drawBelow) negOffset else posOffset))
