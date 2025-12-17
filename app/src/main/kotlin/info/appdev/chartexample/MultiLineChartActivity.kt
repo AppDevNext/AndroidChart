@@ -141,8 +141,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleValues -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -172,8 +171,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleFilled -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -184,8 +182,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleCircles -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -196,8 +193,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleCubic -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -210,8 +206,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleStepped -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -224,8 +219,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet

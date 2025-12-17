@@ -11,6 +11,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
@@ -27,7 +28,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
-import androidx.core.net.toUri
 import kotlin.math.roundToInt
 
 class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
@@ -164,8 +164,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -183,8 +182,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleFilled -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -195,8 +193,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleCircles -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -207,8 +204,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleCubic -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -219,8 +215,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleStepped -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet

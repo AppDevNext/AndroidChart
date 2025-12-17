@@ -129,10 +129,8 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
 
             R.id.actionToggleValues -> {
                 val sets = chart!!.data!!.dataSets
-
                 for (iSet in sets) {
-                    val set = iSet as BarDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                    iSet.setDrawValues(!iSet.isDrawValuesEnabled)
                 }
 
                 chart!!.invalidate()

@@ -160,8 +160,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             }
 
             R.id.actionToggleValues -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as BarDataSet
@@ -172,8 +171,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             }
 
             R.id.actionToggleIcons -> {
-                val sets = chart!!.data!!
-                    .dataSets
+                val sets = chart!!.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as BarDataSet
