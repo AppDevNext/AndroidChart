@@ -27,7 +27,7 @@ import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 /**
- * Example of a heavily customized [LineChart] with limit lines, custom line shapes, etc.
+ * Example of a heavily customized [com.github.mikephil.charting.charts.LineChart] with limit lines, custom line shapes, etc.
  */
 class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
 
@@ -80,13 +80,6 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         // axis range
         binding.chart1.axisLeft.axisMaximum = 200f
         binding.chart1.axisLeft.axisMinimum = -50f
-        val llXAxis10 = LimitLine(9f, "Index 10").apply {
-            lineWidth = 4f
-            enableDashedLine(10f, 10f, 0f)
-            labelPosition = LimitLabelPosition.RIGHT_BOTTOM
-            textSize = 10f
-            typeface = tfRegular
-        }
 
         val limitLineUpper = LimitLine(150f, "Upper Limit").apply {
             lineWidth = 4f
@@ -161,16 +154,14 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                binding.chart1.data?.dataSets?.forEach { set ->
                     set.setDrawValues(!set.isDrawValuesEnabled)
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                binding.chart1.data?.dataSets?.forEach { set ->
                     set.setDrawIcons(!set.isDrawIconsEnabled)
                     binding.chart1.invalidate()
                 }
@@ -184,8 +175,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                binding.chart1.data?.dataSets?.forEach { set ->
                     set.setDrawFilled(!set.isDrawFilledEnabled)
                     binding.chart1.invalidate()
                 }
@@ -202,7 +192,10 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleCubic -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
+                        LineDataSet.Mode.LINEAR
+                    else
+                        LineDataSet.Mode.CUBIC_BEZIER
                 }
                 binding.chart1.invalidate()
             }
@@ -210,7 +203,10 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleStepped -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED)
+                        LineDataSet.Mode.LINEAR
+                    else
+                        LineDataSet.Mode.STEPPED
                 }
                 binding.chart1.invalidate()
             }
@@ -218,7 +214,10 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             R.id.actionToggleHorizontalCubic -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER)
+                        LineDataSet.Mode.LINEAR
+                    else
+                        LineDataSet.Mode.HORIZONTAL_BEZIER
                 }
                 binding.chart1.invalidate()
             }
@@ -264,8 +263,8 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
     override fun onStopTrackingTouch(seekBar: SeekBar) {}
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         Timber.i(entry.toString())
-        Timber.i("LOW HIGH low: " + binding.chart1.lowestVisibleX + ", high: " + binding.chart1.highestVisibleX)
-        Timber.i("MIN MAX xMin: " + binding.chart1.xChartMin + ", xMax: " + binding.chart1.xChartMax + ", yMin: " + binding.chart1.yChartMin + ", yMax: " + binding.chart1.yChartMax)
+        Timber.i("LOW HIGH low: ${binding.chart1.lowestVisibleX}, high: ${binding.chart1.highestVisibleX}")
+        Timber.i("MIN MAX xMin: ${binding.chart1.xChartMin}, xMax: ${binding.chart1.xChartMax}, yMin: ${binding.chart1.yChartMin}, yMax: ${binding.chart1.yChartMax}")
     }
 
     override fun onNothingSelected() = Unit
