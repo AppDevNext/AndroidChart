@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.github.mikephil.charting.charts.LineChart
+import androidx.core.net.toUri
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -14,8 +14,8 @@ import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 /**
  * This works by inverting the background and desired "fill" color. First, we draw the fill color
@@ -25,48 +25,49 @@ import androidx.core.net.toUri
  * the area OUTSIDE the lines!
  */
 class FilledLineActivity : DemoBase() {
-    private var chart: LineChart? = null
     private val fillColor = Color.argb(150, 51, 181, 229)
+
+    private lateinit var binding: ActivityLinechartNoseekbarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_linechart_noseekbar)
+        binding = ActivityLinechartNoseekbarBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        chart = findViewById(R.id.chart1)
-        chart!!.setBackgroundColor(Color.WHITE)
-        chart!!.setGridBackgroundColor(fillColor)
-        chart!!.setDrawGridBackground(true)
+        binding.chart1.setBackgroundColor(Color.WHITE)
+        binding.chart1.setGridBackgroundColor(fillColor)
+        binding.chart1.setDrawGridBackground(true)
 
-        chart!!.setDrawBorders(true)
+        binding.chart1.setDrawBorders(true)
 
         // no description text
-        chart!!.description.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // if disabled, scaling can be done on x- and y-axis separately
-        chart!!.setPinchZoom(false)
+        binding.chart1.setPinchZoom(false)
 
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.isEnabled = false
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.isEnabled = false
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = binding.chart1.axisLeft
         leftAxis.setAxisMaximum(900f)
         leftAxis.setAxisMinimum(-250f)
         leftAxis.setDrawAxisLine(false)
         leftAxis.setDrawZeroLine(false)
         leftAxis.setDrawGridLines(false)
 
-        chart!!.axisRight.isEnabled = false
+        binding.chart1.axisRight.isEnabled = false
 
-        // add data
         setData(60f)
 
-        chart!!.invalidate()
+        binding.chart1.invalidate()
     }
 
-    private fun setData(range: Float) {
+    private fun setData(@Suppress("SameParameterValue") range: Float) {
         val count = 100
         val values1 = ArrayList<Entry?>()
         val sampleValues = getValues(count + 2)
@@ -86,15 +87,15 @@ class FilledLineActivity : DemoBase() {
         val set1: LineDataSet
         val set2: LineDataSet
 
-        if (chart!!.data != null &&
-            chart!!.data!!.getDataSetCount() > 0
+        if (binding.chart1.data != null &&
+            binding.chart1.data!!.getDataSetCount() > 0
         ) {
-            set1 = chart!!.data!!.getDataSetByIndex(0) as LineDataSet
-            set2 = chart!!.data!!.getDataSetByIndex(1) as LineDataSet
+            set1 = binding.chart1.data!!.getDataSetByIndex(0) as LineDataSet
+            set2 = binding.chart1.data!!.getDataSetByIndex(1) as LineDataSet
             set1.setEntries(values1)
             set2.setEntries(values2)
-            chart!!.data!!.notifyDataChanged()
-            chart!!.notifyDataSetChanged()
+            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.notifyDataSetChanged()
         } else {
             // create a dataset and give it a type
             set1 = LineDataSet(values1, "DataSet 1")
@@ -113,7 +114,7 @@ class FilledLineActivity : DemoBase() {
                 override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
                     // change the return value here to better understand the effect
                     // return 0;
-                    return chart!!.axisLeft.axisMinimum
+                    return binding.chart1.axisLeft.axisMinimum
                 }
             }
 
@@ -133,7 +134,7 @@ class FilledLineActivity : DemoBase() {
                 override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
                     // change the return value here to better understand the effect
                     // return 600;
-                    return chart!!.axisLeft.axisMaximum
+                    return binding.chart1.axisLeft.axisMaximum
                 }
             }
 
@@ -145,8 +146,7 @@ class FilledLineActivity : DemoBase() {
             val data = LineData(dataSets)
             data.setDrawValues(false)
 
-            // set data
-            chart!!.setData(data)
+            binding.chart1.setData(data)
         }
     }
 
@@ -168,6 +168,5 @@ class FilledLineActivity : DemoBase() {
         return true
     }
 
-    public override fun saveToGallery() { /* Intentionally left empty */
-    }
+    public override fun saveToGallery() = Unit // Intentionally left empty
 }
