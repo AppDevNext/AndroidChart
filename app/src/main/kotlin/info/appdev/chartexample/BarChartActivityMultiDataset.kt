@@ -193,8 +193,9 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             }
 
             R.id.actionToggleValues -> {
-                for (set in chart!!.data!!.dataSets) set.setDrawValues(!set.isDrawValuesEnabled())
-
+                chart!!.data!!.dataSets.forEach { set ->
+                    set.setDrawValues(!set.isDrawValues())
+                }
                 chart!!.invalidate()
             }
 

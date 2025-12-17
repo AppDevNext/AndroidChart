@@ -182,13 +182,14 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
             }
 
             R.id.actionToggleValues -> {
-                for (set in chart!!.data!!.getDataSets()) set.setDrawValues(!set.isDrawValuesEnabled())
-
+                chart!!.data!!.dataSets.forEach { set ->
+                    set.setDrawValues(!set.isDrawValues())
+                }
                 chart!!.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                for (set in chart!!.data!!.getDataSets()) set.setDrawIcons(!set.isDrawIconsEnabled())
+                for (set in chart!!.data!!.getDataSets()) set.setDrawIcons(!set.isDrawIcons())
 
                 chart!!.invalidate()
             }

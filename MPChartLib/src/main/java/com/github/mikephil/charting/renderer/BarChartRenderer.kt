@@ -314,7 +314,7 @@ open class BarChartRenderer(
                         val entry = dataSet.getEntryForIndex(j / 4)
                         val `val` = entry.y
 
-                        if (dataSet.isDrawValuesEnabled) {
+                        if (dataSet.isDrawValues) {
                             drawValue(
                                 canvas, dataSet.valueFormatter, `val`, entry, i, x,
                                 if (`val` >= 0) (buffer.buffer[j + 1] + posOffset) else (buffer.buffer[j + 3] + negOffset),
@@ -322,7 +322,7 @@ open class BarChartRenderer(
                             )
                         }
 
-                        if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                        if (entry.icon != null && dataSet.isDrawIcons) {
                             val icon = entry.icon
 
                             var px = x
@@ -372,7 +372,7 @@ open class BarChartRenderer(
                                 continue
                             }
 
-                            if (dataSet.isDrawValuesEnabled) {
+                            if (dataSet.isDrawValues) {
                                 drawValue(
                                     canvas, dataSet.valueFormatter, entry.y, entry, i, x,
                                     buffer.buffer[bufferIndex + 1] +
@@ -381,7 +381,7 @@ open class BarChartRenderer(
                                 )
                             }
 
-                            if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                            if (entry.icon != null && dataSet.isDrawIcons) {
                                 val icon = entry.icon
 
                                 var px = x
@@ -454,7 +454,7 @@ open class BarChartRenderer(
                                     continue
                                 }
 
-                                if (dataSet.isDrawValuesEnabled) {
+                                if (dataSet.isDrawValues) {
                                     drawValue(
                                         canvas,
                                         dataSet.valueFormatter,
@@ -467,7 +467,7 @@ open class BarChartRenderer(
                                     )
                                 }
 
-                                if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                                if (entry.icon != null && dataSet.isDrawIcons) {
                                     val icon = entry.icon
 
                                     icon?.let {

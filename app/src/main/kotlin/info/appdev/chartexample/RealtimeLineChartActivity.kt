@@ -128,7 +128,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         set.setHighLightColor(Color.rgb(244, 117, 117))
         set.setValueTextColor(Color.WHITE)
         set.valueTextSize = 9f
-        set.setDrawValues(false)
+        set.isDrawValues = false
         return set
     }
 

@@ -156,7 +156,7 @@ open class RadarChartRenderer(
                     pOut
                 )
 
-                if (dataSet.isDrawValuesEnabled) {
+                if (dataSet.isDrawValues) {
                     drawValue(
                         canvas,
                         dataSet.valueFormatter,
@@ -169,7 +169,7 @@ open class RadarChartRenderer(
                     )
                 }
 
-                if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                if (entry.icon != null && dataSet.isDrawIcons) {
                     val icon = entry.icon
 
                     Utils.getPosition(

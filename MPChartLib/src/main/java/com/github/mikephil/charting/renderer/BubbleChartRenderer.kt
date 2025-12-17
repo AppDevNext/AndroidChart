@@ -146,14 +146,14 @@ open class BubbleChartRenderer(
 
                         val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
 
-                        if (dataSet.isDrawValuesEnabled) {
+                        if (dataSet.isDrawValues) {
                             drawValue(
                                 canvas, dataSet.valueFormatter, entry.size, entry, i, x,
                                 y + (0.5f * lineHeight), valueTextColor
                             )
                         }
 
-                        if (entry.icon != null && dataSet.isDrawIconsEnabled) {
+                        if (entry.icon != null && dataSet.isDrawIcons) {
                             val icon = entry.icon
 
                             icon?.let {

@@ -20,7 +20,7 @@ abstract class BarLineScatterCandleBubbleRenderer(animator: ChartAnimator, viewP
      * Returns true if the DataSet values should be drawn, false if not.
      */
     protected fun shouldDrawValues(set: IDataSet<*>): Boolean {
-        return set.isVisible() && (set.isDrawValuesEnabled() || set.isDrawIconsEnabled())
+        return set.isVisible() && (set.isDrawValues() || set.isDrawIcons())
     }
 
     /**

@@ -48,7 +48,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.DataTools.Companion.setData
 import info.appdev.chartexample.R
 import info.appdev.chartexample.notimportant.DemoBaseCompose
 import timber.log.Timber
@@ -378,9 +377,8 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
 
     private fun toggleValues() {
         chart?.let {
-            val sets = it.data?.dataSets ?: return
-            for (iSet in sets) {
-                iSet.setDrawValues(!iSet.isDrawValuesEnabled)
+            chart!!.data!!.dataSets.forEach { set ->
+                set.setDrawValues(!set.isDrawValues())
             }
             it.invalidate()
         }
@@ -390,7 +388,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
         chart?.let {
             val sets = it.data?.dataSets ?: return
             for (iSet in sets) {
-                iSet.setDrawIcons(!iSet.isDrawIconsEnabled)
+                iSet.setDrawIcons(!iSet.isDrawIcons)
             }
             it.invalidate()
         }

@@ -138,9 +138,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionToggleValues -> {
-                mChart!!.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                mChart!!.data!!.dataSets.forEach { set ->
+                    set.setDrawValues(!set.isDrawValues())
                 }
                 mChart!!.invalidate()
             }

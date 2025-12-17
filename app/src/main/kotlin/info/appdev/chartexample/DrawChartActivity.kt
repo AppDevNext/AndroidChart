@@ -79,12 +79,9 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionToggleValues -> {
-                val sets = binding.chart1.data!!.dataSets
-
-                for (set in sets) {
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                binding.chart1.data!!.dataSets.forEach { set ->
+                    set.setDrawValues(!set.isDrawValues())
                 }
-
                 binding.chart1.invalidate()
             }
 
