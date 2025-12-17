@@ -11,7 +11,7 @@ import kotlin.Int
 import kotlin.String
 import kotlin.arrayOf
 
-open class BarDataSet(yVals: MutableList<BarEntry?>, label: String?) : BarLineScatterCandleBubbleDataSet<BarEntry?>(yVals, label), IBarDataSet {
+open class BarDataSet(yVals: MutableList<BarEntry?>, label: String = "") : BarLineScatterCandleBubbleDataSet<BarEntry>(yVals, label), IBarDataSet {
     /**
      * the maximum number of bars that are stacked upon each other, this value
      * is calculated from the Entries that are added to the DataSet
@@ -55,20 +55,22 @@ open class BarDataSet(yVals: MutableList<BarEntry?>, label: String?) : BarLineSc
         protected set
 
     init {
-        mHighLightColor = Color.rgb(0, 0, 0)
+        highLightColor = Color.rgb(0, 0, 0)
 
         calcStackSize(yVals)
         calcEntryCountIncludingStacks(yVals)
     }
 
-    override fun copy(): DataSet<BarEntry?> {
+    override fun copy(): DataSet<BarEntry?>? {
         val entries: MutableList<BarEntry?> = ArrayList()
-        for (i in mEntries.indices) {
-            entries.add(mEntries[i]!!.copy())
+        mEntries?.let {
+            for (i in it.indices) {
+                entries.add(it[i]!!.copy())
+            }
         }
         val copied = BarDataSet(entries, label)
         copy(copied)
-        return copied
+        return copied as DataSet<BarEntry?>?
     }
 
     protected fun copy(barDataSet: BarDataSet) {
@@ -85,14 +87,10 @@ open class BarDataSet(yVals: MutableList<BarEntry?>, label: String?) : BarLineSc
     }
 
     override fun getFill(index: Int): Fill? {
-        return gradients!!.get(index % gradients!!.size)
+        return gradients!![index % gradients!!.size]
     }
 
-    /**
-     * This method is deprecated.
-     * Use getFill(...) instead.
-     */
-    @Deprecated("")
+    @Deprecated("Use getFill(...) instead")
     fun getGradient(index: Int): Fill? {
         return getFill(index)
     }
@@ -105,11 +103,7 @@ open class BarDataSet(yVals: MutableList<BarEntry?>, label: String?) : BarLineSc
         gradients!!.add(Fill(startColor, endColor))
     }
 
-    /**
-     * This method is deprecated.
-     * Use setFills(...) instead.
-     */
-    @Deprecated("")
+    @Deprecated("Use setFills(...) instead")
     fun setGradientColors(gradientColors: MutableList<Fill?>?) {
         this.gradients = gradientColors
     }
@@ -137,7 +131,7 @@ open class BarDataSet(yVals: MutableList<BarEntry?>, label: String?) : BarLineSc
     }
 
     /**
-     * calculates the maximum stacksize that occurs in the Entries array of this
+     * calculates the maximum stackSize that occurs in the Entries array of this
      * DataSet
      */
     private fun calcStackSize(yVals: MutableList<BarEntry?>) {
@@ -151,13 +145,13 @@ open class BarDataSet(yVals: MutableList<BarEntry?>, label: String?) : BarLineSc
     override fun calcMinMax(e: BarEntry?) {
         if (e != null && !Float.isNaN(e.y)) {
             if (e.yVals == null) {
-                if (e.y < mYMin) mYMin = e.y
+                if (e.y < yMin) yMin = e.y
 
-                if (e.y > mYMax) mYMax = e.y
+                if (e.y > yMax) yMax = e.y
             } else {
-                if (-e.negativeSum < mYMin) mYMin = -e.negativeSum
+                if (-e.negativeSum < yMin) yMin = -e.negativeSum
 
-                if (e.positiveSum > mYMax) mYMax = e.positiveSum
+                if (e.positiveSum > yMax) yMax = e.positiveSum
             }
 
             calcMinMaxX(e)
@@ -238,7 +232,7 @@ open class BarDataSet(yVals: MutableList<BarEntry?>, label: String?) : BarLineSc
         return mStackLabels
     }
 
-    override fun getEntryIndex(entry: BarEntry?): Int {
+    override fun getEntryIndex(entry: BarEntry): Int {
         return this.getEntryIndex(entry)
     }
 }

@@ -18,7 +18,7 @@ import com.github.mikephil.charting.utils.convertDpToPixel
  * This is the base dataset of all DataSets. It's purpose is to implement critical methods
  * provided by the IDataSet interface.
  */
-abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
+abstract class BaseDataSet<T : Entry?>() : IDataSet<T> {
     /**
      * List representing all colors that are used for this DataSet
      */
@@ -236,12 +236,10 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
         mColors.clear()
     }
 
-    override var label: String?
+    override var label: String
         get() = mLabel
         set(value) {
-            if (value != null) {
-                mLabel = value
-            }
+            mLabel = value
         }
     override var axisDependency: AxisDependency
         get() = mAxisDependency

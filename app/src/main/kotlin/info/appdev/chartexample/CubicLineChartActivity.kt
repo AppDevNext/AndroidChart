@@ -90,7 +90,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
     }
 
     private fun setData(count: Int, range: Float) {
-        val values = ArrayList<Entry>()
+        val values = ArrayList<Entry?>()
         val sampleValues = getMuchValues(count)
 
         for (i in 0 until count) {
@@ -118,7 +118,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             set1.setLineWidth(1.8f)
             set1.circleRadius = 4f
             set1.setCircleColor(Color.WHITE)
-            set1.setHighLightColor(Color.rgb(244, 117, 117))
+            set1.highLightColor = Color.rgb(244, 117, 117)
             set1.color = Color.WHITE
             set1.setFillColor(Color.WHITE)
             set1.setFillAlpha(100)

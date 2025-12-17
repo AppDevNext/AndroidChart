@@ -137,7 +137,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         set1.isDrawValues = false
         set1.setFillAlpha(65)
         set1.setFillColor(ColorTemplate.getHoloBlue())
-        set1.setHighLightColor(Color.rgb(244, 117, 117))
+        set1.highLightColor = Color.rgb(244, 117, 117)
         set1.setDrawCircleHole(false)
 
         // create a data object with the data sets

@@ -144,7 +144,7 @@ class DataTools {
 
         fun setData(context: Context, lineChart: LineChart, count: Int = VAL_COUNT, range: Float = VAL_RANGE) {
             Timber.d("count=$count range=$range")
-            val values = ArrayList<Entry>()
+            val values = ArrayList<Entry?>()
             if (count == VAL_COUNT) {
                 VAL_FIX.forEachIndexed { index, d ->
                     values.add(Entry(index.toFloat(), d.toFloat(), ContextCompat.getDrawable(context, R.drawable.star)))
@@ -170,7 +170,7 @@ class DataTools {
         }
 
         private fun createDataset(
-            values: ArrayList<Entry>,
+            values: ArrayList<Entry?>,
             lineChart: LineChart,
             context: Context
         ) {

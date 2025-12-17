@@ -122,7 +122,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
 
             set.color = color
             set.setCircleColor(color)
-            set.setHighLightColor(color)
+            set.highLightColor = color
             set.valueTextSize = 10f
             set.setSingleValueTextColor(color)
 
@@ -150,7 +150,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         set.circleRadius = 4.5f
         set.color = Color.rgb(240, 99, 99)
         set.setCircleColor(Color.rgb(240, 99, 99))
-        set.setHighLightColor(Color.rgb(190, 190, 190))
+        set.highLightColor = Color.rgb(190, 190, 190)
         set.axisDependency = AxisDependency.LEFT
         set.valueTextSize = 10f
 

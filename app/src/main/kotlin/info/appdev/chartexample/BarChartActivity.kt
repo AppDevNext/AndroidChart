@@ -148,7 +148,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             chart!!.data!!.getDataSetCount() > 0
         ) {
             set1 = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
-            set1.setEntries(values)
+            set1.entries  = values
             chart!!.data!!.notifyDataChanged()
             chart!!.notifyDataSetChanged()
         } else {

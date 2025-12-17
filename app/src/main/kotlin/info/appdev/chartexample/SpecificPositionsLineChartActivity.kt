@@ -236,7 +236,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
     }
 
     private fun setData(count: Int, range: Float) {
-        val values = ArrayList<Entry>()
+        val values = ArrayList<Entry?>()
         val sampleValues = getValues(100)
         for (i in 0 until count) {
             val `val` = (sampleValues[i]!!.toFloat() * range) + 3
@@ -255,7 +255,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         }
     }
 
-    private fun createDataset(values: ArrayList<Entry>) {
+    private fun createDataset(values: ArrayList<Entry?>) {
         // create a dataset and give it a type
         val set11 = LineDataSet(values, "DataSet 1")
 
