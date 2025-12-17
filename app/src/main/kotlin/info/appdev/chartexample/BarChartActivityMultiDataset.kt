@@ -250,9 +250,9 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         saveToGallery(chart, "BarChartActivityMultiDataset")
     }
 
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
 
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         Timber.i("Selected: $entry, dataSet: ${highlight.dataSetIndex}")

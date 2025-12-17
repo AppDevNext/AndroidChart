@@ -213,7 +213,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
         saveToGallery(chart, "CandleStickChartActivity")
     }
 
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
 
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
 }

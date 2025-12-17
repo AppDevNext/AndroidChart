@@ -234,9 +234,9 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         saveToGallery(chart, "StackedBarActivity")
     }
 
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
 
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         val barEntry = entry as BarEntry

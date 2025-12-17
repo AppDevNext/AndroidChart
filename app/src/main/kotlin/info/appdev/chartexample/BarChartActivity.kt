@@ -285,9 +285,9 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         saveToGallery(chart, "BarChartActivity")
     }
 
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
 
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+    override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
 
     private val onValueSelectedRectF = RectF()
 
