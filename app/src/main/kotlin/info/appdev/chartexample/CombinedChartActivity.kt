@@ -249,7 +249,6 @@ class CombinedChartActivity : DemoBase() {
                 for (set in chart!!.data!!.dataSets) {
                     if (set is BarDataSet) set.setDrawValues(!set.isDrawValuesEnabled)
                 }
-
                 chart!!.invalidate()
             }
 

@@ -300,7 +300,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i("Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex)
+        Timber.i("Value: ${entry.y}, xIndex: ${entry.x}, DataSet index: ${highlight.dataSetIndex}")
     }
 
     override fun onNothingSelected() = Unit

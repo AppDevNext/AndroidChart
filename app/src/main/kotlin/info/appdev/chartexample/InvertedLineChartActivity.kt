@@ -113,7 +113,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         }
 
         // sort by x-value
-        Collections.sort<Entry?>(entries, EntryXComparator())
+        Collections.sort(entries, EntryXComparator())
 
         // create a dataset and give it a type
         val set1 = LineDataSet(entries, "DataSet 1")
@@ -232,7 +232,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i("Value: " + entry.y + ", xIndex: " + entry.x + ", DataSet index: " + highlight.dataSetIndex)
+        Timber.i("Value: ${entry.y}, xIndex: ${entry.x}, DataSet index: ${highlight.dataSetIndex}")
     }
 
     override fun onNothingSelected() = Unit

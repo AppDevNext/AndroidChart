@@ -111,10 +111,10 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
         val sampleValues = getValues(count + 2)
 
         for (i in 0..<count) {
-            val `val` = sampleValues[i]!!.toFloat() * range - range / 2
+            val valueY = sampleValues[i]!!.toFloat() * range - range / 2
             values.add(
                 BarEntry(
-                    i * spaceForBar, `val`,
+                    i * spaceForBar, valueY,
                     ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )

@@ -242,9 +242,9 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         val barEntry = entry as BarEntry
 
         if (barEntry.yVals != null)
-            Timber.i("Value: " + barEntry.yVals!![highlight.stackIndex])
+            Timber.i("Value: ${barEntry.yVals!![highlight.stackIndex]}")
         else
-            Timber.i("Value: " + barEntry.y)
+            Timber.i("Value: ${barEntry.y}")
     }
 
     override fun onNothingSelected() {}

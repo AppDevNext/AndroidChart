@@ -208,7 +208,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         val barEntry = entry as BarEntry
-        Timber.i("Value: " + abs(barEntry.yVals!![highlight.stackIndex]))
+        Timber.i("Value: ${abs(barEntry.yVals!![highlight.stackIndex])}")
     }
 
     override fun onNothingSelected() = Unit
