@@ -48,7 +48,6 @@ public interface IDataSet<T extends Entry> {
     /**
      * Calculates the min and max y-values from the Entry closest to the given fromX to the Entry closest to the given toX value.
      * This is only needed for the autoScaleMinMax feature.
-     *
      */
     void calcMinMaxY(float fromX, float toX);
 
@@ -64,8 +63,6 @@ public interface IDataSet<T extends Entry> {
      * @param closestToY If there are multiple y-values for the specified x-value,
      * @param rounding determine whether to round up/down/closest
      *                 if there is no Entry matching the provided x-value
-     *
-     *
      */
     T getEntryForXValue(float xValue, float closestToY, DataSet.Rounding rounding);
 
@@ -77,7 +74,6 @@ public interface IDataSet<T extends Entry> {
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      *
-     *
      * @param xValue the x-value
      * @param closestToY If there are multiple y-values for the specified x-value,
      */
@@ -88,7 +84,6 @@ public interface IDataSet<T extends Entry> {
      * search. An empty array if no Entry object at that x-value.
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
-     *
      */
     List<T> getEntriesForXValue(float xValue);
 
@@ -115,7 +110,6 @@ public interface IDataSet<T extends Entry> {
     /**
      * Returns the position of the provided entry in the DataSets Entry array.
      * Returns -1 if doesn't exist.
-     *
      */
     int getEntryIndex(T entry);
 
@@ -125,7 +119,6 @@ public interface IDataSet<T extends Entry> {
      * index in the Entry array of the DataSet for a given xIndex. IMPORTANT: This method does
      * calculations at runtime, do not over-use in performance critical
      * situations.
-     *
      */
     int getIndexInEntries(int xIndex);
 
@@ -134,7 +127,6 @@ public interface IDataSet<T extends Entry> {
      * Entries are added to the end of the list.
      * This will also recalculate the current minimum and maximum
      * values of the DataSet and the value-sum.
-     *
      */
     boolean addEntry(T entry);
 
@@ -144,21 +136,18 @@ public interface IDataSet<T extends Entry> {
      * Entries are added to their appropriate index in the values array respective to their x-position.
      * This will also recalculate the current minimum and maximum
      * values of the DataSet and the value-sum.
-     *
      */
     void addEntryOrdered(T entry);
 
     /**
      * Removes the first Entry (at index 0) of this DataSet from the entries array.
      * Returns true if successful, false if not.
-     *
      */
     boolean removeFirst();
 
     /**
      * Removes the last Entry (at index size-1) of this DataSet from the entries array.
      * Returns true if successful, false if not.
-     *
      */
     boolean removeLast();
 
@@ -167,21 +156,18 @@ public interface IDataSet<T extends Entry> {
      * recalculate the current minimum and maximum values of the DataSet and the
      * value-sum. Returns true if an Entry was removed, false if no Entry could
      * be removed.
-     *
      */
     boolean removeEntry(T entry);
 
     /**
      * Removes the Entry object closest to the given x-value from the DataSet.
      * Returns true if an Entry was removed, false if no Entry could be removed.
-     *
      */
     boolean removeEntryByXValue(float xValue);
 
     /**
      * Removes the Entry object at the given index in the values array from the DataSet.
      * Returns true if an Entry was removed, false if no Entry could be removed.
-     *
      */
     boolean removeEntry(int index);
 
@@ -189,7 +175,6 @@ public interface IDataSet<T extends Entry> {
      * Checks if this DataSet contains the specified Entry. Returns true if so,
      * false if not. NOTE: Performance is pretty bad on this one, do not
      * over-use in performance critical situations.
-     *
      */
     boolean contains(T entry);
 
@@ -200,13 +185,11 @@ public interface IDataSet<T extends Entry> {
 
     /**
      * Returns the label string that describes the DataSet.
-     *
      */
     String getLabel();
 
     /**
      * Sets the label string that describes the DataSet.
-     *
      */
     void setLabel(String label);
 
@@ -216,42 +199,36 @@ public interface IDataSet<T extends Entry> {
     YAxis.AxisDependency getAxisDependency();
 
     /**
-     * Set the y-axis this DataSet should be plotted against (either LEFT or
-     * RIGHT). Default: LEFT
-     *
+     * Set the y-axis this DataSet should be plotted against (either LEFT or RIGHT).
+	 * Default: LEFT
      */
     void setAxisDependency(YAxis.AxisDependency dependency);
 
     /**
      * returns all the colors that are set for this DataSet
-     *
      */
     List<Integer> getColors();
 
     /**
      * Returns the first color (index 0) of the colors-array this DataSet
      * contains. This is only used for performance reasons when only one color is in the colors array (size == 1)
-     *
      */
     int getColor();
 
     /**
      * Returns the color at the given index of the DataSet's color array.
      * Performs a IndexOutOfBounds check by modulus.
-     *
      */
     int getColorByIndex(int index);
 
     /**
      * returns true if highlighting of values is enabled, false if not
-     *
      */
     boolean isHighlightEnabled();
 
     /**
      * If set to true, value highlighting is enabled which means that values can
      * be highlighted programmatically or by touch gesture.
-     *
      */
     void setHighlightEnabled(boolean enabled);
 
@@ -261,68 +238,57 @@ public interface IDataSet<T extends Entry> {
      * formatting (concerning decimals) for all the values that are drawn inside
      * the chart. Use chart.getDefaultValueFormatter() to use the formatter
      * calculated by the chart.
-     *
      */
     void setValueFormatter(IValueFormatter f);
 
     /**
      * Returns the formatter used for drawing the values inside the chart.
-     *
      */
     IValueFormatter getValueFormatter();
 
     /**
      * Returns true if the valueFormatter object of this DataSet is null.
-     *
      */
     boolean needsFormatter();
 
     /**
      * Sets the color the value-labels of this DataSet should have.
-     *
      */
     void setValueTextColor(int color);
 
     /**
      * Sets a list of colors to be used as the colors for the drawn values.
-     *
      */
     void setValueTextColors(List<Integer> colors);
 
     /**
      * Sets a Typeface for the value-labels of this DataSet.
-     *
      */
     void setValueTypeface(Typeface tf);
 
     /**
      * Sets the text-size of the value-labels of this DataSet in dp.
-     *
      */
     void setValueTextSize(float size);
 
     /**
      * Returns only the first color of all colors that are set to be used for the values.
-     *
      */
     int getValueTextColor();
 
     /**
      * Returns the color at the specified index that is used for drawing the values inside the chart.
      * Uses modulus internally.
-     *
      */
     int getValueTextColor(int index);
 
     /**
      * Returns the typeface that is used for drawing the values inside the chart
-     *
      */
     Typeface getValueTypeface();
 
     /**
      * Returns the text size that is used for drawing the values inside the chart
-     *
      */
     float getValueTextSize();
 
@@ -363,7 +329,6 @@ public interface IDataSet<T extends Entry> {
 
     /**
      * Returns true if y-value drawing is enabled, false if not
-     *
      */
     boolean isDrawValuesEnabled();
 
@@ -371,13 +336,11 @@ public interface IDataSet<T extends Entry> {
      * Set this to true to draw y-icons on the chart.
      * NOTE (for bar and line charts): if `maxVisibleCount` is reached, no icons will be drawn even
      * if this is enabled
-     *
      */
     void setDrawIcons(boolean enabled);
 
     /**
      * Returns true if y-icon drawing is enabled, false if not
-     *
      */
     boolean isDrawIconsEnabled();
 
@@ -396,7 +359,6 @@ public interface IDataSet<T extends Entry> {
     /**
      * Set the visibility of this DataSet. If not visible, the DataSet will not
      * be drawn to the chart upon refreshing it.
-     *
      */
     void setVisible(boolean visible);
 
