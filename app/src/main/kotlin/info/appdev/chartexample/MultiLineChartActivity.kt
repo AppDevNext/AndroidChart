@@ -100,7 +100,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             lineDataSet.circleRadius = 4f
 
             val color = colors[datasetNumber % colors.size]
-            lineDataSet.setColor(color)
+            lineDataSet.color = color
             lineDataSet.setCircleColor(color)
             dataSets.add(lineDataSet)
         }
@@ -132,7 +132,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
             R.id.actionToggleValues -> {
                 binding.chart1.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues)
+                    set.isDrawValues = !set.isDrawValues
                 }
                 binding.chart1.invalidate()
             }

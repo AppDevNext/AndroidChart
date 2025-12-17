@@ -81,8 +81,8 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         xAxis.position = XAxisPosition.BOTTOM
         xAxis.typeface = tfLight
         xAxis.setDrawGridLines(false)
-        xAxis.setGranularity(1f) // only intervals of 1 day
-        xAxis.setLabelCount(7)
+        xAxis.granularity = 1f // only intervals of 1 day
+        xAxis.labelCount = 7
         xAxis.valueFormatter = xAxisFormatter
 
         val custom: IAxisValueFormatter = MyAxisValueFormatter()
@@ -93,7 +93,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         leftAxis.valueFormatter = custom
         leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART)
         leftAxis.spaceTop = 15f
-        leftAxis.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        leftAxis.axisMinimum = 0f// this replaces setStartAtZero(true)
 
         val rightAxis = chart!!.axisRight
         rightAxis.setDrawGridLines(false)
@@ -101,7 +101,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         rightAxis.setLabelCount(8, false)
         rightAxis.valueFormatter = custom
         rightAxis.spaceTop = 15f
-        rightAxis.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        rightAxis.axisMinimum = 0f// this replaces setStartAtZero(true)
 
         val l = chart!!.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
@@ -154,7 +154,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         } else {
             set1 = BarDataSet(values, "The year 2017")
 
-            set1.setDrawIcons(false)
+            set1.isDrawIcons = false
 
             val startColor1 = ContextCompat.getColor(this, android.R.color.holo_orange_light)
             val startColor2 = ContextCompat.getColor(this, android.R.color.holo_blue_light)
@@ -202,15 +202,16 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues())
+                chart!!.data!!.dataSets.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
+
                 chart!!.invalidate()
             }
 
             R.id.actionToggleIcons -> {
                 for (set in chart!!.data!!.dataSets)
-                    set.setDrawIcons(!set.isDrawIcons())
+                    set.isDrawIcons = !set.isDrawIcons
 
                 chart!!.invalidate()
             }

@@ -4,11 +4,14 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
 
 class PieHighlighter(chart: PieChart) : PieRadarHighlighter<PieChart>(chart) {
-    override fun getClosestHighlight(index: Int, x: Float, y: Float): Highlight {
-        val set = mChart!!.data!!.dataSet
+    override fun getClosestHighlight(index: Int, x: Float, y: Float): Highlight? {
+        val pieDataSet = mChart!!.data!!.dataSet
 
-        val entry: Entry = set.getEntryForIndex(index)
+        val entry: Entry? = pieDataSet.getEntryForIndex(index)
 
-        return Highlight(index.toFloat(), entry.y, x, y, 0, set.axisDependency)
+        entry?.let {
+            return Highlight(index.toFloat(), entry.y, x, y, 0, pieDataSet.axisDependency)
+        }
+        return null
     }
 }

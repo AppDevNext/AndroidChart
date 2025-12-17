@@ -54,8 +54,8 @@ class FilledLineActivity : DemoBase() {
         xAxis.isEnabled = false
 
         val leftAxis = binding.chart1.axisLeft
-        leftAxis.setAxisMaximum(900f)
-        leftAxis.setAxisMinimum(-250f)
+        leftAxis.axisMaximum = 900f
+        leftAxis.axisMinimum = -250f
         leftAxis.setDrawAxisLine(false)
         leftAxis.setDrawZeroLine(false)
         leftAxis.setDrawGridLines(false)
@@ -101,11 +101,11 @@ class FilledLineActivity : DemoBase() {
             set1 = LineDataSet(valuesArray1, "DataSet 1")
 
             set1.axisDependency = YAxis.AxisDependency.LEFT
-            set1.setColor(Color.rgb(255, 241, 46))
+            set1.color = Color.rgb(255, 241, 46)
             set1.setDrawCircles(false)
             set1.setLineWidth(2f)
             set1.circleRadius = 3f
-            set1.fillAlpha = 255
+            set1.setFillAlpha(255)
             set1.setDrawFilled(true)
             set1.setFillColor(Color.WHITE)
             set1.setHighLightColor(Color.rgb(244, 117, 117))
@@ -121,11 +121,11 @@ class FilledLineActivity : DemoBase() {
             // create a dataset and give it a type
             set2 = LineDataSet(valuesArray2, "DataSet 2")
             set2.axisDependency = YAxis.AxisDependency.LEFT
-            set2.setColor(Color.rgb(255, 241, 46))
+            set2.color = Color.rgb(255, 241, 46)
             set2.setDrawCircles(false)
             set2.setLineWidth(2f)
             set2.circleRadius = 3f
-            set2.fillAlpha = 255
+            set2.setFillAlpha(255)
             set2.setDrawFilled(true)
             set2.setFillColor(Color.WHITE)
             set2.setDrawCircleHole(false)

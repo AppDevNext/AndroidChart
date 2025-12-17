@@ -14,7 +14,6 @@ import androidx.core.graphics.createBitmap
 import androidx.core.graphics.withSave
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieDataSet.ValuePosition
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
@@ -195,7 +194,7 @@ open class PieChartRenderer(
         var visibleAngleCount = 0
         for (j in 0..<entryCount) {
             // draw only if the value is greater than zero
-            if (abs(dataSet.getEntryForIndex(j).y.toDouble()) > Utils.FLOAT_EPSILON) {
+            if (abs(dataSet.getEntryForIndex(j)!!.y.toDouble()) > Utils.FLOAT_EPSILON) {
                 visibleAngleCount++
             }
         }
@@ -211,14 +210,14 @@ open class PieChartRenderer(
             val sliceAngle = drawAngles[j]
             var innerRadius = userInnerRadius
 
-            val e: Entry = dataSet.getEntryForIndex(j)
+            dataSet.getEntryForIndex(j)?.let { pieEntry ->
 
-            // draw only if the value is greater than zero
-            if (!(abs(e.y.toDouble()) > Utils.FLOAT_EPSILON)) {
-                angle += sliceAngle * phaseX
-                continue
+                // draw only if the value is greater than zero
+                if (!(abs(pieEntry.y.toDouble()) > Utils.FLOAT_EPSILON)) {
+                    angle += sliceAngle * phaseX
+                    continue
+                }
             }
-
             // Don't draw if it's highlighted, unless the chart uses rounded slices
             if (dataSet.isHighlightEnabled && chart.needsHighlight(j) && !drawRoundedSlices) {
                 angle += sliceAngle * phaseX
@@ -310,16 +309,15 @@ open class PieChartRenderer(
                     if (accountForSliceSpacing) {
                         val angleMiddle = startAngleOuter + sweepAngleOuter / 2f
 
-                        val sliceSpaceOffset =
-                            calculateMinimumRadiusForSpacedSlice(
-                                center,
-                                radius,
-                                sliceAngle * phaseY,
-                                arcStartPointX,
-                                arcStartPointY,
-                                startAngleOuter,
-                                sweepAngleOuter
-                            )
+                        val sliceSpaceOffset = calculateMinimumRadiusForSpacedSlice(
+                            center,
+                            radius,
+                            sliceAngle * phaseY,
+                            arcStartPointX,
+                            arcStartPointY,
+                            startAngleOuter,
+                            sweepAngleOuter
+                        )
 
                         val arcEndPointX = center.x + sliceSpaceOffset * cos((angleMiddle * Utils.FDEG2RAD).toDouble()).toFloat()
                         val arcEndPointY = center.y + sliceSpaceOffset * sin((angleMiddle * Utils.FDEG2RAD).toDouble()).toFloat()
@@ -427,182 +425,157 @@ open class PieChartRenderer(
                 iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
                 for (j in 0..<entryCount) {
-                    val entry = dataSet.getEntryForIndex(j)
+                    dataSet.getEntryForIndex(j)?.let { entry ->
 
-                    angle = if (xIndex == 0) 0f
-                    else absoluteAngles[xIndex - 1] * phaseX
+                        angle = if (xIndex == 0) 0f
+                        else absoluteAngles[xIndex - 1] * phaseX
 
-                    val sliceAngle = drawAngles[xIndex]
-                    val sliceSpaceMiddleAngle = sliceSpace / (Utils.FDEG2RAD * labelRadius)
+                        val sliceAngle = drawAngles[xIndex]
+                        val sliceSpaceMiddleAngle = sliceSpace / (Utils.FDEG2RAD * labelRadius)
 
-                    // offset needed to center the drawn text in the slice
-                    val angleOffset = (sliceAngle - sliceSpaceMiddleAngle / 2f) / 2f
+                        // offset needed to center the drawn text in the slice
+                        val angleOffset = (sliceAngle - sliceSpaceMiddleAngle / 2f) / 2f
 
-                    angle += angleOffset
+                        angle += angleOffset
 
-                    val transformedAngle = rotationAngle + angle * phaseY
+                        val transformedAngle = rotationAngle + angle * phaseY
 
-                    val value = if (chart.isUsePercentValuesEnabled) (entry.y
-                            / yValueSum * 100f) else entry.y
-                    val entryLabel = entry.label
+                        val value = if (chart.isUsePercentValuesEnabled) (entry.y / yValueSum * 100f) else entry.y
+                        val entryLabel = entry.label
 
-                    val sliceXBase = cos((transformedAngle * Utils.FDEG2RAD).toDouble()).toFloat()
-                    val sliceYBase = sin((transformedAngle * Utils.FDEG2RAD).toDouble()).toFloat()
+                        val sliceXBase = cos((transformedAngle * Utils.FDEG2RAD).toDouble()).toFloat()
+                        val sliceYBase = sin((transformedAngle * Utils.FDEG2RAD).toDouble()).toFloat()
 
-                    val drawXOutside = drawEntryLabels &&
-                            xValuePosition == ValuePosition.OUTSIDE_SLICE
-                    val drawYOutside = drawValues &&
-                            yValuePosition == ValuePosition.OUTSIDE_SLICE
-                    val drawXInside = drawEntryLabels &&
-                            xValuePosition == ValuePosition.INSIDE_SLICE
-                    val drawYInside = drawValues &&
-                            yValuePosition == ValuePosition.INSIDE_SLICE
+                        val drawXOutside = drawEntryLabels && xValuePosition == ValuePosition.OUTSIDE_SLICE
+                        val drawYOutside = drawValues && yValuePosition == ValuePosition.OUTSIDE_SLICE
+                        val drawXInside = drawEntryLabels && xValuePosition == ValuePosition.INSIDE_SLICE
+                        val drawYInside = drawValues && yValuePosition == ValuePosition.INSIDE_SLICE
 
-                    if (drawXOutside || drawYOutside) {
-                        val valueLineLength1 = dataSet.valueLinePart1Length
-                        val valueLineLength2 = dataSet.valueLinePart2Length
-                        val valueLinePart1OffsetPercentage = dataSet.valueLinePart1OffsetPercentage / 100f
+                        if (drawXOutside || drawYOutside) {
+                            val valueLineLength1 = dataSet.valueLinePart1Length
+                            val valueLineLength2 = dataSet.valueLinePart2Length
+                            val valueLinePart1OffsetPercentage = dataSet.valueLinePart1OffsetPercentage / 100f
 
-                        val pt2x: Float
-                        val pt2y: Float
-                        val labelPtx: Float
-                        val labelPty: Float
+                            val pt2x: Float
+                            val pt2y: Float
+                            val labelPtx: Float
+                            val labelPty: Float
 
-                        val line1Radius = if (chart.isDrawHoleEnabled) ((radius - (radius * holeRadiusPercent))
-                                * valueLinePart1OffsetPercentage
-                                + (radius * holeRadiusPercent))
-                        else radius * valueLinePart1OffsetPercentage
+                            val line1Radius =
+                                if (chart.isDrawHoleEnabled) ((radius - (radius * holeRadiusPercent)) * valueLinePart1OffsetPercentage + (radius * holeRadiusPercent))
+                                else radius * valueLinePart1OffsetPercentage
 
-                        val polyline2Width = if (dataSet.isValueLineVariableLength)
-                            labelRadius * valueLineLength2 * abs(
+                            val polyline2Width = if (dataSet.isValueLineVariableLength) labelRadius * valueLineLength2 * abs(
                                 sin(
                                     (transformedAngle * Utils.FDEG2RAD).toDouble()
                                 )
                             ).toFloat()
-                        else
-                            labelRadius * valueLineLength2
+                            else labelRadius * valueLineLength2
 
-                        val pt0x = line1Radius * sliceXBase + center.x
-                        val pt0y = line1Radius * sliceYBase + center.y
+                            val pt0x = line1Radius * sliceXBase + center.x
+                            val pt0y = line1Radius * sliceYBase + center.y
 
-                        val pt1x = labelRadius * (1 + valueLineLength1) * sliceXBase + center.x
-                        val pt1y = labelRadius * (1 + valueLineLength1) * sliceYBase + center.y
+                            val pt1x = labelRadius * (1 + valueLineLength1) * sliceXBase + center.x
+                            val pt1y = labelRadius * (1 + valueLineLength1) * sliceYBase + center.y
 
-                        if (transformedAngle % 360.0 in 90.0..270.0) {
-                            pt2x = pt1x - polyline2Width
-                            pt2y = pt1y
+                            if (transformedAngle % 360.0 in 90.0..270.0) {
+                                pt2x = pt1x - polyline2Width
+                                pt2y = pt1y
 
-                            paintValues.textAlign = Align.RIGHT
+                                paintValues.textAlign = Align.RIGHT
 
-                            if (drawXOutside) paintEntryLabels.textAlign = Align.RIGHT
+                                if (drawXOutside) paintEntryLabels.textAlign = Align.RIGHT
 
-                            labelPtx = pt2x - offset
-                            labelPty = pt2y
-                        } else {
-                            pt2x = pt1x + polyline2Width
-                            pt2y = pt1y
-                            paintValues.textAlign = Align.LEFT
+                                labelPtx = pt2x - offset
+                                labelPty = pt2y
+                            } else {
+                                pt2x = pt1x + polyline2Width
+                                pt2y = pt1y
+                                paintValues.textAlign = Align.LEFT
 
-                            if (drawXOutside) paintEntryLabels.textAlign = Align.LEFT
+                                if (drawXOutside) paintEntryLabels.textAlign = Align.LEFT
 
-                            labelPtx = pt2x + offset
-                            labelPty = pt2y
+                                labelPtx = pt2x + offset
+                                labelPty = pt2y
+                            }
+
+                            var lineColor = ColorTemplate.COLOR_NONE
+
+                            if (isUseValueColorForLineEnabled) lineColor = dataSet.getColorByIndex(j)
+                            else if (valueLineColor != ColorTemplate.COLOR_NONE) lineColor = valueLineColor
+
+                            if (lineColor != ColorTemplate.COLOR_NONE) {
+                                valueLinePaint.color = lineColor
+                                drawLine(pt0x, pt0y, pt1x, pt1y, valueLinePaint)
+                                drawLine(pt1x, pt1y, pt2x, pt2y, valueLinePaint)
+                            }
+
+                            // draw everything, depending on settings
+                            if (drawXOutside && drawYOutside) {
+                                drawValue(
+                                    this, formatter, value, entry, 0, labelPtx, labelPty, dataSet.getValueTextColor(j)
+                                )
+
+                                if (j < data.entryCount && entryLabel != null) {
+                                    drawEntryLabel(this, entryLabel, labelPtx, labelPty + lineHeight)
+                                }
+                            } else if (drawXOutside) {
+                                if (j < data.entryCount && entryLabel != null) {
+                                    drawEntryLabel(this, entryLabel, labelPtx, labelPty + lineHeight / 2f)
+                                }
+                            } else if (drawYOutside) {
+                                drawValue(
+                                    this,
+                                    formatter,
+                                    value,
+                                    entry,
+                                    0,
+                                    labelPtx,
+                                    labelPty + lineHeight / 2f,
+                                    dataSet.getValueTextColor(j)
+                                )
+                            }
                         }
 
-                        var lineColor = ColorTemplate.COLOR_NONE
 
-                        if (isUseValueColorForLineEnabled) lineColor = dataSet.getColorByIndex(j)
-                        else if (valueLineColor != ColorTemplate.COLOR_NONE) lineColor = valueLineColor
+                        if (drawXInside || drawYInside) {
+                            // calculate the text position
+                            val x = labelRadius * sliceXBase + center.x
+                            val y = labelRadius * sliceYBase + center.y
 
-                        if (lineColor != ColorTemplate.COLOR_NONE) {
-                            valueLinePaint.color = lineColor
-                            drawLine(pt0x, pt0y, pt1x, pt1y, valueLinePaint)
-                            drawLine(pt1x, pt1y, pt2x, pt2y, valueLinePaint)
+                            paintValues.textAlign = Align.CENTER
+
+                            // draw everything, depending on settings
+                            if (drawXInside && drawYInside) {
+                                drawValue(this, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j)
+                            )
+
+                                if (j < data.entryCount && entryLabel != null) {
+                                    drawEntryLabel(this, entryLabel, x, y + lineHeight)
+                                }
+                            } else if (drawXInside) {
+                                if (j < data.entryCount && entryLabel != null) {
+                                    drawEntryLabel(this, entryLabel, x, y + lineHeight / 2f)
+                                }
+                            } else if (drawYInside) {
+                                drawValue(this, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j))
+                            }
                         }
 
-                        // draw everything, depending on settings
-                        if (drawXOutside && drawYOutside) {
-                            drawValue(
-                                this,
-                                formatter,
-                                value,
-                                entry,
-                                0,
-                                labelPtx,
-                                labelPty,
-                                dataSet.getValueTextColor(j)
-                            )
+                        if (entry.icon != null && dataSet.isDrawIcons) {
+                            val icon = entry.icon
 
-                            if (j < data.entryCount && entryLabel != null) {
-                                drawEntryLabel(this, entryLabel, labelPtx, labelPty + lineHeight)
+                            val x = (labelRadius + iconsOffset.y) * sliceXBase + center.x
+                            var y = (labelRadius + iconsOffset.y) * sliceYBase + center.y
+                            y += iconsOffset.x
+
+                            icon?.let {
+                                Utils.drawImage(
+                                    this, it, x.toInt(), y.toInt()
+                                )
                             }
-                        } else if (drawXOutside) {
-                            if (j < data.entryCount && entryLabel != null) {
-                                drawEntryLabel(this, entryLabel, labelPtx, labelPty + lineHeight / 2f)
-                            }
-                        } else if (drawYOutside) {
-                            drawValue(
-                                this,
-                                formatter,
-                                value,
-                                entry,
-                                0,
-                                labelPtx,
-                                labelPty + lineHeight / 2f,
-                                dataSet.getValueTextColor(j)
-                            )
                         }
                     }
-
-                    if (drawXInside || drawYInside) {
-                        // calculate the text position
-                        val x = labelRadius * sliceXBase + center.x
-                        val y = labelRadius * sliceYBase + center.y
-
-                        paintValues.textAlign = Align.CENTER
-
-                        // draw everything, depending on settings
-                        if (drawXInside && drawYInside) {
-                            drawValue(
-                                this,
-                                formatter,
-                                value,
-                                entry,
-                                0,
-                                x,
-                                y,
-                                dataSet.getValueTextColor(j)
-                            )
-
-                            if (j < data.entryCount && entryLabel != null) {
-                                drawEntryLabel(this, entryLabel, x, y + lineHeight)
-                            }
-                        } else if (drawXInside) {
-                            if (j < data.entryCount && entryLabel != null) {
-                                drawEntryLabel(this, entryLabel, x, y + lineHeight / 2f)
-                            }
-                        } else if (drawYInside) {
-                            drawValue(this, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j))
-                        }
-                    }
-
-                    if (entry.icon != null && dataSet.isDrawIcons) {
-                        val icon = entry.icon
-
-                        val x = (labelRadius + iconsOffset.y) * sliceXBase + center.x
-                        var y = (labelRadius + iconsOffset.y) * sliceYBase + center.y
-                        y += iconsOffset.x
-
-                        icon?.let {
-                            Utils.drawImage(
-                                this,
-                                it,
-                                x.toInt(),
-                                y.toInt()
-                            )
-                        }
-                    }
-
                     xIndex++
                 }
 
@@ -642,9 +615,7 @@ open class PieChartRenderer(
             }
 
             // only draw the circle if it can be seen (not covered by the hole)
-            if (Color.alpha(paintTransparentCircle.color) > 0 &&
-                chart.transparentCircleRadius > chart.holeRadius
-            ) {
+            if (Color.alpha(paintTransparentCircle.color) > 0 && chart.transparentCircleRadius > chart.holeRadius) {
                 val alpha = paintTransparentCircle.alpha
                 val secondHoleRadius = radius * (chart.transparentCircleRadius / 100)
 
@@ -679,10 +650,8 @@ open class PieChartRenderer(
             val x = center.x + offset.x
             val y = center.y + offset.y
 
-            val innerRadius = if (chart.isDrawHoleEnabled && !chart.isDrawSlicesUnderHoleEnabled)
-                chart.radius * (chart.holeRadius / 100f)
-            else
-                chart.radius
+            val innerRadius = if (chart.isDrawHoleEnabled && !chart.isDrawSlicesUnderHoleEnabled) chart.radius * (chart.holeRadius / 100f)
+            else chart.radius
 
             val holeRect = rectBuffer[0]
             holeRect.left = x - innerRadius
@@ -695,8 +664,7 @@ open class PieChartRenderer(
             val radiusPercent = chart.centerTextRadiusPercent / 100f
             if (radiusPercent > 0.0) {
                 boundingRect.inset(
-                    (boundingRect.width() - boundingRect.width() * radiusPercent) / 2f,
-                    (boundingRect.height() - boundingRect.height() * radiusPercent) / 2f
+                    (boundingRect.width() - boundingRect.width() * radiusPercent) / 2f, (boundingRect.height() - boundingRect.height() * radiusPercent) / 2f
                 )
             }
 
@@ -710,10 +678,7 @@ open class PieChartRenderer(
 
                 // If width is 0, it will crash. Always have a minimum of 1
                 centerTextLayout = StaticLayout(
-                    centerText, 0, centerText.length,
-                    paintCenterText,
-                    max(ceil(width.toDouble()), 1.0).toInt(),
-                    Layout.Alignment.ALIGN_CENTER, 1f, 0f, false
+                    centerText, 0, centerText.length, paintCenterText, max(ceil(width.toDouble()), 1.0).toInt(), Layout.Alignment.ALIGN_CENTER, 1f, 0f, false
                 )
             }
 
@@ -769,8 +734,7 @@ open class PieChartRenderer(
         roundedCornerPaint.isAntiAlias = true
     }
 
-    override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
-        /* Skip entirely if using rounded circle slices, because it doesn't make sense to highlight in this way.
+    override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {/* Skip entirely if using rounded circle slices, because it doesn't make sense to highlight in this way.
                 * TODO: add support for changing slice color with highlighting rather than only shifting the slice
                 */
 
@@ -810,7 +774,7 @@ open class PieChartRenderer(
             var visibleAngleCount = 0
             for (j in 0..<entryCount) {
                 // draw only if the value is greater than zero
-                if ((abs(set.getEntryForIndex(j).y.toDouble()) > Utils.FLOAT_EPSILON)) {
+                if ((abs(set.getEntryForIndex(j)!!.y.toDouble()) > Utils.FLOAT_EPSILON)) {
                     visibleAngleCount++
                 }
             }
@@ -866,24 +830,21 @@ open class PieChartRenderer(
 
             var sliceSpaceRadius = 0f
             if (accountForSliceSpacing) {
-                sliceSpaceRadius =
-                    calculateMinimumRadiusForSpacedSlice(
-                        center,
-                        radius,
-                        sliceAngle * phaseY,
-                        center.x + radius * cos((startAngleOuter * Utils.FDEG2RAD).toDouble()).toFloat(),
-                        center.y + radius * sin((startAngleOuter * Utils.FDEG2RAD).toDouble()).toFloat(),
-                        startAngleOuter,
-                        sweepAngleOuter
-                    )
+                sliceSpaceRadius = calculateMinimumRadiusForSpacedSlice(
+                    center,
+                    radius,
+                    sliceAngle * phaseY,
+                    center.x + radius * cos((startAngleOuter * Utils.FDEG2RAD).toDouble()).toFloat(),
+                    center.y + radius * sin((startAngleOuter * Utils.FDEG2RAD).toDouble()).toFloat(),
+                    startAngleOuter,
+                    sweepAngleOuter
+                )
             }
 
             // API < 21 does not receive floats in addArc, but a RectF
             mInnerRectBuffer[center.x - innerRadius, center.y - innerRadius, center.x + innerRadius] = center.y + innerRadius
 
-            if (drawInnerArc &&
-                (innerRadius > 0f || accountForSliceSpacing)
-            ) {
+            if (drawInnerArc && (innerRadius > 0f || accountForSliceSpacing)) {
                 if (accountForSliceSpacing) {
                     var minSpacedRadius = sliceSpaceRadius
 
@@ -916,19 +877,15 @@ open class PieChartRenderer(
                     if (accountForSliceSpacing) {
                         val angleMiddle = startAngleOuter + sweepAngleOuter / 2f
 
-                        val arcEndPointX = center.x +
-                                sliceSpaceRadius * cos((angleMiddle * Utils.FDEG2RAD).toDouble()).toFloat()
-                        val arcEndPointY = center.y +
-                                sliceSpaceRadius * sin((angleMiddle * Utils.FDEG2RAD).toDouble()).toFloat()
+                        val arcEndPointX = center.x + sliceSpaceRadius * cos((angleMiddle * Utils.FDEG2RAD).toDouble()).toFloat()
+                        val arcEndPointY = center.y + sliceSpaceRadius * sin((angleMiddle * Utils.FDEG2RAD).toDouble()).toFloat()
 
                         mPathBuffer.lineTo(
-                            arcEndPointX,
-                            arcEndPointY
+                            arcEndPointX, arcEndPointY
                         )
                     } else {
                         mPathBuffer.lineTo(
-                            center.x,
-                            center.y
+                            center.x, center.y
                         )
                     }
                 }
@@ -967,23 +924,20 @@ open class PieChartRenderer(
         for (j in 0..<dataSet.entryCount) {
             val sliceAngle = drawAngles[j]
 
-            val e: Entry = dataSet.getEntryForIndex(j)
+            dataSet.getEntryForIndex(j)?.let { entry ->
 
-            // draw only if the value is greater than zero
-            if ((abs(e.y.toDouble()) > Utils.FLOAT_EPSILON)) {
-                val v = Math.toRadians(
-                    ((angle + sliceAngle)
-                            * phaseY).toDouble()
-                )
-                val x = ((r - circleRadius)
-                        * cos(v) + center.x).toFloat()
-                val y = ((r - circleRadius)
-                        * sin(v) + center.y).toFloat()
+                // draw only if the value is greater than zero
+                if ((abs(entry.y.toDouble()) > Utils.FLOAT_EPSILON)) {
+                    val v = Math.toRadians(
+                        ((angle + sliceAngle) * phaseY).toDouble()
+                    )
+                    val x = ((r - circleRadius) * cos(v) + center.x).toFloat()
+                    val y = ((r - circleRadius) * sin(v) + center.y).toFloat()
 
-                paintRender.color = dataSet.getColorByIndex(j)
-                bitmapCanvas!!.drawCircle(x, y, circleRadius, paintRender)
+                    paintRender.color = dataSet.getColorByIndex(j)
+                    bitmapCanvas!!.drawCircle(x, y, circleRadius, paintRender)
+                }
             }
-
             angle += sliceAngle * phaseX
         }
         MPPointF.recycleInstance(center)

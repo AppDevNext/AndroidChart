@@ -171,8 +171,8 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues())
+                chart!!.data!!.dataSets.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
                 chart!!.invalidate()
             }

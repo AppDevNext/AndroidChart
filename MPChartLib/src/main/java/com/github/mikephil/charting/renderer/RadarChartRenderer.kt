@@ -25,8 +25,8 @@ open class RadarChartRenderer(
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val previousPath = Path()
-    private val innerArea = Path()
-    private val temp = Path()
+    private val innerAreaPath = Path()
+    private val tempPath = Path()
 
 
     override fun initBuffers() = Unit
@@ -72,14 +72,14 @@ open class RadarChartRenderer(
         for (j in 0..<dataSet.entryCount) {
             paintRender.color = dataSet.getColorByIndex(j)
 
-            val e = dataSet.getEntryForIndex(j)
+            dataSet.getEntryForIndex(j)?.let { e ->
 
-            Utils.getPosition(
-                center,
-                (e.y - chart.yChartMin) * factor * phaseY,
-                sliceAngle * j * phaseX + chart.rotationAngle, pOut
-            )
-
+                Utils.getPosition(
+                    center,
+                    (e.y - chart.yChartMin) * factor * phaseY,
+                    sliceAngle * j * phaseX + chart.rotationAngle, pOut
+                )
+            }
             if (java.lang.Float.isNaN(pOut.x)) continue
 
             if (!hasMovedToPoint) {
@@ -147,47 +147,48 @@ open class RadarChartRenderer(
             iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
             for (j in 0..<dataSet.entryCount) {
-                val entry = dataSet.getEntryForIndex(j)
-
-                Utils.getPosition(
-                    center,
-                    (entry.y - chart.yChartMin) * factor * phaseY,
-                    sliceAngle * j * phaseX + chart.rotationAngle,
-                    pOut
-                )
-
-                if (dataSet.isDrawValues) {
-                    drawValue(
-                        canvas,
-                        dataSet.valueFormatter,
-                        entry.y,
-                        entry,
-                        i,
-                        pOut.x,
-                        pOut.y - yOffset,
-                        dataSet.getValueTextColor(j)
-                    )
-                }
-
-                if (entry.icon != null && dataSet.isDrawIcons) {
-                    val icon = entry.icon
+                dataSet.getEntryForIndex(j)?.let { entry ->
 
                     Utils.getPosition(
                         center,
-                        (entry.y) * factor * phaseY + iconsOffset.y,
+                        (entry.y - chart.yChartMin) * factor * phaseY,
                         sliceAngle * j * phaseX + chart.rotationAngle,
-                        pIcon
+                        pOut
                     )
 
-                    pIcon.y += iconsOffset.x
-
-                    icon?.let {
-                        Utils.drawImage(
+                    if (dataSet.isDrawValues) {
+                        drawValue(
                             canvas,
-                            it,
-                            pIcon.x.toInt(),
-                            pIcon.y.toInt()
+                            dataSet.valueFormatter,
+                            entry.y,
+                            entry,
+                            i,
+                            pOut.x,
+                            pOut.y - yOffset,
+                            dataSet.getValueTextColor(j)
                         )
+                    }
+
+                    if (entry.icon != null && dataSet.isDrawIcons) {
+                        val icon = entry.icon
+
+                        Utils.getPosition(
+                            center,
+                            (entry.y) * factor * phaseY + iconsOffset.y,
+                            sliceAngle * j * phaseX + chart.rotationAngle,
+                            pIcon
+                        )
+
+                        pIcon.y += iconsOffset.x
+
+                        icon?.let {
+                            Utils.drawImage(
+                                canvas,
+                                it,
+                                pIcon.x.toInt(),
+                                pIcon.y.toInt()
+                            )
+                        }
                     }
                 }
             }
@@ -248,7 +249,7 @@ open class RadarChartRenderer(
         val p2out = MPPointF.getInstance(0f, 0f)
         for (j in 0..<labelCount) {
             if (chart.isCustomLayerColorEnable) {
-                innerArea.rewind()
+                innerAreaPath.rewind()
                 paint.color = chart.layerColorList[j]
             }
             for (i in 0..<chart.data!!.entryCount) {
@@ -261,23 +262,23 @@ open class RadarChartRenderer(
                 if (chart.isCustomLayerColorEnable) {
                     if (p1out.x != p2out.x) {
                         if (i == 0) {
-                            innerArea.moveTo(p1out.x, p1out.y)
+                            innerAreaPath.moveTo(p1out.x, p1out.y)
                         } else {
-                            innerArea.lineTo(p1out.x, p1out.y)
+                            innerAreaPath.lineTo(p1out.x, p1out.y)
                         }
-                        innerArea.lineTo(p2out.x, p2out.y)
+                        innerAreaPath.lineTo(p2out.x, p2out.y)
                     }
                 }
             }
             if (chart.isCustomLayerColorEnable) {
-                temp.set(innerArea)
-                if (!innerArea.isEmpty) {
-                    val result = innerArea.op(previousPath, Path.Op.DIFFERENCE)
+                tempPath.set(innerAreaPath)
+                if (!innerAreaPath.isEmpty) {
+                    val result = innerAreaPath.op(previousPath, Path.Op.DIFFERENCE)
                     if (result) {
-                        canvas.drawPath(innerArea, paint)
+                        canvas.drawPath(innerAreaPath, paint)
                     }
                 }
-                previousPath.set(temp)
+                previousPath.set(tempPath)
             }
         }
         MPPointF.recycleInstance(p1out)
@@ -299,21 +300,23 @@ open class RadarChartRenderer(
         for (high in indices) {
             val set = radarData!!.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled) continue
+            if (set == null || !set.isHighlightEnabled)
+                continue
 
-            val radarEntry = set.getEntryForIndex(high.x.toInt())
+            set.getEntryForIndex(high.x.toInt())?.let { radarEntry ->
+                high.y = radarEntry.y
 
-            if (!isInBoundsX(radarEntry, set)) continue
+                if (!isInBoundsX(radarEntry, set)) continue
 
-            val y = (radarEntry.y - chart.yChartMin)
+                val y = (radarEntry.y - chart.yChartMin)
 
-            Utils.getPosition(
-                center,
-                y * factor * animator.phaseY,
-                sliceAngle * high.x * animator.phaseX + chart.rotationAngle,
-                pOut
-            )
-
+                Utils.getPosition(
+                    center,
+                    y * factor * animator.phaseY,
+                    sliceAngle * high.x * animator.phaseX + chart.rotationAngle,
+                    pOut
+                )
+            }
             high.setDraw(pOut.x, pOut.y)
 
             // draw the lines

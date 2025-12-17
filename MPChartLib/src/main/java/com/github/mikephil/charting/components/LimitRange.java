@@ -39,7 +39,7 @@ public class LimitRange extends ComponentBase {
 	/**
 	 * limit / maximum (the y-value or xIndex)
 	 */
-	private Range mLimit;
+	private final Range mLimit;
 
 	/**
 	 * the width of the limit line
@@ -182,7 +182,7 @@ public class LimitRange extends ComponentBase {
 	 * disabled
 	 */
 	public boolean isDashedLineEnabled() {
-		return mDashPathEffect == null ? false : true;
+		return mDashPathEffect != null;
 	}
 
 	/**

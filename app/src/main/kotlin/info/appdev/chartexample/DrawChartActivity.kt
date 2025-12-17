@@ -62,7 +62,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
 
         // create a dataset and give it a type (0)
         val set1 = LineDataSet(values, "DataSet")
-        set1.lineWidth = 3f
+        set1.setLineWidth(3f)
         set1.circleRadius = 5f
 
         // create a data object with the data sets
@@ -79,8 +79,8 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionToggleValues -> {
-                binding.chart1.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues())
+                binding.chart1.data!!.dataSets.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }

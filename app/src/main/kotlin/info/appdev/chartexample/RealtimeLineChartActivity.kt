@@ -75,8 +75,8 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         val leftAxis = chart!!.axisLeft
         leftAxis.typeface = tfLight
         leftAxis.textColor = Color.WHITE
-        leftAxis.setAxisMaximum(100f)
-        leftAxis.setAxisMinimum(0f)
+        leftAxis.axisMaximum = 100f
+        leftAxis.axisMinimum = 0f
         leftAxis.setDrawGridLines(true)
 
         val rightAxis = chart!!.axisRight
@@ -95,8 +95,8 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
                 data.addDataSet(set)
             }
 
-            val cycleValue = (set.getEntryCount() % 100.0).toInt()
-            data.addEntry(Entry(set.getEntryCount().toFloat(), (sampleValues[cycleValue]!!.toFloat() * 40) + 30f), 0)
+            val cycleValue = (set.entryCount % 100.0).toInt()
+            data.addEntry(Entry(set.entryCount.toFloat(), (sampleValues[cycleValue]!!.toFloat() * 40) + 30f), 0)
             data.notifyDataChanged()
 
             // let the chart know it's data has changed
@@ -119,14 +119,14 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
     private fun createSet(): LineDataSet {
         val set = LineDataSet(null, "Dynamic Data")
         set.axisDependency = AxisDependency.LEFT
-        set.setColor(ColorTemplate.getHoloBlue())
+        set.color = ColorTemplate.getHoloBlue()
         set.setCircleColor(Color.WHITE)
         set.setLineWidth(2f)
         set.circleRadius = 4f
-        set.fillAlpha = 65
+        set.setFillAlpha(65)
         set.setFillColor(ColorTemplate.getHoloBlue())
         set.setHighLightColor(Color.rgb(244, 117, 117))
-        set.setValueTextColor(Color.WHITE)
+        set.setSingleValueTextColor(Color.WHITE)
         set.valueTextSize = 9f
         set.isDrawValues = false
         return set

@@ -6,11 +6,14 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.util.Log;
 
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.formatter.DefaultFillFormatter;
 import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.UtilsKtKt;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -223,7 +226,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 
 	@Override
 	public boolean isDashedLineEnabled() {
-		return mDashPathEffect == null ? false : true;
+		return mDashPathEffect != null;
 	}
 
 	@Override

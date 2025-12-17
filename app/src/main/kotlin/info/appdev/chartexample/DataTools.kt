@@ -176,7 +176,7 @@ class DataTools {
         ) {
             // create a dataset and give it a type
             val lineDataSet01 = LineDataSet(values, "DataSet 1")
-            lineDataSet01.setDrawIcons(false)
+            lineDataSet01.isDrawIcons = false
 
             // draw dashed line
             lineDataSet01.enableDashedLine(10f, 5f, 0f)
@@ -186,7 +186,7 @@ class DataTools {
             lineDataSet01.setCircleColor(Color.BLACK)
 
             // line thickness and point size
-            lineDataSet01.lineWidth = 1f
+            lineDataSet01.setLineWidth(1f)
             lineDataSet01.circleRadius = 3f
 
             // draw points as solid circles
@@ -194,7 +194,7 @@ class DataTools {
 
             // customize legend entry
             lineDataSet01.formLineWidth = 1f
-            lineDataSet01.setFormLineDashEffect(DashPathEffect(floatArrayOf(10f, 5f), 0f))
+            lineDataSet01.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
             lineDataSet01.formSize = 15f
 
             // text size of values
@@ -215,9 +215,9 @@ class DataTools {
             if (getSDKInt() >= 18) {
                 // drawables only supported on api level 18 and above
                 val drawable = ContextCompat.getDrawable(context, R.drawable.fade_blue)
-                lineDataSet01.fillDrawable = drawable
+                lineDataSet01.setFillDrawable(drawable)
             } else {
-                lineDataSet01.fillColor = Color.BLACK
+                lineDataSet01.setFillColor(Color.BLACK)
             }
             val dataSets = ArrayList<ILineDataSet>()
             dataSets.add(lineDataSet01) // add the data sets

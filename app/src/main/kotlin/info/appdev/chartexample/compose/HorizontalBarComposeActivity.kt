@@ -359,7 +359,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
             localChart.notifyDataSetChanged()
         } else {
             set1 = BarDataSet(values, "DataSet 1")
-            set1.setDrawIcons(false)
+            set1.isDrawIcons = false
 
             val dataSets = ArrayList<IBarDataSet>()
             dataSets.add(set1)
@@ -377,8 +377,8 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
 
     private fun toggleValues() {
         chart?.let {
-            chart!!.data!!.dataSets.forEach { set ->
-                set.setDrawValues(!set.isDrawValues())
+            chart!!.data!!.dataSets.forEach {
+                it.isDrawValues = !it.isDrawValues
             }
             it.invalidate()
         }
@@ -388,7 +388,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
         chart?.let {
             val sets = it.data?.dataSets ?: return
             for (iSet in sets) {
-                iSet.setDrawIcons(!iSet.isDrawIcons)
+                iSet.isDrawIcons = !iSet.isDrawIcons
             }
             it.invalidate()
         }

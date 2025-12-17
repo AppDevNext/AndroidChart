@@ -73,11 +73,11 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
         val xl = chart!!.xAxis
         xl.setAvoidFirstLastClipping(true)
-        xl.setAxisMinimum(0f)
+        xl.axisMinimum = 0f
 
         val leftAxis = chart!!.axisLeft
         leftAxis.isInverted = true
-        leftAxis.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         val rightAxis = chart!!.axisRight
         rightAxis.isEnabled = false
@@ -143,8 +143,8 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach { iSet ->
-                    iSet.setDrawValues(!iSet.isDrawValues)
+                chart!!.data!!.dataSets.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
                 chart!!.invalidate()
             }

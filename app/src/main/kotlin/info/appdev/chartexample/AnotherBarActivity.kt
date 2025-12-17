@@ -96,7 +96,7 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
         } else {
             set1 = BarDataSet(values, "Data Set")
             set1.setColors(*ColorTemplate.VORDIPLOM_COLORS)
-            set1.setDrawValues(false)
+            set1.isDrawValues = false
 
             val dataSets = ArrayList<IBarDataSet?>()
             dataSets.add(set1)
@@ -124,9 +124,10 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues())
+                chart!!.data!!.dataSets.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
+
                 chart!!.invalidate()
             }
 

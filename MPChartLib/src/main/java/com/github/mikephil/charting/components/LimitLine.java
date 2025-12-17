@@ -16,7 +16,7 @@ import com.github.mikephil.charting.utils.UtilsKtKt;
 public class LimitLine extends ComponentBase {
 
     /** limit / maximum (the y-value or xIndex) */
-    private float mLimit;
+    private final float mLimit;
 
     /** the width of the limit line */
     private float mLineWidth = 2f;
@@ -130,7 +130,7 @@ public class LimitLine extends ComponentBase {
      * disabled
      */
     public boolean isDashedLineEnabled() {
-        return mDashPathEffect == null ? false : true;
+        return mDashPathEffect != null;
     }
 
     /**

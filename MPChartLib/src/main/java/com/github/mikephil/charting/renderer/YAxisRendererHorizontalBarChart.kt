@@ -69,7 +69,7 @@ open class YAxisRendererHorizontalBarChart(
 
         val positions = transformedPositions
 
-        paintAxisLabels.setTypeface(yAxis.typeface)
+        paintAxisLabels.typeface = yAxis.typeface
         paintAxisLabels.textSize = yAxis.textSize
         paintAxisLabels.color = yAxis.textColor
         paintAxisLabels.textAlign = Align.CENTER
@@ -125,7 +125,7 @@ open class YAxisRendererHorizontalBarChart(
      * @param positions
      */
     override fun drawYLabels(canvas: Canvas, fixedPosition: Float, positions: FloatArray, offset: Float) {
-        paintAxisLabels.setTypeface(yAxis.typeface)
+        paintAxisLabels.typeface = yAxis.typeface
         paintAxisLabels.textSize = yAxis.textSize
         paintAxisLabels.color = yAxis.textColor
 
@@ -140,12 +140,14 @@ open class YAxisRendererHorizontalBarChart(
         for (i in from..<to) {
             val text = yAxis.getFormattedLabel(i)
 
-            canvas.drawText(
-                text,
-                positions[i * 2],
-                fixedPosition - offset + xOffset,
-                paintAxisLabels
-            )
+            text?.let {
+                canvas.drawText(
+                    it,
+                    positions[i * 2],
+                    fixedPosition - offset + xOffset,
+                    paintAxisLabels
+                )
+            }
         }
     }
 
@@ -221,7 +223,7 @@ open class YAxisRendererHorizontalBarChart(
     override fun renderLimitLines(canvas: Canvas) {
         val limitLines = yAxis.limitLines
 
-        if (limitLines == null || limitLines.size <= 0) return
+        if (limitLines.isEmpty()) return
 
         val pts = renderLimitLinesBuffer
         pts[0] = 0f
@@ -232,17 +234,17 @@ open class YAxisRendererHorizontalBarChart(
         limitLinePath.reset()
 
         for (i in limitLines.indices) {
-            val l = limitLines[i]
+            val limitLine = limitLines[i]!!
 
-            if (!l.isEnabled) continue
+            if (!limitLine.isEnabled) continue
 
             canvas.withSave {
                 limitLineClippingRect.set(viewPortHandler.contentRect)
-                limitLineClippingRect.inset(-l.lineWidth, 0f)
+                limitLineClippingRect.inset(-limitLine.lineWidth, 0f)
                 canvas.clipRect(limitLineClippingRect)
 
-                pts[0] = l.limit
-                pts[2] = l.limit
+                pts[0] = limitLine.limit
+                pts[2] = limitLine.limit
 
                 transformer!!.pointValuesToPixel(pts)
 
@@ -253,28 +255,28 @@ open class YAxisRendererHorizontalBarChart(
                 limitLinePath.lineTo(pts[2], pts[3])
 
                 limitLinePaint.style = Paint.Style.STROKE
-                limitLinePaint.color = l.lineColor
-                limitLinePaint.setPathEffect(l.dashPathEffect)
-                limitLinePaint.strokeWidth = l.lineWidth
+                limitLinePaint.color = limitLine.lineColor
+                limitLinePaint.pathEffect = limitLine.dashPathEffect
+                limitLinePaint.strokeWidth = limitLine.lineWidth
 
                 canvas.drawPath(limitLinePath, limitLinePaint)
                 limitLinePath.reset()
 
-                val label = l.label
+                val label = limitLine.label
 
                 // if drawing the limit-value label is enabled
                 if (label != null && label != "") {
-                    limitLinePaint.style = l.textStyle
-                    limitLinePaint.setPathEffect(null)
-                    limitLinePaint.color = l.textColor
-                    limitLinePaint.setTypeface(l.typeface)
+                    limitLinePaint.style = limitLine.textStyle
+                    limitLinePaint.pathEffect = null
+                    limitLinePaint.color = limitLine.textColor
+                    limitLinePaint.typeface = limitLine.typeface
                     limitLinePaint.strokeWidth = 0.5f
-                    limitLinePaint.textSize = l.textSize
+                    limitLinePaint.textSize = limitLine.textSize
 
-                    val xOffset = l.lineWidth + l.xOffset
-                    val yOffset = 2f.convertDpToPixel() + l.yOffset
+                    val xOffset = limitLine.lineWidth + limitLine.xOffset
+                    val yOffset = 2f.convertDpToPixel() + limitLine.yOffset
 
-                    val position = l.labelPosition
+                    val position = limitLine.labelPosition
 
                     when (position) {
                         LimitLabelPosition.RIGHT_TOP -> {

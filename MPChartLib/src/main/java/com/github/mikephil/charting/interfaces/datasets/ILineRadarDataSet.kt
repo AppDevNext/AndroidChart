@@ -1,39 +1,34 @@
-package com.github.mikephil.charting.interfaces.datasets;
+package com.github.mikephil.charting.interfaces.datasets
 
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Drawable
+import com.github.mikephil.charting.data.Entry
 
-import com.github.mikephil.charting.data.Entry;
-
-/**
- * Created by Philipp Jahoda on 21/10/15.
- */
-public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRadarDataSet<T> {
-
+interface ILineRadarDataSet<T : Entry> : ILineScatterCandleRadarDataSet<T> {
     /**
      * Returns the color that is used for filling the line surface area.
      */
-    int getFillColor();
+    val fillColor: Int
 
     /**
      * Returns the drawable used for filling the area below the line.
      */
-    Drawable getFillDrawable();
+    val fillDrawable: Drawable?
 
     /**
      * Returns the alpha value that is used for filling the line surface,
      * default: 85
      */
-    int getFillAlpha();
+    val fillAlpha: Int
 
     /**
      * Returns the stroke-width of the drawn line
      */
-    float getLineWidth();
+    val lineWidth: Float
 
     /**
      * Returns true if filled drawing is enabled, false if not
      */
-    boolean isDrawFilledEnabled();
+    val isDrawFilledEnabled: Boolean
 
     /**
      * Set to true if the DataSet should be drawn filled (surface), and not just
@@ -42,5 +37,5 @@ public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRa
      * For devices with API level < 18 (Android 4.3), hardware acceleration of the chart should
      * be turned off. Default: false
      */
-    void setDrawFilled(boolean enabled);
+    fun setDrawFilled(enabled: Boolean)
 }

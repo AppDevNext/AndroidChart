@@ -162,14 +162,14 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
             val label = yAxis.getFormattedLabel(j)
 
-            canvas.drawText(label, pOut.x + xOffset, pOut.y, paintAxisLabels)
+            label?.let { canvas.drawText(it, pOut.x + xOffset, pOut.y, paintAxisLabels) }
         }
         MPPointF.recycleInstance(center)
         MPPointF.recycleInstance(pOut)
     }
 
     override fun renderLimitLines(canvas: Canvas) {
-        val limitLines = yAxis.limitLines ?: return
+        val limitLines = yAxis.limitLines
 
         val sliceAngle = chart.sliceAngle
 
@@ -180,15 +180,15 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         val center = chart.centerOffsets
         val pOut = MPPointF.getInstance(0f, 0f)
         for (i in limitLines.indices) {
-            val l = limitLines[i]
+            val limitLine = limitLines[i]!!
 
-            if (!l.isEnabled) continue
+            if (!limitLine.isEnabled) continue
 
-            limitLinePaint.color = l.lineColor
-            limitLinePaint.pathEffect = l.dashPathEffect
-            limitLinePaint.strokeWidth = l.lineWidth
+            limitLinePaint.color = limitLine.lineColor
+            limitLinePaint.pathEffect = limitLine.dashPathEffect
+            limitLinePaint.strokeWidth = limitLine.lineWidth
 
-            val r = (l.limit - chart.yChartMin) * factor
+            val r = (limitLine.limit - chart.yChartMin) * factor
 
             val limitPath = renderLimitLinesPathBuffer
             limitPath.reset()

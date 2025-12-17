@@ -65,26 +65,27 @@ open class BubbleChartRenderer(
         val referenceSize = min(maxBubbleHeight.toDouble(), maxBubbleWidth.toDouble()).toFloat()
 
         for (j in xBounds.min..xBounds.range + xBounds.min) {
-            val entry = dataSet.getEntryForIndex(j)
+            val bubbleEntry = dataSet.getEntryForIndex(j)
+            bubbleEntry?.let {
+                pointBuffer[0] = it.x
+                pointBuffer[1] = (it.y) * phaseY
+                trans.pointValuesToPixel(pointBuffer)
 
-            pointBuffer[0] = entry.x
-            pointBuffer[1] = (entry.y) * phaseY
-            trans.pointValuesToPixel(pointBuffer)
+                val shapeHalf = getShapeSize(it.size, dataSet.maxSize, referenceSize, normalizeSize) / 2f
 
-            val shapeHalf = getShapeSize(entry.size, dataSet.maxSize, referenceSize, normalizeSize) / 2f
+                if (!viewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf)
+                    || !viewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf)
+                ) continue
 
-            if (!viewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf)
-                || !viewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf)
-            ) continue
+                if (!viewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf)) continue
 
-            if (!viewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf)) continue
+                if (!viewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf)) break
 
-            if (!viewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf)) break
+                val color = dataSet.getColorByIndex(j)
 
-            val color = dataSet.getColorByIndex(j)
-
-            paintRender.color = color
-            canvas.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, paintRender)
+                paintRender.color = color
+                canvas.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, paintRender)
+            }
         }
     }
 
@@ -144,25 +145,26 @@ open class BubbleChartRenderer(
                             continue
                         }
 
-                        val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
-
-                        if (dataSet.isDrawValues) {
-                            drawValue(
-                                canvas, dataSet.valueFormatter, entry.size, entry, i, x,
-                                y + (0.5f * lineHeight), valueTextColor
-                            )
-                        }
-
-                        if (entry.icon != null && dataSet.isDrawIcons) {
-                            val icon = entry.icon
-
-                            icon?.let {
-                                Utils.drawImage(
-                                    canvas,
-                                    it,
-                                    (x + iconsOffset.x).toInt(),
-                                    (y + iconsOffset.y).toInt()
+                        val bubbleEntry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
+                        bubbleEntry?.let {
+                            if (dataSet.isDrawValues) {
+                                drawValue(
+                                    canvas, dataSet.valueFormatter, bubbleEntry.size, bubbleEntry, i, x,
+                                    y + (0.5f * lineHeight), valueTextColor
                                 )
+                            }
+
+                            if (bubbleEntry.icon != null && dataSet.isDrawIcons) {
+                                val icon = bubbleEntry.icon
+
+                                icon?.let {
+                                    Utils.drawImage(
+                                        canvas,
+                                        it,
+                                        (x + iconsOffset.x).toInt(),
+                                        (y + iconsOffset.y).toInt()
+                                    )
+                                }
                             }
                         }
                         j += 2

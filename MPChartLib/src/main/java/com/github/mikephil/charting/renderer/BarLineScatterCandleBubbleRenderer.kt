@@ -20,7 +20,7 @@ abstract class BarLineScatterCandleBubbleRenderer(animator: ChartAnimator, viewP
      * Returns true if the DataSet values should be drawn, false if not.
      */
     protected fun shouldDrawValues(set: IDataSet<*>): Boolean {
-        return set.isVisible() && (set.isDrawValues() || set.isDrawIcons())
+        return set.isVisible && (set.isDrawValues || set.isDrawIcons)
     }
 
     /**
@@ -29,7 +29,7 @@ abstract class BarLineScatterCandleBubbleRenderer(animator: ChartAnimator, viewP
     protected fun <T : Entry> isInBoundsX(entry: T, set: IBarLineScatterCandleBubbleDataSet<T>): Boolean {
         val entryIndex = set.getEntryIndex(entry).toFloat()
 
-        return if (entryIndex >= set.getEntryCount() * animator.phaseX) {
+        return if (entryIndex >= set.entryCount * animator.phaseX) {
             false
         } else {
             true

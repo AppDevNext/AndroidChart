@@ -127,10 +127,10 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
 
         val dataSet = PieDataSet(entries, "Election Results")
 
-        dataSet.setDrawIcons(false)
+        dataSet.isDrawIcons = false
 
         dataSet.setSliceSpace(3f)
-        dataSet.setIconsOffset(MPPointF(0f, 40f))
+        dataSet.iconsOffset = MPPointF(0f, 40f)
         dataSet.selectionShift = 5f
 
         // add a lot of colors
@@ -182,14 +182,15 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues())
+                chart!!.data!!.dataSets.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
                 chart!!.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                for (set in chart!!.data!!.getDataSets()) set.setDrawIcons(!set.isDrawIcons())
+                for (set in chart!!.data!!.getDataSets())
+                    set.isDrawIcons = !set.isDrawIcons
 
                 chart!!.invalidate()
             }

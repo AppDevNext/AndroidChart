@@ -205,7 +205,7 @@ open class XAxisRendererHorizontalBarChart(
     override fun renderLimitLines(canvas: Canvas) {
         val limitLines = xAxis.limitLines
 
-        if (limitLines == null || limitLines.isEmpty()) return
+        if (limitLines.isEmpty()) return
 
         val pts = mRenderLimitLinesBuffer
         pts[0] = 0f
@@ -215,21 +215,21 @@ open class XAxisRendererHorizontalBarChart(
         limitLinePath.reset()
 
         for (i in limitLines.indices) {
-            val l = limitLines[i]
+            val limitLine = limitLines[i]!!
 
-            if (!l.isEnabled) continue
+            if (!limitLine.isEnabled) continue
 
             canvas.withSave {
                 mLimitLineClippingRect.set(viewPortHandler.contentRect)
-                mLimitLineClippingRect.inset(0f, -l.lineWidth)
+                mLimitLineClippingRect.inset(0f, -limitLine.lineWidth)
                 canvas.clipRect(mLimitLineClippingRect)
 
                 limitLinePaint.style = Paint.Style.STROKE
-                limitLinePaint.color = l.lineColor
-                limitLinePaint.strokeWidth = l.lineWidth
-                limitLinePaint.pathEffect = l.dashPathEffect
+                limitLinePaint.color = limitLine.lineColor
+                limitLinePaint.strokeWidth = limitLine.lineWidth
+                limitLinePaint.pathEffect = limitLine.dashPathEffect
 
-                pts[1] = l.limit
+                pts[1] = limitLine.limit
 
                 transformer!!.pointValuesToPixel(pts)
 
@@ -240,21 +240,21 @@ open class XAxisRendererHorizontalBarChart(
                 limitLinePath.reset()
 
                 // c.drawLines(pts, mLimitLinePaint);
-                val label = l.label
+                val label = limitLine.label
 
                 // if drawing the limit-value label is enabled
                 if (label != null && label != "") {
-                    limitLinePaint.style = l.textStyle
+                    limitLinePaint.style = limitLine.textStyle
                     limitLinePaint.pathEffect = null
-                    limitLinePaint.color = l.textColor
+                    limitLinePaint.color = limitLine.textColor
                     limitLinePaint.strokeWidth = 0.5f
-                    limitLinePaint.textSize = l.textSize
+                    limitLinePaint.textSize = limitLine.textSize
 
                     val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                    val xOffset = 4f.convertDpToPixel() + l.xOffset
-                    val yOffset = l.lineWidth + labelLineHeight + l.yOffset
+                    val xOffset = 4f.convertDpToPixel() + limitLine.xOffset
+                    val yOffset = limitLine.lineWidth + labelLineHeight + limitLine.yOffset
 
-                    val position = l.labelPosition
+                    val position = limitLine.labelPosition
 
                     when (position) {
                         LimitLabelPosition.RIGHT_TOP -> {

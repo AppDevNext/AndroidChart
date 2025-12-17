@@ -92,7 +92,7 @@ class ListViewMultiChartActivity : DemoBase() {
         d1.setLineWidth(2.5f)
         d1.circleRadius = 4.5f
         d1.setHighLightColor(Color.rgb(244, 117, 117))
-        d1.setDrawValues(false)
+        d1.isDrawValues = false
 
         val values2 = ArrayList<Entry?>()
 
@@ -104,9 +104,9 @@ class ListViewMultiChartActivity : DemoBase() {
         d2.setLineWidth(2.5f)
         d2.circleRadius = 4.5f
         d2.setHighLightColor(Color.rgb(244, 117, 117))
-        d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0])
+        d2.color = ColorTemplate.VORDIPLOM_COLORS[0]
         d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0])
-        d2.setDrawValues(false)
+        d2.isDrawValues = false
 
         val sets = ArrayList<ILineDataSet?>()
         sets.add(d1)

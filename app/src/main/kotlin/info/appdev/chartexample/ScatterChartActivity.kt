@@ -73,7 +73,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
 
         val yl = chart!!.axisLeft
         yl.typeface = tfLight
-        yl.setAxisMinimum(0f) // this replaces setStartAtZero(true)
+        yl.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         chart!!.axisRight.isEnabled = false
 
@@ -109,15 +109,15 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         // create a dataset and give it a type
         val set1 = ScatterDataSet(values1, "DS 1")
         set1.setScatterShape(ScatterChart.ScatterShape.SQUARE)
-        set1.setColor(ColorTemplate.COLORFUL_COLORS[0])
+        set1.color = ColorTemplate.COLORFUL_COLORS[0]
         val set2 = ScatterDataSet(values2, "DS 2")
         set2.setScatterShape(ScatterChart.ScatterShape.CIRCLE)
         set2.scatterShapeHoleColor = ColorTemplate.COLORFUL_COLORS[3]
         set2.scatterShapeHoleRadius = 3f
-        set2.setColor(ColorTemplate.COLORFUL_COLORS[1])
+        set2.color = ColorTemplate.COLORFUL_COLORS[1]
         val set3 = ScatterDataSet(values3, "DS 3")
         set3.shapeRenderer = CustomScatterShapeRenderer()
-        set3.setColor(ColorTemplate.COLORFUL_COLORS[2])
+        set3.color = ColorTemplate.COLORFUL_COLORS[2]
 
         set1.scatterShapeSize = 8f
         set2.scatterShapeSize = 8f
@@ -151,7 +151,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
 
             R.id.actionToggleValues -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues)
+                    set.isDrawValues = !set.isDrawValues
                 }
                 chart!!.invalidate()
             }

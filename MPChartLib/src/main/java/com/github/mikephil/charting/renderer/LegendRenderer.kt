@@ -52,7 +52,6 @@ open class LegendRenderer(
 
                 val clrs = dataSet.colors
                 val entryCount = dataSet.entryCount
-
                 // if we have a barchart with stacked bars
                 if (dataSet is IBarDataSet && dataSet.isStacked) {
                     val sLabels = dataSet.stackLabels
@@ -71,10 +70,10 @@ open class LegendRenderer(
                         computedEntries.add(
                             LegendEntry(
                                 label,
-                                dataSet.getForm(),
-                                dataSet.getFormSize(),
-                                dataSet.getFormLineWidth(),
-                                dataSet.getFormLineDashEffect(),
+                                dataSet.form,
+                                dataSet.formSize,
+                                dataSet.formLineWidth,
+                                dataSet.formLineDashEffect,
                                 clrs[j]
                             )
                         )
@@ -84,7 +83,7 @@ open class LegendRenderer(
                         // add the legend description label
                         computedEntries.add(
                             LegendEntry(
-                                dataSet.getLabel(),
+                                dataSet.label,
                                 LegendForm.NONE,
                                 Float.NaN,
                                 Float.NaN,
@@ -97,16 +96,18 @@ open class LegendRenderer(
 
                     var j = 0
                     while (j < clrs.size && j < entryCount) {
-                        computedEntries.add(
-                            LegendEntry(
-                                dataSet.getEntryForIndex(j).label,
-                                dataSet.getForm(),
-                                dataSet.getFormSize(),
-                                dataSet.getFormLineWidth(),
-                                dataSet.getFormLineDashEffect(),
-                                clrs[j]
+                        dataSet.getEntryForIndex(j)?.let { pieEntry ->
+                            computedEntries.add(
+                                LegendEntry(
+                                    pieEntry.label,
+                                    dataSet.form,
+                                    dataSet.formSize,
+                                    dataSet.formLineWidth,
+                                    dataSet.formLineDashEffect,
+                                    clrs[j]
+                                )
                             )
-                        )
+                        }
                         j++
                     }
 
@@ -114,7 +115,7 @@ open class LegendRenderer(
                         // add the legend description label
                         computedEntries.add(
                             LegendEntry(
-                                dataSet.getLabel(),
+                                dataSet.label,
                                 LegendForm.NONE,
                                 Float.NaN,
                                 Float.NaN,
@@ -132,21 +133,21 @@ open class LegendRenderer(
                     computedEntries.add(
                         LegendEntry(
                             null,
-                            dataSet.getForm(),
-                            dataSet.getFormSize(),
-                            dataSet.getFormLineWidth(),
-                            dataSet.getFormLineDashEffect(),
+                            dataSet.form,
+                            dataSet.formSize,
+                            dataSet.formLineWidth,
+                            dataSet.formLineDashEffect,
                             decreasingColor
                         )
                     )
 
                     computedEntries.add(
                         LegendEntry(
-                            dataSet.getLabel(),
-                            dataSet.getForm(),
-                            dataSet.getFormSize(),
-                            dataSet.getFormLineWidth(),
-                            dataSet.getFormLineDashEffect(),
+                            dataSet.label,
+                            dataSet.form,
+                            dataSet.formSize,
+                            dataSet.formLineWidth,
+                            dataSet.formLineDashEffect,
                             increasingColor
                         )
                     )

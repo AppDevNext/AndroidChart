@@ -155,14 +155,14 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
             R.id.actionToggleValues -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.setDrawValues(!set.isDrawValues)
+                    set.isDrawValues = !set.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.setDrawIcons(!set.isDrawIcons)
+                    set.isDrawIcons = !set.isDrawIcons
                     binding.chart1.invalidate()
                 }
             }
@@ -259,8 +259,8 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
     override fun onStopTrackingTouch(seekBar: SeekBar) {}
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         Timber.i(entry.toString())
-        Timber.i("LOW HIGH low: ${binding.chart1.lowestVisibleX}, high: ${binding.chart1.highestVisibleX}")
-        Timber.i("MIN MAX xMin: ${binding.chart1.xChartMin}, xMax: ${binding.chart1.xChartMax}, yMin: ${binding.chart1.yChartMin}, yMax: ${binding.chart1.yChartMax}")
+        Timber.i("LOW HIGH low:${binding.chart1.lowestVisibleX}, high:${binding.chart1.highestVisibleX}")
+        Timber.i("MIN MAX xMin:${binding.chart1.xChartMin}, xMax:${binding.chart1.xChartMax}, yMin:${binding.chart1.yChartMin}, yMax:${binding.chart1.yChartMax}")
     }
 
     override fun onNothingSelected() = Unit
