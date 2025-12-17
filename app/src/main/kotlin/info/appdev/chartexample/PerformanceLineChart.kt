@@ -72,7 +72,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         set1.setLineWidth(0.5f)
         set1.setDrawValues(false)
         set1.setDrawCircles(false)
-        set1.mode = LineDataSet.Mode.LINEAR
+        set1.lineMode = LineDataSet.Mode.LINEAR
         set1.setDrawFilled(false)
 
         // create a data object with the data sets

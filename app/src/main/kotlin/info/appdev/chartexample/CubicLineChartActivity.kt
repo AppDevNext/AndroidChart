@@ -111,7 +111,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             // create a dataset and give it a type
             set1 = LineDataSet(values, "DataSet 1")
 
-            set1.mode = LineDataSet.Mode.CUBIC_BEZIER
+            set1.lineMode = LineDataSet.Mode.CUBIC_BEZIER
             set1.cubicIntensity = 0.2f
             set1.setDrawFilled(true)
             set1.setDrawCircles(false)
@@ -196,7 +196,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.CUBIC_BEZIER)
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
                         LineDataSet.Mode.CUBIC_BEZIER
@@ -209,7 +209,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.STEPPED)
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED)
                         LineDataSet.Mode.LINEAR
                     else
                         LineDataSet.Mode.STEPPED
@@ -222,7 +222,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.mode = if (set.mode == LineDataSet.Mode.HORIZONTAL_BEZIER)
+                    set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
                         LineDataSet.Mode.HORIZONTAL_BEZIER

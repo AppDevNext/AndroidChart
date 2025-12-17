@@ -206,10 +206,10 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.mode == LineDataSet.Mode.CUBIC_BEZIER)
-                        set.mode = LineDataSet.Mode.LINEAR
+                    if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
+                        set.lineMode = LineDataSet.Mode.LINEAR
                     else
-                        set.mode = LineDataSet.Mode.CUBIC_BEZIER
+                        set.lineMode = LineDataSet.Mode.CUBIC_BEZIER
                 }
                 chart!!.invalidate()
             }
@@ -219,10 +219,10 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.mode == LineDataSet.Mode.STEPPED)
-                        set.mode = LineDataSet.Mode.LINEAR
+                    if (set.lineMode == LineDataSet.Mode.STEPPED)
+                        set.lineMode = LineDataSet.Mode.LINEAR
                     else
-                        set.mode = LineDataSet.Mode.STEPPED
+                        set.lineMode = LineDataSet.Mode.STEPPED
                 }
                 chart!!.invalidate()
             }

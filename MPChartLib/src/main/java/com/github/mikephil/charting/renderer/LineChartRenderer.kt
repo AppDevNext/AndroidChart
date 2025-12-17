@@ -90,7 +90,7 @@ open class LineChartRenderer(
         paintRender.strokeWidth = dataSet.lineWidth
         paintRender.setPathEffect(dataSet.dashPathEffect)
 
-        when (dataSet.mode) {
+        when (dataSet.lineMode) {
             LineDataSet.Mode.LINEAR, LineDataSet.Mode.STEPPED -> drawLinear(canvas, dataSet)
             LineDataSet.Mode.CUBIC_BEZIER -> drawCubicBezier(dataSet)
             LineDataSet.Mode.HORIZONTAL_BEZIER -> drawHorizontalBezier(dataSet)
@@ -450,7 +450,7 @@ open class LineChartRenderer(
     private fun generateFilledPath(dataSet: ILineDataSet, startIndex: Int, endIndex: Int, outputPath: Path) {
         val fillMin = dataSet.fillFormatter.getFillLinePosition(dataSet, dataProvider)
         val phaseY = animator.phaseY
-        val isDrawSteppedEnabled = dataSet.mode == LineDataSet.Mode.STEPPED
+        val isDrawSteppedEnabled = dataSet.lineMode == LineDataSet.Mode.STEPPED
 
         val filled = outputPath
         filled.reset()
