@@ -182,8 +182,10 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.isDrawCirclesEnabled) set.setDrawCircles(false)
-                    else set.setDrawCircles(true)
+                    if (set.isDrawCirclesEnabled)
+                        set.setDrawCircles(false)
+                    else
+                        set.setDrawCircles(true)
                 }
                 chart!!.invalidate()
             }
@@ -255,7 +257,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
     }
 
     override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
-        Timber.i("START, x: " + me.x + ", y: " + me.y)
+        Timber.i("START, x: ${me.x}, y: ${me.y}")
     }
 
     override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartGesture?) {

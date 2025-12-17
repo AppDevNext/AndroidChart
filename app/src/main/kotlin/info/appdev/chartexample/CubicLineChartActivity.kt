@@ -12,6 +12,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -22,7 +23,6 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import info.appdev.chartexample.DataTools.Companion.getMuchValues
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
     private var tvX: TextView? = null
@@ -169,11 +169,11 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             R.id.actionToggleFilled -> {
                 val sets = binding.chart1.data!!.dataSets
 
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
-
-                    if (set.isDrawFilledEnabled) set.setDrawFilled(false)
-                    else set.setDrawFilled(true)
+                for (set in sets) {
+                    if (set.isDrawFilledEnabled)
+                        set.setDrawFilled(false)
+                    else
+                        set.setDrawFilled(true)
                 }
                 binding.chart1.invalidate()
             }
@@ -183,8 +183,10 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.isDrawCirclesEnabled) set.setDrawCircles(false)
-                    else set.setDrawCircles(true)
+                    if (iSet.isDrawCirclesEnabled)
+                        set.setDrawCircles(false)
+                    else
+                        set.setDrawCircles(true)
                 }
                 binding.chart1.invalidate()
             }

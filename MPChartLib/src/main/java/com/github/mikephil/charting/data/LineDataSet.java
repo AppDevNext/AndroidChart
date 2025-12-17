@@ -20,7 +20,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 	/**
 	 * Drawing mode for this line dataset
 	 **/
-	private LineDataSet.Mode mMode = Mode.LINEAR;
+	private LineDataSet.Mode mLineDataSetMode = Mode.LINEAR;
 
 	/**
 	 * List representing all colors that are used for the circles
@@ -104,7 +104,7 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 		lineDataSet.mDrawCircleHole = mDrawCircleHole;
 		lineDataSet.mDrawCircles = mDrawCircleHole;
 		lineDataSet.mFillFormatter = mFillFormatter;
-		lineDataSet.mMode = mMode;
+		lineDataSet.mLineDataSetMode = mLineDataSetMode;
 	}
 
 	/**
@@ -112,14 +112,14 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 	 */
 	@Override
 	public LineDataSet.Mode getMode() {
-		return mMode;
+		return mLineDataSetMode;
 	}
 
 	/**
 	 * Returns the drawing mode for this LineDataSet
 	 */
 	public void setMode(LineDataSet.Mode mode) {
-		mMode = mode;
+		mLineDataSetMode = mode;
 	}
 
 	/**
@@ -247,13 +247,13 @@ public class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet
 	@Deprecated
 	@Override
 	public boolean isDrawCubicEnabled() {
-		return mMode == Mode.CUBIC_BEZIER;
+		return mLineDataSetMode == Mode.CUBIC_BEZIER;
 	}
 
 	@Deprecated
 	@Override
 	public boolean isDrawSteppedEnabled() {
-		return mMode == Mode.STEPPED;
+		return mLineDataSetMode == Mode.STEPPED;
 	}
 
 	/**

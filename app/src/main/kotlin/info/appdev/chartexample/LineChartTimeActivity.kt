@@ -120,7 +120,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         while (x < to) {
             val y: Float
             if (count == 100)  // initial
-                y = (valuesData[Math.round(x)])!!.toFloat() * 50 + 50
+                y = (valuesData[x.roundToInt()])!!.toFloat() * 50 + 50
             else y = (Math.random() * 50 + 50).toFloat() // manually triggered
 
             values.add(Entry(x, y)) // add one entry per hour
@@ -193,8 +193,10 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.isDrawCirclesEnabled) set.setDrawCircles(false)
-                    else set.setDrawCircles(true)
+                    if (set.isDrawCirclesEnabled)
+                        set.setDrawCircles(false)
+                    else
+                        set.setDrawCircles(true)
                 }
                 chart!!.invalidate()
             }
@@ -204,8 +206,10 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.mode == LineDataSet.Mode.CUBIC_BEZIER) set.mode = LineDataSet.Mode.LINEAR
-                    else set.mode = LineDataSet.Mode.CUBIC_BEZIER
+                    if (set.mode == LineDataSet.Mode.CUBIC_BEZIER)
+                        set.mode = LineDataSet.Mode.LINEAR
+                    else
+                        set.mode = LineDataSet.Mode.CUBIC_BEZIER
                 }
                 chart!!.invalidate()
             }
@@ -215,8 +219,10 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.mode == LineDataSet.Mode.STEPPED) set.mode = LineDataSet.Mode.LINEAR
-                    else set.mode = LineDataSet.Mode.STEPPED
+                    if (set.mode == LineDataSet.Mode.STEPPED)
+                        set.mode = LineDataSet.Mode.LINEAR
+                    else
+                        set.mode = LineDataSet.Mode.STEPPED
                 }
                 chart!!.invalidate()
             }

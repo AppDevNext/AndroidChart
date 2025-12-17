@@ -81,8 +81,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
             R.id.actionToggleValues -> {
                 val sets = binding.chart1.data!!.dataSets
 
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                for (set in sets) {
                     set.setDrawValues(!set.isDrawValuesEnabled)
                 }
 
@@ -136,7 +135,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
 
     /** callback when a DataSet has been drawn (when lifting the finger)  */
     override fun onDrawFinished(dataSet: DataSet<*>) {
-        Timber.i("DataSet drawn. " + dataSet.toSimpleString())
+        Timber.i("DataSet drawn. ${dataSet.toSimpleString()}")
 
         // prepare the legend again
         binding.chart1.data?.let { binding.chart1.legendRenderer.computeLegend(it) }
