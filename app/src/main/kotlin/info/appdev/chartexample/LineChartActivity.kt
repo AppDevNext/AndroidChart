@@ -182,16 +182,14 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             }
 
             R.id.actionToggleCircles -> {
-                binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                binding.chart1.data?.dataSets?.map { it as LineDataSet }?.forEach { set ->
                     set.setDrawCircles(!set.isDrawCirclesEnabled)
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                binding.chart1.data?.dataSets?.map { it as LineDataSet }?.forEach { set ->
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
@@ -201,8 +199,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             }
 
             R.id.actionToggleStepped -> {
-                binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                binding.chart1.data?.dataSets?.map { it as LineDataSet }?.forEach { set ->
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED)
                         LineDataSet.Mode.LINEAR
                     else
@@ -212,8 +209,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                binding.chart1.data?.dataSets?.map { it as LineDataSet }?.forEach { set ->
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
