@@ -74,6 +74,11 @@ class FilledLineActivity : DemoBase() {
 
         for (i in 0..<count) {
             val valueY = (sampleValues[i]!!.toFloat() * range) + 50
+            if (count / 2 == i) {
+                // Simulate a gap in the data
+                valuesArray1.add(null)
+                continue
+            }
             valuesArray1.add(Entry(i.toFloat(), valueY))
         }
 
@@ -81,6 +86,11 @@ class FilledLineActivity : DemoBase() {
 
         for (i in 0..<count) {
             val valueY = (sampleValues[i + 1]!!.toFloat() * range) + 450
+            if (count / 4 == i) {
+                // Simulate a gap in the data
+                valuesArray2.add(null)
+                continue
+            }
             valuesArray2.add(Entry(i.toFloat(), valueY))
         }
 
