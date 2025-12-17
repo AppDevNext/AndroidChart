@@ -69,19 +69,19 @@ class FilledLineActivity : DemoBase() {
 
     private fun setData(@Suppress("SameParameterValue") range: Float) {
         val count = 100
-        val values1 = ArrayList<Entry?>()
+        val valuesArray1 = ArrayList<Entry?>()
         val sampleValues = getValues(count + 2)
 
         for (i in 0..<count) {
-            val `val` = (sampleValues[i]!!.toFloat() * range) + 50
-            values1.add(Entry(i.toFloat(), `val`))
+            val valueY = (sampleValues[i]!!.toFloat() * range) + 50
+            valuesArray1.add(Entry(i.toFloat(), valueY))
         }
 
-        val values2 = ArrayList<Entry?>()
+        val valuesArray2 = ArrayList<Entry?>()
 
         for (i in 0..<count) {
-            val `val` = (sampleValues[i + 1]!!.toFloat() * range) + 450
-            values2.add(Entry(i.toFloat(), `val`))
+            val valueY = (sampleValues[i + 1]!!.toFloat() * range) + 450
+            valuesArray2.add(Entry(i.toFloat(), valueY))
         }
 
         val set1: LineDataSet
@@ -92,13 +92,13 @@ class FilledLineActivity : DemoBase() {
         ) {
             set1 = binding.chart1.data!!.getDataSetByIndex(0) as LineDataSet
             set2 = binding.chart1.data!!.getDataSetByIndex(1) as LineDataSet
-            set1.setEntries(values1)
-            set2.setEntries(values2)
+            set1.setEntries(valuesArray1)
+            set2.setEntries(valuesArray2)
             binding.chart1.data!!.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {
             // create a dataset and give it a type
-            set1 = LineDataSet(values1, "DataSet 1")
+            set1 = LineDataSet(valuesArray1, "DataSet 1")
 
             set1.axisDependency = YAxis.AxisDependency.LEFT
             set1.setColor(Color.rgb(255, 241, 46))
@@ -119,7 +119,7 @@ class FilledLineActivity : DemoBase() {
             }
 
             // create a dataset and give it a type
-            set2 = LineDataSet(values2, "DataSet 2")
+            set2 = LineDataSet(valuesArray2, "DataSet 2")
             set2.axisDependency = YAxis.AxisDependency.LEFT
             set2.setColor(Color.rgb(255, 241, 46))
             set2.setDrawCircles(false)
