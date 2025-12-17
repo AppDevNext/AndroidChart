@@ -150,10 +150,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
             }
 
             R.id.actionToggleValues -> {
-                val sets = chart!!.data!!.dataSets
-
-                for (iSet in sets) {
-                    val set = iSet as ScatterDataSet
+                chart!!.data!!.dataSets.forEach { set ->
                     set.setDrawValues(!set.isDrawValuesEnabled)
                 }
 

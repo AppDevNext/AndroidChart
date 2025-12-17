@@ -143,11 +143,8 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             }
 
             R.id.actionToggleValues -> {
-                val sets = chart!!.data!!.dataSets
-
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
-                    set.setDrawValues(!set.isDrawValuesEnabled)
+                chart!!.data!!.dataSets.forEach { iSet ->
+                    iSet.setDrawValues(!iSet.isDrawValuesEnabled)
                 }
 
                 chart!!.invalidate()
@@ -161,10 +158,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             }
 
             R.id.actionToggleFilled -> {
-                val sets = chart!!.data!!.dataSets
-
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                chart!!.data!!.dataSets.forEach { set ->
                     set.setDrawFilled(!set.isDrawFilledEnabled)
                 }
                 chart!!.invalidate()

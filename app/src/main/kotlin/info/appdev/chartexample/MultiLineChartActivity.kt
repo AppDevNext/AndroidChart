@@ -141,10 +141,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleValues -> {
-                val sets = chart!!.data!!.dataSets
-
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                chart!!.data!!.dataSets.forEach { set ->
                     set.setDrawValues(!set.isDrawValuesEnabled)
                 }
 
@@ -171,12 +168,11 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleFilled -> {
-                val sets = chart!!.data!!.dataSets
-
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
-                    if (set.isDrawFilledEnabled) set.setDrawFilled(false)
-                    else set.setDrawFilled(true)
+                chart!!.data!!.dataSets.forEach { set ->
+                    if (set.isDrawFilledEnabled)
+                        set.setDrawFilled(false)
+                    else
+                        set.setDrawFilled(true)
                 }
                 chart!!.invalidate()
             }

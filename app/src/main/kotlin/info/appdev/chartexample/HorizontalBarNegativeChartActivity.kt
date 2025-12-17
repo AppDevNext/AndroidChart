@@ -160,19 +160,15 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
             }
 
             R.id.actionToggleValues -> {
-                val sets = chart!!.data!!.dataSets
-
-                for (iSet in sets) {
-                    iSet.setDrawValues(!iSet.isDrawValuesEnabled())
+                chart!!.data!!.dataSets.forEach {
+                    it.setDrawValues(!it.isDrawValuesEnabled())
                 }
 
                 chart!!.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                val sets = chart!!.data!!.dataSets
-
-                for (iSet in sets) {
+                chart!!.data!!.dataSets.forEach { iSet ->
                     iSet.setDrawIcons(!iSet.isDrawIconsEnabled())
                 }
 

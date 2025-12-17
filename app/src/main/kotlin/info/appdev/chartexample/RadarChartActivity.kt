@@ -174,18 +174,14 @@ class RadarChartActivity : DemoBase() {
             }
 
             R.id.actionToggleFilled -> {
-                val sets = chart!!.data!!.dataSets
-
-                for (set in sets) {
+                chart!!.data!!.dataSets.forEach { set ->
                     set.setDrawFilled(!set.isDrawFilledEnabled())
                 }
                 chart!!.invalidate()
             }
 
             R.id.actionToggleHighlightCircle -> {
-                val sets = chart!!.data!!.dataSets
-
-                for (set in sets) {
+                chart!!.data!!.dataSets.forEach { set ->
                     set.setDrawHighlightCircleEnabled(!set.isDrawHighlightCircleEnabled())
                 }
                 chart!!.invalidate()
