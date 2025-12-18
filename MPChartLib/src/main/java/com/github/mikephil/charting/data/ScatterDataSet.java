@@ -47,7 +47,7 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
 
     @Override
     public DataSet<Entry> copy() {
-        List<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < mEntries.size(); i++) {
             entries.add(mEntries.get(i).copy());
         }
@@ -67,8 +67,6 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     /**
      * Sets the size in density pixels the drawn scattershape will have. This
      * only applies for non custom shapes.
-     *
-     * @param size
      */
     public void setScatterShapeSize(float size) {
         mShapeSize = size;
@@ -82,8 +80,6 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     /**
      * Sets the ScatterShape this DataSet should be drawn with. This will search for an available IShapeRenderer and set this
      * renderer for the DataSet.
-     *
-     * @param shape
      */
     public void setScatterShape(ScatterChart.ScatterShape shape) {
         mShapeRenderer = getRendererForShape(shape);
@@ -92,8 +88,6 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     /**
      * Sets a new IShapeRenderer responsible for drawing this DataSet.
      * This can also be used to set a custom IShapeRenderer aside from the default ones.
-     *
-     * @param shapeRenderer
      */
     public void setShapeRenderer(IShapeRenderer shapeRenderer) {
         mShapeRenderer = shapeRenderer;
@@ -107,8 +101,6 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
     /**
      * Sets the radius of the hole in the shape (applies to Square, Circle and Triangle)
      * Set this to <= 0 to remove holes.
-     *
-     * @param holeRadius
      */
     public void setScatterShapeHoleRadius(float holeRadius) {
         mScatterShapeHoleRadius = holeRadius;
@@ -121,8 +113,6 @@ public class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry> impleme
 
     /**
      * Sets the color for the hole in the shape.
-     *
-     * @param holeColor
      */
     public void setScatterShapeHoleColor(int holeColor) {
         mScatterShapeHoleColor = holeColor;
