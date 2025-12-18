@@ -88,7 +88,7 @@ class ListViewMultiChartActivity : DemoBase() {
             values1.add(Entry(i.toFloat(), ((sampleValues[i]!!.toFloat() * 65).toInt() + 40).toFloat()))
         }
 
-        val d1 = LineDataSet(values1, "New DataSet " + cnt + ", (1)")
+        val d1 = LineDataSet(values1, "New DataSet $cnt, (1)")
         d1.setLineWidth(2.5f)
         d1.circleRadius = 4.5f
         d1.setHighLightColor(Color.rgb(244, 117, 117))
@@ -100,7 +100,7 @@ class ListViewMultiChartActivity : DemoBase() {
             values2.add(Entry(i.toFloat(), values1.get(i)!!.y - 30))
         }
 
-        val d2 = LineDataSet(values2, "New DataSet " + cnt + ", (2)")
+        val d2 = LineDataSet(values2, "New DataSet $cnt, (2)")
         d2.setLineWidth(2.5f)
         d2.circleRadius = 4.5f
         d2.setHighLightColor(Color.rgb(244, 117, 117))
