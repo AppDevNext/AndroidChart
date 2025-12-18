@@ -290,7 +290,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
     }
 
     override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
-        Timber.i("START, x: " + me.x + ", y: " + me.y)
+        Timber.i("START, x: ${me.x}, y: ${me.y}")
     }
 
     override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
