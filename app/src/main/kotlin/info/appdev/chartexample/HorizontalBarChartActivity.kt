@@ -119,7 +119,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
             binding.chart1.data!!.getDataSetCount() > 0
         ) {
             set1 = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
-            set1.setEntries(values)
+            set1.entries  = values
             binding.chart1.data!!.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {

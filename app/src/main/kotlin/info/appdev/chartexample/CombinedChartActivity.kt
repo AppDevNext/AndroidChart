@@ -105,10 +105,10 @@ class CombinedChartActivity : DemoBase() {
 
         val set = LineDataSet(entries, "Line DataSet")
         set.color = Color.rgb(240, 238, 70)
-        set.setLineWidth(2.5f)
+        set.lineWidth = 2.5f
         set.setCircleColor(Color.rgb(240, 238, 70))
         set.circleRadius = 5f
-        set.setFillColor(Color.rgb(240, 238, 70))
+        set.fillColor = Color.rgb(240, 238, 70)
         set.lineMode = LineDataSet.Mode.CUBIC_BEZIER
         set.isDrawValues = true
         set.valueTextSize = 10f

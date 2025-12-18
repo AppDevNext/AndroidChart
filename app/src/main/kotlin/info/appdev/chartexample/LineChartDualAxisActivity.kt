@@ -153,9 +153,9 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set1 = chart!!.data!!.getDataSetByIndex(0) as LineDataSet
             set2 = chart!!.data!!.getDataSetByIndex(1) as LineDataSet
             set3 = chart!!.data!!.getDataSetByIndex(2) as LineDataSet
-            set1.setEntries(values1)
-            set2.setEntries(values2)
-            set3.setEntries(values3)
+            set1.entries = values1
+            set2.entries = values2
+            set3.entries = values3
             chart!!.data!!.notifyDataChanged()
             chart!!.notifyDataSetChanged()
         } else {
@@ -165,11 +165,11 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set1.axisDependency = AxisDependency.LEFT
             set1.color = ColorTemplate.getHoloBlue()
             set1.setCircleColor(Color.WHITE)
-            set1.setLineWidth(2f)
+            set1.lineWidth = 2f
             set1.circleRadius = 3f
-            set1.setFillAlpha(65)
-            set1.setFillColor(ColorTemplate.getHoloBlue())
-            set1.setHighLightColor(Color.rgb(244, 117, 117))
+            set1.fillAlpha = 65
+            set1.fillColor = ColorTemplate.getHoloBlue()
+            set1.highLightColor = Color.rgb(244, 117, 117)
             set1.setDrawCircleHole(false)
 
             //set1.setFillFormatter(new MyFillFormatter(0f));
@@ -182,24 +182,24 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set2.axisDependency = AxisDependency.RIGHT
             set2.color = Color.MAGENTA
             set2.setCircleColor(Color.WHITE)
-            set2.setLineWidth(2f)
+            set2.lineWidth = 2f
             set2.circleRadius = 3f
-            set2.setFillAlpha(65)
-            set2.setFillColor(Color.BLUE)
+            set2.fillAlpha = 65
+            set2.fillColor = Color.BLUE
             set2.setDrawCircleHole(false)
-            set2.setHighLightColor(Color.rgb(244, 117, 117))
+            set2.highLightColor = Color.rgb(244, 117, 117)
 
             //set2.setFillFormatter(new MyFillFormatter(900f));
             set3 = LineDataSet(values3, "DataSet 3")
             set3.axisDependency = AxisDependency.RIGHT
             set3.color = Color.YELLOW
             set3.setCircleColor(Color.WHITE)
-            set3.setLineWidth(2f)
+            set3.lineWidth = 2f
             set3.circleRadius = 3f
-            set3.setFillAlpha(65)
-            set3.setFillColor(ColorTemplate.colorWithAlpha(Color.YELLOW, 200))
+            set3.fillAlpha = 65
+            set3.fillColor = ColorTemplate.colorWithAlpha(Color.YELLOW, 200)
             set3.setDrawCircleHole(false)
-            set3.setHighLightColor(Color.rgb(244, 117, 117))
+            set3.highLightColor = Color.rgb(244, 117, 117)
 
             // create a data object with the data sets
             val data = LineData(set1, set2, set3)

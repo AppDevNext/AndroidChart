@@ -108,7 +108,7 @@ class BarChartPositiveNegative : DemoBase() {
             chart!!.data!!.getDataSetCount() > 0
         ) {
             set = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
-            set.setEntries(values)
+            set.entries  = values
             chart!!.data!!.notifyDataChanged()
             chart!!.notifyDataSetChanged()
         } else {

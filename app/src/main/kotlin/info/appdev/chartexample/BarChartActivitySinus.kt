@@ -100,7 +100,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
             binding.chart1.data!!.getDataSetCount() > 0
         ) {
             set = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
-            set.setEntries(entries)
+            set.entries = entries
             binding.chart1.data!!.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {

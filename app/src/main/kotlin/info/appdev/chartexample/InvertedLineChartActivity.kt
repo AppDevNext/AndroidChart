@@ -118,7 +118,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         // create a dataset and give it a type
         val set1 = LineDataSet(entries, "DataSet 1")
 
-        set1.setLineWidth(1.5f)
+        set1.lineWidth = 1.5f
         set1.circleRadius = 4f
 
         // create a data object with the data sets

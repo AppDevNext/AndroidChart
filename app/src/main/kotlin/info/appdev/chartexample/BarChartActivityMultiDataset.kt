@@ -142,10 +142,10 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             set2 = chart!!.data!!.getDataSetByIndex(1) as BarDataSet
             set3 = chart!!.data!!.getDataSetByIndex(2) as BarDataSet
             set4 = chart!!.data!!.getDataSetByIndex(3) as BarDataSet
-            set1.setEntries(values1)
-            set2.setEntries(values2)
-            set3.setEntries(values3)
-            set4.setEntries(values4)
+            set1.entries = values1
+            set2.entries = values2
+            set3.entries = values3
+            set4.entries = values4
             chart!!.data!!.notifyDataChanged()
             chart!!.notifyDataSetChanged()
         } else {

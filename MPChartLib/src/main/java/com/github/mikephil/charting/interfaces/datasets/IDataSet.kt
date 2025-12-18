@@ -9,7 +9,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.MPPointF
 
-interface IDataSet<T : Entry> {
+interface IDataSet<T : Entry?> {
     /**
      * returns the minimum y-value this DataSet holds
      */
@@ -107,7 +107,7 @@ interface IDataSet<T : Entry> {
      * Returns the position of the provided entry in the DataSets Entry array.
      * Returns -1 if doesn't exist.
      */
-    fun getEntryIndex(e: T): Int
+    fun getEntryIndex(entry: T): Int
 
     /**
      * This method returns the actual
@@ -181,7 +181,7 @@ interface IDataSet<T : Entry> {
     /**
      * Sets the label string that describes the DataSet.
      */
-    var label: String?
+    var label: String
 
     /**
      * Set the y-axis this DataSet should be plotted against (either LEFT or RIGHT). Default: LEFT
