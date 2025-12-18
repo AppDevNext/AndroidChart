@@ -89,7 +89,7 @@ class ListViewMultiChartActivity : DemoBase() {
         }
 
         val d1 = LineDataSet(values1, "New DataSet $cnt, (1)")
-        d1.setLineWidth(2.5f)
+        d1.lineWidth = 2.5f
         d1.circleRadius = 4.5f
         d1.highLightColor = Color.rgb(244, 117, 117)
         d1.isDrawValues = false
@@ -101,7 +101,7 @@ class ListViewMultiChartActivity : DemoBase() {
         }
 
         val d2 = LineDataSet(values2, "New DataSet $cnt, (2)")
-        d2.setLineWidth(2.5f)
+        d2.lineWidth = 2.5f
         d2.circleRadius = 4.5f
         d2.highLightColor = Color.rgb(244, 117, 117)
         d2.color = ColorTemplate.VORDIPLOM_COLORS[0]

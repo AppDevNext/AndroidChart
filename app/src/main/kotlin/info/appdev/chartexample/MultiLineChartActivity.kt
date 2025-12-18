@@ -96,7 +96,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             val lineDataSet = LineDataSet(values, "DataSet " + (datasetNumber + 1))
-            lineDataSet.setLineWidth(2.5f)
+            lineDataSet.lineWidth = 2.5f
             lineDataSet.circleRadius = 4f
 
             val color = colors[datasetNumber % colors.size]

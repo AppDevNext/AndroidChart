@@ -7,10 +7,8 @@ import com.github.mikephil.charting.utils.convertDpToPixel
 
 /**
  * DataSet for the CandleStickChart.
- *
- * @author Philipp Jahoda
  */
-class CandleDataSet(yVals: MutableList<CandleEntry?>?, label: String?) : LineScatterCandleRadarDataSet<CandleEntry?>(yVals, label), ICandleDataSet {
+class CandleDataSet(yVals: MutableList<CandleEntry?>?, label: String = "") : LineScatterCandleRadarDataSet<CandleEntry?>(yVals, label), ICandleDataSet {
     /**
      * the width of the shadow of the candle
      */

@@ -113,8 +113,8 @@ abstract class SimpleFragment : Fragment() {
         val ds1 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "sine.txt"), "Sine function")
         val ds2 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "cosine.txt"), "Cosine function")
 
-        ds1.setLineWidth(2f)
-        ds2.setLineWidth(2f)
+        ds1.lineWidth = 2f
+        ds2.lineWidth = 2f
 
         ds1.setDrawCircles(false)
         ds2.setDrawCircles(false)
@@ -154,13 +154,13 @@ abstract class SimpleFragment : Fragment() {
             ds3.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[2])
             ds4.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[3])
 
-            ds1.setLineWidth(2.5f)
+            ds1.lineWidth = 2.5f
             ds1.circleRadius = 3f
-            ds2.setLineWidth(2.5f)
+            ds2.lineWidth = 2.5f
             ds2.circleRadius = 3f
-            ds3.setLineWidth(2.5f)
+            ds3.lineWidth = 2.5f
             ds3.circleRadius = 3f
-            ds4.setLineWidth(2.5f)
+            ds4.lineWidth = 2.5f
             ds4.circleRadius = 3f
 
 

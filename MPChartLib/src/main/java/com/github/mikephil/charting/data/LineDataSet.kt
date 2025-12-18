@@ -10,7 +10,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.convertDpToPixel
 
-class LineDataSet(yVals: MutableList<Entry?>?, label: String?) : LineRadarDataSet<Entry?>(yVals, label), ILineDataSet {
+class LineDataSet(yVals: MutableList<Entry?>?, label: String = "") : LineRadarDataSet<Entry?>(yVals, label), ILineDataSet {
     /**
      * Drawing mode for this line dataset
      */

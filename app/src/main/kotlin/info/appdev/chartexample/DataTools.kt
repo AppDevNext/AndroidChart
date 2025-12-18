@@ -186,7 +186,7 @@ class DataTools {
             lineDataSet01.setCircleColor(Color.BLACK)
 
             // line thickness and point size
-            lineDataSet01.setLineWidth(1f)
+            lineDataSet01.lineWidth = 1f
             lineDataSet01.circleRadius = 3f
 
             // draw points as solid circles
@@ -215,9 +215,9 @@ class DataTools {
             if (getSDKInt() >= 18) {
                 // drawables only supported on api level 18 and above
                 val drawable = ContextCompat.getDrawable(context, R.drawable.fade_blue)
-                lineDataSet01.setFillDrawable(drawable)
+                lineDataSet01.fillDrawable = drawable
             } else {
-                lineDataSet01.setFillColor(Color.BLACK)
+                lineDataSet01.fillColor = Color.BLACK
             }
             val dataSets = ArrayList<ILineDataSet>()
             dataSets.add(lineDataSet01) // add the data sets

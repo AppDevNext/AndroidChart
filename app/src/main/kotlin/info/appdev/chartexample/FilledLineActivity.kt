@@ -103,11 +103,11 @@ class FilledLineActivity : DemoBase() {
             set1.axisDependency = YAxis.AxisDependency.LEFT
             set1.color = Color.rgb(255, 241, 46)
             set1.setDrawCircles(false)
-            set1.setLineWidth(2f)
+            set1.lineWidth = 2f
             set1.circleRadius = 3f
-            set1.setFillAlpha(255)
+            set1.fillAlpha = 255
             set1.setDrawFilled(true)
-            set1.setFillColor(Color.WHITE)
+            set1.fillColor = Color.WHITE
             set1.highLightColor = Color.rgb(244, 117, 117)
             set1.setDrawCircleHole(false)
             set1.fillFormatter = object : IFillFormatter {
@@ -123,11 +123,11 @@ class FilledLineActivity : DemoBase() {
             set2.axisDependency = YAxis.AxisDependency.LEFT
             set2.color = Color.rgb(255, 241, 46)
             set2.setDrawCircles(false)
-            set2.setLineWidth(2f)
+            set2.lineWidth = 2f
             set2.circleRadius = 3f
-            set2.setFillAlpha(255)
+            set2.fillAlpha = 255
             set2.setDrawFilled(true)
-            set2.setFillColor(Color.WHITE)
+            set2.fillColor = Color.WHITE
             set2.setDrawCircleHole(false)
             set2.highLightColor = Color.rgb(244, 117, 117)
             set2.fillFormatter = object : IFillFormatter {
