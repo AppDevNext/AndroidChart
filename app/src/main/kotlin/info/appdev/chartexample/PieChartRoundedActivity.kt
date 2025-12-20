@@ -129,7 +129,7 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
 
         dataSet.isDrawIcons = false
 
-        dataSet.setSliceSpace(3f)
+        dataSet.sliceSpace = 3f
         dataSet.iconsOffset = MPPointF(0f, 40f)
         dataSet.selectionShift = 5f
 
@@ -163,7 +163,7 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
 
         val renderer = chart!!.renderer as PieChartRenderer
         renderer.roundedCornerRadius = 30f
-        dataSet.setSliceSpace(renderer.roundedCornerRadius / 2)
+        dataSet.sliceSpace = renderer.roundedCornerRadius / 2
 
         chart!!.invalidate()
     }
