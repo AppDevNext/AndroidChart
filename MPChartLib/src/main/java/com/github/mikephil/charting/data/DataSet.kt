@@ -176,8 +176,7 @@ abstract class DataSet<T : Entry>(
     }
 
     /**
-     * Returns a simple string representation of the DataSet with the type and
-     * the number of Entries.
+     * Returns a simple string representation of the DataSet with the type and the number of Entries.
      */
     fun toSimpleString() = "DataSet, label: $label, entries: ${mEntries!!.size}"
 

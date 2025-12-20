@@ -15,13 +15,13 @@ open class TriangleShapeRenderer : IShapeRenderer {
         canvas: Canvas, dataSet: IScatterDataSet, viewPortHandler: ViewPortHandler?,
         posX: Float, posY: Float, renderPaint: Paint
     ) {
-        val shapeSize = dataSet.getScatterShapeSize().convertDpToPixel()
+        val shapeSize = dataSet.scatterShapeSize.convertDpToPixel()
         val shapeHalf = shapeSize / 2f
-        val shapeHoleSizeHalf = dataSet.getScatterShapeHoleRadius().convertDpToPixel()
+        val shapeHoleSizeHalf = dataSet.scatterShapeHoleRadius.convertDpToPixel()
         val shapeHoleSize = shapeHoleSizeHalf * 2f
         val shapeStrokeSize = (shapeSize - shapeHoleSize) / 2f
 
-        val shapeHoleColor = dataSet.getScatterShapeHoleColor()
+        val shapeHoleColor = dataSet.scatterShapeHoleColor
 
         renderPaint.style = Paint.Style.FILL
 
