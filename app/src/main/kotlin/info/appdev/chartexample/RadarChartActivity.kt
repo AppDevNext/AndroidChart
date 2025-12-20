@@ -184,7 +184,7 @@ class RadarChartActivity : DemoBase() {
 
             R.id.actionToggleHighlightCircle -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawHighlightCircleEnabled(!set.isDrawHighlightCircleEnabled())
+                    set.isDrawHighlightCircleEnabled = !set.isDrawHighlightCircleEnabled
                 }
                 chart!!.invalidate()
             }
