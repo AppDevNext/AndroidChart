@@ -447,7 +447,6 @@ open class LineChartRenderer(
      * @param startIndex The index from which to start reading the dataset
      * @param endIndex   The index from which to stop reading the dataset
      * @param outputPath The path object that will be assigned the chart data.
-     * @return
      */
     private fun generateFilledPath(dataSet: ILineDataSet, startIndex: Int, endIndex: Int, outputPath: Path) {
         val fillMin = dataSet.fillFormatter.getFillLinePosition(dataSet, dataProvider)
@@ -695,9 +694,6 @@ open class LineChartRenderer(
 
         /**
          * Sets up the cache, returns true if a change of cache was required.
-         *
-         * @param set
-         * @return
          */
         fun init(set: ILineDataSet): Boolean {
             val size = set.circleColorCount
@@ -777,9 +773,6 @@ open class LineChartRenderer(
 
         /**
          * Returns the cached Bitmap at the given index.
-         *
-         * @param index
-         * @return
          */
         fun getBitmap(index: Int): Bitmap? {
             return circleBitmaps!![index % circleBitmaps!!.size]

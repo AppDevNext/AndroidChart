@@ -135,9 +135,6 @@ class Highlight : Serializable {
     /**
      * Returns true if this highlight object is equal to the other (compares
      * xIndex and dataSetIndex)
-     *
-     * @param h
-     * @return
      */
     fun equalTo(h: Highlight?): Boolean {
         return if (h == null)
@@ -147,6 +144,6 @@ class Highlight : Serializable {
     }
 
     override fun toString(): String {
-        return "Highlight, x:$x y:$y dataSetIndex:$dataSetIndex stackIndex (only stacked barentry): $stackIndex"
+        return "Highlight, x:$x y:$y dataSetIndex:$dataSetIndex stackIndex (only stacked bar entry): $stackIndex"
     }
 }

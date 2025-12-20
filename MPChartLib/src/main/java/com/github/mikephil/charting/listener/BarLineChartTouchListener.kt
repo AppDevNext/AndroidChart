@@ -386,9 +386,6 @@ class BarLineChartTouchListener(
 
     /**
      * limit scaleX range
-     * @param scaleX
-     * @param t
-     * @return
      */
     private fun getLimitedScaleX(scaleX: Float, t: MPPointF): Float {
         val h = chart!!.viewPortHandler
@@ -413,9 +410,6 @@ class BarLineChartTouchListener(
 
     /**
      * limit scaleY range
-     * @param scaleY
-     * @param t
-     * @return
      */
     private fun getLimitedScaleY(scaleY: Float, t: MPPointF): Float {
         val h = chart!!.viewPortHandler
@@ -457,10 +451,6 @@ class BarLineChartTouchListener(
      * Returns a recyclable MPPointF instance.
      * returns the correct translation depending on the provided x and y touch
      * points
-     *
-     * @param x
-     * @param y
-     * @return
      */
     fun getTrans(x: Float, y: Float): MPPointF {
         val vph = chart!!.viewPortHandler
@@ -479,8 +469,6 @@ class BarLineChartTouchListener(
 
     /**
      * Returns true if the current touch situation should be interpreted as inverted, false if not.
-     *
-     * @return
      */
     private fun inverted(): Boolean {
         return (closestDataSetToTouch == null && chart!!.isAnyAxisInverted) || (closestDataSetToTouch != null
@@ -631,9 +619,6 @@ class BarLineChartTouchListener(
 
         /**
          * returns the distance between two pointer touch points
-         *
-         * @param event
-         * @return
          */
         private fun spacing(event: MotionEvent): Float {
             val x = event.getX(0) - event.getX(1)
@@ -644,9 +629,6 @@ class BarLineChartTouchListener(
         /**
          * calculates the distance on the x-axis between two pointers (fingers on
          * the display)
-         *
-         * @param e
-         * @return
          */
         private fun getXDist(e: MotionEvent): Float {
             val x = abs((e.getX(0) - e.getX(1)).toDouble()).toFloat()
@@ -656,9 +638,6 @@ class BarLineChartTouchListener(
         /**
          * calculates the distance on the y-axis between two pointers (fingers on
          * the display)
-         *
-         * @param e
-         * @return
          */
         private fun getYDist(e: MotionEvent): Float {
             val y = abs((e.getY(0) - e.getY(1)).toDouble()).toFloat()

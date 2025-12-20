@@ -13,41 +13,30 @@ open class BarEntry : Entry {
     /**
      * Returns the stacked values this BarEntry represents, or null, if only a single value is represented (then, use
      * getY()).
-     *
-     * @return
      */
     var yVals: FloatArray? = null
         private set
 
     /**
      * Returns the ranges of the individual stack-entries. Will return null if this entry is not stacked.
-     *
-     * @return
      */
     var ranges: Array<Range?> = arrayOfNulls(0)
         private set
 
     /**
      * Returns the sum of all negative values this entry (if stacked) contains. (this is a positive number)
-     *
-     * @return
      */
     var negativeSum: Float = 0f
         private set
 
     /**
      * Returns the sum of all positive values this entry (if stacked) contains.
-     *
-     * @return
      */
     var positiveSum: Float = 0f
         private set
 
     /**
      * Constructor for normal bars (not stacked).
-     *
-     * @param x
-     * @param y
      */
     constructor(x: Float, y: Float) : super(x, y)
 
@@ -155,16 +144,12 @@ open class BarEntry : Entry {
     override var y: Float = 0.0f
         /**
          * Returns the value of this BarEntry. If the entry is stacked, it returns the positive sum of all values.
-         *
-         * @return
          */
         get() = super.y
 
     val isStacked: Boolean
         /**
          * Returns true if this BarEntry is stacked (has a values array), false if not.
-         *
-         * @return
          */
         get() = this.yVals != null
 
@@ -235,9 +220,6 @@ open class BarEntry : Entry {
     companion object {
         /**
          * Calculates the sum across all values of the given stack.
-         *
-         * @param vals
-         * @return
          */
         private fun calcSum(vals: FloatArray?): Float {
             if (vals == null) return 0f

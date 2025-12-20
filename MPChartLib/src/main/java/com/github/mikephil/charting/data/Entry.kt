@@ -69,8 +69,6 @@ open class Entry : BaseEntry, Parcelable, Serializable {
 
     /**
      * returns an exact copy of the entry
-     *
-     * @return
      */
     open fun copy(): Entry? {
         val e = Entry(x, y, data)
@@ -81,9 +79,6 @@ open class Entry : BaseEntry, Parcelable, Serializable {
      * Compares value, xIndex and data of the entries. Returns true if entries
      * are equal in those points, false if not. Does not check by hash-code like
      * it's done by the "equals" method.
-     *
-     * @param e
-     * @return
      */
     fun equalTo(e: Entry?): Boolean {
         if (e == null) return false

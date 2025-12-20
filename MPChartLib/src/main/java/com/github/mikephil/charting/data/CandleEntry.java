@@ -13,16 +13,16 @@ import android.graphics.drawable.Drawable;
 public class CandleEntry extends Entry {
 
     /** shadow-high value */
-    private float mShadowHigh = 0f;
+    private float mShadowHigh;
 
     /** shadow-low value */
-    private float mShadowLow = 0f;
+    private float mShadowLow;
 
     /** close value */
-    private float mClose = 0f;
+    private float mClose;
 
     /** open value */
-    private float mOpen = 0f;
+    private float mOpen;
 
     /**
      * Constructor.
@@ -48,8 +48,6 @@ public class CandleEntry extends Entry {
      * @param x The value on the x-axis
      * @param shadowH The (shadow) high value
      * @param shadowL The (shadow) low value
-     * @param open
-     * @param close
      * @param data Spot for additional data this Entry represents
      */
     public CandleEntry(float x, float shadowH, float shadowL, float open, float close,
@@ -68,8 +66,6 @@ public class CandleEntry extends Entry {
      * @param x The value on the x-axis
      * @param shadowH The (shadow) high value
      * @param shadowL The (shadow) low value
-     * @param open
-     * @param close
      * @param icon Icon image
      */
     public CandleEntry(float x, float shadowH, float shadowL, float open, float close,
@@ -88,8 +84,6 @@ public class CandleEntry extends Entry {
      * @param x The value on the x-axis
      * @param shadowH The (shadow) high value
      * @param shadowL The (shadow) low value
-     * @param open
-     * @param close
      * @param icon Icon image
      * @param data Spot for additional data this Entry represents
      */
@@ -106,8 +100,6 @@ public class CandleEntry extends Entry {
     /**
      * Returns the overall range (difference) between shadow-high and
      * shadow-low.
-     * 
-     * @return
      */
     public float getShadowRange() {
         return Math.abs(mShadowHigh - mShadowLow);
@@ -115,16 +107,13 @@ public class CandleEntry extends Entry {
 
     /**
      * Returns the body size (difference between open and close).
-     * 
-     * @return
      */
     public float getBodyRange() {
         return Math.abs(mOpen - mClose);
     }
 
     /**
-     * Returns the center value of the candle. (Middle value between high and
-     * low)
+     * Returns the center value of the candle. (Middle value between high and low)
      */
     @Override
     public float getY() {
@@ -132,17 +121,11 @@ public class CandleEntry extends Entry {
     }
 
     public CandleEntry copy() {
-
-        CandleEntry c = new CandleEntry(getX(), mShadowHigh, mShadowLow, mOpen,
-                mClose, getData());
-
-        return c;
+		return new CandleEntry(getX(), mShadowHigh, mShadowLow, mOpen, mClose, getData());
     }
 
     /**
      * Returns the upper shadows highest value.
-     * 
-     * @return
      */
     public float getHigh() {
         return mShadowHigh;
@@ -154,8 +137,6 @@ public class CandleEntry extends Entry {
 
     /**
      * Returns the lower shadows lowest value.
-     * 
-     * @return
      */
     public float getLow() {
         return mShadowLow;
@@ -166,9 +147,7 @@ public class CandleEntry extends Entry {
     }
 
     /**
-     * Returns the bodys close value.
-     * 
-     * @return
+     * Returns the bodies close value.
      */
     public float getClose() {
         return mClose;
@@ -179,9 +158,7 @@ public class CandleEntry extends Entry {
     }
 
     /**
-     * Returns the bodys open value.
-     * 
-     * @return
+     * Returns the bodies open value.
      */
     public float getOpen() {
         return mOpen;

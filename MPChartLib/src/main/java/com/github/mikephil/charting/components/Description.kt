@@ -16,8 +16,6 @@ class Description : ComponentBase() {
 
     /**
      * Returns the customized position of the description, or null if none set.
-     *
-     * @return
      */
     /**
      * the custom position of the description text

@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 /**
  * Implemented according to Wiki-Pseudocode {@link}
- * http://en.wikipedia.org/wiki/Ramer�Douglas�Peucker_algorithm
+ * <a href="http://en.wikipedia.org/wiki/Ramer">...</a>�Douglas�Peucker_algorithm
  *
  * @author Philipp Baldauf & Phliipp Jahoda
  */
@@ -49,9 +49,6 @@ public class Approximator {
 
     /**
      * Combine arrays.
-     *
-     * @param arrays
-     * @return
      */
     float[] concat(float[]... arrays) {
         int length = 0;
@@ -71,15 +68,15 @@ public class Approximator {
 
     private class Line {
 
-        private float[] points;
+        private final float[] points;
 
-        private float sxey;
-        private float exsy;
+        private final float sxey;
+        private final float exsy;
 
-        private float dx;
-        private float dy;
+        private final float dx;
+        private final float dy;
 
-        private float length;
+        private final float length;
 
         public Line(float x1, float y1, float x2, float y2) {
             dx = x1 - x2;

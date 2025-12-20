@@ -15,7 +15,7 @@ import android.graphics.drawable.Drawable;
 public class BubbleEntry extends Entry {
 
     /** size value */
-    private float mSize = 0f;
+    private float mSize;
 
     /**
      * Constructor.
@@ -71,14 +71,11 @@ public class BubbleEntry extends Entry {
 
     public BubbleEntry copy() {
 
-        BubbleEntry c = new BubbleEntry(getX(), getY(), mSize, getData());
-        return c;
+		return new BubbleEntry(getX(), getY(), mSize, getData());
     }
 
     /**
      * Returns the size of this entry (the size of the bubble).
-     *
-     * @return
      */
     public float getSize() {
         return mSize;

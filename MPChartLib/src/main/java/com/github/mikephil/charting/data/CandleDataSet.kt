@@ -41,7 +41,7 @@ class CandleDataSet(yVals: MutableList<CandleEntry?>?, label: String = "") : Lin
 
     /**
      * paint style when open > close
-     * descreasing candlesticks are traditionally filled
+     * decreasing candlesticks are traditionally filled
      */
     protected var mDecreasingPaintStyle: Paint.Style? = Paint.Style.FILL
 
@@ -61,8 +61,7 @@ class CandleDataSet(yVals: MutableList<CandleEntry?>?, label: String = "") : Lin
     protected var mDecreasingColor: Int = ColorTemplate.COLOR_SKIP
 
     /**
-     * shadow line color, set -1 for backward compatibility and uses default
-     * color
+     * shadow line color, set -1 for backward compatibility and uses default color
      */
     protected var mShadowColor: Int = ColorTemplate.COLOR_SKIP
 

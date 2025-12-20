@@ -18,8 +18,6 @@ public class RadarEntry extends Entry {
 
     /**
      * This is the same as getY(). Returns the value of the RadarEntry.
-     *
-     * @return
      */
     public float getValue() {
         return getY();

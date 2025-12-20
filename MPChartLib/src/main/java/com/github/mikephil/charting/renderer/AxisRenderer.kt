@@ -6,7 +6,6 @@ import android.graphics.Paint
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.utils.MPPointD
 import com.github.mikephil.charting.utils.Transformer
-import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.github.mikephil.charting.utils.roundToNextSignificant
 import kotlin.math.abs
@@ -39,11 +38,6 @@ abstract class AxisRenderer(
     }
         protected set
 
-    /**
-     * Returns the Paint object used for drawing the axis (labels).
-     *
-     * @return
-     */
     /**
      * paint for the x-label values
      */
@@ -119,8 +113,6 @@ abstract class AxisRenderer(
 
     /**
      * Sets up the axis values. Computes the desired number of labels between the two given extremes.
-     *
-     * @return
      */
     protected open fun computeAxisValues(min: Float, max: Float) {
         val labelCount = axis.labelCount

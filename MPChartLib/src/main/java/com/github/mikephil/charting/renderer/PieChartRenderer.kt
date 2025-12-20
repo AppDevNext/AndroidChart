@@ -156,7 +156,6 @@ open class PieChartRenderer(
      * Calculates the sliceSpace to use based on visible values and their size compared to the set sliceSpace.
      *
      * @param dataSet
-     * @return
      */
     protected fun getSliceSpace(dataSet: IPieDataSet): Float {
         if (!dataSet.isAutomaticallyDisableSliceSpacingEnabled) return dataSet.sliceSpace

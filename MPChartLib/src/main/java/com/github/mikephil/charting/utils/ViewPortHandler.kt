@@ -185,7 +185,6 @@ open class ViewPortHandler {
      *
      * @param scaleX
      * @param scaleY
-     * @return
      */
     fun zoom(scaleX: Float, scaleY: Float): Matrix {
         val save = Matrix()
@@ -206,7 +205,6 @@ open class ViewPortHandler {
      * @param scaleY
      * @param x
      * @param y
-     * @return
      */
     fun zoom(scaleX: Float, scaleY: Float, x: Float, y: Float): Matrix {
         val save = Matrix()
@@ -222,10 +220,6 @@ open class ViewPortHandler {
 
     /**
      * Sets the scale factor to the specified values.
-     *
-     * @param scaleX
-     * @param scaleY
-     * @return
      */
     fun setZoom(scaleX: Float, scaleY: Float): Matrix {
         val save = Matrix()
@@ -293,7 +287,6 @@ open class ViewPortHandler {
      * Post-translates to the specified points.  Less Performant.
      *
      * @param transformedPts
-     * @return
      */
     fun translate(transformedPts: FloatArray): Matrix {
         val save = Matrix()
@@ -305,7 +298,6 @@ open class ViewPortHandler {
      * Post-translates to the specified points.  Output matrix allows for caching objects.
      *
      * @param transformedPts
-     * @return
      */
     fun translate(transformedPts: FloatArray, outputMatrix: Matrix) {
         outputMatrix.reset()
@@ -349,7 +341,6 @@ open class ViewPortHandler {
      * call this method to refresh the graph with a given matrix
      *
      * @param newMatrix
-     * @return
      */
     fun refresh(newMatrix: Matrix, chart: View, invalidate: Boolean): Matrix {
         matrixTouch.set(newMatrix)
@@ -558,8 +549,6 @@ open class ViewPortHandler {
 
     /**
      * Returns true if the chart is not yet fully zoomed out on the x-axis
-     *
-     * @return
      */
     fun canZoomOutMoreX(): Boolean = scaleX > minScaleX
 

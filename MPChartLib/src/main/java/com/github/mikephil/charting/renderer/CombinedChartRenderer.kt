@@ -96,9 +96,6 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
 
     /**
      * Returns the sub-renderer object at the specified index.
-     *
-     * @param index
-     * @return
      */
     fun getSubRenderer(index: Int): DataRenderer? {
         return if (index >= dataRenderers.size || index < 0) null
@@ -108,8 +105,6 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
     val subRenderers: List<DataRenderer>
         /**
          * Returns all sub-renderers.
-         *
-         * @return
          */
         get() = dataRenderers
 

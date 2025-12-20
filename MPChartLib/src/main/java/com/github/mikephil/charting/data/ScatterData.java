@@ -21,8 +21,6 @@ public class ScatterData extends BarLineScatterCandleBubbleData<IScatterDataSet>
 
     /**
      * Returns the maximum shape-size across all DataSets.
-     *
-     * @return
      */
     public float getGreatestShapeSize() {
 

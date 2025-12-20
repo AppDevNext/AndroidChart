@@ -6,7 +6,6 @@ import android.util.Log;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,8 +28,6 @@ public class PieData extends ChartData<IPieDataSet> {
 
     /**
      * Sets the PieDataSet this data object should represent.
-     *
-     * @param dataSet
      */
     public void setDataSet(IPieDataSet dataSet) {
         mDataSets.clear();
@@ -41,8 +38,6 @@ public class PieData extends ChartData<IPieDataSet> {
     /**
      * Returns the DataSet this PieData object represents. A PieData object can
      * only contain one DataSet.
-     *
-     * @return
      */
     public IPieDataSet getDataSet() {
         return mDataSets.get(0);
@@ -52,7 +47,7 @@ public class PieData extends ChartData<IPieDataSet> {
     public List<IPieDataSet> getDataSets() {
         List<IPieDataSet> dataSets = super.getDataSets();
 
-        if (dataSets.size() < 1) {
+        if (dataSets.isEmpty()) {
             Log.e("AndroidChart",
                     "Found multiple data sets while pie chart only allows one");
         }
@@ -62,9 +57,6 @@ public class PieData extends ChartData<IPieDataSet> {
 
     /**
      * The PieData object can only have one DataSet. Use getDataSet() method instead.
-     *
-     * @param index
-     * @return
      */
     @Override
     public IPieDataSet getDataSetByIndex(int index) {
@@ -84,8 +76,6 @@ public class PieData extends ChartData<IPieDataSet> {
 
     /**
      * Returns the sum of all values in this PieData object.
-     *
-     * @return
      */
     public float getYValueSum() {
 

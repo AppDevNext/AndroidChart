@@ -53,10 +53,6 @@ public abstract class Utils {
 	/**
 	 * calculates the approximate width of a text, depending on a demo text
 	 * avoid repeated calls (e.g. inside drawing methods)
-	 *
-	 * @param paint
-	 * @param demoText
-	 * @return
 	 */
 	public static int calcTextWidth(Paint paint, String demoText) {
 		return (int) paint.measureText(demoText);
@@ -67,10 +63,6 @@ public abstract class Utils {
 	/**
 	 * calculates the approximate height of a text, depending on a demo text
 	 * avoid repeated calls (e.g. inside drawing methods)
-	 *
-	 * @param paint
-	 * @param demoText
-	 * @return
 	 */
 	public static int calcTextHeight(Paint paint, String demoText) {
 
@@ -157,9 +149,6 @@ public abstract class Utils {
 
 	/**
 	 * rounds the given number to the next significant number
-	 *
-	 * @param number
-	 * @return
 	 */
 	public static float roundToNextSignificant(double number) {
 		if (Double.isInfinite(number) ||

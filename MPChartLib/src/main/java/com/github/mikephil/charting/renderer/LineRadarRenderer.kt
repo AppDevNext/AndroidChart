@@ -70,8 +70,6 @@ abstract class LineRadarRenderer(animator: ChartAnimator, viewPortHandler: ViewP
 
     /**
      * Clip path with hardware acceleration only working properly on API level 18 and above.
-     *
-     * @return
      */
     private fun clipPathSupported(): Boolean {
         return getSDKInt() >= 18

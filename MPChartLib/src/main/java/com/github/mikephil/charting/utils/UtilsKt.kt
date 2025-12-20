@@ -47,9 +47,6 @@ fun Float.getDecimals(): Int {
 
 /**
  * rounds the given number to the next significant number
- *
- * @param number
- * @return
  */
 fun kotlin.Double.roundToNextSignificant(): Float {
     if (Double.isInfinite(this) ||

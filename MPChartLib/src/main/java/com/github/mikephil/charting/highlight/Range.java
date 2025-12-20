@@ -16,9 +16,6 @@ public final class Range {
 
 	/**
 	 * Returns true if this range contains (if the value is in between) the given value, false if not.
-	 * 
-	 * @param value
-	 * @return
 	 */
 	public boolean contains(float value) {
 

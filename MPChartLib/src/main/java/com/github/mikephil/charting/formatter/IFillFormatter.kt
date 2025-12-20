@@ -13,7 +13,6 @@ interface IFillFormatter {
      *
      * @param dataSet the ILineDataSet that is currently drawn
      * @param dataProvider
-     * @return
      */
     fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float
 }

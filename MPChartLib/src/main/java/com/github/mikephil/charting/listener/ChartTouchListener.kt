@@ -15,11 +15,6 @@ abstract class ChartTouchListener<T : Chart<*>?>(
     }
 
     /**
-     * Returns the last gesture that has been performed on the chart.
-     *
-     * @return
-     */
-    /**
      * the last touch gesture that has been performed
      */
     var lastGesture: ChartGesture = ChartGesture.NONE
@@ -27,11 +22,6 @@ abstract class ChartTouchListener<T : Chart<*>?>(
 
     /**
      * returns the touch mode the listener is currently in
-     *
-     * @return
-     */
-    /**
-     * integer field that holds the current touch-state
      */
     var touchMode: Int = NONE
         protected set
@@ -105,12 +95,6 @@ abstract class ChartTouchListener<T : Chart<*>?>(
 
         /**
          * returns the distance between two points
-         *
-         * @param eventX
-         * @param startX
-         * @param eventY
-         * @param startY
-         * @return
          */
         @JvmStatic
         protected fun distance(eventX: Float, startX: Float, eventY: Float, startY: Float): Float {

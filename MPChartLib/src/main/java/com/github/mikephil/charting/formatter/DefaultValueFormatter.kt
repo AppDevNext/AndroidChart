@@ -16,8 +16,6 @@ open class DefaultValueFormatter(digits: Int) : IValueFormatter {
 
     /**
      * Returns the number of decimal digits this formatter uses.
-     *
-     * @return
      */
     var decimalDigits = 0
         protected set
