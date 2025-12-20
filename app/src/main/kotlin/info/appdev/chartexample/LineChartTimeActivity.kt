@@ -109,7 +109,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
         val now: Long = 0 //470044; //TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis());
 
-        val values = ArrayList<Entry?>()
+        val values = ArrayList<Entry>()
 
         // count = hours
         val to = (now + count).toFloat()

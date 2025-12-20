@@ -121,7 +121,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
     }
 
     private fun setData(count: Int, range: Float) {
-        val values1 = ArrayList<Entry?>()
+        val values1 = ArrayList<Entry>()
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {
@@ -129,14 +129,14 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             values1.add(Entry(i.toFloat(), `val`))
         }
 
-        val values2 = ArrayList<Entry?>()
+        val values2 = ArrayList<Entry>()
 
         for (i in 0..<count) {
             val `val` = (sampleValues[i]!!.toFloat() * range) + 450
             values2.add(Entry(i.toFloat(), `val`))
         }
 
-        val values3 = ArrayList<Entry?>()
+        val values3 = ArrayList<Entry>()
 
         for (i in 0..<count) {
             val `val` = (sampleValues[i]!!.toFloat() * range) + 500

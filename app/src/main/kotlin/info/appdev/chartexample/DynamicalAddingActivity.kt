@@ -106,7 +106,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             val count = (data.getDataSetCount() + 1)
             val amount = data.getDataSetByIndex(0).entryCount
 
-            val values = ArrayList<Entry?>()
+            val values = ArrayList<Entry>()
 
             for (i in 0..<amount) {
                 val cycleValue = (i % 100.0).toInt()

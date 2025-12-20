@@ -87,7 +87,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
 
         chart!!.resetTracking()
 
-        val values = ArrayList<CandleEntry?>()
+        val values = ArrayList<CandleEntry>()
         val sampleValues = getValues(100)
 
         for (i in 0..<progress) {

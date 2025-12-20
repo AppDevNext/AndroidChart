@@ -3,7 +3,7 @@ package com.github.mikephil.charting.interfaces.datasets
 import android.graphics.drawable.Drawable
 import com.github.mikephil.charting.data.Entry
 
-interface ILineRadarDataSet<T : Entry?> : ILineScatterCandleRadarDataSet<T> {
+interface ILineRadarDataSet<T : Entry> : ILineScatterCandleRadarDataSet<T> {
     /**
      * Returns the color that is used for filling the line surface area.
      */

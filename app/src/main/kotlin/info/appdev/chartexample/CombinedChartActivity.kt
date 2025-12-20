@@ -99,7 +99,7 @@ class CombinedChartActivity : DemoBase() {
     private fun generateLineData(): LineData {
         val d = LineData()
 
-        val entries = ArrayList<Entry?>()
+        val entries = ArrayList<Entry>()
 
         for (index in 0..<sampleCount) entries.add(Entry(index + 0.5f, values[index]!!.toFloat() * 15 + 5))
 
@@ -121,8 +121,8 @@ class CombinedChartActivity : DemoBase() {
     }
 
     private fun generateBarData(): BarData {
-        val entries1 = ArrayList<BarEntry?>()
-        val entries2 = ArrayList<BarEntry?>()
+        val entries1 = ArrayList<BarEntry>()
+        val entries2 = ArrayList<BarEntry>()
 
         for (index in 0..<sampleCount) {
             entries1.add(BarEntry(0f, values[index]!!.toFloat() * 25 + 25))
@@ -161,7 +161,7 @@ class CombinedChartActivity : DemoBase() {
     private fun generateScatterData(): ScatterData {
         val d = ScatterData()
 
-        val entries = ArrayList<Entry?>()
+        val entries = ArrayList<Entry>()
 
         var index = 0f
         while (index < sampleCount) {
@@ -182,7 +182,7 @@ class CombinedChartActivity : DemoBase() {
     private fun generateCandleData(): CandleData {
         val d = CandleData()
 
-        val entries = ArrayList<CandleEntry?>()
+        val entries = ArrayList<CandleEntry>()
 
         var index = 0
         while (index < sampleCount) {

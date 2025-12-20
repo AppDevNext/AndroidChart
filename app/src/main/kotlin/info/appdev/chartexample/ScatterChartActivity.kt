@@ -86,9 +86,9 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         tvX!!.text = seekBarX!!.progress.toString()
         tvY!!.text = seekBarY!!.progress.toString()
 
-        val values1 = ArrayList<Entry?>()
-        val values2 = ArrayList<Entry?>()
-        val values3 = ArrayList<Entry?>()
+        val values1 = ArrayList<Entry>()
+        val values2 = ArrayList<Entry>()
+        val values3 = ArrayList<Entry>()
         val sampleValues = getValues(100 + 2)
 
         for (i in 0..<seekBarX!!.progress) {

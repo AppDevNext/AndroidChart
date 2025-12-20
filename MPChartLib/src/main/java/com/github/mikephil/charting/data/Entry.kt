@@ -70,7 +70,7 @@ open class Entry : BaseEntry, Parcelable, Serializable {
     /**
      * returns an exact copy of the entry
      */
-    open fun copy(): Entry? {
+    open fun copy(): Entry {
         val e = Entry(x, y, data)
         return e
     }

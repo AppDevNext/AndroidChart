@@ -85,7 +85,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         l.xEntrySpace = 6f
 
         // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
-        val values = ArrayList<BarEntry?>()
+        val values = ArrayList<BarEntry>()
         values.add(BarEntry(5f, floatArrayOf(-10f, 10f)))
         values.add(BarEntry(15f, floatArrayOf(-12f, 13f)))
         values.add(BarEntry(25f, floatArrayOf(-15f, 15f)))

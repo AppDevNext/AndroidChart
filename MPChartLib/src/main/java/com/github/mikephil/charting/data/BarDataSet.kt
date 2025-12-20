@@ -11,7 +11,7 @@ import kotlin.Int
 import kotlin.String
 import kotlin.arrayOf
 
-open class BarDataSet(yVals: MutableList<BarEntry?>, label: String = "") : BarLineScatterCandleBubbleDataSet<BarEntry>(yVals, label), IBarDataSet {
+open class BarDataSet(yVals: MutableList<BarEntry>, label: String = "") : BarLineScatterCandleBubbleDataSet<BarEntry>(yVals, label), IBarDataSet {
     /**
      * the maximum number of bars that are stacked upon each other, this value
      * is calculated from the Entries that are added to the DataSet
@@ -61,16 +61,16 @@ open class BarDataSet(yVals: MutableList<BarEntry?>, label: String = "") : BarLi
         calcEntryCountIncludingStacks(yVals)
     }
 
-    override fun copy(): DataSet<BarEntry?>? {
-        val entries: MutableList<BarEntry?> = ArrayList()
+    override fun copy(): DataSet<BarEntry>? {
+        val entries: MutableList<BarEntry> = mutableListOf()
         mEntries?.let {
             for (i in it.indices) {
-                entries.add(it[i]!!.copy())
+                entries.add(it[i].copy())
             }
         }
         val copied = BarDataSet(entries, label)
         copy(copied)
-        return copied as DataSet<BarEntry?>?
+        return copied
     }
 
     protected fun copy(barDataSet: BarDataSet) {
@@ -119,11 +119,11 @@ open class BarDataSet(yVals: MutableList<BarEntry?>, label: String = "") : BarLi
      * Calculates the total number of entries this DataSet represents, including
      * stacks. All values belonging to a stack are calculated separately.
      */
-    private fun calcEntryCountIncludingStacks(yVals: MutableList<BarEntry?>) {
+    private fun calcEntryCountIncludingStacks(yVals: MutableList<BarEntry>) {
         this.entryCountStacks = 0
 
         for (i in yVals.indices) {
-            val vals = yVals.get(i)!!.yVals
+            val vals = yVals.get(i).yVals
 
             if (vals == null) this.entryCountStacks++
             else this.entryCountStacks += vals.size
@@ -134,27 +134,27 @@ open class BarDataSet(yVals: MutableList<BarEntry?>, label: String = "") : BarLi
      * calculates the maximum stackSize that occurs in the Entries array of this
      * DataSet
      */
-    private fun calcStackSize(yVals: MutableList<BarEntry?>) {
+    private fun calcStackSize(yVals: MutableList<BarEntry>) {
         for (i in yVals.indices) {
-            val vals = yVals[i]?.yVals
+            val vals = yVals[i].yVals
 
             if (vals != null && vals.size > mStackSize) mStackSize = vals.size
         }
     }
 
-    override fun calcMinMax(e: BarEntry?) {
-        if (e != null && !Float.isNaN(e.y)) {
-            if (e.yVals == null) {
-                if (e.y < yMin) yMin = e.y
+    override fun calcMinMax(entry: BarEntry) {
+        if (!Float.isNaN(entry.y)) {
+            if (entry.yVals == null) {
+                if (entry.y < yMin) yMin = entry.y
 
-                if (e.y > yMax) yMax = e.y
+                if (entry.y > yMax) yMax = entry.y
             } else {
-                if (-e.negativeSum < yMin) yMin = -e.negativeSum
+                if (-entry.negativeSum < yMin) yMin = -entry.negativeSum
 
-                if (e.positiveSum > yMax) yMax = e.positiveSum
+                if (entry.positiveSum > yMax) yMax = entry.positiveSum
             }
 
-            calcMinMaxX(e)
+            calcMinMaxX(entry)
         }
     }
 

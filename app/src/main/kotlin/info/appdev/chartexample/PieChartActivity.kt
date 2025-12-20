@@ -108,7 +108,7 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
     }
 
     private fun setData(count: Int, range: Float) {
-        val entries = ArrayList<PieEntry?>()
+        val entries = ArrayList<PieEntry>()
         val sampleValues = getValues(100)
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of

@@ -10,7 +10,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.convertDpToPixel
 
-class LineDataSet(yVals: MutableList<Entry?>?, label: String = "") : LineRadarDataSet<Entry?>(yVals, label), ILineDataSet {
+open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRadarDataSet<Entry>(yVals, label), ILineDataSet {
     /**
      * Drawing mode for this line dataset
      */
@@ -83,10 +83,12 @@ class LineDataSet(yVals: MutableList<Entry?>?, label: String = "") : LineRadarDa
         circleColors!!.add(Color.rgb(140, 234, 255))
     }
 
-    override fun copy(): DataSet<Entry?> {
-        val entries: MutableList<Entry?> = ArrayList<Entry?>()
-        for (i in mEntries!!.indices) {
-            entries.add(mEntries!![i]!!.copy())
+    override fun copy(): DataSet<Entry> {
+        val entries: MutableList<Entry> = mutableListOf()
+        mEntries?.let {
+            for (i in it.indices) {
+                entries.add(it[i].copy())
+            }
         }
         val copied = LineDataSet(entries, label)
         copy(copied)

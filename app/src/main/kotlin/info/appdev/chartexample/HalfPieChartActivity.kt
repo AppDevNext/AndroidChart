@@ -82,7 +82,7 @@ class HalfPieChartActivity : DemoBase() {
 
     private fun setData(range: Float) {
         val count = 4
-        val values = ArrayList<PieEntry?>()
+        val values = ArrayList<PieEntry>()
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {

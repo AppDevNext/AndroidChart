@@ -90,7 +90,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
     }
 
     private fun setData(count: Int, range: Float) {
-        val values = ArrayList<Entry?>()
+        val values = ArrayList<Entry>()
         val sampleValues = getMuchValues(count)
 
         for (i in 0 until count) {

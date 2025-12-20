@@ -69,7 +69,7 @@ class FilledLineActivity : DemoBase() {
 
     private fun setData(@Suppress("SameParameterValue") range: Float) {
         val count = 100
-        val valuesArray1 = ArrayList<Entry?>()
+        val valuesArray1 = ArrayList<Entry>()
         val sampleValues = getValues(count + 2)
 
         for (i in 0..<count) {
@@ -77,7 +77,7 @@ class FilledLineActivity : DemoBase() {
             valuesArray1.add(Entry(i.toFloat(), valueY))
         }
 
-        val valuesArray2 = ArrayList<Entry?>()
+        val valuesArray2 = ArrayList<Entry>()
 
         for (i in 0..<count) {
             val valueY = (sampleValues[i + 1]!!.toFloat() * range) + 450

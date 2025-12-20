@@ -90,8 +90,8 @@ class RadarChartActivity : DemoBase() {
         val cnt = 5
         val sampleValues = getValues(cnt + 1)
 
-        val entries1 = ArrayList<RadarEntry?>()
-        val entries2 = ArrayList<RadarEntry?>()
+        val entries1 = ArrayList<RadarEntry>()
+        val entries2 = ArrayList<RadarEntry>()
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.

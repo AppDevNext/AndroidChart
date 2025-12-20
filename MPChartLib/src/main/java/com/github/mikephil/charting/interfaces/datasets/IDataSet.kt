@@ -9,7 +9,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.MPPointF
 
-interface IDataSet<T : Entry?> {
+interface IDataSet<T : Entry> {
     /**
      * returns the minimum y-value this DataSet holds
      */
@@ -81,7 +81,7 @@ interface IDataSet<T : Entry?> {
      * INFORMATION: This method does calculations at runtime. Do
      * not over-use in performance critical situations.
      */
-    fun getEntriesForXValue(xValue: Float): MutableList<T?>?
+    fun getEntriesForXValue(xValue: Float): MutableList<T>?
 
     /**
      * Returns the Entry object found at the given index (NOT xIndex) in the values array.

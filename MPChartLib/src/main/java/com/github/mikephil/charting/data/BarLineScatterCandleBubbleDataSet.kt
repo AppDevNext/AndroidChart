@@ -6,8 +6,8 @@ import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBub
 /**
  * Baseclass of all DataSets for Bar-, Line-, Scatter- and CandleStickChart.
  */
-abstract class BarLineScatterCandleBubbleDataSet<T : Entry?>(yVals: MutableList<T?>?, label: String = "") :
-    DataSet<T>(yVals, label), IBarLineScatterCandleBubbleDataSet<T?> {
+abstract class BarLineScatterCandleBubbleDataSet<T : Entry>(yVals: MutableList<T>?, label: String = "") :
+    DataSet<T>(yVals, label), IBarLineScatterCandleBubbleDataSet<T> {
     /**
      * Sets the color that is used for drawing the highlight indicators. Dont
      * forget to resolve the color using getResources().getColor(...) or
