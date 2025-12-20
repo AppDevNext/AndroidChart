@@ -47,9 +47,6 @@ open class RadarChartRenderer(
 
     /**
      * Draws the RadarDataSet
-     *
-     * @param canvas
-     * @param dataSet
      * @param mostEntries the entry count of the dataset with the most entries
      */
     protected fun drawDataSet(canvas: Canvas, dataSet: IRadarDataSet, mostEntries: Int) {

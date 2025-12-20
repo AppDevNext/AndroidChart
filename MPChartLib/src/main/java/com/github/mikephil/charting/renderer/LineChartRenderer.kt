@@ -390,11 +390,6 @@ open class LineChartRenderer(
 
     /**
      * Draws a filled linear path on the canvas.
-     *
-     * @param canvas
-     * @param dataSet
-     * @param trans
-     * @param bounds
      */
     protected fun drawLinearFill(canvas: Canvas, dataSet: ILineDataSet, trans: Transformer, bounds: XBounds) {
         val filled = mGenerateFilledPathBuffer
