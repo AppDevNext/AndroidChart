@@ -40,7 +40,7 @@ abstract class SimpleFragment : Fragment() {
         val sets = ArrayList<IBarDataSet?>()
 
         for (i in 0..<dataSets) {
-            val entries = ArrayList<BarEntry?>()
+            val entries = ArrayList<BarEntry>()
 
             for (j in 0..<count) {
                 entries.add(BarEntry(j.toFloat(), (values[j]!!.toFloat() * range) + range / 4))
@@ -64,7 +64,7 @@ abstract class SimpleFragment : Fragment() {
         val shapes = ScatterShape.getAllDefaultShapes()
 
         for (i in 0..<dataSets) {
-            val entries = ArrayList<Entry?>()
+            val entries = ArrayList<Entry>()
 
             for (j in 0..<count) {
                 entries.add(Entry(j.toFloat(), (values[j]!!.toFloat() * range) + range / 4))
@@ -90,7 +90,7 @@ abstract class SimpleFragment : Fragment() {
     protected fun generatePieData(): PieData {
         val count = 4
         val values = getValues(count)
-        val entries1 = ArrayList<PieEntry?>()
+        val entries1 = ArrayList<PieEntry>()
 
         for (i in 0..<count) {
             entries1.add(PieEntry(((values[i]!!.toFloat() * 60) + 40), "Quarter " + (i + 1)))

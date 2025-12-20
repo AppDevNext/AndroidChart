@@ -2,6 +2,8 @@ package com.github.mikephil.charting.data;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by philipp on 13/06/16.
  */
@@ -23,9 +25,9 @@ public class RadarEntry extends Entry {
         return getY();
     }
 
-    public RadarEntry copy() {
-        RadarEntry e = new RadarEntry(getY(), getData());
-        return e;
+    @NonNull
+	public RadarEntry copy() {
+		return new RadarEntry(getY(), getData());
     }
 
     @Deprecated

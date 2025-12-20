@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 /**
  * @author Philipp Jahoda
  */
@@ -77,7 +79,8 @@ public class PieEntry extends Entry {
         return super.getX();
     }
 
-    public PieEntry copy() {
+    @NonNull
+	public PieEntry copy() {
 		return new PieEntry(getY(), label, getData());
     }
 }

@@ -100,7 +100,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         tvX!!.text = seekBarX!!.progress.toString()
         tvY!!.text = seekBarY!!.progress.toString()
 
-        val values = ArrayList<BarEntry?>()
+        val values = ArrayList<BarEntry>()
         val sampleValues = getValues(100 + 2)
 
         for (i in 0..<seekBarX!!.progress) {

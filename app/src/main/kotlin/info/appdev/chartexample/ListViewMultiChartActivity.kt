@@ -80,7 +80,7 @@ class ListViewMultiChartActivity : DemoBase() {
      * @return Line data
      */
     private fun generateDataLine(cnt: Int): LineData {
-        val values1 = ArrayList<Entry?>()
+        val values1 = ArrayList<Entry>()
         val count = 12
         val sampleValues = getValues(count)
 
@@ -94,10 +94,10 @@ class ListViewMultiChartActivity : DemoBase() {
         d1.highLightColor = Color.rgb(244, 117, 117)
         d1.isDrawValues = false
 
-        val values2 = ArrayList<Entry?>()
+        val values2 = ArrayList<Entry>()
 
         for (i in 0..<count) {
-            values2.add(Entry(i.toFloat(), values1.get(i)!!.y - 30))
+            values2.add(Entry(i.toFloat(), values1.get(i).y - 30))
         }
 
         val d2 = LineDataSet(values2, "New DataSet $cnt, (2)")
@@ -122,7 +122,7 @@ class ListViewMultiChartActivity : DemoBase() {
      */
     private fun generateDataBar(cnt: Int): BarData {
         val count = 12
-        val entries = ArrayList<BarEntry?>()
+        val entries = ArrayList<BarEntry>()
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {
@@ -145,7 +145,7 @@ class ListViewMultiChartActivity : DemoBase() {
      */
     private fun generateDataPie(): PieData {
         val cnt = 4
-        val entries = ArrayList<PieEntry?>()
+        val entries = ArrayList<PieEntry>()
         val sampleValues = getValues(cnt)
 
         for (i in 0..<cnt) {

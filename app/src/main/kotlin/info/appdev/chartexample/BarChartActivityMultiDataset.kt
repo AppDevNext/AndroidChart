@@ -117,10 +117,10 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         tvX!!.text = String.format(Locale.ENGLISH, "%d-%d", startYear, endYear)
         tvY!!.text = seekBarY!!.progress.toString()
 
-        val values1 = ArrayList<BarEntry?>()
-        val values2 = ArrayList<BarEntry?>()
-        val values3 = ArrayList<BarEntry?>()
-        val values4 = ArrayList<BarEntry?>()
+        val values1 = ArrayList<BarEntry>()
+        val values2 = ArrayList<BarEntry>()
+        val values3 = ArrayList<BarEntry>()
+        val values4 = ArrayList<BarEntry>()
 
         val randomMultiplier = seekBarY!!.progress * 100000f
         val sampleValues = getValues(100 + 2)

@@ -106,7 +106,7 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
 
     private fun setData(count: Int, range: Float) {
         val sampleValues = getValues(count)
-        val entries = ArrayList<PieEntry?>()
+        val entries = ArrayList<PieEntry>()
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.

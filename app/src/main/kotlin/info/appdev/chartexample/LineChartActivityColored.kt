@@ -92,7 +92,7 @@ class LineChartActivityColored : DemoBase() {
 
     private fun getData(range: Float): LineData {
         val count = 36
-        val values = ArrayList<Entry?>()
+        val values = ArrayList<Entry>()
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {

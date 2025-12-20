@@ -9,7 +9,7 @@ import org.junit.Test
 class DataSetTest {
     @Test
     fun testCalcMinMax() {
-        val entries: MutableList<Entry?> = ArrayList()
+        val entries: MutableList<Entry> = mutableListOf()
         entries.add(Entry(10f, 10f))
         entries.add(Entry(15f, 2f))
         entries.add(Entry(21f, 5f))
@@ -45,7 +45,7 @@ class DataSetTest {
 
     @Test
     fun testAddRemoveEntry() {
-        val entries: MutableList<Entry?> = ArrayList()
+        val entries: MutableList<Entry> = mutableListOf()
         entries.add(Entry(10f, 10f))
         entries.add(Entry(15f, 2f))
         entries.add(Entry(21f, 5f))
@@ -129,7 +129,7 @@ class DataSetTest {
 
     @Test
     fun testGetEntryForXValue() {
-        val entries: MutableList<Entry?> = ArrayList()
+        val entries: MutableList<Entry> = mutableListOf()
         entries.add(Entry(10f, 10f))
         entries.add(Entry(15f, 5f))
         entries.add(Entry(21f, 5f))
@@ -169,7 +169,7 @@ class DataSetTest {
     fun testGetEntryForXValueWithDuplicates() {
         // sorted list of values (by x position)
 
-        val values: MutableList<Entry?> = ArrayList()
+        val values: MutableList<Entry> = ArrayList()
         values.add(Entry(0f, 10f))
         values.add(Entry(1f, 20f))
         values.add(Entry(2f, 30f))
@@ -211,14 +211,14 @@ class DataSetTest {
 
         var entries = set.getEntriesForXValue(4f)
         Assert.assertEquals(2, entries.size)
-        Assert.assertEquals(60f, entries[0]!!.y, 0.01f)
-        Assert.assertEquals(70f, entries[1]!!.y, 0.01f)
+        Assert.assertEquals(60f, entries[0].y, 0.01f)
+        Assert.assertEquals(70f, entries[1].y, 0.01f)
 
         entries = set.getEntriesForXValue(3.5f)
         Assert.assertEquals(0, entries.size)
 
         entries = set.getEntriesForXValue(2f)
         Assert.assertEquals(1, entries.size)
-        Assert.assertEquals(30f, entries[0]!!.y, 0.01f)
+        Assert.assertEquals(30f, entries[0].y, 0.01f)
     }
 }

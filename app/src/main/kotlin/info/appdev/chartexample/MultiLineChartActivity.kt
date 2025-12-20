@@ -87,7 +87,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         val dataSets = ArrayList<ILineDataSet>()
 
         for (datasetNumber in 0..2) {
-            val values = ArrayList<Entry?>()
+            val values = ArrayList<Entry>()
             val sampleValues = getValues(100)
 
             for (i in 0..<progress) {

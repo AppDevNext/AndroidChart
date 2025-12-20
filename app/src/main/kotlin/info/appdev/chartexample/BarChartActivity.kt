@@ -127,7 +127,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
     private fun setData(count: Int, range: Float) {
         val start = 1f
 
-        val values = ArrayList<BarEntry?>()
+        val values = ArrayList<BarEntry>()
         val sampleValues = getValues(100)
 
         var i = start.toInt()

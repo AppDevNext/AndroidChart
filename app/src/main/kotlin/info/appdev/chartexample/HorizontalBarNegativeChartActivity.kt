@@ -107,7 +107,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
     private fun setData(count: Int, range: Float) {
         val barWidth = 9f
         val spaceForBar = 10f
-        val values = ArrayList<BarEntry?>()
+        val values = ArrayList<BarEntry>()
         val sampleValues = getValues(count + 2)
 
         for (i in 0..<count) {

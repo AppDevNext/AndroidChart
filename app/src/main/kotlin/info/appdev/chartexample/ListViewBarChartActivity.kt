@@ -112,7 +112,7 @@ class ListViewBarChartActivity : DemoBase() {
      */
     private fun generateData(cnt: Int): BarData {
         val count = 12
-        val entries = ArrayList<BarEntry?>()
+        val entries = ArrayList<BarEntry>()
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {

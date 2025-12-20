@@ -86,7 +86,7 @@ class BarChartPositiveNegative : DemoBase() {
     }
 
     private fun setData(dataList: MutableList<Data>) {
-        val values = ArrayList<BarEntry?>()
+        val values = ArrayList<BarEntry>()
         val colors: MutableList<Int> = ArrayList()
 
         val green = Color.rgb(110, 190, 102)

@@ -103,7 +103,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
     }
 
     private fun setData(count: Int, range: Float) {
-        val entries = ArrayList<Entry?>()
+        val entries = ArrayList<Entry>()
         val sampleValues = getValues(count + 2)
 
         for (i in 0..<count) {

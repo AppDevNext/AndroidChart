@@ -22,7 +22,7 @@ import info.appdev.chartexample.notimportant.DemoBase
 
 class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
 
-    private lateinit var dataSinus: MutableList<BarEntry?>
+    private lateinit var dataSinus: MutableList<BarEntry>
 
     private lateinit var binding: ActivityBarchartSinusBinding
 
@@ -88,7 +88,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
     }
 
     private fun setData(count: Int) {
-        val entries = ArrayList<BarEntry?>()
+        val entries = ArrayList<BarEntry>()
 
         for (i in 0..<count) {
             entries.add(dataSinus[i])

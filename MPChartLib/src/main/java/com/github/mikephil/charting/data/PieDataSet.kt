@@ -3,7 +3,7 @@ package com.github.mikephil.charting.data
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
 import com.github.mikephil.charting.utils.convertDpToPixel
 
-class PieDataSet(yVals: MutableList<PieEntry?>?, label: String) : DataSet<PieEntry?>(yVals, label), IPieDataSet {
+open class PieDataSet(yVals: MutableList<PieEntry>?, label: String) : DataSet<PieEntry>(yVals, label), IPieDataSet {
     /**
      * the space in pixels between the chart-slices, default 0f
      */
@@ -26,10 +26,12 @@ class PieDataSet(yVals: MutableList<PieEntry?>?, label: String) : DataSet<PieEnt
     private var mValueLineVariableLength = true
     private var mHighlightColor: Int? = null
 
-    override fun copy(): DataSet<PieEntry?> {
-        val entries: MutableList<PieEntry?> = ArrayList<PieEntry?>()
-        for (i in mEntries!!.indices) {
-            entries.add(mEntries!!.get(i)!!.copy())
+    override fun copy(): DataSet<PieEntry> {
+        val entries: MutableList<PieEntry> = mutableListOf()
+        mEntries?.let {
+            for (i in it.indices) {
+                entries.add(it[i].copy())
+            }
         }
         val copied = PieDataSet(entries, label)
         return copied
@@ -39,9 +41,7 @@ class PieDataSet(yVals: MutableList<PieEntry?>?, label: String) : DataSet<PieEnt
         super.copy((pieDataSet as BaseDataSet<*>?)!!)
     }
 
-    override fun calcMinMax(entry: PieEntry?) {
-        if (entry == null) return
-
+    override fun calcMinMax(entry: PieEntry) {
         calcMinMaxY(entry)
     }
 

@@ -12,7 +12,7 @@ import com.github.mikephil.charting.renderer.scatter.TriangleShapeRenderer
 import com.github.mikephil.charting.renderer.scatter.XShapeRenderer
 import com.github.mikephil.charting.utils.ColorTemplate
 
-open class ScatterDataSet(yVals: MutableList<Entry?>?, label: String = "") : LineScatterCandleRadarDataSet<Entry?>(yVals, label), IScatterDataSet {
+open class ScatterDataSet(yVals: MutableList<Entry>?, label: String = "") : LineScatterCandleRadarDataSet<Entry>(yVals, label), IScatterDataSet {
     /**
      * the size the scattershape will have, in density pixels
      */
@@ -36,10 +36,12 @@ open class ScatterDataSet(yVals: MutableList<Entry?>?, label: String = "") : Lin
      */
     private var mScatterShapeHoleColor = ColorTemplate.COLOR_NONE
 
-    override fun copy(): DataSet<Entry?> {
-        val entries: MutableList<Entry?> = ArrayList()
-        for (i in mEntries!!.indices) {
-            entries.add(mEntries!![i]!!.copy())
+    override fun copy(): DataSet<Entry> {
+        val entries: MutableList<Entry> = mutableListOf()
+        mEntries?.let {
+            for (i in it.indices) {
+                entries.add(it[i].copy())
+            }
         }
         val copied = ScatterDataSet(entries, label)
         copy(copied)

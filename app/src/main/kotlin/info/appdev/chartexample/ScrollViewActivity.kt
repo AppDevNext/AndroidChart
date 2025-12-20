@@ -45,7 +45,7 @@ class ScrollViewActivity : DemoBase() {
 
     private fun setData(count: Int) {
         val sampleValues = getValues(count)
-        val values = ArrayList<BarEntry?>()
+        val values = ArrayList<BarEntry>()
 
         for (i in 0..<count) {
             val `val` = (sampleValues[i]!!.toFloat() * count) + 15
