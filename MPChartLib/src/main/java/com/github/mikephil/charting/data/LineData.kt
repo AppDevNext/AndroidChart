@@ -5,10 +5,10 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 /**
  * Data object that encapsulates all data associated with a LineChart.
  */
-class LineData : BarLineScatterCandleBubbleData<ILineDataSet?> {
+class LineData : BarLineScatterCandleBubbleData<ILineDataSet> {
     constructor() : super()
 
     constructor(vararg dataSets: ILineDataSet) : super(*dataSets)
 
-    constructor(dataSets: MutableList<ILineDataSet>?) : super(dataSets)
+    constructor(dataSets: MutableList<ILineDataSet>) : super(dataSets)
 }
