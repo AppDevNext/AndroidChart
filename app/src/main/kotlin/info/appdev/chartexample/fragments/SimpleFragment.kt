@@ -34,6 +34,7 @@ abstract class SimpleFragment : Fragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
+    @Suppress("SameParameterValue")
     protected fun generateBarData(dataSets: Int, range: Float): BarData {
         val count = 12
         val values = getValues(count)
@@ -56,6 +57,7 @@ abstract class SimpleFragment : Fragment() {
         return d
     }
 
+    @Suppress("SameParameterValue")
     protected fun generateScatterData(dataSets: Int, range: Float): ScatterData {
         val count = 100
         val values = getValues(count)
@@ -135,14 +137,10 @@ abstract class SimpleFragment : Fragment() {
         get() {
             val sets = ArrayList<ILineDataSet?>()
 
-            val ds1 =
-                LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "n.txt"), "O(n)")
-            val ds2 =
-                LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "nlogn.txt"), "O(nlogn)")
-            val ds3 =
-                LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "square.txt"), "O(n\u00B2)")
-            val ds4 =
-                LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "three.txt"), "O(n\u00B3)")
+            val ds1 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "n.txt"), "O(n)")
+            val ds2 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "nlogn.txt"), "O(nlogn)")
+            val ds3 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "square.txt"), "O(n\u00B2)")
+            val ds4 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "three.txt"), "O(n\u00B3)")
 
             ds1.color = ColorTemplate.VORDIPLOM_COLORS[0]
             ds2.color = ColorTemplate.VORDIPLOM_COLORS[1]
