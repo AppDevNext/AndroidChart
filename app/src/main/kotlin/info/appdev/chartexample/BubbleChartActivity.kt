@@ -95,9 +95,9 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         tvX!!.text = count.toString()
         tvY!!.text = range.toString()
 
-        val values1 = ArrayList<BubbleEntry?>()
-        val values2 = ArrayList<BubbleEntry?>()
-        val values3 = ArrayList<BubbleEntry?>()
+        val values1 = ArrayList<BubbleEntry>()
+        val values2 = ArrayList<BubbleEntry>()
+        val values3 = ArrayList<BubbleEntry>()
         val sampleValues = getValues(100)
 
         for (i in 0..<count) {
