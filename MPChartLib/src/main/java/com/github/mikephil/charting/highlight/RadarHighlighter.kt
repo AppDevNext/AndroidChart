@@ -2,7 +2,6 @@ package com.github.mikephil.charting.highlight
 
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import kotlin.math.abs
@@ -44,10 +43,10 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
         val factor = chartPieRadar.getFactor()
 
         val pOut = MPPointF.getInstance(0f, 0f)
-        for (i in 0..<chartPieRadar.data!!.getDataSetCount()) {
-            val dataSet: IDataSet<*> = chartPieRadar.data!!.getDataSetByIndex(i)
+        for (i in 0..<chartPieRadar.data!!.dataSetCount) {
+            val dataSet = chartPieRadar.data!!.getDataSetByIndex(i)
 
-            val entry: Entry? = dataSet.getEntryForIndex(index)
+            val entry: Entry? = dataSet?.getEntryForIndex(index)
 
             val y = (entry!!.y - chartPieRadar.yChartMin)
 

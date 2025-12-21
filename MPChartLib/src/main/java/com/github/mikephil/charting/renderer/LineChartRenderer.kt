@@ -77,11 +77,9 @@ open class LineChartRenderer(
 
         val lineData = dataProvider.lineData
 
-        lineData.dataSets.forEach { set ->
-            set?.let {
-                if (it.isVisible)
-                    drawDataSet(canvas, set)
-            }
+        lineData.dataSets?.forEach { set ->
+            if (set.isVisible)
+                drawDataSet(canvas, set)
         }
         canvas.drawBitmap(drawBitmapLocal, 0f, 0f, null)
     }
@@ -277,113 +275,113 @@ open class LineChartRenderer(
         }
 
         // more than 1 color
-            if (dataSet.colors.size > 1) {
-                val numberOfFloats = pointsPerEntryPair * 2
+        if (dataSet.colors.size > 1) {
+            val numberOfFloats = pointsPerEntryPair * 2
 
-                if (lineBuffer.size <= numberOfFloats)
-                    lineBuffer = FloatArray(numberOfFloats * 2)
+            if (lineBuffer.size <= numberOfFloats)
+                lineBuffer = FloatArray(numberOfFloats * 2)
 
-                val max = xBounds.min + xBounds.range
+            val max = xBounds.min + xBounds.range
 
-                for (j in xBounds.min..<max) {
-                    var entry: Entry = dataSet.getEntryForIndex(j) ?: continue
+            for (j in xBounds.min..<max) {
+                var entry: Entry = dataSet.getEntryForIndex(j) ?: continue
 
-                    lineBuffer[0] = entry.x
-                    lineBuffer[1] = entry.y * phaseY
+                lineBuffer[0] = entry.x
+                lineBuffer[1] = entry.y * phaseY
 
-                    if (j < xBounds.max) {
-                        entry = dataSet.getEntryForIndex(j + 1)!!
+                if (j < xBounds.max) {
+                    entry = dataSet.getEntryForIndex(j + 1)!!
 
-                        if (dataSet.isDrawSteppedEnabled) {
-                            lineBuffer[2] = entry.x
-                            lineBuffer[3] = lineBuffer[1]
-                            lineBuffer[4] = lineBuffer[2]
-                            lineBuffer[5] = lineBuffer[3]
-                            lineBuffer[6] = entry.x
-                            lineBuffer[7] = entry.y * phaseY
-                        } else {
-                            lineBuffer[2] = entry.x
-                            lineBuffer[3] = entry.y * phaseY
-                        }
-                    } else {
-                        lineBuffer[2] = lineBuffer[0]
+                    if (dataSet.isDrawSteppedEnabled) {
+                        lineBuffer[2] = entry.x
                         lineBuffer[3] = lineBuffer[1]
+                        lineBuffer[4] = lineBuffer[2]
+                        lineBuffer[5] = lineBuffer[3]
+                        lineBuffer[6] = entry.x
+                        lineBuffer[7] = entry.y * phaseY
+                    } else {
+                        lineBuffer[2] = entry.x
+                        lineBuffer[3] = entry.y * phaseY
+                    }
+                } else {
+                    lineBuffer[2] = lineBuffer[0]
+                    lineBuffer[3] = lineBuffer[1]
+                }
+
+                // Determine the start and end coordinates of the line, and make sure they differ.
+                val firstCoordinateX = lineBuffer[0]
+                val firstCoordinateY = lineBuffer[1]
+                val lastCoordinateX = lineBuffer[numberOfFloats - 2]
+                val lastCoordinateY = lineBuffer[numberOfFloats - 1]
+
+                if (firstCoordinateX == lastCoordinateX &&
+                    firstCoordinateY == lastCoordinateY
+                ) continue
+
+                trans!!.pointValuesToPixel(lineBuffer)
+
+                if (!viewPortHandler.isInBoundsRight(firstCoordinateX)) break
+
+                // make sure the lines don't do shitty things outside
+                // bounds
+                if (!viewPortHandler.isInBoundsLeft(lastCoordinateX) || !viewPortHandler.isInBoundsTop(
+                        max(
+                            firstCoordinateY.toDouble(),
+                            lastCoordinateY.toDouble()
+                        ).toFloat()
+                    ) || !viewPortHandler.isInBoundsBottom(
+                        min(firstCoordinateY.toDouble(), lastCoordinateY.toDouble()).toFloat()
+                    )
+                ) continue
+
+                // get the color that is set for this line-segment
+                paintRender.color = dataSet.getColorByIndex(j)
+
+                canvas!!.drawLines(lineBuffer, 0, pointsPerEntryPair * 2, paintRender)
+            }
+        } else { // only one color per dataset
+
+            if (lineBuffer.size < max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2) lineBuffer = FloatArray(
+                (max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 4).toInt()
+            )
+
+            var e1: Entry?
+            var e2: Entry?
+
+            e1 = dataSet.getEntryForIndex(xBounds.min)
+
+            if (e1 != null) {
+                var j = 0
+                for (x in xBounds.min..xBounds.range + xBounds.min) {
+                    e1 = dataSet.getEntryForIndex(if (x == 0) 0 else (x - 1))
+                    e2 = dataSet.getEntryForIndex(x)
+
+                    if (e1 == null || e2 == null) continue
+
+                    lineBuffer[j++] = e1.x
+                    lineBuffer[j++] = e1.y * phaseY
+
+                    if (dataSet.isDrawSteppedEnabled) {
+                        lineBuffer[j++] = e2.x
+                        lineBuffer[j++] = e1.y * phaseY
+                        lineBuffer[j++] = e2.x
+                        lineBuffer[j++] = e1.y * phaseY
                     }
 
-                    // Determine the start and end coordinates of the line, and make sure they differ.
-                    val firstCoordinateX = lineBuffer[0]
-                    val firstCoordinateY = lineBuffer[1]
-                    val lastCoordinateX = lineBuffer[numberOfFloats - 2]
-                    val lastCoordinateY = lineBuffer[numberOfFloats - 1]
+                    lineBuffer[j++] = e2.x
+                    lineBuffer[j++] = e2.y * phaseY
+                }
 
-                    if (firstCoordinateX == lastCoordinateX &&
-                        firstCoordinateY == lastCoordinateY
-                    ) continue
-
+                if (j > 0) {
                     trans!!.pointValuesToPixel(lineBuffer)
 
-                    if (!viewPortHandler.isInBoundsRight(firstCoordinateX)) break
+                    val size = (max(((xBounds.range + 1) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2).toInt()
 
-                    // make sure the lines don't do shitty things outside
-                    // bounds
-                    if (!viewPortHandler.isInBoundsLeft(lastCoordinateX) || !viewPortHandler.isInBoundsTop(
-                            max(
-                                firstCoordinateY.toDouble(),
-                                lastCoordinateY.toDouble()
-                            ).toFloat()
-                        ) || !viewPortHandler.isInBoundsBottom(
-                            min(firstCoordinateY.toDouble(), lastCoordinateY.toDouble()).toFloat()
-                        )
-                    ) continue
+                    paintRender.color = dataSet.color
 
-                    // get the color that is set for this line-segment
-                    paintRender.color = dataSet.getColorByIndex(j)
-
-                    canvas!!.drawLines(lineBuffer, 0, pointsPerEntryPair * 2, paintRender)
+                    canvas!!.drawLines(lineBuffer, 0, size, paintRender)
                 }
-            } else { // only one color per dataset
-
-                if (lineBuffer.size < max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2) lineBuffer = FloatArray(
-                    (max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 4).toInt()
-                )
-
-                var e1: Entry?
-                var e2: Entry?
-
-                e1 = dataSet.getEntryForIndex(xBounds.min)
-
-                if (e1 != null) {
-                    var j = 0
-                    for (x in xBounds.min..xBounds.range + xBounds.min) {
-                        e1 = dataSet.getEntryForIndex(if (x == 0) 0 else (x - 1))
-                        e2 = dataSet.getEntryForIndex(x)
-
-                        if (e1 == null || e2 == null) continue
-
-                        lineBuffer[j++] = e1.x
-                        lineBuffer[j++] = e1.y * phaseY
-
-                        if (dataSet.isDrawSteppedEnabled) {
-                            lineBuffer[j++] = e2.x
-                            lineBuffer[j++] = e1.y * phaseY
-                            lineBuffer[j++] = e2.x
-                            lineBuffer[j++] = e1.y * phaseY
-                        }
-
-                        lineBuffer[j++] = e2.x
-                        lineBuffer[j++] = e2.y * phaseY
-                    }
-
-                    if (j > 0) {
-                        trans!!.pointValuesToPixel(lineBuffer)
-
-                        val size = (max(((xBounds.range + 1) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2).toInt()
-
-                        paintRender.color = dataSet.color
-
-                        canvas!!.drawLines(lineBuffer, 0, size, paintRender)
-                    }
-                }
+            }
         }
 
         paintRender.pathEffect = null
@@ -487,9 +485,9 @@ open class LineChartRenderer(
         if (isDrawingValuesAllowed(dataProvider)) {
             val dataSets = dataProvider.lineData.dataSets
 
-            for (i in dataSets.indices) {
-                val dataSet = dataSets[i]
-                dataSet?.let {
+            dataSets?.let {
+                for (i in it.indices) {
+                    val dataSet = dataSets[i]
                     if (dataSet.entryCount == 0) {
                         continue
                     }
@@ -591,9 +589,9 @@ open class LineChartRenderer(
 
         val dataSets = dataProvider.lineData.dataSets
 
-        for (i in dataSets.indices) {
-            val dataSet = dataSets[i]
-            dataSet?.let {
+        dataSets?.let {
+            for (i in it.indices) {
+                val dataSet = dataSets[i]
                 if (!dataSet.isVisible || !dataSet.isDrawCirclesEnabled || dataSet.entryCount == 0) continue
 
                 circlePaintInner.color = dataSet.circleHoleColor

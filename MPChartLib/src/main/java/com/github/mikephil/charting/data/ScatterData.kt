@@ -16,10 +16,12 @@ class ScatterData : BarLineScatterCandleBubbleData<IScatterDataSet> {
         get() {
             var max = 0f
 
-            for (set in mDataSets) {
-                val size = set.scatterShapeSize
+            if (dataSets != null) {
+                for (set in dataSets) {
+                    val size = set.scatterShapeSize
 
-                if (size > max) max = size
+                    if (size > max) max = size
+                }
             }
 
             return max

@@ -103,7 +103,7 @@ open class PieChartRenderer(
 
         val pieData = chart.data
 
-        for (set in pieData!!.dataSets) {
+        for (set in pieData!!.dataSets!!) {
             if (set!!.isVisible && set.entryCount > 0) drawDataSet(set)
         }
     }
@@ -387,196 +387,198 @@ open class PieChartRenderer(
         canvas.withSave {
             val offset = 5f.convertDpToPixel()
 
-            for (i in dataSets.indices) {
-                val dataSet = dataSets[i]
-                if (dataSet!!.entryCount == 0) {
-                    continue
-                }
-                val drawValues = dataSet.isDrawValues
-                if (!drawValues && !drawEntryLabels) {
-                    continue
-                }
-
-                val xValuePosition = dataSet.xValuePosition
-                val yValuePosition = dataSet.yValuePosition
-
-                // apply the text-styling defined by the DataSet
-                applyValueTextStyle(dataSet)
-
-                val lineHeight = (Utils.calcTextHeight(paintValues, "Q")
-                        + 4f.convertDpToPixel())
-
-                val formatter = dataSet.valueFormatter
-
-                val entryCount = dataSet.entryCount
-
-                val isUseValueColorForLineEnabled = dataSet.isUseValueColorForLineEnabled
-                val valueLineColor = dataSet.valueLineColor
-
-                valueLinePaint.strokeWidth = dataSet.valueLineWidth.convertDpToPixel()
-
-                val sliceSpace = getSliceSpace(dataSet)
-
-                val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
-                iconsOffset.x = iconsOffset.x.convertDpToPixel()
-                iconsOffset.y = iconsOffset.y.convertDpToPixel()
-
-                for (j in 0..<entryCount) {
-                    dataSet.getEntryForIndex(j)?.let { entry ->
-
-                        angle = if (xIndex == 0) 0f
-                        else absoluteAngles[xIndex - 1] * phaseX
-
-                        val sliceAngle = drawAngles[xIndex]
-                        val sliceSpaceMiddleAngle = sliceSpace / (Utils.FDEG2RAD * labelRadius)
-
-                        // offset needed to center the drawn text in the slice
-                        val angleOffset = (sliceAngle - sliceSpaceMiddleAngle / 2f) / 2f
-
-                        angle += angleOffset
-
-                        val transformedAngle = rotationAngle + angle * phaseY
-
-                        val value = if (chart.isUsePercentValuesEnabled) (entry.y / yValueSum * 100f) else entry.y
-                        val entryLabel = entry.label
-
-                        val sliceXBase = cos((transformedAngle * Utils.FDEG2RAD).toDouble()).toFloat()
-                        val sliceYBase = sin((transformedAngle * Utils.FDEG2RAD).toDouble()).toFloat()
-
-                        val drawXOutside = drawEntryLabels && xValuePosition == ValuePosition.OUTSIDE_SLICE
-                        val drawYOutside = drawValues && yValuePosition == ValuePosition.OUTSIDE_SLICE
-                        val drawXInside = drawEntryLabels && xValuePosition == ValuePosition.INSIDE_SLICE
-                        val drawYInside = drawValues && yValuePosition == ValuePosition.INSIDE_SLICE
-
-                        if (drawXOutside || drawYOutside) {
-                            val valueLineLength1 = dataSet.valueLinePart1Length
-                            val valueLineLength2 = dataSet.valueLinePart2Length
-                            val valueLinePart1OffsetPercentage = dataSet.valueLinePart1OffsetPercentage / 100f
-
-                            val pt2x: Float
-                            val pt2y: Float
-                            val labelPtx: Float
-                            val labelPty: Float
-
-                            val line1Radius =
-                                if (chart.isDrawHoleEnabled) ((radius - (radius * holeRadiusPercent)) * valueLinePart1OffsetPercentage + (radius * holeRadiusPercent))
-                                else radius * valueLinePart1OffsetPercentage
-
-                            val polyline2Width = if (dataSet.isValueLineVariableLength) labelRadius * valueLineLength2 * abs(
-                                sin(
-                                    (transformedAngle * Utils.FDEG2RAD).toDouble()
-                                )
-                            ).toFloat()
-                            else labelRadius * valueLineLength2
-
-                            val pt0x = line1Radius * sliceXBase + center.x
-                            val pt0y = line1Radius * sliceYBase + center.y
-
-                            val pt1x = labelRadius * (1 + valueLineLength1) * sliceXBase + center.x
-                            val pt1y = labelRadius * (1 + valueLineLength1) * sliceYBase + center.y
-
-                            if (transformedAngle % 360.0 in 90.0..270.0) {
-                                pt2x = pt1x - polyline2Width
-                                pt2y = pt1y
-
-                                paintValues.textAlign = Align.RIGHT
-
-                                if (drawXOutside) paintEntryLabels.textAlign = Align.RIGHT
-
-                                labelPtx = pt2x - offset
-                                labelPty = pt2y
-                            } else {
-                                pt2x = pt1x + polyline2Width
-                                pt2y = pt1y
-                                paintValues.textAlign = Align.LEFT
-
-                                if (drawXOutside) paintEntryLabels.textAlign = Align.LEFT
-
-                                labelPtx = pt2x + offset
-                                labelPty = pt2y
-                            }
-
-                            var lineColor = ColorTemplate.COLOR_NONE
-
-                            if (isUseValueColorForLineEnabled) lineColor = dataSet.getColorByIndex(j)
-                            else if (valueLineColor != ColorTemplate.COLOR_NONE) lineColor = valueLineColor
-
-                            if (lineColor != ColorTemplate.COLOR_NONE) {
-                                valueLinePaint.color = lineColor
-                                drawLine(pt0x, pt0y, pt1x, pt1y, valueLinePaint)
-                                drawLine(pt1x, pt1y, pt2x, pt2y, valueLinePaint)
-                            }
-
-                            // draw everything, depending on settings
-                            if (drawXOutside && drawYOutside) {
-                                drawValue(
-                                    this, formatter, value, entry, 0, labelPtx, labelPty, dataSet.getValueTextColor(j)
-                                )
-
-                                if (j < data.entryCount && entryLabel != null) {
-                                    drawEntryLabel(this, entryLabel, labelPtx, labelPty + lineHeight)
-                                }
-                            } else if (drawXOutside) {
-                                if (j < data.entryCount && entryLabel != null) {
-                                    drawEntryLabel(this, entryLabel, labelPtx, labelPty + lineHeight / 2f)
-                                }
-                            } else if (drawYOutside) {
-                                drawValue(
-                                    this,
-                                    formatter,
-                                    value,
-                                    entry,
-                                    0,
-                                    labelPtx,
-                                    labelPty + lineHeight / 2f,
-                                    dataSet.getValueTextColor(j)
-                                )
-                            }
-                        }
-
-
-                        if (drawXInside || drawYInside) {
-                            // calculate the text position
-                            val x = labelRadius * sliceXBase + center.x
-                            val y = labelRadius * sliceYBase + center.y
-
-                            paintValues.textAlign = Align.CENTER
-
-                            // draw everything, depending on settings
-                            if (drawXInside && drawYInside) {
-                                drawValue(this, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j)
-                            )
-
-                                if (j < data.entryCount && entryLabel != null) {
-                                    drawEntryLabel(this, entryLabel, x, y + lineHeight)
-                                }
-                            } else if (drawXInside) {
-                                if (j < data.entryCount && entryLabel != null) {
-                                    drawEntryLabel(this, entryLabel, x, y + lineHeight / 2f)
-                                }
-                            } else if (drawYInside) {
-                                drawValue(this, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j))
-                            }
-                        }
-
-                        if (entry.icon != null && dataSet.isDrawIcons) {
-                            val icon = entry.icon
-
-                            val x = (labelRadius + iconsOffset.y) * sliceXBase + center.x
-                            var y = (labelRadius + iconsOffset.y) * sliceYBase + center.y
-                            y += iconsOffset.x
-
-                            icon?.let {
-                                Utils.drawImage(
-                                    this, it, x.toInt(), y.toInt()
-                                )
-                            }
-                        }
+            dataSets?.let {
+                for (i in it.indices) {
+                    val dataSet = dataSets[i]
+                    if (dataSet.entryCount == 0) {
+                        continue
                     }
-                    xIndex++
-                }
+                    val drawValues = dataSet.isDrawValues
+                    if (!drawValues && !drawEntryLabels) {
+                        continue
+                    }
 
-                MPPointF.recycleInstance(iconsOffset)
+                    val xValuePosition = dataSet.xValuePosition
+                    val yValuePosition = dataSet.yValuePosition
+
+                    // apply the text-styling defined by the DataSet
+                    applyValueTextStyle(dataSet)
+
+                    val lineHeight = (Utils.calcTextHeight(paintValues, "Q")
+                            + 4f.convertDpToPixel())
+
+                    val formatter = dataSet.valueFormatter
+
+                    val entryCount = dataSet.entryCount
+
+                    val isUseValueColorForLineEnabled = dataSet.isUseValueColorForLineEnabled
+                    val valueLineColor = dataSet.valueLineColor
+
+                    valueLinePaint.strokeWidth = dataSet.valueLineWidth.convertDpToPixel()
+
+                    val sliceSpace = getSliceSpace(dataSet)
+
+                    val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                    iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                    iconsOffset.y = iconsOffset.y.convertDpToPixel()
+
+                    for (j in 0..<entryCount) {
+                        dataSet.getEntryForIndex(j)?.let { entry ->
+
+                            angle = if (xIndex == 0) 0f
+                            else absoluteAngles[xIndex - 1] * phaseX
+
+                            val sliceAngle = drawAngles[xIndex]
+                            val sliceSpaceMiddleAngle = sliceSpace / (Utils.FDEG2RAD * labelRadius)
+
+                            // offset needed to center the drawn text in the slice
+                            val angleOffset = (sliceAngle - sliceSpaceMiddleAngle / 2f) / 2f
+
+                            angle += angleOffset
+
+                            val transformedAngle = rotationAngle + angle * phaseY
+
+                            val value = if (chart.isUsePercentValuesEnabled) (entry.y / yValueSum * 100f) else entry.y
+                            val entryLabel = entry.label
+
+                            val sliceXBase = cos((transformedAngle * Utils.FDEG2RAD).toDouble()).toFloat()
+                            val sliceYBase = sin((transformedAngle * Utils.FDEG2RAD).toDouble()).toFloat()
+
+                            val drawXOutside = drawEntryLabels && xValuePosition == ValuePosition.OUTSIDE_SLICE
+                            val drawYOutside = drawValues && yValuePosition == ValuePosition.OUTSIDE_SLICE
+                            val drawXInside = drawEntryLabels && xValuePosition == ValuePosition.INSIDE_SLICE
+                            val drawYInside = drawValues && yValuePosition == ValuePosition.INSIDE_SLICE
+
+                            if (drawXOutside || drawYOutside) {
+                                val valueLineLength1 = dataSet.valueLinePart1Length
+                                val valueLineLength2 = dataSet.valueLinePart2Length
+                                val valueLinePart1OffsetPercentage = dataSet.valueLinePart1OffsetPercentage / 100f
+
+                                val pt2x: Float
+                                val pt2y: Float
+                                val labelPtx: Float
+                                val labelPty: Float
+
+                                val line1Radius =
+                                    if (chart.isDrawHoleEnabled) ((radius - (radius * holeRadiusPercent)) * valueLinePart1OffsetPercentage + (radius * holeRadiusPercent))
+                                    else radius * valueLinePart1OffsetPercentage
+
+                                val polyline2Width = if (dataSet.isValueLineVariableLength) labelRadius * valueLineLength2 * abs(
+                                    sin(
+                                        (transformedAngle * Utils.FDEG2RAD).toDouble()
+                                    )
+                                ).toFloat()
+                                else labelRadius * valueLineLength2
+
+                                val pt0x = line1Radius * sliceXBase + center.x
+                                val pt0y = line1Radius * sliceYBase + center.y
+
+                                val pt1x = labelRadius * (1 + valueLineLength1) * sliceXBase + center.x
+                                val pt1y = labelRadius * (1 + valueLineLength1) * sliceYBase + center.y
+
+                                if (transformedAngle % 360.0 in 90.0..270.0) {
+                                    pt2x = pt1x - polyline2Width
+                                    pt2y = pt1y
+
+                                    paintValues.textAlign = Align.RIGHT
+
+                                    if (drawXOutside) paintEntryLabels.textAlign = Align.RIGHT
+
+                                    labelPtx = pt2x - offset
+                                    labelPty = pt2y
+                                } else {
+                                    pt2x = pt1x + polyline2Width
+                                    pt2y = pt1y
+                                    paintValues.textAlign = Align.LEFT
+
+                                    if (drawXOutside) paintEntryLabels.textAlign = Align.LEFT
+
+                                    labelPtx = pt2x + offset
+                                    labelPty = pt2y
+                                }
+
+                                var lineColor = ColorTemplate.COLOR_NONE
+
+                                if (isUseValueColorForLineEnabled) lineColor = dataSet.getColorByIndex(j)
+                                else if (valueLineColor != ColorTemplate.COLOR_NONE) lineColor = valueLineColor
+
+                                if (lineColor != ColorTemplate.COLOR_NONE) {
+                                    valueLinePaint.color = lineColor
+                                    drawLine(pt0x, pt0y, pt1x, pt1y, valueLinePaint)
+                                    drawLine(pt1x, pt1y, pt2x, pt2y, valueLinePaint)
+                                }
+
+                                // draw everything, depending on settings
+                                if (drawXOutside && drawYOutside) {
+                                    drawValue(
+                                        this, formatter, value, entry, 0, labelPtx, labelPty, dataSet.getValueTextColor(j)
+                                    )
+
+                                    if (j < data.entryCount && entryLabel != null) {
+                                        drawEntryLabel(this, entryLabel, labelPtx, labelPty + lineHeight)
+                                    }
+                                } else if (drawXOutside) {
+                                    if (j < data.entryCount && entryLabel != null) {
+                                        drawEntryLabel(this, entryLabel, labelPtx, labelPty + lineHeight / 2f)
+                                    }
+                                } else if (drawYOutside) {
+                                    drawValue(
+                                        this,
+                                        formatter,
+                                        value,
+                                        entry,
+                                        0,
+                                        labelPtx,
+                                        labelPty + lineHeight / 2f,
+                                        dataSet.getValueTextColor(j)
+                                    )
+                                }
+                            }
+
+
+                            if (drawXInside || drawYInside) {
+                                // calculate the text position
+                                val x = labelRadius * sliceXBase + center.x
+                                val y = labelRadius * sliceYBase + center.y
+
+                                paintValues.textAlign = Align.CENTER
+
+                                // draw everything, depending on settings
+                                if (drawXInside && drawYInside) {
+                                    drawValue(this, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j)
+                                    )
+
+                                    if (j < data.entryCount && entryLabel != null) {
+                                        drawEntryLabel(this, entryLabel, x, y + lineHeight)
+                                    }
+                                } else if (drawXInside) {
+                                    if (j < data.entryCount && entryLabel != null) {
+                                        drawEntryLabel(this, entryLabel, x, y + lineHeight / 2f)
+                                    }
+                                } else if (drawYInside) {
+                                    drawValue(this, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j))
+                                }
+                            }
+
+                            if (entry.icon != null && dataSet.isDrawIcons) {
+                                val icon = entry.icon
+
+                                val x = (labelRadius + iconsOffset.y) * sliceXBase + center.x
+                                var y = (labelRadius + iconsOffset.y) * sliceYBase + center.y
+                                y += iconsOffset.x
+
+                                icon?.let {
+                                    Utils.drawImage(
+                                        this, it, x.toInt(), y.toInt()
+                                    )
+                                }
+                            }
+                        }
+                        xIndex++
+                    }
+
+                    MPPointF.recycleInstance(iconsOffset)
+                }
             }
             MPPointF.recycleInstance(center)
         }

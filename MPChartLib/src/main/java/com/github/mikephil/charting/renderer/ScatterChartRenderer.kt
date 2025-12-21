@@ -22,7 +22,7 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
         val scatterData = dataProvider.scatterData
 
         scatterData?.let {
-            for (set in it.dataSets) {
+            for (set in it.dataSets!!) {
                 if (set.isVisible)
                     drawDataSet(canvas, set)
             }
@@ -80,7 +80,7 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
         if (isDrawingValuesAllowed(dataProvider)) {
             dataProvider.scatterData?.let { scatterData ->
                 for (i in 0..<scatterData.dataSetCount) {
-                    val dataSet = scatterData.dataSets[i]
+                    val dataSet = scatterData.dataSets!![i]
 
                     if (dataSet.entryCount == 0) {
                         continue

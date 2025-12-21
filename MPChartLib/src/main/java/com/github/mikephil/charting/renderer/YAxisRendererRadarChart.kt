@@ -193,12 +193,15 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
             val limitPath = renderLimitLinesPathBuffer
             limitPath.reset()
 
+            chart.data!!.maxEntryCountSet?.let { maxEntryCountSet ->
+                for (j in 0..<maxEntryCountSet.entryCount) {
+                    Utils.getPosition(center, r, sliceAngle * j + chart.rotationAngle, pOut)
 
-            for (j in 0..<chart.data!!.maxEntryCountSet.entryCount) {
-                Utils.getPosition(center, r, sliceAngle * j + chart.rotationAngle, pOut)
-
-                if (j == 0) limitPath.moveTo(pOut.x, pOut.y)
-                else limitPath.lineTo(pOut.x, pOut.y)
+                    if (j == 0)
+                        limitPath.moveTo(pOut.x, pOut.y)
+                    else
+                        limitPath.lineTo(pOut.x, pOut.y)
+                }
             }
             limitPath.close()
 

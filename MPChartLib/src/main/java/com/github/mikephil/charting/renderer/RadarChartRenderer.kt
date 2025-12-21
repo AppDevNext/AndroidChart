@@ -32,13 +32,14 @@ open class RadarChartRenderer(
     override fun initBuffers() = Unit
 
     override fun drawData(canvas: Canvas) {
-        val radarData = chart.data
+        chart.data?.let { radarData ->
 
-        val mostEntries = radarData!!.maxEntryCountSet.entryCount
+            val mostEntries = radarData.maxEntryCountSet?.entryCount ?: 0
 
-        for (set in radarData.dataSets) {
-            if (set.isVisible) {
-                drawDataSet(canvas, set, mostEntries)
+            for (set in radarData.dataSets!!) {
+                if (set.isVisible) {
+                    drawDataSet(canvas, set, mostEntries)
+                }
             }
         }
     }
@@ -128,69 +129,72 @@ open class RadarChartRenderer(
         val yOffset = 5f.convertDpToPixel()
 
         for (i in 0..<chart.data!!.dataSetCount) {
-            val dataSet = chart.data!!.getDataSetByIndex(i)
-            if (dataSet.entryCount == 0) {
-                continue
-            }
-            if (!shouldDrawValues(dataSet)) {
-                continue
-            }
+            chart.data!!.getDataSetByIndex(i)?.let { dataSet ->
 
-            // apply the text-styling defined by the DataSet
-            applyValueTextStyle(dataSet)
+                chart.data!!.getDataSetByIndex(i)
+                if (dataSet.entryCount == 0) {
+                    continue
+                }
+                if (!shouldDrawValues(dataSet)) {
+                    continue
+                }
 
-            val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
-            iconsOffset.x = iconsOffset.x.convertDpToPixel()
-            iconsOffset.y = iconsOffset.y.convertDpToPixel()
+                // apply the text-styling defined by the DataSet
+                applyValueTextStyle(dataSet)
 
-            for (j in 0..<dataSet.entryCount) {
-                dataSet.getEntryForIndex(j)?.let { entry ->
+                val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
-                    Utils.getPosition(
-                        center,
-                        (entry.y - chart.yChartMin) * factor * phaseY,
-                        sliceAngle * j * phaseX + chart.rotationAngle,
-                        pOut
-                    )
-
-                    if (dataSet.isDrawValues) {
-                        drawValue(
-                            canvas,
-                            dataSet.valueFormatter,
-                            entry.y,
-                            entry,
-                            i,
-                            pOut.x,
-                            pOut.y - yOffset,
-                            dataSet.getValueTextColor(j)
-                        )
-                    }
-
-                    if (entry.icon != null && dataSet.isDrawIcons) {
-                        val icon = entry.icon
+                for (j in 0..<dataSet.entryCount) {
+                    dataSet.getEntryForIndex(j)?.let { entry ->
 
                         Utils.getPosition(
                             center,
-                            (entry.y) * factor * phaseY + iconsOffset.y,
+                            (entry.y - chart.yChartMin) * factor * phaseY,
                             sliceAngle * j * phaseX + chart.rotationAngle,
-                            pIcon
+                            pOut
                         )
 
-                        pIcon.y += iconsOffset.x
-
-                        icon?.let {
-                            Utils.drawImage(
+                        if (dataSet.isDrawValues) {
+                            drawValue(
                                 canvas,
-                                it,
-                                pIcon.x.toInt(),
-                                pIcon.y.toInt()
+                                dataSet.valueFormatter,
+                                entry.y,
+                                entry,
+                                i,
+                                pOut.x,
+                                pOut.y - yOffset,
+                                dataSet.getValueTextColor(j)
                             )
+                        }
+
+                        if (entry.icon != null && dataSet.isDrawIcons) {
+                            val icon = entry.icon
+
+                            Utils.getPosition(
+                                center,
+                                (entry.y) * factor * phaseY + iconsOffset.y,
+                                sliceAngle * j * phaseX + chart.rotationAngle,
+                                pIcon
+                            )
+
+                            pIcon.y += iconsOffset.x
+
+                            icon?.let {
+                                Utils.drawImage(
+                                    canvas,
+                                    it,
+                                    pIcon.x.toInt(),
+                                    pIcon.y.toInt()
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            MPPointF.recycleInstance(iconsOffset)
+                MPPointF.recycleInstance(iconsOffset)
+            }
         }
 
         MPPointF.recycleInstance(center)
@@ -218,7 +222,7 @@ open class RadarChartRenderer(
         webPaint.alpha = chart.webAlpha
 
         val xIncrements = 1 + chart.skipWebLineCount
-        val maxEntryCount = chart.data!!.maxEntryCountSet.entryCount
+        val maxEntryCount = chart.data!!.maxEntryCountSet?.entryCount ?: 0
 
         val p = MPPointF.getInstance(0f, 0f)
         var i = 0

@@ -20,41 +20,47 @@ class PieData : ChartData<IPieDataSet> {
          * Returns the DataSet this PieData object represents. A PieData object can
          * only contain one DataSet.
          */
-        get() = mDataSets[0]
+        get() = dataSets!![0]
         /**
          * Sets the PieDataSet this data object should represent.
          */
         set(dataSet) {
-            mDataSets.clear()
-            mDataSets.add(dataSet)
+            dataSets?.clear()
+            dataSets?.add(dataSet)
             notifyDataChanged()
         }
 
-    override fun getDataSets(): MutableList<IPieDataSet?> {
-        val dataSets = super.getDataSets()
-
-        if (dataSets.isEmpty()) {
-            Log.e(
-                "AndroidChart",
-                "Found multiple data sets while pie chart only allows one"
-            )
+    override var dataSets: MutableList<IPieDataSet>?
+        get() {
+            super.dataSets?.let {
+                if (it.isEmpty()) {
+                    Log.e("AndroidChart", "Found multiple data sets while pie chart only allows one")
+                }
+            }
+            return super.dataSets
         }
-
-        return dataSets
-    }
+        set(value) {
+            super.dataSets = value
+        }
 
     /**
      * The PieData object can only have one DataSet. Use getDataSet() method instead.
      */
     override fun getDataSetByIndex(index: Int): IPieDataSet? {
-        return if (index == 0) this.dataSet else null
+        return if (index == 0)
+            this.dataSet
+        else
+            null
     }
 
-    override fun getDataSetByLabel(label: String, ignorecase: Boolean): IPieDataSet? {
-        return if (ignorecase) if (label.equals(mDataSets[0]!!.label, ignoreCase = true))
-            mDataSets[0]
+    override fun getDataSetByLabel(label: String, ignoreCase: Boolean): IPieDataSet? {
+        return if (ignoreCase) if (label.equals(dataSets!![0].label, ignoreCase = true))
+            dataSets!![0]
         else
-            null else if (label == mDataSets[0]!!.label) mDataSets[0] else null
+            null else if (label == dataSets!![0].label)
+            dataSets!![0]
+        else
+            null
     }
 
     override fun getEntryForHighlight(highlight: Highlight): Entry? {

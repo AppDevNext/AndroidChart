@@ -56,15 +56,15 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
     @Override
     public void calcMinMax() {
 
-        if(mDataSets == null){
-            mDataSets = new ArrayList<>();
+        if(dataSets == null){
+            dataSets = new ArrayList<>();
         }
-        mDataSets.clear();
+        dataSets.clear();
 
-        mYMax = -Float.MAX_VALUE;
-        mYMin = Float.MAX_VALUE;
-        mXMax = -Float.MAX_VALUE;
-        mXMin = Float.MAX_VALUE;
+        yMax = -Float.MAX_VALUE;
+        yMin = Float.MAX_VALUE;
+        xMax = -Float.MAX_VALUE;
+        xMin = Float.MAX_VALUE;
 
         mLeftAxisMax = -Float.MAX_VALUE;
         mLeftAxisMin = Float.MAX_VALUE;
@@ -78,19 +78,19 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
             data.calcMinMax();
 
             List<IBarLineScatterCandleBubbleDataSet<? extends Entry>> sets = data.getDataSets();
-            mDataSets.addAll(sets);
+            dataSets.addAll(sets);
 
-            if (data.getYMax() > mYMax)
-                mYMax = data.getYMax();
+            if (data.getYMax() > yMax)
+                yMax = data.getYMax();
 
-            if (data.getYMin() < mYMin)
-                mYMin = data.getYMin();
+            if (data.getYMin() < yMin)
+                yMin = data.getYMin();
 
-            if (data.getXMax() > mXMax)
-                mXMax = data.getXMax();
+            if (data.getXMax() > xMax)
+                xMax = data.getXMax();
 
-            if (data.getXMin() < mXMin)
-                mXMin = data.getXMin();
+            if (data.getXMin() < xMin)
+                xMin = data.getXMin();
 
             for (IBarLineScatterCandleBubbleDataSet<? extends Entry> dataset : sets) {
                 if (dataset.getAxisDependency() == YAxis.AxisDependency.LEFT)  {
@@ -254,7 +254,7 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
 
     @Deprecated
     @Override
-    public boolean removeEntry(Entry e, int dataSetIndex) {
+    public boolean removeEntry(Entry entry, int dataSetIndex) {
         Log.e("AndroidChart", "removeEntry(...) not supported for CombinedData");
         return false;
     }

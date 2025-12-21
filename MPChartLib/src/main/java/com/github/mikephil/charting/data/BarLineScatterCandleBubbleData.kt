@@ -1,14 +1,20 @@
 package com.github.mikephil.charting.data
 
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
+import com.github.mikephil.charting.interfaces.datasets.IDataSet
 
 /**
  * Baseclass for all Line, Bar, Scatter, Candle and Bubble data.
  */
-abstract class BarLineScatterCandleBubbleData<T : IBarLineScatterCandleBubbleDataSet<out Entry>> : ChartData<T> {
+abstract class BarLineScatterCandleBubbleData<out T> : ChartData<@UnsafeVariance T>
+        where T : IDataSet<out Entry>,
+              T : IBarLineScatterCandleBubbleDataSet<out Entry> {
+
     constructor() : super()
 
-    constructor(vararg sets: T) : super(*sets)
+    @Suppress("UNCHECKED_CAST")
+    constructor(vararg sets: @UnsafeVariance T) : super(*sets)
 
-    constructor(sets: MutableList<T>) : super(sets)
+    @Suppress("UNCHECKED_CAST")
+    constructor(sets: MutableList<@UnsafeVariance T>) : super(sets)
 }

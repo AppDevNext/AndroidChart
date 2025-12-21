@@ -14,16 +14,16 @@ open class BarHighlighter(barDataProvider: BarDataProvider) : ChartHighlighter<B
 
         val barData = provider.barData
 
-        val set = barData.getDataSetByIndex(high.dataSetIndex)
-        if (set.isStacked()) {
-            return getStackedHighlight(
-                high,
-                set,
-                pos.x.toFloat(),
-                pos.y.toFloat()
-            )
+        barData.getDataSetByIndex(high.dataSetIndex)?.let { set ->
+            if (set.isStacked()) {
+                return getStackedHighlight(
+                    high,
+                    set,
+                    pos.x.toFloat(),
+                    pos.y.toFloat()
+                )
+            }
         }
-
         MPPointD.recycleInstance(pos)
 
         return high

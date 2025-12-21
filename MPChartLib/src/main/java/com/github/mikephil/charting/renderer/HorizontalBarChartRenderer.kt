@@ -32,10 +32,12 @@ open class HorizontalBarChartRenderer(
 
         for (i in barBuffers.indices) {
             val set = barData.getDataSetByIndex(i)
-            barBuffers[i] = HorizontalBarBuffer(
-                set.entryCount * 4 * (if (set.isStacked) set.stackSize else 1),
-                barData.dataSetCount, set.isStacked
-            )
+            set?.let {
+                barBuffers[i] = HorizontalBarBuffer(
+                    it.entryCount * 4 * (if (set.isStacked) set.stackSize else 1),
+                    barData.dataSetCount, set.isStacked
+                )
+            }
         }
     }
 
@@ -175,7 +177,7 @@ open class HorizontalBarChartRenderer(
             val drawValueAboveBar = dataProvider.isDrawValueAboveBarEnabled
 
             for (i in 0..<dataProvider.barData.dataSetCount) {
-                val dataSet = dataSets[i]
+                val dataSet = dataSets!![i]
                 if (dataSet.entryCount == 0) {
                     continue
                 }
@@ -457,8 +459,8 @@ open class HorizontalBarChartRenderer(
         high.setDraw(bar.centerY(), bar.right)
     }
 
-    override fun isDrawingValuesAllowed(chart: IBaseProvider): Boolean {
-        return (chart.data!!.entryCount < chart.maxVisibleCount
+    override fun isDrawingValuesAllowed(baseProvider: IBaseProvider): Boolean {
+        return (baseProvider.data!!.entryCount < baseProvider.maxVisibleCount
                 * viewPortHandler.scaleY)
     }
 }

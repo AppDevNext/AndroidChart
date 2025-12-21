@@ -92,17 +92,19 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
         val data = this.data
 
         var i = 0
-        val dataSetCount = data.getDataSetCount()
+        val dataSetCount = data.dataSetCount
         while (i < dataSetCount) {
-            val dataSet: IDataSet<*> = data.getDataSetByIndex(i)
+            val dataSet= data.getDataSetByIndex(i)
 
             // don't include DataSets that cannot be highlighted
-            if (!dataSet.isHighlightEnabled) {
-                i++
-                continue
+            dataSet?.let {
+                if (!it.isHighlightEnabled) {
+                    i++
+                    continue
+                }
+                highlightBuffer.addAll(buildHighlights(it, i, xVal, DataSet.Rounding.CLOSEST))
             }
 
-            highlightBuffer.addAll(buildHighlights(dataSet, i, xVal, DataSet.Rounding.CLOSEST))
             i++
         }
 

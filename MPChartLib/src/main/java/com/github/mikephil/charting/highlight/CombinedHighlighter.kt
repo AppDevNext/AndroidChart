@@ -5,7 +5,6 @@ import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.DataSet
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.dataprovider.CombinedDataProvider
-import com.github.mikephil.charting.interfaces.datasets.IDataSet
 
 open class CombinedHighlighter(dataProvider: CombinedDataProvider, barChart: BarDataProvider) : ChartHighlighter<CombinedDataProvider>(dataProvider), IHighlighter {
     /**
@@ -37,20 +36,22 @@ open class CombinedHighlighter(dataProvider: CombinedDataProvider, barChart: Bar
                 }
             } else {
                 var j = 0
-                val dataSetCount = dataObject.getDataSetCount()
+                val dataSetCount = dataObject.dataSetCount
                 while (j < dataSetCount) {
-                    val dataSet: IDataSet<*> = dataObjects[i].getDataSetByIndex(j)
+                    val dataSet = dataObjects[i].getDataSetByIndex(j)
 
-                    // don't include datasets that cannot be highlighted
-                    if (!dataSet.isHighlightEnabled) {
-                        j++
-                        continue
-                    }
+                    dataSet?.let {
+                        // don't include datasets that cannot be highlighted
+                        if (!it.isHighlightEnabled) {
+                            j++
+                            continue
+                        }
 
-                    val highs = buildHighlights(dataSet, j, xVal, DataSet.Rounding.CLOSEST)
-                    for (high in highs) {
-                        high.dataIndex = i
-                        highlightBuffer.add(high)
+                        val highs = buildHighlights(it, j, xVal, DataSet.Rounding.CLOSEST)
+                        for (high in highs) {
+                            high.dataIndex = i
+                            highlightBuffer.add(high)
+                        }
                     }
                     j++
                 }
