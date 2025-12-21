@@ -10,7 +10,6 @@ import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
-import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.github.mikephil.charting.utils.convertDpToPixel
 
