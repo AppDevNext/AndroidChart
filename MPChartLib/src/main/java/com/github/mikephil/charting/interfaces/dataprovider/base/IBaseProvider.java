@@ -56,7 +56,7 @@ public interface IBaseProvider {
     IValueFormatter getDefaultValueFormatter();
 
     @Nullable
-    ChartData getData();
+    ChartData<?> getData();
 
     int getMaxVisibleCount();
 }
