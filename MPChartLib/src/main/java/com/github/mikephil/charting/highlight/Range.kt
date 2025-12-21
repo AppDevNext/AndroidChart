@@ -9,8 +9,7 @@ class Range(var from: Float, @JvmField var to: Float) {
      * Returns true if this range contains (if the value is in between) the given value, false if not.
      */
     fun contains(value: Float): Boolean {
-        if (value > from && value <= to) return true
-        else return false
+        return value > from && value <= to
     }
 
     fun isLarger(value: Float): Boolean {

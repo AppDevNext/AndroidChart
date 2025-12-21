@@ -1,19 +1,18 @@
 package com.github.mikephil.charting.highlight
 
-import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.MPPointD
 import kotlin.math.abs
 import kotlin.math.max
 
-open class BarHighlighter(chart: BarDataProvider?) : ChartHighlighter<BarDataProvider?>(chart) {
+open class BarHighlighter(barDataProvider: BarDataProvider?) : ChartHighlighter<BarDataProvider?>(barDataProvider) {
     override fun getHighlight(x: Float, y: Float): Highlight? {
         val high = super.getHighlight(x, y) ?: return null
 
         val pos = getValsForTouch(x, y)
 
-        val barData = mChart!!.barData
+        val barData = provider!!.barData
 
         val set = barData.getDataSetByIndex(high.dataSetIndex)
         if (set.isStacked()) {
@@ -47,7 +46,7 @@ open class BarHighlighter(chart: BarDataProvider?) : ChartHighlighter<BarDataPro
                 if (ranges.isNotEmpty()) {
                     val stackIndex = getClosestStackIndex(ranges, yVal)
 
-                    val pixels = mChart!!.getTransformer(set.axisDependency)!!.getPixelForValues(high.x, ranges[stackIndex].to)
+                    val pixels = provider!!.getTransformer(set.axisDependency)!!.getPixelForValues(high.x, ranges[stackIndex].to)
 
                     val stackedHigh = Highlight(
                         entry.x,
@@ -91,7 +90,4 @@ open class BarHighlighter(chart: BarDataProvider?) : ChartHighlighter<BarDataPro
         return abs(x1 - x2)
     }
 
-    override fun getData(): BarLineScatterCandleBubbleData<*> {
-        return mChart!!.barData
-    }
 }

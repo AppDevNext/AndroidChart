@@ -7,7 +7,7 @@ import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.dataprovider.CombinedDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 
-open class CombinedHighlighter(chart: CombinedDataProvider?, barChart: BarDataProvider) : ChartHighlighter<CombinedDataProvider?>(chart), IHighlighter {
+open class CombinedHighlighter(dataProvider: CombinedDataProvider?, barChart: BarDataProvider) : ChartHighlighter<CombinedDataProvider?>(dataProvider), IHighlighter {
     /**
      * bar highlighter for supporting stacked highlighting
      */
@@ -19,10 +19,10 @@ open class CombinedHighlighter(chart: CombinedDataProvider?, barChart: BarDataPr
         barHighlighter = BarHighlighter(barChart)
     }
 
-    override fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight?>? {
+    override fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight>? {
         mHighlightBuffer.clear()
 
-        val dataObjects = mChart!!.combinedData!!.getAllData()
+        val dataObjects = provider!!.combinedData!!.getAllData()
 
         for (i in dataObjects.indices) {
             val dataObject: ChartData<*> = dataObjects[i]

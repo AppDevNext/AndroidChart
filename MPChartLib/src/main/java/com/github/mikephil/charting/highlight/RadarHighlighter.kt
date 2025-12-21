@@ -11,7 +11,7 @@ open class RadarHighlighter(chart: RadarChart?) : PieRadarHighlighter<RadarChart
     override fun getClosestHighlight(index: Int, x: Float, y: Float): Highlight? {
         val highlights = getHighlightsAtIndex(index)
 
-        val distanceToCenter = mChart!!.distanceToCenter(x, y) / mChart!!.getFactor()
+        val distanceToCenter = chart!!.distanceToCenter(x, y) / chart!!.getFactor()
 
         var closest: Highlight? = null
         var distance = Float.MAX_VALUE
@@ -38,22 +38,22 @@ open class RadarHighlighter(chart: RadarChart?) : PieRadarHighlighter<RadarChart
     protected fun getHighlightsAtIndex(index: Int): MutableList<Highlight> {
         mHighlightBuffer.clear()
 
-        val phaseX = mChart!!.animator.phaseX
-        val phaseY = mChart!!.animator.phaseY
-        val sliceAngle = mChart!!.sliceAngle
-        val factor = mChart!!.getFactor()
+        val phaseX = chart!!.animator.phaseX
+        val phaseY = chart!!.animator.phaseY
+        val sliceAngle = chart!!.sliceAngle
+        val factor = chart!!.getFactor()
 
         val pOut = MPPointF.getInstance(0f, 0f)
-        for (i in 0..<mChart!!.data!!.getDataSetCount()) {
-            val dataSet: IDataSet<*> = mChart!!.data!!.getDataSetByIndex(i)
+        for (i in 0..<chart!!.data!!.getDataSetCount()) {
+            val dataSet: IDataSet<*> = chart!!.data!!.getDataSetByIndex(i)
 
             val entry: Entry? = dataSet.getEntryForIndex(index)
 
-            val y = (entry!!.y - mChart!!.yChartMin)
+            val y = (entry!!.y - chart!!.yChartMin)
 
             Utils.getPosition(
-                mChart!!.centerOffsets, y * factor * phaseY,
-                sliceAngle * index * phaseX + mChart!!.rotationAngle, pOut
+                chart!!.centerOffsets, y * factor * phaseY,
+                sliceAngle * index * phaseX + chart!!.rotationAngle, pOut
             )
 
             mHighlightBuffer.add(Highlight(index.toFloat(), entry.y, pOut.x, pOut.y, i, dataSet.axisDependency))

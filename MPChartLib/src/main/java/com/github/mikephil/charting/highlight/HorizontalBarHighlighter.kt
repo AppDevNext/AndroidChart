@@ -7,9 +7,9 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.MPPointD
 import kotlin.math.abs
 
-class HorizontalBarHighlighter(chart: BarDataProvider?) : BarHighlighter(chart) {
+class HorizontalBarHighlighter(dataProvider: BarDataProvider?) : BarHighlighter(dataProvider) {
     override fun getHighlight(x: Float, y: Float): Highlight? {
-        val barData = mChart!!.barData
+        val barData = provider!!.barData
 
         val pos = getValsForTouch(y, x)
 
@@ -30,11 +30,11 @@ class HorizontalBarHighlighter(chart: BarDataProvider?) : BarHighlighter(chart) 
         return high
     }
 
-    override fun buildHighlights(set: IDataSet<*>, dataSetIndex: Int, xVal: Float, rounding: DataSet.Rounding?): MutableList<Highlight?> {
-        val highlights = ArrayList<Highlight?>()
+    override fun buildHighlights(set: IDataSet<*>, dataSetIndex: Int, xVal: Float, rounding: DataSet.Rounding?): MutableList<Highlight> {
+        val highlights = ArrayList<Highlight>()
 
         var entries = set.getEntriesForXValue(xVal)
-        if (entries!!.isEmpty()) {
+        if (entries != null && entries.isEmpty()) {
             // Try to find closest x-value and take all entries for that x-value
             val closestEntry: Entry? = set.getEntryForXValue(xVal, Float.NaN, rounding)
             closestEntry?.let { closestE ->
@@ -42,20 +42,21 @@ class HorizontalBarHighlighter(chart: BarDataProvider?) : BarHighlighter(chart) 
             }
         }
 
-        if (entries!!.isEmpty())
+        if (entries != null && entries.isEmpty())
             return highlights
 
-        for (entry in entries) {
-            val pixels = mChart!!.getTransformer(set.axisDependency)!!.getPixelForValues(entry.y, entry.x)
+        if (entries != null)
+            for (entry in entries) {
+                val pixels = provider!!.getTransformer(set.axisDependency)!!.getPixelForValues(entry.y, entry.x)
 
-            highlights.add(
-                Highlight(
-                    entry.x, entry.y,
-                    pixels.x.toFloat(), pixels.y.toFloat(),
-                    dataSetIndex, set.axisDependency
+                highlights.add(
+                    Highlight(
+                        entry.x, entry.y,
+                        pixels.x.toFloat(), pixels.y.toFloat(),
+                        dataSetIndex, set.axisDependency
+                    )
                 )
-            )
-        }
+            }
 
         return highlights
     }
