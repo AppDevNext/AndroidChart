@@ -123,7 +123,7 @@ class ListViewBarChartActivity : DemoBase() {
         d.setColors(*ColorTemplate.VORDIPLOM_COLORS)
         d.barShadowColor = Color.rgb(203, 203, 203)
 
-        val sets = ArrayList<IBarDataSet?>()
+        val sets = ArrayList<IBarDataSet>()
         sets.add(d)
 
         val cd = BarData(sets)

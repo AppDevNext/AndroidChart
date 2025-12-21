@@ -127,7 +127,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
 
             set1.isDrawIcons = false
 
-            val dataSets = ArrayList<IBarDataSet?>()
+            val dataSets = ArrayList<IBarDataSet>()
             dataSets.add(set1)
 
             val data = BarData(dataSets)

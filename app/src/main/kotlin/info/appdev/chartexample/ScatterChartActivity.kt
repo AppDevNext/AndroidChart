@@ -123,7 +123,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         set2.scatterShapeSize = 8f
         set3.scatterShapeSize = 8f
 
-        val dataSets = ArrayList<IScatterDataSet?>()
+        val dataSets = ArrayList<IScatterDataSet>()
         dataSets.add(set1) // add the data sets
         dataSets.add(set2)
         dataSets.add(set3)
