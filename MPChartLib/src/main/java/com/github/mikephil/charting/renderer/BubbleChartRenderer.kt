@@ -29,8 +29,9 @@ open class BubbleChartRenderer(
     override fun drawData(canvas: Canvas) {
         val bubbleData = dataProvider.bubbleData
 
-        for (set in bubbleData.dataSets) {
-            if (set.isVisible) drawDataSet(canvas, set)
+        bubbleData?.dataSets?.forEach { set ->
+            if (set.isVisible)
+                drawDataSet(canvas, set)
         }
     }
 
@@ -194,15 +195,18 @@ open class BubbleChartRenderer(
         val phaseY = animator.phaseY
 
         for (high in indices) {
-            val set = bubbleData.getDataSetByIndex(high.dataSetIndex)
+            val set = bubbleData?.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled) continue
+            if (set == null || !set.isHighlightEnabled)
+                continue
 
             val bubbleEntry = set.getEntryForXValue(high.x, high.y)!!
 
-            if (bubbleEntry.y != high.y) continue
+            if (bubbleEntry.y != high.y)
+                continue
 
-            if (!isInBoundsX(bubbleEntry, set)) continue
+            if (!isInBoundsX(bubbleEntry, set))
+                continue
 
             val trans = dataProvider.getTransformer(set.axisDependency)
 
@@ -215,9 +219,7 @@ open class BubbleChartRenderer(
 
             // calculate the full width of 1 step on the x-axis
             val maxBubbleWidth = abs((sizeBuffer[2] - sizeBuffer[0]).toDouble()).toFloat()
-            val maxBubbleHeight = abs(
-                (viewPortHandler.contentBottom() - viewPortHandler.contentTop()).toDouble()
-            ).toFloat()
+            val maxBubbleHeight = abs((viewPortHandler.contentBottom() - viewPortHandler.contentTop()).toDouble()).toFloat()
             val referenceSize = min(maxBubbleHeight.toDouble(), maxBubbleWidth.toDouble()).toFloat()
 
             pointBuffer[0] = bubbleEntry.x
@@ -237,9 +239,11 @@ open class BubbleChartRenderer(
                 || !viewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf)
             ) continue
 
-            if (!viewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf)) continue
+            if (!viewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf))
+                continue
 
-            if (!viewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf)) break
+            if (!viewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf))
+                break
 
             val originalColor = set.getColorByIndex(bubbleEntry.x.toInt())
 
