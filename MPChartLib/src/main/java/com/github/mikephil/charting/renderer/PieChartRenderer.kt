@@ -104,7 +104,7 @@ open class PieChartRenderer(
         val pieData = chart.data
 
         for (set in pieData!!.dataSets) {
-            if (set.isVisible && set.entryCount > 0) drawDataSet(set)
+            if (set!!.isVisible && set.entryCount > 0) drawDataSet(set)
         }
     }
 
@@ -389,7 +389,7 @@ open class PieChartRenderer(
 
             for (i in dataSets.indices) {
                 val dataSet = dataSets[i]
-                if (dataSet.entryCount == 0) {
+                if (dataSet!!.entryCount == 0) {
                     continue
                 }
                 val drawValues = dataSet.isDrawValues
@@ -900,11 +900,13 @@ open class PieChartRenderer(
      * This gives all pie-slices a rounded edge.
      */
     protected fun drawRoundedSlices() {
-        if (!chart.isDrawRoundedSlicesEnabled) return
+        if (!chart.isDrawRoundedSlicesEnabled)
+            return
 
         val dataSet = chart.data!!.dataSet
 
-        if (!dataSet.isVisible) return
+        if (!dataSet!!.isVisible)
+            return
 
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
