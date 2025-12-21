@@ -63,13 +63,15 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
         val yOffset = Utils.calcTextHeight(paintAxisLabels, "A") / 2.5f + yAxis.yOffset
 
-        val dependency = yAxis.axisDependency
+        val axisDependency = yAxis.axisDependency
         val labelPosition = yAxis.labelPosition
 
-        val xPos = calculateAxisLabelsXPosition(dependency, labelPosition)
-        paintAxisLabels.textAlign = getAxisLabelTextAlign(dependency, labelPosition)
+        if (axisDependency != null && labelPosition != null) {
+            val xPos = calculateAxisLabelsXPosition(axisDependency, labelPosition)
+            paintAxisLabels.textAlign = getAxisLabelTextAlign(axisDependency, labelPosition)
 
-        drawYLabels(canvas, xPos, positions, yOffset)
+            drawYLabels(canvas, xPos, positions, yOffset)
+        }
     }
 
     override fun renderAxisLine(canvas: Canvas) {
@@ -118,7 +120,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         // draw
         for (i in from..<to) {
             val text = if (yAxis.isShowSpecificPositions) {
-                yAxis.valueFormatter.getFormattedValue(yAxis.specificPositions[i], yAxis)
+                yAxis.valueFormatter?.getFormattedValue(yAxis.specificPositions[i], yAxis)
             } else {
                 yAxis.getFormattedLabel(i)
             }
@@ -277,7 +279,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
             limitLinePath.reset()
 
             for (i in limitLines.indices) {
-                val limitLine = limitLines[i]!!
+                val limitLine = limitLines[i]
 
                 if (!limitLine.isEnabled)
                     continue
@@ -375,7 +377,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
             limitRangePathFill.reset()
 
             for (limitRangeIndex in limitRanges.indices) {
-                val limitRange = limitRanges[limitRangeIndex]!!
+                val limitRange = limitRanges[limitRangeIndex]
 
                 if (!limitRange.isEnabled)
                     continue

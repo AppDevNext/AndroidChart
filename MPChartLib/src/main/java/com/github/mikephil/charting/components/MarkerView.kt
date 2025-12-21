@@ -52,7 +52,7 @@ open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(c
     var chartView: Chart<*>?
         get() = if (mWeakChart == null) null else mWeakChart!!.get()
         set(chart) {
-            mWeakChart = WeakReference<Chart<*>?>(chart)
+            mWeakChart = WeakReference(chart)
         }
 
     override fun getOffsetForDrawingAtPoint(posX: Float, posY: Float): MPPointF {

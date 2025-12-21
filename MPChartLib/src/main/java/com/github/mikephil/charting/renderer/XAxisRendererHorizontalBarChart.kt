@@ -149,7 +149,7 @@ open class XAxisRendererHorizontalBarChart(
             val y = positions[i + 1]
 
             if (viewPortHandler.isInBoundsY(y)) {
-                val label = xAxis.valueFormatter.getFormattedValue(xAxis.mEntries[i / 2], xAxis)
+                val label = xAxis.valueFormatter?.getFormattedValue(xAxis.mEntries[i / 2], xAxis)
                 drawLabel(canvas, label, pos, y, anchor, labelRotationAngleDegrees)
             }
             i += 2
@@ -215,7 +215,7 @@ open class XAxisRendererHorizontalBarChart(
         limitLinePath.reset()
 
         for (i in limitLines.indices) {
-            val limitLine = limitLines[i]!!
+            val limitLine = limitLines[i]
 
             if (!limitLine.isEnabled) continue
 

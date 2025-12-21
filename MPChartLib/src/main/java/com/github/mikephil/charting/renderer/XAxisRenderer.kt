@@ -6,6 +6,8 @@ import android.graphics.Paint
 import android.graphics.Paint.Align
 import android.graphics.Path
 import android.graphics.RectF
+import androidx.core.graphics.withClip
+import androidx.core.graphics.withSave
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition
 import com.github.mikephil.charting.components.XAxis
@@ -16,8 +18,6 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
-import androidx.core.graphics.withClip
-import androidx.core.graphics.withSave
 import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.roundToInt
 
@@ -102,21 +102,25 @@ open class XAxisRenderer(
                 pointF.y = 1.0f
                 drawLabels(canvas, viewPortHandler.contentTop() - yOffset, pointF)
             }
+
             XAxisPosition.TOP_INSIDE -> {
                 pointF.x = 0.5f
                 pointF.y = 1.0f
                 drawLabels(canvas, viewPortHandler.contentTop() + yOffset + xAxis.mLabelHeight, pointF)
             }
+
             XAxisPosition.BOTTOM -> {
                 pointF.x = 0.5f
                 pointF.y = 0.0f
                 drawLabels(canvas, viewPortHandler.contentBottom() + yOffset, pointF)
             }
+
             XAxisPosition.BOTTOM_INSIDE -> {
                 pointF.x = 0.5f
                 pointF.y = 0.0f
                 drawLabels(canvas, viewPortHandler.contentBottom() - yOffset - xAxis.mLabelHeight, pointF)
             }
+
             else -> { // BOTH SIDED
                 pointF.x = 0.5f
                 pointF.y = 1.0f
@@ -165,12 +169,12 @@ open class XAxisRenderer(
         var positions: FloatArray
 
         if (xAxis.isShowSpecificPositions) {
-                positions = FloatArray(xAxis.specificPositions.size * 2)
-                var i = 0
-                while (i < positions.size) {
-                    positions[i] = xAxis.specificPositions[i / 2]
-                    i += 2
-                }
+            positions = FloatArray(xAxis.specificPositions.size * 2)
+            var i = 0
+            while (i < positions.size) {
+                positions[i] = xAxis.specificPositions[i / 2]
+                i += 2
+            }
         } else {
             positions = FloatArray(xAxis.mEntryCount * 2)
             var i = 0
@@ -193,9 +197,9 @@ open class XAxisRenderer(
 
             if (viewPortHandler.isInBoundsX(x)) {
                 val label = if (xAxis.isShowSpecificPositions)
-                    xAxis.valueFormatter.getFormattedValue(xAxis.specificPositions[i / 2], xAxis)
+                    xAxis.valueFormatter?.getFormattedValue(xAxis.specificPositions[i / 2], xAxis)
                 else
-                    xAxis.valueFormatter.getFormattedValue(xAxis.mEntries[i / 2], xAxis)
+                    xAxis.valueFormatter?.getFormattedValue(xAxis.mEntries[i / 2], xAxis)
 
                 if (xAxis.isAvoidFirstLastClippingEnabled) {
                     // avoid clipping of the last
@@ -347,7 +351,7 @@ open class XAxisRenderer(
         position[1] = 0f
 
         for (i in limitLines.indices) {
-            val limitLine = limitLines[i]!!
+            val limitLine = limitLines[i]
 
             if (!limitLine.isEnabled) continue
 
@@ -393,10 +397,12 @@ open class XAxisRenderer(
                         limitLinePaint
                     )
                 }
+
                 LimitLabelPosition.RIGHT_BOTTOM -> {
                     limitLinePaint.textAlign = Align.LEFT
                     canvas.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
                 }
+
                 LimitLabelPosition.LEFT_TOP -> {
                     limitLinePaint.textAlign = Align.RIGHT
                     val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
@@ -405,6 +411,7 @@ open class XAxisRenderer(
                         limitLinePaint
                     )
                 }
+
                 else -> {
                     limitLinePaint.textAlign = Align.RIGHT
                     canvas.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
