@@ -111,7 +111,7 @@ class FilledLineActivity : DemoBase() {
             set1.highLightColor = Color.rgb(244, 117, 117)
             set1.isDrawCircleHoleEnabled = false
             set1.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
                     // change the return value here to better understand the effect
                     // return 0;
                     return binding.chart1.axisLeft.axisMinimum
@@ -131,7 +131,7 @@ class FilledLineActivity : DemoBase() {
             set2.isDrawCircleHoleEnabled = false
             set2.highLightColor = Color.rgb(244, 117, 117)
             set2.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
                     // change the return value here to better understand the effect
                     // return 600;
                     return binding.chart1.axisLeft.axisMaximum

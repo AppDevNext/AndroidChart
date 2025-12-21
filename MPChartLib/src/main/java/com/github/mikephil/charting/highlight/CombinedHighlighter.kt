@@ -7,7 +7,7 @@ import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.dataprovider.CombinedDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 
-open class CombinedHighlighter(dataProvider: CombinedDataProvider?, barChart: BarDataProvider) : ChartHighlighter<CombinedDataProvider>(dataProvider), IHighlighter {
+open class CombinedHighlighter(dataProvider: CombinedDataProvider, barChart: BarDataProvider) : ChartHighlighter<CombinedDataProvider>(dataProvider), IHighlighter {
     /**
      * bar highlighter for supporting stacked highlighting
      */

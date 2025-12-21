@@ -7,7 +7,7 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.MPPointD
 import kotlin.math.abs
 
-class HorizontalBarHighlighter(dataProvider: BarDataProvider?) : BarHighlighter(dataProvider) {
+class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(dataProvider) {
     override fun getHighlight(x: Float, y: Float): Highlight? {
         val barData = provider!!.barData
 

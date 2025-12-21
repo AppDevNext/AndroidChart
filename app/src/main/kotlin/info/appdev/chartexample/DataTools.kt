@@ -206,7 +206,7 @@ class DataTools {
             // set the filled area
             lineDataSet01.setDrawFilled(true)
             lineDataSet01.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
                     return lineChart.axisLeft.axisMinimum
                 }
             }
