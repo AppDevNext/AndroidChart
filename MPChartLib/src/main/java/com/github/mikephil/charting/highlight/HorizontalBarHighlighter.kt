@@ -9,7 +9,7 @@ import kotlin.math.abs
 
 class HorizontalBarHighlighter(chart: BarDataProvider?) : BarHighlighter(chart) {
     override fun getHighlight(x: Float, y: Float): Highlight? {
-        val barData = mChart.barData
+        val barData = mChart!!.barData
 
         val pos = getValsForTouch(y, x)
 
@@ -36,22 +36,21 @@ class HorizontalBarHighlighter(chart: BarDataProvider?) : BarHighlighter(chart) 
         var entries = set.getEntriesForXValue(xVal)
         if (entries!!.isEmpty()) {
             // Try to find closest x-value and take all entries for that x-value
-            val closest: Entry? = set.getEntryForXValue(xVal, Float.NaN, rounding)
-            if (closest != null) {
-                entries = set.getEntriesForXValue(closest.x)
+            val closestEntry: Entry? = set.getEntryForXValue(xVal, Float.NaN, rounding)
+            closestEntry?.let { closestE ->
+                entries = set.getEntriesForXValue(closestE.x)
             }
         }
 
-        if (entries!!.isEmpty()) return highlights
+        if (entries!!.isEmpty())
+            return highlights
 
-        for (e in entries) {
-            val pixels = mChart.getTransformer(
-                set.axisDependency
-            )!!.getPixelForValues(e.y, e.x)
+        for (entry in entries) {
+            val pixels = mChart!!.getTransformer(set.axisDependency)!!.getPixelForValues(entry.y, entry.x)
 
             highlights.add(
                 Highlight(
-                    e.x, e.y,
+                    entry.x, entry.y,
                     pixels.x.toFloat(), pixels.y.toFloat(),
                     dataSetIndex, set.axisDependency
                 )
@@ -61,7 +60,5 @@ class HorizontalBarHighlighter(chart: BarDataProvider?) : BarHighlighter(chart) 
         return highlights
     }
 
-    override fun getDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
-        return abs(y1 - y2)
-    }
+    override fun getDistance(x1: Float, y1: Float, x2: Float, y2: Float) = abs(y1 - y2)
 }
