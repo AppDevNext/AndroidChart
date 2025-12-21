@@ -114,121 +114,84 @@ open class CandleDataSet(yVals: MutableList<CandleEntry>?, label: String = "") :
         }
     }
 
-    /**
-     * Sets the space that is left out on the left and right side of each
-     * candle, default 0.1f (10%), max 0.45f, min 0f
-     */
-    fun setBarSpace(space: Float) {
-        var space = space
-        if (space < 0f) space = 0f
-        if (space > 0.45f) space = 0.45f
+    override var barSpace: Float
+        get() = mBarSpace
+        set(value) {
+            /**
+             * Sets the space that is left out on the left and right side of each
+             * candle, default 0.1f (10%), max 0.45f, min 0f
+             */
+            var space = value
+            if (space < 0f) space = 0f
+            if (space > 0.45f) space = 0.45f
 
-        mBarSpace = space
-    }
+            mBarSpace = space
+        }
 
-    override fun getBarSpace(): Float {
-        return mBarSpace
-    }
-
-    /**
-     * Sets the width of the candle-shadow-line in pixels. Default 3f.
-     */
-    fun setShadowWidth(width: Float) {
-        mShadowWidth = width.convertDpToPixel()
-    }
-
-    override fun getShadowWidth(): Float {
-        return mShadowWidth
-    }
-
-    /**
-     * Sets whether the candle bars should show?
-     */
-    fun setShowCandleBar(showCandleBar: Boolean) {
-        mShowCandleBar = showCandleBar
-    }
-
-    override fun getShowCandleBar(): Boolean {
-        return mShowCandleBar
-    }
-
-    /**
-     * Sets the one and ONLY color that should be used for this DataSet when
-     * open == close.
-     */
-    fun setNeutralColor(color: Int) {
-        mNeutralColor = color
-    }
-
-    override fun getNeutralColor(): Int {
-        return mNeutralColor
-    }
-
-    /**
-     * Sets the one and ONLY color that should be used for this DataSet when
-     * open <= close.
-     */
-    fun setIncreasingColor(color: Int) {
-        mIncreasingColor = color
-    }
-
-    override fun getIncreasingColor(): Int {
-        return mIncreasingColor
-    }
-
-    /**
-     * Sets the one and ONLY color that should be used for this DataSet when
-     * open > close.
-     */
-    fun setDecreasingColor(color: Int) {
-        mDecreasingColor = color
-    }
-
-    override fun getDecreasingColor(): Int {
-        return mDecreasingColor
-    }
-
-    override fun getIncreasingPaintStyle(): Paint.Style? {
-        return mIncreasingPaintStyle
-    }
-
-    /**
-     * Sets paint style when open < close
-     */
-    fun setIncreasingPaintStyle(paintStyle: Paint.Style?) {
-        this.mIncreasingPaintStyle = paintStyle
-    }
-
-    override fun getDecreasingPaintStyle(): Paint.Style? {
-        return mDecreasingPaintStyle
-    }
-
-    /**
-     * Sets paint style when open > close
-     */
-    fun setDecreasingPaintStyle(decreasingPaintStyle: Paint.Style?) {
-        this.mDecreasingPaintStyle = decreasingPaintStyle
-    }
-
-    override fun getShadowColor(): Int {
-        return mShadowColor
-    }
-
-    /**
-     * Sets shadow color for all entries
-     */
-    fun setShadowColor(shadowColor: Int) {
-        this.mShadowColor = shadowColor
-    }
-
-    override fun getShadowColorSameAsCandle(): Boolean {
-        return mShadowColorSameAsCandle
-    }
-
-    /**
-     * Sets shadow color to be the same color as the candle color
-     */
-    fun setShadowColorSameAsCandle(shadowColorSameAsCandle: Boolean) {
-        this.mShadowColorSameAsCandle = shadowColorSameAsCandle
-    }
+    override var showCandleBar: Boolean
+        get() = mShowCandleBar
+        set(value) {
+            mShowCandleBar = value
+        }
+    override var shadowWidth: Float
+        get() = mShadowWidth
+        set(value) {
+            mShadowWidth = value.convertDpToPixel()
+        }
+    override var shadowColor: Int
+        get() = mShadowColor
+        set(value) {
+            mShadowColor = value
+        }
+    override var neutralColor: Int
+        get() = mNeutralColor
+        set(value) {
+            /**
+             * Sets the one and ONLY color that should be used for this DataSet when
+             * open == close.
+             */
+            mNeutralColor = value
+        }
+    override var increasingColor: Int
+        get() = mIncreasingColor
+        set(value) {
+            /**
+             * Sets the one and ONLY color that should be used for this DataSet when
+             * open <= close.
+             */
+            mIncreasingColor = value
+        }
+    override var decreasingColor: Int
+        get() = mDecreasingColor
+        set(value) {
+            /**
+             * Sets the one and ONLY color that should be used for this DataSet when
+             * open > close.
+             */
+            mDecreasingColor = value
+        }
+    override var increasingPaintStyle: Paint.Style?
+        get() = mIncreasingPaintStyle
+        set(value) {
+            /**
+             * Sets paint style when open < close
+             */
+            mIncreasingPaintStyle = value
+        }
+    override var decreasingPaintStyle: Paint.Style?
+        get() = mDecreasingPaintStyle
+        set(value) {
+            /**
+             * Sets paint style when open > close
+             */
+            mDecreasingPaintStyle = value
+        }
+    override var shadowColorSameAsCandle: Boolean
+        get() = mShadowColorSameAsCandle
+        set(value) {
+            /**
+             * Sets shadow color to be the same color as the candle color
+             */
+            mShadowColorSameAsCandle = value
+        }
 }

@@ -193,7 +193,7 @@ class CombinedChartActivity : DemoBase() {
         val set = CandleDataSet(entries, "Candle DataSet")
         set.decreasingColor = Color.rgb(142, 150, 175)
         set.shadowColor = Color.DKGRAY
-        set.setBarSpace(0.3f)
+        set.barSpace = 0.3f
         set.valueTextSize = 10f
         set.isDrawValues = false
         d.addDataSet(set)
