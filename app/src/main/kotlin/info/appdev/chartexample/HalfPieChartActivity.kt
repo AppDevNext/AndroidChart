@@ -90,7 +90,7 @@ class HalfPieChartActivity : DemoBase() {
         }
 
         val dataSet = PieDataSet(values, "Election Results")
-        dataSet.setSliceSpace(3f)
+        dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
 
         dataSet.setColors(*ColorTemplate.MATERIAL_COLORS)

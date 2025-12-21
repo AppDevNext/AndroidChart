@@ -127,7 +127,7 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
         dataSet.isDrawIcons = false
 
-        dataSet.setSliceSpace(3f)
+        dataSet.sliceSpace = 3f
         dataSet.iconsOffset = MPPointF(0f, 40f)
         dataSet.selectionShift = 5f
 

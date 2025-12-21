@@ -155,7 +155,7 @@ class ListViewMultiChartActivity : DemoBase() {
         val d = PieDataSet(entries, "")
 
         // space between slices
-        d.setSliceSpace(2f)
+        d.sliceSpace = 2f
         d.setColors(*ColorTemplate.VORDIPLOM_COLORS)
 
         return PieData(d)

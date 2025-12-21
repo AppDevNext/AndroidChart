@@ -115,7 +115,7 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
         }
 
         val dataSet = PieDataSet(entries, "Election Results")
-        dataSet.setSliceSpace(3f)
+        dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
 
         // add a lot of colors

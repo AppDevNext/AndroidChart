@@ -1,74 +1,69 @@
-package com.github.mikephil.charting.interfaces.datasets;
+package com.github.mikephil.charting.interfaces.datasets
 
-import androidx.annotation.Nullable;
+import com.github.mikephil.charting.data.PieDataSet.ValuePosition
+import com.github.mikephil.charting.data.PieEntry
 
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-
-public interface IPieDataSet extends IDataSet<PieEntry> {
-
+interface IPieDataSet : IDataSet<PieEntry> {
     /**
      * Returns the space that is set to be between the piechart-slices of this
      * DataSet, in pixels.
      */
-    float getSliceSpace();
+    val sliceSpace: Float
 
     /**
      * When enabled, slice spacing will be 0.0 when the smallest value is going to be
      * smaller than the slice spacing itself.
      */
-    boolean isAutomaticallyDisableSliceSpacingEnabled();
+    val isAutomaticallyDisableSliceSpacingEnabled: Boolean
 
     /**
      * Returns the distance a highlighted piechart slice is "shifted" away from
      * the chart-center in dp.
      */
-    float getSelectionShift();
+    val selectionShift: Float
 
-    PieDataSet.ValuePosition getXValuePosition();
+    val xValuePosition: ValuePosition?
 
-    PieDataSet.ValuePosition getYValuePosition();
+    val yValuePosition: ValuePosition?
 
     /**
      * When valuePosition is OutsideSlice, indicates line color
      */
-    int getValueLineColor();
+    val valueLineColor: Int
 
     /**
      * When valuePosition is OutsideSlice and enabled, line will have the same color as the slice
      */
-    boolean isUseValueColorForLineEnabled();
+    val isUseValueColorForLineEnabled: Boolean
 
     /**
      * When valuePosition is OutsideSlice, indicates line width
      */
-    float getValueLineWidth();
+    val valueLineWidth: Float
 
     /**
      * When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
      */
-    float getValueLinePart1OffsetPercentage();
+    val valueLinePart1OffsetPercentage: Float
 
     /**
      * When valuePosition is OutsideSlice, indicates length of first half of the line
      */
-    float getValueLinePart1Length();
+    val valueLinePart1Length: Float
 
     /**
      * When valuePosition is OutsideSlice, indicates length of second half of the line
      */
-    float getValueLinePart2Length();
+    val valueLinePart2Length: Float
 
     /**
      * When valuePosition is OutsideSlice, this allows variable line length
      */
-    boolean isValueLineVariableLength();
+    val isValueLineVariableLength: Boolean
 
     /**
      * Gets the color for the highlighted sector
      */
-    @Nullable
-    Integer getHighlightColor();
-
+    val highlightColor: Int?
 }
 
