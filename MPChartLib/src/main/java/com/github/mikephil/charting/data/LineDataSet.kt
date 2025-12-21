@@ -14,7 +14,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
     /**
      * Drawing mode for this line dataset
      */
-    private var mLineDataSetMode: Mode? = Mode.LINEAR
+    private var mLineDataSetMode: Mode = Mode.LINEAR
 
     /**
      * returns all colors specified for the circles
@@ -109,89 +109,16 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
         lineDataSet.mLineDataSetMode = mLineDataSetMode
     }
 
-    /**
-     * Returns the drawing mode for this line dataset
-     */
-    override fun getLineMode(): Mode? {
-        return mLineDataSetMode
-    }
-
-    /**
-     * Returns the drawing mode for this LineDataSet
-     */
-    fun setLineMode(mode: Mode?) {
-        mLineDataSetMode = mode
-    }
-
-    /**
-     * Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic,
-     * Min = 0.05f = low cubic effect, Default: 0.2f
-     */
-    fun setCubicIntensity(intensity: Float) {
-        var intensity = intensity
-        if (intensity > 1f) {
-            intensity = 1f
-        }
-        if (intensity < 0.05f) {
-            intensity = 0.05f
-        }
-
-        mCubicIntensity = intensity
-    }
-
-    override fun getCubicIntensity(): Float {
-        return mCubicIntensity
-    }
-
-
-    /**
-     * Sets the radius of the drawn circles.
-     * Default radius = 4f, Min = 1f
-     */
-    fun setCircleRadius(radius: Float) {
-        if (radius >= 1f) {
-            mCircleRadius = radius.convertDpToPixel()
-        } else {
-            Log.e("LineDataSet", "Circle radius cannot be < 1")
-        }
-    }
-
-    override fun getCircleRadius(): Float {
-        return mCircleRadius
-    }
-
-    /**
-     * Sets the hole radius of the drawn circles.
-     * Default radius = 2f, Min = 0.5f
-     */
-    fun setCircleHoleRadius(holeRadius: Float) {
-        if (holeRadius >= 0.5f) {
-            mCircleHoleRadius = holeRadius.convertDpToPixel()
-        } else {
-            Log.e("LineDataSet", "Circle radius cannot be < 0.5")
-        }
-    }
-
-    override fun getCircleHoleRadius(): Float {
-        return mCircleHoleRadius
-    }
-
-    @get:Deprecated("")
-    @set:Deprecated("")
+    @get:Deprecated("Deprecated because of unclarity. Use getCircleRadius instead")
+    @set:Deprecated("Deprecated because of unclarity. Use getCircleRadius instead")
     var circleSize: Float
-        /**
-         * This function is deprecated because of unclarity. Use getCircleRadius instead.
-         */
         get() = circleRadius
         /**
          * sets the size (radius) of the circle shpaed value indicators,
          * default size = 4f
-         *
-         *
-         * This method is deprecated because of unclarity. Use setCircleRadius instead.
          */
         set(size) {
-            setCircleRadius(size)
+            circleRadius = size
         }
 
     /**
@@ -211,50 +138,114 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
         )
     }
 
-    /**
-     * Disables the line to be drawn in dashed mode.
-     */
-    fun disableDashedLine() {
-        mDashPathEffect = null
-    }
+    override var lineMode: Mode
+        get() = mLineDataSetMode
+        set(value) {
+            mLineDataSetMode = value
+        }
+    override var cubicIntensity: Float
+        get() = mCubicIntensity
+        set(value) {
+            /**
+             * Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic,
+             * Min = 0.05f = low cubic effect, Default: 0.2f
+             */
+            var intensity = value
+            if (intensity > 1f) {
+                intensity = 1f
+            }
+            if (intensity < 0.05f) {
+                intensity = 0.05f
+            }
 
-    override fun isDashedLineEnabled(): Boolean {
-        return mDashPathEffect != null
-    }
+            mCubicIntensity = intensity
+        }
 
-    override fun getDashPathEffect(): DashPathEffect? {
-        return mDashPathEffect
-    }
+    @Suppress("OVERRIDE_DEPRECATION")
+    override val isDrawCubicEnabled: Boolean
+        get() = mLineDataSetMode == Mode.CUBIC_BEZIER
 
-    /**
-     * set this to true to enable the drawing of circle indicators for this
-     * DataSet, default true
-     */
-    fun setDrawCircles(enabled: Boolean) {
-        this.mDrawCircles = enabled
-    }
+    @Suppress("OVERRIDE_DEPRECATION")
+    override val isDrawSteppedEnabled: Boolean
+        get() = mLineDataSetMode == Mode.STEPPED
+    override var circleRadius: Float
+        get() = mCircleRadius
+        set(value) {
+            /**
+             * Sets the radius of the drawn circles.
+             * Default radius = 4f, Min = 1f
+             */
+            if (value >= 1f) {
+                mCircleRadius = value.convertDpToPixel()
+            } else {
+                Log.e("LineDataSet", "Circle radius cannot be < 1")
+            }
+        }
 
-    override fun isDrawCirclesEnabled(): Boolean {
-        return mDrawCircles
-    }
-
-    @Deprecated("")
-    override fun isDrawCubicEnabled(): Boolean {
-        return mLineDataSetMode == Mode.CUBIC_BEZIER
-    }
-
-    @Deprecated("")
-    override fun isDrawSteppedEnabled(): Boolean {
-        return mLineDataSetMode == Mode.STEPPED
-    }
+    override var circleHoleRadius: Float
+        get() = mCircleHoleRadius
+        set(value) {
+            /**
+             * Sets the hole radius of the drawn circles.
+             * Default radius = 2f, Min = 0.5f
+             */
+            if (value >= 0.5f) {
+                mCircleHoleRadius = value.convertDpToPixel()
+            } else {
+                Log.e("LineDataSet", "Circle radius cannot be < 0.5")
+            }
+        }
 
     override fun getCircleColor(index: Int): Int {
-        return circleColors!!.get(index)!!
+        return circleColors!![index]!!
     }
 
-    override fun getCircleColorCount(): Int {
-        return circleColors!!.size
-    }
+    override val circleColorCount: Int
+        get() = circleColors!!.size
+
+    override var isDrawCirclesEnabled: Boolean
+        get() = mDrawCircles
+        set(value) {
+            mDrawCircles = value
+        }
+    override var circleHoleColor: Int
+        get() = mCircleHoleColor
+        set(value) {
+            mCircleHoleColor = value
+        }
+    override var isDrawCircleHoleEnabled: Boolean
+        get() = mDrawCircleHole
+        set(value) {
+            mDrawCircleHole = value
+        }
+    override var dashPathEffect: DashPathEffect?
+        get() = mDashPathEffect
+        set(value) {
+            mDashPathEffect = value
+        }
+
+    /**
+     * set it with method enableDashedLine(..)
+     */
+    override var isDashedLineEnabled: Boolean
+        get() = mDashPathEffect != null
+        set(value) {
+            mDashPathEffect = null
+        }
+
+    /**
+     * Sets a custom IFillFormatter to the chart that handles the position of the
+     * filled-line for each DataSet. Set this to null to use the default logic.
+     */
+    override var fillFormatter: IFillFormatter?
+        get() = mFillFormatter
+        set(value) {
+            if (value == null) {
+                mFillFormatter = DefaultFillFormatter()
+            } else {
+                mFillFormatter = value
+            }
+        }
 
     /**
      * Sets the colors that should be used for the circles of this DataSet.
@@ -278,7 +269,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
     fun setCircleColors(colors: IntArray, c: Context) {
         var clrs = this.circleColors
         if (clrs == null) {
-            clrs = ArrayList<Int?>()
+            clrs = ArrayList()
         }
         clrs.clear()
 
@@ -306,44 +297,6 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
             this.circleColors = ArrayList<Int?>()
         }
         circleColors!!.clear()
-    }
-
-    /**
-     * Sets the color of the inner circle of the line-circles.
-     */
-    fun setCircleHoleColor(color: Int) {
-        mCircleHoleColor = color
-    }
-
-    override fun getCircleHoleColor(): Int {
-        return mCircleHoleColor
-    }
-
-    /**
-     * Set this to true to allow drawing a hole in each data circle.
-     */
-    fun setDrawCircleHole(enabled: Boolean) {
-        mDrawCircleHole = enabled
-    }
-
-    override fun isDrawCircleHoleEnabled(): Boolean {
-        return mDrawCircleHole
-    }
-
-    /**
-     * Sets a custom IFillFormatter to the chart that handles the position of the
-     * filled-line for each DataSet. Set this to null to use the default logic.
-     */
-    fun setFillFormatter(formatter: IFillFormatter?) {
-        if (formatter == null) {
-            mFillFormatter = DefaultFillFormatter()
-        } else {
-            mFillFormatter = formatter
-        }
-    }
-
-    override fun getFillFormatter(): IFillFormatter? {
-        return mFillFormatter
     }
 
     enum class Mode {

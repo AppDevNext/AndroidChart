@@ -157,7 +157,7 @@ class RadarChartActivity : DemoBase() {
 
             R.id.actionToggleValues -> {
                 chart!!.data!!.dataSets.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                    it?.isDrawValues = !it.isDrawValues
                 }
 
                 chart!!.invalidate()
@@ -177,7 +177,7 @@ class RadarChartActivity : DemoBase() {
 
             R.id.actionToggleFilled -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set?.setDrawFilled(!set.isDrawFilledEnabled)
                 }
                 chart!!.invalidate()
             }

@@ -161,14 +161,14 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
             R.id.actionToggleValues -> {
                 chart!!.data!!.dataSets.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                    it?.isDrawValues = !it.isDrawValues
                 }
                 chart!!.invalidate()
             }
 
             R.id.actionToggleIcons -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.isDrawIcons = !set.isDrawIcons
+                    set?.isDrawIcons = !set.isDrawIcons
                 }
                 chart!!.invalidate()
             }

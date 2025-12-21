@@ -378,7 +378,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
     private fun toggleValues() {
         chart?.let {
             chart!!.data!!.dataSets.forEach {
-                it.isDrawValues = !it.isDrawValues
+                it?.isDrawValues = !it.isDrawValues
             }
             it.invalidate()
         }

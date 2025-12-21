@@ -100,7 +100,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         values.add(BarEntry(105f, floatArrayOf(-1f, 2f)))
 
         val set = BarDataSet(values, "Age Distribution")
-        set.isDrawIcons = false
+        set?.isDrawIcons = false
         set.valueFormatter = CustomFormatter()
         set.valueTextSize = 7f
         set.axisDependency = YAxis.AxisDependency.RIGHT
@@ -129,14 +129,14 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
 
             R.id.actionToggleValues -> {
                 chart!!.data!!.dataSets.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                    it?.isDrawValues = !it.isDrawValues
                 }
                 chart!!.invalidate()
             }
 
             R.id.actionToggleIcons -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.isDrawIcons = !set.isDrawIcons
+                    set?.isDrawIcons = !set.isDrawIcons
                 }
 
                 chart!!.invalidate()

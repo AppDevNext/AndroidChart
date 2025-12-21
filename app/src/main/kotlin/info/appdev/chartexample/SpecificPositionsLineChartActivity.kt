@@ -139,7 +139,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         when (item.itemId) {
             R.id.actionToggleValues -> {
                 mChart!!.data?.dataSets?.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                    it?.isDrawValues = !it.isDrawValues
                 }
                 mChart!!.invalidate()
             }
@@ -154,7 +154,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleFilled -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set?.setDrawFilled(!set.isDrawFilledEnabled)
                 }
                 mChart!!.invalidate()
             }
@@ -162,7 +162,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleCircles -> {
                 mChart!!.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.setDrawCircles(!set.isDrawCirclesEnabled)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 mChart!!.invalidate()
             }
@@ -266,7 +266,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         set11.setCircleColor(Color.BLACK)
         set11.lineWidth = 1f
         set11.circleRadius = 3f
-        set11.setDrawCircleHole(false)
+        set11.isDrawCircleHoleEnabled = false
         set11.valueTextSize = 9f
         set11.setDrawFilled(true)
         set11.formLineWidth = 1f

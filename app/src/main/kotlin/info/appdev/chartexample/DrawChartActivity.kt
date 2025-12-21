@@ -80,7 +80,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         when (item.itemId) {
             R.id.actionToggleValues -> {
                 binding.chart1.data!!.dataSets.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                    it?.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }

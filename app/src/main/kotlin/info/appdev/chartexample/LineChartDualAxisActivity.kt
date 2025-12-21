@@ -170,7 +170,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set1.fillAlpha = 65
             set1.fillColor = ColorTemplate.getHoloBlue()
             set1.highLightColor = Color.rgb(244, 117, 117)
-            set1.setDrawCircleHole(false)
+            set1.isDrawCircleHoleEnabled = false
 
             //set1.setFillFormatter(new MyFillFormatter(0f));
             //set1.setDrawHorizontalHighlightIndicator(false);
@@ -186,7 +186,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set2.circleRadius = 3f
             set2.fillAlpha = 65
             set2.fillColor = Color.BLUE
-            set2.setDrawCircleHole(false)
+            set2.isDrawCircleHoleEnabled = false
             set2.highLightColor = Color.rgb(244, 117, 117)
 
             //set2.setFillFormatter(new MyFillFormatter(900f));
@@ -198,7 +198,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set3.circleRadius = 3f
             set3.fillAlpha = 65
             set3.fillColor = ColorTemplate.colorWithAlpha(Color.YELLOW, 200)
-            set3.setDrawCircleHole(false)
+            set3.isDrawCircleHoleEnabled = false
             set3.highLightColor = Color.rgb(244, 117, 117)
 
             // create a data object with the data sets
@@ -227,7 +227,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
             R.id.actionToggleValues -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.isDrawValues = !set.isDrawValues
+                    set?.isDrawValues = !set.isDrawValues
                 }
                 chart!!.invalidate()
             }
@@ -241,7 +241,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
             R.id.actionToggleFilled -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set?.setDrawFilled(!set.isDrawFilledEnabled)
                 }
                 chart!!.invalidate()
             }
@@ -251,7 +251,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setDrawCircles(!set.isDrawCirclesEnabled)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 chart!!.invalidate()
             }
@@ -346,14 +346,13 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         Timber.i(entry.toString())
 
-        chart!!.centerViewToAnimated(
-            entry.x, entry.y, chart!!.data!!.getDataSetByIndex(highlight.dataSetIndex)
-                .axisDependency, 500
-        )
-        //chart.zoomAndCenterAnimated(2.5f, 2.5f, e.getX(), e.getY(), chart.getData().getDataSetByIndex(dataSetIndex)
-        // .getAxisDependency(), 1000);
-        //chart.zoomAndCenterAnimated(1.8f, 1.8f, e.getX(), e.getY(), chart.getData().getDataSetByIndex(dataSetIndex)
-        // .getAxisDependency(), 1000);
+        chart!!.data!!.getDataSetByIndex(highlight.dataSetIndex)?.let {
+            chart!!.centerViewToAnimated(entry.x, entry.y, it.axisDependency, 500)
+            //chart.zoomAndCenterAnimated(2.5f, 2.5f, e.getX(), e.getY(), chart.getData().getDataSetByIndex(dataSetIndex)
+            // .getAxisDependency(), 1000);
+            //chart.zoomAndCenterAnimated(1.8f, 1.8f, e.getX(), e.getY(), chart.getData().getDataSetByIndex(dataSetIndex)
+            // .getAxisDependency(), 1000);
+        }
     }
 
     override fun onNothingSelected() = Unit

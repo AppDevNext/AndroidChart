@@ -190,7 +190,7 @@ class DataTools {
             lineDataSet01.circleRadius = 3f
 
             // draw points as solid circles
-            lineDataSet01.setDrawCircleHole(false)
+            lineDataSet01.isDrawCircleHoleEnabled = false
 
             // customize legend entry
             lineDataSet01.formLineWidth = 1f

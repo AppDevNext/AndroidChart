@@ -111,15 +111,15 @@ abstract class SimpleFragment : Fragment() {
     }
 
     protected fun generateLineData(): LineData {
-        val sets = ArrayList<ILineDataSet?>()
+        val sets = ArrayList<ILineDataSet>()
         val ds1 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "sine.txt"), "Sine function")
         val ds2 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "cosine.txt"), "Cosine function")
 
         ds1.lineWidth = 2f
         ds2.lineWidth = 2f
 
-        ds1.setDrawCircles(false)
-        ds2.setDrawCircles(false)
+        ds1.isDrawCirclesEnabled = false
+        ds2.isDrawCirclesEnabled = false
 
         ds1.color = ColorTemplate.VORDIPLOM_COLORS[0]
         ds2.color = ColorTemplate.VORDIPLOM_COLORS[1]
@@ -135,7 +135,7 @@ abstract class SimpleFragment : Fragment() {
 
     protected val complexity: LineData
         get() {
-            val sets = ArrayList<ILineDataSet?>()
+            val sets = ArrayList<ILineDataSet>()
 
             val ds1 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "n.txt"), "O(n)")
             val ds2 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "nlogn.txt"), "O(nlogn)")

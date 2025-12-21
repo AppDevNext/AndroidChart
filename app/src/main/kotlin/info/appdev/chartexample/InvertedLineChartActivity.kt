@@ -144,7 +144,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
             R.id.actionToggleValues -> {
                 chart!!.data!!.dataSets.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                    it?.isDrawValues = !it.isDrawValues
                 }
                 chart!!.invalidate()
             }
@@ -158,7 +158,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
             R.id.actionToggleFilled -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set?.setDrawFilled(!set.isDrawFilledEnabled)
                 }
                 chart!!.invalidate()
             }
@@ -168,7 +168,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    set.setDrawCircles(!set.isDrawCirclesEnabled)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 chart!!.invalidate()
             }

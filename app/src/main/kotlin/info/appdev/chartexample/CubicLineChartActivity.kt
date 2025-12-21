@@ -114,8 +114,8 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             set1.lineMode = LineDataSet.Mode.CUBIC_BEZIER
             set1.cubicIntensity = 0.2f
             set1.setDrawFilled(true)
-            set1.setDrawCircles(false)
-            set1.lineWidth= 1.8f
+            set1.isDrawCirclesEnabled = false
+            set1.lineWidth = 1.8f
             set1.circleRadius = 4f
             set1.setCircleColor(Color.WHITE)
             set1.highLightColor = Color.rgb(244, 117, 117)
@@ -155,7 +155,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleValues -> {
                 binding.chart1.data!!.dataSets.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                    it?.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
@@ -170,11 +170,13 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             R.id.actionToggleFilled -> {
                 val sets = binding.chart1.data!!.dataSets
 
-                for (set in sets) {
-                    if (set.isDrawFilledEnabled)
-                        set.setDrawFilled(false)
-                    else
-                        set.setDrawFilled(true)
+                sets.forEach { set ->
+                    set?.let {
+                        if (set.isDrawFilledEnabled)
+                            set?.setDrawFilled(false)
+                        else
+                            set?.setDrawFilled(true)
+                    }
                 }
                 binding.chart1.invalidate()
             }
@@ -184,10 +186,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (iSet.isDrawCirclesEnabled)
-                        set.setDrawCircles(false)
-                    else
-                        set.setDrawCircles(true)
+                    set.isDrawCirclesEnabled = !iSet.isDrawCirclesEnabled
                 }
                 binding.chart1.invalidate()
             }
