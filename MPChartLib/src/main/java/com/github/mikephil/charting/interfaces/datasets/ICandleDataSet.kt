@@ -1,64 +1,58 @@
-package com.github.mikephil.charting.interfaces.datasets;
+package com.github.mikephil.charting.interfaces.datasets
 
-import android.graphics.Paint;
+import android.graphics.Paint
+import com.github.mikephil.charting.data.CandleEntry
 
-import com.github.mikephil.charting.data.CandleEntry;
-
-/**
- * Created by philipp on 21/10/15.
- */
-public interface ICandleDataSet extends ILineScatterCandleRadarDataSet<CandleEntry> {
-
+interface ICandleDataSet : ILineScatterCandleRadarDataSet<CandleEntry> {
     /**
-     * Returns the space that is left out on the left and right side of each
-     * candle.
+     * Returns the space that is left out on the left and right side of each candle.
      */
-    float getBarSpace();
+    val barSpace: Float
 
     /**
      * Returns whether the candle bars should show?
      * When false, only "ticks" will show
      * - default: true
      */
-    boolean getShowCandleBar();
+    val showCandleBar: Boolean
 
     /**
      * Returns the width of the candle-shadow-line in pixels.
      */
-    float getShadowWidth();
+    val shadowWidth: Float
 
     /**
      * Returns shadow color for all entries
      */
-    int getShadowColor();
+    val shadowColor: Int
 
     /**
      * Returns the neutral color (for open == close)
      */
-    int getNeutralColor();
+    val neutralColor: Int
 
     /**
      * Returns the increasing color (for open < close).
      */
-    int getIncreasingColor();
+    val increasingColor: Int
 
     /**
      * Returns the decreasing color (for open > close).
      */
-    int getDecreasingColor();
+    val decreasingColor: Int
 
     /**
      * Returns paint style when open < close
      */
-    Paint.Style getIncreasingPaintStyle();
+    val increasingPaintStyle: Paint.Style?
 
     /**
      * Returns paint style when open > close
      */
-    Paint.Style getDecreasingPaintStyle();
+    val decreasingPaintStyle: Paint.Style?
 
     /**
      * Is the shadow color same as the candle color?
      */
-    boolean getShadowColorSameAsCandle();
+    val shadowColorSameAsCandle: Boolean
 }

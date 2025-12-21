@@ -54,53 +54,24 @@ open class LegendRenderer(
                 val clrs = dataSet.colors
                 val entryCount = dataSet.entryCount
                 // if we have a barchart with stacked bars
-                if (dataSet is IBarDataSet && dataSet.isStacked) {
-                    val sLabels = dataSet.stackLabels
+                when (dataSet) {
+                    is IBarDataSet if dataSet.isStacked -> {
+                        val sLabels = dataSet.stackLabels
 
-                    val minEntries = min(clrs.size.toDouble(), dataSet.stackSize.toDouble()).toInt()
+                        val minEntries = min(clrs.size.toDouble(), dataSet.stackSize.toDouble()).toInt()
 
-                    for (j in 0..<minEntries) {
-                        val label: String?
-                        if (sLabels.isNotEmpty()) {
-                            val labelIndex = j % minEntries
-                            label = if (labelIndex < sLabels.size) sLabels[labelIndex] else null
-                        } else {
-                            label = null
-                        }
+                        for (j in 0..<minEntries) {
+                            val label: String?
+                            if (sLabels.isNotEmpty()) {
+                                val labelIndex = j % minEntries
+                                label = if (labelIndex < sLabels.size) sLabels[labelIndex] else null
+                            } else {
+                                label = null
+                            }
 
-                        computedEntries.add(
-                            LegendEntry(
-                                label,
-                                dataSet.form,
-                                dataSet.formSize,
-                                dataSet.formLineWidth,
-                                dataSet.formLineDashEffect,
-                                clrs[j]
-                            )
-                        )
-                    }
-
-                    if (dataSet.label != null) {
-                        // add the legend description label
-                        computedEntries.add(
-                            LegendEntry(
-                                dataSet.label,
-                                LegendForm.NONE,
-                                Float.NaN,
-                                Float.NaN,
-                                null,
-                                ColorTemplate.COLOR_NONE
-                            )
-                        )
-                    }
-                } else if (dataSet is IPieDataSet) {
-
-                    var j = 0
-                    while (j < clrs.size && j < entryCount) {
-                        dataSet.getEntryForIndex(j)?.let { pieEntry ->
                             computedEntries.add(
                                 LegendEntry(
-                                    pieEntry.label,
+                                    label,
                                     dataSet.form,
                                     dataSet.formSize,
                                     dataSet.formLineWidth,
@@ -109,11 +80,7 @@ open class LegendRenderer(
                                 )
                             )
                         }
-                        j++
-                    }
 
-                    if (dataSet.label != null) {
-                        // add the legend description label
                         computedEntries.add(
                             LegendEntry(
                                 dataSet.label,
@@ -125,62 +92,95 @@ open class LegendRenderer(
                             )
                         )
                     }
-                } else if (dataSet is ICandleDataSet && dataSet.decreasingColor !=
-                    ColorTemplate.COLOR_NONE
-                ) {
-                    val decreasingColor = dataSet.decreasingColor
-                    val increasingColor = dataSet.increasingColor
 
-                    computedEntries.add(
-                        LegendEntry(
-                            null,
-                            dataSet.form,
-                            dataSet.formSize,
-                            dataSet.formLineWidth,
-                            dataSet.formLineDashEffect,
-                            decreasingColor
-                        )
-                    )
+                    is IPieDataSet -> {
 
-                    computedEntries.add(
-                        LegendEntry(
-                            dataSet.label,
-                            dataSet.form,
-                            dataSet.formSize,
-                            dataSet.formLineWidth,
-                            dataSet.formLineDashEffect,
-                            increasingColor
-                        )
-                    )
-                } else { // all others
-
-                    var j = 0
-                    while (j < clrs.size && j < entryCount) {
-                        // if multiple colors are set for a DataSet, group them
-                        val label = if (j < clrs.size - 1 && j < entryCount - 1) {
-                            null
-                        } else { // add label to the last entry
-                            data.getDataSetByIndex(i).label
+                        var j = 0
+                        while (j < clrs.size && j < entryCount) {
+                            dataSet.getEntryForIndex(j)?.let { pieEntry ->
+                                computedEntries.add(
+                                    LegendEntry(
+                                        pieEntry.label,
+                                        dataSet.form,
+                                        dataSet.formSize,
+                                        dataSet.formLineWidth,
+                                        dataSet.formLineDashEffect,
+                                        clrs[j]
+                                    )
+                                )
+                            }
+                            j++
                         }
 
                         computedEntries.add(
                             LegendEntry(
-                                label,
+                                dataSet.label,
+                                LegendForm.NONE,
+                                Float.NaN,
+                                Float.NaN,
+                                null,
+                                ColorTemplate.COLOR_NONE
+                            )
+                        )
+                    }
+
+                    is ICandleDataSet if dataSet.decreasingColor !=
+                            ColorTemplate.COLOR_NONE
+                        -> {
+                        val decreasingColor = dataSet.decreasingColor
+                        val increasingColor = dataSet.increasingColor
+
+                        computedEntries.add(
+                            LegendEntry(
+                                null,
                                 dataSet.form,
                                 dataSet.formSize,
                                 dataSet.formLineWidth,
                                 dataSet.formLineDashEffect,
-                                clrs[j]
+                                decreasingColor
                             )
                         )
-                        j++
+
+                        computedEntries.add(
+                            LegendEntry(
+                                dataSet.label,
+                                dataSet.form,
+                                dataSet.formSize,
+                                dataSet.formLineWidth,
+                                dataSet.formLineDashEffect,
+                                increasingColor
+                            )
+                        )
+                    }
+
+                    else -> { // all others
+
+                        var j = 0
+                        while (j < clrs.size && j < entryCount) {
+                            // if multiple colors are set for a DataSet, group them
+                            val label = if (j < clrs.size - 1 && j < entryCount - 1) {
+                                null
+                            } else { // add label to the last entry
+                                data.getDataSetByIndex(i).label
+                            }
+
+                            computedEntries.add(
+                                LegendEntry(
+                                    label,
+                                    dataSet.form,
+                                    dataSet.formSize,
+                                    dataSet.formLineWidth,
+                                    dataSet.formLineDashEffect,
+                                    clrs[j]
+                                )
+                            )
+                            j++
+                        }
                     }
                 }
             }
 
-            if (legend.extraEntries != null) {
-                Collections.addAll(computedEntries, *legend.extraEntries)
-            }
+            Collections.addAll(computedEntries, *legend.extraEntries)
 
             legend.setEntries(computedEntries)
         }
@@ -228,7 +228,7 @@ open class LegendRenderer(
 
         val yOffset = legend.yOffset
         val xOffset = legend.xOffset
-        var originPosX: Float = 0f
+        var originPosX = 0f
 
         when (horizontalAlignment) {
             LegendHorizontalAlignment.LEFT -> {
@@ -283,7 +283,7 @@ open class LegendRenderer(
                     LegendVerticalAlignment.BOTTOM -> viewPortHandler.chartHeight - yOffset - legend.mNeededHeight
                     LegendVerticalAlignment.CENTER -> (viewPortHandler.chartHeight - legend.mNeededHeight) / 2f + yOffset
                     else -> {
-                        Log.w("Chart", "Legend verticalAlignment not set");
+                        Log.w("Chart", "Legend verticalAlignment not set")
                         0f
                     }
                 }
@@ -344,7 +344,7 @@ open class LegendRenderer(
                 // contains the stacked legend size in pixels
                 var stack = 0f
                 var wasStacked = false
-                var posY: Float = 0f
+                var posY = 0f
 
                 when (verticalAlignment) {
                     LegendVerticalAlignment.TOP -> {
@@ -367,7 +367,7 @@ open class LegendRenderer(
                             - legend.mNeededHeight / 2f
                             + legend.yOffset)
 
-                    null -> Log.w("Chart", "Legend verticalAlignment is null");
+                    null -> Log.w("Chart", "Legend verticalAlignment is null")
                 }
 
                 var i = 0
