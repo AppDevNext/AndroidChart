@@ -141,22 +141,19 @@ open class BarEntry : Entry {
         calcRanges()
     }
 
+    /**
+     * Returns the value of this BarEntry. If the entry is stacked, it returns the positive sum of all values.
+     */
     override var y: Float = 0.0f
-        /**
-         * Returns the value of this BarEntry. If the entry is stacked, it returns the positive sum of all values.
-         */
         get() = super.y
 
+    /**
+     * Returns true if this BarEntry is stacked (has a values array), false if not.
+     */
     val isStacked: Boolean
-        /**
-         * Returns true if this BarEntry is stacked (has a values array), false if not.
-         */
         get() = this.yVals != null
 
-    /**
-     * Use `getSumBelow(stackIndex)` instead.
-     */
-    @Deprecated("")
+    @Deprecated("getSumBelow(stackIndex)` instead.")
     fun getBelowSum(stackIndex: Int): Float {
         return getSumBelow(stackIndex)
     }
@@ -232,5 +229,3 @@ open class BarEntry : Entry {
         }
     }
 }
-
-
