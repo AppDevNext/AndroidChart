@@ -110,7 +110,7 @@ class CombinedChartActivity : DemoBase() {
         set.circleRadius = 5f
         set.fillColor = Color.rgb(240, 238, 70)
         set.lineMode = LineDataSet.Mode.CUBIC_BEZIER
-        set?.isDrawValues = true
+        set.isDrawValues = true
         set.valueTextSize = 10f
         set.setSingleValueTextColor(Color.rgb(240, 238, 70))
 
@@ -172,7 +172,7 @@ class CombinedChartActivity : DemoBase() {
         val set = ScatterDataSet(entries, "Scatter DataSet")
         set.setColors(*ColorTemplate.MATERIAL_COLORS)
         set.scatterShapeSize = 7.5f
-        set?.isDrawValues = false
+        set.isDrawValues = false
         set.valueTextSize = 10f
         d.addDataSet(set)
 
@@ -195,7 +195,7 @@ class CombinedChartActivity : DemoBase() {
         set.shadowColor = Color.DKGRAY
         set.setBarSpace(0.3f)
         set.valueTextSize = 10f
-        set?.isDrawValues = false
+        set.isDrawValues = false
         d.addDataSet(set)
 
         return d
@@ -204,7 +204,7 @@ class CombinedChartActivity : DemoBase() {
     private fun generateBubbleData(): BubbleData {
         val bd = BubbleData()
 
-        val entries = ArrayList<BubbleEntry?>()
+        val entries = ArrayList<BubbleEntry>()
 
         for (index in 0..<sampleCount) {
             val y = values[index]!!.toFloat() * 10 + 105
@@ -217,7 +217,7 @@ class CombinedChartActivity : DemoBase() {
         set.valueTextSize = 10f
         set.setSingleValueTextColor(Color.WHITE)
         set.highlightCircleWidth = 1.5f
-        set?.isDrawValues = true
+        set.isDrawValues = true
         bd.addDataSet(set)
 
         return bd
@@ -240,7 +240,7 @@ class CombinedChartActivity : DemoBase() {
             R.id.actionToggleLineValues -> {
                 chart!!.data!!.dataSets.forEach {
                     if (it is LineDataSet)
-                        it?.isDrawValues = !it.isDrawValues
+                        it.isDrawValues = !it.isDrawValues
                 }
                 chart!!.invalidate()
             }
@@ -248,7 +248,7 @@ class CombinedChartActivity : DemoBase() {
             R.id.actionToggleBarValues -> {
                 chart!!.data!!.dataSets.forEach {
                     if (it is BarDataSet)
-                        it?.isDrawValues = !it.isDrawValues
+                        it.isDrawValues = !it.isDrawValues
                 }
                 chart!!.invalidate()
             }

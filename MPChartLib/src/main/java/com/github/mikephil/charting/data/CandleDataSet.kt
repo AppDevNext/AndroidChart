@@ -94,7 +94,7 @@ open class CandleDataSet(yVals: MutableList<CandleEntry>?, label: String = "") :
     }
 
     override fun calcMinMax(entry: CandleEntry) {
-        entry?.let {
+        entry.let {
             if (entry.low < yMin) yMin = entry.low
 
             if (entry.high > yMax) yMax = entry.high
@@ -103,7 +103,7 @@ open class CandleDataSet(yVals: MutableList<CandleEntry>?, label: String = "") :
     }
 
     override fun calcMinMaxY(entry: CandleEntry) {
-        entry?.let {
+        entry.let {
             if (entry.high < yMin) yMin = entry.high
 
             if (entry.high > yMax) yMax = entry.high
