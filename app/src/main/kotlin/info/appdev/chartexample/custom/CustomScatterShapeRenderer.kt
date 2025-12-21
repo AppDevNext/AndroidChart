@@ -15,7 +15,7 @@ class CustomScatterShapeRenderer : IShapeRenderer {
         canvas: Canvas, dataSet: IScatterDataSet, viewPortHandler: ViewPortHandler?,
         posX: Float, posY: Float, renderPaint: Paint
     ) {
-        val shapeHalf = dataSet.getScatterShapeSize().convertDpToPixel() / 2f
+        val shapeHalf = dataSet.scatterShapeSize.convertDpToPixel() / 2f
 
         canvas.drawLine(
             posX - shapeHalf,

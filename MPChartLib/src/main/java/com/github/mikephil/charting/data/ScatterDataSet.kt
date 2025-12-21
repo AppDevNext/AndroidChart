@@ -14,7 +14,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 
 open class ScatterDataSet(yVals: MutableList<Entry>?, label: String = "") : LineScatterCandleRadarDataSet<Entry>(yVals, label), IScatterDataSet {
     /**
-     * the size the scattershape will have, in density pixels
+     * the size the scatterShape will have, in density pixels
      */
     private var shapeSize = 15f
 
@@ -57,18 +57,6 @@ open class ScatterDataSet(yVals: MutableList<Entry>?, label: String = "") : Line
     }
 
     /**
-     * Sets the size in density pixels the drawn scattershape will have. This
-     * only applies for non custom shapes.
-     */
-    fun setScatterShapeSize(size: Float) {
-        shapeSize = size
-    }
-
-    override fun getScatterShapeSize(): Float {
-        return shapeSize
-    }
-
-    /**
      * Sets the ScatterShape this DataSet should be drawn with. This will search for an available IShapeRenderer and set this
      * renderer for the DataSet.
      */
@@ -77,39 +65,34 @@ open class ScatterDataSet(yVals: MutableList<Entry>?, label: String = "") : Line
     }
 
     /**
+     * Sets the size in density pixels the drawn scatterShape will have. This
+     * only applies for non custom shapes.
+     */
+    override var scatterShapeSize: Float
+        get() = shapeSize
+        set(value) {
+            shapeSize = value
+        }
+    override var scatterShapeHoleRadius: Float
+        get() = mScatterShapeHoleRadius
+        set(value) {
+            mScatterShapeHoleRadius = value
+        }
+    override var scatterShapeHoleColor: Int
+        get() = mScatterShapeHoleColor
+        set(value) {
+            mScatterShapeHoleColor = value
+        }
+
+    /**
      * Sets a new IShapeRenderer responsible for drawing this DataSet.
      * This can also be used to set a custom IShapeRenderer aside from the default ones.
      */
-    fun setShapeRenderer(shape: IShapeRenderer?) {
-        mShapeRenderer = shape
-    }
-
-    override fun getShapeRenderer(): IShapeRenderer? {
-        return mShapeRenderer
-    }
-
-    /**
-     * Sets the radius of the hole in the shape (applies to Square, Circle and Triangle)
-     * Set this to <= 0 to remove holes.
-     */
-    fun setScatterShapeHoleRadius(holeRadius: Float) {
-        mScatterShapeHoleRadius = holeRadius
-    }
-
-    override fun getScatterShapeHoleRadius(): Float {
-        return mScatterShapeHoleRadius
-    }
-
-    /**
-     * Sets the color for the hole in the shape.
-     */
-    fun setScatterShapeHoleColor(holeColor: Int) {
-        mScatterShapeHoleColor = holeColor
-    }
-
-    override fun getScatterShapeHoleColor(): Int {
-        return mScatterShapeHoleColor
-    }
+    override var shapeRenderer: IShapeRenderer?
+        get() = mShapeRenderer
+        set(value) {
+            mShapeRenderer = value
+        }
 
     companion object {
         fun getRendererForShape(shape: ScatterShape): IShapeRenderer? {
