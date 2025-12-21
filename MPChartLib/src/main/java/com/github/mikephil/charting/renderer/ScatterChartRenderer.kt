@@ -21,8 +21,11 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
     override fun drawData(canvas: Canvas) {
         val scatterData = dataProvider.scatterData
 
-        for (set in scatterData.dataSets) {
-            if (set.isVisible) drawDataSet(canvas, set)
+        scatterData?.let {
+            for (set in it.dataSets) {
+                if (set.isVisible)
+                    drawDataSet(canvas, set)
+            }
         }
     }
 
@@ -75,91 +78,90 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
 
     override fun drawValues(canvas: Canvas) {
         if (isDrawingValuesAllowed(dataProvider)) {
-            val dataSets = dataProvider.scatterData.dataSets
+            dataProvider.scatterData?.let { scatterData ->
+                for (i in 0..<scatterData.dataSetCount) {
+                    val dataSet = scatterData.dataSets[i]
 
-            for (i in 0..<dataProvider.scatterData.dataSetCount) {
-                val dataSet = dataSets[i]
-
-                if (dataSet.entryCount == 0) {
-                    continue
-                }
-                if (!shouldDrawValues(dataSet) || dataSet.entryCount < 1) {
-                    continue
-                }
-
-                // apply the text-styling defined by the DataSet
-                applyValueTextStyle(dataSet)
-
-                xBounds.set(dataProvider, dataSet)
-
-                val positions = dataProvider.getTransformer(dataSet.axisDependency)!!.generateTransformedValuesScatter(
-                    dataSet,
-                    animator.phaseX, animator.phaseY, xBounds.min, xBounds.max
-                )
-
-                val shapeSize = dataSet.scatterShapeSize.convertDpToPixel()
-
-                val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
-                iconsOffset.x = iconsOffset.x.convertDpToPixel()
-                iconsOffset.y = iconsOffset.y.convertDpToPixel()
-
-                var j = 0
-                while (j < positions.size) {
-                    if (!viewPortHandler.isInBoundsRight(positions[j]))
-                        break
-
-                    // make sure the lines don't do shitty things outside bounds
-                    if ((!viewPortHandler.isInBoundsLeft(positions[j])
-                                || !viewPortHandler.isInBoundsY(positions[j + 1]))
-                    ) {
-                        j += 2
+                    if (dataSet.entryCount == 0) {
+                        continue
+                    }
+                    if (!shouldDrawValues(dataSet) || dataSet.entryCount < 1) {
                         continue
                     }
 
-                    dataSet.getEntryForIndex(j / 2 + xBounds.min)?.let { entry ->
+                    // apply the text-styling defined by the DataSet
+                    applyValueTextStyle(dataSet)
 
-                        if (dataSet.isDrawValues) {
-                            drawValue(
-                                canvas,
-                                dataSet.valueFormatter,
-                                entry.y,
-                                entry,
-                                i,
-                                positions[j],
-                                positions[j + 1] - shapeSize,
-                                dataSet.getValueTextColor(j / 2 + xBounds.min)
-                            )
+                    xBounds.set(dataProvider, dataSet)
+
+                    val positions = dataProvider.getTransformer(dataSet.axisDependency)!!.generateTransformedValuesScatter(
+                        dataSet,
+                        animator.phaseX, animator.phaseY, xBounds.min, xBounds.max
+                    )
+
+                    val shapeSize = dataSet.scatterShapeSize.convertDpToPixel()
+
+                    val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                    iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                    iconsOffset.y = iconsOffset.y.convertDpToPixel()
+
+                    var j = 0
+                    while (j < positions.size) {
+                        if (!viewPortHandler.isInBoundsRight(positions[j]))
+                            break
+
+                        // make sure the lines don't do shitty things outside bounds
+                        if ((!viewPortHandler.isInBoundsLeft(positions[j])
+                                    || !viewPortHandler.isInBoundsY(positions[j + 1]))
+                        ) {
+                            j += 2
+                            continue
                         }
 
-                        if (entry.icon != null && dataSet.isDrawIcons) {
-                            val icon = entry.icon
+                        dataSet.getEntryForIndex(j / 2 + xBounds.min)?.let { entry ->
 
-                            icon?.let {
-                                Utils.drawImage(
+                            if (dataSet.isDrawValues) {
+                                drawValue(
                                     canvas,
-                                    it,
-                                    (positions[j] + iconsOffset.x).toInt(),
-                                    (positions[j + 1] + iconsOffset.y).toInt()
+                                    dataSet.valueFormatter,
+                                    entry.y,
+                                    entry,
+                                    i,
+                                    positions[j],
+                                    positions[j + 1] - shapeSize,
+                                    dataSet.getValueTextColor(j / 2 + xBounds.min)
                                 )
                             }
-                        }
-                    }
-                    j += 2
-                }
 
-                MPPointF.recycleInstance(iconsOffset)
+                            if (entry.icon != null && dataSet.isDrawIcons) {
+                                val icon = entry.icon
+
+                                icon?.let {
+                                    Utils.drawImage(
+                                        canvas,
+                                        it,
+                                        (positions[j] + iconsOffset.x).toInt(),
+                                        (positions[j + 1] + iconsOffset.y).toInt()
+                                    )
+                                }
+                            }
+                        }
+                        j += 2
+                    }
+
+                    MPPointF.recycleInstance(iconsOffset)
+                }
             }
         }
     }
 
-    override fun drawExtras(canvas: Canvas) {
-    }
+    override fun drawExtras(canvas: Canvas) = Unit
 
     override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
         val scatterData = dataProvider.scatterData
 
         for (high in indices) {
-            val set = scatterData.getDataSetByIndex(high.dataSetIndex)
+            val set = scatterData?.getDataSetByIndex(high.dataSetIndex)
 
             if (set == null || !set.isHighlightEnabled) continue
 
