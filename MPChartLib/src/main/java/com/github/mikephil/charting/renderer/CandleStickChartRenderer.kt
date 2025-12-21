@@ -28,8 +28,9 @@ open class CandleStickChartRenderer(
     override fun drawData(canvas: Canvas) {
         val candleData = dataProvider.candleData
 
-        for (set in candleData.dataSets) {
-            if (set.isVisible) drawDataSet(canvas, set)
+        candleData?.dataSets?.forEach { set ->
+            if (set.isVisible)
+                drawDataSet(canvas, set)
         }
     }
 
@@ -208,77 +209,78 @@ open class CandleStickChartRenderer(
     override fun drawValues(canvas: Canvas) {
         // if values are drawn
         if (isDrawingValuesAllowed(dataProvider)) {
-            val dataSets = dataProvider.candleData.dataSets
+            dataProvider.candleData?.let {
 
-            for (i in dataSets.indices) {
-                val dataSet = dataSets[i]
-                if (dataSet.entryCount == 0) {
-                    continue
-                }
-                if (!shouldDrawValues(dataSet) || dataSet.entryCount < 1) {
-                    continue
-                }
-
-                // apply the text-styling defined by the DataSet
-                applyValueTextStyle(dataSet)
-
-                val trans = dataProvider.getTransformer(dataSet.axisDependency)
-
-                xBounds.set(dataProvider, dataSet)
-
-                val positions = trans!!.generateTransformedValuesCandle(
-                    dataSet, animator.phaseX, animator.phaseY, xBounds.min, xBounds.max
-                )
-
-                val yOffset = 5f.convertDpToPixel()
-
-                val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
-                iconsOffset.x = iconsOffset.x.convertDpToPixel()
-                iconsOffset.y = iconsOffset.y.convertDpToPixel()
-
-                var j = 0
-                while (j < positions.size) {
-                    val x = positions[j]
-                    val y = positions[j + 1]
-
-                    if (!viewPortHandler.isInBoundsRight(x)) break
-
-                    if (!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y)) {
-                        j += 2
+                for (i in it.dataSets.indices) {
+                    val dataSet = it.dataSets[i]
+                    if (dataSet.entryCount == 0) {
+                        continue
+                    }
+                    if (!shouldDrawValues(dataSet) || dataSet.entryCount < 1) {
                         continue
                     }
 
-                    val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)!!
+                    // apply the text-styling defined by the DataSet
+                    applyValueTextStyle(dataSet)
 
-                    if (dataSet.isDrawValues) {
-                        drawValue(
-                            canvas,
-                            dataSet.valueFormatter,
-                            entry.high,
-                            entry,
-                            i,
-                            x,
-                            y - yOffset,
-                            dataSet.getValueTextColor(j / 2)
-                        )
-                    }
+                    val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-                    if (entry.icon != null && dataSet.isDrawIcons) {
-                        val icon = entry.icon
+                    xBounds.set(dataProvider, dataSet)
 
-                        icon?.let {
-                            Utils.drawImage(
+                    val positions = trans!!.generateTransformedValuesCandle(
+                        dataSet, animator.phaseX, animator.phaseY, xBounds.min, xBounds.max
+                    )
+
+                    val yOffset = 5f.convertDpToPixel()
+
+                    val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                    iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                    iconsOffset.y = iconsOffset.y.convertDpToPixel()
+
+                    var j = 0
+                    while (j < positions.size) {
+                        val x = positions[j]
+                        val y = positions[j + 1]
+
+                        if (!viewPortHandler.isInBoundsRight(x)) break
+
+                        if (!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y)) {
+                            j += 2
+                            continue
+                        }
+
+                        val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)!!
+
+                        if (dataSet.isDrawValues) {
+                            drawValue(
                                 canvas,
-                                it,
-                                (x + iconsOffset.x).toInt(),
-                                (y + iconsOffset.y).toInt()
+                                dataSet.valueFormatter,
+                                entry.high,
+                                entry,
+                                i,
+                                x,
+                                y - yOffset,
+                                dataSet.getValueTextColor(j / 2)
                             )
                         }
-                    }
-                    j += 2
-                }
 
-                MPPointF.recycleInstance(iconsOffset)
+                        if (entry.icon != null && dataSet.isDrawIcons) {
+                            val icon = entry.icon
+
+                            icon?.let {
+                                Utils.drawImage(
+                                    canvas,
+                                    it,
+                                    (x + iconsOffset.x).toInt(),
+                                    (y + iconsOffset.y).toInt()
+                                )
+                            }
+                        }
+                        j += 2
+                    }
+
+                    MPPointF.recycleInstance(iconsOffset)
+                }
             }
         }
     }
@@ -289,7 +291,7 @@ open class CandleStickChartRenderer(
         val candleData = dataProvider.candleData
 
         for (high in indices) {
-            val set = candleData.getDataSetByIndex(high.dataSetIndex)
+            val set = candleData?.getDataSetByIndex(high.dataSetIndex)
 
             if (set == null || !set.isHighlightEnabled) continue
 
