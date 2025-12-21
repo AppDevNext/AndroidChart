@@ -7,7 +7,7 @@ import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.dataprovider.CombinedDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 
-open class CombinedHighlighter(dataProvider: CombinedDataProvider?, barChart: BarDataProvider) : ChartHighlighter<CombinedDataProvider?>(dataProvider), IHighlighter {
+open class CombinedHighlighter(dataProvider: CombinedDataProvider?, barChart: BarDataProvider) : ChartHighlighter<CombinedDataProvider>(dataProvider), IHighlighter {
     /**
      * bar highlighter for supporting stacked highlighting
      */
@@ -20,7 +20,7 @@ open class CombinedHighlighter(dataProvider: CombinedDataProvider?, barChart: Ba
     }
 
     override fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight>? {
-        mHighlightBuffer.clear()
+        highlightBuffer.clear()
 
         val dataObjects = provider!!.combinedData!!.getAllData()
 
@@ -33,7 +33,7 @@ open class CombinedHighlighter(dataProvider: CombinedDataProvider?, barChart: Ba
 
                 if (high != null) {
                     high.dataIndex = i
-                    mHighlightBuffer.add(high)
+                    highlightBuffer.add(high)
                 }
             } else {
                 var j = 0
@@ -50,13 +50,13 @@ open class CombinedHighlighter(dataProvider: CombinedDataProvider?, barChart: Ba
                     val highs = buildHighlights(dataSet, j, xVal, DataSet.Rounding.CLOSEST)
                     for (high in highs) {
                         high.dataIndex = i
-                        mHighlightBuffer.add(high)
+                        highlightBuffer.add(high)
                     }
                     j++
                 }
             }
         }
 
-        return mHighlightBuffer
+        return highlightBuffer
     }
 }
