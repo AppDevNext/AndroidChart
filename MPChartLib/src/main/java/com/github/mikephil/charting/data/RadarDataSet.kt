@@ -19,41 +19,41 @@ open class RadarDataSet(yVals: MutableList<RadarEntry>?, label: String = "") : L
     protected var mHighlightCircleOuterRadius: Float = 4.0f
     protected var mHighlightCircleStrokeWidth: Float = 2.0f
 
-    /** Returns true if highlight circle should be drawn, false if not */
-    override fun isDrawHighlightCircleEnabled(): Boolean {
-        return mDrawHighlightCircleEnabled
-    }
-
-    /** Sets whether highlight circle should be drawn or not */
-    override fun setDrawHighlightCircleEnabled(enabled: Boolean) {
-        mDrawHighlightCircleEnabled = enabled
-    }
-
-    override fun getHighlightCircleFillColor(): Int {
-        return mHighlightCircleFillColor
-    }
-
-    /** Returns the stroke color for highlight circle.
-     * If Utils.COLOR_NONE, the color of the dataset is taken. */
-    override fun getHighlightCircleStrokeColor(): Int {
-        return mHighlightCircleStrokeColor
-    }
-
-    override fun getHighlightCircleStrokeAlpha(): Int {
-        return mHighlightCircleStrokeAlpha
-    }
-
-    override fun getHighlightCircleInnerRadius(): Float {
-        return mHighlightCircleInnerRadius
-    }
-
-    override fun getHighlightCircleOuterRadius(): Float {
-        return mHighlightCircleOuterRadius
-    }
-
-    override fun getHighlightCircleStrokeWidth(): Float {
-        return mHighlightCircleStrokeWidth
-    }
+    override var isDrawHighlightCircleEnabled: Boolean
+        get() = mDrawHighlightCircleEnabled
+        set(value) {
+            mDrawHighlightCircleEnabled = value
+        }
+    override var highlightCircleFillColor: Int
+        get() = mHighlightCircleFillColor
+        set(value) {
+            mHighlightCircleFillColor = value
+        }
+    override var highlightCircleStrokeColor: Int
+        get() = mHighlightCircleStrokeColor
+        set(value) {
+            mHighlightCircleStrokeColor = value
+        }
+    override var highlightCircleStrokeAlpha: Int
+        get() = mHighlightCircleStrokeAlpha
+        set(value) {
+            mHighlightCircleStrokeAlpha = value
+        }
+    override var highlightCircleInnerRadius: Float
+        get() = mHighlightCircleInnerRadius
+        set(value) {
+            mHighlightCircleInnerRadius = value
+        }
+    override var highlightCircleOuterRadius: Float
+        get() = mHighlightCircleOuterRadius
+        set(value) {
+            mHighlightCircleOuterRadius = value
+        }
+    override var highlightCircleStrokeWidth: Float
+        get() = mHighlightCircleStrokeWidth
+        set(value) {
+            mHighlightCircleStrokeWidth = value
+        }
 
     override fun copy(): DataSet<RadarEntry> {
         val entries: MutableList<RadarEntry> = mutableListOf()
@@ -76,4 +76,5 @@ open class RadarDataSet(yVals: MutableList<RadarEntry>?, label: String = "") : L
         radarDataSet.mHighlightCircleStrokeColor = mHighlightCircleStrokeColor
         radarDataSet.mHighlightCircleStrokeWidth = mHighlightCircleStrokeWidth
     }
+
 }
