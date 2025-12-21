@@ -61,7 +61,7 @@ abstract class SimpleFragment : Fragment() {
     protected fun generateScatterData(dataSets: Int, range: Float): ScatterData {
         val count = 100
         val values = getValues(count)
-        val sets = ArrayList<IScatterDataSet?>()
+        val sets = ArrayList<IScatterDataSet>()
 
         val shapes = ScatterShape.getAllDefaultShapes()
 
