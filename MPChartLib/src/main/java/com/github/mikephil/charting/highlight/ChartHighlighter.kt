@@ -4,7 +4,7 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData
 import com.github.mikephil.charting.data.DataSet
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.interfaces.dataprovider.BarLineScatterCandleBubbleDataProvider
+import com.github.mikephil.charting.interfaces.dataprovider.base.BarLineScatterCandleBubbleDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.MPPointD
 import kotlin.math.abs

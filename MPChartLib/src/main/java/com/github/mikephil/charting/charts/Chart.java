@@ -30,7 +30,7 @@ import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.IHighlighter;
-import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
+import com.github.mikephil.charting.interfaces.dataprovider.base.IBaseProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
@@ -55,7 +55,7 @@ import androidx.annotation.NonNull;
  * @author Philipp Jahoda
  */
 @SuppressWarnings("unused")
-public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Entry>>> extends ViewGroup implements ChartInterface {
+public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Entry>>> extends ViewGroup implements IBaseProvider {
 
 	public static final String LOG_TAG = "AndroidChart";
 
