@@ -136,7 +136,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         set3.setColor(ColorTemplate.COLORFUL_COLORS[2], 130)
         set3.isDrawValues = true
 
-        val dataSets = ArrayList<IBubbleDataSet?>()
+        val dataSets = ArrayList<IBubbleDataSet>()
         dataSets.add(set1) // add the data sets
         dataSets.add(set2)
         dataSets.add(set3)
