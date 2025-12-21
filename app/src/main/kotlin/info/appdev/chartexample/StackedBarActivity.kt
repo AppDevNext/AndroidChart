@@ -132,7 +132,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             set1.setColors(*this.colors)
             set1.stackLabels = arrayOf("Births", "Divorces", "Marriages")
 
-            val dataSets = ArrayList<IBarDataSet?>()
+            val dataSets = ArrayList<IBarDataSet>()
             dataSets.add(set1)
 
             val data = BarData(dataSets)

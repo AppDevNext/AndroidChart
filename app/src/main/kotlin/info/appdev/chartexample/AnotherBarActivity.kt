@@ -98,7 +98,7 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
             set1.setColors(*ColorTemplate.VORDIPLOM_COLORS)
             set1.isDrawValues = false
 
-            val dataSets = ArrayList<IBarDataSet?>()
+            val dataSets = ArrayList<IBarDataSet>()
             dataSets.add(set1)
 
             val data = BarData(dataSets)
