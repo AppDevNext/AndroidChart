@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Paint.Align
 import android.graphics.Path
+import android.util.Log
 import androidx.core.graphics.withSave
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.Legend.LegendDirection
@@ -227,7 +228,7 @@ open class LegendRenderer(
 
         val yOffset = legend.yOffset
         val xOffset = legend.xOffset
-        var originPosX: Float
+        var originPosX: Float = 0f
 
         when (horizontalAlignment) {
             LegendHorizontalAlignment.LEFT -> {
@@ -265,6 +266,8 @@ open class LegendRenderer(
                         legend.mNeededWidth / 2.0 - xOffset).toFloat()
                 }
             }
+
+            null -> Log.e("Chart", "Legend horizontalAlignment is null")
         }
 
         when (orientation) {
@@ -279,6 +282,10 @@ open class LegendRenderer(
                     LegendVerticalAlignment.TOP -> yOffset
                     LegendVerticalAlignment.BOTTOM -> viewPortHandler.chartHeight - yOffset - legend.mNeededHeight
                     LegendVerticalAlignment.CENTER -> (viewPortHandler.chartHeight - legend.mNeededHeight) / 2f + yOffset
+                    else -> {
+                        Log.w("Chart", "Legend verticalAlignment not set");
+                        0f
+                    }
                 }
 
                 var lineIndex = 0
@@ -290,16 +297,18 @@ open class LegendRenderer(
                     val drawingForm = e.form != LegendForm.NONE
                     val formSize = if (java.lang.Float.isNaN(e.formSize)) defaultFormSize else e.formSize.convertDpToPixel()
 
-                    if (i < calculatedLabelBreakPoints.size && calculatedLabelBreakPoints[i]) {
+                    if (i < calculatedLabelBreakPoints.size && calculatedLabelBreakPoints[i] == true) {
                         posX = originPosX
                         posY += labelLineHeight + labelLineSpacing
                     }
 
                     if (posX == originPosX && horizontalAlignment == LegendHorizontalAlignment.CENTER && lineIndex < calculatedLineSizes.size) {
-                        posX += (if (direction == LegendDirection.RIGHT_TO_LEFT)
-                            calculatedLineSizes[lineIndex].width
-                        else
-                            -calculatedLineSizes[lineIndex].width) / 2f
+                        calculatedLineSizes[lineIndex]?.let { fSize ->
+                            posX += (if (direction == LegendDirection.RIGHT_TO_LEFT)
+                                fSize.width
+                            else
+                                -fSize.width) / 2f
+                        }
                         lineIndex++
                     }
 
@@ -316,11 +325,14 @@ open class LegendRenderer(
                     if (!isStacked) {
                         if (drawingForm) posX += if (direction == LegendDirection.RIGHT_TO_LEFT) -formToTextSpace else formToTextSpace
 
-                        if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= calculatedLabelSizes[i].width
+                        if (direction == LegendDirection.RIGHT_TO_LEFT)
+                            posX -= calculatedLabelSizes[i]?.width ?: 0f
 
-                        drawLabel(canvas, posX, posY + labelLineHeight, e.label)
+                        if (e.label != null)
+                            drawLabel(canvas, posX, posY + labelLineHeight, e.label!!)
 
-                        if (direction == LegendDirection.LEFT_TO_RIGHT) posX += calculatedLabelSizes[i].width
+                        if (direction == LegendDirection.LEFT_TO_RIGHT)
+                            posX += calculatedLabelSizes[i]?.width ?: 0f
 
                         posX += if (direction == LegendDirection.RIGHT_TO_LEFT) -xEntrySpace else xEntrySpace
                     } else posX += if (direction == LegendDirection.RIGHT_TO_LEFT) -stackSpace else stackSpace
@@ -332,7 +344,7 @@ open class LegendRenderer(
                 // contains the stacked legend size in pixels
                 var stack = 0f
                 var wasStacked = false
-                var posY: Float
+                var posY: Float = 0f
 
                 when (verticalAlignment) {
                     LegendVerticalAlignment.TOP -> {
@@ -354,6 +366,8 @@ open class LegendRenderer(
                     LegendVerticalAlignment.CENTER -> posY = (viewPortHandler.chartHeight / 2f
                             - legend.mNeededHeight / 2f
                             + legend.yOffset)
+
+                    null -> Log.w("Chart", "Legend verticalAlignment is null");
                 }
 
                 var i = 0
@@ -365,8 +379,10 @@ open class LegendRenderer(
                     var posX = originPosX
 
                     if (drawingForm) {
-                        if (direction == LegendDirection.LEFT_TO_RIGHT) posX += stack
-                        else posX -= formSize - stack
+                        if (direction == LegendDirection.LEFT_TO_RIGHT)
+                            posX += stack
+                        else
+                            posX -= formSize - stack
 
                         drawForm(canvas, posX, posY + formYOffset, e, legend)
 
@@ -382,12 +398,13 @@ open class LegendRenderer(
 
                         if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= Utils.calcTextWidth(labelPaint, e.label).toFloat()
 
-                        if (!wasStacked) {
-                            drawLabel(canvas, posX, posY + labelLineHeight, e.label)
-                        } else {
-                            posY += labelLineHeight + labelLineSpacing
-                            drawLabel(canvas, posX, posY + labelLineHeight, e.label)
-                        }
+                        if (e.label != null)
+                            if (!wasStacked) {
+                                drawLabel(canvas, posX, posY + labelLineHeight, e.label!!)
+                            } else {
+                                posY += labelLineHeight + labelLineSpacing
+                                drawLabel(canvas, posX, posY + labelLineHeight, e.label!!)
+                            }
 
                         // make a step down
                         posY += labelLineHeight + labelLineSpacing
@@ -447,8 +464,8 @@ open class LegendRenderer(
             val half = formSize / 2f
 
             when (form) {
-                LegendForm.NONE -> {}
-                LegendForm.EMPTY -> {}
+                LegendForm.NONE -> Unit
+                LegendForm.EMPTY -> Unit
                 LegendForm.DEFAULT, LegendForm.CIRCLE -> {
                     formPaint.style = Paint.Style.FILL
                     canvas.drawCircle(x + half, y, half, formPaint)
@@ -479,6 +496,9 @@ open class LegendRenderer(
                     mLineFormPath.lineTo(x + formSize, y)
                     canvas.drawPath(mLineFormPath, formPaint)
                 }
+
+                null -> Log.w( "Chart", "Legend form is null")
+
             }
 
         }
