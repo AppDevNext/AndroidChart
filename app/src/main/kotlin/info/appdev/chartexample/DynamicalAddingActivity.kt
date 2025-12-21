@@ -60,22 +60,23 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
 
         val lastDataSetIndex = data.getDataSetCount() - 1 // add data only to the last
         val lastSet = data.getDataSetByIndex(lastDataSetIndex)
+        lastSet?.let {
+            val cycleValue = (lastSet.entryCount % 100.0).toInt()
 
-        val cycleValue = (lastSet.entryCount % 100.0).toInt()
+            val value = (sampleValues[cycleValue]!!.toFloat() * 50) + 50f * (lastDataSetIndex + 1)
 
-        val value = (sampleValues[cycleValue]!!.toFloat() * 50) + 50f * (lastDataSetIndex + 1)
+            data.addEntry(Entry(lastSet.entryCount.toFloat(), value), lastDataSetIndex)
+            data.notifyDataChanged()
 
-        data.addEntry(Entry(lastSet.entryCount.toFloat(), value), lastDataSetIndex)
-        data.notifyDataChanged()
+            // let the chart know it's data has changed
+            chart!!.notifyDataSetChanged()
 
-        // let the chart know it's data has changed
-        chart!!.notifyDataSetChanged()
-
-        chart!!.setVisibleXRangeMaximum(6f)
-        //chart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
+            chart!!.setVisibleXRangeMaximum(6f)
+            //chart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
 //
-//            // this automatically refreshes the chart (calls invalidate())
-        chart!!.moveViewTo((data.getEntryCount() - 7).toFloat(), 50f, AxisDependency.LEFT)
+            // this automatically refreshes the chart (calls invalidate())
+            chart!!.moveViewTo((data.getEntryCount() - 7).toFloat(), 50f, AxisDependency.LEFT)
+        }
     }
 
     private fun removeLastEntry() {
@@ -104,7 +105,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             chart!!.setData(LineData())
         } else {
             val count = (data.getDataSetCount() + 1)
-            val amount = data.getDataSetByIndex(0).entryCount
+            val amount = data.getDataSetByIndex(0)?.entryCount ?: 0
 
             val values = ArrayList<Entry>()
 

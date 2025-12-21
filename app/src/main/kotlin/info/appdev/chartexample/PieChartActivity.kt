@@ -178,14 +178,14 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
             R.id.actionToggleValues -> {
                 chart!!.data!!.dataSets.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                    it?.isDrawValues = !it.isDrawValues
                 }
                 chart!!.invalidate()
             }
 
             R.id.actionToggleIcons -> {
                 for (set in chart!!.data!!.getDataSets())
-                    set.isDrawIcons = !set.isDrawIcons
+                    set?.isDrawIcons = !set.isDrawIcons
 
                 chart!!.invalidate()
             }

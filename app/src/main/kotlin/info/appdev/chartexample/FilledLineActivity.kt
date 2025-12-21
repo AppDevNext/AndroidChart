@@ -102,14 +102,14 @@ class FilledLineActivity : DemoBase() {
 
             set1.axisDependency = YAxis.AxisDependency.LEFT
             set1.color = Color.rgb(255, 241, 46)
-            set1.setDrawCircles(false)
+            set1.isDrawCirclesEnabled = false
             set1.lineWidth = 2f
             set1.circleRadius = 3f
             set1.fillAlpha = 255
             set1.setDrawFilled(true)
             set1.fillColor = Color.WHITE
             set1.highLightColor = Color.rgb(244, 117, 117)
-            set1.setDrawCircleHole(false)
+            set1.isDrawCircleHoleEnabled = false
             set1.fillFormatter = object : IFillFormatter {
                 override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
                     // change the return value here to better understand the effect
@@ -122,13 +122,13 @@ class FilledLineActivity : DemoBase() {
             set2 = LineDataSet(valuesArray2, "DataSet 2")
             set2.axisDependency = YAxis.AxisDependency.LEFT
             set2.color = Color.rgb(255, 241, 46)
-            set2.setDrawCircles(false)
+            set2.isDrawCirclesEnabled = false
             set2.lineWidth = 2f
             set2.circleRadius = 3f
             set2.fillAlpha = 255
             set2.setDrawFilled(true)
             set2.fillColor = Color.WHITE
-            set2.setDrawCircleHole(false)
+            set2.isDrawCircleHoleEnabled = false
             set2.highLightColor = Color.rgb(244, 117, 117)
             set2.fillFormatter = object : IFillFormatter {
                 override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
@@ -138,7 +138,7 @@ class FilledLineActivity : DemoBase() {
                 }
             }
 
-            val dataSets = ArrayList<ILineDataSet?>()
+            val dataSets = ArrayList<ILineDataSet>()
             dataSets.add(set1) // add the data sets
             dataSets.add(set2)
 

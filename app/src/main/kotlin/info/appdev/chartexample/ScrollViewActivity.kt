@@ -54,7 +54,7 @@ class ScrollViewActivity : DemoBase() {
 
         val set = BarDataSet(values, "Data Set")
         set.setColors(*ColorTemplate.VORDIPLOM_COLORS)
-        set.isDrawValues = false
+        set?.isDrawValues = false
 
         val data = BarData(set)
 

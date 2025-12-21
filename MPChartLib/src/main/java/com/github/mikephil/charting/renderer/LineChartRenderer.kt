@@ -77,8 +77,11 @@ open class LineChartRenderer(
 
         val lineData = dataProvider.lineData
 
-        for (set in lineData.dataSets) {
-            if (set.isVisible) drawDataSet(canvas, set)
+        lineData.dataSets.forEach { set ->
+            set?.let {
+                if (it.isVisible)
+                    drawDataSet(canvas, set)
+            }
         }
         canvas.drawBitmap(drawBitmapLocal, 0f, 0f, null)
     }
@@ -225,7 +228,7 @@ open class LineChartRenderer(
     }
 
     protected fun drawCubicFill(canvas: Canvas, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
-        val fillMin = dataSet.fillFormatter.getFillLinePosition(dataSet, dataProvider)
+        val fillMin = dataSet.fillFormatter!!.getFillLinePosition(dataSet, dataProvider)
 
         dataSet.getEntryForIndex(bounds.min + bounds.range)?.let {
             spline.lineTo(it.x, fillMin)
@@ -444,7 +447,7 @@ open class LineChartRenderer(
      * @param outputPath The path object that will be assigned the chart data.
      */
     private fun generateFilledPath(dataSet: ILineDataSet, startIndex: Int, endIndex: Int, outputPath: Path) {
-        val fillMin = dataSet.fillFormatter.getFillLinePosition(dataSet, dataProvider)
+        val fillMin = dataSet.fillFormatter!!.getFillLinePosition(dataSet, dataProvider)
         val phaseY = animator.phaseY
         val isDrawSteppedEnabled = dataSet.lineMode == LineDataSet.Mode.STEPPED
 
@@ -486,73 +489,75 @@ open class LineChartRenderer(
 
             for (i in dataSets.indices) {
                 val dataSet = dataSets[i]
-                if (dataSet.entryCount == 0) {
-                    continue
-                }
-                if (!shouldDrawValues(dataSet) || dataSet.entryCount < 1) {
-                    continue
-                }
-
-                // apply the text-styling defined by the DataSet
-                applyValueTextStyle(dataSet)
-
-                val trans = dataProvider.getTransformer(dataSet.axisDependency)
-
-                // make sure the values do not interfear with the circles
-                var valOffset = (dataSet.circleRadius * 1.75f).toInt()
-
-                if (!dataSet.isDrawCirclesEnabled) valOffset = valOffset / 2
-
-                xBounds.set(dataProvider, dataSet)
-
-                val positions = trans!!.generateTransformedValuesLine(
-                    dataSet, animator.phaseX, animator
-                        .phaseY, xBounds.min, xBounds.max
-                )
-
-                val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
-                iconsOffset.x = iconsOffset.x.convertDpToPixel()
-                iconsOffset.y = iconsOffset.y.convertDpToPixel()
-
-                var j = 0
-                while (j < positions.size) {
-                    val x = positions[j]
-                    val y = positions[j + 1]
-
-                    if (!viewPortHandler.isInBoundsRight(x)) break
-
-                    if (!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y)) {
-                        j += 2
+                dataSet?.let {
+                    if (dataSet.entryCount == 0) {
+                        continue
+                    }
+                    if (!shouldDrawValues(dataSet) || dataSet.entryCount < 1) {
                         continue
                     }
 
-                    val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
+                    // apply the text-styling defined by the DataSet
+                    applyValueTextStyle(dataSet)
 
-                    if (entry != null) {
-                        if (dataSet.isDrawValues) {
-                            drawValue(
-                                canvas, dataSet.valueFormatter, entry.y, entry, i, x,
-                                y - valOffset, dataSet.getValueTextColor(j / 2)
-                            )
+                    val trans = dataProvider.getTransformer(dataSet.axisDependency)
+
+                    // make sure the values do not interfear with the circles
+                    var valOffset = (dataSet.circleRadius * 1.75f).toInt()
+
+                    if (!dataSet.isDrawCirclesEnabled) valOffset = valOffset / 2
+
+                    xBounds.set(dataProvider, dataSet)
+
+                    val positions = trans!!.generateTransformedValuesLine(
+                        dataSet, animator.phaseX, animator
+                            .phaseY, xBounds.min, xBounds.max
+                    )
+
+                    val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                    iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                    iconsOffset.y = iconsOffset.y.convertDpToPixel()
+
+                    var j = 0
+                    while (j < positions.size) {
+                        val x = positions[j]
+                        val y = positions[j + 1]
+
+                        if (!viewPortHandler.isInBoundsRight(x)) break
+
+                        if (!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y)) {
+                            j += 2
+                            continue
                         }
 
-                        if (entry.icon != null && dataSet.isDrawIcons) {
-                            val icon = entry.icon
+                        val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
 
-                            icon?.let {
-                                Utils.drawImage(
-                                    canvas,
-                                    it,
-                                    (x + iconsOffset.x).toInt(),
-                                    (y + iconsOffset.y).toInt()
+                        if (entry != null) {
+                            if (dataSet.isDrawValues) {
+                                drawValue(
+                                    canvas, dataSet.valueFormatter, entry.y, entry, i, x,
+                                    y - valOffset, dataSet.getValueTextColor(j / 2)
                                 )
                             }
-                        }
-                    }
-                    j += 2
-                }
 
-                MPPointF.recycleInstance(iconsOffset)
+                            if (entry.icon != null && dataSet.isDrawIcons) {
+                                val icon = entry.icon
+
+                                icon?.let {
+                                    Utils.drawImage(
+                                        canvas,
+                                        it,
+                                        (x + iconsOffset.x).toInt(),
+                                        (y + iconsOffset.y).toInt()
+                                    )
+                                }
+                            }
+                        }
+                        j += 2
+                    }
+
+                    MPPointF.recycleInstance(iconsOffset)
+                }
             }
         }
     }
@@ -588,57 +593,58 @@ open class LineChartRenderer(
 
         for (i in dataSets.indices) {
             val dataSet = dataSets[i]
+            dataSet?.let {
+                if (!dataSet.isVisible || !dataSet.isDrawCirclesEnabled || dataSet.entryCount == 0) continue
 
-            if (!dataSet.isVisible || !dataSet.isDrawCirclesEnabled || dataSet.entryCount == 0) continue
+                circlePaintInner.color = dataSet.circleHoleColor
 
-            circlePaintInner.color = dataSet.circleHoleColor
+                val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-            val trans = dataProvider.getTransformer(dataSet.axisDependency)
+                xBounds.set(dataProvider, dataSet)
 
-            xBounds.set(dataProvider, dataSet)
+                val circleRadius = dataSet.circleRadius
+                val circleHoleRadius = dataSet.circleHoleRadius
+                val drawCircleHole = dataSet.isDrawCircleHoleEnabled && circleHoleRadius < circleRadius && circleHoleRadius > 0f
+                val drawTransparentCircleHole = drawCircleHole &&
+                        dataSet.circleHoleColor == ColorTemplate.COLOR_NONE
 
-            val circleRadius = dataSet.circleRadius
-            val circleHoleRadius = dataSet.circleHoleRadius
-            val drawCircleHole = dataSet.isDrawCircleHoleEnabled && circleHoleRadius < circleRadius && circleHoleRadius > 0f
-            val drawTransparentCircleHole = drawCircleHole &&
-                    dataSet.circleHoleColor == ColorTemplate.COLOR_NONE
+                val imageCache: DataSetImageCache?
 
-            val imageCache: DataSetImageCache?
+                if (mImageCaches.containsKey(dataSet)) {
+                    imageCache = mImageCaches[dataSet]
+                } else {
+                    imageCache = DataSetImageCache()
+                    mImageCaches[dataSet] = imageCache
+                }
 
-            if (mImageCaches.containsKey(dataSet)) {
-                imageCache = mImageCaches[dataSet]
-            } else {
-                imageCache = DataSetImageCache()
-                mImageCaches[dataSet] = imageCache
-            }
+                val changeRequired = imageCache!!.init(dataSet)
 
-            val changeRequired = imageCache!!.init(dataSet)
+                // only fill the cache with new bitmaps if a change is required
+                if (changeRequired) {
+                    imageCache.fill(dataSet, drawCircleHole, drawTransparentCircleHole)
+                }
 
-            // only fill the cache with new bitmaps if a change is required
-            if (changeRequired) {
-                imageCache.fill(dataSet, drawCircleHole, drawTransparentCircleHole)
-            }
+                val boundsRangeCount = xBounds.range + xBounds.min
 
-            val boundsRangeCount = xBounds.range + xBounds.min
+                for (j in xBounds.min..boundsRangeCount) {
+                    val e = dataSet.getEntryForIndex(j) ?: break
 
-            for (j in xBounds.min..boundsRangeCount) {
-                val e = dataSet.getEntryForIndex(j) ?: break
+                    mCirclesBuffer[0] = e.x
+                    mCirclesBuffer[1] = e.y * phaseY
 
-                mCirclesBuffer[0] = e.x
-                mCirclesBuffer[1] = e.y * phaseY
+                    trans!!.pointValuesToPixel(mCirclesBuffer)
 
-                trans!!.pointValuesToPixel(mCirclesBuffer)
+                    if (!viewPortHandler.isInBoundsRight(mCirclesBuffer[0])) break
 
-                if (!viewPortHandler.isInBoundsRight(mCirclesBuffer[0])) break
+                    if (!viewPortHandler.isInBoundsLeft(mCirclesBuffer[0]) ||
+                        !viewPortHandler.isInBoundsY(mCirclesBuffer[1])
+                    ) continue
 
-                if (!viewPortHandler.isInBoundsLeft(mCirclesBuffer[0]) ||
-                    !viewPortHandler.isInBoundsY(mCirclesBuffer[1])
-                ) continue
+                    val circleBitmap = imageCache.getBitmap(j)
 
-                val circleBitmap = imageCache.getBitmap(j)
-
-                if (circleBitmap != null) {
-                    canvas.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, null)
+                    if (circleBitmap != null) {
+                        canvas.drawBitmap(circleBitmap, mCirclesBuffer[0] - circleRadius, mCirclesBuffer[1] - circleRadius, null)
+                    }
                 }
             }
         }

@@ -133,12 +133,12 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         set1.color = ColorTemplate.getHoloBlue()
         set1.setSingleValueTextColor(ColorTemplate.getHoloBlue())
         set1.lineWidth = 1.5f
-        set1.setDrawCircles(false)
+        set1.isDrawCirclesEnabled = false
         set1.isDrawValues = false
         set1.fillAlpha = 65
         set1.fillColor = ColorTemplate.getHoloBlue()
         set1.highLightColor = Color.rgb(244, 117, 117)
-        set1.setDrawCircleHole(false)
+        set1.isDrawCircleHoleEnabled = false
 
         // create a data object with the data sets
         val data = LineData(set1)
@@ -165,7 +165,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleValues -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    set.isDrawValues = !set.isDrawValues
+                    set?.isDrawValues = !set.isDrawValues
                 }
                 chart!!.invalidate()
             }
@@ -179,10 +179,12 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleFilled -> {
                 chart!!.data!!.dataSets.forEach { set ->
-                    if (set.isDrawFilledEnabled)
-                        set.setDrawFilled(false)
-                    else
-                        set.setDrawFilled(true)
+                    set?.let {
+                        if (set.isDrawFilledEnabled)
+                            set.setDrawFilled(false)
+                        else
+                            set.setDrawFilled(true)
+                    }
                 }
                 chart!!.invalidate()
             }
@@ -192,10 +194,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.isDrawCirclesEnabled)
-                        set.setDrawCircles(false)
-                    else
-                        set.setDrawCircles(true)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 chart!!.invalidate()
             }

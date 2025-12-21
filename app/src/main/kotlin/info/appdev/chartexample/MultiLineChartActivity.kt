@@ -132,7 +132,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
             R.id.actionToggleValues -> {
                 binding.chart1.data!!.dataSets.forEach { set ->
-                    set.isDrawValues = !set.isDrawValues
+                    set?.isDrawValues = !set.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
@@ -158,10 +158,12 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
             R.id.actionToggleFilled -> {
                 binding.chart1.data!!.dataSets.forEach { set ->
-                    if (set.isDrawFilledEnabled)
-                        set.setDrawFilled(false)
-                    else
-                        set.setDrawFilled(true)
+                    set?.let {
+                        if (set.isDrawFilledEnabled)
+                            set.setDrawFilled(false)
+                        else
+                            set.setDrawFilled(true)
+                    }
                 }
                 binding.chart1.invalidate()
             }
@@ -171,10 +173,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
-                    if (set.isDrawCirclesEnabled)
-                        set.setDrawCircles(false)
-                    else
-                        set.setDrawCircles(true)
+                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 binding.chart1.invalidate()
             }
