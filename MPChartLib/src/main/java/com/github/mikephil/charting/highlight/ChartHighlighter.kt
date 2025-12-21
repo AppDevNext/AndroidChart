@@ -10,11 +10,11 @@ import com.github.mikephil.charting.utils.MPPointD
 import kotlin.math.abs
 import kotlin.math.hypot
 
-open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider?>(protected var provider: T?) : IHighlighter {
+open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protected var provider: T?) : IHighlighter {
     /**
      * buffer for storing previously highlighted values
      */
-    protected var mHighlightBuffer: MutableList<Highlight> = ArrayList()
+    protected var highlightBuffer: MutableList<Highlight> = ArrayList()
 
     override fun getHighlight(x: Float, y: Float): Highlight? {
         val pos = getValsForTouch(x, y)
@@ -87,7 +87,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider?>(protect
      * @param y    touch position
      */
     protected open fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight>? {
-        mHighlightBuffer.clear()
+        highlightBuffer.clear()
 
         val data = this.data
 
@@ -102,11 +102,11 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider?>(protect
                 continue
             }
 
-            mHighlightBuffer.addAll(buildHighlights(dataSet, i, xVal, DataSet.Rounding.CLOSEST))
+            highlightBuffer.addAll(buildHighlights(dataSet, i, xVal, DataSet.Rounding.CLOSEST))
             i++
         }
 
-        return mHighlightBuffer
+        return highlightBuffer
     }
 
     /**

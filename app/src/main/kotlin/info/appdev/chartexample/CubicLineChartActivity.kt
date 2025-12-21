@@ -173,9 +173,9 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
                 sets.forEach { set ->
                     set?.let {
                         if (set.isDrawFilledEnabled)
-                            set?.setDrawFilled(false)
+                            set.setDrawFilled(false)
                         else
-                            set?.setDrawFilled(true)
+                            set.setDrawFilled(true)
                     }
                 }
                 binding.chart1.invalidate()

@@ -39,7 +39,7 @@ public interface ChartInterface {
     float getYChartMax();
 
     /**
-     * Returns the maximum distance in scren dp a touch can be away from an entry to cause it to get highlighted.
+     * Returns the maximum distance in screen dp a touch can be away from an entry to cause it to get highlighted.
      */
     float getMaxHighlightDistance();
 

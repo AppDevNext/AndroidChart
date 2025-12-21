@@ -6,7 +6,7 @@ import com.github.mikephil.charting.utils.MPPointD
 import kotlin.math.abs
 import kotlin.math.max
 
-open class BarHighlighter(barDataProvider: BarDataProvider?) : ChartHighlighter<BarDataProvider?>(barDataProvider) {
+open class BarHighlighter(barDataProvider: BarDataProvider?) : ChartHighlighter<BarDataProvider>(barDataProvider) {
     override fun getHighlight(x: Float, y: Float): Highlight? {
         val high = super.getHighlight(x, y) ?: return null
 
