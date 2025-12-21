@@ -124,7 +124,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             set1.fillAlpha = 100
             set1.setDrawHorizontalHighlightIndicator(false)
             set1.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider?): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
                     return binding.chart1.axisLeft.axisMinimum
                 }
             }

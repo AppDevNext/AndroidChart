@@ -7,7 +7,7 @@ import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.buffer.HorizontalBarBuffer
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
-import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface
+import com.github.mikephil.charting.interfaces.dataprovider.base.IBaseProvider
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.Fill
 import com.github.mikephil.charting.utils.MPPointF
@@ -457,7 +457,7 @@ open class HorizontalBarChartRenderer(
         high.setDraw(bar.centerY(), bar.right)
     }
 
-    override fun isDrawingValuesAllowed(chart: ChartInterface): Boolean {
+    override fun isDrawingValuesAllowed(chart: IBaseProvider): Boolean {
         return (chart.data!!.entryCount < chart.maxVisibleCount
                 * viewPortHandler.scaleY)
     }

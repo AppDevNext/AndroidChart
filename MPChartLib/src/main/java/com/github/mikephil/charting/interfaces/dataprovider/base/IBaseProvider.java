@@ -1,4 +1,4 @@
-package com.github.mikephil.charting.interfaces.dataprovider;
+package com.github.mikephil.charting.interfaces.dataprovider.base;
 
 import android.graphics.RectF;
 
@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
  *
  * @author Philipp Jahoda
  */
-public interface ChartInterface {
+public interface IBaseProvider {
 
     /**
      * Returns the minimum x value of the chart, regardless of zoom or translation.
@@ -56,7 +56,7 @@ public interface ChartInterface {
     IValueFormatter getDefaultValueFormatter();
 
     @Nullable
-    ChartData getData();
+    ChartData<?> getData();
 
     int getMaxVisibleCount();
 }

@@ -30,7 +30,7 @@ import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.IHighlighter;
-import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface;
+import com.github.mikephil.charting.interfaces.dataprovider.base.IBaseProvider;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
@@ -55,7 +55,7 @@ import androidx.annotation.NonNull;
  * @author Philipp Jahoda
  */
 @SuppressWarnings("unused")
-public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Entry>>> extends ViewGroup implements ChartInterface {
+public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Entry>>> extends ViewGroup implements IBaseProvider {
 
 	public static final String LOG_TAG = "AndroidChart";
 
@@ -667,7 +667,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 */
 	public void highlightValue(Highlight high, boolean callListener) {
 
-		Entry e = null;
+		Entry entry = null;
 
 		if (high == null) {
 			mIndicesToHighlight = null;
@@ -677,8 +677,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 				Log.i(LOG_TAG, "Highlighted: " + high);
 			}
 
-			e = mData.getEntryForHighlight(high);
-			if (e == null) {
+			entry = mData.getEntryForHighlight(high);
+			if (entry == null) {
 				mIndicesToHighlight = null;
 				high = null;
 			} else {
@@ -696,7 +696,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 				mSelectionListener.onNothingSelected();
 			} else {
 				// notify the listener
-				mSelectionListener.onValueSelected(e, high);
+				mSelectionListener.onValueSelected(entry, high);
 			}
 		}
 
@@ -723,8 +723,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 * Set a new (e.g. custom) ChartTouchListener NOTE: make sure to
 	 * setTouchEnabled(true); if you need touch gestures on the chart
 	 */
-	public void setOnTouchListener(ChartTouchListener l) {
-		this.mChartTouchListener = l;
+	public void setOnTouchListener(ChartTouchListener touchListener) {
+		this.mChartTouchListener = touchListener;
 	}
 
 	/**
@@ -983,6 +983,16 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 */
 	public float getYMin() {
 		return mData.getYMin();
+	}
+
+	@Override
+	public float getYChartMin() {
+		return mData.getYMin();
+	}
+
+	@Override
+	public float getYChartMax() {
+		return mData.getYMax();
 	}
 
 	@Override

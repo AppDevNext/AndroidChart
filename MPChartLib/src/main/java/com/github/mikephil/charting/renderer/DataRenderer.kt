@@ -8,7 +8,7 @@ import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.interfaces.dataprovider.ChartInterface
+import com.github.mikephil.charting.interfaces.dataprovider.base.IBaseProvider
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.github.mikephil.charting.utils.convertDpToPixel
@@ -58,7 +58,7 @@ abstract class DataRenderer(
         paintHighlight.color = Color.rgb(255, 187, 115)
     }
 
-    protected open fun isDrawingValuesAllowed(chart: ChartInterface): Boolean {
+    protected open fun isDrawingValuesAllowed(chart: IBaseProvider): Boolean {
         return chart.data!!.entryCount < chart.maxVisibleCount * viewPortHandler.scaleX
     }
 
