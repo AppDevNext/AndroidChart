@@ -782,7 +782,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
             PieEntry entry = pieData.getDataSet().getEntryForIndex(i);
             float percentage = (entry.getValue() / pieData.getYValueSum()) * 100;
             builder.append(String.format(Locale.getDefault(), "%s has %.2f percent pie taken",
-                    (TextUtils.isEmpty(entry.getLabel()) ? "No Label" : entry.getLabel()),
+                    (TextUtils.isEmpty(entry.label) ? "No Label" : entry.label),
                     percentage));
         }
 
