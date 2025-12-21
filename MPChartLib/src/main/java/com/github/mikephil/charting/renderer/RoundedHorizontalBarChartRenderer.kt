@@ -39,7 +39,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
 
     override fun drawDataSet(canvas: Canvas, dataSet: IBarDataSet, index: Int) {
         initBuffers()
-        val trans = chart.getTransformer(dataSet.axisDependency)
+        val trans = dataProvider.getTransformer(dataSet.axisDependency)
         barBorderPaint.color = dataSet.barBorderColor
         barBorderPaint.strokeWidth = dataSet.barBorderWidth.convertDpToPixel()
         shadowPaint.color = dataSet.barShadowColor
@@ -47,9 +47,9 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
 
-        if (chart.isDrawBarShadowEnabled) {
+        if (dataProvider.isDrawBarShadowEnabled) {
             shadowPaint.color = dataSet.barShadowColor
-            val barData = chart.barData
+            val barData = dataProvider.barData
             val barWidth = barData.barWidth
             val barWidthHalf = barWidth / 2.0f
             var x: Float
@@ -84,8 +84,8 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
         val buffer = barBuffers[index]!!
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
-        buffer.setInverted(chart.isInverted(dataSet.axisDependency))
-        buffer.setBarWidth(chart.barData.barWidth)
+        buffer.setInverted(dataProvider.isInverted(dataSet.axisDependency))
+        buffer.setBarWidth(dataProvider.barData.barWidth)
         buffer.feed(dataSet)
         trans!!.pointValuesToPixel(buffer.buffer)
 
@@ -102,7 +102,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
                     break
                 }
 
-                if (chart.isDrawBarShadowEnabled) {
+                if (dataProvider.isDrawBarShadowEnabled) {
                     if (roundedShadowRadius > 0) {
                         canvas.drawRoundRect(
                             RectF(
@@ -152,7 +152,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
                     break
                 }
 
-                if (chart.isDrawBarShadowEnabled) {
+                if (dataProvider.isDrawBarShadowEnabled) {
                     if (roundedShadowRadius > 0) {
                         canvas.drawRoundRect(
                             RectF(

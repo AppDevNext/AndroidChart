@@ -73,7 +73,7 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
         for (renderer in dataRenderers) {
             var data: ChartData<*>? = null
 
-            if (renderer is BarChartRenderer) data = renderer.chart.barData
+            if (renderer is BarChartRenderer) data = renderer.dataProvider.barData
             else if (renderer is LineChartRenderer) data = renderer.dataProvider.lineData
             else if (renderer is CandleStickChartRenderer) data = renderer.dataProvider.candleData
             else if (renderer is ScatterChartRenderer) data = renderer.dataProvider.scatterData
