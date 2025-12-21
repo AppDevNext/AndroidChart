@@ -425,36 +425,36 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 	/**
 	 * Adjusts the current minimum and maximum values based on the provided Entry object.
 	 */
-    protected void calcMinMax(Entry e, AxisDependency axis) {
+    protected void calcMinMax(Entry entry, AxisDependency axis) {
 
-		if (mYMax < e.getY()) {
-			mYMax = e.getY();
+		if (mYMax < entry.getY()) {
+			mYMax = entry.getY();
 		}
-		if (mYMin > e.getY()) {
-			mYMin = e.getY();
+		if (mYMin > entry.getY()) {
+			mYMin = entry.getY();
 		}
 
-		if (mXMax < e.getX()) {
-			mXMax = e.getX();
+		if (mXMax < entry.getX()) {
+			mXMax = entry.getX();
 		}
-		if (mXMin > e.getX()) {
-			mXMin = e.getX();
+		if (mXMin > entry.getX()) {
+			mXMin = entry.getX();
 		}
 
 		if (axis == AxisDependency.LEFT) {
 
-			if (mLeftAxisMax < e.getY()) {
-				mLeftAxisMax = e.getY();
+			if (mLeftAxisMax < entry.getY()) {
+				mLeftAxisMax = entry.getY();
 			}
-			if (mLeftAxisMin > e.getY()) {
-				mLeftAxisMin = e.getY();
+			if (mLeftAxisMin > entry.getY()) {
+				mLeftAxisMin = entry.getY();
 			}
 		} else {
-			if (mRightAxisMax < e.getY()) {
-				mRightAxisMax = e.getY();
+			if (mRightAxisMax < entry.getY()) {
+				mRightAxisMax = entry.getY();
 			}
-			if (mRightAxisMin > e.getY()) {
-				mRightAxisMin = e.getY();
+			if (mRightAxisMin > entry.getY()) {
+				mRightAxisMin = entry.getY();
 			}
 		}
 	}
@@ -501,7 +501,7 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 	 */
     public boolean removeEntry(Entry e, int dataSetIndex) {
 
-		// entry null, outofbounds
+		// entry null, out of bounds
 		if (e == null || dataSetIndex >= mDataSets.size()) {
 			return false;
 		}
@@ -635,9 +635,9 @@ public abstract class ChartData<T extends IDataSet<? extends Entry>> implements 
 	/**
 	 * Sets a custom IValueFormatter for all DataSets this data object contains.
 	 */
-	public void setValueFormatter(IValueFormatter f) {
+	public void setValueFormatter(IValueFormatter valueFormatter) {
 		for (IDataSet set : mDataSets) {
-			set.setValueFormatter(f);
+			set.setValueFormatter(valueFormatter);
 		}
 	}
 

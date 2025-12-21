@@ -10,12 +10,12 @@ import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
  * from the DataSet labels. Each PieData object can only represent one
  * PieDataSet (multiple PieDataSets inside a single PieChart are not possible).
  */
-class PieData : ChartData<IPieDataSet?> {
+class PieData : ChartData<IPieDataSet> {
     constructor() : super()
 
-    constructor(dataSet: IPieDataSet?) : super(dataSet)
+    constructor(dataSet: IPieDataSet) : super(dataSet)
 
-    var dataSet: IPieDataSet?
+    var dataSet: IPieDataSet
         /**
          * Returns the DataSet this PieData object represents. A PieData object can
          * only contain one DataSet.
@@ -58,7 +58,7 @@ class PieData : ChartData<IPieDataSet?> {
     }
 
     override fun getEntryForHighlight(highlight: Highlight): Entry? {
-        return this.dataSet!!.getEntryForIndex(highlight.x.toInt())
+        return this.dataSet.getEntryForIndex(highlight.x.toInt())
     }
 
     val yValueSum: Float
@@ -68,7 +68,7 @@ class PieData : ChartData<IPieDataSet?> {
         get() {
             var sum = 0f
 
-            for (i in 0..<this.dataSet!!.entryCount) sum += this.dataSet!!.getEntryForIndex(i)!!.y
+            for (i in 0..<this.dataSet.entryCount) sum += this.dataSet.getEntryForIndex(i)!!.y
 
 
             return sum
