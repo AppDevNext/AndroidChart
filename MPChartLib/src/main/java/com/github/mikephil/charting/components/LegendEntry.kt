@@ -1,14 +1,12 @@
-package com.github.mikephil.charting.components;
+package com.github.mikephil.charting.components
+
+import android.graphics.DashPathEffect
+import com.github.mikephil.charting.components.Legend.LegendForm
+import com.github.mikephil.charting.utils.ColorTemplate
 
 
-import android.graphics.DashPathEffect;
-
-import com.github.mikephil.charting.utils.ColorTemplate;
-
-public class LegendEntry {
-    public LegendEntry() {
-
-    }
+class LegendEntry {
+    constructor()
 
     /**
      *
@@ -19,26 +17,27 @@ public class LegendEntry {
      * @param formLineDashEffect Set to nil to use the legend's default.
      * @param formColor The color for drawing the form.
      */
-    public LegendEntry(String label,
-                       Legend.LegendForm form,
-                       float formSize,
-                       float formLineWidth,
-                       DashPathEffect formLineDashEffect,
-                       int formColor)
-    {
-        this.label = label;
-        this.form = form;
-        this.formSize = formSize;
-        this.formLineWidth = formLineWidth;
-        this.formLineDashEffect = formLineDashEffect;
-        this.formColor = formColor;
+    constructor(
+        label: String?,
+        form: LegendForm?,
+        formSize: Float,
+        formLineWidth: Float,
+        formLineDashEffect: DashPathEffect?,
+        formColor: Int
+    ) {
+        this.label = label
+        this.form = form
+        this.formSize = formSize
+        this.formLineWidth = formLineWidth
+        this.formLineDashEffect = formLineDashEffect
+        this.formColor = formColor
     }
 
     /**
      * The legend entry text.
      * A `null` label will start a group.
      */
-    public String label;
+    var label: String? = null
 
     /**
      * The form to draw for this entry.
@@ -47,32 +46,31 @@ public class LegendEntry {
      * `EMPTY` will avoid drawing a form, but keep its space.
      * `DEFAULT` will use the Legend's default.
      */
-    public Legend.LegendForm form = Legend.LegendForm.DEFAULT;
+    var form: LegendForm? = LegendForm.DEFAULT
 
     /**
      * Form size will be considered except for when .None is used
      *
      * Set as NaN to use the legend's default
      */
-    public float formSize = Float.NaN;
+    var formSize: Float = Float.NaN
 
     /**
      * Line width used for shapes that consist of lines.
      *
      * Set as NaN to use the legend's default
      */
-    public float formLineWidth = Float.NaN;
+    var formLineWidth: Float = Float.NaN
 
     /**
      * Line dash path effect used for shapes that consist of lines.
      *
      * Set to null to use the legend's default
      */
-    public DashPathEffect formLineDashEffect = null;
+    var formLineDashEffect: DashPathEffect? = null
 
     /**
      * The color for drawing the form
      */
-    public int formColor = ColorTemplate.COLOR_NONE;
-
+    var formColor: Int = ColorTemplate.COLOR_NONE
 }
