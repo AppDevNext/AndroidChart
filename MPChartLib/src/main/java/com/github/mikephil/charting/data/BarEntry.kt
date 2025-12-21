@@ -20,7 +20,7 @@ open class BarEntry : Entry {
     /**
      * Returns the ranges of the individual stack-entries. Will return null if this entry is not stacked.
      */
-    var ranges: Array<Range?> = arrayOfNulls(0)
+    var ranges: Array<Range> = arrayOf()
         private set
 
     /**
@@ -196,7 +196,7 @@ open class BarEntry : Entry {
 
         if (values == null || values.isEmpty()) return
 
-        this.ranges = arrayOfNulls(values.size)
+        this.ranges = arrayOf()
 
         var negRemain = -this.negativeSum
         var posRemain = 0f
