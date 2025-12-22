@@ -17,7 +17,7 @@ class RadarData : ChartData<IRadarDataSet> {
 
     constructor() : super()
 
-    constructor(dataSets: MutableList<IRadarDataSet?>) : super(dataSets)
+    constructor(dataSets: MutableList<IRadarDataSet>) : super(dataSets)
 
     constructor(vararg dataSets: IRadarDataSet) : super(*dataSets)
 

@@ -121,7 +121,7 @@ class RadarChartActivity : DemoBase() {
         set2.isDrawHighlightCircleEnabled = true
         set2.setDrawHighlightIndicators(false)
 
-        val sets = ArrayList<IRadarDataSet?>()
+        val sets = ArrayList<IRadarDataSet>()
         sets.add(set1)
         sets.add(set2)
 
