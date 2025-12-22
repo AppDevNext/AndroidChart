@@ -8,10 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -21,46 +19,38 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.EntryXComparator
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.MyMarkerView
+import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 import java.util.Collections
 
 class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
-    private var chart: LineChart? = null
-    private var seekBarX: SeekBar? = null
-    private var seekBarY: SeekBar? = null
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
+
+    private lateinit var binding: ActivityLinechartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_linechart)
+        binding = ActivityLinechartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvX = findViewById(R.id.tvXMax)
-        tvY = findViewById(R.id.tvYMax)
+        binding.seekBarY.setOnSeekBarChangeListener(this)
+        binding.seekBarX.setOnSeekBarChangeListener(this)
 
-        seekBarX = findViewById(R.id.seekBarX)
-        seekBarY = findViewById(R.id.seekBarY)
-
-        seekBarY!!.setOnSeekBarChangeListener(this)
-        seekBarX!!.setOnSeekBarChangeListener(this)
-
-        chart = findViewById(R.id.chart1)
-        chart!!.setOnChartValueSelectedListener(this)
-        chart!!.setDrawGridBackground(false)
+        binding.chart1.setOnChartValueSelectedListener(this)
+        binding.chart1.setDrawGridBackground(false)
 
         // no description text
-        chart!!.description.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // enable touch gestures
-        chart!!.setTouchEnabled(true)
+        binding.chart1.setTouchEnabled(true)
 
         // enable scaling and dragging
-        chart!!.setDragEnabled(true)
-        chart!!.setScaleEnabled(true)
+        binding.chart1.setDragEnabled(true)
+        binding.chart1.setScaleEnabled(true)
 
         // if disabled, scaling can be done on x- and y-axis separately
-        chart!!.setPinchZoom(true)
+        binding.chart1.setPinchZoom(true)
 
         // set an alternative background color
         // chart.setBackgroundColor(Color.GRAY);
@@ -68,23 +58,23 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
         val mv = MyMarkerView(this, R.layout.custom_marker_view)
-        mv.chartView = chart // For bounds control
-        chart!!.setMarker(mv) // Set the marker to the chart
+        mv.chartView = binding.chart1 // For bounds control
+        binding.chart1.setMarker(mv) // Set the marker to the chart
 
-        val xl = chart!!.xAxis
+        val xl = binding.chart1.xAxis
         xl.setAvoidFirstLastClipping(true)
         xl.axisMinimum = 0f
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = binding.chart1.axisLeft
         leftAxis.isInverted = true
         leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        val rightAxis = chart!!.axisRight
+        val rightAxis = binding.chart1.axisRight
         rightAxis.isEnabled = false
 
         // add data
-        seekBarX!!.progress = 25
-        seekBarY!!.progress = 50
+        binding.seekBarX.progress = 25
+        binding.seekBarY.progress = 50
 
         // // restrain the maximum scale-out factor
         // chart.setScaleMinima(3f, 3f);
@@ -93,13 +83,13 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         // chart.centerViewPort(10, 50);
 
         // get the legend (only possible after setting data)
-        val l = chart!!.legend
+        val l = binding.chart1.legend
 
         // modify the legend ...
         l.form = LegendForm.LINE
 
         // don't forget to refresh the drawing
-        chart?.invalidate()
+        binding.chart1.invalidate()
     }
 
     private fun setData(count: Int, range: Float) {
@@ -125,7 +115,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         val data = LineData(set1)
 
         // set data
-        chart!!.setData(data)
+        binding.chart1.setData(data)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -143,64 +133,64 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach {
+                binding.chart1.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart?.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionToggleFilled -> {
-                chart!!.data!!.dataSets.forEach { set ->
+                binding.chart1.data!!.dataSets.forEach { set ->
                     set?.setDrawFilled(!set.isDrawFilledEnabled)
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                val sets = chart!!.data!!.dataSets
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(2000)
+                binding.chart1.animateX(2000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(2000)
+                binding.chart1.animateY(2000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(2000, 2000)
+                binding.chart1.animateXY(2000, 2000)
             }
 
             R.id.actionTogglePinch -> {
-                chart!!.setPinchZoom(!chart!!.isPinchZoomEnabled)
+                binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled)
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart?.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -208,17 +198,17 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        tvX!!.text = seekBarX!!.progress.toString()
-        tvY!!.text = seekBarY!!.progress.toString()
+        binding.tvXMax.text = binding.seekBarX.progress.toString()
+        binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        setData(seekBarX!!.progress, seekBarY!!.progress.toFloat())
+        setData(binding.seekBarX.progress, binding.seekBarY.progress.toFloat())
 
         // redraw
-        chart?.invalidate()
+        binding.chart1.invalidate()
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "InvertedLineChartActivity")
+        saveToGallery(binding.chart1, "InvertedLineChartActivity")
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {

@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.components.YAxis
@@ -25,19 +24,13 @@ import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 
 class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
 
     private lateinit var binding: ActivityLinechartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLinechartBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-
-        tvX = findViewById(R.id.tvXMax)
-        tvY = findViewById(R.id.tvYMax)
+        setContentView(binding.root)
 
         binding.chart1.setViewPortOffsets(0f, 0f, 0f, 0f)
         binding.chart1.setBackgroundColor(Color.rgb(104, 241, 175))
@@ -268,8 +261,8 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
     @SuppressLint("SetTextI18n")
     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-        tvX!!.text = binding.seekBarX.progress.toString()
-        tvY!!.text = binding.seekBarY.progress.toString()
+        binding.tvXMax.text = binding.seekBarX.progress.toString()
+        binding.tvYMax.text = binding.seekBarY.progress.toString()
 
         setData(binding.seekBarX.progress, binding.seekBarY.progress.toFloat())
 

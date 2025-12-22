@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -28,19 +27,21 @@ import info.appdev.chartexample.listviewitems.LineChartItem
 import info.appdev.chartexample.listviewitems.PieChartItem
 import info.appdev.chartexample.notimportant.DemoBase
 import androidx.core.net.toUri
+import info.appdev.chartexample.databinding.ActivityListviewChartBinding
 
 /**
  * Demonstrates the use of charts inside a ListView. IMPORTANT: provide a
  * specific height attribute for the chart inside your ListView item
  */
 class ListViewMultiChartActivity : DemoBase() {
+    private lateinit var binding: ActivityListviewChartBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_listview_chart)
+        binding = ActivityListviewChartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val lv = findViewById<ListView>(R.id.listViewMain)
-
-        val list = ArrayList<ChartItem?>()
+        val list = ArrayList<ChartItem>()
 
         // 30 items
         for (i in 0..29) {
@@ -54,11 +55,11 @@ class ListViewMultiChartActivity : DemoBase() {
         }
 
         val chartDataAdapter = ChartDataAdapter(applicationContext, list)
-        lv.adapter = chartDataAdapter
+        binding.listViewMain.adapter = chartDataAdapter
     }
 
     /** adapter that supports 3 different item types  */
-    private class ChartDataAdapter(context: Context, objects: MutableList<ChartItem?>) : ArrayAdapter<ChartItem>(context, 0, objects) {
+    private class ChartDataAdapter(context: Context, objects: MutableList<ChartItem>) : ArrayAdapter<ChartItem>(context, 0, objects) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             return getItem(position)!!.getView(position, convertView, context)!!
         }

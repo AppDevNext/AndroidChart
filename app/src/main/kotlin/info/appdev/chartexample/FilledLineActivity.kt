@@ -32,8 +32,7 @@ class FilledLineActivity : DemoBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLinechartNoseekbarBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         binding.chart1.setBackgroundColor(Color.WHITE)
         binding.chart1.setGridBackgroundColor(fillColor)

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
@@ -30,48 +29,50 @@ import com.github.mikephil.charting.data.ScatterDataSet
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityCombinedBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import kotlin.math.roundToInt
 
 class CombinedChartActivity : DemoBase() {
-    private var chart: CombinedChart? = null
     private val sampleCount = 12
     var values: Array<Double?> = getValues(sampleCount * 2)
 
+    private lateinit var binding: ActivityCombinedBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_combined)
+        binding = ActivityCombinedBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        chart = findViewById(R.id.chart1)
-        chart!!.description.isEnabled = false
-        chart!!.setBackgroundColor(Color.WHITE)
-        chart!!.setDrawGridBackground(false)
-        chart!!.setDrawBarShadow(false)
-        chart!!.isHighlightFullBarEnabled = false
+        binding.chart1.description.isEnabled = false
+        binding.chart1.setBackgroundColor(Color.WHITE)
+        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.setDrawBarShadow(false)
+        binding.chart1.isHighlightFullBarEnabled = false
 
         // draw bars behind lines
-        chart!!.setDrawOrder(
+        binding.chart1.setDrawOrder(
             arrayOf(
                 DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
             )
         )
 
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.isWordWrapEnabled = true
         l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
         l.orientation = Legend.LegendOrientation.HORIZONTAL
         l.setDrawInside(false)
 
-        val rightAxis = chart!!.axisRight
+        val rightAxis = binding.chart1.axisRight
         rightAxis.setDrawGridLines(false)
         rightAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = binding.chart1.axisLeft
         leftAxis.setDrawGridLines(false)
         leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.position = XAxisPosition.BOTH_SIDED
         xAxis.axisMinimum = 0f
         xAxis.granularity = 1f
@@ -92,8 +93,8 @@ class CombinedChartActivity : DemoBase() {
 
         xAxis.axisMaximum = data.xMax + 0.25f
 
-        chart!!.setData(data)
-        chart?.invalidate()
+        binding.chart1.setData(data)
+        binding.chart1.invalidate()
     }
 
     private fun generateLineData(): LineData {
@@ -238,27 +239,27 @@ class CombinedChartActivity : DemoBase() {
             }
 
             R.id.actionToggleLineValues -> {
-                chart!!.data!!.dataSets.forEach {
+                binding.chart1.data!!.dataSets.forEach {
                     if (it is LineDataSet)
                         it.isDrawValues = !it.isDrawValues
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleBarValues -> {
-                chart!!.data!!.dataSets.forEach {
+                binding.chart1.data!!.dataSets.forEach {
                     if (it is BarDataSet)
                         it.isDrawValues = !it.isDrawValues
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionRemoveDataSet -> {
-                val rnd = values[sampleCount]!!.toFloat().toInt() * chart!!.data!!.getDataSetCount()
-                chart!!.data!!.removeDataSet(chart!!.data!!.getDataSetByIndex(rnd))
-                chart!!.data!!.notifyDataChanged()
-                chart?.notifyDataSetChanged()
-                chart?.invalidate()
+                val rnd = values[sampleCount]!!.toFloat().toInt() * binding.chart1.data!!.getDataSetCount()
+                binding.chart1.data!!.removeDataSet(binding.chart1.data!!.getDataSetByIndex(rnd))
+                binding.chart1.data!!.notifyDataChanged()
+                binding.chart1.notifyDataSetChanged()
+                binding.chart1.invalidate()
             }
         }
         return true

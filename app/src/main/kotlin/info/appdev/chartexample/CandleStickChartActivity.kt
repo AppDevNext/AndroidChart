@@ -10,88 +10,75 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityCandlechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 
 class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
-    private var chart: CandleStickChart? = null
-    private var seekBarX: SeekBar? = null
-    private var seekBarY: SeekBar? = null
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
+
+    private lateinit var binding: ActivityCandlechartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_candlechart)
+        binding = ActivityCandlechartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvX = findViewById(R.id.tvXMax)
-        tvY = findViewById(R.id.tvYMax)
+        binding.seekBarX.setOnSeekBarChangeListener(this)
+        binding.seekBarY.setOnSeekBarChangeListener(this)
+        binding.chart1.setBackgroundColor(Color.WHITE)
+        binding.chart1.description.isEnabled = false
 
-        seekBarX = findViewById(R.id.seekBarX)
-        seekBarX!!.setOnSeekBarChangeListener(this)
-
-        seekBarY = findViewById(R.id.seekBarY)
-        seekBarY!!.setOnSeekBarChangeListener(this)
-
-        chart = findViewById(R.id.chart1)
-        chart!!.setBackgroundColor(Color.WHITE)
-
-        chart!!.description.isEnabled = false
-
-        // if more than 60 entries are displayed in the chart, no values will be
-        // drawn
-        chart!!.setMaxVisibleValueCount(60)
+        // if more than 60 entries are displayed in the chart, no values will be drawn
+        binding.chart1.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        chart!!.setPinchZoom(false)
+        binding.chart1.setPinchZoom(false)
 
-        chart!!.setDrawGridBackground(false)
+        binding.chart1.setDrawGridBackground(false)
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.position = XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = binding.chart1.axisLeft
         //        leftAxis.setEnabled(false);
         leftAxis.setLabelCount(7, false)
         leftAxis.setDrawGridLines(false)
         leftAxis.setDrawAxisLine(false)
 
-        val rightAxis = chart!!.axisRight
+        val rightAxis = binding.chart1.axisRight
         rightAxis.isEnabled = false
 
         //        rightAxis.setStartAtZero(false);
 
         // setting data
-        seekBarX!!.progress = 40
-        seekBarY!!.progress = 100
+        binding.seekBarX.progress = 40
+        binding.seekBarY.progress = 100
 
-        chart!!.legend.isEnabled = false
+        binding.chart1.legend.isEnabled = false
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        val progress: Int = (seekBarX!!.progress)
+        val progress: Int = (binding.seekBarX.progress)
 
-        tvX!!.text = progress.toString()
-        tvY!!.text = seekBarY!!.progress.toString()
+        binding.tvXMax.text = progress.toString()
+        binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        chart!!.resetTracking()
+        binding.chart1.resetTracking()
 
         val values = ArrayList<CandleEntry>()
         val sampleValues = getValues(100)
 
         for (i in 0..<progress) {
-            val multi = (seekBarY!!.progress + 1).toFloat()
+            val multi = (binding.seekBarY.progress + 1).toFloat()
             val `val` = (sampleValues[i]!!.toFloat() * 40) + multi
 
             val high = (sampleValues[i]!!.toFloat() * 9) + 8f
@@ -129,8 +116,8 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
         //set1.setHighlightLineWidth(1f);
         val data = CandleData(set1)
 
-        chart!!.setData(data)
-        chart?.invalidate()
+        binding.chart1.setData(data)
+        binding.chart1.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -148,62 +135,62 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach {
+                binding.chart1.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                for (set in chart!!.data!!.dataSets)
+                for (set in binding.chart1.data!!.dataSets)
                     set?.isDrawIcons = !set.isDrawIcons
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart?.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionTogglePinch -> {
-                if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
-                else chart!!.setPinchZoom(true)
+                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
+                else binding.chart1.setPinchZoom(true)
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart?.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
             R.id.actionToggleMakeShadowSameColorAsCandle -> {
-                for (set in chart!!.data!!.dataSets) {
+                for (set in binding.chart1.data!!.dataSets) {
                     (set as CandleDataSet).shadowColorSameAsCandle = !set.shadowColorSameAsCandle
                 }
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(2000)
+                binding.chart1.animateX(2000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(2000)
+                binding.chart1.animateY(2000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(2000, 2000)
+                binding.chart1.animateXY(2000, 2000)
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -211,7 +198,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "CandleStickChartActivity")
+        saveToGallery(binding.chart1, "CandleStickChartActivity")
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit

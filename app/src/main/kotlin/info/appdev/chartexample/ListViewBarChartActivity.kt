@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.data.BarData
@@ -22,19 +21,22 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
 import androidx.core.net.toUri
+import info.appdev.chartexample.databinding.ActivityListviewChartBinding
 
 /**
  * Demonstrates the use of charts inside a ListView. IMPORTANT: provide a
  * specific height attribute for the chart inside your ListView item
  */
 class ListViewBarChartActivity : DemoBase() {
+
+    private lateinit var binding: ActivityListviewChartBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_listview_chart)
+        binding = ActivityListviewChartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val lv = findViewById<ListView>(R.id.listViewMain)
-
-        val list = ArrayList<BarData?>()
+        val list = ArrayList<BarData>()
 
         // 20 items
         for (i in 0..19) {
@@ -42,10 +44,10 @@ class ListViewBarChartActivity : DemoBase() {
         }
 
         val chartDataAdapter = ChartDataAdapter(applicationContext, list)
-        lv.adapter = chartDataAdapter
+        binding.listViewMain.adapter = chartDataAdapter
     }
 
-    private inner class ChartDataAdapter(context: Context, objects: MutableList<BarData?>) : ArrayAdapter<BarData?>(context, 0, objects) {
+    private inner class ChartDataAdapter(context: Context, objects: MutableList<BarData>) : ArrayAdapter<BarData>(context, 0, objects) {
         @SuppressLint("InflateParams")
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             var convertView = convertView

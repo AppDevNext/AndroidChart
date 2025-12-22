@@ -8,14 +8,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
-import android.view.View
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition
@@ -30,47 +27,41 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.getSDKInt
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.MyMarkerView
+import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestureListener, OnChartValueSelectedListener {
 
-    private var mChart: LineChart? = null
-    private var mSeekBarX: SeekBar? = null
-    private var mSeekBarY: SeekBar? = null
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
+    private lateinit var binding: ActivityLinechartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_linechart)
-        tvX = findViewById<View>(R.id.tvXMax) as TextView
-        tvY = findViewById<View>(R.id.tvYMax) as TextView
-        mSeekBarX = findViewById<View>(R.id.seekBarX) as SeekBar
-        mSeekBarY = findViewById<View>(R.id.seekBarY) as SeekBar
-        mSeekBarX!!.progress = 45
-        mSeekBarY!!.progress = 100
-        mSeekBarY!!.setOnSeekBarChangeListener(this)
-        mSeekBarX!!.setOnSeekBarChangeListener(this)
-        mChart = findViewById<View>(R.id.chart1) as LineChart
-        mChart!!.onChartGestureListener = this
-        mChart!!.setOnChartValueSelectedListener(this)
-        mChart!!.setDrawGridBackground(false)
+        binding = ActivityLinechartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.seekBarX.progress = 45
+        binding.seekBarY.progress = 100
+        binding.seekBarY.setOnSeekBarChangeListener(this)
+        binding.seekBarX.setOnSeekBarChangeListener(this)
+        binding.chart1.onChartGestureListener = this
+        binding.chart1.setOnChartValueSelectedListener(this)
+        binding.chart1.setDrawGridBackground(false)
 
         // no description text
-        mChart!!.description.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // enable touch gestures
-        mChart!!.setTouchEnabled(true)
+        binding.chart1.setTouchEnabled(true)
 
         // enable scaling and dragging
-        mChart!!.isDragEnabled = true
-        mChart!!.setScaleEnabled(true)
+        binding.chart1.isDragEnabled = true
+        binding.chart1.setScaleEnabled(true)
         // mChart.setScaleXEnabled(true);
         // mChart.setScaleYEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        mChart!!.setPinchZoom(true)
+        binding.chart1.setPinchZoom(true)
 
         // set an alternative background color
         // mChart.setBackgroundColor(Color.GRAY);
@@ -78,8 +69,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
         val mv = MyMarkerView(this, R.layout.custom_marker_view)
-        mv.chartView = mChart // For bounds control
-        mChart!!.marker.add(mv) // Set the marker to the chart
+        mv.chartView = binding.chart1 // For bounds control
+        binding.chart1.marker.add(mv) // Set the marker to the chart
 
         // x-axis limit line
         val llXAxis = LimitLine(10f, "Index 10")
@@ -87,7 +78,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         llXAxis.enableDashedLine(10f, 10f, 0f)
         llXAxis.labelPosition = LimitLabelPosition.RIGHT_BOTTOM
         llXAxis.textSize = 10f
-        val xAxis = mChart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.enableGridDashedLine(10f, 10f, 0f)
         xAxis.isShowSpecificPositions = true
         xAxis.specificPositions = floatArrayOf(20f, 30f, 60f)
@@ -104,7 +95,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         ll2.labelPosition = LimitLabelPosition.RIGHT_BOTTOM
         ll2.textSize = 10f
         ll2.typeface = tf
-        val leftAxis = mChart!!.axisLeft
+        val leftAxis = binding.chart1.axisLeft
         leftAxis.removeAllLimitLines() // reset all limit lines to avoid overlapping lines
         leftAxis.addLimitLine(ll1)
         leftAxis.addLimitLine(ll2)
@@ -118,13 +109,13 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
         // limit lines are drawn behind data (and not on top)
         leftAxis.setDrawLimitLinesBehindData(true)
-        mChart!!.axisRight.isEnabled = false
+        binding.chart1.axisRight.isEnabled = false
         setData(45, 100f)
-        mChart!!.animateX(2500)
+        binding.chart1.animateX(2500)
         //mChart.invalidate();
 
         // get the legend (only possible after setting data)
-        val l = mChart!!.legend
+        val l = binding.chart1.legend
 
         // modify the legend ...
         l.form = LegendForm.LINE
@@ -138,74 +129,74 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionToggleValues -> {
-                mChart!!.data?.dataSets?.forEach {
+                binding.chart1.data?.dataSets?.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                mChart!!.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                mChart!!.data?.let {
+                binding.chart1.data?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
-                    mChart!!.invalidate()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionToggleFilled -> {
-                mChart!!.data?.dataSets?.forEach {
+                binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set?.setDrawFilled(!set.isDrawFilledEnabled)
+                    set.setDrawFilled(!set.isDrawFilledEnabled)
                 }
-                mChart!!.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                mChart!!.data?.dataSets?.forEach {
+                binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
-                mChart!!.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                mChart!!.data?.dataSets?.forEach {
+                binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER
                 }
-                mChart!!.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleStepped -> {
-                mChart!!.data?.dataSets?.forEach {
+                binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED
                 }
-                mChart!!.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                mChart!!.data?.dataSets?.forEach {
+                binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER
                 }
-                mChart!!.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                mChart!!.setPinchZoom(!mChart!!.isPinchZoomEnabled)
-                mChart!!.invalidate()
+                binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled)
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                mChart!!.isAutoScaleMinMaxEnabled = !mChart!!.isAutoScaleMinMaxEnabled
-                mChart!!.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
-            R.id.animateX -> mChart!!.animateX(3000)
-            R.id.animateY -> mChart!!.animateY(3000, Easing.easeInCubic)
-            R.id.animateXY -> mChart!!.animateXY(3000, 3000)
+            R.id.animateX -> binding.chart1.animateX(3000)
+            R.id.animateY -> binding.chart1.animateY(3000, Easing.easeInCubic)
+            R.id.animateXY -> binding.chart1.animateXY(3000, 3000)
             R.id.actionSave -> {
-                if (mChart!!.saveToPath("title" + System.currentTimeMillis(), "")) {
+                if (binding.chart1.saveToPath("title" + System.currentTimeMillis(), "")) {
                     Toast.makeText(applicationContext, "Saving SUCCESSFUL!", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(applicationContext, "Saving FAILED!", Toast.LENGTH_SHORT).show()
@@ -219,12 +210,12 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
     @SuppressLint("SetTextI18n")
     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-        tvX!!.text = "" + (mSeekBarX!!.progress + 1)
-        tvY!!.text = "" + mSeekBarY!!.progress
-        setData(mSeekBarX!!.progress + 1, mSeekBarY!!.progress.toFloat())
+        binding.tvXMax.text = "" + (binding.seekBarX.progress + 1)
+        binding.tvXMax.text = "" + binding.seekBarY.progress
+        setData(binding.seekBarX.progress + 1, binding.seekBarY.progress.toFloat())
 
         // redraw
-        mChart!!.invalidate()
+        binding.chart1.invalidate()
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -242,12 +233,12 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             val `val` = (sampleValues[i]!!.toFloat() * range) + 3
             values.add(Entry(i.toFloat(), `val`))
         }
-        mChart!!.data?.let {
+        binding.chart1.data?.let {
             if (it.dataSetCount > 0) {
                 val set1 = it.getDataSetByIndex(0) as LineDataSet
                 set1.entries = values
                 it.notifyDataChanged()
-                mChart!!.notifyDataSetChanged()
+                binding.chart1.notifyDataSetChanged()
             } else
                 createDataset(values)
         } ?: run {
@@ -286,7 +277,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         val data = LineData(dataSets)
 
         // set data
-        mChart!!.data = data
+        binding.chart1.data = data
     }
 
     override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
@@ -298,7 +289,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
         // un-highlight values after the gesture is finished and no single-tap
         if (lastPerformedGesture != ChartGesture.SINGLE_TAP) {
-            mChart!!.highlightValues(null) // or highlightTouch(null) for callback to onNothingSelected(...)
+            binding.chart1.highlightValues(null) // or highlightTouch(null) for callback to onNothingSelected(...)
         }
     }
 
@@ -328,13 +319,13 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         Timber.i(entry.toString())
-        Timber.i("LOWHIGH low: ${mChart!!.lowestVisibleX}, high: ${mChart!!.highestVisibleX}")
-        Timber.i("MIN MAX xmin: ${mChart!!.xChartMin}, xmax: ${mChart!!.xChartMax}, ymin: ${mChart!!.yChartMin}, ymax: ${mChart!!.yChartMax}")
+        Timber.i("LOWHIGH low: ${binding.chart1.lowestVisibleX}, high: ${binding.chart1.highestVisibleX}")
+        Timber.i("MIN MAX xmin: ${binding.chart1.xChartMin}, xmax: ${binding.chart1.xChartMax}, ymin: ${binding.chart1.yChartMin}, ymax: ${binding.chart1.yChartMax}")
     }
 
     override fun onNothingSelected() = Unit
 
     override fun saveToGallery() {
-        saveToGallery(mChart, "SpecificPositionsLineChartActivity")
+        saveToGallery(binding.chart1, "SpecificPositionsLineChartActivity")
     }
 }

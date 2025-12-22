@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.data.Entry
@@ -20,71 +19,71 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityRealtimeLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
-    private var chart: LineChart? = null
     var sampleValues: Array<Double?> = getValues(102)
+
+    private lateinit var binding: ActivityRealtimeLinechartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_realtime_linechart)
+        binding = ActivityRealtimeLinechartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        chart = findViewById(R.id.chart1)
-        chart!!.setOnChartValueSelectedListener(this)
-
-        // enable description text
-        chart!!.description.isEnabled = true
+        binding.chart1.setOnChartValueSelectedListener(this)
+        binding.chart1.description.isEnabled = true
 
         // enable touch gestures
-        chart!!.setTouchEnabled(true)
+        binding.chart1.setTouchEnabled(true)
 
         // enable scaling and dragging
-        chart!!.setDragEnabled(true)
-        chart!!.setScaleEnabled(true)
-        chart!!.setDrawGridBackground(false)
+        binding.chart1.setDragEnabled(true)
+        binding.chart1.setScaleEnabled(true)
+        binding.chart1.setDrawGridBackground(false)
 
         // if disabled, scaling can be done on x- and y-axis separately
-        chart!!.setPinchZoom(true)
+        binding.chart1.setPinchZoom(true)
 
         // set an alternative background color
-        chart!!.setBackgroundColor(Color.LTGRAY)
+        binding.chart1.setBackgroundColor(Color.LTGRAY)
 
         val data = LineData()
         data.setValueTextColor(Color.WHITE)
 
         // add empty data
-        chart!!.setData(data)
+        binding.chart1.setData(data)
 
         // get the legend (only possible after setting data)
-        val l = chart!!.legend
+        val l = binding.chart1.legend
 
         // modify the legend ...
         l.form = LegendForm.LINE
         l.typeface = tfLight
         l.textColor = Color.WHITE
 
-        val xl = chart!!.xAxis
+        val xl = binding.chart1.xAxis
         xl.typeface = tfLight
         xl.textColor = Color.WHITE
         xl.setDrawGridLines(false)
         xl.setAvoidFirstLastClipping(true)
         xl.isEnabled = true
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = binding.chart1.axisLeft
         leftAxis.typeface = tfLight
         leftAxis.textColor = Color.WHITE
         leftAxis.axisMaximum = 100f
         leftAxis.axisMinimum = 0f
         leftAxis.setDrawGridLines(true)
 
-        val rightAxis = chart!!.axisRight
+        val rightAxis = binding.chart1.axisRight
         rightAxis.isEnabled = false
     }
 
     private fun addEntry() {
-        val data = chart!!.data
+        val data = binding.chart1.data
 
         if (data != null) {
             var set = data.getDataSetByIndex(0)
@@ -100,15 +99,15 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
             data.notifyDataChanged()
 
             // let the chart know it's data has changed
-            chart?.notifyDataSetChanged()
+            binding.chart1.notifyDataSetChanged()
 
             // limit the number of visible entries
-            chart!!.setVisibleXRangeMaximum(120f)
+            binding.chart1.setVisibleXRangeMaximum(120f)
 
             // chart.setVisibleYRange(30, AxisDependency.LEFT);
 
             // move to the latest entry
-            chart!!.moveViewToX(data.getEntryCount().toFloat())
+            binding.chart1.moveViewToX(data.getEntryCount().toFloat())
 
             // this automatically refreshes the chart (calls invalidate())
             // chart.moveViewTo(data.getXValCount()-7, 55f,
@@ -175,7 +174,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
             }
 
             R.id.actionClear -> {
-                chart!!.clearValues()
+                binding.chart1.clearValues()
                 Toast.makeText(this, "Chart cleared!", Toast.LENGTH_SHORT).show()
             }
 
@@ -187,7 +186,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -195,7 +194,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "RealtimeLineChartActivity")
+        saveToGallery(binding.chart1, "RealtimeLineChartActivity")
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {

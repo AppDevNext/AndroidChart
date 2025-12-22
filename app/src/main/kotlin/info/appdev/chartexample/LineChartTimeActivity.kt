@@ -9,10 +9,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -23,6 +21,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate.holoBlue
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityLinechartTimeBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -31,46 +30,42 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
-    private var chart: LineChart? = null
-    private var seekBarX: SeekBar? = null
-    private var tvX: TextView? = null
+
+    private lateinit var binding: ActivityLinechartTimeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_linechart_time)
+        binding = ActivityLinechartTimeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvX = findViewById(R.id.tvXMax)
-        seekBarX = findViewById(R.id.seekBarX)
-        seekBarX!!.setOnSeekBarChangeListener(this)
-
-        chart = findViewById(R.id.chart1)
+        binding.seekBarX.setOnSeekBarChangeListener(this)
 
         // no description text
-        chart!!.description.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // enable touch gestures
-        chart!!.setTouchEnabled(true)
+        binding.chart1.setTouchEnabled(true)
 
-        chart!!.setDragDecelerationFrictionCoef(0.9f)
+        binding.chart1.setDragDecelerationFrictionCoef(0.9f)
 
         // enable scaling and dragging
-        chart!!.setDragEnabled(true)
-        chart!!.setScaleEnabled(true)
-        chart!!.setDrawGridBackground(false)
-        chart!!.isHighlightPerDragEnabled = true
+        binding.chart1.setDragEnabled(true)
+        binding.chart1.setScaleEnabled(true)
+        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.isHighlightPerDragEnabled = true
 
         // set an alternative background color
-        chart!!.setBackgroundColor(Color.WHITE)
-        chart!!.setViewPortOffsets(0f, 0f, 0f, 0f)
+        binding.chart1.setBackgroundColor(Color.WHITE)
+        binding.chart1.setViewPortOffsets(0f, 0f, 0f, 0f)
 
         // add data
-        seekBarX!!.progress = 100
+        binding.seekBarX.progress = 100
 
         // get the legend (only possible after setting data)
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.isEnabled = false
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.position = XAxis.XAxisPosition.TOP_INSIDE
         xAxis.typeface = tfLight
         xAxis.textSize = 10f
@@ -89,7 +84,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
         }
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = binding.chart1.axisLeft
         leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
         leftAxis.typeface = tfLight
         leftAxis.textColor = holoBlue
@@ -100,7 +95,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         leftAxis.yOffset = -9f
         leftAxis.textColor = Color.rgb(255, 192, 56)
 
-        val rightAxis = chart!!.axisRight
+        val rightAxis = binding.chart1.axisRight
         rightAxis.isEnabled = false
     }
 
@@ -145,7 +140,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         data.setValueTextSize(9f)
 
         // set data
-        chart!!.setData(data)
+        binding.chart1.setData(data)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -163,21 +158,21 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach { set ->
+                binding.chart1.data!!.dataSets.forEach { set ->
                     set?.isDrawValues = !set.isDrawValues
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart?.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionToggleFilled -> {
-                chart!!.data!!.dataSets.forEach { set ->
+                binding.chart1.data!!.dataSets.forEach { set ->
                     set?.let {
                         if (set.isDrawFilledEnabled)
                             set.setDrawFilled(false)
@@ -185,21 +180,21 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
                             set.setDrawFilled(true)
                     }
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                val sets = chart!!.data!!.dataSets
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                val sets = chart!!.data!!.dataSets
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -208,11 +203,11 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
                     else
                         set.lineMode = LineDataSet.Mode.CUBIC_BEZIER
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleStepped -> {
-                val sets = chart!!.data!!.dataSets
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -221,38 +216,38 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
                     else
                         set.lineMode = LineDataSet.Mode.STEPPED
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
-                else chart!!.setPinchZoom(true)
+                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
+                else binding.chart1.setPinchZoom(true)
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart?.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(2000)
+                binding.chart1.animateX(2000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(2000)
+                binding.chart1.animateY(2000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(2000, 2000)
+                binding.chart1.animateXY(2000, 2000)
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -260,16 +255,16 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        tvX!!.text = seekBarX!!.progress.toString()
+        binding.tvXMax.text = binding.seekBarX.progress.toString()
 
-        setData(seekBarX!!.progress)
+        setData(binding.seekBarX.progress)
 
         // redraw
-        chart?.invalidate()
+        binding.chart1.invalidate()
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "LineChartTime")
+        saveToGallery(binding.chart1, "LineChartTime")
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit

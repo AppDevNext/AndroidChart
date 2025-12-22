@@ -9,11 +9,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.BubbleChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BubbleData
@@ -26,74 +24,62 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityBubblechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
-    private var chart: BubbleChart? = null
-    private var seekBarX: SeekBar? = null
-    private var seekBarY: SeekBar? = null
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
+
+    private lateinit var binding: ActivityBubblechartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bubblechart)
+        binding = ActivityBubblechartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvX = findViewById(R.id.tvXMax)
-        tvY = findViewById(R.id.tvYMax)
-
-        seekBarX = findViewById(R.id.seekBarX)
-        seekBarX!!.setOnSeekBarChangeListener(this)
-
-        seekBarY = findViewById(R.id.seekBarY)
-        seekBarY!!.setOnSeekBarChangeListener(this)
-
-        chart = findViewById(R.id.chart1)
-        chart!!.description.isEnabled = false
-
-        chart!!.setOnChartValueSelectedListener(this)
-
-        chart!!.setDrawGridBackground(false)
-
-        chart!!.setTouchEnabled(true)
+        binding.seekBarX.setOnSeekBarChangeListener(this)
+        binding.seekBarY.setOnSeekBarChangeListener(this)
+        binding.chart1.description.isEnabled = false
+        binding.chart1.setOnChartValueSelectedListener(this)
+        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.setTouchEnabled(true)
 
         // enable scaling and dragging
-        chart!!.setDragEnabled(true)
-        chart!!.setScaleEnabled(true)
+        binding.chart1.setDragEnabled(true)
+        binding.chart1.setScaleEnabled(true)
 
-        chart!!.setMaxVisibleValueCount(200)
-        chart!!.setPinchZoom(true)
+        binding.chart1.setMaxVisibleValueCount(200)
+        binding.chart1.setPinchZoom(true)
 
-        seekBarX!!.progress = 10
-        seekBarY!!.progress = 50
+        binding.seekBarX.progress = 10
+        binding.seekBarY.progress = 50
 
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         l.orientation = Legend.LegendOrientation.VERTICAL
         l.setDrawInside(false)
         l.typeface = tfLight
 
-        val yl = chart!!.axisLeft
+        val yl = binding.chart1.axisLeft
         yl.typeface = tfLight
         yl.spaceTop = 30f
         yl.spaceBottom = 30f
         yl.setDrawZeroLine(false)
 
-        chart!!.axisRight.isEnabled = false
+        binding.chart1.axisRight.isEnabled = false
 
-        val xl = chart!!.xAxis
+        val xl = binding.chart1.xAxis
         xl.position = XAxis.XAxisPosition.BOTTOM
         xl.typeface = tfLight
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        val count = seekBarX!!.progress
-        val range = seekBarY!!.progress
+        val count = binding.seekBarX.progress
+        val range = binding.seekBarY.progress
 
-        tvX!!.text = count.toString()
-        tvY!!.text = range.toString()
+        binding.tvXMax.text = count.toString()
+        binding.tvYMax.text = range.toString()
 
         val values1 = ArrayList<BubbleEntry>()
         val values2 = ArrayList<BubbleEntry>()
@@ -149,8 +135,8 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         data.setValueTextColor(Color.WHITE)
         data.setHighlightCircleWidth(1.5f)
 
-        chart!!.setData(data)
-        chart?.invalidate()
+        binding.chart1.setData(data)
+        binding.chart1.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -167,62 +153,62 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach {
+                binding.chart1.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                for (set in chart!!.data!!.dataSets)
+                for (set in binding.chart1.data!!.dataSets)
                     set?.isDrawIcons = !set.isDrawIcons
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart?.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionTogglePinch -> {
-                if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
-                else chart!!.setPinchZoom(true)
+                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
+                else binding.chart1.setPinchZoom(true)
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart?.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
 
             R.id.animateX -> {
-                chart!!.animateX(2000)
+                binding.chart1.animateX(2000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(2000)
+                binding.chart1.animateY(2000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(2000, 2000)
+                binding.chart1.animateXY(2000, 2000)
             }
         }
         return true
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "BubbleChartActivity")
+        saveToGallery(binding.chart1, "BubbleChartActivity")
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {

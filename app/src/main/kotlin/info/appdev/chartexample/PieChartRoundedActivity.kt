@@ -14,12 +14,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
@@ -32,69 +30,60 @@ import com.github.mikephil.charting.renderer.PieChartRenderer
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityPiechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
-    private var chart: PieChart? = null
-    private var seekBarX: SeekBar? = null
-    private var seekBarY: SeekBar? = null
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
+
+    private lateinit var binding: ActivityPiechartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_piechart)
+        binding = ActivityPiechartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvX = findViewById(R.id.tvXMax)
-        tvY = this.findViewById(R.id.tvYMax)
+        binding.seekBarX.setOnSeekBarChangeListener(this)
+        binding.seekBarY.setOnSeekBarChangeListener(this)
+        binding.chart1.setUsePercentValues(true)
+        binding.chart1.description.isEnabled = false
+        binding.chart1.setExtraOffsets(5f, 10f, 5f, 5f)
 
-        seekBarX = findViewById(R.id.seekBarX)
-        seekBarY = findViewById(R.id.seekBarY)
+        binding.chart1.setDragDecelerationFrictionCoef(0.95f)
 
-        seekBarX!!.setOnSeekBarChangeListener(this)
-        seekBarY!!.setOnSeekBarChangeListener(this)
+        binding.chart1.setCenterTextTypeface(tfLight)
+        binding.chart1.centerText = generateCenterSpannableText()
 
-        chart = findViewById(R.id.chart1)
-        chart!!.setUsePercentValues(true)
-        chart!!.description.isEnabled = false
-        chart!!.setExtraOffsets(5f, 10f, 5f, 5f)
+        binding.chart1.isDrawHoleEnabled = true
+        binding.chart1.setHoleColor(Color.TRANSPARENT)
 
-        chart!!.setDragDecelerationFrictionCoef(0.95f)
+        binding.chart1.setTransparentCircleColor(Color.TRANSPARENT)
+        binding.chart1.setTransparentCircleAlpha(110)
 
-        chart!!.setCenterTextTypeface(tfLight)
-        chart!!.centerText = generateCenterSpannableText()
+        binding.chart1.holeRadius = 50f
 
-        chart!!.isDrawHoleEnabled = true
-        chart!!.setHoleColor(Color.TRANSPARENT)
+        binding.chart1.transparentCircleRadius = 0f
 
-        chart!!.setTransparentCircleColor(Color.TRANSPARENT)
-        chart!!.setTransparentCircleAlpha(110)
+        binding.chart1.setDrawCenterText(true)
 
-        chart!!.holeRadius = 50f
-
-        chart!!.transparentCircleRadius = 0f
-
-        chart!!.setDrawCenterText(true)
-
-        chart!!.rotationAngle = 0f
+        binding.chart1.rotationAngle = 0f
         // enable rotation of the chart by touch
-        chart!!.isRotationEnabled = true
-        chart!!.isHighlightPerTapEnabled = true
+        binding.chart1.isRotationEnabled = true
+        binding.chart1.isHighlightPerTapEnabled = true
 
         // chart.setUnit(" €");
         // chart.setDrawUnitsInChart(true);
 
         // add a selection listener
-        chart!!.setOnChartValueSelectedListener(this)
+        binding.chart1.setOnChartValueSelectedListener(this)
 
-        seekBarX!!.progress = 4
-        seekBarY!!.progress = 10
+        binding.seekBarX.progress = 4
+        binding.seekBarY.progress = 10
 
-        chart!!.animateY(1400, Easing.easeInOutQuad)
+        binding.chart1.animateY(1400, Easing.easeInOutQuad)
 
         // chart.spin(2000, 0, 360);
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         l.orientation = Legend.LegendOrientation.VERTICAL
@@ -104,9 +93,9 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
         l.yOffset = 0f
 
         // entry label styling
-        chart!!.setEntryLabelColor(Color.WHITE)
-        chart!!.setEntryLabelTypeface(tfRegular)
-        chart!!.setEntryLabelTextSize(12f)
+        binding.chart1.setEntryLabelColor(Color.WHITE)
+        binding.chart1.setEntryLabelTypeface(tfRegular)
+        binding.chart1.setEntryLabelTextSize(12f)
     }
 
     private fun setData(count: Int, range: Float) {
@@ -156,16 +145,16 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
         data.setValueTextSize(11f)
         data.setValueTextColor(Color.WHITE)
         data.setValueTypeface(tfLight)
-        chart!!.setData(data)
+        binding.chart1.setData(data)
 
         // undo all highlights
-        chart!!.highlightValues(null)
+        binding.chart1.highlightValues(null)
 
-        val renderer = chart!!.renderer as PieChartRenderer
+        val renderer = binding.chart1.renderer as PieChartRenderer
         renderer.roundedCornerRadius = 30f
         dataSet.sliceSpace = renderer.roundedCornerRadius / 2
 
-        chart?.invalidate()
+        binding.chart1.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -182,79 +171,79 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach {
+                binding.chart1.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                for (set in chart!!.data!!.getDataSets())
+                for (set in binding.chart1.data!!.getDataSets())
                     set?.isDrawIcons = !set.isDrawIcons
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHole -> {
-                chart!!.isDrawHoleEnabled = !chart!!.isDrawHoleEnabled
-                chart?.invalidate()
+                binding.chart1.isDrawHoleEnabled = !binding.chart1.isDrawHoleEnabled
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleMinAngles -> {
-                if (chart!!.minAngleForSlices == 0f) chart!!.setMinAngleForSlices(36f)
-                else chart!!.setMinAngleForSlices(0f)
-                chart?.notifyDataSetChanged()
-                chart?.invalidate()
+                if (binding.chart1.minAngleForSlices == 0f) binding.chart1.setMinAngleForSlices(36f)
+                else binding.chart1.setMinAngleForSlices(0f)
+                binding.chart1.notifyDataSetChanged()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleCurvedSlices -> {
-                val toSet = !chart!!.isDrawRoundedSlicesEnabled || !chart!!.isDrawHoleEnabled
-                chart!!.setDrawRoundedSlices(toSet)
-                if (toSet && !chart!!.isDrawHoleEnabled) {
-                    chart!!.isDrawHoleEnabled = true
+                val toSet = !binding.chart1.isDrawRoundedSlicesEnabled || !binding.chart1.isDrawHoleEnabled
+                binding.chart1.setDrawRoundedSlices(toSet)
+                if (toSet && !binding.chart1.isDrawHoleEnabled) {
+                    binding.chart1.isDrawHoleEnabled = true
                 }
-                if (toSet && chart!!.isDrawSlicesUnderHoleEnabled) {
-                    chart!!.setDrawSlicesUnderHole(false)
+                if (toSet && binding.chart1.isDrawSlicesUnderHoleEnabled) {
+                    binding.chart1.setDrawSlicesUnderHole(false)
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionDrawCenter -> {
-                chart!!.setDrawCenterText(!chart!!.isDrawCenterTextEnabled)
-                chart?.invalidate()
+                binding.chart1.setDrawCenterText(!binding.chart1.isDrawCenterTextEnabled)
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleXValues -> {
-                chart!!.setDrawEntryLabels(!chart!!.isDrawEntryLabelsEnabled)
-                chart?.invalidate()
+                binding.chart1.setDrawEntryLabels(!binding.chart1.isDrawEntryLabelsEnabled)
+                binding.chart1.invalidate()
             }
 
             R.id.actionTogglePercent -> {
-                chart!!.setUsePercentValues(!chart!!.isUsePercentValuesEnabled)
-                chart?.invalidate()
+                binding.chart1.setUsePercentValues(!binding.chart1.isUsePercentValuesEnabled)
+                binding.chart1.invalidate()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(1400)
+                binding.chart1.animateX(1400)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(1400)
+                binding.chart1.animateY(1400)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(1400, 1400)
+                binding.chart1.animateXY(1400, 1400)
             }
 
             R.id.actionToggleSpin -> {
-                chart!!.spin(1000, chart!!.rotationAngle, chart!!.rotationAngle + 360, Easing.easeInOutCubic)
+                binding.chart1.spin(1000, binding.chart1.rotationAngle, binding.chart1.rotationAngle + 360, Easing.easeInOutCubic)
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -262,14 +251,14 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        tvX!!.text = seekBarX!!.progress.toString()
-        tvY!!.text = seekBarY!!.progress.toString()
+        binding.tvXMax.text = binding.seekBarX.progress.toString()
+        binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        setData(seekBarX!!.progress, seekBarY!!.progress.toFloat())
+        setData(binding.seekBarX.progress, binding.seekBarY.progress.toFloat())
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "PieChartActivity")
+        saveToGallery(binding.chart1, "PieChartActivity")
     }
 
     private fun generateCenterSpannableText(): SpannableString {

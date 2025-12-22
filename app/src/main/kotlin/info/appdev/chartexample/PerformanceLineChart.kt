@@ -7,53 +7,49 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import info.appdev.chartexample.DataTools.Companion.getMuchValues
 import info.appdev.chartexample.notimportant.DemoBase
 import androidx.core.net.toUri
+import info.appdev.chartexample.databinding.ActivityPerformanceLinechartBinding
 
 class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
-    private var chart: LineChart? = null
-    private var seekBarValues: SeekBar? = null
-    private var tvCount: TextView? = null
+
+    private lateinit var binding: ActivityPerformanceLinechartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_performance_linechart)
+        binding = ActivityPerformanceLinechartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvCount = findViewById(R.id.tvValueCount)
-        seekBarValues = findViewById(R.id.seekbarValues)
-        seekBarValues!!.setOnSeekBarChangeListener(this)
+        binding.seekbarValues.setOnSeekBarChangeListener(this)
 
-        chart = findViewById(R.id.chart1)
-        chart!!.setDrawGridBackground(false)
+        binding.chart1.setDrawGridBackground(false)
 
         // no description text
-        chart!!.description.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // enable touch gestures
-        chart!!.setTouchEnabled(true)
+        binding.chart1.setTouchEnabled(true)
 
         // enable scaling and dragging
-        chart!!.setDragEnabled(true)
-        chart!!.setScaleEnabled(true)
+        binding.chart1.setDragEnabled(true)
+        binding.chart1.setScaleEnabled(true)
 
         // if disabled, scaling can be done on x- and y-axis separately
-        chart!!.setPinchZoom(false)
+        binding.chart1.setPinchZoom(false)
 
-        chart!!.axisLeft.setDrawGridLines(false)
-        chart!!.axisRight.isEnabled = false
-        chart!!.xAxis.setDrawGridLines(true)
-        chart!!.xAxis.setDrawAxisLine(false)
+        binding.chart1.axisLeft.setDrawGridLines(false)
+        binding.chart1.axisRight.isEnabled = false
+        binding.chart1.xAxis.setDrawGridLines(true)
+        binding.chart1.xAxis.setDrawAxisLine(false)
 
-        seekBarValues!!.progress = 9000
+        binding.seekbarValues.progress = 9000
 
         // don't forget to refresh the drawing
-        chart?.invalidate()
+        binding.chart1.invalidate()
     }
 
     private fun setData(count: Int, range: Float) {
@@ -79,10 +75,10 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         val data = LineData(set1)
 
         // set data
-        chart!!.setData(data)
+        binding.chart1.setData(data)
 
         // get the legend (only possible after setting data)
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.isEnabled = false
     }
 
@@ -105,15 +101,15 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        val count = seekBarValues!!.progress + 1000
-        tvCount!!.text = count.toString()
+        val count = binding.seekbarValues.progress + 1000
+        binding.tvValueCount.text = count.toString()
 
-        chart!!.resetTracking()
+        binding.chart1.resetTracking()
 
         setData(count, 500f)
 
         // redraw
-        chart?.invalidate()
+        binding.chart1.invalidate()
     }
 
     public override fun saveToGallery() { /* Intentionally left empty */

@@ -34,8 +34,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHorizontalbarchartBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         binding.seekBarY.setOnSeekBarChangeListener(this)
         binding.seekBarX.setOnSeekBarChangeListener(this)

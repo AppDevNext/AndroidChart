@@ -9,10 +9,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.BarData
@@ -25,55 +23,49 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.MyMarkerView
+import info.appdev.chartexample.databinding.ActivityBarchartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 import java.util.Locale
 
 class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
-    private var chart: BarChart? = null
-    private var seekBarX: SeekBar? = null
-    private var seekBarY: SeekBar? = null
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
+
+    private lateinit var binding: ActivityBarchartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_barchart)
+        binding = ActivityBarchartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvX = findViewById(R.id.tvXMax)
-        tvX!!.textSize = 10f
-        tvY = findViewById(R.id.tvYMax)
+        binding.tvXMax.textSize = 10f
 
-        seekBarX = findViewById(R.id.seekBarX)
-        seekBarX!!.max = 50
-        seekBarX!!.setOnSeekBarChangeListener(this)
+        binding.seekBarX.max = 50
+        binding.seekBarX.setOnSeekBarChangeListener(this)
 
-        seekBarY = findViewById(R.id.seekBarY)
-        seekBarY!!.setOnSeekBarChangeListener(this)
+        binding.seekBarY.setOnSeekBarChangeListener(this)
 
-        chart = findViewById(R.id.chart1)
-        chart!!.setOnChartValueSelectedListener(this)
-        chart!!.description.isEnabled = false
+        binding.chart1.setOnChartValueSelectedListener(this)
+        binding.chart1.description.isEnabled = false
 
         //        chart.setDrawBorders(true);
 
         // scaling can now only be done on x- and y-axis separately
-        chart!!.setPinchZoom(false)
+        binding.chart1.setPinchZoom(false)
 
-        chart!!.setDrawBarShadow(false)
+        binding.chart1.setDrawBarShadow(false)
 
-        chart!!.setDrawGridBackground(false)
+        binding.chart1.setDrawGridBackground(false)
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
         val mv = MyMarkerView(this, R.layout.custom_marker_view)
-        mv.chartView = chart // For bounds control
-        chart!!.setMarker(mv) // Set the marker to the chart
+        mv.chartView = binding.chart1 // For bounds control
+        binding.chart1.setMarker(mv) // Set the marker to the chart
 
-        seekBarX!!.progress = 10
-        seekBarY!!.progress = 100
+        binding.seekBarX.progress = 10
+        binding.seekBarY.progress = 100
 
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         l.orientation = Legend.LegendOrientation.VERTICAL
@@ -84,7 +76,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         l.yEntrySpace = 0f
         l.textSize = 8f
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.typeface = tfLight
         xAxis.granularity = 1f
         xAxis.setCenterAxisLabels(true)
@@ -94,14 +86,14 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             }
         }
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = binding.chart1.axisLeft
         leftAxis.typeface = tfLight
         leftAxis.valueFormatter = LargeValueFormatter()
         leftAxis.setDrawGridLines(false)
         leftAxis.spaceTop = 35f
         leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        chart!!.axisRight.isEnabled = false
+        binding.chart1.axisRight.isEnabled = false
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -110,19 +102,19 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         val barWidth = 0.2f // x4 DataSet
 
         // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
-        val groupCount = seekBarX!!.progress + 1
+        val groupCount = binding.seekBarX.progress + 1
         val startYear = 1980
         val endYear = startYear + groupCount
 
-        tvX!!.text = String.format(Locale.ENGLISH, "%d-%d", startYear, endYear)
-        tvY!!.text = seekBarY!!.progress.toString()
+        binding.tvXMax.text = String.format(Locale.ENGLISH, "%d-%d", startYear, endYear)
+        binding.tvYMax.text = binding.seekBarY.progress.toString()
 
         val values1 = ArrayList<BarEntry>()
         val values2 = ArrayList<BarEntry>()
         val values3 = ArrayList<BarEntry>()
         val values4 = ArrayList<BarEntry>()
 
-        val randomMultiplier = seekBarY!!.progress * 100000f
+        val randomMultiplier = binding.seekBarY.progress * 100000f
         val sampleValues = getValues(100 + 2)
 
         for (i in startYear..<endYear) {
@@ -137,17 +129,17 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         val set3: BarDataSet
         val set4: BarDataSet
 
-        if (chart!!.data != null && chart!!.data!!.getDataSetCount() > 0) {
-            set1 = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
-            set2 = chart!!.data!!.getDataSetByIndex(1) as BarDataSet
-            set3 = chart!!.data!!.getDataSetByIndex(2) as BarDataSet
-            set4 = chart!!.data!!.getDataSetByIndex(3) as BarDataSet
+        if (binding.chart1.data != null && binding.chart1.data!!.getDataSetCount() > 0) {
+            set1 = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
+            set2 = binding.chart1.data!!.getDataSetByIndex(1) as BarDataSet
+            set3 = binding.chart1.data!!.getDataSetByIndex(2) as BarDataSet
+            set4 = binding.chart1.data!!.getDataSetByIndex(3) as BarDataSet
             set1.entries = values1
             set2.entries = values2
             set3.entries = values3
             set4.entries = values4
-            chart!!.data!!.notifyDataChanged()
-            chart?.notifyDataSetChanged()
+            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.notifyDataSetChanged()
         } else {
             // create 4 DataSets
             set1 = BarDataSet(values1, "Company A")
@@ -163,19 +155,19 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             data.setValueFormatter(LargeValueFormatter())
             data.setValueTypeface(tfLight)
 
-            chart!!.setData(data)
+            binding.chart1.setData(data)
         }
 
         // specify the width each bar should have
-        chart!!.barData.barWidth = barWidth
+        binding.chart1.barData.barWidth = barWidth
 
         // restrict the x-axis range
-        chart!!.xAxis.axisMinimum = startYear.toFloat()
+        binding.chart1.xAxis.axisMinimum = startYear.toFloat()
 
         // barData.getGroupWith(...) is a helper that calculates the width each group needs based on the provided parameters
-        chart!!.xAxis.axisMaximum = startYear + chart!!.barData.getGroupWidth(groupSpace, barSpace) * groupCount
-        chart!!.groupBars(startYear.toFloat(), groupSpace, barSpace)
-        chart?.invalidate()
+        binding.chart1.xAxis.axisMaximum = startYear + binding.chart1.barData.getGroupWidth(groupSpace, barSpace) * groupCount
+        binding.chart1.groupBars(startYear.toFloat(), groupSpace, barSpace)
+        binding.chart1.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -193,35 +185,35 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach {
+                binding.chart1.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
-                else chart!!.setPinchZoom(true)
+                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
+                else binding.chart1.setPinchZoom(true)
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart?.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
             R.id.actionToggleBarBorders -> {
-                for (set in chart!!.data!!.dataSets) (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
+                for (set in binding.chart1.data!!.dataSets) (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart?.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
@@ -229,27 +221,27 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
 
             R.id.animateX -> {
-                chart!!.animateX(2000)
+                binding.chart1.animateX(2000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(2000)
+                binding.chart1.animateY(2000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(2000, 2000)
+                binding.chart1.animateXY(2000, 2000)
             }
         }
         return true
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "BarChartActivityMultiDataset")
+        saveToGallery(binding.chart1, "BarChartActivityMultiDataset")
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit

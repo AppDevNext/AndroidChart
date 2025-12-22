@@ -89,7 +89,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
     }
 
     override fun getMaxVisibleCount(): Int {
-        return mData!!.getEntryCount()
+        return mData!!.entryCount
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
