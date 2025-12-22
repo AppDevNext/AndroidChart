@@ -11,7 +11,7 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
     override fun getClosestHighlight(index: Int, x: Float, y: Float): Highlight? {
         val highlights = getHighlightsAtIndex(index)
 
-        val distanceToCenter = chartPieRadar!!.distanceToCenter(x, y) / chartPieRadar!!.getFactor()
+        val distanceToCenter = chartPieRadar.distanceToCenter(x, y) / chartPieRadar.getFactor()
 
         var closest: Highlight? = null
         var distance = Float.MAX_VALUE
@@ -38,22 +38,22 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
     protected fun getHighlightsAtIndex(index: Int): MutableList<Highlight> {
         mHighlightBuffer.clear()
 
-        val phaseX = chartPieRadar!!.animator.phaseX
-        val phaseY = chartPieRadar!!.animator.phaseY
-        val sliceAngle = chartPieRadar!!.sliceAngle
-        val factor = chartPieRadar!!.getFactor()
+        val phaseX = chartPieRadar.animator.phaseX
+        val phaseY = chartPieRadar.animator.phaseY
+        val sliceAngle = chartPieRadar.sliceAngle
+        val factor = chartPieRadar.getFactor()
 
         val pOut = MPPointF.getInstance(0f, 0f)
-        for (i in 0..<chartPieRadar!!.data!!.getDataSetCount()) {
-            val dataSet: IDataSet<*> = chartPieRadar!!.data!!.getDataSetByIndex(i)
+        for (i in 0..<chartPieRadar.data!!.getDataSetCount()) {
+            val dataSet: IDataSet<*> = chartPieRadar.data!!.getDataSetByIndex(i)
 
             val entry: Entry? = dataSet.getEntryForIndex(index)
 
-            val y = (entry!!.y - chartPieRadar!!.yChartMin)
+            val y = (entry!!.y - chartPieRadar.yChartMin)
 
             Utils.getPosition(
-                chartPieRadar!!.centerOffsets, y * factor * phaseY,
-                sliceAngle * index * phaseX + chartPieRadar!!.rotationAngle, pOut
+                chartPieRadar.centerOffsets, y * factor * phaseY,
+                sliceAngle * index * phaseX + chartPieRadar.rotationAngle, pOut
             )
 
             mHighlightBuffer.add(Highlight(index.toFloat(), entry.y, pOut.x, pOut.y, i, dataSet.axisDependency))
