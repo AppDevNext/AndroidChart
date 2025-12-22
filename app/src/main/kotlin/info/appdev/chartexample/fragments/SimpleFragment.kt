@@ -23,7 +23,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
-import com.github.mikephil.charting.utils.FileUtils
+import com.github.mikephil.charting.utils.loadEntriesFromAssets
 import info.appdev.chartexample.DataTools.Companion.getValues
 
 abstract class SimpleFragment : Fragment() {
@@ -112,8 +112,8 @@ abstract class SimpleFragment : Fragment() {
 
     protected fun generateLineData(): LineData {
         val sets = ArrayList<ILineDataSet>()
-        val ds1 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "sine.txt"), "Sine function")
-        val ds2 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "cosine.txt"), "Cosine function")
+        val ds1 = LineDataSet(requireContext().assets.loadEntriesFromAssets("sine.txt"), "Sine function")
+        val ds2 = LineDataSet(requireContext().assets.loadEntriesFromAssets( "cosine.txt"), "Cosine function")
 
         ds1.lineWidth = 2f
         ds2.lineWidth = 2f
@@ -137,10 +137,10 @@ abstract class SimpleFragment : Fragment() {
         get() {
             val sets = ArrayList<ILineDataSet>()
 
-            val ds1 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "n.txt"), "O(n)")
-            val ds2 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "nlogn.txt"), "O(nlogn)")
-            val ds3 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "square.txt"), "O(n\u00B2)")
-            val ds4 = LineDataSet(FileUtils.loadEntriesFromAssets(requireContext().assets, "three.txt"), "O(n\u00B3)")
+            val ds1 = LineDataSet(requireContext().assets.loadEntriesFromAssets("n.txt"), "O(n)")
+            val ds2 = LineDataSet(requireContext().assets.loadEntriesFromAssets("nlogn.txt"), "O(nlogn)")
+            val ds3 = LineDataSet(requireContext().assets.loadEntriesFromAssets("square.txt"), "O(n\u00B2)")
+            val ds4 = LineDataSet(requireContext().assets.loadEntriesFromAssets("three.txt"), "O(n\u00B3)")
 
             ds1.color = ColorTemplate.VORDIPLOM_COLORS[0]
             ds2.color = ColorTemplate.VORDIPLOM_COLORS[1]

@@ -16,7 +16,7 @@ import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.utils.FileUtils
+import com.github.mikephil.charting.utils.loadBarEntriesFromAssets
 import info.appdev.chartexample.databinding.ActivityBarchartSinusBinding
 import info.appdev.chartexample.notimportant.DemoBase
 
@@ -32,7 +32,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         val view = binding.root
         setContentView(view)
 
-        dataSinus = FileUtils.loadBarEntriesFromAssets(assets, "sinus_values.txt")
+        dataSinus = assets.loadBarEntriesFromAssets("sinus_values.txt")
         binding.chart1.setDrawBarShadow(false)
         binding.chart1.setDrawValueAboveBar(true)
 
