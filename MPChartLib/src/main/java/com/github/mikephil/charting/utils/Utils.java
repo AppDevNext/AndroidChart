@@ -210,8 +210,8 @@ public abstract class Utils {
 		int height = drawable.getIntrinsicHeight();
 
 		MPPointF drawOffset = MPPointF.Companion.getInstance();
-		drawOffset.setX(x - (width / 2));
-		drawOffset.setY(y - (height / 2));
+		drawOffset.setX(x - ((float) width / 2));
+		drawOffset.setY(y - ((float) height / 2));
 
 		drawable.copyBounds(mDrawableBoundsCache);
 		drawable.setBounds(
