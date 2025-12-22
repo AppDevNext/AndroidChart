@@ -167,7 +167,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             val endColor4 = ContextCompat.getColor(this, android.R.color.holo_red_dark)
             val endColor5 = ContextCompat.getColor(this, android.R.color.holo_orange_dark)
 
-            val gradientFills: MutableList<Fill?> = ArrayList()
+            val gradientFills: MutableList<Fill> = ArrayList()
             gradientFills.add(Fill(startColor1, endColor1))
             gradientFills.add(Fill(startColor2, endColor2))
             gradientFills.add(Fill(startColor3, endColor3))
