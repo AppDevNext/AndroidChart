@@ -1,7 +1,6 @@
 
 package com.github.mikephil.charting.utils;
 
-import android.content.res.Resources;
 import android.graphics.Color;
 
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ public class ColorTemplate {
         int color = (int) Long.parseLong(hex.replace("#", ""), 16);
         int r = (color >> 16) & 0xFF;
         int g = (color >> 8) & 0xFF;
-        int b = (color >> 0) & 0xFF;
+        int b = (color) & 0xFF;
         return Color.rgb(r, g, b);
     }
 
@@ -81,23 +80,7 @@ public class ColorTemplate {
         return (color & 0xffffff) | ((alpha & 0xff) << 24);
     }
 
-    /**
-     * turn an array of resource-colors (contains resource-id integers) into an
-     * array list of actual color integers
-     * @param colors an integer array of resource id's of colors
-     */
-    public static List<Integer> createColors(Resources r, int[] colors) {
-
-        List<Integer> result = new ArrayList<>();
-
-        for (int i : colors) {
-            result.add(r.getColor(i));
-        }
-
-        return result;
-    }
-
-    /**
+	/**
      * Turns an array of colors (integer color values) into an ArrayList of colors.
      */
     public static List<Integer> createColors(int[] colors) {
