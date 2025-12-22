@@ -51,7 +51,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String = "") : BarLin
      * Use getFills() instead.
      */
     @get:Deprecated("")
-    var gradients: MutableList<Fill?>? = null
+    var gradients: MutableList<Fill>? = null
         protected set
 
     init {
@@ -82,7 +82,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String = "") : BarLin
         barDataSet.mHighLightAlpha = mHighLightAlpha
     }
 
-    override fun getFills(): MutableList<Fill?>? {
+    override fun getFills(): MutableList<Fill>? {
         return this.gradients
     }
 
@@ -99,19 +99,19 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String = "") : BarLin
      * Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
      */
     fun setGradientColor(startColor: Int, endColor: Int) {
-        gradients!!.clear()
-        gradients!!.add(Fill(startColor, endColor))
+        gradients?.clear()
+        gradients?.add(Fill(startColor, endColor))
     }
 
     @Deprecated("Use setFills(...) instead")
-    fun setGradientColors(gradientColors: MutableList<Fill?>?) {
+    fun setGradientColors(gradientColors: MutableList<Fill>?) {
         this.gradients = gradientColors
     }
 
     /**
      * Sets the fills for the bars in this dataset.
      */
-    fun setFills(fills: MutableList<Fill?>?) {
+    fun setFills(fills: MutableList<Fill>?) {
         this.gradients = fills
     }
 
