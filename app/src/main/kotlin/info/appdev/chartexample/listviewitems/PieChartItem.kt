@@ -80,14 +80,14 @@ class PieChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {
     }
 
     private fun generateCenterSpannableText(): SpannableString {
-        val s = SpannableString("AndroidChart\ndeveloped by AppDevNext")
-        s.setSpan(RelativeSizeSpan(1.7f), 0, 14, 0)
-        s.setSpan(StyleSpan(Typeface.NORMAL), 14, s.length - 15, 0)
-        s.setSpan(ForegroundColorSpan(Color.GRAY), 14, s.length - 15, 0)
-        s.setSpan(RelativeSizeSpan(.8f), 14, s.length - 15, 0)
-        s.setSpan(StyleSpan(Typeface.ITALIC), s.length - 14, s.length, 0)
-        s.setSpan(ForegroundColorSpan(ColorTemplate.holoBlue), s.length - 14, s.length, 0)
-        return s
+        val spannable = SpannableString("AndroidChart\ndeveloped by AppDevNext")
+        spannable.setSpan(RelativeSizeSpan(1.7f), 0, 14, 0)
+        spannable.setSpan(StyleSpan(Typeface.NORMAL), 14, spannable.length - 15, 0)
+        spannable.setSpan(ForegroundColorSpan(Color.GRAY), 14, spannable.length - 15, 0)
+        spannable.setSpan(RelativeSizeSpan(.8f), 14, spannable.length - 15, 0)
+        spannable.setSpan(StyleSpan(Typeface.ITALIC), spannable.length - 14, spannable.length, 0)
+        spannable.setSpan(ForegroundColorSpan(ColorTemplate.holoBlue), spannable.length - 14, spannable.length, 0)
+        return spannable
     }
 
     private class ViewHolder {

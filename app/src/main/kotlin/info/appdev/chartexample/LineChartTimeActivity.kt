@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.components.YAxis.AxisDependency
@@ -20,14 +21,13 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.utils.ColorTemplate.holoBlue
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
-import com.github.mikephil.charting.components.AxisBase
 import kotlin.math.roundToInt
 
 class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
@@ -92,7 +92,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         val leftAxis = chart!!.axisLeft
         leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
         leftAxis.typeface = tfLight
-        leftAxis.textColor = ColorTemplate.holoBlue
+        leftAxis.textColor = holoBlue
         leftAxis.setDrawGridLines(true)
         leftAxis.isGranularityEnabled = true
         leftAxis.axisMinimum = 0f
@@ -129,13 +129,13 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         // create a dataset and give it a type
         val set1 = LineDataSet(values, "DataSet 1")
         set1.axisDependency = AxisDependency.LEFT
-        set1.color = ColorTemplate.holoBlue
-        set1.setSingleValueTextColor(ColorTemplate.holoBlue)
+        set1.color = holoBlue
+        set1.setSingleValueTextColor(holoBlue)
         set1.lineWidth = 1.5f
         set1.isDrawCirclesEnabled = false
         set1.isDrawValues = false
         set1.fillAlpha = 65
-        set1.fillColor = ColorTemplate.holoBlue
+        set1.fillColor = holoBlue
         set1.highLightColor = Color.rgb(244, 117, 117)
         set1.isDrawCircleHoleEnabled = false
 
