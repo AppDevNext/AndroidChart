@@ -61,7 +61,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
         var distance = Float.MAX_VALUE
 
         for (i in closestValues.indices) {
-            val high = closestValues.get(i)
+            val high = closestValues[i]
 
             if (high.axis == axis) {
                 val tempDistance = abs(getHighlightPos(high) - pos)
@@ -112,6 +112,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
     /**
      * An array of `Highlight` objects corresponding to the selected xValue and dataSetIndex.
      */
+    @Suppress("SameParameterValue")
     protected open fun buildHighlights(set: IDataSet<*>, dataSetIndex: Int, xVal: Float, rounding: DataSet.Rounding?): MutableList<Highlight> {
         val highlights = ArrayList<Highlight>()
 
@@ -129,7 +130,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
 
         if (entries != null)
             for (e in entries) {
-                val pixels = provider!!.getTransformer(set.axisDependency)!!.getPixelForValues(e.x, e.y)
+                val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(e.x, e.y)
 
                 highlights.add(
                     Highlight(
@@ -159,7 +160,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
         var distance = minSelectionDistance
 
         for (i in closestValues.indices) {
-            val high = closestValues.get(i)
+            val high = closestValues[i]
 
             if (axis == null || high.axis == axis) {
                 val cDistance = getDistance(x, y, high.xPx, high.yPx)
@@ -184,5 +185,5 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
     }
 
     protected open val data: BarLineScatterCandleBubbleData<*>
-        get() = provider!!.getData()
+        get() = provider.getData()
 }
