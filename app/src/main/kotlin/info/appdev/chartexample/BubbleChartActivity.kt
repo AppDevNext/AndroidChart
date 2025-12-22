@@ -150,7 +150,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         data.setHighlightCircleWidth(1.5f)
 
         chart!!.setData(data)
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -170,19 +170,19 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
                 chart!!.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleIcons -> {
                 for (set in chart!!.data!!.dataSets)
                     set?.isDrawIcons = !set.isDrawIcons
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 
@@ -190,12 +190,12 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
                 if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
                 else chart!!.setPinchZoom(true)
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
                 chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart?.notifyDataSetChanged()
             }
 
             R.id.actionSave -> {

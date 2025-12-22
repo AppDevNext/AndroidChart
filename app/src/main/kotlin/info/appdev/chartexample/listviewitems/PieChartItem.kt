@@ -64,17 +64,18 @@ class PieChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {
         // set data
         holder.chart!!.setData(chartData as PieData?)
 
-        val l = holder.chart!!.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        l.orientation = Legend.LegendOrientation.VERTICAL
-        l.setDrawInside(false)
-        l.yEntrySpace = 0f
-        l.yOffset = 0f
+        holder.chart?.legend?.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+            orientation = Legend.LegendOrientation.VERTICAL
+            setDrawInside(false)
+            yEntrySpace = 0f
+            yOffset = 0f
+        }
 
         // do not forget to refresh the chart
         // holder.chart.invalidate();
-        holder.chart!!.animateY(900)
+        holder.chart?.animateY(900)
 
         return convertView
     }

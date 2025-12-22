@@ -157,7 +157,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set2.entries = values2
             set3.entries = values3
             chart!!.data!!.notifyDataChanged()
-            chart!!.notifyDataSetChanged()
+            chart?.notifyDataSetChanged()
         } else {
             // create a dataset and give it a type
             set1 = LineDataSet(values1, "DataSet 1")
@@ -229,13 +229,13 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                 chart!!.data!!.dataSets.forEach { set ->
                     set?.isDrawValues = !set.isDrawValues
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 
@@ -243,7 +243,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                 chart!!.data!!.dataSets.forEach { set ->
                     set?.setDrawFilled(!set.isDrawFilledEnabled)
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleCircles -> {
@@ -253,7 +253,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                     val set = iSet as LineDataSet
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleCubic -> {
@@ -266,7 +266,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                     else
                         LineDataSet.Mode.CUBIC_BEZIER
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleStepped -> {
@@ -279,7 +279,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                     else
                         LineDataSet.Mode.STEPPED
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHorizontalCubic -> {
@@ -292,18 +292,18 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                     else
                         LineDataSet.Mode.HORIZONTAL_BEZIER
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionTogglePinch -> {
                 chart!!.setPinchZoom(!chart!!.isPinchZoomEnabled)
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
                 chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart?.notifyDataSetChanged()
             }
 
             R.id.animateX -> {
@@ -336,7 +336,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         setData(seekBarX!!.progress, seekBarY!!.progress.toFloat())
 
         // redraw
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun saveToGallery() {

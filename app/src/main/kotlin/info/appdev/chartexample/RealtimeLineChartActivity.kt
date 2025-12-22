@@ -100,7 +100,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
             data.notifyDataChanged()
 
             // let the chart know it's data has changed
-            chart!!.notifyDataSetChanged()
+            chart?.notifyDataSetChanged()
 
             // limit the number of visible entries
             chart!!.setVisibleXRangeMaximum(120f)

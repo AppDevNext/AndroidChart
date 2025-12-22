@@ -65,7 +65,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
                         chart!!.disableScroll()
                     } else if (touchMode == ROTATE) {
                         updateGestureRotation(x, y)
-                        chart!!.invalidate()
+                        chart?.invalidate()
                     }
 
                     endAction(event)

@@ -154,7 +154,7 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
         // undo all highlights
         chart!!.highlightValues(null)
 
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -174,19 +174,19 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
                 chart!!.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHole -> {
                 chart!!.isDrawHoleEnabled = !chart!!.isDrawHoleEnabled
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleMinAngles -> {
                 if (chart!!.minAngleForSlices == 0f) chart!!.setMinAngleForSlices(36f)
                 else chart!!.setMinAngleForSlices(0f)
-                chart!!.notifyDataSetChanged()
-                chart!!.invalidate()
+                chart?.notifyDataSetChanged()
+                chart?.invalidate()
             }
 
             R.id.actionToggleCurvedSlices -> {
@@ -198,22 +198,22 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
                 if (toSet && chart!!.isDrawSlicesUnderHoleEnabled) {
                     chart!!.setDrawSlicesUnderHole(false)
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionDrawCenter -> {
                 chart!!.setDrawCenterText(!chart!!.isDrawCenterTextEnabled)
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleXValues -> {
                 chart!!.setDrawEntryLabels(!chart!!.isDrawEntryLabelsEnabled)
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionTogglePercent -> {
                 chart!!.setUsePercentValues(!chart!!.isUsePercentValuesEnabled)
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.animateX -> {

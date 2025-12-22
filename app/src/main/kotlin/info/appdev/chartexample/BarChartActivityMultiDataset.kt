@@ -147,7 +147,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             set3.entries = values3
             set4.entries = values4
             chart!!.data!!.notifyDataChanged()
-            chart!!.notifyDataSetChanged()
+            chart?.notifyDataSetChanged()
         } else {
             // create 4 DataSets
             set1 = BarDataSet(values1, "Company A")
@@ -175,7 +175,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         // barData.getGroupWith(...) is a helper that calculates the width each group needs based on the provided parameters
         chart!!.xAxis.axisMaximum = startYear + chart!!.barData.getGroupWidth(groupSpace, barSpace) * groupCount
         chart!!.groupBars(startYear.toFloat(), groupSpace, barSpace)
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -197,31 +197,31 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
                     it?.isDrawValues = !it.isDrawValues
                 }
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionTogglePinch -> {
                 if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
                 else chart!!.setPinchZoom(true)
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
                 chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart?.notifyDataSetChanged()
             }
 
             R.id.actionToggleBarBorders -> {
                 for (set in chart!!.data!!.dataSets) (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 

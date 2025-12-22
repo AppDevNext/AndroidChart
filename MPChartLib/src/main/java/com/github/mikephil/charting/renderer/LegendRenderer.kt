@@ -4,7 +4,6 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Paint.Align
 import android.graphics.Path
-import android.util.Log
 import androidx.core.graphics.withSave
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.Legend.LegendDirection
@@ -228,7 +227,7 @@ open class LegendRenderer(
 
         val yOffset = legend.yOffset
         val xOffset = legend.xOffset
-        var originPosX = 0f
+        var originPosX: Float
 
         when (horizontalAlignment) {
             LegendHorizontalAlignment.LEFT -> {
@@ -266,8 +265,6 @@ open class LegendRenderer(
                         legend.mNeededWidth / 2.0 - xOffset).toFloat()
                 }
             }
-
-            null -> Log.e("Chart", "Legend horizontalAlignment is null")
         }
 
         when (orientation) {
@@ -282,10 +279,6 @@ open class LegendRenderer(
                     LegendVerticalAlignment.TOP -> yOffset
                     LegendVerticalAlignment.BOTTOM -> viewPortHandler.chartHeight - yOffset - legend.mNeededHeight
                     LegendVerticalAlignment.CENTER -> (viewPortHandler.chartHeight - legend.mNeededHeight) / 2f + yOffset
-                    else -> {
-                        Log.w("Chart", "Legend verticalAlignment not set")
-                        0f
-                    }
                 }
 
                 var lineIndex = 0
@@ -344,7 +337,7 @@ open class LegendRenderer(
                 // contains the stacked legend size in pixels
                 var stack = 0f
                 var wasStacked = false
-                var posY = 0f
+                var posY: Float
 
                 when (verticalAlignment) {
                     LegendVerticalAlignment.TOP -> {
@@ -366,8 +359,6 @@ open class LegendRenderer(
                     LegendVerticalAlignment.CENTER -> posY = (viewPortHandler.chartHeight / 2f
                             - legend.mNeededHeight / 2f
                             + legend.yOffset)
-
-                    null -> Log.w("Chart", "Legend verticalAlignment is null")
                 }
 
                 var i = 0
@@ -496,9 +487,6 @@ open class LegendRenderer(
                     mLineFormPath.lineTo(x + formSize, y)
                     canvas.drawPath(mLineFormPath, formPaint)
                 }
-
-                null -> Log.w( "Chart", "Legend form is null")
-
             }
 
         }

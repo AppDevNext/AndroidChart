@@ -92,7 +92,7 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
             set1 = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
             set1.entries = values
             chart!!.data!!.notifyDataChanged()
-            chart!!.notifyDataSetChanged()
+            chart?.notifyDataSetChanged()
         } else {
             set1 = BarDataSet(values, "Data Set")
             set1.setColors(*ColorTemplate.VORDIPLOM_COLORS)
@@ -106,7 +106,7 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
             chart!!.setFitBars(true)
         }
 
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -128,13 +128,13 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
                     it?.isDrawValues = !it.isDrawValues
                 }
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 
@@ -142,18 +142,18 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
                 if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
                 else chart!!.setPinchZoom(true)
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
                 chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart?.notifyDataSetChanged()
             }
 
             R.id.actionToggleBarBorders -> {
                 for (set in chart!!.data!!.dataSets) (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.animateX -> {

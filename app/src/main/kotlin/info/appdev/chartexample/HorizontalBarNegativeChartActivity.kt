@@ -128,7 +128,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
             set1 = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
             set1.entries  = values
             chart!!.data!!.notifyDataChanged()
-            chart!!.notifyDataSetChanged()
+            chart?.notifyDataSetChanged()
         } else {
             set1 = BarDataSet(values, "DataSet 1")
 
@@ -163,7 +163,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
                 chart!!.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleIcons -> {
@@ -171,31 +171,31 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
                     iSet.isDrawIcons = !iSet.isDrawIcons
                 }
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 
             R.id.actionTogglePinch -> {
                 chart!!.setPinchZoom(!chart!!.isPinchZoomEnabled)
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
                 chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart?.notifyDataSetChanged()
             }
 
             R.id.actionToggleBarBorders -> {
                 for (set in chart!!.data!!.dataSets) (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.animateX -> {
@@ -227,7 +227,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
         setData(seekBarX!!.progress, seekBarY!!.progress.toFloat())
         chart!!.setFitBars(true)
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun saveToGallery() {

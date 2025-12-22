@@ -99,7 +99,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         l.form = LegendForm.LINE
 
         // don't forget to refresh the drawing
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     private fun setData(count: Int, range: Float) {
@@ -146,13 +146,13 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                 chart!!.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 
@@ -160,7 +160,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                 chart!!.data!!.dataSets.forEach { set ->
                     set?.setDrawFilled(!set.isDrawFilledEnabled)
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleCircles -> {
@@ -170,7 +170,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                     val set = iSet as LineDataSet
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.animateX -> {
@@ -188,12 +188,12 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             R.id.actionTogglePinch -> {
                 chart!!.setPinchZoom(!chart!!.isPinchZoomEnabled)
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
                 chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart?.notifyDataSetChanged()
             }
 
             R.id.actionSave -> {
@@ -214,7 +214,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         setData(seekBarX!!.progress, seekBarY!!.progress.toFloat())
 
         // redraw
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun saveToGallery() {

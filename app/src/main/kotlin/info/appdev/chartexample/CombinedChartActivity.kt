@@ -93,7 +93,7 @@ class CombinedChartActivity : DemoBase() {
         xAxis.axisMaximum = data.xMax + 0.25f
 
         chart!!.setData(data)
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     private fun generateLineData(): LineData {
@@ -242,7 +242,7 @@ class CombinedChartActivity : DemoBase() {
                     if (it is LineDataSet)
                         it.isDrawValues = !it.isDrawValues
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleBarValues -> {
@@ -250,15 +250,15 @@ class CombinedChartActivity : DemoBase() {
                     if (it is BarDataSet)
                         it.isDrawValues = !it.isDrawValues
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionRemoveDataSet -> {
                 val rnd = values[sampleCount]!!.toFloat().toInt() * chart!!.data!!.getDataSetCount()
                 chart!!.data!!.removeDataSet(chart!!.data!!.getDataSetByIndex(rnd))
                 chart!!.data!!.notifyDataChanged()
-                chart!!.notifyDataSetChanged()
-                chart!!.invalidate()
+                chart?.notifyDataSetChanged()
+                chart?.invalidate()
             }
         }
         return true

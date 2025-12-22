@@ -102,7 +102,7 @@ class HalfPieChartActivity : DemoBase() {
         data.setValueTypeface(tfLight)
         chart!!.setData(data)
 
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     private fun generateCenterSpannableText(): SpannableString {

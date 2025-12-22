@@ -166,13 +166,13 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
                 chart!!.data!!.dataSets.forEach { set ->
                     set?.isDrawValues = !set.isDrawValues
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 
@@ -185,7 +185,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
                             set.setDrawFilled(true)
                     }
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleCircles -> {
@@ -195,7 +195,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
                     val set = iSet as LineDataSet
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleCubic -> {
@@ -208,7 +208,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
                     else
                         set.lineMode = LineDataSet.Mode.CUBIC_BEZIER
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleStepped -> {
@@ -221,19 +221,19 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
                     else
                         set.lineMode = LineDataSet.Mode.STEPPED
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionTogglePinch -> {
                 if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
                 else chart!!.setPinchZoom(true)
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
                 chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart?.notifyDataSetChanged()
             }
 
             R.id.animateX -> {
@@ -265,7 +265,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         setData(seekBarX!!.progress)
 
         // redraw
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun saveToGallery() {
