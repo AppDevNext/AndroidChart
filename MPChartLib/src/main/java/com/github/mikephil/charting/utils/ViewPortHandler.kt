@@ -319,7 +319,7 @@ open class ViewPortHandler {
      * @param view
      * @return save
      */
-    fun centerViewPort(transformedPts: FloatArray, view: View) {
+    fun centerViewPort(transformedPts: FloatArray, view: View?) {
         val save = mCenterViewPortMatrixBuffer
         save.reset()
         save.set(matrixTouch)
@@ -342,13 +342,14 @@ open class ViewPortHandler {
      *
      * @param newMatrix
      */
-    fun refresh(newMatrix: Matrix, chart: View, invalidate: Boolean): Matrix {
+    fun refresh(newMatrix: Matrix, view: View?, invalidate: Boolean): Matrix {
         matrixTouch.set(newMatrix)
 
         // make sure scale and translation are within their bounds
         limitTransAndScale(matrixTouch, contentRect)
 
-        if (invalidate) chart.invalidate()
+        if (invalidate)
+            view?.invalidate()
 
         newMatrix.set(matrixTouch)
         return newMatrix

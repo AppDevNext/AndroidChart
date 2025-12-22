@@ -28,7 +28,7 @@ fun Canvas.drawImage(
 ) {
     val width: Int = drawable.intrinsicWidth
     val height: Int = drawable.intrinsicHeight
-    val drawOffset = MPPointF.getInstance()
+    val drawOffset = MPPointF.getInstance(width.toFloat(), height.toFloat())
     drawOffset.x = x - (width.toFloat() / 2)
     drawOffset.y = y - (height.toFloat() / 2)
 

@@ -263,7 +263,7 @@ public class HorizontalBarChart extends BarChart {
 
 		getTransformer(axis).pointValuesToPixel(vals);
 
-		return MPPointF.getInstance(vals[0], vals[1]);
+		return MPPointF.Companion.getInstance(vals[0], vals[1]);
 	}
 
 	/**
@@ -287,14 +287,14 @@ public class HorizontalBarChart extends BarChart {
 	public float getLowestVisibleX() {
 		getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
 				mViewPortHandler.contentBottom(), posForGetLowestVisibleX);
-		return (float) Math.max(mXAxis.mAxisMinimum, posForGetLowestVisibleX.y);
+		return (float) Math.max(mXAxis.mAxisMinimum, posForGetLowestVisibleX.getY());
 	}
 
 	@Override
 	public float getHighestVisibleX() {
 		getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(mViewPortHandler.contentLeft(),
 				mViewPortHandler.contentTop(), posForGetHighestVisibleX);
-		return (float) Math.min(mXAxis.mAxisMaximum, posForGetHighestVisibleX.y);
+		return (float) Math.min(mXAxis.mAxisMaximum, posForGetHighestVisibleX.getY());
 	}
 
 	/**

@@ -390,17 +390,17 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 
 				switch (mInfoPaint.getTextAlign()) {
 					case LEFT:
-						pt.x = 0;
-						canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint);
+						pt.setX(0);
+						canvas.drawText(mNoDataText, pt.getX(), pt.getY(), mInfoPaint);
 						break;
 
 					case RIGHT:
-						pt.x *= 2.0F;
-						canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint);
+						pt.setX(pt.getX() * 2.0F);
+						canvas.drawText(mNoDataText, pt.getX(), pt.getY(), mInfoPaint);
 						break;
 
 					default:
-						canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint);
+						canvas.drawText(mNoDataText, pt.getX(), pt.getY(), mInfoPaint);
 						break;
 				}
 			}
@@ -437,8 +437,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 				x = getWidth() - mViewPortHandler.offsetRight() - mDescription.getXOffset();
 				y = getHeight() - mViewPortHandler.offsetBottom() - mDescription.getYOffset();
 			} else {
-				x = position.x;
-				y = position.y;
+				x = position.getX();
+				y = position.getY();
 			}
 
 			c.drawText(mDescription.text, x, y, mDescPaint);
@@ -1015,7 +1015,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 * Returns the center point of the chart (the whole View) in pixels.
 	 */
 	public MPPointF getCenter() {
-		return MPPointF.getInstance(getWidth() / 2f, getHeight() / 2f);
+		return MPPointF.Companion.getInstance(getWidth() / 2f, getHeight() / 2f);
 	}
 
 	/**

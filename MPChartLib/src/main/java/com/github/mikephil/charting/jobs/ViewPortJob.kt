@@ -12,32 +12,27 @@ import com.github.mikephil.charting.utils.ViewPortHandler
  * This is especially important if viewport modifying methods are called on the chart
  * directly after initialization.
  */
-abstract class ViewPortJob(
-    @JvmField protected var viewPortHandler: ViewPortHandler?, xValue: Float, yValue: Float,
+abstract class ViewPortJob<T : ViewPortJob<T>>(
+    protected var mViewPortHandler: ViewPortHandler, xValue: Float, yValue: Float,
     trans: Transformer?, v: View?
-) : Poolable(), Runnable {
-    @JvmField
+) : Poolable<T>(), Runnable {
     protected var pts: FloatArray = FloatArray(2)
 
     var xValue: Float = 0f
         protected set
     var yValue: Float = 0f
         protected set
-    @JvmField
-    protected var transformer: Transformer?
-    @JvmField
+    protected var mTrans: Transformer?
     protected var view: View?
 
     init {
         this.xValue = xValue
         this.yValue = yValue
-        this.transformer = trans
+        this.mTrans = trans
         this.view = v
     }
 
     protected fun recycle() {
-        viewPortHandler = null
-        transformer = null
         view = null
     }
 }

@@ -10,8 +10,8 @@ import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.ViewPortHandler
 
 @SuppressLint("NewApi")
-abstract class AnimatedViewPortJob(
-    viewPortHandler: ViewPortHandler?,
+abstract class AnimatedViewPortJob<T : AnimatedViewPortJob<T>>(
+    viewPortHandler: ViewPortHandler,
     xValue: Float,
     yValue: Float,
     trans: Transformer?,
@@ -19,8 +19,8 @@ abstract class AnimatedViewPortJob(
     var xOrigin: Float,
     var yOrigin: Float,
     duration: Long
-) : ViewPortJob(viewPortHandler, xValue, yValue, trans, v), AnimatorUpdateListener, Animator.AnimatorListener {
-    protected var animator: ObjectAnimator = ObjectAnimator.ofFloat(this, "phase", 0f, 1f)
+) : ViewPortJob<T>(viewPortHandler, xValue, yValue, trans, v), AnimatorUpdateListener, Animator.AnimatorListener {
+    protected val animator: ObjectAnimator = ObjectAnimator.ofFloat(this, "phase", 0f, 1f)
 
     var phase: Float = 0f
 
@@ -52,6 +52,7 @@ abstract class AnimatedViewPortJob(
         try {
             recycleSelf()
         } catch (_: IllegalArgumentException) {
+            // don't worry about it.
         }
     }
 
@@ -59,10 +60,13 @@ abstract class AnimatedViewPortJob(
         try {
             recycleSelf()
         } catch (_: IllegalArgumentException) {
+            // don't worry about it.
         }
     }
 
-    override fun onAnimationRepeat(animation: Animator) = Unit
+    override fun onAnimationRepeat(animation: Animator) {
+    }
 
-    override fun onAnimationUpdate(animation: ValueAnimator) = Unit
+    override fun onAnimationUpdate(animation: ValueAnimator) {
+    }
 }
