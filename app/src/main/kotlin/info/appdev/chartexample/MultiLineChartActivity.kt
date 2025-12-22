@@ -156,7 +156,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.data!!.dataSets?.forEach { set ->
                     set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
@@ -164,30 +164,28 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
             R.id.actionToggleCircles -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    if (set is LineDataSet) {
-                        set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
+                    set.let {
+                        if (set is LineDataSet) {
+                            set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
+                        }
                     }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                val sets = binding.chart1.data!!.dataSets
-
-                for (iSet in sets) {
+                binding.chart1.data?.dataSets?.let { iSet ->
                     val set = iSet as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
                         LineDataSet.Mode.CUBIC_BEZIER
+                    binding.chart1.invalidate()
                 }
-                binding.chart1.invalidate()
             }
 
             R.id.actionToggleStepped -> {
-                val sets = binding.chart1.data!!.dataSets
-
-                for (iSet in sets) {
+                binding.chart1.data?.dataSets?.let { iSet ->
                     val set = iSet as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED)
                         LineDataSet.Mode.LINEAR
@@ -198,9 +196,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                val sets = binding.chart1.data!!.dataSets
-
-                for (iSet in sets) {
+                binding.chart1.data?.dataSets?.let { iSet ->
                     val set = iSet as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER)
                         LineDataSet.Mode.LINEAR
@@ -230,6 +226,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
                 binding.chart1.animateXY(2000, 2000)
             }
         }
+
         return true
     }
 
