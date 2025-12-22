@@ -131,7 +131,7 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
 
         for (c in ColorTemplate.PASTEL_COLORS) colors.add(c)
 
-        colors.add(ColorTemplate.getHoloBlue())
+        colors.add(ColorTemplate.holoBlue)
 
         dataSet.setColors(colors)
 
@@ -261,7 +261,7 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
         s.setSpan(ForegroundColorSpan(Color.GRAY), 12, s.length - 10, 0)
         s.setSpan(RelativeSizeSpan(.65f), 12, s.length - 10, 0)
         s.setSpan(StyleSpan(Typeface.ITALIC), s.length - 10, s.length, 0)
-        s.setSpan(ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length - 10, s.length, 0)
+        s.setSpan(ForegroundColorSpan(ColorTemplate.holoBlue), s.length - 10, s.length, 0)
         return s
     }
 

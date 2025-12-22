@@ -8,7 +8,6 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
-import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.RelativeLayout
@@ -113,7 +112,7 @@ class HalfPieChartActivity : DemoBase() {
         s.setSpan(ForegroundColorSpan(Color.GRAY), 14, s.length - 15, 0)
         s.setSpan(RelativeSizeSpan(.8f), 14, s.length - 15, 0)
         s.setSpan(StyleSpan(Typeface.ITALIC), s.length - 14, s.length, 0)
-        s.setSpan(ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length - 14, s.length, 0)
+        s.setSpan(ForegroundColorSpan(ColorTemplate.holoBlue), s.length - 14, s.length, 0)
         return s
     }
 

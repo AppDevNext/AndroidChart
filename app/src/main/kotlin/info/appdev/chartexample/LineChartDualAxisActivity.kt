@@ -104,7 +104,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
         val leftAxis = chart!!.axisLeft
         leftAxis.typeface = tfLight
-        leftAxis.textColor = ColorTemplate.getHoloBlue()
+        leftAxis.textColor = ColorTemplate.holoBlue
         leftAxis.axisMaximum = 200f
         leftAxis.axisMinimum = 0f
         leftAxis.setDrawGridLines(true)
@@ -163,12 +163,12 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             set1 = LineDataSet(values1, "DataSet 1")
 
             set1.axisDependency = AxisDependency.LEFT
-            set1.color = ColorTemplate.getHoloBlue()
+            set1.color = ColorTemplate.holoBlue
             set1.setCircleColor(Color.WHITE)
             set1.lineWidth = 2f
             set1.circleRadius = 3f
             set1.fillAlpha = 65
-            set1.fillColor = ColorTemplate.getHoloBlue()
+            set1.fillColor = ColorTemplate.holoBlue
             set1.highLightColor = Color.rgb(244, 117, 117)
             set1.isDrawCircleHoleEnabled = false
 

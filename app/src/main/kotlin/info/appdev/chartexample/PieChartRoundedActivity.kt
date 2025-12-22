@@ -146,7 +146,7 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
 
         for (c in ColorTemplate.PASTEL_COLORS) colors.add(c)
 
-        colors.add(ColorTemplate.getHoloBlue())
+        colors.add(ColorTemplate.holoBlue)
 
         dataSet.setColors(colors)
 
@@ -279,7 +279,7 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
         s.setSpan(ForegroundColorSpan(Color.GRAY), 14, s.length - 15, 0)
         s.setSpan(RelativeSizeSpan(.8f), 14, s.length - 15, 0)
         s.setSpan(StyleSpan(Typeface.ITALIC), s.length - 14, s.length, 0)
-        s.setSpan(ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length - 14, s.length, 0)
+        s.setSpan(ForegroundColorSpan(ColorTemplate.holoBlue), s.length - 14, s.length, 0)
         return s
     }
 

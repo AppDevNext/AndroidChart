@@ -92,7 +92,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         val leftAxis = chart!!.axisLeft
         leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
         leftAxis.typeface = tfLight
-        leftAxis.textColor = ColorTemplate.getHoloBlue()
+        leftAxis.textColor = ColorTemplate.holoBlue
         leftAxis.setDrawGridLines(true)
         leftAxis.isGranularityEnabled = true
         leftAxis.axisMinimum = 0f
@@ -118,10 +118,9 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         // increment by 1 hour
         var x = now.toFloat()
         while (x < to) {
-            val y: Float
-            if (count == 100)  // initial
-                y = (valuesData[x.roundToInt()])!!.toFloat() * 50 + 50
-            else y = (Math.random() * 50 + 50).toFloat() // manually triggered
+            val y: Float = if (count == 100)  // initial
+                (valuesData[x.roundToInt()])!!.toFloat() * 50 + 50
+            else (Math.random() * 50 + 50).toFloat() // manually triggered
 
             values.add(Entry(x, y)) // add one entry per hour
             x++
@@ -130,13 +129,13 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         // create a dataset and give it a type
         val set1 = LineDataSet(values, "DataSet 1")
         set1.axisDependency = AxisDependency.LEFT
-        set1.color = ColorTemplate.getHoloBlue()
-        set1.setSingleValueTextColor(ColorTemplate.getHoloBlue())
+        set1.color = ColorTemplate.holoBlue
+        set1.setSingleValueTextColor(ColorTemplate.holoBlue)
         set1.lineWidth = 1.5f
         set1.isDrawCirclesEnabled = false
         set1.isDrawValues = false
         set1.fillAlpha = 65
-        set1.fillColor = ColorTemplate.getHoloBlue()
+        set1.fillColor = ColorTemplate.holoBlue
         set1.highLightColor = Color.rgb(244, 117, 117)
         set1.isDrawCircleHoleEnabled = false
 
