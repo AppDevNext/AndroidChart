@@ -435,13 +435,13 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
      * Applys a spin animation to the Chart.
      */
     @SuppressLint("NewApi")
-    public void spin(int durationmillis, float fromangle, float toangle, EasingFunction easing) {
+    public void spin(int durationMillis, float fromangle, float toangle, EasingFunction easing) {
 
         setRotationAngle(fromangle);
 
         ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle,
                 toangle);
-        spinAnimator.setDuration(durationmillis);
+        spinAnimator.setDuration(durationMillis);
         spinAnimator.setInterpolator(easing);
 
         spinAnimator.addUpdateListener(new AnimatorUpdateListener() {
