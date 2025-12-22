@@ -29,8 +29,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBarchartSinusBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         dataSinus = assets.loadBarEntriesFromAssets("sinus_values.txt")
         binding.chart1.setDrawBarShadow(false)

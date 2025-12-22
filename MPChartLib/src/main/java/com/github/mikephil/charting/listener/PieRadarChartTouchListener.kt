@@ -9,7 +9,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.abs
 
-class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListener<PieRadarChartBase<*>?>(chart) {
+class PieRadarChartTouchListener(chart: PieRadarChartBase<*>) : ChartTouchListener<PieRadarChartBase<*>>(chart) {
     private val touchStartPoint: MPPointF = MPPointF.getInstance(0f, 0f)
 
     /**
@@ -30,7 +30,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
 
         // if rotation by touch is enabled
         // TODO: Also check if the pie itself is being touched, rather than the entire chart area
-        if (chart!!.isRotationEnabled) {
+        if (chart.isRotationEnabled) {
             val x = event.x
             val y = event.y
 
@@ -42,7 +42,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
 
                     resetVelocity()
 
-                    if (chart!!.isDragDecelerationEnabled) {
+                    if (chart.isDragDecelerationEnabled) {
                         sampleVelocity(x, y)
                     }
 
@@ -52,7 +52,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
                 }
 
                 MotionEvent.ACTION_MOVE -> {
-                    if (chart!!.isDragDecelerationEnabled) {
+                    if (chart.isDragDecelerationEnabled) {
                         sampleVelocity(x, y)
                     }
 
@@ -62,17 +62,17 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
                     ) {
                         lastGesture = ChartGesture.ROTATE
                         touchMode = ROTATE
-                        chart!!.disableScroll()
+                        chart.disableScroll()
                     } else if (touchMode == ROTATE) {
                         updateGestureRotation(x, y)
-                        chart?.invalidate()
+                        chart.invalidate()
                     }
 
                     endAction(event)
                 }
 
                 MotionEvent.ACTION_UP -> {
-                    if (chart!!.isDragDecelerationEnabled) {
+                    if (chart.isDragDecelerationEnabled) {
                         stopDeceleration()
 
                         sampleVelocity(x, y)
@@ -82,11 +82,11 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
                         if (decelerationAngularVelocity != 0f) {
                             decelerationLastTime = AnimationUtils.currentAnimationTimeMillis()
 
-                            chart?.postInvalidateOnAnimation() // This causes computeScroll to fire, recommended for this by Google
+                            chart.postInvalidateOnAnimation() // This causes computeScroll to fire, recommended for this by Google
                         }
                     }
 
-                    chart!!.enableScroll()
+                    chart.enableScroll()
                     touchMode = NONE
 
                     endAction(event)
@@ -100,7 +100,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
     override fun onLongPress(me: MotionEvent) {
         lastGesture = ChartGesture.LONG_PRESS
 
-        val onChartGestureListener = chart!!.onChartGestureListener
+        val onChartGestureListener = chart.onChartGestureListener
 
         onChartGestureListener?.onChartLongPressed(me)
     }
@@ -110,15 +110,15 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
     override fun onSingleTapUp(e: MotionEvent): Boolean {
         lastGesture = ChartGesture.SINGLE_TAP
 
-        val onChartGestureListener = chart!!.onChartGestureListener
+        val onChartGestureListener = chart.onChartGestureListener
 
         onChartGestureListener?.onChartSingleTapped(e)
 
-        if (!chart!!.isHighlightPerTapEnabled) {
+        if (!chart.isHighlightPerTapEnabled) {
             return false
         }
 
-        val high = chart!!.getHighlightByTouchPoint(e.x, e.y)
+        val high = chart.getHighlightByTouchPoint(e.x, e.y)
         performHighlight(high, e)
 
         return true
@@ -131,7 +131,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
     private fun sampleVelocity(touchLocationX: Float, touchLocationY: Float) {
         val currentTime = AnimationUtils.currentAnimationTimeMillis()
 
-        velocitySamples.add(AngularVelocitySample(currentTime, chart!!.getAngleForPoint(touchLocationX, touchLocationY)))
+        velocitySamples.add(AngularVelocitySample(currentTime, chart.getAngleForPoint(touchLocationX, touchLocationY)))
 
         // Remove samples older than our sample time - 1 seconds
         var i = 0
@@ -204,7 +204,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
      * @param y
      */
     fun setGestureStartAngle(x: Float, y: Float) {
-        startAngle = chart!!.getAngleForPoint(x, y) - chart!!.rawRotationAngle
+        startAngle = chart.getAngleForPoint(x, y) - chart.rawRotationAngle
     }
 
     /**
@@ -215,7 +215,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
      * @param y
      */
     fun updateGestureRotation(x: Float, y: Float) {
-        chart!!.rotationAngle = chart!!.getAngleForPoint(x, y) - startAngle
+        chart.rotationAngle = chart.getAngleForPoint(x, y) - startAngle
     }
 
     /**
@@ -232,16 +232,16 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
 
         val currentTime = AnimationUtils.currentAnimationTimeMillis()
 
-        decelerationAngularVelocity *= chart!!.dragDecelerationFrictionCoef
+        decelerationAngularVelocity *= chart.dragDecelerationFrictionCoef
 
         val timeInterval = (currentTime - decelerationLastTime).toFloat() / 1000f
 
-        chart!!.rotationAngle += decelerationAngularVelocity * timeInterval
+        chart.rotationAngle += decelerationAngularVelocity * timeInterval
 
         decelerationLastTime = currentTime
 
         if (abs(decelerationAngularVelocity) >= 0.001) {
-            chart?.postInvalidateOnAnimation() // This causes computeScroll to fire, recommended for this by Google
+            chart.postInvalidateOnAnimation() // This causes computeScroll to fire, recommended for this by Google
         } else {
             stopDeceleration()
         }

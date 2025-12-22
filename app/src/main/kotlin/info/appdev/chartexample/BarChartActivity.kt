@@ -9,11 +9,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
@@ -31,53 +29,45 @@ import com.github.mikephil.charting.utils.Fill
 import com.github.mikephil.charting.utils.MPPointF
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.XYMarkerView
+import info.appdev.chartexample.databinding.ActivityBarchartBinding
 import info.appdev.chartexample.formatter.DayAxisValueFormatter
 import info.appdev.chartexample.formatter.MyAxisValueFormatter
 import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
-    private var chart: BarChart? = null
-    private var seekBarX: SeekBar? = null
-    private var seekBarY: SeekBar? = null
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
+
+    private lateinit var binding: ActivityBarchartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_barchart)
+        binding = ActivityBarchartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvX = findViewById(R.id.tvXMax)
-        tvY = findViewById(R.id.tvYMax)
+        binding.seekBarY.setOnSeekBarChangeListener(this)
+        binding.seekBarX.setOnSeekBarChangeListener(this)
 
-        seekBarX = findViewById(R.id.seekBarX)
-        seekBarY = findViewById(R.id.seekBarY)
+        binding.chart1.setOnChartValueSelectedListener(this)
+        binding.chart1.setRoundedBarRadius(50f)
 
-        seekBarY!!.setOnSeekBarChangeListener(this)
-        seekBarX!!.setOnSeekBarChangeListener(this)
+        binding.chart1.setDrawBarShadow(false)
+        binding.chart1.setDrawValueAboveBar(true)
 
-        chart = findViewById(R.id.chart1)
-        chart!!.setOnChartValueSelectedListener(this)
-        chart!!.setRoundedBarRadius(50f)
-
-        chart!!.setDrawBarShadow(false)
-        chart!!.setDrawValueAboveBar(true)
-
-        chart!!.description.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
-        chart!!.setMaxVisibleValueCount(60)
+        binding.chart1.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        chart!!.setPinchZoom(false)
+        binding.chart1.setPinchZoom(false)
 
-        chart!!.setDrawGridBackground(false)
+        binding.chart1.setDrawGridBackground(false)
 
         // chart.setDrawYLabels(false);
-        val xAxisFormatter: IAxisValueFormatter = DayAxisValueFormatter(chart!!)
+        val xAxisFormatter: IAxisValueFormatter = DayAxisValueFormatter(binding.chart1)
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.position = XAxisPosition.BOTTOM
         xAxis.typeface = tfLight
         xAxis.setDrawGridLines(false)
@@ -87,7 +77,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
         val custom: IAxisValueFormatter = MyAxisValueFormatter()
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = binding.chart1.axisLeft
         leftAxis.typeface = tfLight
         leftAxis.setLabelCount(8, false)
         leftAxis.valueFormatter = custom
@@ -95,7 +85,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         leftAxis.spaceTop = 15f
         leftAxis.axisMinimum = 0f// this replaces setStartAtZero(true)
 
-        val rightAxis = chart!!.axisRight
+        val rightAxis = binding.chart1.axisRight
         rightAxis.setDrawGridLines(false)
         rightAxis.typeface = tfLight
         rightAxis.setLabelCount(8, false)
@@ -103,7 +93,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         rightAxis.spaceTop = 15f
         rightAxis.axisMinimum = 0f// this replaces setStartAtZero(true)
 
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
         l.orientation = Legend.LegendOrientation.HORIZONTAL
@@ -114,12 +104,12 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         l.xEntrySpace = 4f
 
         val mv = XYMarkerView(this, xAxisFormatter)
-        mv.chartView = chart // For bounds control
-        chart?.setMarker(mv) // Set the marker to the chart
+        mv.chartView = binding.chart1 // For bounds control
+        binding.chart1.setMarker(mv) // Set the marker to the chart
 
         // setting data
-        seekBarY!!.progress = 50
-        seekBarX!!.progress = 12
+        binding.seekBarY.progress = 50
+        binding.seekBarX.progress = 12
 
         // chart.setDrawLegend(false);
     }
@@ -144,13 +134,13 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
         val set1: BarDataSet
 
-        if (chart!!.data != null &&
-            chart!!.data!!.getDataSetCount() > 0
+        if (binding.chart1.data != null &&
+            binding.chart1.data!!.getDataSetCount() > 0
         ) {
-            set1 = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
+            set1 = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
             set1.entries  = values
-            chart!!.data!!.notifyDataChanged()
-            chart?.notifyDataSetChanged()
+            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.notifyDataSetChanged()
         } else {
             set1 = BarDataSet(values, "The year 2017")
 
@@ -184,7 +174,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             data.setValueTypeface(tfLight)
             data.barWidth = 0.9f
 
-            chart?.setData(data)
+            binding.chart1.setData(data)
         }
     }
 
@@ -202,88 +192,88 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach {
+                binding.chart1.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                for (set in chart!!.data!!.dataSets)
+                for (set in binding.chart1.data!!.dataSets)
                     set?.isDrawIcons = !set.isDrawIcons
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart?.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionTogglePinch -> {
-                if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
-                else chart!!.setPinchZoom(true)
+                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
+                else binding.chart1.setPinchZoom(true)
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart?.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
             R.id.actionToggleBarBorders -> {
-                for (set in chart!!.data!!.dataSets)
+                for (set in binding.chart1.data!!.dataSets)
                     (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f)
                         0f
                     else
                         1f
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(2000)
+                binding.chart1.animateX(2000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(2000)
+                binding.chart1.animateY(2000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(2000, 2000)
+                binding.chart1.animateXY(2000, 2000)
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
 
             R.id.actionRotateXAxisLabelsBy45Deg -> {
-                chart!!.xAxis.labelRotationAngle = 45f
-                chart?.notifyDataSetChanged()
-                chart?.invalidate()
+                binding.chart1.xAxis.labelRotationAngle = 45f
+                binding.chart1.notifyDataSetChanged()
+                binding.chart1.invalidate()
             }
         }
         return true
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        tvX!!.text = seekBarX!!.progress.toString()
-        tvY!!.text = seekBarY!!.progress.toString()
+        binding.tvXMax.text = binding.seekBarX.progress.toString()
+        binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        setData(seekBarX!!.progress, seekBarY!!.progress.toFloat())
-        chart?.invalidate()
+        setData(binding.seekBarX.progress, binding.seekBarY.progress.toFloat())
+        binding.chart1.invalidate()
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "BarChartActivity")
+        saveToGallery(binding.chart1, "BarChartActivity")
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
@@ -294,12 +284,12 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         val bounds = onValueSelectedRectF
-        chart!!.getBarBounds(entry as BarEntry, bounds)
-        val position = chart!!.getPosition(entry, AxisDependency.LEFT)
+        binding.chart1.getBarBounds(entry as BarEntry, bounds)
+        val position = binding.chart1.getPosition(entry, AxisDependency.LEFT)
 
         Timber.i("bounds $bounds")
         Timber.i("position = $position")
-        Timber.i("x-index low: ${+chart!!.lowestVisibleX}, high: ${+chart!!.highestVisibleX}")
+        Timber.i("x-index low: ${+binding.chart1.lowestVisibleX}, high: ${+binding.chart1.highestVisibleX}")
 
         MPPointF.recycleInstance(position)
     }

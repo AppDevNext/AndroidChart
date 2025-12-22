@@ -37,6 +37,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         super.onCreate(savedInstanceState)
         binding = ActivityLinechartBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
         binding.seekBarX.setOnSeekBarChangeListener(this)
         binding.seekBarY.max = 180
         binding.seekBarY.setOnSeekBarChangeListener(this)

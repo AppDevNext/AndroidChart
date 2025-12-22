@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.data.BarData
@@ -16,36 +15,38 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.ViewPortHandler
+import info.appdev.chartexample.databinding.ActivityBarchartNoseekbarBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import java.text.DecimalFormat
 import kotlin.math.max
 import kotlin.math.min
 
 class BarChartPositiveNegative : DemoBase() {
-    private var chart: BarChart? = null
+
+    private lateinit var binding: ActivityBarchartNoseekbarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_barchart_noseekbar)
+        binding = ActivityBarchartNoseekbarBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        chart = findViewById(R.id.chart1)
-        chart!!.setBackgroundColor(Color.WHITE)
-        chart!!.extraTopOffset = -30f
-        chart!!.extraBottomOffset = 10f
-        chart!!.extraLeftOffset = 70f
-        chart!!.extraRightOffset = 70f
+        binding.chart1.setBackgroundColor(Color.WHITE)
+        binding.chart1.extraTopOffset = -30f
+        binding.chart1.extraBottomOffset = 10f
+        binding.chart1.extraLeftOffset = 70f
+        binding.chart1.extraRightOffset = 70f
 
-        chart!!.setDrawBarShadow(false)
-        chart!!.setDrawValueAboveBar(true)
+        binding.chart1.setDrawBarShadow(false)
+        binding.chart1.setDrawValueAboveBar(true)
 
-        chart!!.description.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // scaling can now only be done on x- and y-axis separately
-        chart!!.setPinchZoom(false)
+        binding.chart1.setPinchZoom(false)
 
-        chart!!.setDrawGridBackground(false)
+        binding.chart1.setDrawGridBackground(false)
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.position = XAxisPosition.BOTTOM
         xAxis.typeface = tfRegular
         xAxis.setDrawGridLines(false)
@@ -56,7 +57,7 @@ class BarChartPositiveNegative : DemoBase() {
         xAxis.setCenterAxisLabels(true)
         xAxis.granularity = 1f
 
-        val left = chart!!.axisLeft
+        val left = binding.chart1.axisLeft
         left.setDrawLabels(false)
         left.spaceTop = 25f
         left.spaceBottom = 25f
@@ -65,8 +66,8 @@ class BarChartPositiveNegative : DemoBase() {
         left.setDrawZeroLine(true) // draw a zero line
         left.zeroLineColor = Color.GRAY
         left.zeroLineWidth = 0.7f
-        chart!!.axisRight.isEnabled = false
-        chart!!.legend.isEnabled = false
+        binding.chart1.axisRight.isEnabled = false
+        binding.chart1.legend.isEnabled = false
 
         // THIS IS THE ORIGINAL DATA YOU WANT TO PLOT
         val data: MutableList<Data> = ArrayList()
@@ -104,13 +105,13 @@ class BarChartPositiveNegative : DemoBase() {
 
         val set: BarDataSet
 
-        if (chart!!.data != null &&
-            chart!!.data!!.getDataSetCount() > 0
+        if (binding.chart1.data != null &&
+            binding.chart1.data!!.getDataSetCount() > 0
         ) {
-            set = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
+            set = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
             set.entries  = values
-            chart!!.data!!.notifyDataChanged()
-            chart?.notifyDataSetChanged()
+            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.notifyDataSetChanged()
         } else {
             set = BarDataSet(values, "Values")
             set.setColors(colors)
@@ -122,8 +123,8 @@ class BarChartPositiveNegative : DemoBase() {
             data.setValueFormatter(ValueFormatter())
             data.barWidth = 0.8f
 
-            chart!!.setData(data)
-            chart?.invalidate()
+            binding.chart1.setData(data)
+            binding.chart1.invalidate()
         }
     }
 

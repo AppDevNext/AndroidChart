@@ -8,10 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -19,80 +17,69 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityBarchartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 
 class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
-    private var chart: BarChart? = null
-    private var seekBarX: SeekBar? = null
-    private var seekBarY: SeekBar? = null
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
+
+    private lateinit var binding: ActivityBarchartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_barchart)
+        binding = ActivityBarchartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvX = findViewById(R.id.tvXMax)
-        tvY = findViewById(R.id.tvYMax)
+        binding.seekBarX.setOnSeekBarChangeListener(this)
+        binding.seekBarY.setOnSeekBarChangeListener(this)
+        binding.chart1.description.isEnabled = false
 
-        seekBarX = findViewById(R.id.seekBarX)
-        seekBarX!!.setOnSeekBarChangeListener(this)
-
-        seekBarY = findViewById(R.id.seekBarY)
-        seekBarY!!.setOnSeekBarChangeListener(this)
-
-        chart = findViewById(R.id.chart1)
-
-        chart!!.description.isEnabled = false
-
-        // if more than 60 entries are displayed in the chart, no values will be
-        // drawn
-        chart!!.setMaxVisibleValueCount(60)
+        // if more than 60 entries are displayed in the chart, no values will be drawn
+        binding.chart1.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        chart!!.setPinchZoom(false)
+        binding.chart1.setPinchZoom(false)
 
-        chart!!.setDrawBarShadow(false)
-        chart!!.setDrawGridBackground(false)
+        binding.chart1.setDrawBarShadow(false)
+        binding.chart1.setDrawGridBackground(false)
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.position = XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
 
-        chart!!.axisLeft.setDrawGridLines(false)
+        binding.chart1.axisLeft.setDrawGridLines(false)
 
         // setting data
-        seekBarX!!.progress = DEFAULT_VALUE
-        seekBarY!!.progress = 100
+        binding.seekBarX.progress = DEFAULT_VALUE
+        binding.seekBarY.progress = 100
 
         // add a nice and smooth animation
-        chart!!.animateY(1500)
+        binding.chart1.animateY(1500)
 
-        chart!!.legend.isEnabled = false
+        binding.chart1.legend.isEnabled = false
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        tvX!!.text = seekBarX!!.progress.toString()
-        tvY!!.text = seekBarY!!.progress.toString()
+        binding.tvXMax.text = binding.seekBarX.progress.toString()
+        binding.tvYMax.text = binding.seekBarY.progress.toString()
 
         val values = ArrayList<BarEntry>()
         val sampleValues = getValues(100)
 
-        for (i in 0..<seekBarX!!.progress) {
-            val multi = (seekBarY!!.progress + 1).toFloat()
+        for (i in 0..<binding.seekBarX.progress) {
+            val multi = (binding.seekBarY.progress + 1).toFloat()
             val `val` = (sampleValues[i]!!.toFloat() * multi) + multi / 3
             values.add(BarEntry(i.toFloat(), `val`))
         }
 
         val set1: BarDataSet
 
-        if (chart!!.data != null &&
-            chart!!.data!!.getDataSetCount() > 0
+        if (binding.chart1.data != null &&
+            binding.chart1.data!!.getDataSetCount() > 0
         ) {
-            set1 = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
+            set1 = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
             set1.entries = values
-            chart!!.data!!.notifyDataChanged()
-            chart?.notifyDataSetChanged()
+            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.notifyDataSetChanged()
         } else {
             set1 = BarDataSet(values, "Data Set")
             set1.setColors(*ColorTemplate.VORDIPLOM_COLORS)
@@ -102,11 +89,11 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
             dataSets.add(set1)
 
             val data = BarData(dataSets)
-            chart!!.setData(data)
-            chart!!.setFitBars(true)
+            binding.chart1.setData(data)
+            binding.chart1.setFitBars(true)
         }
 
-        chart?.invalidate()
+        binding.chart1.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -124,55 +111,58 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach {
+                binding.chart1.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart?.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionTogglePinch -> {
-                if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
-                else chart!!.setPinchZoom(true)
+                if (binding.chart1.isPinchZoomEnabled)
+                    binding.chart1.setPinchZoom(false)
+                else
+                    binding.chart1.setPinchZoom(true)
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart?.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
             R.id.actionToggleBarBorders -> {
-                for (set in chart!!.data!!.dataSets) (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
+                for (set in binding.chart1.data!!.dataSets)
+                        (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(2000)
+                binding.chart1.animateX(2000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(2000)
+                binding.chart1.animateY(2000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(2000, 2000)
+                binding.chart1.animateXY(2000, 2000)
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -180,7 +170,7 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "AnotherBarActivity")
+        saveToGallery(binding.chart1, "AnotherBarActivity")
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit

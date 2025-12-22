@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.LineChart
@@ -23,6 +22,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
@@ -33,56 +33,47 @@ import timber.log.Timber
  * @version 3.1.0
  */
 class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
-    private var chart: LineChart? = null
-    private var seekBarX: SeekBar? = null
-    private var seekBarY: SeekBar? = null
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
+
+    private lateinit var binding: ActivityLinechartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_linechart)
+        binding = ActivityLinechartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvX = findViewById(R.id.tvXMax)
-        tvY = findViewById(R.id.tvYMax)
+        binding.seekBarX.setOnSeekBarChangeListener(this)
+        binding.seekBarY.setOnSeekBarChangeListener(this)
 
-        seekBarX = findViewById(R.id.seekBarX)
-        seekBarX!!.setOnSeekBarChangeListener(this)
-
-        seekBarY = findViewById(R.id.seekBarY)
-        seekBarY!!.setOnSeekBarChangeListener(this)
-
-        chart = findViewById(R.id.chart1)
-        chart!!.setOnChartValueSelectedListener(this)
+        binding.chart1.setOnChartValueSelectedListener(this)
 
         // no description text
-        chart!!.description.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // enable touch gestures
-        chart!!.setTouchEnabled(true)
+        binding.chart1.setTouchEnabled(true)
 
-        chart!!.setDragDecelerationFrictionCoef(0.9f)
+        binding.chart1.setDragDecelerationFrictionCoef(0.9f)
 
         // enable scaling and dragging
-        chart!!.setDragEnabled(true)
-        chart!!.setScaleEnabled(true)
-        chart!!.setDrawGridBackground(false)
-        chart!!.isHighlightPerDragEnabled = true
+        binding.chart1.setDragEnabled(true)
+        binding.chart1.setScaleEnabled(true)
+        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.isHighlightPerDragEnabled = true
 
         // if disabled, scaling can be done on x- and y-axis separately
-        chart!!.setPinchZoom(true)
+        binding.chart1.setPinchZoom(true)
 
         // set an alternative background color
-        chart!!.setBackgroundColor(Color.LTGRAY)
+        binding.chart1.setBackgroundColor(Color.LTGRAY)
 
         // add data
-        seekBarX!!.progress = 20
-        seekBarY!!.progress = 30
+        binding.seekBarX.progress = 20
+        binding.seekBarY.progress = 30
 
-        chart!!.animateX(1500)
+        binding.chart1.animateX(1500)
 
         // get the legend (only possible after setting data)
-        val l = chart!!.legend
+        val l = binding.chart1.legend
 
         // modify the legend ...
         l.form = LegendForm.LINE
@@ -95,14 +86,14 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         l.setDrawInside(false)
 
         //        l.setYOffset(11f);
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.typeface = tfLight
         xAxis.textSize = 11f
         xAxis.textColor = Color.WHITE
         xAxis.setDrawGridLines(false)
         xAxis.setDrawAxisLine(false)
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = binding.chart1.axisLeft
         leftAxis.typeface = tfLight
         leftAxis.textColor = ColorTemplate.holoBlue
         leftAxis.axisMaximum = 200f
@@ -110,7 +101,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         leftAxis.setDrawGridLines(true)
         leftAxis.isGranularityEnabled = true
 
-        val rightAxis = chart!!.axisRight
+        val rightAxis = binding.chart1.axisRight
         rightAxis.typeface = tfLight
         rightAxis.textColor = Color.MAGENTA
         rightAxis.axisMaximum = 900f
@@ -147,17 +138,17 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         val set2: LineDataSet
         val set3: LineDataSet
 
-        if (chart!!.data != null &&
-            chart!!.data!!.getDataSetCount() > 0
+        if (binding.chart1.data != null &&
+            binding.chart1.data!!.getDataSetCount() > 0
         ) {
-            set1 = chart!!.data!!.getDataSetByIndex(0) as LineDataSet
-            set2 = chart!!.data!!.getDataSetByIndex(1) as LineDataSet
-            set3 = chart!!.data!!.getDataSetByIndex(2) as LineDataSet
+            set1 = binding.chart1.data!!.getDataSetByIndex(0) as LineDataSet
+            set2 = binding.chart1.data!!.getDataSetByIndex(1) as LineDataSet
+            set3 = binding.chart1.data!!.getDataSetByIndex(2) as LineDataSet
             set1.entries = values1
             set2.entries = values2
             set3.entries = values3
-            chart!!.data!!.notifyDataChanged()
-            chart?.notifyDataSetChanged()
+            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.notifyDataSetChanged()
         } else {
             // create a dataset and give it a type
             set1 = LineDataSet(values1, "DataSet 1")
@@ -207,7 +198,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             data.setValueTextSize(9f)
 
             // set data
-            chart!!.setData(data)
+            binding.chart1.setData(data)
         }
     }
 
@@ -226,38 +217,38 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach { set ->
+                binding.chart1.data!!.dataSets.forEach { set ->
                     set?.isDrawValues = !set.isDrawValues
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart?.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionToggleFilled -> {
-                chart!!.data!!.dataSets.forEach { set ->
+                binding.chart1.data!!.dataSets.forEach { set ->
                     set?.setDrawFilled(!set.isDrawFilledEnabled)
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                val sets = chart!!.data!!.dataSets
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                val sets = chart!!.data!!.dataSets
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -266,11 +257,11 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                     else
                         LineDataSet.Mode.CUBIC_BEZIER
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleStepped -> {
-                val sets = chart!!.data!!.dataSets
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -279,11 +270,11 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                     else
                         LineDataSet.Mode.STEPPED
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                val sets = chart!!.data!!.dataSets
+                val sets = binding.chart1.data!!.dataSets
 
                 for (iSet in sets) {
                     val set = iSet as LineDataSet
@@ -292,37 +283,37 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
                     else
                         LineDataSet.Mode.HORIZONTAL_BEZIER
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                chart!!.setPinchZoom(!chart!!.isPinchZoomEnabled)
+                binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled)
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart?.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(2000)
+                binding.chart1.animateX(2000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(2000)
+                binding.chart1.animateY(2000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(2000, 2000)
+                binding.chart1.animateXY(2000, 2000)
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -330,24 +321,24 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        tvX!!.text = seekBarX!!.progress.toString()
-        tvY!!.text = seekBarY!!.progress.toString()
+        binding.tvXMax.text = binding.seekBarX.progress.toString()
+        binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        setData(seekBarX!!.progress, seekBarY!!.progress.toFloat())
+        setData(binding.seekBarX.progress, binding.seekBarY.progress.toFloat())
 
         // redraw
-        chart?.invalidate()
+        binding.chart1.invalidate()
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "LineChartActivity2")
+        saveToGallery(binding.chart1, "LineChartActivity2")
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         Timber.i(entry.toString())
 
-        chart!!.data!!.getDataSetByIndex(highlight.dataSetIndex)?.let {
-            chart!!.centerViewToAnimated(entry.x, entry.y, it.axisDependency, 500)
+        binding.chart1.data!!.getDataSetByIndex(highlight.dataSetIndex)?.let {
+            binding.chart1.centerViewToAnimated(entry.x, entry.y, it.axisDependency, 500)
             //chart.zoomAndCenterAnimated(2.5f, 2.5f, e.getX(), e.getY(), chart.getData().getDataSetByIndex(dataSetIndex)
             // .getAxisDependency(), 1000);
             //chart.zoomAndCenterAnimated(1.8f, 1.8f, e.getX(), e.getY(), chart.getData().getDataSetByIndex(dataSetIndex)

@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.charts.ScatterChart
@@ -22,48 +21,39 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.CustomScatterShapeRenderer
+import info.appdev.chartexample.databinding.ActivityScatterchartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
-    private var chart: ScatterChart? = null
-    private var seekBarX: SeekBar? = null
-    private var seekBarY: SeekBar? = null
-    private var tvX: TextView? = null
-    private var tvY: TextView? = null
+
+    private lateinit var binding: ActivityScatterchartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scatterchart)
+        binding = ActivityScatterchartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvX = findViewById(R.id.tvXMax)
-        tvY = findViewById(R.id.tvYMax)
+        binding.seekBarX.setOnSeekBarChangeListener(this)
+        binding.seekBarY.setOnSeekBarChangeListener(this)
+        binding.chart1.description.isEnabled = false
+        binding.chart1.setOnChartValueSelectedListener(this)
 
-        seekBarX = findViewById(R.id.seekBarX)
-        seekBarX!!.setOnSeekBarChangeListener(this)
-
-        seekBarY = findViewById(R.id.seekBarY)
-        seekBarY!!.setOnSeekBarChangeListener(this)
-
-        chart = findViewById(R.id.chart1)
-        chart!!.description.isEnabled = false
-        chart!!.setOnChartValueSelectedListener(this)
-
-        chart!!.setDrawGridBackground(false)
-        chart!!.setTouchEnabled(true)
-        chart!!.maxHighlightDistance = 50f
+        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.setTouchEnabled(true)
+        binding.chart1.maxHighlightDistance = 50f
 
         // enable scaling and dragging
-        chart!!.setDragEnabled(true)
-        chart!!.setScaleEnabled(true)
+        binding.chart1.setDragEnabled(true)
+        binding.chart1.setScaleEnabled(true)
 
-        chart!!.setMaxVisibleValueCount(200)
-        chart!!.setPinchZoom(true)
+        binding.chart1.setMaxVisibleValueCount(200)
+        binding.chart1.setPinchZoom(true)
 
-        seekBarX!!.progress = 45
-        seekBarY!!.progress = 100
+        binding.seekBarX.progress = 45
+        binding.seekBarY.progress = 100
 
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         l.orientation = Legend.LegendOrientation.VERTICAL
@@ -71,38 +61,38 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         l.typeface = tfLight
         l.xOffset = 5f
 
-        val yl = chart!!.axisLeft
+        val yl = binding.chart1.axisLeft
         yl.typeface = tfLight
         yl.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        chart!!.axisRight.isEnabled = false
+        binding.chart1.axisRight.isEnabled = false
 
-        val xl = chart!!.xAxis
+        val xl = binding.chart1.xAxis
         xl.typeface = tfLight
         xl.setDrawGridLines(false)
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        tvX!!.text = seekBarX!!.progress.toString()
-        tvY!!.text = seekBarY!!.progress.toString()
+        binding.tvXMax.text = binding.seekBarX.progress.toString()
+        binding.tvYMax.text = binding.seekBarY.progress.toString()
 
         val values1 = ArrayList<Entry>()
         val values2 = ArrayList<Entry>()
         val values3 = ArrayList<Entry>()
         val sampleValues = getValues(100 + 2)
 
-        for (i in 0..<seekBarX!!.progress) {
-            val `val` = (sampleValues[i]!!.toFloat() * seekBarY!!.progress) + 3
+        for (i in 0..<binding.seekBarX.progress) {
+            val `val` = (sampleValues[i]!!.toFloat() * binding.seekBarY.progress) + 3
             values1.add(Entry(i.toFloat(), `val`))
         }
 
-        for (i in 0..<seekBarX!!.progress) {
-            val `val` = (sampleValues[i + 1]!!.toFloat() * seekBarY!!.progress) + 3
+        for (i in 0..<binding.seekBarX.progress) {
+            val `val` = (sampleValues[i + 1]!!.toFloat() * binding.seekBarY.progress) + 3
             values2.add(Entry(i + 0.33f, `val`))
         }
 
-        for (i in 0..<seekBarX!!.progress) {
-            val `val` = (sampleValues[i + 2]!!.toFloat() * seekBarY!!.progress) + 3
+        for (i in 0..<binding.seekBarX.progress) {
+            val `val` = (sampleValues[i + 2]!!.toFloat() * binding.seekBarY.progress) + 3
             values3.add(Entry(i + 0.66f, `val`))
         }
 
@@ -132,8 +122,8 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         val data = ScatterData(dataSets)
         data.setValueTypeface(tfLight)
 
-        chart!!.setData(data)
-        chart?.invalidate()
+        binding.chart1.setData(data)
+        binding.chart1.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -150,47 +140,47 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach { set ->
+                binding.chart1.data!!.dataSets.forEach { set ->
                     set?.isDrawValues = !set.isDrawValues
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart?.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionTogglePinch -> {
-                chart!!.setPinchZoom(!chart!!.isPinchZoomEnabled)
+                binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled)
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart?.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(3000)
+                binding.chart1.animateX(3000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(3000)
+                binding.chart1.animateY(3000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(3000, 3000)
+                binding.chart1.animateXY(3000, 3000)
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -198,7 +188,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "ScatterChartActivity")
+        saveToGallery(binding.chart1, "ScatterChartActivity")
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {

@@ -10,7 +10,6 @@ import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
@@ -24,40 +23,42 @@ import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ViewPortHandler
+import info.appdev.chartexample.databinding.ActivityAgeDistributionBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 import java.text.DecimalFormat
 import kotlin.math.abs
 
 class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
-    private var chart: HorizontalBarChart? = null
+
+    private lateinit var binding: ActivityAgeDistributionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_age_distribution)
+        binding = ActivityAgeDistributionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        chart = findViewById(R.id.chart1)
-        chart!!.setOnChartValueSelectedListener(this)
-        chart!!.setDrawGridBackground(false)
-        chart!!.description.isEnabled = false
+        binding.chart1.setOnChartValueSelectedListener(this)
+        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.description.isEnabled = false
 
         // scaling can now only be done on x- and y-axis separately
-        chart!!.setPinchZoom(false)
+        binding.chart1.setPinchZoom(false)
 
-        chart!!.setDrawBarShadow(false)
-        chart!!.setDrawValueAboveBar(true)
-        chart!!.isHighlightFullBarEnabled = false
+        binding.chart1.setDrawBarShadow(false)
+        binding.chart1.setDrawValueAboveBar(true)
+        binding.chart1.isHighlightFullBarEnabled = false
 
-        chart!!.axisLeft.isEnabled = false
-        chart!!.axisRight.axisMaximum = 25f
-        chart!!.axisRight.axisMinimum = -25f
-        chart!!.axisRight.setDrawGridLines(false)
-        chart!!.axisRight.setDrawZeroLine(true)
-        chart!!.axisRight.setLabelCount(7, false)
-        chart!!.axisRight.valueFormatter = CustomFormatter()
-        chart!!.axisRight.textSize = 9f
+        binding.chart1.axisLeft.isEnabled = false
+        binding.chart1.axisRight.axisMaximum = 25f
+        binding.chart1.axisRight.axisMinimum = -25f
+        binding.chart1.axisRight.setDrawGridLines(false)
+        binding.chart1.axisRight.setDrawZeroLine(true)
+        binding.chart1.axisRight.setLabelCount(7, false)
+        binding.chart1.axisRight.valueFormatter = CustomFormatter()
+        binding.chart1.axisRight.textSize = 9f
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.position = XAxisPosition.BOTH_SIDED
         xAxis.setDrawGridLines(false)
         xAxis.setDrawAxisLine(false)
@@ -75,7 +76,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
             }
         }
 
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         l.orientation = Legend.LegendOrientation.HORIZONTAL
@@ -100,7 +101,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         values.add(BarEntry(105f, floatArrayOf(-1f, 2f)))
 
         val set = BarDataSet(values, "Age Distribution")
-        set?.isDrawIcons = false
+        set.isDrawIcons = false
         set.valueFormatter = CustomFormatter()
         set.valueTextSize = 7f
         set.axisDependency = YAxis.AxisDependency.RIGHT
@@ -109,8 +110,8 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
 
         val data = BarData(set)
         data.barWidth = 8.5f
-        chart!!.setData(data)
-        chart?.invalidate()
+        binding.chart1.setData(data)
+        binding.chart1.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -128,67 +129,67 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach {
+                binding.chart1.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                chart!!.data!!.dataSets.forEach { set ->
+                binding.chart1.data!!.dataSets.forEach { set ->
                     set?.isDrawIcons = !set.isDrawIcons
                 }
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart?.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionTogglePinch -> {
-                if (chart!!.isPinchZoomEnabled) {
-                    chart!!.setPinchZoom(false)
+                if (binding.chart1.isPinchZoomEnabled) {
+                    binding.chart1.setPinchZoom(false)
                 } else {
-                    chart!!.setPinchZoom(true)
+                    binding.chart1.setPinchZoom(true)
                 }
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart?.notifyDataSetChanged()
+                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.notifyDataSetChanged()
             }
 
             R.id.actionToggleBarBorders -> {
-                for (set in chart!!.data!!.dataSets) {
+                for (set in binding.chart1.data!!.dataSets) {
                     (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
                 }
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(3000)
+                binding.chart1.animateX(3000)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(3000)
+                binding.chart1.animateY(3000)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(3000, 3000)
+                binding.chart1.animateXY(3000, 3000)
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -196,7 +197,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "StackedBarActivityNegative")
+        saveToGallery(binding.chart1, "StackedBarActivityNegative")
     }
 
     override fun onValueSelected(entry: Entry, highlight: Highlight) {

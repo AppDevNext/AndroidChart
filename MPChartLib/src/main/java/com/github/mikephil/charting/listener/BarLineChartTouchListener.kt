@@ -29,7 +29,7 @@ class BarLineChartTouchListener(
     touchMatrix: Matrix,
     dragTriggerDistance: Float
 ) :
-    ChartTouchListener<BarLineChartBase<out BarLineScatterCandleBubbleData<out IBarLineScatterCandleBubbleDataSet<out Entry>>?>?>(chart) {
+    ChartTouchListener<BarLineChartBase<out BarLineScatterCandleBubbleData<out IBarLineScatterCandleBubbleDataSet<out Entry>>>>(chart) {
     /**
      * the original touch-matrix from the chart
      */
@@ -110,11 +110,11 @@ class BarLineChartTouchListener(
             }
         }
 
-        if (touchMode == NONE || chart!!.isFlingEnabled) {
+        if (touchMode == NONE || chart.isFlingEnabled) {
             gestureDetector?.onTouchEvent(event)
         }
 
-        if (!chart!!.isDragEnabled && (!chart!!.isScaleXEnabled && !chart!!.isScaleYEnabled)) return true
+        if (!chart.isDragEnabled && (!chart.isScaleXEnabled && !chart.isScaleYEnabled)) return true
 
         // Handle touch events here...
         when (event.action and MotionEvent.ACTION_MASK) {
@@ -127,7 +127,7 @@ class BarLineChartTouchListener(
             }
 
             MotionEvent.ACTION_POINTER_DOWN -> if (event.pointerCount >= 2) {
-                chart!!.disableScroll()
+                chart.disableScroll()
 
                 saveTouchStart(event)
 
@@ -141,11 +141,11 @@ class BarLineChartTouchListener(
                 savedDist = spacing(event)
 
                 if (savedDist > 10f) {
-                    touchMode = if (chart!!.isPinchZoomEnabled) {
+                    touchMode = if (chart.isPinchZoomEnabled) {
                         PINCH_ZOOM
                     } else {
-                        if (chart!!.isScaleXEnabled != chart!!.isScaleYEnabled) {
-                            if (chart!!.isScaleXEnabled) X_ZOOM else Y_ZOOM
+                        if (chart.isScaleXEnabled != chart.isScaleYEnabled) {
+                            if (chart.isScaleXEnabled) X_ZOOM else Y_ZOOM
                         } else {
                             if (savedXDist > savedYDist) X_ZOOM else Y_ZOOM
                         }
@@ -157,16 +157,16 @@ class BarLineChartTouchListener(
             }
 
             MotionEvent.ACTION_MOVE -> if (touchMode == DRAG) {
-                chart!!.disableScroll()
+                chart.disableScroll()
 
-                val x = if (chart!!.isDragXEnabled) event.x - touchStartPoint.x else 0f
-                val y = if (chart!!.isDragYEnabled) event.y - touchStartPoint.y else 0f
+                val x = if (chart.isDragXEnabled) event.x - touchStartPoint.x else 0f
+                val y = if (chart.isDragYEnabled) event.y - touchStartPoint.y else 0f
 
                 performDrag(event, x, y)
             } else if (touchMode == X_ZOOM || touchMode == Y_ZOOM || touchMode == PINCH_ZOOM) {
-                chart!!.disableScroll()
+                chart.disableScroll()
 
-                if (chart!!.isScaleXEnabled || chart!!.isScaleYEnabled) performZoom(event)
+                if (chart.isScaleXEnabled || chart.isScaleYEnabled) performZoom(event)
             } else if (touchMode == NONE
                 && abs(
                     distance(
@@ -175,26 +175,26 @@ class BarLineChartTouchListener(
                     ).toDouble()
                 ) > dragTriggerDist
             ) {
-                if (chart!!.isDragEnabled) {
-                    val shouldPan = !chart!!.isFullyZoomedOut ||
-                            !chart!!.hasNoDragOffset()
+                if (chart.isDragEnabled) {
+                    val shouldPan = !chart.isFullyZoomedOut ||
+                            !chart.hasNoDragOffset()
 
                     if (shouldPan) {
                         val distanceX = abs((event.x - touchStartPoint.x).toDouble()).toFloat()
                         val distanceY = abs((event.y - touchStartPoint.y).toDouble()).toFloat()
 
                         // Disable dragging in a direction that's disallowed
-                        if ((chart!!.isDragXEnabled || distanceY >= distanceX) &&
-                            (chart!!.isDragYEnabled || distanceY <= distanceX)
+                        if ((chart.isDragXEnabled || distanceY >= distanceX) &&
+                            (chart.isDragYEnabled || distanceY <= distanceX)
                         ) {
                             lastGesture = ChartGesture.DRAG
                             touchMode = DRAG
                         }
                     } else {
-                        if (chart!!.isHighlightPerDragEnabled) {
+                        if (chart.isHighlightPerDragEnabled) {
                             lastGesture = ChartGesture.DRAG
 
-                            if (chart!!.isHighlightPerDragEnabled) performHighlightDrag(event)
+                            if (chart.isHighlightPerDragEnabled) performHighlightDrag(event)
                         }
                     }
                 }
@@ -210,7 +210,7 @@ class BarLineChartTouchListener(
                     if (abs(velocityX.toDouble()) > Utils.minimumFlingVelocity ||
                         abs(velocityY.toDouble()) > Utils.minimumFlingVelocity
                     ) {
-                        if (touchMode == DRAG && chart!!.isDragDecelerationEnabled) {
+                        if (touchMode == DRAG && chart.isDragDecelerationEnabled) {
                             stopDeceleration()
 
                             decelerationLastTime = AnimationUtils.currentAnimationTimeMillis()
@@ -222,7 +222,7 @@ class BarLineChartTouchListener(
                             decelerationVelocity.y = velocityY
 
                             // This causes computeScroll to fire, recommended for this by Google
-                            chart?.postInvalidateOnAnimation()
+                            chart.postInvalidateOnAnimation()
                         }
                     }
 
@@ -231,12 +231,12 @@ class BarLineChartTouchListener(
                         // could have changed in size, affecting Y-axis size.
                         // So we need to recalculate offsets.
 
-                        chart!!.calculateOffsets()
-                        chart!!.postInvalidate()
+                        chart.calculateOffsets()
+                        chart.postInvalidate()
                     }
 
                     touchMode = NONE
-                    chart!!.enableScroll()
+                    chart.enableScroll()
 
                     it.recycle()
                     velocityTracker = null
@@ -258,7 +258,7 @@ class BarLineChartTouchListener(
         }
 
         // perform the transformation, update the chart
-        matrix = chart!!.viewPortHandler.refresh(matrix, chart!!, true)
+        matrix = chart.viewPortHandler.refresh(matrix, chart, true)
 
         return true // indicate event was handled
     }
@@ -274,7 +274,7 @@ class BarLineChartTouchListener(
         touchStartPoint.x = event.x
         touchStartPoint.y = event.y
 
-        closestDataSetToTouch = chart!!.getDataSetByTouchPoint(event.x, event.y)
+        closestDataSetToTouch = chart.getDataSetByTouchPoint(event.x, event.y)
     }
 
     /**
@@ -289,7 +289,7 @@ class BarLineChartTouchListener(
 
         matrix.set(savedMatrix)
 
-        val l = chart!!.onChartGestureListener
+        val l = chart.onChartGestureListener
 
         // check if axis is inverted
         if (inverted()) {
@@ -315,7 +315,7 @@ class BarLineChartTouchListener(
     private fun performZoom(event: MotionEvent) {
         if (event.pointerCount >= 2) { // two finger zoom
 
-            val l = chart!!.onChartGestureListener
+            val l = chart.onChartGestureListener
 
             // get the distance between the pointers of the touch event
             val totalDist = spacing(event)
@@ -324,7 +324,7 @@ class BarLineChartTouchListener(
                 // get the translation
 
                 val t = getTrans(touchPointCenter.x, touchPointCenter.y)
-                val h = chart!!.viewPortHandler
+                val h = chart.viewPortHandler
 
                 // take actions depending on the activated touch mode
                 if (touchMode == PINCH_ZOOM) {
@@ -338,8 +338,8 @@ class BarLineChartTouchListener(
 
                     val canZoomMoreY = if (isZoomingOut) h.canZoomOutMoreY() else h.canZoomInMoreY()
 
-                    val scaleX = if (chart!!.isScaleXEnabled) scale else 1f
-                    val scaleY = if (chart!!.isScaleYEnabled) scale else 1f
+                    val scaleX = if (chart.isScaleXEnabled) scale else 1f
+                    val scaleY = if (chart.isScaleYEnabled) scale else 1f
 
                     if (canZoomMoreY || canZoomMoreX) {
                         matrix.set(savedMatrix)
@@ -347,7 +347,7 @@ class BarLineChartTouchListener(
 
                         l?.onChartScale(event, scaleX, scaleY)
                     }
-                } else if (touchMode == X_ZOOM && chart!!.isScaleXEnabled) {
+                } else if (touchMode == X_ZOOM && chart.isScaleXEnabled) {
                     lastGesture = ChartGesture.X_ZOOM
 
                     val xDist = getXDist(event)
@@ -362,7 +362,7 @@ class BarLineChartTouchListener(
 
                         l?.onChartScale(event, scaleX, 1f)
                     }
-                } else if (touchMode == Y_ZOOM && chart!!.isScaleYEnabled) {
+                } else if (touchMode == Y_ZOOM && chart.isScaleYEnabled) {
                     lastGesture = ChartGesture.Y_ZOOM
 
                     val yDist = getYDist(event)
@@ -388,7 +388,7 @@ class BarLineChartTouchListener(
      * limit scaleX range
      */
     private fun getLimitedScaleX(scaleX: Float, t: MPPointF): Float {
-        val h = chart!!.viewPortHandler
+        val h = chart.viewPortHandler
         tempMatrix.set(savedMatrix)
         tempMatrix.postScale(scaleX, 1f, t.x, t.y)
 
@@ -412,7 +412,7 @@ class BarLineChartTouchListener(
      * limit scaleY range
      */
     private fun getLimitedScaleY(scaleY: Float, t: MPPointF): Float {
-        val h = chart!!.viewPortHandler
+        val h = chart.viewPortHandler
         tempMatrix.set(savedMatrix)
         tempMatrix.postScale(1f, scaleY, t.x, t.y)
 
@@ -438,11 +438,11 @@ class BarLineChartTouchListener(
      * @param motionEvent
      */
     private fun performHighlightDrag(motionEvent: MotionEvent) {
-        val highlight = chart!!.getHighlightByTouchPoint(motionEvent.x, motionEvent.y)
+        val highlight = chart.getHighlightByTouchPoint(motionEvent.x, motionEvent.y)
 
         if (highlight != null && !highlight.equalTo(mLastHighlighted)) {
             mLastHighlighted = highlight
-            chart!!.highlightValue(highlight, true)
+            chart.highlightValue(highlight, true)
         }
     }
 
@@ -453,7 +453,7 @@ class BarLineChartTouchListener(
      * points
      */
     fun getTrans(x: Float, y: Float): MPPointF {
-        val vph = chart!!.viewPortHandler
+        val vph = chart.viewPortHandler
 
         val xTrans = x - vph.offsetLeft()
 
@@ -461,7 +461,7 @@ class BarLineChartTouchListener(
         val yTrans: Float = if (inverted()) {
             -(y - vph.offsetTop())
         } else {
-            -(chart!!.measuredHeight - y - vph.offsetBottom())
+            -(chart.measuredHeight - y - vph.offsetBottom())
         }
 
         return MPPointF.getInstance(xTrans, yTrans)
@@ -471,8 +471,8 @@ class BarLineChartTouchListener(
      * Returns true if the current touch situation should be interpreted as inverted, false if not.
      */
     private fun inverted(): Boolean {
-        return (closestDataSetToTouch == null && chart!!.isAnyAxisInverted) || (closestDataSetToTouch != null
-                && chart!!.isInverted(closestDataSetToTouch!!.axisDependency))
+        return (closestDataSetToTouch == null && chart.isAnyAxisInverted) || (closestDataSetToTouch != null
+                && chart.isInverted(closestDataSetToTouch!!.axisDependency))
     }
 
     /**
@@ -488,20 +488,20 @@ class BarLineChartTouchListener(
     override fun onDoubleTap(e: MotionEvent): Boolean {
         lastGesture = ChartGesture.DOUBLE_TAP
 
-        val onChartGestureListener = chart!!.onChartGestureListener
+        val onChartGestureListener = chart.onChartGestureListener
 
         onChartGestureListener?.onChartDoubleTapped(e)
 
         // check if double-tap zooming is enabled
-        if (chart!!.isDoubleTapToZoomEnabled && chart!!.data!!.entryCount > 0) {
+        if (chart.isDoubleTapToZoomEnabled && chart.data!!.entryCount > 0) {
             val trans = getTrans(e.x, e.y)
 
-            val scaleX = if (chart!!.isScaleXEnabled) 1.4f else 1f
-            val scaleY = if (chart!!.isScaleYEnabled) 1.4f else 1f
+            val scaleX = if (chart.isScaleXEnabled) 1.4f else 1f
+            val scaleY = if (chart.isScaleYEnabled) 1.4f else 1f
 
-            chart!!.zoom(scaleX, scaleY, trans.x, trans.y)
+            chart.zoom(scaleX, scaleY, trans.x, trans.y)
 
-            if (chart!!.isLogEnabled) Log.i(
+            if (chart.isLogEnabled) Log.i(
                 "BarlineChartTouch", ("Double-Tap, Zooming In, x: " + trans.x + ", y: "
                         + trans.y)
             )
@@ -517,7 +517,7 @@ class BarLineChartTouchListener(
     override fun onLongPress(e: MotionEvent) {
         lastGesture = ChartGesture.LONG_PRESS
 
-        val l = chart!!.onChartGestureListener
+        val l = chart.onChartGestureListener
 
         l?.onChartLongPressed(e)
     }
@@ -525,15 +525,15 @@ class BarLineChartTouchListener(
     override fun onSingleTapUp(e: MotionEvent): Boolean {
         lastGesture = ChartGesture.SINGLE_TAP
 
-        val l = chart!!.onChartGestureListener
+        val l = chart.onChartGestureListener
 
         l?.onChartSingleTapped(e)
 
-        if (!chart!!.isHighlightPerTapEnabled) {
+        if (!chart.isHighlightPerTapEnabled) {
             return false
         }
 
-        val h = chart!!.getHighlightByTouchPoint(e.x, e.y)
+        val h = chart.getHighlightByTouchPoint(e.x, e.y)
         performHighlight(h, e)
 
         return super.onSingleTapUp(e)
@@ -542,7 +542,7 @@ class BarLineChartTouchListener(
     override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
         lastGesture = ChartGesture.FLING
 
-        val chartGestureListener = chart!!.onChartGestureListener
+        val chartGestureListener = chart.onChartGestureListener
 
         chartGestureListener?.onChartFling(e1, e2, velocityX, velocityY)
 
@@ -560,8 +560,8 @@ class BarLineChartTouchListener(
 
         val currentTime = AnimationUtils.currentAnimationTimeMillis()
 
-        decelerationVelocity.x *= chart!!.dragDecelerationFrictionCoef
-        decelerationVelocity.y *= chart!!.dragDecelerationFrictionCoef
+        decelerationVelocity.x *= chart.dragDecelerationFrictionCoef
+        decelerationVelocity.y *= chart.dragDecelerationFrictionCoef
 
         val timeInterval = (currentTime - decelerationLastTime).toFloat() / 1000f
 
@@ -576,24 +576,24 @@ class BarLineChartTouchListener(
             decelerationCurrentPoint.y, 0
         )
 
-        val dragDistanceX = if (chart!!.isDragXEnabled) decelerationCurrentPoint.x - touchStartPoint.x else 0f
-        val dragDistanceY = if (chart!!.isDragYEnabled) decelerationCurrentPoint.y - touchStartPoint.y else 0f
+        val dragDistanceX = if (chart.isDragXEnabled) decelerationCurrentPoint.x - touchStartPoint.x else 0f
+        val dragDistanceY = if (chart.isDragYEnabled) decelerationCurrentPoint.y - touchStartPoint.y else 0f
 
         performDrag(event, dragDistanceX, dragDistanceY)
 
         event.recycle()
-        matrix = chart!!.viewPortHandler.refresh(matrix, chart!!, false)
+        matrix = chart.viewPortHandler.refresh(matrix, chart, false)
 
         decelerationLastTime = currentTime
 
         if (abs(decelerationVelocity.x.toDouble()) >= 0.01 || abs(decelerationVelocity.y.toDouble()) >= 0.01)
-            chart?.postInvalidateOnAnimation() // This causes computeScroll to fire, recommended for this by Google
+            chart.postInvalidateOnAnimation() // This causes computeScroll to fire, recommended for this by Google
         else {
             // Range might have changed, which means that Y-axis labels
             // could have changed in size, affecting Y-axis size.
             // So we need to recalculate offsets.
-            chart?.calculateOffsets()
-            chart?.postInvalidate()
+            chart.calculateOffsets()
+            chart.postInvalidate()
 
             stopDeceleration()
         }

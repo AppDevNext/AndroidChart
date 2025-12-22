@@ -5,42 +5,42 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.net.toUri
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityScrollviewBinding
 import info.appdev.chartexample.notimportant.DemoBase
 
 class ScrollViewActivity : DemoBase() {
-    private var chart: BarChart? = null
+
+    private lateinit var binding: ActivityScrollviewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scrollview)
+        binding = ActivityScrollviewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        chart = findViewById(R.id.chart1)
-
-        chart!!.description.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // scaling can now only be done on x- and y-axis separately
-        chart!!.setPinchZoom(false)
+        binding.chart1.setPinchZoom(false)
 
-        chart!!.setDrawBarShadow(false)
-        chart!!.setDrawGridBackground(false)
+        binding.chart1.setDrawBarShadow(false)
+        binding.chart1.setDrawGridBackground(false)
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.position = XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
 
-        chart!!.axisLeft.setDrawGridLines(false)
+        binding.chart1.axisLeft.setDrawGridLines(false)
 
-        chart!!.legend.isEnabled = false
+        binding.chart1.legend.isEnabled = false
 
         setData(10)
-        chart!!.setFitBars(true)
+        binding.chart1.setFitBars(true)
     }
 
     private fun setData(count: Int) {
@@ -54,13 +54,13 @@ class ScrollViewActivity : DemoBase() {
 
         val set = BarDataSet(values, "Data Set")
         set.setColors(*ColorTemplate.VORDIPLOM_COLORS)
-        set?.isDrawValues = false
+        set.isDrawValues = false
 
         val data = BarData(set)
 
-        chart!!.setData(data)
-        chart?.invalidate()
-        chart!!.animateY(800)
+        binding.chart1.setData(data)
+        binding.chart1.invalidate()
+        binding.chart1.animateY(800)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

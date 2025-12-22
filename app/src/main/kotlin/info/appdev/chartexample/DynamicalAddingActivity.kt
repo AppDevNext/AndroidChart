@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -20,34 +19,36 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
 import androidx.core.net.toUri
+import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
 
 class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
-    private var chart: LineChart? = null
     var sampleValues: Array<Double?> = getValues(102)
+
+    private lateinit var binding: ActivityLinechartNoseekbarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_linechart_noseekbar)
+        binding = ActivityLinechartNoseekbarBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        chart = findViewById(R.id.chart1)
-        chart!!.setOnChartValueSelectedListener(this)
-        chart!!.setDrawGridBackground(false)
-        chart!!.description.isEnabled = false
-        chart!!.setNoDataText("No chart data available. Use the menu to add entries and data sets!")
+        binding.chart1.setOnChartValueSelectedListener(this)
+        binding.chart1.setDrawGridBackground(false)
+        binding.chart1.description.isEnabled = false
+        binding.chart1.setNoDataText("No chart data available. Use the menu to add entries and data sets!")
 
         //        chart.getXAxis().setDrawLabels(false);
 //        chart.getXAxis().setDrawGridLines(false);
-        chart?.invalidate()
+        binding.chart1.invalidate()
     }
 
     private val colors: IntArray = ColorTemplate.VORDIPLOM_COLORS
 
     private fun addEntry() {
-        var data = chart!!.data
+        var data = binding.chart1.data
 
         if (data == null) {
             data = LineData()
-            chart!!.setData(data)
+            binding.chart1.setData(data)
         }
 
         var set = data.getDataSetByIndex(0)
@@ -69,18 +70,18 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             data.notifyDataChanged()
 
             // let the chart know it's data has changed
-            chart?.notifyDataSetChanged()
+            binding.chart1.notifyDataSetChanged()
 
-            chart!!.setVisibleXRangeMaximum(6f)
+            binding.chart1.setVisibleXRangeMaximum(6f)
             //chart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
 //
             // this automatically refreshes the chart (calls invalidate())
-            chart!!.moveViewTo((data.getEntryCount() - 7).toFloat(), 50f, AxisDependency.LEFT)
+            binding.chart1.moveViewTo((data.getEntryCount() - 7).toFloat(), 50f, AxisDependency.LEFT)
         }
     }
 
     private fun removeLastEntry() {
-        val data = chart!!.data
+        val data = binding.chart1.data
 
         if (data != null) {
             val set = data.getDataSetByIndex(0)
@@ -92,17 +93,17 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
                 // or remove by index
                 // mData.removeEntryByXValue(xIndex, dataSetIndex);
                 data.notifyDataChanged()
-                chart?.notifyDataSetChanged()
-                chart?.invalidate()
+                binding.chart1.notifyDataSetChanged()
+                binding.chart1.invalidate()
             }
         }
     }
 
     private fun addDataSet() {
-        val data = chart!!.data
+        val data = binding.chart1.data
 
         if (data == null) {
-            chart!!.setData(LineData())
+            binding.chart1.setData(LineData())
         } else {
             val count = (data.getDataSetCount() + 1)
             val amount = data.getDataSetByIndex(0)?.entryCount ?: 0
@@ -129,19 +130,19 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
 
             data.addDataSet(set)
             data.notifyDataChanged()
-            chart?.notifyDataSetChanged()
-            chart?.invalidate()
+            binding.chart1.notifyDataSetChanged()
+            binding.chart1.invalidate()
         }
     }
 
     private fun removeDataSet() {
-        val data = chart!!.data
+        val data = binding.chart1.data
 
         if (data != null) {
             data.removeDataSet(data.getDataSetByIndex(data.getDataSetCount() - 1))
 
-            chart?.notifyDataSetChanged()
-            chart?.invalidate()
+            binding.chart1.notifyDataSetChanged()
+            binding.chart1.invalidate()
         }
     }
 
@@ -199,7 +200,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             }
 
             R.id.actionClear -> {
-                chart!!.clear()
+                binding.chart1.clear()
                 Toast.makeText(this, "Chart cleared!", Toast.LENGTH_SHORT).show()
             }
 
@@ -207,7 +208,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -216,6 +217,6 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "DynamicalAddingActivity")
+        saveToGallery(binding.chart1, "DynamicalAddingActivity")
     }
 }

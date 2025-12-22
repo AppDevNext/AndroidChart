@@ -8,8 +8,8 @@ import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.highlight.Highlight
 import kotlin.math.sqrt
 
-abstract class ChartTouchListener<T : Chart<*>?>(
-    @JvmField protected var chart: T?) : SimpleOnGestureListener(), OnTouchListener {
+abstract class ChartTouchListener<T : Chart<*>>(
+    @JvmField protected var chart: T) : SimpleOnGestureListener(), OnTouchListener {
     enum class ChartGesture {
         NONE, DRAG, X_ZOOM, Y_ZOOM, PINCH_ZOOM, ROTATE, SINGLE_TAP, DOUBLE_TAP, LONG_PRESS, FLING
     }
@@ -35,7 +35,7 @@ abstract class ChartTouchListener<T : Chart<*>?>(
      * the gesturedetector used for detecting taps and longpresses, ...
      */
     @JvmField
-    protected var gestureDetector: GestureDetector? = GestureDetector(chart!!.getContext(), this)
+    protected var gestureDetector: GestureDetector? = GestureDetector(chart.context, this)
 
     /**
      * Calls the OnChartGestureListener to do the start callback
@@ -43,7 +43,7 @@ abstract class ChartTouchListener<T : Chart<*>?>(
      * @param me
      */
     fun startAction(me: MotionEvent) {
-        val l = chart!!.getOnChartGestureListener()
+        val l = chart.onChartGestureListener
 
         if (l != null) l.onChartGestureStart(me, this.lastGesture)
     }
@@ -54,7 +54,7 @@ abstract class ChartTouchListener<T : Chart<*>?>(
      * @param me
      */
     fun endAction(me: MotionEvent) {
-        val l = chart!!.getOnChartGestureListener()
+        val l = chart.onChartGestureListener
 
         if (l != null) l.onChartGestureEnd(me, this.lastGesture)
     }
@@ -75,10 +75,10 @@ abstract class ChartTouchListener<T : Chart<*>?>(
      */
     protected fun performHighlight(highlight: Highlight?, motionEvent: MotionEvent?) {
         if (highlight == null || highlight.equalTo(mLastHighlighted)) {
-            chart!!.highlightValue(null, true)
+            chart.highlightValue(null, true)
             mLastHighlighted = null
         } else {
-            chart!!.highlightValue(highlight, true)
+            chart.highlightValue(highlight, true)
             mLastHighlighted = highlight
         }
     }

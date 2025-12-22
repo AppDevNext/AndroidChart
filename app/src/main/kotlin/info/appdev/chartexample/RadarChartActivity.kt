@@ -10,7 +10,6 @@ import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.MarkerView
@@ -21,37 +20,38 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.RadarMarkerView
+import info.appdev.chartexample.databinding.ActivityRadarchartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 
 class RadarChartActivity : DemoBase() {
-    private var chart: RadarChart? = null
+
+    private lateinit var binding: ActivityRadarchartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_radarchart)
+        binding = ActivityRadarchartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        chart = findViewById(R.id.chart1)
-        chart!!.setBackgroundColor(Color.rgb(60, 65, 82))
+        binding.chart1.setBackgroundColor(Color.rgb(60, 65, 82))
+        binding.chart1.description.isEnabled = false
 
-        chart!!.description.isEnabled = false
-
-        chart!!.webLineWidth = 1f
-        chart!!.webColor = Color.LTGRAY
-        chart!!.webLineWidthInner = 1f
-        chart!!.webColorInner = Color.LTGRAY
-        chart!!.webAlpha = 100
+        binding.chart1.webLineWidth = 1f
+        binding.chart1.webColor = Color.LTGRAY
+        binding.chart1.webLineWidthInner = 1f
+        binding.chart1.webColorInner = Color.LTGRAY
+        binding.chart1.webAlpha = 100
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
         val mv: MarkerView = RadarMarkerView(this, R.layout.radar_markerview)
-        mv.chartView = chart // For bounds control
-        chart!!.setMarker(mv) // Set the marker to the chart
+        mv.chartView = binding.chart1 // For bounds control
+        binding.chart1.setMarker(mv) // Set the marker to the chart
 
         setData()
 
-        chart!!.animateXY(1400, 1400, Easing.easeInOutQuad)
+        binding.chart1.animateXY(1400, 1400, Easing.easeInOutQuad)
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.chart1.xAxis
         xAxis.typeface = tfLight
         xAxis.textSize = 9f
         xAxis.yOffset = 0f
@@ -65,7 +65,7 @@ class RadarChartActivity : DemoBase() {
         }
         xAxis.textColor = Color.WHITE
 
-        val yAxis = chart!!.yAxis
+        val yAxis = binding.chart1.yAxis
         yAxis.typeface = tfLight
         yAxis.setLabelCount(5, false)
         yAxis.textSize = 9f
@@ -73,7 +73,7 @@ class RadarChartActivity : DemoBase() {
         yAxis.axisMaximum = 80f
         yAxis.setDrawLabels(false)
 
-        val l = chart!!.legend
+        val l = binding.chart1.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
         l.orientation = Legend.LegendOrientation.HORIZONTAL
@@ -131,15 +131,15 @@ class RadarChartActivity : DemoBase() {
         data.setDrawValues(false)
         data.setValueTextColor(Color.WHITE)
 
-        chart!!.setData(data)
+        binding.chart1.setData(data)
         val colorList: MutableList<Int?> = ArrayList()
         colorList.add(Color.rgb(222, 166, 111))
         colorList.add(Color.rgb(220, 206, 138))
         colorList.add(Color.rgb(243, 255, 192))
         colorList.add(Color.rgb(240, 255, 240))
         colorList.add(Color.rgb(250, 255, 250))
-        chart!!.setLayerColorList(colorList)
-        chart?.invalidate()
+        binding.chart1.setLayerColorList(colorList)
+        binding.chart1.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -156,71 +156,71 @@ class RadarChartActivity : DemoBase() {
             }
 
             R.id.actionToggleValues -> {
-                chart!!.data!!.dataSets.forEach {
+                binding.chart1.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
 
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (chart!!.data != null) {
-                    chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart?.invalidate()
+                if (binding.chart1.data != null) {
+                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
+                    binding.chart1.invalidate()
                 }
             }
 
             R.id.actionToggleRotate -> {
-                chart!!.isRotationEnabled = !chart!!.isRotationEnabled
-                chart?.invalidate()
+                binding.chart1.isRotationEnabled = !binding.chart1.isRotationEnabled
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleFilled -> {
-                chart!!.data!!.dataSets.forEach { set ->
+                binding.chart1.data!!.dataSets.forEach { set ->
                     set?.setDrawFilled(!set.isDrawFilledEnabled)
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlightCircle -> {
-                chart!!.data!!.dataSets.forEach { set ->
+                binding.chart1.data!!.dataSets.forEach { set ->
                     set.isDrawHighlightCircleEnabled = !set.isDrawHighlightCircleEnabled
                 }
-                chart?.invalidate()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleXLabels -> {
-                chart!!.xAxis.isEnabled = !chart!!.xAxis.isEnabled
-                chart?.notifyDataSetChanged()
-                chart?.invalidate()
+                binding.chart1.xAxis.isEnabled = !binding.chart1.xAxis.isEnabled
+                binding.chart1.notifyDataSetChanged()
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleYLabels -> {
-                chart!!.yAxis.isEnabled = !chart!!.yAxis.isEnabled
-                chart?.invalidate()
+                binding.chart1.yAxis.isEnabled = !binding.chart1.yAxis.isEnabled
+                binding.chart1.invalidate()
             }
 
             R.id.animateX -> {
-                chart!!.animateX(1400)
+                binding.chart1.animateX(1400)
             }
 
             R.id.animateY -> {
-                chart!!.animateY(1400)
+                binding.chart1.animateY(1400)
             }
 
             R.id.animateXY -> {
-                chart!!.animateXY(1400, 1400)
+                binding.chart1.animateXY(1400, 1400)
             }
 
             R.id.actionToggleSpin -> {
-                chart!!.spin(2000, chart!!.rotationAngle, chart!!.rotationAngle + 360, Easing.easeInOutCubic)
+                binding.chart1.spin(2000, binding.chart1.rotationAngle, binding.chart1.rotationAngle + 360, Easing.easeInOutCubic)
             }
 
             R.id.actionSave -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     saveToGallery()
                 } else {
-                    requestStoragePermission(chart)
+                    requestStoragePermission(binding.chart1)
                 }
             }
         }
@@ -228,6 +228,6 @@ class RadarChartActivity : DemoBase() {
     }
 
     override fun saveToGallery() {
-        saveToGallery(chart, "RadarChartActivity")
+        saveToGallery(binding.chart1, "RadarChartActivity")
     }
 }
