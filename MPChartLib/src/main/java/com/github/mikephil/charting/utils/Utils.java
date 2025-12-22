@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
@@ -209,9 +210,14 @@ public abstract class Utils {
 		int width = drawable.getIntrinsicWidth();
 		int height = drawable.getIntrinsicHeight();
 
-		MPPointF drawOffset = MPPointF.Companion.getInstance();
-		drawOffset.setX(x - (width / 2));
-		drawOffset.setY(y - (height / 2));
+		MPPointF drawOffset1 = MPPointF.Companion.getInstance();
+		MPPointF drawOffset2 = MPPointF.Companion.getInstance();
+		drawOffset2.setX(x - (width / 2));
+		drawOffset2.setY(y - (height / 2));
+		drawOffset1.setX(x - (width / 2f));
+		drawOffset1.setY(y - (height / 2f));
+		Log.d("drawOffsetOriginal", drawOffset2.toString());
+		Log.d("drawOffsetCalc", drawOffset1.toString());
 
 		drawable.copyBounds(mDrawableBoundsCache);
 		drawable.setBounds(
@@ -222,7 +228,7 @@ public abstract class Utils {
 
 		int saveId = canvas.save();
 		// translate to the correct position and draw
-		canvas.translate(drawOffset.getX(), drawOffset.getY());
+		canvas.translate(drawOffset1.getX(), drawOffset1.getY());
 		drawable.draw(canvas);
 		canvas.restoreToCount(saveId);
 	}
