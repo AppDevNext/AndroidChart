@@ -130,7 +130,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
         val data = CandleData(set1)
 
         chart!!.setData(data)
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -151,19 +151,19 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
                 chart!!.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleIcons -> {
                 for (set in chart!!.data!!.dataSets)
                     set?.isDrawIcons = !set.isDrawIcons
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 
@@ -171,12 +171,12 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
                 if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
                 else chart!!.setPinchZoom(true)
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
                 chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart?.notifyDataSetChanged()
             }
 
             R.id.actionToggleMakeShadowSameColorAsCandle -> {
@@ -184,7 +184,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
                     (set as CandleDataSet).shadowColorSameAsCandle = !set.shadowColorSameAsCandle
                 }
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.animateX -> {

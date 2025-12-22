@@ -53,7 +53,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         seekBarValues!!.progress = 9000
 
         // don't forget to refresh the drawing
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     private fun setData(count: Int, range: Float) {
@@ -113,7 +113,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         setData(count, 500f)
 
         // redraw
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     public override fun saveToGallery() { /* Intentionally left empty */

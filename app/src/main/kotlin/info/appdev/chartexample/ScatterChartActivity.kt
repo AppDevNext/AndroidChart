@@ -133,7 +133,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         data.setValueTypeface(tfLight)
 
         chart!!.setData(data)
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -153,25 +153,25 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
                 chart!!.data!!.dataSets.forEach { set ->
                     set?.isDrawValues = !set.isDrawValues
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 
             R.id.actionTogglePinch -> {
                 chart!!.setPinchZoom(!chart!!.isPinchZoomEnabled)
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
                 chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart?.notifyDataSetChanged()
             }
 
             R.id.animateX -> {

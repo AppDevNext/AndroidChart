@@ -224,11 +224,6 @@ public class HorizontalBarChart extends BarChart {
 		RectF bounds = outputRect;
 		IBarDataSet set = mData.getDataSetForEntry(barEntry);
 
-		if (set == null) {
-			outputRect.set(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
-			return;
-		}
-
 		float y = barEntry.getY();
 		float x = barEntry.getX();
 

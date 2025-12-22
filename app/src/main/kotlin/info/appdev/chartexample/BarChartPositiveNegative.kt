@@ -110,7 +110,7 @@ class BarChartPositiveNegative : DemoBase() {
             set = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
             set.entries  = values
             chart!!.data!!.notifyDataChanged()
-            chart!!.notifyDataSetChanged()
+            chart?.notifyDataSetChanged()
         } else {
             set = BarDataSet(values, "Values")
             set.setColors(colors)
@@ -123,7 +123,7 @@ class BarChartPositiveNegative : DemoBase() {
             data.barWidth = 0.8f
 
             chart!!.setData(data)
-            chart!!.invalidate()
+            chart?.invalidate()
         }
     }
 

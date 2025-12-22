@@ -18,7 +18,6 @@ import kotlin.collections.MutableList
 import kotlin.collections.toTypedArray
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.requireNotNull
 
 /**
  * Class representing the legend of the chart. The legend will contain one entry
@@ -88,10 +87,6 @@ class Legend() : ComponentBase() {
         private set
 
     /**
-     * @return true if a custom legend entries has been set default
-     * false (automatic legend)
-     */
-    /**
      * Are the legend labels/colors a custom value or auto calculated? If false,
      * then it's auto, if true, then custom. default false (automatic legend)
      */
@@ -99,22 +94,13 @@ class Legend() : ComponentBase() {
         private set
 
     /**
-     * returns the horizontal alignment of the legend
-     */
-    /**
      * sets the horizontal alignment of the legend
      */
-    var horizontalAlignment: LegendHorizontalAlignment? = LegendHorizontalAlignment.LEFT
-    /**
-     * returns the vertical alignment of the legend
-     */
+    var horizontalAlignment: LegendHorizontalAlignment = LegendHorizontalAlignment.LEFT
     /**
      * sets the vertical alignment of the legend
      */
-    var verticalAlignment: LegendVerticalAlignment? = LegendVerticalAlignment.BOTTOM
-    /**
-     * returns the orientation of the legend
-     */
+    var verticalAlignment: LegendVerticalAlignment = LegendVerticalAlignment.BOTTOM
     /**
      * sets the orientation of the legend
      */
@@ -127,92 +113,40 @@ class Legend() : ComponentBase() {
         private set
 
     /**
-     * returns the text direction of the legend
-     */
-    /**
-     * sets the text direction of the legend
-     */
-    /**
      * the text direction for the legend
      */
-    var direction: LegendDirection? = LegendDirection.LEFT_TO_RIGHT
+    var direction: LegendDirection = LegendDirection.LEFT_TO_RIGHT
 
-    /**
-     * returns the current form/shape that is set for the legend
-     */
-    /**
-     * sets the form/shape of the legend forms
-     */
     /**
      * the shape/form the legend colors are drawn in
      */
-    var form: LegendForm? = LegendForm.SQUARE
+    var form: LegendForm = LegendForm.SQUARE
 
-    /**
-     * returns the size in dp of the legend forms
-     */
-    /**
-     * sets the size in dp of the legend forms, default 8f
-     */
     /**
      * the size of the legend forms/shapes
      */
     var formSize: kotlin.Float = 8f
 
     /**
-     * returns the line width in dp for drawing forms that consist of lines
-     */
-    /**
-     * sets the line width in dp for forms that consist of lines, default 3f
-     */
-    /**
      * the size of the legend forms/shapes
      */
     var formLineWidth: kotlin.Float = 3f
 
-    /**
-     * @return The line dash path effect used for shapes that consist of lines.
-     */
-    /**
-     * Sets the line dash path effect used for shapes that consist of lines.
-     */
     /**
      * Line dash path effect used for shapes that consist of lines.
      */
     var formLineDashEffect: DashPathEffect? = null
 
     /**
-     * returns the space between the legend entries on a horizontal axis in
-     * pixels
-     */
-    /**
-     * sets the space between the legend entries on a horizontal axis in pixels,
-     * converts to dp internally
-     */
-    /**
      * the space between the legend entries on a horizontal axis, default 6f
      */
     var xEntrySpace: kotlin.Float = 6f
 
     /**
-     * returns the space between the legend entries on a vertical axis in pixels
-     */
-    /**
-     * sets the space between the legend entries on a vertical axis in pixels,
-     * converts to dp internally
-     */
-    /**
      * the space between the legend entries on a vertical axis, default 5f
      */
     var yEntrySpace: kotlin.Float = 0f
 
-    /**
-     * returns the space between the form and the actual label/text
-     */
-    /**
-     * sets the space between the form and the actual label/text, converts to dp
-     * internally
-     */
     /**
      * the space between the legend entries on a vertical axis, default 2f
      * private float mYEntrySpace = 2f; / ** the space between the form and the
@@ -220,12 +154,6 @@ class Legend() : ComponentBase() {
      */
     var formToTextSpace: kotlin.Float = 5f
 
-    /**
-     * returns the space that is left out between stacked forms (with no label)
-     */
-    /**
-     * sets the space that is left out between stacked forms (with no label)
-     */
     /**
      * the space that should be left between stacked forms
      */
@@ -239,23 +167,12 @@ class Legend() : ComponentBase() {
      * piechart, then this defines the size of the rectangular bounds out of the
      * size of the "hole". / default: 0.95f (95%)
      */
-    /**
-     * The maximum relative size out of the whole chart view. / If
-     * the legend is to the right/left of the chart, then this affects the width
-     * of the legend. / If the legend is to the top/bottom of the chart, then
-     * this affects the height of the legend. / default: 0.95f (95%)
-     */
-    /**
-     * the maximum relative size out of the whole chart view in percent
-     */
     var maxSizePercent: kotlin.Float = 0.95f
 
     /**
      * Constructor. Provide entries for the legend.
      */
     constructor(entries: Array<LegendEntry>) : this() {
-        requireNotNull(entries) { "entries array is NULL" }
-
         this.entries = entries
     }
 

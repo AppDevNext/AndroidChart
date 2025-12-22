@@ -19,7 +19,7 @@ class LegendEntry {
      */
     constructor(
         label: String?,
-        form: LegendForm?,
+        form: LegendForm,
         formSize: Float,
         formLineWidth: Float,
         formLineDashEffect: DashPathEffect?,
@@ -46,7 +46,7 @@ class LegendEntry {
      * `EMPTY` will avoid drawing a form, but keep its space.
      * `DEFAULT` will use the Legend's default.
      */
-    var form: LegendForm? = LegendForm.DEFAULT
+    var form: LegendForm = LegendForm.DEFAULT
 
     /**
      * Form size will be considered except for when .None is used

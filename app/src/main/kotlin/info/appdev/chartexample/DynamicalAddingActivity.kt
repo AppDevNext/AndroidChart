@@ -37,7 +37,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
 
         //        chart.getXAxis().setDrawLabels(false);
 //        chart.getXAxis().setDrawGridLines(false);
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     private val colors: IntArray = ColorTemplate.VORDIPLOM_COLORS
@@ -69,7 +69,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             data.notifyDataChanged()
 
             // let the chart know it's data has changed
-            chart!!.notifyDataSetChanged()
+            chart?.notifyDataSetChanged()
 
             chart!!.setVisibleXRangeMaximum(6f)
             //chart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
@@ -92,8 +92,8 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
                 // or remove by index
                 // mData.removeEntryByXValue(xIndex, dataSetIndex);
                 data.notifyDataChanged()
-                chart!!.notifyDataSetChanged()
-                chart!!.invalidate()
+                chart?.notifyDataSetChanged()
+                chart?.invalidate()
             }
         }
     }
@@ -129,8 +129,8 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
 
             data.addDataSet(set)
             data.notifyDataChanged()
-            chart!!.notifyDataSetChanged()
-            chart!!.invalidate()
+            chart?.notifyDataSetChanged()
+            chart?.invalidate()
         }
     }
 
@@ -140,8 +140,8 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         if (data != null) {
             data.removeDataSet(data.getDataSetByIndex(data.getDataSetCount() - 1))
 
-            chart!!.notifyDataSetChanged()
-            chart!!.invalidate()
+            chart?.notifyDataSetChanged()
+            chart?.invalidate()
         }
     }
 

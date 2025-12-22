@@ -110,7 +110,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         val data = BarData(set)
         data.barWidth = 8.5f
         chart!!.setData(data)
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -131,7 +131,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
                 chart!!.data!!.dataSets.forEach {
                     it?.isDrawValues = !it.isDrawValues
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleIcons -> {
@@ -139,13 +139,13 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
                     set?.isDrawIcons = !set.isDrawIcons
                 }
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 
@@ -156,12 +156,12 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
                     chart!!.setPinchZoom(true)
                 }
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
                 chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart?.notifyDataSetChanged()
             }
 
             R.id.actionToggleBarBorders -> {
@@ -169,7 +169,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
                     (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
                 }
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.animateX -> {

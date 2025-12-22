@@ -115,7 +115,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
         val mv = XYMarkerView(this, xAxisFormatter)
         mv.chartView = chart // For bounds control
-        chart!!.setMarker(mv) // Set the marker to the chart
+        chart?.setMarker(mv) // Set the marker to the chart
 
         // setting data
         seekBarY!!.progress = 50
@@ -150,7 +150,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             set1 = chart!!.data!!.getDataSetByIndex(0) as BarDataSet
             set1.entries  = values
             chart!!.data!!.notifyDataChanged()
-            chart!!.notifyDataSetChanged()
+            chart?.notifyDataSetChanged()
         } else {
             set1 = BarDataSet(values, "The year 2017")
 
@@ -184,7 +184,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             data.setValueTypeface(tfLight)
             data.barWidth = 0.9f
 
-            chart!!.setData(data)
+            chart?.setData(data)
         }
     }
 
@@ -206,20 +206,20 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
                     it?.isDrawValues = !it.isDrawValues
                 }
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleIcons -> {
                 for (set in chart!!.data!!.dataSets)
                     set?.isDrawIcons = !set.isDrawIcons
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 
@@ -227,12 +227,12 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
                 if (chart!!.isPinchZoomEnabled) chart!!.setPinchZoom(false)
                 else chart!!.setPinchZoom(true)
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
                 chart!!.isAutoScaleMinMaxEnabled = !chart!!.isAutoScaleMinMaxEnabled
-                chart!!.notifyDataSetChanged()
+                chart?.notifyDataSetChanged()
             }
 
             R.id.actionToggleBarBorders -> {
@@ -242,7 +242,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
                     else
                         1f
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.animateX -> {
@@ -267,8 +267,8 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
             R.id.actionRotateXAxisLabelsBy45Deg -> {
                 chart!!.xAxis.labelRotationAngle = 45f
-                chart!!.notifyDataSetChanged()
-                chart!!.invalidate()
+                chart?.notifyDataSetChanged()
+                chart?.invalidate()
             }
         }
         return true
@@ -279,7 +279,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         tvY!!.text = seekBarY!!.progress.toString()
 
         setData(seekBarX!!.progress, seekBarY!!.progress.toFloat())
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun saveToGallery() {

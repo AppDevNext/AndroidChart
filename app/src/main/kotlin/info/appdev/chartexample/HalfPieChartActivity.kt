@@ -11,6 +11,8 @@ import android.text.style.StyleSpan
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.RelativeLayout
+import androidx.core.net.toUri
+import androidx.window.layout.WindowMetricsCalculator
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -21,8 +23,6 @@ import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
-import androidx.window.layout.WindowMetricsCalculator
 
 class HalfPieChartActivity : DemoBase() {
     private var chart: PieChart? = null
@@ -57,7 +57,7 @@ class HalfPieChartActivity : DemoBase() {
         chart!!.isHighlightPerTapEnabled = true
 
         chart!!.setMaxAngle(180f) // HALF CHART
-        chart!!.setRotationAngle(180f)
+        chart!!.rotationAngle = 180f
         chart!!.setCenterTextOffset(0f, -20f)
 
         setData(100f)
@@ -102,7 +102,7 @@ class HalfPieChartActivity : DemoBase() {
         data.setValueTypeface(tfLight)
         chart!!.setData(data)
 
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     private fun generateCenterSpannableText(): SpannableString {

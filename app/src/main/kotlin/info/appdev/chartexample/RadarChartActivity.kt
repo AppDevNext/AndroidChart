@@ -139,7 +139,7 @@ class RadarChartActivity : DemoBase() {
         colorList.add(Color.rgb(240, 255, 240))
         colorList.add(Color.rgb(250, 255, 250))
         chart!!.setLayerColorList(colorList)
-        chart!!.invalidate()
+        chart?.invalidate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -160,44 +160,44 @@ class RadarChartActivity : DemoBase() {
                     it?.isDrawValues = !it.isDrawValues
                 }
 
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
                 if (chart!!.data != null) {
                     chart!!.data!!.isHighlightEnabled = !chart!!.data!!.isHighlightEnabled()
-                    chart!!.invalidate()
+                    chart?.invalidate()
                 }
             }
 
             R.id.actionToggleRotate -> {
                 chart!!.isRotationEnabled = !chart!!.isRotationEnabled
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleFilled -> {
                 chart!!.data!!.dataSets.forEach { set ->
                     set?.setDrawFilled(!set.isDrawFilledEnabled)
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleHighlightCircle -> {
                 chart!!.data!!.dataSets.forEach { set ->
                     set.isDrawHighlightCircleEnabled = !set.isDrawHighlightCircleEnabled
                 }
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.actionToggleXLabels -> {
                 chart!!.xAxis.isEnabled = !chart!!.xAxis.isEnabled
-                chart!!.notifyDataSetChanged()
-                chart!!.invalidate()
+                chart?.notifyDataSetChanged()
+                chart?.invalidate()
             }
 
             R.id.actionToggleYLabels -> {
                 chart!!.yAxis.isEnabled = !chart!!.yAxis.isEnabled
-                chart!!.invalidate()
+                chart?.invalidate()
             }
 
             R.id.animateX -> {
