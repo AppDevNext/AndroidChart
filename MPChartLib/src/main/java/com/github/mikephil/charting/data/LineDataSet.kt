@@ -29,7 +29,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
     /**
      * List representing all colors that are used for the circles
      */
-    var circleColors: MutableList<Int?>? = null
+    var circleColors: MutableList<Int>? = null
 
     /**
      * the color of the inner circles
@@ -73,7 +73,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
         // mCircleRadius = UtilsKtKt.convertDpToPixel(4f);
         // mLineWidth = UtilsKtKt.convertDpToPixel(1f);
         if (this.circleColors == null) {
-            this.circleColors = ArrayList<Int?>()
+            this.circleColors = ArrayList<Int>()
         }
         circleColors!!.clear()
 
@@ -198,7 +198,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
         }
 
     override fun getCircleColor(index: Int): Int {
-        return circleColors!![index]!!
+        return circleColors!![index]
     }
 
     override val circleColorCount: Int
@@ -267,7 +267,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
      * this method. Internally, the colors are resolved using
      * getResources().getColor(...)
      */
-    fun setCircleColors(colors: IntArray, c: Context) {
+    fun setCircleColors(colors: IntArray, context: Context) {
         var clrs = this.circleColors
         if (clrs == null) {
             clrs = ArrayList()
@@ -275,7 +275,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
         clrs.clear()
 
         for (color in colors) {
-            clrs.add(c.resources.getColor(color))
+            clrs.add(context.resources.getColor(color))
         }
 
         this.circleColors = clrs
@@ -295,7 +295,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
      */
     fun resetCircleColors() {
         if (this.circleColors == null) {
-            this.circleColors = ArrayList<Int?>()
+            this.circleColors = ArrayList()
         }
         circleColors!!.clear()
     }
