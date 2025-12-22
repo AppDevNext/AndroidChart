@@ -215,7 +215,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
      * @param y
      */
     fun updateGestureRotation(x: Float, y: Float) {
-        chart!!.setRotationAngle(chart!!.getAngleForPoint(x, y) - startAngle)
+        chart!!.rotationAngle = chart!!.getAngleForPoint(x, y) - startAngle
     }
 
     /**
@@ -236,7 +236,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>?) : ChartTouchListe
 
         val timeInterval = (currentTime - decelerationLastTime).toFloat() / 1000f
 
-        chart!!.setRotationAngle(chart!!.rotationAngle + decelerationAngularVelocity * timeInterval)
+        chart!!.rotationAngle += decelerationAngularVelocity * timeInterval
 
         decelerationLastTime = currentTime
 

@@ -75,7 +75,7 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
         chart!!.setDrawCenterText(true)
 
-        chart!!.setRotationAngle(0f)
+        chart!!.rotationAngle = 0f
         // enable rotation of the chart by touch
         chart!!.isRotationEnabled = true
         chart!!.isHighlightPerTapEnabled = true

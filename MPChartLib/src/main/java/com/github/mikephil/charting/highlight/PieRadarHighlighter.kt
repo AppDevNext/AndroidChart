@@ -13,7 +13,7 @@ abstract class PieRadarHighlighter<T : PieRadarChartBase<*>>(protected var chart
         val touchDistanceToCenter = chartPieRadar.distanceToCenter(x, y)
 
         // check if a slice was touched
-        if (touchDistanceToCenter > chartPieRadar.getRadius()) {
+        if (touchDistanceToCenter > chartPieRadar.radius) {
             // if no slice was touched, highlight nothing
 
             return null
