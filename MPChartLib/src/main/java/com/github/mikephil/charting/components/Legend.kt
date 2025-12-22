@@ -6,6 +6,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.FSize
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextSize
 import com.github.mikephil.charting.utils.convertDpToPixel
 import java.lang.Float
 import kotlin.Array
@@ -463,7 +464,7 @@ class Legend() : ComponentBase() {
 
                     // grouped forms have null labels
                     if (label != null) {
-                        calculatedLabelSizes.add(Utils.calcTextSize(labelpaint, label))
+                        calculatedLabelSizes.add(labelpaint.calcTextSize(label))
                         requiredWidth += if (drawingForm) formToTextSpace + formSize else 0f
                         requiredWidth += calculatedLabelSizes.get(i)!!.width
                     } else {

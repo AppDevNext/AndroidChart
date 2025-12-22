@@ -5,8 +5,8 @@ import android.graphics.Path
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.utils.MPPointF
-import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.getPosition
 import com.github.mikephil.charting.utils.roundToNextSignificant
 import kotlin.math.abs
 import kotlin.math.ceil
@@ -145,7 +145,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         paintAxisLabels.color = yAxis.textColor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
+        var pOut = MPPointF.getInstance(0f, 0f)
         val factor = chart.factor
 
         val from = if (yAxis.isDrawBottomYLabelEntryEnabled) 0 else 1
@@ -159,7 +159,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         for (j in from..<to) {
             val r = (yAxis.mEntries[j] - yAxis.mAxisMinimum) * factor
 
-            Utils.getPosition(center, r, chart.rotationAngle, pOut)
+            pOut = center.getPosition(r, chart.rotationAngle)
 
             val label = yAxis.getFormattedLabel(j)
 
@@ -179,7 +179,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         val factor = chart.factor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
+        var pOut = MPPointF.getInstance(0f, 0f)
         for (i in limitLines.indices) {
             val limitLine = limitLines[i]
 
@@ -196,7 +196,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
             chart.getData()!!.maxEntryCountSet?.let { maxEntryCountSet ->
                 for (j in 0..<maxEntryCountSet.entryCount) {
-                    Utils.getPosition(center, r, sliceAngle * j + chart.rotationAngle, pOut)
+                    pOut = center.getPosition(r, sliceAngle * j + chart.rotationAngle)
 
                     if (j == 0)
                         limitPath.moveTo(pOut.x, pOut.y)

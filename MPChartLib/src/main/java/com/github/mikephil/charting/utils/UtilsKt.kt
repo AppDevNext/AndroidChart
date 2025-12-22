@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.ViewConfiguration
+import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import timber.log.Timber
 import java.lang.Double
 import kotlin.Boolean
@@ -12,11 +13,14 @@ import kotlin.CharArray
 import kotlin.Float
 import kotlin.Int
 import kotlin.String
+import kotlin.apply
 import kotlin.code
 import kotlin.math.ceil
+import kotlin.math.cos
 import kotlin.math.log10
 import kotlin.math.pow
 import kotlin.math.roundToInt
+import kotlin.math.sin
 
 var metrics: DisplayMetrics? = null
 var minimumFlingVelocity = 0
@@ -80,6 +84,26 @@ fun Float.convertDpToPixel(): Float {
 fun getSDKInt() = Build.VERSION.SDK_INT
 
 fun Context.convertDpToPixel(dp: Float) = dp * this.resources.displayMetrics.density
+
+fun getDefaultValueFormatter() = DefaultValueFormatter(1)
+
+fun MPPointF.getPosition(dist: Float, angle: Float) :MPPointF {
+    return MPPointF().apply {
+        x = (this.x + dist * cos(Math.toRadians(angle.toDouble()))).toFloat()
+        y = (this.y + dist * sin(Math.toRadians(angle.toDouble()))).toFloat()
+    }
+}
+
+/**
+ * returns an angle between 0.f < 360.f (not less than zero, less than 360)
+ */
+fun Float.getNormalizedAngle(): Float {
+    var angle = this
+    while (angle < 0f) {
+        angle += 360f
+    }
+    return angle % 360f
+}
 
 fun Float.formatNumber(digitCount: Int, separateThousands: Boolean, separateChar: Char = '.'): String {
     var number = this

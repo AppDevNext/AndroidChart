@@ -14,6 +14,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.github.mikephil.charting.utils.convertDpToPixel
+import com.github.mikephil.charting.utils.getPosition
 
 open class RadarChartRenderer(
     protected var chart: RadarChart, animator: ChartAnimator,
@@ -123,7 +124,7 @@ open class RadarChartRenderer(
         val factor = chart.factor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
+        var pOut = MPPointF.getInstance(0f, 0f)
         val pIcon = MPPointF.getInstance(0f, 0f)
 
         val yOffset = 5f.convertDpToPixel()
@@ -149,12 +150,10 @@ open class RadarChartRenderer(
                 for (j in 0..<dataSet.entryCount) {
                     dataSet.getEntryForIndex(j)?.let { entry ->
 
-                        Utils.getPosition(
-                            center,
+                        pOut = center.getPosition(
                             (entry.y - chart.yChartMin) * factor * phaseY,
-                            sliceAngle * j * phaseX + chart.rotationAngle,
-                            pOut
-                        )
+                            sliceAngle * j * phaseX + chart.rotationAngle
+                    )
 
                         if (dataSet.isDrawValues) {
                             drawValue(

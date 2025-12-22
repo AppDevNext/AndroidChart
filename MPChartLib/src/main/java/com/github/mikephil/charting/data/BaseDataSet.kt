@@ -11,8 +11,8 @@ import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
-import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.convertDpToPixel
+import com.github.mikephil.charting.utils.getDefaultValueFormatter
 
 /**
  * This is the base dataset of all DataSets. It's purpose is to implement critical methods
@@ -255,7 +255,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
 
     override var valueFormatter: IValueFormatter
         get() = if (needsFormatter())
-            Utils.getDefaultValueFormatter()
+            getDefaultValueFormatter()
         else
             mValueFormatter!!
         set(value) {

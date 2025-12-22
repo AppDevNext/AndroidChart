@@ -2,19 +2,49 @@ package com.github.mikephil.charting.utils
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Paint.Align
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.text.StaticLayout
-import android.text.TextPaint
-import com.github.mikephil.charting.utils.Utils.FDEG2RAD
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.sin
 
 private val mDrawableBoundsCache = Rect()
-val DEG2RAD: Double = (Math.PI / 180.0)
-val FDEG2RAD: Float = (Math.PI.toFloat() / 180f)
+
+private val calcTextSizeRect = Rect()
+
+/**
+ * calculates the approximate size of a text, depending on a demo text
+ * avoid repeated calls (e.g. inside drawing methods)
+ *
+ * @param outputFSize An output variable, modified by the function.
+ */
+fun Paint.calcTextSize(demoText: String, outputFSize: FSize) {
+    val r = calcTextSizeRect
+    r.set(0, 0, 0, 0)
+    this.getTextBounds(demoText, 0, demoText.length, r)
+    outputFSize.width = r.width().toFloat()
+    outputFSize.height = r.height().toFloat()
+}
+
+/**
+ * Returns a recyclable FSize instance.
+ * calculates the approximate size of a text, depending on a demo text
+ * avoid repeated calls (e.g. inside drawing methods)
+ * @return A Recyclable FSize instance
+ */
+fun Paint.calcTextSize(demoText: String): FSize {
+    val result = FSize.getInstance(0f, 0f)
+    this.calcTextSize(demoText, result)
+    return result
+}
+
+/**
+ * calculates the approximate height of a text, depending on a demo text
+ * avoid repeated calls (e.g. inside drawing methods)
+ */
+fun Paint.calcTextHeight(demoText: String): Int {
+    val rect = Rect()
+    rect.set(0, 0, 0, 0)
+    this.getTextBounds(demoText, 0, demoText.length, rect)
+    return rect.height()
+}
 
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
@@ -45,182 +75,4 @@ fun Canvas.drawImage(
     this.translate(drawOffset.x, drawOffset.y)
     drawable.draw(this)
     this.restoreToCount(saveId)
-}
-
-private val mDrawTextRectBuffer = Rect()
-private val mFontMetricsBuffer = Paint.FontMetrics()
-
-fun Canvas.drawXAxisValue(
-    text: String?, x: Float, y: Float,
-    paint: Paint,
-    anchor: MPPointF, angleDegrees: Float
-) {
-    var drawOffsetX = 0f
-    var drawOffsetY = 0f
-
-    val lineHeight = paint.getFontMetrics(mFontMetricsBuffer)
-    text?.let { paint.getTextBounds(text, 0, it.length, mDrawTextRectBuffer) }
-
-    // Android sometimes has pre-padding
-    drawOffsetX -= mDrawTextRectBuffer.left.toFloat()
-
-    // Android does not snap the bounds to line boundaries,
-    //  and draws from bottom to top.
-    // And we want to normalize it.
-    drawOffsetY -= mFontMetricsBuffer.ascent
-
-    // To have a consistent point of reference, we always draw left-aligned
-    val originalTextAlign = paint.textAlign
-    paint.textAlign = Align.LEFT
-
-    if (angleDegrees != 0f) {
-        // Move the text drawing rect in a way that it always rotates around its center
-
-        drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f
-        drawOffsetY -= lineHeight * 0.5f
-
-        var translateX = x
-        var translateY = y
-
-        // Move the "outer" rect relative to the anchor, assuming its centered
-        if (anchor.x != 0.5f || anchor.y != 0.5f) {
-            val rotatedSize = getSizeOfRotatedRectangleByDegrees(
-                mDrawTextRectBuffer.width().toFloat(),
-                lineHeight,
-                angleDegrees
-            )
-
-            translateX -= rotatedSize.width * (anchor.x - 0.5f)
-            translateY -= rotatedSize.height * (anchor.y - 0.5f)
-            FSize.recycleInstance(rotatedSize)
-        }
-
-        this.save()
-        this.translate(translateX, translateY)
-        this.rotate(angleDegrees)
-
-        text?.let { this.drawText(it, drawOffsetX, drawOffsetY, paint) }
-
-        this.restore()
-    } else {
-        if (anchor.x != 0f || anchor.y != 0f) {
-            drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x
-            drawOffsetY -= lineHeight * anchor.y
-        }
-
-        drawOffsetX += x
-        drawOffsetY += y
-
-        text?.let { this.drawText(it, drawOffsetX, drawOffsetY, paint) }
-    }
-
-    paint.textAlign = originalTextAlign
-}
-
-fun Canvas.drawMultilineText(
-    textLayout: StaticLayout,
-    x: Float, y: Float,
-    paint: TextPaint,
-    anchor: MPPointF, angleDegrees: Float
-) {
-    var drawOffsetX = 0f
-    var drawOffsetY = 0f
-    val drawWidth: Float
-    val drawHeight: Float
-
-    val lineHeight = paint.getFontMetrics(mFontMetricsBuffer)
-
-    drawWidth = textLayout.width.toFloat()
-    drawHeight = textLayout.lineCount * lineHeight
-
-    // Android sometimes has pre-padding
-    drawOffsetX -= mDrawTextRectBuffer.left.toFloat()
-
-    // Android does not snap the bounds to line boundaries,
-    //  and draws from bottom to top.
-    // And we want to normalize it.
-    drawOffsetY += drawHeight
-
-    // To have a consistent point of reference, we always draw left-aligned
-    val originalTextAlign = paint.textAlign
-    paint.textAlign = Align.LEFT
-
-    if (angleDegrees != 0f) {
-        // Move the text drawing rect in a way that it always rotates around its center
-
-        drawOffsetX -= drawWidth * 0.5f
-        drawOffsetY -= drawHeight * 0.5f
-
-        var translateX = x
-        var translateY = y
-
-        // Move the "outer" rect relative to the anchor, assuming its centered
-        if (anchor.x != 0.5f || anchor.y != 0.5f) {
-            val rotatedSize = getSizeOfRotatedRectangleByDegrees(
-                drawWidth,
-                drawHeight,
-                angleDegrees
-            )
-
-            translateX -= rotatedSize.width * (anchor.x - 0.5f)
-            translateY -= rotatedSize.height * (anchor.y - 0.5f)
-            FSize.recycleInstance(rotatedSize)
-        }
-
-        this.save()
-        this.translate(translateX, translateY)
-        this.rotate(angleDegrees)
-
-        this.translate(drawOffsetX, drawOffsetY)
-        textLayout.draw(this)
-
-        this.restore()
-    } else {
-        if (anchor.x != 0f || anchor.y != 0f) {
-            drawOffsetX -= drawWidth * anchor.x
-            drawOffsetY -= drawHeight * anchor.y
-        }
-
-        drawOffsetX += x
-        drawOffsetY += y
-
-        this.save()
-
-        this.translate(drawOffsetX, drawOffsetY)
-        textLayout.draw(this)
-
-        this.restore()
-    }
-
-    paint.textAlign = originalTextAlign
-}
-
-/**
- * Returns a recyclable FSize instance.
- * Represents size of a rotated rectangle by degrees.
- *
- * @param rectangleWidth
- * @param rectangleHeight
- * @param degrees
- * @return A Recyclable FSize instance
- */
-fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: Float, rectangleHeight: Float, degrees: Float): FSize {
-    val radians = degrees * FDEG2RAD
-    return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians)
-}
-
-/**
- * Returns a recyclable FSize instance.
- * Represents size of a rotated rectangle by radians.
- *
- * @param rectangleWidth
- * @param rectangleHeight
- * @param radians
- * @return A Recyclable FSize instance
- */
-fun getSizeOfRotatedRectangleByRadians(rectangleWidth: Float, rectangleHeight: Float, radians: Float): FSize {
-    return FSize.getInstance(
-        abs(rectangleWidth * cos(radians.toDouble()).toFloat()) + abs(rectangleHeight * sin(radians.toDouble()).toFloat()),
-        abs(rectangleWidth * sin(radians.toDouble()).toFloat()) + abs(rectangleHeight * cos(radians.toDouble()).toFloat())
-    )
 }

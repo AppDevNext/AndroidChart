@@ -15,6 +15,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextSize
 import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.roundToInt
 
@@ -57,7 +58,7 @@ open class XAxisRendererHorizontalBarChart(
 
         val longest = xAxis.longestLabel
 
-        val labelSize = Utils.calcTextSize(paintAxisLabels, longest)
+        val labelSize = paintAxisLabels.calcTextSize(longest)
 
         val labelWidth = (labelSize.width + xAxis.xOffset * 3.5f).toInt().toFloat()
         val labelHeight = labelSize.height

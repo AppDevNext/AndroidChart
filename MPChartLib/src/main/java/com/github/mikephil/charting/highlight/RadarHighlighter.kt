@@ -3,7 +3,7 @@ package com.github.mikephil.charting.highlight
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.utils.MPPointF
-import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.getPosition
 import kotlin.math.abs
 
 open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>(chart) {
@@ -42,7 +42,7 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
         val sliceAngle = chartPieRadar.sliceAngle
         val factor = chartPieRadar.factor
 
-        val pOut = MPPointF.getInstance(0f, 0f)
+        var pOut: MPPointF
         for (i in 0..<chartPieRadar.getData()!!.dataSetCount) {
             val dataSet = chartPieRadar.getData()!!.getDataSetByIndex(i)
 
@@ -50,9 +50,9 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
 
             val y = (entry!!.y - chartPieRadar.yChartMin)
 
-            Utils.getPosition(
-                chartPieRadar.centerOffsets, y * factor * phaseY,
-                sliceAngle * index * phaseX + chartPieRadar.rotationAngle, pOut
+            pOut = chartPieRadar.centerOffsets.getPosition(
+                y * factor * phaseY,
+                sliceAngle * index * phaseX + chartPieRadar.rotationAngle
             )
 
             mHighlightBuffer.add(Highlight(index.toFloat(), entry.y, pOut.x, pOut.y, i, dataSet.axisDependency))
