@@ -97,7 +97,7 @@ open class LineChartRenderer(
             LineDataSet.Mode.LINEAR, LineDataSet.Mode.STEPPED -> drawLinear(canvas, dataSet)
             LineDataSet.Mode.CUBIC_BEZIER -> drawCubicBezier(dataSet)
             LineDataSet.Mode.HORIZONTAL_BEZIER -> drawHorizontalBezier(dataSet)
-            else -> drawLinear(canvas, dataSet)
+//            else -> drawLinear(canvas, dataSet)
         }
 
         paintRender.pathEffect = null

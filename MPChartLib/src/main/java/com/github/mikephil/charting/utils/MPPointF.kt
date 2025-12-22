@@ -32,7 +32,7 @@ class MPPointF : Poolable<MPPointF> {
     }
 
     companion object {
-        private var pool: ObjectPool<MPPointF> = ObjectPool.Companion.create(32, MPPointF(0f, 0f))
+        private var pool: ObjectPool<MPPointF> = ObjectPool.create(32, MPPointF(0f, 0f))
 
         init {
             pool.replenishPercentage = 0.5f
