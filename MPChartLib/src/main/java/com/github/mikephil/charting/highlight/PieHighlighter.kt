@@ -5,9 +5,9 @@ import com.github.mikephil.charting.data.Entry
 
 class PieHighlighter(chart: PieChart) : PieRadarHighlighter<PieChart>(chart) {
     override fun getClosestHighlight(index: Int, x: Float, y: Float): Highlight? {
-        val pieDataSet = chart!!.data!!.dataSet
+        val pieDataSet = chart.data!!.dataSet
 
-        val entry: Entry? = pieDataSet?.getEntryForIndex(index)
+        val entry: Entry? = pieDataSet.getEntryForIndex(index)
 
         entry?.let {
             return Highlight(index.toFloat(), entry.y, x, y, 0, pieDataSet.axisDependency)

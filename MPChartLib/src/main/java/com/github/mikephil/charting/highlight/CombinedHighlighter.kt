@@ -22,7 +22,7 @@ open class CombinedHighlighter(dataProvider: CombinedDataProvider, barChart: Bar
     override fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight>? {
         highlightBuffer.clear()
 
-        val dataObjects = provider!!.combinedData!!.getAllData()
+        val dataObjects = provider.combinedData!!.getAllData()
 
         for (i in dataObjects.indices) {
             val dataObject: ChartData<*> = dataObjects[i]

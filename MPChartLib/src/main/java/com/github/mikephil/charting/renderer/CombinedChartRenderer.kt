@@ -36,7 +36,7 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
 
         for (order in orders) {
             when (order) {
-                DrawOrder.BAR -> if (chart.barData != null) dataRenderers.add(BarChartRenderer(chart, animator, viewPortHandler))
+                DrawOrder.BAR -> dataRenderers.add(BarChartRenderer(chart, animator, viewPortHandler))
                 DrawOrder.BUBBLE -> if (chart.bubbleData != null) dataRenderers.add(BubbleChartRenderer(chart, animator, viewPortHandler))
                 DrawOrder.LINE -> dataRenderers.add(LineChartRenderer(chart, animator, viewPortHandler))
                 DrawOrder.CANDLE -> if (chart.candleData != null) dataRenderers.add(CandleStickChartRenderer(chart, animator, viewPortHandler))
@@ -98,8 +98,10 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
      * Returns the sub-renderer object at the specified index.
      */
     fun getSubRenderer(index: Int): DataRenderer? {
-        return if (index >= dataRenderers.size || index < 0) null
-        else dataRenderers[index]
+        return if (index >= dataRenderers.size || index < 0)
+            null
+        else
+            dataRenderers[index]
     }
 
     val subRenderers: List<DataRenderer>

@@ -180,7 +180,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         val center = chart.centerOffsets
         val pOut = MPPointF.getInstance(0f, 0f)
         for (i in limitLines.indices) {
-            val limitLine = limitLines[i]!!
+            val limitLine = limitLines[i]
 
             if (!limitLine.isEnabled) continue
 

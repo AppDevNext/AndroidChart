@@ -17,21 +17,9 @@ import kotlin.math.min
 class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     HorizontalBarChartRenderer(chart, animator, viewPortHandler) {
     private val mBarShadowRectBuffer = RectF()
-    private var roundedShadowRadius = 0f
-    private var roundedPositiveDataSetRadius = 0f
-    private var roundedNegativeDataSetRadius = 0f
-
-    fun setRoundedNegativeDataSetRadius(roundedNegativeDataSet: Float) {
-        roundedNegativeDataSetRadius = roundedNegativeDataSet
-    }
-
-    fun setRoundedShadowRadius(roundedShadow: Float) {
-        roundedShadowRadius = roundedShadow
-    }
-
-    fun setRoundedPositiveDataSetRadius(roundedPositiveDataSet: Float) {
-        roundedPositiveDataSetRadius = roundedPositiveDataSet
-    }
+    var roundedShadowRadius = 0f
+    var roundedPositiveDataSetRadius = 0f
+    var roundedNegativeDataSetRadius = 0f
 
     init {
         paintValues.textAlign = Paint.Align.LEFT
@@ -43,7 +31,6 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
         barBorderPaint.color = dataSet.barBorderColor
         barBorderPaint.strokeWidth = dataSet.barBorderWidth.convertDpToPixel()
         shadowPaint.color = dataSet.barShadowColor
-        val drawBorder = dataSet.barBorderWidth > 0f
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
 
@@ -234,6 +221,7 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
         }
     }
 
+    @Suppress("SameParameterValue")
     private fun roundRect(rect: RectF, rx: Float, ry: Float, tl: Boolean, tr: Boolean, br: Boolean, bl: Boolean): Path {
         var rx = rx
         var ry = ry

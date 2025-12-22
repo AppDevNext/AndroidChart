@@ -10,7 +10,7 @@ import com.github.mikephil.charting.utils.MPPointD
 import kotlin.math.abs
 import kotlin.math.hypot
 
-open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protected var provider: T?) : IHighlighter {
+open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protected var provider: T) : IHighlighter {
     /**
      * buffer for storing previously highlighted values
      */
@@ -32,7 +32,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
     protected fun getValsForTouch(x: Float, y: Float): MPPointD {
         // take any transformer to determine the x-axis value
 
-        return provider!!.getTransformer(AxisDependency.LEFT)!!.getValuesByTouchPoint(x, y)
+        return provider.getTransformer(AxisDependency.LEFT)!!.getValuesByTouchPoint(x, y)
     }
 
     /**
@@ -50,7 +50,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
 
         val axis = if (leftAxisMinDist < rightAxisMinDist) AxisDependency.LEFT else AxisDependency.RIGHT
 
-        return getClosestHighlightByPixel(closestValues, x, y, axis, provider!!.getMaxHighlightDistance())
+        return getClosestHighlightByPixel(closestValues, x, y, axis, provider.getMaxHighlightDistance())
     }
 
     /**

@@ -168,6 +168,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
     @Suppress("OVERRIDE_DEPRECATION")
     override val isDrawSteppedEnabled: Boolean
         get() = mLineDataSetMode == Mode.STEPPED
+
     override var circleRadius: Float
         get() = mCircleRadius
         set(value) {
