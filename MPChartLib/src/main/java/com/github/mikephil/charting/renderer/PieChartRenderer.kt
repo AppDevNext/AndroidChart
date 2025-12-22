@@ -905,7 +905,7 @@ open class PieChartRenderer(
 
         val dataSet = chart.data!!.dataSet
 
-        if (!dataSet!!.isVisible)
+        if (!dataSet.isVisible)
             return
 
         val phaseX = animator.phaseX

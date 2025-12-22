@@ -234,7 +234,7 @@ open class YAxisRendererHorizontalBarChart(
         limitLinePath.reset()
 
         for (i in limitLines.indices) {
-            val limitLine = limitLines[i]!!
+            val limitLine = limitLines[i]
 
             if (!limitLine.isEnabled) continue
 

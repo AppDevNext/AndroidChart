@@ -267,10 +267,10 @@ open class CandleStickChartRenderer(
                         if (entry.icon != null && dataSet.isDrawIcons) {
                             val icon = entry.icon
 
-                            icon?.let {
+                            icon?.let { ico ->
                                 Utils.drawImage(
                                     canvas,
-                                    it,
+                                    ico,
                                     (x + iconsOffset.x).toInt(),
                                     (y + iconsOffset.y).toInt()
                                 )

@@ -9,7 +9,7 @@ import kotlin.math.abs
 
 class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(dataProvider) {
     override fun getHighlight(x: Float, y: Float): Highlight? {
-        val barData = provider!!.barData
+        val barData = provider.barData
 
         val pos = getValsForTouch(y, x)
 
@@ -47,7 +47,7 @@ class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(d
 
         if (entries != null)
             for (entry in entries) {
-                val pixels = provider!!.getTransformer(set.axisDependency)!!.getPixelForValues(entry.y, entry.x)
+                val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(entry.y, entry.x)
 
                 highlights.add(
                     Highlight(

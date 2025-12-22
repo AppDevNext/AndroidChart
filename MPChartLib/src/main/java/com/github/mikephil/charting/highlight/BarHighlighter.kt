@@ -12,7 +12,7 @@ open class BarHighlighter(barDataProvider: BarDataProvider) : ChartHighlighter<B
 
         val pos = getValsForTouch(x, y)
 
-        val barData = provider!!.barData
+        val barData = provider.barData
 
         val set = barData.getDataSetByIndex(high.dataSetIndex)
         if (set.isStacked()) {
@@ -46,7 +46,7 @@ open class BarHighlighter(barDataProvider: BarDataProvider) : ChartHighlighter<B
                 if (ranges.isNotEmpty()) {
                     val stackIndex = getClosestStackIndex(ranges, yVal)
 
-                    val pixels = provider!!.getTransformer(set.axisDependency)!!.getPixelForValues(high.x, ranges[stackIndex].to)
+                    val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(high.x, ranges[stackIndex].to)
 
                     val stackedHigh = Highlight(
                         entry.x,

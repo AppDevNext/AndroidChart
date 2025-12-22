@@ -7,7 +7,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import kotlin.math.abs
 
-open class RadarHighlighter(chart: RadarChart?) : PieRadarHighlighter<RadarChart?>(chart) {
+open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>(chart) {
     override fun getClosestHighlight(index: Int, x: Float, y: Float): Highlight? {
         val highlights = getHighlightsAtIndex(index)
 
