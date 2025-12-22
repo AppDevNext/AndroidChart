@@ -80,7 +80,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      */
     private CharSequence mCenterText = "";
 
-    private final MPPointF mCenterTextOffset = MPPointF.getInstance(0, 0);
+    private final MPPointF mCenterTextOffset = MPPointF.Companion.getInstance(0, 0);
 
     /**
      * indicates the size of the hole in the center of the piechart,
@@ -170,10 +170,10 @@ public class PieChart extends PieRadarChartBase<PieData> {
 
         // create the circle box that will contain the pie-chart (the bounds of
         // the pie-chart)
-        mCircleBox.set(c.x - radius + shift,
-                c.y - radius + shift,
-                c.x + radius - shift,
-                c.y + radius - shift);
+        mCircleBox.set(c.getX() - radius + shift,
+                c.getY() - radius + shift,
+                c.getX() + radius - shift,
+                c.getY() + radius - shift);
 
         MPPointF.recycleInstance(c);
     }
@@ -207,10 +207,10 @@ public class PieChart extends PieRadarChartBase<PieData> {
         // calculate the text position
         float x = (float) (r
                 * Math.cos(Math.toRadians((rotationAngle + mAbsoluteAngles[entryIndex] - offset)
-                * mAnimator.getPhaseY())) + center.x);
+                * mAnimator.getPhaseY())) + center.getX());
         float y = (float) (r
                 * Math.sin(Math.toRadians((rotationAngle + mAbsoluteAngles[entryIndex] - offset)
-                * mAnimator.getPhaseY())) + center.y);
+                * mAnimator.getPhaseY())) + center.getY());
 
         MPPointF.recycleInstance(center);
         return new float[]{x, y};
@@ -496,7 +496,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      *
 	 */
     public MPPointF getCenterCircleBox() {
-        return MPPointF.getInstance(mCircleBox.centerX(), mCircleBox.centerY());
+        return MPPointF.Companion.getInstance(mCircleBox.centerX(), mCircleBox.centerY());
     }
 
     /**
@@ -529,8 +529,8 @@ public class PieChart extends PieRadarChartBase<PieData> {
      *
 	 */
     public void setCenterTextOffset(float x, float y) {
-        mCenterTextOffset.x = UtilsKtKt.convertDpToPixel(x);
-        mCenterTextOffset.y = UtilsKtKt.convertDpToPixel(y);
+        mCenterTextOffset.setX(UtilsKtKt.convertDpToPixel(x));
+        mCenterTextOffset.setY(UtilsKtKt.convertDpToPixel(y));
     }
 
     /**
@@ -538,7 +538,7 @@ public class PieChart extends PieRadarChartBase<PieData> {
      *
 	 */
     public MPPointF getCenterTextOffset() {
-        return MPPointF.getInstance(mCenterTextOffset.x, mCenterTextOffset.y);
+        return MPPointF.Companion.getInstance(mCenterTextOffset.getX(), mCenterTextOffset.getY());
     }
 
     /**

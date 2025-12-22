@@ -355,7 +355,7 @@ public class Transformer {
      */
     public MPPointD getValuesByTouchPoint(float x, float y) {
 
-        MPPointD result = MPPointD.getInstance(0, 0);
+        MPPointD result = MPPointD.Companion.getInstance(0, 0);
         getValuesByTouchPoint(x, y, result);
         return result;
     }
@@ -367,8 +367,8 @@ public class Transformer {
 
         pixelsToValue(ptsBuffer);
 
-        outputPoint.x = ptsBuffer[0];
-        outputPoint.y = ptsBuffer[1];
+        outputPoint.setX(ptsBuffer[0]);
+        outputPoint.setY(ptsBuffer[1]);
     }
 
     /**
@@ -385,7 +385,7 @@ public class Transformer {
         double xPx = ptsBuffer[0];
         double yPx = ptsBuffer[1];
 
-        return MPPointD.getInstance(xPx, yPx);
+        return MPPointD.Companion.getInstance(xPx, yPx);
     }
 
     public Matrix getValueMatrix() {

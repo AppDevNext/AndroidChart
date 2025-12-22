@@ -149,10 +149,10 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
                             MPPointF reference = getPosition(center, getRadius(),
                                     getAngleForPoint(bottomX, bottomY));
 
-                            float distReference = distanceToCenter(reference.x, reference.y);
+                            float distReference = distanceToCenter(reference.getX(), reference.getY());
                             float minOffset = UtilsKtKt.convertDpToPixel(5f);
 
-                            if (bottomY >= center.y && getHeight() - legendWidth > getWidth()) {
+                            if (bottomY >= center.getY() && getHeight() - legendWidth > getWidth()) {
                                 xLegendOffset = legendWidth;
                             } else if (distLegend < distReference) {
 
@@ -258,13 +258,13 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
 
         MPPointF c = getCenterOffsets();
 
-        double tx = x - c.x, ty = y - c.y;
+        double tx = x - c.getX(), ty = y - c.getY();
         double length = Math.sqrt(tx * tx + ty * ty);
         double r = Math.acos(ty / length);
 
         float angle = (float) Math.toDegrees(r);
 
-        if (x > c.x)
+        if (x > c.getX())
             angle = 360f - angle;
 
         // add 90° because chart starts EAST
@@ -287,14 +287,14 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
      */
     public MPPointF getPosition(MPPointF center, float dist, float angle) {
 
-        MPPointF p = MPPointF.getInstance(0, 0);
+        MPPointF p = MPPointF.Companion.getInstance(0, 0);
         getPosition(center, dist, angle, p);
         return p;
     }
 
     public void getPosition(MPPointF center, float dist, float angle, MPPointF outputPoint) {
-        outputPoint.x = (float) (center.x + dist * Math.cos(Math.toRadians(angle)));
-        outputPoint.y = (float) (center.y + dist * Math.sin(Math.toRadians(angle)));
+        outputPoint.setX((float) (center.getX() + dist * Math.cos(Math.toRadians(angle))));
+		outputPoint.setY((float) (center.getY() + dist * Math.sin(Math.toRadians(angle))));
     }
 
     /**
@@ -309,16 +309,16 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
         float xDist;
         float yDist;
 
-        if (x > c.x) {
-            xDist = x - c.x;
+        if (x > c.getX()) {
+            xDist = x - c.getX();
         } else {
-            xDist = c.x - x;
+            xDist = c.getX() - x;
         }
 
-        if (y > c.y) {
-            yDist = y - c.y;
+        if (y > c.getY()) {
+            yDist = y - c.getY();
         } else {
-            yDist = c.y - y;
+            yDist = c.getY() - y;
         }
 
         // pythagoras

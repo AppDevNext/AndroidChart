@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
@@ -103,7 +102,7 @@ public abstract class Utils {
 	 */
 	public static FSize calcTextSize(Paint paint, String demoText) {
 
-		FSize result = FSize.getInstance(0, 0);
+		FSize result = FSize.Companion.getInstance(0, 0);
 		calcTextSize(paint, demoText, result);
 		return result;
 	}
@@ -123,8 +122,8 @@ public abstract class Utils {
 		Rect r = mCalcTextSizeRect;
 		r.set(0, 0, 0, 0);
 		paint.getTextBounds(demoText, 0, demoText.length(), r);
-		outputFSize.width = r.width();
-		outputFSize.height = r.height();
+		outputFSize.setWidth(r.width());
+		outputFSize.setHeight(r.height());
 
 	}
 
@@ -175,14 +174,14 @@ public abstract class Utils {
 	 * @return
 	 */
 	public static MPPointF getPosition(MPPointF center, float dist, float angle) {
-		MPPointF p = MPPointF.getInstance(0, 0);
+		MPPointF p = MPPointF.Companion.getInstance(0, 0);
 		getPosition(center, dist, angle, p);
 		return p;
 	}
 
 	public static void getPosition(MPPointF center, float dist, float angle, MPPointF outputPoint) {
-		outputPoint.x = (float) (center.x + dist * Math.cos(Math.toRadians(angle)));
-		outputPoint.y = (float) (center.y + dist * Math.sin(Math.toRadians(angle)));
+		outputPoint.setX((float) (center.getX() + dist * Math.cos(Math.toRadians(angle))));
+		outputPoint.setY((float) (center.getY() + dist * Math.sin(Math.toRadians(angle))));
 	}
 
 	public static void velocityTrackerPointerUpCleanUpIfNecessary(MotionEvent ev, VelocityTracker tracker) {
@@ -229,9 +228,9 @@ public abstract class Utils {
 		int width = drawable.getIntrinsicWidth();
 		int height = drawable.getIntrinsicHeight();
 
-		MPPointF drawOffset = MPPointF.getInstance();
-		drawOffset.x = x - (width / 2);
-		drawOffset.y = y - (height / 2);
+		MPPointF drawOffset = MPPointF.Companion.getInstance();
+		drawOffset.setX(x - (width / 2));
+		drawOffset.setY(y - (height / 2));
 
 		drawable.copyBounds(mDrawableBoundsCache);
 		drawable.setBounds(
@@ -242,7 +241,7 @@ public abstract class Utils {
 
 		int saveId = canvas.save();
 		// translate to the correct position and draw
-		canvas.translate(drawOffset.x, drawOffset.y);
+		canvas.translate(drawOffset.getX(), drawOffset.getY());
 		drawable.draw(canvas);
 		canvas.restoreToCount(saveId);
 	}
@@ -282,15 +281,15 @@ public abstract class Utils {
 			float translateY = y;
 
 			// Move the "outer" rect relative to the anchor, assuming its centered
-			if (anchor.x != 0.5f || anchor.y != 0.5f) {
+			if (anchor.getX() != 0.5f || anchor.getY() != 0.5f) {
 				final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
 						mDrawTextRectBuffer.width(),
 						lineHeight,
 						angleDegrees);
 
-				translateX -= rotatedSize.width * (anchor.x - 0.5f);
-				translateY -= rotatedSize.height * (anchor.y - 0.5f);
-				FSize.recycleInstance(rotatedSize);
+				translateX -= rotatedSize.getWidth() * (anchor.getX() - 0.5f);
+				translateY -= rotatedSize.getHeight() * (anchor.getY() - 0.5f);
+				FSize.Companion.recycleInstance(rotatedSize);
 			}
 
 			canvas.save();
@@ -301,10 +300,10 @@ public abstract class Utils {
 
 			canvas.restore();
 		} else {
-			if (anchor.x != 0.f || anchor.y != 0.f) {
+			if (anchor.getX() != 0.f || anchor.getY() != 0.f) {
 
-				drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x;
-				drawOffsetY -= lineHeight * anchor.y;
+				drawOffsetX -= mDrawTextRectBuffer.width() * anchor.getX();
+				drawOffsetY -= lineHeight * anchor.getY();
 			}
 
 			drawOffsetX += x;
@@ -353,15 +352,15 @@ public abstract class Utils {
 			float translateY = y;
 
 			// Move the "outer" rect relative to the anchor, assuming its centered
-			if (anchor.x != 0.5f || anchor.y != 0.5f) {
+			if (anchor.getX() != 0.5f || anchor.getY() != 0.5f) {
 				final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
 						drawWidth,
 						drawHeight,
 						angleDegrees);
 
-				translateX -= rotatedSize.width * (anchor.x - 0.5f);
-				translateY -= rotatedSize.height * (anchor.y - 0.5f);
-				FSize.recycleInstance(rotatedSize);
+				translateX -= rotatedSize.getWidth() * (anchor.getX() - 0.5f);
+				translateY -= rotatedSize.getHeight() * (anchor.getY() - 0.5f);
+				FSize.Companion.recycleInstance(rotatedSize);
 			}
 
 			canvas.save();
@@ -373,10 +372,10 @@ public abstract class Utils {
 
 			canvas.restore();
 		} else {
-			if (anchor.x != 0.f || anchor.y != 0.f) {
+			if (anchor.getX() != 0.f || anchor.getY() != 0.f) {
 
-				drawOffsetX -= drawWidth * anchor.x;
-				drawOffsetY -= drawHeight * anchor.y;
+				drawOffsetX -= drawWidth * anchor.getX();
+				drawOffsetY -= drawHeight * anchor.getY();
 			}
 
 			drawOffsetX += x;
@@ -417,7 +416,7 @@ public abstract class Utils {
 	 * @return A Recyclable FSize instance
 	 */
 	public static FSize getSizeOfRotatedRectangleByRadians(float rectangleWidth, float rectangleHeight, float radians) {
-		return FSize.getInstance(
+		return FSize.Companion.getInstance(
 				Math.abs(rectangleWidth * (float) Math.cos(radians)) + Math.abs(rectangleHeight * (float) Math.sin(radians)),
 				Math.abs(rectangleWidth * (float) Math.sin(radians)) + Math.abs(rectangleHeight * (float) Math.cos(radians))
 		);
