@@ -6,8 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.text.StaticLayout;
-import android.text.TextPaint;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
@@ -144,23 +142,6 @@ public abstract class Utils {
 	/// - returns: The default value formatter used for all chart components that needs a default
 	public static IValueFormatter getDefaultValueFormatter() {
 		return mDefaultValueFormatter;
-	}
-
-	/**
-	 * rounds the given number to the next significant number
-	 */
-	public static float roundToNextSignificant(double number) {
-		if (Double.isInfinite(number) ||
-				Double.isNaN(number) ||
-				number == 0.0) {
-			return 0;
-		}
-
-		final float d = (float) Math.ceil((float) Math.log10(number < 0 ? -number : number));
-		final int pw = 1 - (int) d;
-		final float magnitude = (float) Math.pow(10, pw);
-		final long shifted = Math.round(number * magnitude);
-		return shifted / magnitude;
 	}
 
 	/**
@@ -310,83 +291,6 @@ public abstract class Utils {
 			drawOffsetY += y;
 
 			canvas.drawText(text, drawOffsetX, drawOffsetY, paint);
-		}
-
-		paint.setTextAlign(originalTextAlign);
-	}
-
-	public static void drawMultilineText(Canvas canvas, StaticLayout textLayout,
-										 float x, float y,
-										 TextPaint paint,
-										 MPPointF anchor, float angleDegrees) {
-
-		float drawOffsetX = 0.f;
-		float drawOffsetY = 0.f;
-		float drawWidth;
-		float drawHeight;
-
-		final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
-
-		drawWidth = textLayout.getWidth();
-		drawHeight = textLayout.getLineCount() * lineHeight;
-
-		// Android sometimes has pre-padding
-		drawOffsetX -= mDrawTextRectBuffer.left;
-
-		// Android does not snap the bounds to line boundaries,
-		//  and draws from bottom to top.
-		// And we want to normalize it.
-		drawOffsetY += drawHeight;
-
-		// To have a consistent point of reference, we always draw left-aligned
-		Paint.Align originalTextAlign = paint.getTextAlign();
-		paint.setTextAlign(Paint.Align.LEFT);
-
-		if (angleDegrees != 0.f) {
-
-			// Move the text drawing rect in a way that it always rotates around its center
-			drawOffsetX -= drawWidth * 0.5f;
-			drawOffsetY -= drawHeight * 0.5f;
-
-			float translateX = x;
-			float translateY = y;
-
-			// Move the "outer" rect relative to the anchor, assuming its centered
-			if (anchor.getX() != 0.5f || anchor.getY() != 0.5f) {
-				final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
-						drawWidth,
-						drawHeight,
-						angleDegrees);
-
-				translateX -= rotatedSize.getWidth() * (anchor.getX() - 0.5f);
-				translateY -= rotatedSize.getHeight() * (anchor.getY() - 0.5f);
-				FSize.Companion.recycleInstance(rotatedSize);
-			}
-
-			canvas.save();
-			canvas.translate(translateX, translateY);
-			canvas.rotate(angleDegrees);
-
-			canvas.translate(drawOffsetX, drawOffsetY);
-			textLayout.draw(canvas);
-
-			canvas.restore();
-		} else {
-			if (anchor.getX() != 0.f || anchor.getY() != 0.f) {
-
-				drawOffsetX -= drawWidth * anchor.getX();
-				drawOffsetY -= drawHeight * anchor.getY();
-			}
-
-			drawOffsetX += x;
-			drawOffsetY += y;
-
-			canvas.save();
-
-			canvas.translate(drawOffsetX, drawOffsetY);
-			textLayout.draw(canvas);
-
-			canvas.restore();
 		}
 
 		paint.setTextAlign(originalTextAlign);
