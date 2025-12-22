@@ -104,7 +104,7 @@ open class PieChartRenderer(
         val pieData = chart.data
 
         for (set in pieData!!.dataSets!!) {
-            if (set!!.isVisible && set.entryCount > 0) drawDataSet(set)
+            if (set.isVisible && set.entryCount > 0) drawDataSet(set)
         }
     }
 

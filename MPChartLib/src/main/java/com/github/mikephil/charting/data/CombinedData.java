@@ -56,15 +56,15 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
     @Override
     public void calcMinMax() {
 
-        if(dataSets == null){
-            dataSets = new ArrayList<>();
+        if(getDataSets() == null){
+            setDataSets(new ArrayList<>());
         }
-        dataSets.clear();
+		getDataSets().clear();
 
-        yMax = -Float.MAX_VALUE;
-        yMin = Float.MAX_VALUE;
-        xMax = -Float.MAX_VALUE;
-        xMin = Float.MAX_VALUE;
+		setYMax(-Float.MAX_VALUE);
+		setYMin(Float.MAX_VALUE);
+		setXMax(-Float.MAX_VALUE);
+		setXMin(Float.MAX_VALUE);
 
         mLeftAxisMax = -Float.MAX_VALUE;
         mLeftAxisMin = Float.MAX_VALUE;
@@ -78,19 +78,19 @@ public class CombinedData extends BarLineScatterCandleBubbleData<IBarLineScatter
             data.calcMinMax();
 
             List<IBarLineScatterCandleBubbleDataSet<? extends Entry>> sets = data.getDataSets();
-            dataSets.addAll(sets);
+            getDataSets().addAll(sets);
 
-            if (data.getYMax() > yMax)
-                yMax = data.getYMax();
+            if (data.getYMax() > getYMax())
+                setYMax(data.getYMax());
 
-            if (data.getYMin() < yMin)
-                yMin = data.getYMin();
+            if (data.getYMin() < getYMin())
+                setYMin(data.getYMin());
 
-            if (data.getXMax() > xMax)
-                xMax = data.getXMax();
+            if (data.getXMax() > getXMax())
+                setXMax(data.getXMax());
 
-            if (data.getXMin() < xMin)
-                xMin = data.getXMin();
+            if (data.getXMin() < getXMin())
+                setXMin(data.getXMin());
 
             for (IBarLineScatterCandleBubbleDataSet<? extends Entry> dataset : sets) {
                 if (dataset.getAxisDependency() == YAxis.AxisDependency.LEFT)  {

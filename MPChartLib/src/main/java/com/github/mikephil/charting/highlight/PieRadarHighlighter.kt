@@ -1,6 +1,5 @@
 package com.github.mikephil.charting.highlight
 
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.charts.PieRadarChartBase
 
 abstract class PieRadarHighlighter<T : PieRadarChartBase<*>>(protected var chartPieRadar: T) : IHighlighter {
@@ -20,14 +19,13 @@ abstract class PieRadarHighlighter<T : PieRadarChartBase<*>>(protected var chart
         } else {
             var angle = chartPieRadar.getAngleForPoint(x, y)
 
-            if (chartPieRadar is PieChart) {
-                angle /= chartPieRadar.animator.phaseY
-            }
+            angle /= chartPieRadar.animator.phaseY
 
             val index = chartPieRadar.getIndexForAngle(angle)
 
-            // check if the index could be found
-            return if (index < 0 || index >= chartPieRadar.getData()!!.getMaxEntryCountSet().entryCount) {
+            val localData = chartPieRadar.data
+            val maxCount = localData?.maxEntryCountSet?.entryCount ?: 0
+            return if (index !in 0..<maxCount) {
                 null
             } else {
                 getClosestHighlight(index, x, y)
