@@ -13,8 +13,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.min
 
-/** @noinspection unused
- */
+@Suppress("unused")
 class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     BarChartRenderer(chart, animator, viewPortHandler) {
     private val mBarShadowRectBuffer = RectF()
@@ -41,7 +40,6 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
         barBorderPaint.color = dataSet.barBorderColor
         barBorderPaint.strokeWidth = dataSet.barBorderWidth.convertDpToPixel()
         shadowPaint.color = dataSet.barShadowColor
-        val drawBorder = dataSet.barBorderWidth > 0f
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
 
@@ -89,7 +87,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
         trans!!.pointValuesToPixel(buffer.buffer)
 
         // if multiple colors has been assigned to Bar Chart
-        dataSet.colors?.let {
+        dataSet.colors.let {
             if (it.size > 1) {
                 var j = 0
                 while (j < buffer.size()) {
@@ -208,28 +206,24 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
                 paintRender.color = dataSet.getColorByIndex(j / 4)
             }
 
-            paintRender.setShader(
-                LinearGradient(
-                    buffer.buffer[j],
-                    buffer.buffer[j + 3],
-                    buffer.buffer[j],
-                    buffer.buffer[j + 1],
-                    dataSet.getColorByIndex(j / 4),
-                    dataSet.getColorByIndex(j / 4),
-                    Shader.TileMode.MIRROR
-                )
+            paintRender.shader = LinearGradient(
+                buffer.buffer[j],
+                buffer.buffer[j + 3],
+                buffer.buffer[j],
+                buffer.buffer[j + 1],
+                dataSet.getColorByIndex(j / 4),
+                dataSet.getColorByIndex(j / 4),
+                Shader.TileMode.MIRROR
             )
 
-            paintRender.setShader(
-                LinearGradient(
-                    buffer.buffer[j],
-                    buffer.buffer[j + 3],
-                    buffer.buffer[j],
-                    buffer.buffer[j + 1],
-                    dataSet.getColorByIndex(j / 4),
-                    dataSet.getColorByIndex(j / 4),
-                    Shader.TileMode.MIRROR
-                )
+            paintRender.shader = LinearGradient(
+                buffer.buffer[j],
+                buffer.buffer[j + 3],
+                buffer.buffer[j],
+                buffer.buffer[j + 1],
+                dataSet.getColorByIndex(j / 4),
+                dataSet.getColorByIndex(j / 4),
+                Shader.TileMode.MIRROR
             )
 
             dataSet.getEntryForIndex(j / 4)?.let { barEntry ->
@@ -239,7 +233,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
                         RectF(
                             buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                             buffer.buffer[j + 3]
-                        ), roundedNegativeDataSetRadius, roundedNegativeDataSetRadius, true, true, true, true
+                        ), roundedNegativeDataSetRadius, roundedNegativeDataSetRadius, tl = true, tr = true, br = true, bl = true
                     )
                     canvas.drawPath(path2, paintRender)
                 } else if ((barEntry.y > 0 && roundedPositiveDataSetRadius > 0)) {
@@ -247,7 +241,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
                         RectF(
                             buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                             buffer.buffer[j + 3]
-                        ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, true, true, true, true
+                        ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, tl = true, tr = true, br = true, bl = true
                     )
                     canvas.drawPath(path2, paintRender)
                 } else {
@@ -294,8 +288,8 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
                     } else {
                         val range = barEntry.ranges[high.stackIndex]
 
-                        y1 = range?.from ?: 0f
-                        y2 = range?.to ?: 0f
+                        y1 = range.from
+                        y2 = range.to
                     }
                 } else {
                     y1 = barEntry.y
@@ -310,7 +304,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
                     RectF(
                         barRect.left, barRect.top, barRect.right,
                         barRect.bottom
-                    ), mRadius, mRadius, true, true, true, true
+                    ), mRadius, mRadius, tl = true, tr = true, br = true, bl = true
                 )
 
                 canvas.drawPath(path2, paintHighlight)
@@ -318,6 +312,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
         }
     }
 
+    @Suppress("SameParameterValue")
     private fun roundRect(rect: RectF, rx: Float, ry: Float, tl: Boolean, tr: Boolean, br: Boolean, bl: Boolean): Path {
         var rx = rx
         var ry = ry
