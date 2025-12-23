@@ -87,7 +87,7 @@ class FilledLineActivity : DemoBase() {
         val set2: LineDataSet
 
         if (binding.chart1.data != null &&
-            binding.chart1.data!!.getDataSetCount() > 0
+            binding.chart1.data!!.dataSetCount > 0
         ) {
             set1 = binding.chart1.data!!.getDataSetByIndex(0) as LineDataSet
             set2 = binding.chart1.data!!.getDataSetByIndex(1) as LineDataSet
