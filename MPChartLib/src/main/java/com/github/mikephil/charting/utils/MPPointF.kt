@@ -31,6 +31,10 @@ class MPPointF : Poolable<MPPointF> {
         return MPPointF(0f, 0f)
     }
 
+    override fun toString(): String {
+        return "x=$x y=$y"
+    }
+
     companion object {
         private var pool: ObjectPool<MPPointF> = ObjectPool.create(32, MPPointF(0f, 0f))
 
