@@ -130,7 +130,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         when (item.itemId) {
             R.id.actionToggleValues -> {
                 binding.chart1.data?.dataSets?.forEach {
-                    it?.isDrawValues = !it.isDrawValues
+                    it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
@@ -138,8 +138,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleHighlight -> {
                 binding.chart1.data?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
-                    binding.chart1.invalidate()
                 }
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleFilled -> {
