@@ -275,8 +275,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
                 val data = chart.data
                 if (data != null) {
                     val position = chart.getPosition(
-                        entry, data.getDataSetByIndex(highlight.dataSetIndex)
-                            .axisDependency
+                        entry, data.getDataSetByIndex(highlight.dataSetIndex)?.axisDependency
                     )
 
                     Timber.tag("bounds $bounds")
@@ -377,8 +376,8 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
 
     private fun toggleValues() {
         chart?.let {
-            it.data!!.dataSets.forEach {
-                it?.isDrawValues = !it.isDrawValues
+            it.data?.dataSets?.forEach {
+                it.isDrawValues = !it.isDrawValues
             }
             it.invalidate()
         }
