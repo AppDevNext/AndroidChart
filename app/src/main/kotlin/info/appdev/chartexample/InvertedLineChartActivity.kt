@@ -148,7 +148,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
             }

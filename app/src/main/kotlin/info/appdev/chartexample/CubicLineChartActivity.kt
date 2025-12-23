@@ -106,7 +106,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
             set1.lineMode = LineDataSet.Mode.CUBIC_BEZIER
             set1.cubicIntensity = 0.2f
-            set1.setDrawFilled(true)
+            set1.isDrawFilledEnabled = true
             set1.isDrawCirclesEnabled = false
             set1.lineWidth = 1.8f
             set1.circleRadius = 4f
@@ -163,10 +163,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
                     set.let {
-                        if (set.isDrawFilledEnabled)
-                            set.setDrawFilled(false)
-                        else
-                            set.setDrawFilled(true)
+                        set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                     }
                 }
                 binding.chart1.invalidate()
