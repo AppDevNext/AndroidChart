@@ -133,31 +133,28 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data!!.dataSets.forEach {
-                    it?.isDrawValues = !it.isDrawValues
+                binding.chart1.data?.dataSets?.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (binding.chart1.data != null) {
-                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
-                    binding.chart1.invalidate()
+                binding.chart1.data?.let {
+                    it.isHighlightEnabled = !it.isHighlightEnabled
                 }
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.data!!.dataSets.forEach { set ->
-                    set?.setDrawFilled(!set.isDrawFilledEnabled)
+                binding.chart1.data?.dataSets?.forEach { set ->
+                    set.setDrawFilled(!set.isDrawFilledEnabled)
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                val sets = binding.chart1.data!!.dataSets
-
-                for (iSet in sets) {
-                    val set = iSet as LineDataSet
+                binding.chart1.data?.dataSets?.forEach { set ->
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 binding.chart1.invalidate()
