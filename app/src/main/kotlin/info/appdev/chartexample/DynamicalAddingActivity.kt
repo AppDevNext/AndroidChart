@@ -59,7 +59,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             data.addDataSet(set)
         }
 
-        val lastDataSetIndex = data.getDataSetCount() - 1 // add data only to the last
+        val lastDataSetIndex = data.dataSetCount - 1 // add data only to the last
         val lastSet = data.getDataSetByIndex(lastDataSetIndex)
         lastSet?.let {
             val cycleValue = (lastSet.entryCount % 100.0).toInt()
@@ -76,7 +76,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             //chart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
 //
             // this automatically refreshes the chart (calls invalidate())
-            binding.chart1.moveViewTo((data.getEntryCount() - 7).toFloat(), 50f, AxisDependency.LEFT)
+            binding.chart1.moveViewTo((data.entryCount - 7).toFloat(), 50f, AxisDependency.LEFT)
         }
     }
 
@@ -105,7 +105,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         if (data == null) {
             binding.chart1.setData(LineData())
         } else {
-            val count = (data.getDataSetCount() + 1)
+            val count = (data.dataSetCount + 1)
             val amount = data.getDataSetByIndex(0)?.entryCount ?: 0
 
             val values = ArrayList<Entry>()
@@ -139,7 +139,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         val data = binding.chart1.data
 
         if (data != null) {
-            data.removeDataSet(data.getDataSetByIndex(data.getDataSetCount() - 1))
+            data.removeDataSet(data.getDataSetByIndex(data.dataSetCount - 1))
 
             binding.chart1.notifyDataSetChanged()
             binding.chart1.invalidate()
