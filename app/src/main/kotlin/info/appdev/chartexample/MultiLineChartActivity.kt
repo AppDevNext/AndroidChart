@@ -149,10 +149,10 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleHighlight -> {
-                if (binding.chart1.data != null) {
-                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
-                    binding.chart1.invalidate()
+                binding.chart1.data?.let { data ->
+                    data.isHighlightEnabled = !data.isHighlightEnabled
                 }
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleFilled -> {
