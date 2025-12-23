@@ -10,7 +10,7 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
     override fun getClosestHighlight(index: Int, x: Float, y: Float): Highlight? {
         val highlights = getHighlightsAtIndex(index)
 
-        val distanceToCenter = chartPieRadar.distanceToCenter(x, y) / chartPieRadar.getFactor()
+        val distanceToCenter = chartPieRadar.distanceToCenter(x, y) / chartPieRadar.factor
 
         var closest: Highlight? = null
         var distance = Float.MAX_VALUE
@@ -40,7 +40,7 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
         val phaseX = chartPieRadar.animator.phaseX
         val phaseY = chartPieRadar.animator.phaseY
         val sliceAngle = chartPieRadar.sliceAngle
-        val factor = chartPieRadar.getFactor()
+        val factor = chartPieRadar.factor
 
         val pOut = MPPointF.getInstance(0f, 0f)
         for (i in 0..<chartPieRadar.data!!.dataSetCount) {

@@ -132,13 +132,13 @@ class RadarChartActivity : DemoBase() {
         data.setValueTextColor(Color.WHITE)
 
         binding.chart1.setData(data)
-        val colorList: MutableList<Int?> = ArrayList()
+        val colorList: MutableList<Int> = ArrayList()
         colorList.add(Color.rgb(222, 166, 111))
         colorList.add(Color.rgb(220, 206, 138))
         colorList.add(Color.rgb(243, 255, 192))
         colorList.add(Color.rgb(240, 255, 240))
         colorList.add(Color.rgb(250, 255, 250))
-        binding.chart1.setLayerColorList(colorList)
+        binding.chart1.layerColorList = colorList
         binding.chart1.invalidate()
     }
 
