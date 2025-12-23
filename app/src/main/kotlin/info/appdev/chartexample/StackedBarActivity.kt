@@ -110,7 +110,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         val set1: BarDataSet
 
         if (binding.chart1.data != null &&
-            binding.chart1.data!!.getDataSetCount() > 0
+            binding.chart1.data!!.dataSetCount > 0
         ) {
             set1 = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
             set1.entries  = values
@@ -150,24 +150,24 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data!!.dataSets.forEach {
-                    it?.isDrawValues = !it.isDrawValues
+                binding.chart1.data?.dataSets?.forEach {
+                    it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                binding.chart1.data!!.dataSets.forEach { set ->
-                    set?.isDrawIcons = !set.isDrawIcons
+                binding.chart1.data?.dataSets?.forEach { set ->
+                    set.isDrawIcons = !set.isDrawIcons
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                if (binding.chart1.data != null) {
-                    binding.chart1.data!!.isHighlightEnabled = !binding.chart1.data!!.isHighlightEnabled()
-                    binding.chart1.invalidate()
+                binding.chart1.data?.let {
+                    it.isHighlightEnabled = !it.isHighlightEnabled
                 }
+                binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
@@ -182,8 +182,9 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             }
 
             R.id.actionToggleBarBorders -> {
-                for (set in binding.chart1.data!!.dataSets) (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
-
+                binding.chart1.data?.dataSets?.forEach { set ->
+                    (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
+                }
                 binding.chart1.invalidate()
             }
 
