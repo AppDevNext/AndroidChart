@@ -7,13 +7,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import androidx.core.net.toUri
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import info.appdev.chartexample.DataTools.Companion.getMuchValues
-import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 import info.appdev.chartexample.databinding.ActivityPerformanceLinechartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 
 class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
 
@@ -69,7 +69,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         set1.isDrawValues = false
         set1.isDrawCirclesEnabled = false
         set1.lineMode = LineDataSet.Mode.LINEAR
-        set1.setDrawFilled(false)
+        set1.isDrawFilledEnabled = false
 
         // create a data object with the data sets
         val data = LineData(set1)

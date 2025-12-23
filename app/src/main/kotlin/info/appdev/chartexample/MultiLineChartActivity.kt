@@ -156,13 +156,8 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.data!!.dataSets.forEach { set ->
-                    set?.let {
-                        if (set.isDrawFilledEnabled)
-                            set.setDrawFilled(false)
-                        else
-                            set.setDrawFilled(true)
-                    }
+                binding.chart1.data?.dataSets?.forEach { set ->
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
             }

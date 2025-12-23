@@ -106,7 +106,7 @@ class RadarChartActivity : DemoBase() {
         val set1 = RadarDataSet(entries1, "Last Week")
         set1.color = Color.rgb(103, 110, 129)
         set1.fillColor = Color.rgb(103, 110, 129)
-        set1.setDrawFilled(true)
+        set1.isDrawFilledEnabled = true
         set1.fillAlpha = 180
         set1.lineWidth = 2f
         set1.isDrawHighlightCircleEnabled = true
@@ -115,7 +115,7 @@ class RadarChartActivity : DemoBase() {
         val set2 = RadarDataSet(entries2, "This Week")
         set2.color = Color.rgb(121, 162, 175)
         set2.fillColor = Color.rgb(121, 162, 175)
-        set2.setDrawFilled(true)
+        set2.isDrawFilledEnabled = true
         set2.fillAlpha = 180
         set2.lineWidth = 2f
         set2.isDrawHighlightCircleEnabled = true
@@ -176,7 +176,7 @@ class RadarChartActivity : DemoBase() {
 
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
             }

@@ -143,9 +143,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
-                    set.setDrawFilled(!set.isDrawFilledEnabled)
+                binding.chart1.data?.dataSets?.forEach { set ->
+                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
             }
@@ -259,7 +258,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         set11.circleRadius = 3f
         set11.isDrawCircleHoleEnabled = false
         set11.valueTextSize = 9f
-        set11.setDrawFilled(true)
+        set11.isDrawFilledEnabled = true
         set11.formLineWidth = 1f
         set11.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
         set11.formSize = 15f

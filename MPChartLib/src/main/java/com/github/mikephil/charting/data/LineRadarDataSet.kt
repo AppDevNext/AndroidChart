@@ -66,10 +66,6 @@ abstract class LineRadarDataSet<T : Entry>(yVals: MutableList<T>?, label: String
             mLineWidth = width.convertDpToPixel()
         }
 
-    override fun setDrawFilled(enabled: Boolean) {
-        this.isDrawFilledEnabled = enabled
-    }
-
     protected fun copy(lineRadarDataSet: LineRadarDataSet<*>) {
         super.copy((lineRadarDataSet as BaseDataSet<*>?)!!)
         lineRadarDataSet.isDrawFilledEnabled = this.isDrawFilledEnabled
