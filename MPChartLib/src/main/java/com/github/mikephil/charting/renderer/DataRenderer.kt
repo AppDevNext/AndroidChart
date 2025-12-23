@@ -58,8 +58,8 @@ abstract class DataRenderer(
         paintHighlight.color = Color.rgb(255, 187, 115)
     }
 
-    protected open fun isDrawingValuesAllowed(chart: IBaseProvider): Boolean {
-        return chart.data!!.entryCount < chart.maxVisibleCount * viewPortHandler.scaleX
+    protected open fun isDrawingValuesAllowed(baseProvider: IBaseProvider): Boolean {
+        return baseProvider.data!!.entryCount < baseProvider.maxVisibleCount * viewPortHandler.scaleX
     }
 
     /**

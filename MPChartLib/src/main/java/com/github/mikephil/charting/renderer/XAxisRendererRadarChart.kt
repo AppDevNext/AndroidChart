@@ -27,21 +27,22 @@ class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, pr
 
         val center = chart.centerOffsets
         val pOut = MPPointF.getInstance(0f, 0f)
-        for (i in 0..<chart.data!!.maxEntryCountSet.entryCount) {
-            val label = xAxis.valueFormatter?.getFormattedValue(i.toFloat(), xAxis)
+        chart.data!!.maxEntryCountSet?.let { maxEntryCountSet ->
+            for (i in 0..<maxEntryCountSet.entryCount) {
+                val label = xAxis.valueFormatter?.getFormattedValue(i.toFloat(), xAxis)
 
-            val angle = (sliceAngle * i + chart.rotationAngle) % 360f
+                val angle = (sliceAngle * i + chart.rotationAngle) % 360f
 
-            Utils.getPosition(
-                center, chart.yRange * factor + xAxis.mLabelWidth / 2f, angle, pOut
-            )
+                Utils.getPosition(
+                    center, chart.yRange * factor + xAxis.mLabelWidth / 2f, angle, pOut
+                )
 
-            drawLabel(
-                canvas, label, pOut.x, pOut.y - xAxis.mLabelHeight / 2f,
-                drawLabelAnchor, labelRotationAngleDegrees
-            )
+                drawLabel(
+                    canvas, label, pOut.x, pOut.y - xAxis.mLabelHeight / 2f,
+                    drawLabelAnchor, labelRotationAngleDegrees
+                )
+            }
         }
-
         MPPointF.recycleInstance(center)
         MPPointF.recycleInstance(pOut)
         MPPointF.recycleInstance(drawLabelAnchor)

@@ -160,7 +160,7 @@ open class LegendRenderer(
                             val label = if (j < clrs.size - 1 && j < entryCount - 1) {
                                 null
                             } else { // add label to the last entry
-                                data.getDataSetByIndex(i).label
+                                data.getDataSetByIndex(i)?.label
                             }
 
                             computedEntries.add(

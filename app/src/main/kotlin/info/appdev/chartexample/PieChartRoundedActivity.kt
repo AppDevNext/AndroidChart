@@ -172,14 +172,14 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
 
             R.id.actionToggleValues -> {
                 binding.chart1.data?.dataSets?.forEach {
-                    it?.isDrawValues = !it.isDrawValues
+                    it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set?.isDrawIcons = !set.isDrawIcons
+                    set.isDrawIcons = !set.isDrawIcons
                 }
                 binding.chart1.invalidate()
             }

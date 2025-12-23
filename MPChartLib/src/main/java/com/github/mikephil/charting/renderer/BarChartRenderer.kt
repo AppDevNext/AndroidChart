@@ -49,9 +49,9 @@ open class BarChartRenderer(
     private var roundedBarRadius = 0f
 
     constructor(
-        chart: BarDataProvider, animator: ChartAnimator,
+        dataProvider: BarDataProvider, animator: ChartAnimator,
         viewPortHandler: ViewPortHandler, mDrawRoundedBars: Boolean, mRoundedBarRadius: Float
-    ) : this(chart, animator, viewPortHandler) {
+    ) : this(dataProvider, animator, viewPortHandler) {
         this.drawRoundedBars = mDrawRoundedBars
         this.roundedBarRadius = mRoundedBarRadius
     }
@@ -60,7 +60,7 @@ open class BarChartRenderer(
         val barData = dataProvider.barData
         barBuffers = mutableListOf()
 
-        barData.dataSets.forEach {
+        barData.dataSets?.forEach {
             barBuffers.add(
                 BarBuffer(
                     it.entryCount * 4 * (if (it.isStacked) it.stackSize else 1),
@@ -80,8 +80,10 @@ open class BarChartRenderer(
         for (i in 0..<barData.dataSetCount) {
             val dataSet = barData.getDataSetByIndex(i)
 
-            if (dataSet.isVisible) {
-                drawDataSet(canvas, dataSet, i)
+            dataSet?.let {
+                if (it.isVisible) {
+                    drawDataSet(canvas, it, i)
+                }
             }
         }
     }
@@ -262,7 +264,7 @@ open class BarChartRenderer(
             val drawValueAboveBar = dataProvider.isDrawValueAboveBarEnabled
 
             for (i in 0..<dataProvider.barData.dataSetCount) {
-                val dataSet = dataSets[i]
+                val dataSet = dataSets!![i]
                 if (dataSet.entryCount == 0) {
                     continue
                 }
