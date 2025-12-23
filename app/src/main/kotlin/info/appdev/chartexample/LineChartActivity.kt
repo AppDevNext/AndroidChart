@@ -156,16 +156,16 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
             R.id.actionToggleValues -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set?.isDrawValues = !set.isDrawValues
+                    set.isDrawValues = !set.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set?.isDrawIcons = !set.isDrawIcons
-                    binding.chart1.invalidate()
+                    set.isDrawIcons = !set.isDrawIcons
                 }
+                binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
@@ -177,7 +177,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set?.setDrawFilled(!set.isDrawFilledEnabled)
+                    set.setDrawFilled(!set.isDrawFilledEnabled)
                     binding.chart1.invalidate()
                 }
             }
