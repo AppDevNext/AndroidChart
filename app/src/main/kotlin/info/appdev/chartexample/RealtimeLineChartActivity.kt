@@ -107,7 +107,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
             // chart.setVisibleYRange(30, AxisDependency.LEFT);
 
             // move to the latest entry
-            binding.chart1.moveViewToX(data.getEntryCount().toFloat())
+            binding.chart1.moveViewToX(data.dataSetCount.toFloat())
 
             // this automatically refreshes the chart (calls invalidate())
             // chart.moveViewTo(data.getXValCount()-7, 55f,
