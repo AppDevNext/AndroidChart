@@ -16,7 +16,7 @@ class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(d
             val high = getHighlightForX(pos.y.toFloat(), y, x) ?: return null
 
             val set = barData.getDataSetByIndex(high.dataSetIndex)
-            if (set != null && set.isStacked()) {
+            if (set != null && set.isStacked) {
                 return getStackedHighlight(
                     high,
                     set,
