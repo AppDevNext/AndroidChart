@@ -71,8 +71,7 @@ open class HorizontalBarChartRenderer(
 
                 var i = 0
                 val count = min((ceil(((dataSet.entryCount).toFloat() * phaseX).toDouble())).toInt().toDouble(), dataSet.entryCount.toDouble()).toInt()
-                while (i < count
-                ) {
+                while (i < count) {
                     val barEntry = dataSet.getEntryForIndex(i)
                     barEntry?.let {
                         x = it.x
