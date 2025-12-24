@@ -51,11 +51,10 @@ class CombinedChartActivity : DemoBase() {
         binding.chart1.isHighlightFullBarEnabled = false
 
         // draw bars behind lines
-        binding.chart1.setDrawOrder(
-            arrayOf(
-                DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
-            )
+        binding.chart1.drawOrder = arrayOf(
+            DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
         )
+
 
         val l = binding.chart1.legend
         l.isWordWrapEnabled = true

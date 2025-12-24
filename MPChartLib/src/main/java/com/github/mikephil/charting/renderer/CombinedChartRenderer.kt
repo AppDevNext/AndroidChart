@@ -19,7 +19,7 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
     /**
      * all rederers for the different kinds of data this combined-renderer can draw
      */
-    protected var dataRenderers: MutableList<DataRenderer> = ArrayList(5)
+    protected var dataRenderers: MutableList<DataRenderer> = mutableListOf()
 
     protected var weakChart: WeakReference<Chart<*>> = WeakReference(chart)
 
@@ -105,9 +105,6 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
     }
 
     val subRenderers: List<DataRenderer>
-        /**
-         * Returns all sub-renderers.
-         */
         get() = dataRenderers
 
     fun setSubRenderers(renderers: MutableList<DataRenderer>) {
