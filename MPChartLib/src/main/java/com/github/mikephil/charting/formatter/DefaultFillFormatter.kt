@@ -12,22 +12,24 @@ open class DefaultFillFormatter : IFillFormatter {
         val fillMin: Float
         val chartMaxY = dataProvider.yChartMax
         val chartMinY = dataProvider.yChartMin
-        val data = dataProvider.lineData
-        fillMin = if (dataSet!!.yMax > 0 && dataSet.yMin < 0) {
-            0f
-        } else {
-            val max: Float = if (data.yMax > 0) 0f
-            else
-                chartMaxY
-            val min: Float = if (data.yMin < 0)
+        dataProvider.lineData?.let { data ->
+            fillMin = if (dataSet!!.yMax > 0 && dataSet.yMin < 0) {
                 0f
-            else
-                chartMinY
-            if (dataSet.yMin >= 0)
-                min
-            else
-                max
+            } else {
+                val max: Float = if (data.yMax > 0) 0f
+                else
+                    chartMaxY
+                val min: Float = if (data.yMin < 0)
+                    0f
+                else
+                    chartMinY
+                if (dataSet.yMin >= 0)
+                    min
+                else
+                    max
+            }
+            return fillMin
         }
-        return fillMin
+        return 0f
     }
 }

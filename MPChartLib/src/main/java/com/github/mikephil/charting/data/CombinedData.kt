@@ -168,7 +168,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
 
         if (highlight.dataSetIndex >= data.dataSetCount) return null
 
-        return data.dataSets!!.get(highlight.dataSetIndex) as IBarLineScatterCandleBubbleDataSet<out Entry>?
+        return data.dataSets!![highlight.dataSetIndex] as IBarLineScatterCandleBubbleDataSet<out Entry>?
     }
 
     fun getDataIndex(data: ChartData<*>?): Int {

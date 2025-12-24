@@ -75,11 +75,11 @@ open class LineChartRenderer(
 
         drawBitmapLocal.eraseColor(Color.TRANSPARENT)
 
-        val lineData = dataProvider.lineData
-
-        lineData.dataSets?.forEach { set ->
-            if (set.isVisible)
-                drawDataSet(canvas, set)
+        dataProvider.lineData?.let { lineData ->
+            lineData.dataSets?.forEach { set ->
+                if (set.isVisible)
+                    drawDataSet(canvas, set)
+            }
         }
         canvas.drawBitmap(drawBitmapLocal, 0f, 0f, null)
     }
@@ -482,7 +482,7 @@ open class LineChartRenderer(
 
     override fun drawValues(canvas: Canvas) {
         if (isDrawingValuesAllowed(dataProvider)) {
-            val dataSets = dataProvider.lineData.dataSets
+            val dataSets = dataProvider.lineData?.dataSets
 
             dataSets?.let {
                 for (i in it.indices) {
@@ -586,7 +586,7 @@ open class LineChartRenderer(
         mCirclesBuffer[0] = 0f
         mCirclesBuffer[1] = 0f
 
-        val dataSets = dataProvider.lineData.dataSets
+        val dataSets = dataProvider.lineData?.dataSets
 
         dataSets?.let {
             for (i in it.indices) {
@@ -651,7 +651,7 @@ open class LineChartRenderer(
         val lineData = dataProvider.lineData
 
         for (high in indices) {
-            val set = lineData.getDataSetByIndex(high.dataSetIndex)
+            val set = lineData?.getDataSetByIndex(high.dataSetIndex)
 
             if (set == null || !set.isHighlightEnabled) continue
 
