@@ -322,8 +322,7 @@ open class LineChartRenderer(
 
                 if (!viewPortHandler.isInBoundsRight(firstCoordinateX)) break
 
-                // make sure the lines don't do shitty things outside
-                // bounds
+                // make sure the lines don't do shitty things outside bounds
                 if (!viewPortHandler.isInBoundsLeft(lastCoordinateX) || !viewPortHandler.isInBoundsTop(
                         max(
                             firstCoordinateY.toDouble(),
