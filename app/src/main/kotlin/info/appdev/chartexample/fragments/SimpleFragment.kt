@@ -63,7 +63,7 @@ abstract class SimpleFragment : Fragment() {
         val values = getValues(count)
         val sets = ArrayList<IScatterDataSet>()
 
-        val shapes = ScatterShape.getAllDefaultShapes()
+        val shapes = ScatterShape.allDefaultShapes
 
         for (i in 0..<dataSets) {
             val entries = ArrayList<Entry>()
