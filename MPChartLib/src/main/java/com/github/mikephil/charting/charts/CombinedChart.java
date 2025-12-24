@@ -111,15 +111,20 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
 			Log.e(LOG_TAG, "Can't select by touch. No data set.");
 			return null;
 		} else {
-			Highlight h = getHighlighter().getHighlight(x, y);
-			if (h == null || !isHighlightFullBarEnabled()) {
-				return h;
+			Highlight highlight = getHighlighter().getHighlight(x, y);
+			if (highlight == null || !isHighlightFullBarEnabled()) {
+				return highlight;
 			}
 
 			// For isHighlightFullBarEnabled, remove stackIndex
-			return new Highlight(h.getX(), h.getY(),
-					h.getXPx(), h.getYPx(),
-					h.getDataSetIndex(), -1, h.getAxis());
+			return new Highlight(
+					highlight.getX(),
+					highlight.getY(),
+					highlight.getXPx(),
+					highlight.getYPx(),
+					highlight.getDataSetIndex(),
+					-1,
+					highlight.getAxis());
 		}
 	}
 
