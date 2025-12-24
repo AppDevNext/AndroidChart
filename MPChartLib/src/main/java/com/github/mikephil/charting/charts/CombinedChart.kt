@@ -8,11 +8,13 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BubbleData
 import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CombinedData
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.ScatterData
 import com.github.mikephil.charting.highlight.CombinedHighlighter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.dataprovider.CombinedDataProvider
+import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.renderer.CombinedChartRenderer
 
 /**
@@ -200,13 +202,15 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
         for (i in mIndicesToHighlight.indices) {
             val highlight = mIndicesToHighlight[i]
-            val set = mData!!.getDataSetByHighlight(highlight)
+            val dataset = mData!!.getDataSetByHighlight(highlight)
 
             val e = mData!!.getEntryForHighlight(highlight)
-            if (e == null || set == null) {
+            if (e == null || dataset == null) {
                 continue
             }
 
+            @Suppress("UNCHECKED_CAST")
+            val set = dataset as IDataSet<Entry>
             val entryIndex = set.getEntryIndex(e)
 
             // make sure entry not null
