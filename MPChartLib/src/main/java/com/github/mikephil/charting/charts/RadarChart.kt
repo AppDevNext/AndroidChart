@@ -110,22 +110,23 @@ class RadarChart : PieRadarChartBase<RadarData> {
 
     override fun calcMinMax() {
         super.calcMinMax()
-
-        mYAxis!!.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT))
-        mXAxis.calculate(0f, mData.maxEntryCountSet!!.entryCount.toFloat())
+        mData?.let { data ->
+            mYAxis!!.calculate(data.getYMin(AxisDependency.LEFT), data.getYMax(AxisDependency.LEFT))
+            mXAxis.calculate(0f, data.maxEntryCountSet!!.entryCount.toFloat())
+        }
     }
 
     override fun notifyDataSetChanged() {
-        if (mData == null) return
+        mData?.let { data ->
+            calcMinMax()
 
-        calcMinMax()
+            mYAxisRenderer!!.computeAxis(mYAxis!!.mAxisMinimum, mYAxis!!.mAxisMaximum, mYAxis!!.isInverted)
+            mXAxisRenderer!!.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
 
-        mYAxisRenderer!!.computeAxis(mYAxis!!.mAxisMinimum, mYAxis!!.mAxisMaximum, mYAxis!!.isInverted)
-        mXAxisRenderer!!.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
+            if (mLegend != null && !mLegend.isLegendCustom) mLegendRenderer.computeLegend(data)
 
-        if (mLegend != null && !mLegend.isLegendCustom) mLegendRenderer.computeLegend(mData)
-
-        calculateOffsets()
+            calculateOffsets()
+        }
     }
 
     protected override fun onDraw(canvas: Canvas) {
@@ -175,7 +176,7 @@ class RadarChart : PieRadarChartBase<RadarData> {
          * Returns the angle that each slice in the radar chart occupies.
          *
          */
-        get() = 360f / mData.maxEntryCountSet!!.entryCount.toFloat()
+        get() = 360f / mData?.maxEntryCountSet!!.entryCount.toFloat()
 
 
     val isCustomLayerColorEnable: Boolean
@@ -202,7 +203,7 @@ class RadarChart : PieRadarChartBase<RadarData> {
 
         val sliceangle = this.sliceAngle
 
-        val max = mData.maxEntryCountSet!!.entryCount
+        val max = mData?.maxEntryCountSet!!.entryCount
 
         var index = 0
 

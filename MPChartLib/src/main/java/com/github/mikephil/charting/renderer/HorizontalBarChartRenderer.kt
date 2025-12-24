@@ -31,7 +31,7 @@ open class HorizontalBarChartRenderer(
         barBuffers = arrayOfNulls<HorizontalBarBuffer>(barData.dataSetCount).toMutableList()
 
         for (i in barBuffers.indices) {
-            val set = barData.getDataSetByIndex(i)
+            val set = barData?.getDataSetByIndex(i)
             set?.let {
                 barBuffers[i] = HorizontalBarBuffer(
                     it.entryCount * 4 * (if (set.isStacked) set.stackSize else 1),
@@ -104,7 +104,7 @@ open class HorizontalBarChartRenderer(
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
         buffer.setInverted(dataProvider.isInverted(dataSet.axisDependency))
-        buffer.setBarWidth(dataProvider.barData.barWidth)
+        dataProvider.barData?.let { buffer.setBarWidth(it.barWidth) }
 
         buffer.feed(dataSet)
 
