@@ -186,8 +186,10 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             }
 
             R.id.actionToggleMinAngles -> {
-                if (binding.chart1.minAngleForSlices == 0f) binding.chart1.setMinAngleForSlices(36f)
-                else binding.chart1.setMinAngleForSlices(0f)
+                if (binding.chart1.minAngleForSlices == 0f)
+                    binding.chart1.minAngleForSlices = 36f
+                else
+                    binding.chart1.minAngleForSlices = 0f
                 binding.chart1.notifyDataSetChanged()
                 binding.chart1.invalidate()
             }
