@@ -501,10 +501,8 @@ class BarLineChartTouchListener(
 
             chart.zoom(scaleX, scaleY, trans.x, trans.y)
 
-            if (chart.isLogEnabled) Log.i(
-                "BarlineChartTouch", ("Double-Tap, Zooming In, x: " + trans.x + ", y: "
-                        + trans.y)
-            )
+            if (chart.isLogEnabled)
+                Log.i("BarlineChartTouch", "Double-Tap, Zooming In, x: ${trans.x} y: ${trans.y}")
 
             onChartGestureListener?.onChartScale(e, scaleX, scaleY)
 

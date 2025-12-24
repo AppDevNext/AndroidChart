@@ -173,8 +173,6 @@ class YAxis : AxisBase {
 
     /**
      * Enum that specifies the axis a DataSet should be plotted against, either LEFT or RIGHT.
-     *
-     * @author Philipp Jahoda
      */
     enum class AxisDependency {
         LEFT, RIGHT

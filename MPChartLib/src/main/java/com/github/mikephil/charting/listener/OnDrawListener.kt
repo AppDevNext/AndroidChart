@@ -16,7 +16,7 @@ interface OnDrawListener {
     fun onEntryAdded(entry: Entry)
 
     /**
-     * Called whenever an entry is moved by the user after beeing highlighted
+     * Called whenever an entry is moved by the user after being highlighted
      */
     fun onEntryMoved(entry: Entry)
 

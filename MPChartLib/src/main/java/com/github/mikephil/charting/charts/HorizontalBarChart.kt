@@ -27,8 +27,6 @@ import kotlin.math.min
 /**
  * BarChart with horizontal bar orientation. In this implementation, x- and y-axis are switched, meaning the YAxis class
  * represents the horizontal values and the XAxis class represents the vertical values.
- *
- * @author Philipp Jahoda
  */
 class HorizontalBarChart : BarChart {
     constructor(context: Context?) : super(context)

@@ -12,8 +12,6 @@ import kotlin.Int
 /**
  * Data object that allows the combination of Line-, Bar-, Scatter-, Bubble- and
  * CandleData. Used in the CombinedChart class.
- *
- * @author Philipp Jahoda
  */
 class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out Entry>>() {
     var lineData: LineData? = null
