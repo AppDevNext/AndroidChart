@@ -9,25 +9,27 @@ import kotlin.math.abs
 
 class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(dataProvider) {
     override fun getHighlight(x: Float, y: Float): Highlight? {
-        val barData = provider.barData
+        provider.barData?.let { barData ->
 
-        val pos = getValsForTouch(y, x)
+            val pos = getValsForTouch(y, x)
 
-        val high = getHighlightForX(pos.y.toFloat(), y, x) ?: return null
+            val high = getHighlightForX(pos.y.toFloat(), y, x) ?: return null
 
-        val set = barData.getDataSetByIndex(high.dataSetIndex)
-        if (set != null && set.isStacked()) {
-            return getStackedHighlight(
-                high,
-                set,
-                pos.y.toFloat(),
-                pos.x.toFloat()
-            )
+            val set = barData.getDataSetByIndex(high.dataSetIndex)
+            if (set != null && set.isStacked()) {
+                return getStackedHighlight(
+                    high,
+                    set,
+                    pos.y.toFloat(),
+                    pos.x.toFloat()
+                )
+            }
+
+            MPPointD.recycleInstance(pos)
+
+            return high
         }
-
-        MPPointD.recycleInstance(pos)
-
-        return high
+        return null
     }
 
     override fun buildHighlights(set: IDataSet<*>, dataSetIndex: Int, xVal: Float, rounding: DataSet.Rounding?): MutableList<Highlight> {

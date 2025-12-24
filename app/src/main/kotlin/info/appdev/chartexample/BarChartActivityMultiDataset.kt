@@ -159,13 +159,13 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         }
 
         // specify the width each bar should have
-        binding.chart1.barData.barWidth = barWidth
+        binding.chart1.barData?.let { it.barWidth = barWidth }
 
         // restrict the x-axis range
         binding.chart1.xAxis.axisMinimum = startYear.toFloat()
 
         // barData.getGroupWith(...) is a helper that calculates the width each group needs based on the provided parameters
-        binding.chart1.xAxis.axisMaximum = startYear + binding.chart1.barData.getGroupWidth(groupSpace, barSpace) * groupCount
+        binding.chart1.barData?.let { binding.chart1.xAxis.axisMaximum = startYear + it.getGroupWidth(groupSpace, barSpace) * groupCount }
         binding.chart1.groupBars(startYear.toFloat(), groupSpace, barSpace)
         binding.chart1.invalidate()
     }

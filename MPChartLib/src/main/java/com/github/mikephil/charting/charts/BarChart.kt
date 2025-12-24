@@ -80,20 +80,22 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
     }
 
     protected override fun calcMinMax() {
-        if (mFitBars) {
-            mXAxis.calculate(mData.xMin - mData.barWidth / 2f, mData.xMax + mData.barWidth / 2f)
-        } else {
-            mXAxis.calculate(mData.xMin, mData.xMax)
-        }
+        mData?.let { barData ->
+            if (mFitBars) {
+                mXAxis.calculate(barData.xMin - barData.barWidth / 2f, barData.xMax + barData.barWidth / 2f)
+            } else {
+                mXAxis.calculate(barData.xMin, barData.xMax)
+            }
 
-        // calculate axis range (min / max) according to provided data
-        mAxisLeft.calculate(mData.getYMin(YAxis.AxisDependency.LEFT), mData.getYMax(YAxis.AxisDependency.LEFT))
-        mAxisRight.calculate(
-            mData.getYMin(YAxis.AxisDependency.RIGHT), mData.getYMax(
-                YAxis.AxisDependency
-                    .RIGHT
+            // calculate axis range (min / max) according to provided data
+            mAxisLeft.calculate(barData.getYMin(YAxis.AxisDependency.LEFT), barData.getYMax(YAxis.AxisDependency.LEFT))
+            mAxisRight.calculate(
+                barData.getYMin(YAxis.AxisDependency.RIGHT), barData.getYMax(
+                    YAxis.AxisDependency
+                        .RIGHT
+                )
             )
-        )
+        }
     }
 
     /**
@@ -134,26 +136,28 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
      * The rect will be assigned Float.MIN_VALUE in all locations if the Entry could not be found in the charts data.
      */
     open fun getBarBounds(barEntry: BarEntry, outputRect: RectF) {
-        val set = mData.getDataSetForEntry(barEntry)
+        mData?.let { barData ->
+            val set = barData.getDataSetForEntry(barEntry)
 
-        if (set == null) {
-            outputRect.set(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE)
-            return
+            if (set == null) {
+                outputRect.set(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE)
+                return
+            }
+
+            val y = barEntry.y
+            val x = barEntry.x
+
+            val barWidth = barData.barWidth
+
+            val left = x - barWidth / 2f
+            val right = x + barWidth / 2f
+            val top = if (y >= 0) y else 0f
+            val bottom = if (y <= 0) y else 0f
+
+            outputRect.set(left, top, right, bottom)
+
+            getTransformer(set.axisDependency)!!.rectValueToPixel(outputRect)
         }
-
-        val y = barEntry.y
-        val x = barEntry.x
-
-        val barWidth = mData.barWidth
-
-        val left = x - barWidth / 2f
-        val right = x + barWidth / 2f
-        val top = if (y >= 0) y else 0f
-        val bottom = if (y <= 0) y else 0f
-
-        outputRect.set(left, top, right, bottom)
-
-        getTransformer(set.axisDependency)!!.rectValueToPixel(outputRect)
     }
 
     /**
@@ -182,7 +186,7 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
         highlightValue(Highlight(x, dataSetIndex, stackIndex), false)
     }
 
-    override val barData: BarData
+    override val barData: BarData?
         get() = mData
 
     /**
@@ -206,7 +210,7 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
      * @param barSpace   the space between individual bars in values (not pixels) e.g. 0.1f for bar width 1f
      */
     fun groupBars(fromX: Float, groupSpace: Float, barSpace: Float) {
-        barData.groupBars(fromX, groupSpace, barSpace)
+        barData?.groupBars(fromX, groupSpace, barSpace)
         notifyDataSetChanged()
     }
 
@@ -222,28 +226,29 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
     }
 
     override fun getAccessibilityDescription(): String {
-        val barData = barData
+        barData?.let { barData ->
+            val entryCount = barData.entryCount
 
-        val entryCount = barData.entryCount
+            // Find the min and max index
+            val yAxisValueFormatter = axisLeft.valueFormatter
+            val minVal = yAxisValueFormatter!!.getFormattedValue(barData.yMin, null)
+            val maxVal = yAxisValueFormatter.getFormattedValue(barData.yMax, null)
 
-        // Find the min and max index
-        val yAxisValueFormatter = axisLeft.valueFormatter
-        val minVal = yAxisValueFormatter!!.getFormattedValue(barData.yMin, null)
-        val maxVal = yAxisValueFormatter.getFormattedValue(barData.yMax, null)
+            // Data range...
+            val xAxisValueFormatter = xAxis.valueFormatter
+            val minRange = xAxisValueFormatter!!.getFormattedValue(barData.xMin, null)
+            val maxRange = xAxisValueFormatter.getFormattedValue(barData.xMax, null)
 
-        // Data range...
-        val xAxisValueFormatter = xAxis.valueFormatter
-        val minRange = xAxisValueFormatter!!.getFormattedValue(barData.xMin, null)
-        val maxRange = xAxisValueFormatter.getFormattedValue(barData.xMax, null)
+            val entries = if (entryCount == 1) "entry" else "entries"
 
-        val entries = if (entryCount == 1) "entry" else "entries"
-
-        // Format the values of min and max; to recite them back
-        return String.format(
-            Locale.getDefault(), "The bar chart has %d %s. " +
-                    "The minimum value is %s and maximum value is %s." +
-                    "Data ranges from %s to %s.",
-            entryCount, entries, minVal, maxVal, minRange, maxRange
-        )
+            // Format the values of min and max; to recite them back
+            return String.format(
+                Locale.getDefault(), "The bar chart has %d %s. " +
+                        "The minimum value is %s and maximum value is %s." +
+                        "Data ranges from %s to %s.",
+                entryCount, entries, minVal, maxVal, minRange, maxRange
+            )
+        }
+        return ""
     }
 }

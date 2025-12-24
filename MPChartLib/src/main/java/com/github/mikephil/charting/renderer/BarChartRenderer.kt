@@ -60,7 +60,7 @@ open class BarChartRenderer(
         val barData = dataProvider.barData
         barBuffers = mutableListOf()
 
-        barData.dataSets?.forEach {
+        barData?.dataSets?.forEach {
             barBuffers.add(
                 BarBuffer(
                     it.entryCount * 4 * (if (it.isStacked) it.stackSize else 1),
@@ -75,14 +75,14 @@ open class BarChartRenderer(
             initBuffers()
         }
 
-        val barData = dataProvider.barData
+        dataProvider.barData?.let { barData ->
+            for (i in 0..<barData.dataSetCount) {
+                val dataSet = barData.getDataSetByIndex(i)
 
-        for (i in 0..<barData.dataSetCount) {
-            val dataSet = barData.getDataSetByIndex(i)
-
-            dataSet?.let {
-                if (it.isVisible) {
-                    drawDataSet(canvas, it, i)
+                dataSet?.let {
+                    if (it.isVisible) {
+                        drawDataSet(canvas, it, i)
+                    }
                 }
             }
         }
@@ -119,43 +119,44 @@ open class BarChartRenderer(
         if (dataProvider.isDrawBarShadowEnabled) {
             shadowPaint.color = dataSet.barShadowColor
 
-            val barData = dataProvider.barData
+            dataProvider.barData?.let { barData ->
 
-            val barWidth = barData.barWidth
-            val barWidthHalf = barWidth / 2.0f
-            var x: Float
+                val barWidth = barData.barWidth
+                val barWidthHalf = barWidth / 2.0f
+                var x: Float
 
-            var i = 0
-            val count = min((ceil(((dataSet.entryCount).toFloat() * phaseX).toDouble())).toInt().toDouble(), dataSet.entryCount.toDouble()).toInt()
-            while (i < count) {
-                val barEntry = dataSet.getEntryForIndex(i)
+                var i = 0
+                val count = min((ceil(((dataSet.entryCount).toFloat() * phaseX).toDouble())).toInt().toDouble(), dataSet.entryCount.toDouble()).toInt()
+                while (i < count) {
+                    val barEntry = dataSet.getEntryForIndex(i)
 
-                barEntry?.let {
-                    x = barEntry.x
+                    barEntry?.let {
+                        x = barEntry.x
 
-                    barShadowRectBuffer.left = x - barWidthHalf
-                    barShadowRectBuffer.right = x + barWidthHalf
+                        barShadowRectBuffer.left = x - barWidthHalf
+                        barShadowRectBuffer.right = x + barWidthHalf
 
-                    trans!!.rectValueToPixel(barShadowRectBuffer)
-                }
-                if (!viewPortHandler.isInBoundsLeft(barShadowRectBuffer.right)) {
+                        trans!!.rectValueToPixel(barShadowRectBuffer)
+                    }
+                    if (!viewPortHandler.isInBoundsLeft(barShadowRectBuffer.right)) {
+                        i++
+                        continue
+                    }
+
+                    if (!viewPortHandler.isInBoundsRight(barShadowRectBuffer.left)) {
+                        break
+                    }
+
+                    barShadowRectBuffer.top = viewPortHandler.contentTop()
+                    barShadowRectBuffer.bottom = viewPortHandler.contentBottom()
+
+                    if (drawRoundedBars) {
+                        canvas.drawRoundRect(barShadowRectBuffer, roundedBarRadius, roundedBarRadius, shadowPaint)
+                    } else {
+                        canvas.drawRect(barShadowRectBuffer, shadowPaint)
+                    }
                     i++
-                    continue
                 }
-
-                if (!viewPortHandler.isInBoundsRight(barShadowRectBuffer.left)) {
-                    break
-                }
-
-                barShadowRectBuffer.top = viewPortHandler.contentTop()
-                barShadowRectBuffer.bottom = viewPortHandler.contentBottom()
-
-                if (drawRoundedBars) {
-                    canvas.drawRoundRect(barShadowRectBuffer, roundedBarRadius, roundedBarRadius, shadowPaint)
-                } else {
-                    canvas.drawRect(barShadowRectBuffer, shadowPaint)
-                }
-                i++
             }
         }
 
@@ -164,7 +165,7 @@ open class BarChartRenderer(
             setPhases(phaseX, phaseY)
             setDataSet(index)
             setInverted(dataProvider.isInverted(dataSet.axisDependency))
-            setBarWidth(dataProvider.barData.barWidth)
+            dataProvider.barData?.let { setBarWidth(it.barWidth) }
             feed(dataSet)
         }
         trans!!.pointValuesToPixel(buffer.buffer)
@@ -255,132 +256,74 @@ open class BarChartRenderer(
         // if values are drawn
 
         if (isDrawingValuesAllowed(dataProvider)) {
-            val dataSets = dataProvider.barData.dataSets
+            val dataSets = dataProvider.barData?.dataSets
 
             val valueOffsetPlus = 4.5f.convertDpToPixel()
             var posOffset: Float
             var negOffset: Float
             val drawValueAboveBar = dataProvider.isDrawValueAboveBarEnabled
 
-            for (i in 0..<dataProvider.barData.dataSetCount) {
-                val dataSet = dataSets!![i]
-                if (dataSet.entryCount == 0) {
-                    continue
-                }
-                if (!shouldDrawValues(dataSet)) {
-                    continue
-                }
-
-                // apply the text-styling defined by the DataSet
-                applyValueTextStyle(dataSet)
-
-                val isInverted = dataProvider.isInverted(dataSet.axisDependency)
-
-                // calculate the correct offset depending on the draw position of
-                // the value
-                val valueTextHeight = Utils.calcTextHeight(paintValues, "8").toFloat()
-                posOffset = (if (drawValueAboveBar) -valueOffsetPlus else valueTextHeight + valueOffsetPlus)
-                negOffset = (if (drawValueAboveBar) valueTextHeight + valueOffsetPlus else -valueOffsetPlus)
-
-                if (isInverted) {
-                    posOffset = -posOffset - valueTextHeight
-                    negOffset = -negOffset - valueTextHeight
-                }
-
-                // get the buffer
-                val buffer = barBuffers[i]
-
-                val phaseY = animator.phaseY
-
-                val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
-                iconsOffset.x = iconsOffset.x.convertDpToPixel()
-                iconsOffset.y = iconsOffset.y.convertDpToPixel()
-
-                // if only single values are drawn (sum)
-                if (!dataSet.isStacked) {
-                    var j = 0
-                    while (j < buffer!!.buffer.size * animator.phaseX) {
-                        val x = (buffer.buffer[j] + buffer.buffer[j + 2]) / 2f
-
-                        if (!viewPortHandler.isInBoundsRight(x)) {
-                            break
-                        }
-
-                        if (!viewPortHandler.isInBoundsY(buffer.buffer[j + 1])
-                            || !viewPortHandler.isInBoundsLeft(x)
-                        ) {
-                            j += 4
-                            continue
-                        }
-
-                        val barEntry = dataSet.getEntryForIndex(j / 4)
-                        barEntry?.let {
-                            val value = barEntry.y
-
-                            if (dataSet.isDrawValues) {
-                                drawValue(
-                                    canvas, dataSet.valueFormatter, value, barEntry, i, x,
-                                    if (value >= 0) (buffer.buffer[j + 1] + posOffset) else (buffer.buffer[j + 3] + negOffset),
-                                    dataSet.getValueTextColor(j / 4)
-                                )
-                            }
-
-                            if (barEntry.icon != null && dataSet.isDrawIcons) {
-                                val icon = barEntry.icon
-
-                                var px = x
-                                var py = if (value >= 0) (buffer.buffer[j + 1] + posOffset) else (buffer.buffer[j + 3] + negOffset)
-
-                                px += iconsOffset.x
-                                py += iconsOffset.y
-
-                                icon?.let {
-                                    Utils.drawImage(
-                                        canvas,
-                                        it,
-                                        px.toInt(),
-                                        py.toInt()
-                                    )
-                                }
-                            }
-                        }
-                        j += 4
+            dataProvider.barData?.let { barData ->
+                for (i in 0..<barData.dataSetCount) {
+                    val dataSet = dataSets!![i]
+                    if (dataSet.entryCount == 0) {
+                        continue
+                    }
+                    if (!shouldDrawValues(dataSet)) {
+                        continue
                     }
 
-                    // if we have stacks
-                } else {
-                    val trans = dataProvider.getTransformer(dataSet.axisDependency)
+                    // apply the text-styling defined by the DataSet
+                    applyValueTextStyle(dataSet)
 
-                    var bufferIndex = 0
-                    var index = 0
+                    val isInverted = dataProvider.isInverted(dataSet.axisDependency)
 
-                    while (index < dataSet.entryCount * animator.phaseX) {
-                        val barEntry = dataSet.getEntryForIndex(index)
-                        barEntry?.let {
-                            val vals = barEntry.yVals
-                            val x = (buffer!!.buffer[bufferIndex] + buffer.buffer[bufferIndex + 2]) / 2f
-                            val color = dataSet.getValueTextColor(index)
+                    // calculate the correct offset depending on the draw position of
+                    // the value
+                    val valueTextHeight = Utils.calcTextHeight(paintValues, "8").toFloat()
+                    posOffset = (if (drawValueAboveBar) -valueOffsetPlus else valueTextHeight + valueOffsetPlus)
+                    negOffset = (if (drawValueAboveBar) valueTextHeight + valueOffsetPlus else -valueOffsetPlus)
 
-                            // we still draw stacked bars, but there is one
-                            // non-stacked
-                            // in between
-                            if (vals == null) {
-                                if (!viewPortHandler.isInBoundsRight(x)) {
-                                    break
-                                }
+                    if (isInverted) {
+                        posOffset = -posOffset - valueTextHeight
+                        negOffset = -negOffset - valueTextHeight
+                    }
 
-                                if (!viewPortHandler.isInBoundsY(buffer.buffer[bufferIndex + 1])
-                                    || !viewPortHandler.isInBoundsLeft(x)
-                                ) {
-                                    continue
-                                }
+                    // get the buffer
+                    val buffer = barBuffers[i]
+
+                    val phaseY = animator.phaseY
+
+                    val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                    iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                    iconsOffset.y = iconsOffset.y.convertDpToPixel()
+
+                    // if only single values are drawn (sum)
+                    if (!dataSet.isStacked) {
+                        var j = 0
+                        while (j < buffer!!.buffer.size * animator.phaseX) {
+                            val x = (buffer.buffer[j] + buffer.buffer[j + 2]) / 2f
+
+                            if (!viewPortHandler.isInBoundsRight(x)) {
+                                break
+                            }
+
+                            if (!viewPortHandler.isInBoundsY(buffer.buffer[j + 1])
+                                || !viewPortHandler.isInBoundsLeft(x)
+                            ) {
+                                j += 4
+                                continue
+                            }
+
+                            val barEntry = dataSet.getEntryForIndex(j / 4)
+                            barEntry?.let {
+                                val value = barEntry.y
 
                                 if (dataSet.isDrawValues) {
                                     drawValue(
-                                        canvas, dataSet.valueFormatter, barEntry.y, barEntry, i, x,
-                                        buffer.buffer[bufferIndex + 1] + (if (barEntry.y >= 0)
-                                            posOffset else negOffset),
-                                        color
+                                        canvas, dataSet.valueFormatter, value, barEntry, i, x,
+                                        if (value >= 0) (buffer.buffer[j + 1] + posOffset) else (buffer.buffer[j + 3] + negOffset),
+                                        dataSet.getValueTextColor(j / 4)
                                     )
                                 }
 
@@ -388,8 +331,7 @@ open class BarChartRenderer(
                                     val icon = barEntry.icon
 
                                     var px = x
-                                    var py = buffer.buffer[bufferIndex + 1] +
-                                            (if (barEntry.y >= 0) posOffset else negOffset)
+                                    var py = if (value >= 0) (buffer.buffer[j + 1] + posOffset) else (buffer.buffer[j + 3] + negOffset)
 
                                     px += iconsOffset.x
                                     py += iconsOffset.y
@@ -403,69 +345,43 @@ open class BarChartRenderer(
                                         )
                                     }
                                 }
+                            }
+                            j += 4
+                        }
 
-                                // draw stack values
-                            } else {
-                                val transformed = FloatArray(vals.size * 2)
+                        // if we have stacks
+                    } else {
+                        val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-                                var posY = 0f
-                                var negY = -barEntry.negativeSum
+                        var bufferIndex = 0
+                        var index = 0
 
-                                run {
-                                    var k = 0
-                                    var idx = 0
-                                    while (k < transformed.size) {
-                                        val value = vals[idx]
-                                        val y: Float
+                        while (index < dataSet.entryCount * animator.phaseX) {
+                            val barEntry = dataSet.getEntryForIndex(index)
+                            barEntry?.let {
+                                val vals = barEntry.yVals
+                                val x = (buffer!!.buffer[bufferIndex] + buffer.buffer[bufferIndex + 2]) / 2f
+                                val color = dataSet.getValueTextColor(index)
 
-                                        if (value == 0.0f && (posY == 0.0f || negY == 0.0f)) {
-                                            // Take care of the situation of a 0.0 value, which overlaps a non-zero bar
-                                            y = value
-                                        } else if (value >= 0.0f) {
-                                            posY += value
-                                            y = posY
-                                        } else {
-                                            y = negY
-                                            negY -= value
-                                        }
-
-                                        transformed[k + 1] = y * phaseY
-                                        k += 2
-                                        idx++
-                                    }
-                                }
-
-                                trans!!.pointValuesToPixel(transformed)
-
-                                var k = 0
-                                while (k < transformed.size) {
-                                    val `val` = vals[k / 2]
-                                    val drawBelow =
-                                        (`val` == 0.0f && negY == 0.0f && posY > 0.0f) ||
-                                                `val` < 0.0f
-                                    val y = (transformed[k + 1]
-                                            + (if (drawBelow) negOffset else posOffset))
-
+                                // we still draw stacked bars, but there is one
+                                // non-stacked
+                                // in between
+                                if (vals == null) {
                                     if (!viewPortHandler.isInBoundsRight(x)) {
                                         break
                                     }
 
-                                    if (!viewPortHandler.isInBoundsY(y)
+                                    if (!viewPortHandler.isInBoundsY(buffer.buffer[bufferIndex + 1])
                                         || !viewPortHandler.isInBoundsLeft(x)
                                     ) {
-                                        k += 2
                                         continue
                                     }
 
                                     if (dataSet.isDrawValues) {
                                         drawValue(
-                                            canvas,
-                                            dataSet.valueFormatter,
-                                            vals[k / 2],
-                                            barEntry,
-                                            i,
-                                            x,
-                                            y,
+                                            canvas, dataSet.valueFormatter, barEntry.y, barEntry, i, x,
+                                            buffer.buffer[bufferIndex + 1] + (if (barEntry.y >= 0)
+                                                posOffset else negOffset),
                                             color
                                         )
                                     }
@@ -473,26 +389,113 @@ open class BarChartRenderer(
                                     if (barEntry.icon != null && dataSet.isDrawIcons) {
                                         val icon = barEntry.icon
 
+                                        var px = x
+                                        var py = buffer.buffer[bufferIndex + 1] +
+                                                (if (barEntry.y >= 0) posOffset else negOffset)
+
+                                        px += iconsOffset.x
+                                        py += iconsOffset.y
+
                                         icon?.let {
                                             Utils.drawImage(
                                                 canvas,
                                                 it,
-                                                (x + iconsOffset.x).toInt(),
-                                                (y + iconsOffset.y).toInt()
+                                                px.toInt(),
+                                                py.toInt()
                                             )
                                         }
                                     }
-                                    k += 2
+
+                                    // draw stack values
+                                } else {
+                                    val transformed = FloatArray(vals.size * 2)
+
+                                    var posY = 0f
+                                    var negY = -barEntry.negativeSum
+
+                                    run {
+                                        var k = 0
+                                        var idx = 0
+                                        while (k < transformed.size) {
+                                            val value = vals[idx]
+                                            val y: Float
+
+                                            if (value == 0.0f && (posY == 0.0f || negY == 0.0f)) {
+                                                // Take care of the situation of a 0.0 value, which overlaps a non-zero bar
+                                                y = value
+                                            } else if (value >= 0.0f) {
+                                                posY += value
+                                                y = posY
+                                            } else {
+                                                y = negY
+                                                negY -= value
+                                            }
+
+                                            transformed[k + 1] = y * phaseY
+                                            k += 2
+                                            idx++
+                                        }
+                                    }
+
+                                    trans!!.pointValuesToPixel(transformed)
+
+                                    var k = 0
+                                    while (k < transformed.size) {
+                                        val `val` = vals[k / 2]
+                                        val drawBelow =
+                                            (`val` == 0.0f && negY == 0.0f && posY > 0.0f) ||
+                                                    `val` < 0.0f
+                                        val y = (transformed[k + 1]
+                                                + (if (drawBelow) negOffset else posOffset))
+
+                                        if (!viewPortHandler.isInBoundsRight(x)) {
+                                            break
+                                        }
+
+                                        if (!viewPortHandler.isInBoundsY(y)
+                                            || !viewPortHandler.isInBoundsLeft(x)
+                                        ) {
+                                            k += 2
+                                            continue
+                                        }
+
+                                        if (dataSet.isDrawValues) {
+                                            drawValue(
+                                                canvas,
+                                                dataSet.valueFormatter,
+                                                vals[k / 2],
+                                                barEntry,
+                                                i,
+                                                x,
+                                                y,
+                                                color
+                                            )
+                                        }
+
+                                        if (barEntry.icon != null && dataSet.isDrawIcons) {
+                                            val icon = barEntry.icon
+
+                                            icon?.let {
+                                                Utils.drawImage(
+                                                    canvas,
+                                                    it,
+                                                    (x + iconsOffset.x).toInt(),
+                                                    (y + iconsOffset.y).toInt()
+                                                )
+                                            }
+                                        }
+                                        k += 2
+                                    }
                                 }
+
+                                bufferIndex = if (vals == null) bufferIndex + 4 else bufferIndex + 4 * vals.size
                             }
-
-                            bufferIndex = if (vals == null) bufferIndex + 4 else bufferIndex + 4 * vals.size
+                            index++
                         }
-                        index++
                     }
-                }
 
-                MPPointF.recycleInstance(iconsOffset)
+                    MPPointF.recycleInstance(iconsOffset)
+                }
             }
         }
     }
@@ -501,7 +504,7 @@ open class BarChartRenderer(
         val barData = dataProvider.barData
 
         for (high in indices) {
-            val set = barData.getDataSetByIndex(high.dataSetIndex)
+            val set = barData?.getDataSetByIndex(high.dataSetIndex)
 
             if (set == null || !set.isHighlightEnabled) {
                 continue

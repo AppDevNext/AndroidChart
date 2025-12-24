@@ -28,7 +28,7 @@ import kotlin.math.min
  * BarChart with horizontal bar orientation. In this implementation, x- and y-axis are switched, meaning the YAxis class
  * represents the horizontal values and the XAxis class represents the vertical values.
  */
-class HorizontalBarChart : BarChart {
+open class HorizontalBarChart : BarChart {
     constructor(context: Context?) : super(context)
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -201,22 +201,23 @@ class HorizontalBarChart : BarChart {
     }
 
     override fun getBarBounds(barEntry: BarEntry, outputRect: RectF) {
-        val bounds = outputRect
-        val set = mData.getDataSetForEntry(barEntry)
+        mData?.let { data ->
+            val set = data.getDataSetForEntry(barEntry)
 
-        val y = barEntry.y
-        val x = barEntry.x
+            val y = barEntry.y
+            val x = barEntry.x
 
-        val barWidth = mData.barWidth
+            val barWidth = data.barWidth
 
-        val top = x - barWidth / 2f
-        val bottom = x + barWidth / 2f
-        val left = if (y >= 0) y else 0f
-        val right = if (y <= 0) y else 0f
+            val top = x - barWidth / 2f
+            val bottom = x + barWidth / 2f
+            val left = if (y >= 0) y else 0f
+            val right = if (y <= 0) y else 0f
 
-        bounds.set(left, top, right, bottom)
+            outputRect.set(left, top, right, bottom)
 
-        getTransformer(set!!.axisDependency)!!.rectValueToPixel(bounds)
+            getTransformer(set!!.axisDependency)!!.rectValueToPixel(outputRect)
+        }
     }
 
     protected var mGetPositionBuffer: FloatArray = FloatArray(2)

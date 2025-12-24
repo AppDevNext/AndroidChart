@@ -48,6 +48,7 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Baseclass of all Chart-Views.
@@ -68,6 +69,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
 	 * object that holds all data that was originally set for the chart, before
 	 * it was modified or any filtering algorithms had been applied
 	 */
+	@Nullable
 	protected T mData = null;
 
 	/**

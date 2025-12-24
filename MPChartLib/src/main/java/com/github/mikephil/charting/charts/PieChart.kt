@@ -172,26 +172,23 @@ class PieChart : PieRadarChartBase<PieData> {
     override fun calculateOffsets() {
         super.calculateOffsets()
 
-        // prevent nullpointer when no data set
-        if (mData == null) return
+        mData?.let { data ->
+            val diameter = diameter
+            val radius = diameter / 2f
 
-        val diameter = diameter
-        val radius = diameter / 2f
+            val shift = data.dataSet.selectionShift
 
-        val c = centerOffsets
+            // create the circle box that will contain the pie-chart (the bounds of
+            // the pie-chart)
+            circleBox.set(
+                centerOffsets.x - radius + shift,
+                centerOffsets.y - radius + shift,
+                centerOffsets.x + radius - shift,
+                centerOffsets.y + radius - shift
+            )
 
-        val shift = mData.dataSet.selectionShift
-
-        // create the circle box that will contain the pie-chart (the bounds of
-        // the pie-chart)
-        circleBox.set(
-            c.x - radius + shift,
-            c.y - radius + shift,
-            c.x + radius - shift,
-            c.y + radius - shift
-        )
-
-        recycleInstance(c)
+            recycleInstance(centerOffsets)
+        }
     }
 
     override fun calcMinMax() {
@@ -241,76 +238,78 @@ class PieChart : PieRadarChartBase<PieData> {
      * calculates the needed angles for the chart slices
      */
     private fun calcAngles() {
-        val entryCount = mData.entryCount
+        mData?.let { data ->
+            val entryCount = data.entryCount
 
-        if (drawAngles.size != entryCount) {
-            this.drawAngles = FloatArray(entryCount)
-        } else {
-            for (i in 0..<entryCount) {
-                this.drawAngles[i] = 0f
+            if (drawAngles.size != entryCount) {
+                this.drawAngles = FloatArray(entryCount)
+            } else {
+                for (i in 0..<entryCount) {
+                    this.drawAngles[i] = 0f
+                }
             }
-        }
-        if (absoluteAngles.size != entryCount) {
-            this.absoluteAngles = FloatArray(entryCount)
-        } else {
-            for (i in 0..<entryCount) {
-                this.absoluteAngles[i] = 0f
+            if (absoluteAngles.size != entryCount) {
+                this.absoluteAngles = FloatArray(entryCount)
+            } else {
+                for (i in 0..<entryCount) {
+                    this.absoluteAngles[i] = 0f
+                }
             }
-        }
 
-        val yValueSum = mData.yValueSum
+            val yValueSum = data.yValueSum
 
-        val dataSets = mData.dataSets
+            val dataSets = data.dataSets
 
-        val hasMinAngle = mMinAngleForSlices != 0f && entryCount * mMinAngleForSlices <= mMaxAngle
-        val minAngles = FloatArray(entryCount)
+            val hasMinAngle = mMinAngleForSlices != 0f && entryCount * mMinAngleForSlices <= mMaxAngle
+            val minAngles = FloatArray(entryCount)
 
-        var cnt = 0
-        var offset = 0f
-        var diff = 0f
+            var cnt = 0
+            var offset = 0f
+            var diff = 0f
 
-        for (i in 0..<mData.dataSetCount) {
-            val set = dataSets!!.get(i)
+            for (i in 0..<data.dataSetCount) {
+                val set = dataSets!!.get(i)
 
-            for (j in 0..<set.entryCount) {
-                val drawAngle = calcAngle(abs(set.getEntryForIndex(j)!!.y), yValueSum)
+                for (j in 0..<set.entryCount) {
+                    val drawAngle = calcAngle(abs(set.getEntryForIndex(j)!!.y), yValueSum)
 
-                if (hasMinAngle) {
-                    val temp = drawAngle - mMinAngleForSlices
-                    if (temp <= 0) {
-                        minAngles[cnt] = mMinAngleForSlices
-                        offset -= temp
+                    if (hasMinAngle) {
+                        val temp = drawAngle - mMinAngleForSlices
+                        if (temp <= 0) {
+                            minAngles[cnt] = mMinAngleForSlices
+                            offset -= temp
+                        } else {
+                            minAngles[cnt] = drawAngle
+                            diff += temp
+                        }
+                    }
+
+                    this.drawAngles[cnt] = drawAngle
+
+                    if (cnt == 0) {
+                        this.absoluteAngles[cnt] = this.drawAngles[cnt]
                     } else {
-                        minAngles[cnt] = drawAngle
-                        diff += temp
+                        this.absoluteAngles[cnt] = this.absoluteAngles[cnt - 1] + this.drawAngles[cnt]
+                    }
+
+                    cnt++
+                }
+            }
+
+            if (hasMinAngle) {
+                // Correct bigger slices by relatively reducing their angles based on the total angle needed to subtract
+                // This requires that `entryCount * mMinAngleForSlices <= mMaxAngle` be true to properly work!
+                for (i in 0..<entryCount) {
+                    minAngles[i] -= (minAngles[i] - mMinAngleForSlices) / diff * offset
+                    if (i == 0) {
+                        this.absoluteAngles[0] = minAngles[0]
+                    } else {
+                        this.absoluteAngles[i] = this.absoluteAngles[i - 1] + minAngles[i]
                     }
                 }
 
-                this.drawAngles[cnt] = drawAngle
-
-                if (cnt == 0) {
-                    this.absoluteAngles[cnt] = this.drawAngles[cnt]
-                } else {
-                    this.absoluteAngles[cnt] = this.absoluteAngles[cnt - 1] + this.drawAngles[cnt]
-                }
-
-                cnt++
+                this.drawAngles = minAngles
             }
-        }
-
-        if (hasMinAngle) {
-            // Correct bigger slices by relatively reducing their angles based on the total angle needed to subtract
-            // This requires that `entryCount * mMinAngleForSlices <= mMaxAngle` be true to properly work!
-            for (i in 0..<entryCount) {
-                minAngles[i] -= (minAngles[i] - mMinAngleForSlices) / diff * offset
-                if (i == 0) {
-                    this.absoluteAngles[0] = minAngles[0]
-                } else {
-                    this.absoluteAngles[i] = this.absoluteAngles[i - 1] + minAngles[i]
-                }
-            }
-
-            this.drawAngles = minAngles
         }
     }
 
@@ -331,10 +330,7 @@ class PieChart : PieRadarChartBase<PieData> {
     /**
      * calculates the needed angle for a given value
      */
-    /**
-     * calculates the needed angle for a given value
-     */
-    private fun calcAngle(value: Float, yValueSum: Float = mData.yValueSum): Float {
+    private fun calcAngle(value: Float, yValueSum: Float): Float {
         return value / yValueSum * mMaxAngle
     }
 
@@ -362,10 +358,10 @@ class PieChart : PieRadarChartBase<PieData> {
      * Returns the index of the DataSet this x-index belongs to.
      */
     fun getDataSetIndexForIndex(xIndex: Int): Int {
-        val dataSets = mData.dataSets
+        val dataSets = mData?.dataSets
 
         for (i in dataSets!!.indices) {
-            if (dataSets.get(i).getEntryForXValue(xIndex.toFloat(), Float.NaN) != null) return i
+            if (dataSets[i].getEntryForXValue(xIndex.toFloat(), Float.NaN) != null) return i
         }
 
         return -1

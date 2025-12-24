@@ -28,7 +28,7 @@ class ScatterChart : BarLineChartBase<ScatterData>, ScatterDataProvider {
         xAxis.spaceMax = 0.5f
     }
 
-    override val scatterData: ScatterData
+    override val scatterData: ScatterData?
         get() = mData
 
     /**
