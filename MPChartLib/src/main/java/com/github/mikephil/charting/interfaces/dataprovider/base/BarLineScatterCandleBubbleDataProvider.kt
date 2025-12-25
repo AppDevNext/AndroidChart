@@ -8,5 +8,4 @@ interface BarLineScatterCandleBubbleDataProvider : IBaseProvider {
     fun isInverted(axis: YAxis.AxisDependency?): Boolean
     val lowestVisibleX: Float
     val highestVisibleX: Float
-//    override fun getData(): BarLineScatterCandleBubbleData<*>
 }
