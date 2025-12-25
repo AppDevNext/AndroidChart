@@ -37,10 +37,6 @@ interface IBaseProvider {
      */
     var maxHighlightDistance: Float
 
-    val width: Int
-
-    val height: Int
-
     val centerOfView: MPPointF?
 
     val centerOffsets: MPPointF
