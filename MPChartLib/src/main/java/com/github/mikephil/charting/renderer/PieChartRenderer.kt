@@ -14,6 +14,7 @@ import androidx.core.graphics.createBitmap
 import androidx.core.graphics.withSave
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet.ValuePosition
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
@@ -101,10 +102,10 @@ open class PieChartRenderer(
 
         drawBitmap.eraseColor(Color.TRANSPARENT)
 
-        val pieData = chart.data
+        val pieData = chart.getData()
 
-        for (set in pieData!!.dataSets!!) {
-            if (set.isVisible && set.entryCount > 0) drawDataSet(set)
+        for (set in pieData?.dataSets ?: return) {
+            if (set.isVisible && set.entryCount > 0) drawDataSet(set as IPieDataSet)
         }
     }
 
@@ -159,7 +160,7 @@ open class PieChartRenderer(
         if (!dataSet.isAutomaticallyDisableSliceSpacingEnabled) return dataSet.sliceSpace
 
         val spaceSizeRatio = dataSet.sliceSpace / viewPortHandler.smallestContentExtension
-        val minValueRatio = dataSet.yMin / chart.data!!.yValueSum * 2
+        val minValueRatio = dataSet.yMin / (chart.getData()!! as PieData).yValueSum * 2
 
         val sliceSpace = if (spaceSizeRatio > minValueRatio) 0f else dataSet.sliceSpace
 
@@ -374,7 +375,7 @@ open class PieChartRenderer(
 
         val labelRadius = radius - labelRadiusOffset
 
-        val data = chart.data
+        val data = chart.getData() as PieData?
         val dataSets = data!!.dataSets
 
         val yValueSum = data.yValueSum
@@ -765,7 +766,7 @@ open class PieChartRenderer(
 
             if (index >= drawAngles.size) continue
 
-            val set = chart.data?.getDataSetByIndex(indices[i].dataSetIndex)
+            val set = chart.getData()?.getDataSetByIndex(indices[i].dataSetIndex) as? IPieDataSet
 
             if (set == null || !set.isHighlightEnabled) continue
 
@@ -905,7 +906,7 @@ open class PieChartRenderer(
         if (!chart.isDrawRoundedSlicesEnabled)
             return
 
-        val dataSet = chart.data!!.dataSet
+        val dataSet = (chart.getData()!! as PieData).dataSet
 
         if (!dataSet.isVisible)
             return

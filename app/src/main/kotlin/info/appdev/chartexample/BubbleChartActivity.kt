@@ -153,21 +153,21 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.bubbleData?.dataSets?.forEach {
                     it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.bubbleData?.dataSets?.forEach { set ->
                     set.isDrawIcons = !set.isDrawIcons
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                binding.chart1.data?.let {
+                binding.chart1.bubbleData?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
                 }
                 binding.chart1.invalidate()

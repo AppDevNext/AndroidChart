@@ -2,12 +2,13 @@ package com.github.mikephil.charting.charts
 
 import android.content.Context
 import android.util.AttributeSet
+import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider
 import com.github.mikephil.charting.renderer.LineChartRenderer
 import java.util.Locale
 
-open class LineChart : BarLineChartBase<LineData?>, LineDataProvider {
+open class LineChart : BarLineChartBase<LineData>, LineDataProvider {
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -18,11 +19,15 @@ open class LineChart : BarLineChartBase<LineData?>, LineDataProvider {
         mRenderer = LineChartRenderer(this, mAnimator, mViewPortHandler)
     }
 
-    override val lineData: LineData
+    override var lineData: LineData
         get() {
             return mData ?: run {
                 LineData()
             }
+        }
+        set(value) {
+            mData = value
+            notifyDataSetChanged()
         }
 
     public override fun onDetachedFromWindow() {
@@ -53,5 +58,9 @@ open class LineChart : BarLineChartBase<LineData?>, LineDataProvider {
                     "Data ranges from %s to %s.",
             numberOfPoints, entries, minVal, maxVal, minRange, maxRange
         )
+    }
+
+    override fun setData(data: LineData?) {
+        super.setData(data)
     }
 }

@@ -3,6 +3,7 @@ package com.github.mikephil.charting.charts
 import android.content.Context
 import android.util.AttributeSet
 import com.github.mikephil.charting.data.CandleData
+import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.interfaces.dataprovider.CandleDataProvider
 import com.github.mikephil.charting.renderer.CandleStickChartRenderer
 
@@ -30,5 +31,9 @@ class CandleStickChart : BarLineChartBase<CandleData?>, CandleDataProvider {
 
     override fun getAccessibilityDescription(): String {
         return "This is a candlestick chart"
+    }
+
+    override fun setData(data: CandleData?) {
+        super.setData(data)
     }
 }

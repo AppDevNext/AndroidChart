@@ -86,14 +86,13 @@ class FilledLineActivity : DemoBase() {
         val set1: LineDataSet
         val set2: LineDataSet
 
-        if (binding.chart1.data != null &&
-            binding.chart1.data!!.dataSetCount > 0
+        if (binding.chart1.lineData.dataSetCount > 0
         ) {
-            set1 = binding.chart1.data!!.getDataSetByIndex(0) as LineDataSet
-            set2 = binding.chart1.data!!.getDataSetByIndex(1) as LineDataSet
+            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
+            set2 = binding.chart1.lineData.getDataSetByIndex(1) as LineDataSet
             set1.entries = valuesArray1
             set2.entries = valuesArray2
-            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.lineData.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {
             // create a dataset and give it a type

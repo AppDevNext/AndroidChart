@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.components.YAxis.AxisDependency
+import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.highlight.RadarHighlighter
 import com.github.mikephil.charting.renderer.RadarChartRenderer
@@ -283,21 +284,24 @@ class RadarChart : PieRadarChartBase<RadarData> {
     /**
      * Returns the maximum value this chart can display on it's y-axis.
      */
-    override fun getYChartMax(): Float {
-        return mYAxis!!.mAxisMaximum
+    override val yChartMax: Float
+        get() = mYAxis!!.mAxisMaximum
+
+    override fun setData(data: RadarData?) {
+        super.setData(data)
     }
+
 
     /**
      * Returns the minimum value this chart can display on it's y-axis.
      */
-    override fun getYChartMin(): Float {
-        return mYAxis!!.mAxisMinimum
-    }
+    override val yChartMin: Float
+        get() = mYAxis!!.mAxisMinimum
 
+    /**
+     * Range of y-values this chart can display.
+     */
     val yRange: Float
-        /**
-         * Returns the range of y-values this chart can display.
-         */
         get() = mYAxis!!.mAxisRange
 
     override fun getAccessibilityDescription(): String {

@@ -88,9 +88,8 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
         //mXAxis.mAxisRange = mData.getXVals().size() - 1;
     }
 
-    override fun getMaxVisibleCount(): Int {
-        return mData!!.entryCount
-    }
+    override val maxVisibleCount: Int
+        get() = mData!!.entryCount
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         // use the Pie- and RadarChart listener own listener
@@ -183,10 +182,12 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
                                 mLegend.mNeededHeight,
                                 mViewPortHandler.chartHeight * mLegend.maxSizePercent
                             )
+
                             LegendVerticalAlignment.BOTTOM -> legendBottom = min(
                                 mLegend.mNeededHeight,
                                 mViewPortHandler.chartHeight * mLegend.maxSizePercent
                             )
+
                             LegendVerticalAlignment.CENTER -> Log.e(LOG_TAG, "LegendCenter/VerticalCenter not supported for PieRadarChart")
                         }
                     }
@@ -258,27 +259,28 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
      * 90° is EAST, ...
      */
     fun getAngleForPoint(x: Float, y: Float): Float {
-        val c = centerOffsets
+        centerOffsets?.let { c ->
 
-        val tx = (x - c.x).toDouble()
-        val ty = (y - c.y).toDouble()
-        val length = sqrt(tx * tx + ty * ty)
-        val r = acos(ty / length)
+            val tx = (x - c.x).toDouble()
+            val ty = (y - c.y).toDouble()
+            val length = sqrt(tx * tx + ty * ty)
+            val r = acos(ty / length)
 
-        var angle = Math.toDegrees(r).toFloat()
+            var angle = Math.toDegrees(r).toFloat()
 
-        if (x > c.x) angle = 360f - angle
+            if (x > c.x) angle = 360f - angle
 
-        // add 90° because chart starts EAST
-        angle += 90f
+            // add 90° because chart starts EAST
+            angle += 90f
 
-        // neutralize overflow
-        if (angle > 360f)
-            angle -= 360f
+            // neutralize overflow
+            if (angle > 360f)
+                angle -= 360f
 
-        recycleInstance(c)
-
-        return angle
+            recycleInstance(c)
+            return angle
+        }
+        return 0f
     }
 
     /**
@@ -302,28 +304,30 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
      * Returns the distance of a certain point on the chart to the center of the chart.
      */
     fun distanceToCenter(x: Float, y: Float): Float {
-        val c = centerOffsets
+        centerOffsets?.let { c ->
 
-        val dist: Float
+            val dist: Float
 
-        val xDist: Float = if (x > c.x) {
-            x - c.x
-        } else {
-            c.x - x
+            val xDist: Float = if (x > c.x) {
+                x - c.x
+            } else {
+                c.x - x
+            }
+
+            val yDist: Float = if (y > c.y) {
+                y - c.y
+            } else {
+                c.y - y
+            }
+
+            // pythagoras
+            dist = sqrt(xDist.toDouble().pow(2.0) + yDist.toDouble().pow(2.0)).toFloat()
+
+            recycleInstance(c)
+
+            return dist
         }
-
-        val yDist: Float = if (y > c.y) {
-            y - c.y
-        } else {
-            c.y - y
-        }
-
-        // pythagoras
-        dist = sqrt(xDist.toDouble().pow(2.0) + yDist.toDouble().pow(2.0)).toFloat()
-
-        recycleInstance(c)
-
-        return dist
+        return 0f
     }
 
     /**
@@ -376,15 +380,11 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
      */
     protected abstract val requiredBaseOffset: Float
 
-    override fun getYChartMax(): Float {
-        // TODO Auto-generated method stub
-        return 0f
-    }
+    override val yChartMax: Float
+        get() = 0f
 
-    override fun getYChartMin(): Float {
-        // TODO Auto-generated method stub
-        return 0f
-    }
+    override val yChartMin: Float
+        get() = 0f
 
     /**
      * Apply a spin animation to the Chart.

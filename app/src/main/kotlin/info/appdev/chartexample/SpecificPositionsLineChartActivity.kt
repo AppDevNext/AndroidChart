@@ -129,28 +129,29 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionToggleValues -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.getData()?.dataSets?.forEach {
                     it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                binding.chart1.data?.let {
+                binding.chart1.getData()?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.getData()?.dataSets?.forEach {
+                    val set = it as LineDataSet
                     set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.getData()?.dataSets?.forEach {
                     val set = it as LineDataSet
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
@@ -158,7 +159,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             }
 
             R.id.actionToggleCubic -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.getData()?.dataSets?.forEach {
                     val set = it as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER
                 }
@@ -166,7 +167,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             }
 
             R.id.actionToggleStepped -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.getData()?.dataSets?.forEach {
                     val set = it as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED
                 }
@@ -174,7 +175,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.getData()?.dataSets?.forEach {
                     val set = it as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER
                 }
@@ -232,7 +233,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             val `val` = (sampleValues[i]!!.toFloat() * range) + 3
             values.add(Entry(i.toFloat(), `val`))
         }
-        binding.chart1.data?.let {
+        binding.chart1.getData()?.let {
             if (it.dataSetCount > 0) {
                 val set1 = it.getDataSetByIndex(0) as LineDataSet
                 set1.entries = values
@@ -276,7 +277,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         val data = LineData(dataSets)
 
         // set data
-        binding.chart1.data = data
+        binding.chart1.setData(data)
     }
 
     override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture?) {

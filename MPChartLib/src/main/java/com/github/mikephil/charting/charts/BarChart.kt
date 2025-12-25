@@ -251,4 +251,8 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
         }
         return ""
     }
+
+    override fun setData(data: BarData?) {
+        super.setData(data)
+    }
 }

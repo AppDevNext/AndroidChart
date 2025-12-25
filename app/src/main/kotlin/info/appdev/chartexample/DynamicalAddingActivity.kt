@@ -44,7 +44,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
     private val colors: IntArray = ColorTemplate.VORDIPLOM_COLORS
 
     private fun addEntry() {
-        var data = binding.chart1.data
+        var data = binding.chart1.getData()
 
         if (data == null) {
             data = LineData()
@@ -81,7 +81,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
     }
 
     private fun removeLastEntry() {
-        val data = binding.chart1.data
+        val data = binding.chart1.getData()
 
         if (data != null) {
             val set = data.getDataSetByIndex(0)
@@ -100,7 +100,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
     }
 
     private fun addDataSet() {
-        val data = binding.chart1.data
+        val data = binding.chart1.getData()
 
         if (data == null) {
             binding.chart1.setData(LineData())
@@ -136,7 +136,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
     }
 
     private fun removeDataSet() {
-        val data = binding.chart1.data
+        val data = binding.chart1.getData()
 
         if (data != null) {
             data.removeDataSet(data.getDataSetByIndex(data.dataSetCount - 1))

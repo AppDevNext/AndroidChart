@@ -32,13 +32,13 @@ open class RadarChartRenderer(
     override fun initBuffers() = Unit
 
     override fun drawData(canvas: Canvas) {
-        chart.data?.let { radarData ->
+        chart.getData()?.let { radarData ->
 
             val mostEntries = radarData.maxEntryCountSet?.entryCount ?: 0
 
-            for (set in radarData.dataSets!!) {
+            radarData.dataSets?.forEach { set ->
                 if (set.isVisible) {
-                    drawDataSet(canvas, set, mostEntries)
+                    drawDataSet(canvas, set as IRadarDataSet, mostEntries)
                 }
             }
         }
@@ -128,10 +128,10 @@ open class RadarChartRenderer(
 
         val yOffset = 5f.convertDpToPixel()
 
-        for (i in 0..<chart.data!!.dataSetCount) {
-            chart.data!!.getDataSetByIndex(i)?.let { dataSet ->
+        for (i in 0..<chart.getData()!!.dataSetCount) {
+            chart.getData()!!.getDataSetByIndex(i)?.let { dataSet ->
 
-                chart.data!!.getDataSetByIndex(i)
+                chart.getData()!!.getDataSetByIndex(i)
                 if (dataSet.entryCount == 0) {
                     continue
                 }
@@ -222,7 +222,7 @@ open class RadarChartRenderer(
         webPaint.alpha = chart.webAlpha
 
         val xIncrements = 1 + chart.skipWebLineCount
-        val maxEntryCount = chart.data!!.maxEntryCountSet?.entryCount ?: 0
+        val maxEntryCount = chart.getData()!!.maxEntryCountSet?.entryCount ?: 0
 
         val p = MPPointF.getInstance(0f, 0f)
         var i = 0
@@ -253,7 +253,7 @@ open class RadarChartRenderer(
                 innerAreaPath.rewind()
                 paint.color = chart.layerColorList[j]
             }
-            for (i in 0..<chart.data!!.entryCount) {
+            for (i in 0..<chart.getData()!!.entryCount) {
                 val r = (chart.yAxis.mEntries[j] - chart.yChartMin) * factor
 
                 Utils.getPosition(center, r, sliceAngle * i + rotationAngle, p1out)
@@ -296,10 +296,10 @@ open class RadarChartRenderer(
         val center = chart.centerOffsets
         val pOut = MPPointF.getInstance(0f, 0f)
 
-        val radarData = chart.data
+        val radarData = chart.getData()
 
         for (high in indices) {
-            val set = radarData!!.getDataSetByIndex(high.dataSetIndex)
+            val set = radarData!!.getDataSetByIndex(high.dataSetIndex) as IRadarDataSet?
 
             if (set == null || !set.isHighlightEnabled)
                 continue
