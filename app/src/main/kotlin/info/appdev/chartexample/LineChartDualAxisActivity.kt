@@ -138,16 +138,15 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         val set2: LineDataSet
         val set3: LineDataSet
 
-        if (binding.chart1.data != null &&
-            binding.chart1.data!!.dataSetCount > 0
+        if (binding.chart1.lineData.dataSetCount > 0
         ) {
-            set1 = binding.chart1.data!!.getDataSetByIndex(0) as LineDataSet
-            set2 = binding.chart1.data!!.getDataSetByIndex(1) as LineDataSet
-            set3 = binding.chart1.data!!.getDataSetByIndex(2) as LineDataSet
+            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
+            set2 = binding.chart1.lineData.getDataSetByIndex(1) as LineDataSet
+            set3 = binding.chart1.lineData.getDataSetByIndex(2) as LineDataSet
             set1.entries = values1
             set2.entries = values2
             set3.entries = values3
-            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.lineData.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {
             // create a dataset and give it a type
@@ -217,35 +216,35 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.getData()?.dataSets?.forEach { set ->
                     set.isDrawValues = !set.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                binding.chart1.data?.let {
+                binding.chart1.getData()?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.getData()?.dataSets?.forEach { set ->
                     set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.getData()?.dataSets?.forEach { set ->
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.getData()?.dataSets?.forEach { set ->
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
@@ -255,7 +254,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             }
 
             R.id.actionToggleStepped -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.getData()?.dataSets?.forEach { set ->
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED)
                         LineDataSet.Mode.LINEAR
                     else
@@ -265,7 +264,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.getData()?.dataSets?.forEach { set ->
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
@@ -325,7 +324,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         Timber.i(entry.toString())
 
-        binding.chart1.data!!.getDataSetByIndex(highlight.dataSetIndex)?.let {
+        binding.chart1.lineData.getDataSetByIndex(highlight.dataSetIndex)?.let {
             binding.chart1.centerViewToAnimated(entry.x, entry.y, it.axisDependency, 500)
             //chart.zoomAndCenterAnimated(2.5f, 2.5f, e.getX(), e.getY(), chart.getData().getDataSetByIndex(dataSetIndex)
             // .getAxisDependency(), 1000);

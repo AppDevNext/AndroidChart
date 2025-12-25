@@ -155,7 +155,7 @@ class DataTools {
                     values.add(Entry(i.toFloat(), value, ContextCompat.getDrawable(context, R.drawable.star)))
                 }
             }
-            lineChart.data?.let {
+            lineChart.getData()?.let {
                 if (it.dataSetCount > 0) {
                     val lineDataSet0 = it.getDataSetByIndex(0) as LineDataSet
                     lineDataSet0.entries = values
@@ -225,8 +225,7 @@ class DataTools {
             // create a data object with the data sets
             val data = LineData(dataSets)
 
-            // set data
-            lineChart.data = data
+            lineChart.setData(data)
         }
     }
 }

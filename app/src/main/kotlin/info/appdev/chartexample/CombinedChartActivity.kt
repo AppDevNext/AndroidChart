@@ -237,7 +237,7 @@ class CombinedChartActivity : DemoBase() {
             }
 
             R.id.actionToggleLineValues -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.lineData?.dataSets?.forEach {
                     if (it is LineDataSet)
                         it.isDrawValues = !it.isDrawValues
                 }
@@ -245,7 +245,7 @@ class CombinedChartActivity : DemoBase() {
             }
 
             R.id.actionToggleBarValues -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.barData?.dataSets?.forEach {
                     if (it is BarDataSet)
                         it.isDrawValues = !it.isDrawValues
                 }
@@ -253,9 +253,9 @@ class CombinedChartActivity : DemoBase() {
             }
 
             R.id.actionRemoveDataSet -> {
-                val rnd = values[sampleCount]!!.toFloat().toInt() * binding.chart1.data!!.dataSetCount
-                binding.chart1.data!!.removeDataSet(binding.chart1.data!!.getDataSetByIndex(rnd))
-                binding.chart1.data!!.notifyDataChanged()
+                val rnd = values[sampleCount]!!.toFloat().toInt() * binding.chart1.combinedData!!.dataSetCount
+                binding.chart1.combinedData!!.removeDataSet(binding.chart1.combinedData!!.getDataSetByIndex(rnd))
+                binding.chart1.combinedData!!.notifyDataChanged()
                 binding.chart1.notifyDataSetChanged()
                 binding.chart1.invalidate()
             }

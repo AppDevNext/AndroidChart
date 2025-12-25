@@ -1,7 +1,7 @@
 package com.github.mikephil.charting.highlight
 
 import com.github.mikephil.charting.components.YAxis.AxisDependency
-import com.github.mikephil.charting.data.BarLineScatterCandleBubbleData
+import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.DataSet
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.interfaces.dataprovider.base.BarLineScatterCandleBubbleDataProvider
@@ -50,7 +50,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
 
         val axis = if (leftAxisMinDist < rightAxisMinDist) AxisDependency.LEFT else AxisDependency.RIGHT
 
-        return getClosestHighlightByPixel(closestValues, x, y, axis, provider.getMaxHighlightDistance())
+        return getClosestHighlightByPixel(closestValues, x, y, axis, provider.maxHighlightDistance)
     }
 
     /**
@@ -89,25 +89,24 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
     protected open fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight>? {
         highlightBuffer.clear()
 
-        val data = this.data
+        data?.let { myData ->
+            var i = 0
+            val dataSetCount = myData.dataSetCount
+            while (i < dataSetCount) {
+                val dataSet = myData.getDataSetByIndex(i)
 
-        var i = 0
-        val dataSetCount = data.dataSetCount
-        while (i < dataSetCount) {
-            val dataSet= data.getDataSetByIndex(i)
-
-            // don't include DataSets that cannot be highlighted
-            dataSet?.let {
-                if (!it.isHighlightEnabled) {
-                    i++
-                    continue
+                // don't include DataSets that cannot be highlighted
+                dataSet?.let {
+                    if (!it.isHighlightEnabled) {
+                        i++
+                        continue
+                    }
+                    highlightBuffer.addAll(buildHighlights(it, i, xVal, DataSet.Rounding.CLOSEST))
                 }
-                highlightBuffer.addAll(buildHighlights(it, i, xVal, DataSet.Rounding.CLOSEST))
+
+                i++
             }
-
-            i++
         }
-
         return highlightBuffer
     }
 
@@ -186,6 +185,6 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
         return hypot((x1 - x2).toDouble(), (y1 - y2).toDouble()).toFloat()
     }
 
-    protected open val data: BarLineScatterCandleBubbleData<*>
+    protected open val data: ChartData<*>?
         get() = provider.getData()
 }

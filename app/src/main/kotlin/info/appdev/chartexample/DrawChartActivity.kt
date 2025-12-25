@@ -67,7 +67,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         // create a data object with the data sets
         val data = LineData(set1)
 
-        binding.chart1.data = data
+        binding.chart1.setData(data)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -78,14 +78,14 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionToggleValues -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.getData()?.dataSets?.forEach {
                     it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                binding.chart1.data?.let {
+                binding.chart1.getData()?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
                 }
                 binding.chart1.invalidate()
@@ -134,7 +134,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         Timber.i("DataSet drawn. ${dataSet.toSimpleString()}")
 
         // prepare the legend again
-        binding.chart1.data?.let { binding.chart1.legendRenderer.computeLegend(it) }
+        binding.chart1.getData()?.let { binding.chart1.legendRenderer.computeLegend(it) }
     }
 
     override fun onEntryMoved(entry: Entry) {

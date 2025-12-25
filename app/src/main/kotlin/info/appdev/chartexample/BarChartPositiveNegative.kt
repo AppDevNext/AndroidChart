@@ -105,12 +105,12 @@ class BarChartPositiveNegative : DemoBase() {
 
         val set: BarDataSet
 
-        if (binding.chart1.data != null &&
-            binding.chart1.data!!.dataSetCount > 0
+        if (binding.chart1.barData != null &&
+            binding.chart1.barData!!.dataSetCount > 0
         ) {
-            set = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
+            set = binding.chart1.barData!!.getDataSetByIndex(0) as BarDataSet
             set.entries  = values
-            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.barData?.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {
             set = BarDataSet(values, "Values")

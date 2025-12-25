@@ -129,16 +129,16 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         val set3: BarDataSet
         val set4: BarDataSet
 
-        if (binding.chart1.data != null && binding.chart1.data!!.dataSetCount > 0) {
-            set1 = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
-            set2 = binding.chart1.data!!.getDataSetByIndex(1) as BarDataSet
-            set3 = binding.chart1.data!!.getDataSetByIndex(2) as BarDataSet
-            set4 = binding.chart1.data!!.getDataSetByIndex(3) as BarDataSet
+        if (binding.chart1.barData != null && binding.chart1.barData!!.dataSetCount > 0) {
+            set1 = binding.chart1.barData!!.getDataSetByIndex(0) as BarDataSet
+            set2 = binding.chart1.barData!!.getDataSetByIndex(1) as BarDataSet
+            set3 = binding.chart1.barData!!.getDataSetByIndex(2) as BarDataSet
+            set4 = binding.chart1.barData!!.getDataSetByIndex(3) as BarDataSet
             set1.entries = values1
             set2.entries = values2
             set3.entries = values3
             set4.entries = values4
-            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.barData?.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {
             // create 4 DataSets
@@ -185,7 +185,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.barData?.dataSets?.forEach {
                     it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
@@ -204,14 +204,14 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             }
 
             R.id.actionToggleBarBorders -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.barData?.dataSets?.forEach { set ->
                     (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                binding.chart1.data?.let {
+                binding.chart1.barData?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
                 }
                 binding.chart1.invalidate()

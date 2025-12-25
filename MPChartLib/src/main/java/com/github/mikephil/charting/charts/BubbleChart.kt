@@ -3,6 +3,7 @@ package com.github.mikephil.charting.charts
 import android.content.Context
 import android.util.AttributeSet
 import com.github.mikephil.charting.data.BubbleData
+import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider
 import com.github.mikephil.charting.renderer.BubbleChartRenderer
 
@@ -30,5 +31,9 @@ class BubbleChart : BarLineChartBase<BubbleData?>, BubbleDataProvider {
 
     override fun getAccessibilityDescription(): String {
         return "This is bubble chart"
+    }
+
+    override fun setData(data: BubbleData?) {
+        super.setData(data)
     }
 }

@@ -27,7 +27,7 @@ class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, pr
 
         val center = chart.centerOffsets
         val pOut = MPPointF.getInstance(0f, 0f)
-        chart.data!!.maxEntryCountSet?.let { maxEntryCountSet ->
+        chart.getData()!!.maxEntryCountSet?.let { maxEntryCountSet ->
             for (i in 0..<maxEntryCountSet.entryCount) {
                 val label = xAxis.valueFormatter?.getFormattedValue(i.toFloat(), xAxis)
 

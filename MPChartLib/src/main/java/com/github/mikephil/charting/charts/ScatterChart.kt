@@ -2,6 +2,7 @@ package com.github.mikephil.charting.charts
 
 import android.content.Context
 import android.util.AttributeSet
+import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.ScatterData
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider
 import com.github.mikephil.charting.renderer.ScatterChartRenderer
@@ -64,5 +65,9 @@ class ScatterChart : BarLineChartBase<ScatterData>, ScatterDataProvider {
 
     override fun getAccessibilityDescription(): String {
         return "This is scatter chart"
+    }
+
+    override fun setData(data: ScatterData?) {
+        super.setData(data)
     }
 }

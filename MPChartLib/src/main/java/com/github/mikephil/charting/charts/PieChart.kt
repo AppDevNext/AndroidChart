@@ -7,6 +7,7 @@ import android.graphics.Typeface
 import android.text.TextUtils
 import android.util.AttributeSet
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.highlight.PieHighlighter
@@ -586,7 +587,7 @@ class PieChart : PieRadarChartBase<PieData> {
     }
 
     override fun getAccessibilityDescription(): String {
-        val pieData = data
+        val pieData = getData() as PieData?
 
         var entryCount = 0
         if (pieData != null) entryCount = pieData.entryCount
@@ -608,5 +609,9 @@ class PieChart : PieRadarChartBase<PieData> {
         }
 
         return builder.toString()
+    }
+
+    override fun setData(data: PieData?) {
+        super.setData(data)
     }
 }

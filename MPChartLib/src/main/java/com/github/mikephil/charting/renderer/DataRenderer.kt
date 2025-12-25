@@ -20,6 +20,7 @@ import com.github.mikephil.charting.utils.convertDpToPixel
 abstract class DataRenderer(
     @JvmField protected var animator: ChartAnimator, viewPortHandler: ViewPortHandler
 ) : Renderer(viewPortHandler) {
+
     /**
      * main paint object used for rendering
      */
@@ -59,7 +60,7 @@ abstract class DataRenderer(
     }
 
     protected open fun isDrawingValuesAllowed(baseProvider: IBaseProvider): Boolean {
-        return baseProvider.data!!.entryCount < baseProvider.maxVisibleCount * viewPortHandler.scaleX
+        return baseProvider.getData()!!.entryCount < baseProvider.maxVisibleCount * viewPortHandler.scaleX
     }
 
     /**

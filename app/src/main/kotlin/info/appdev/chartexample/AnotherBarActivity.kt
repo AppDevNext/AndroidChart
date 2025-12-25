@@ -73,12 +73,12 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
 
         val set1: BarDataSet
 
-        if (binding.chart1.data != null &&
-            binding.chart1.data!!.dataSetCount > 0
+        if (binding.chart1.barData != null &&
+            binding.chart1.barData!!.dataSetCount > 0
         ) {
-            set1 = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
+            set1 = binding.chart1.barData!!.getDataSetByIndex(0) as BarDataSet
             set1.entries = values
-            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.barData?.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {
             set1 = BarDataSet(values, "Data Set")
@@ -111,14 +111,14 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.barData?.dataSets?.forEach {
                     it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                binding.chart1.data?.let {
+                binding.chart1.barData?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
                 }
                 binding.chart1.invalidate()
@@ -139,7 +139,7 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleBarBorders -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.barData?.dataSets?.forEach { set ->
                     (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f)
                         0f
                     else

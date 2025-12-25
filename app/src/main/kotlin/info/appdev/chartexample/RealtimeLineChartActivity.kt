@@ -83,36 +83,34 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
     }
 
     private fun addEntry() {
-        val data = binding.chart1.data
+        val data = binding.chart1.lineData
 
-        if (data != null) {
-            var set = data.getDataSetByIndex(0)
+        var set = data.getDataSetByIndex(0)
 
-            // set.addEntry(...); // can be called as well
-            if (set == null) {
-                set = createSet()
-                data.addDataSet(set)
-            }
-
-            val cycleValue = (set.entryCount % 100.0).toInt()
-            data.addEntry(Entry(set.entryCount.toFloat(), (sampleValues[cycleValue]!!.toFloat() * 40) + 30f), 0)
-            data.notifyDataChanged()
-
-            // let the chart know it's data has changed
-            binding.chart1.notifyDataSetChanged()
-
-            // limit the number of visible entries
-            binding.chart1.setVisibleXRangeMaximum(120f)
-
-            // chart.setVisibleYRange(30, AxisDependency.LEFT);
-
-            // move to the latest entry
-            binding.chart1.moveViewToX(data.dataSetCount.toFloat())
-
-            // this automatically refreshes the chart (calls invalidate())
-            // chart.moveViewTo(data.getXValCount()-7, 55f,
-            // AxisDependency.LEFT);
+        // set.addEntry(...); // can be called as well
+        if (set == null) {
+            set = createSet()
+            data.addDataSet(set)
         }
+
+        val cycleValue = (set.entryCount % 100.0).toInt()
+        data.addEntry(Entry(set.entryCount.toFloat(), (sampleValues[cycleValue]!!.toFloat() * 40) + 30f), 0)
+        data.notifyDataChanged()
+
+        // let the chart know it's data has changed
+        binding.chart1.notifyDataSetChanged()
+
+        // limit the number of visible entries
+        binding.chart1.setVisibleXRangeMaximum(120f)
+
+        // chart.setVisibleYRange(30, AxisDependency.LEFT);
+
+        // move to the latest entry
+        binding.chart1.moveViewToX(data.dataSetCount.toFloat())
+
+        // this automatically refreshes the chart (calls invalidate())
+        // chart.moveViewTo(data.getXValCount()-7, 55f,
+        // AxisDependency.LEFT);
     }
 
     private fun createSet(): LineDataSet {

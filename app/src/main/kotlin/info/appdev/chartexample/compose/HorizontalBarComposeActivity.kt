@@ -272,7 +272,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
                 val bounds = RectF()
                 chart.getBarBounds(entry as BarEntry, bounds)
 
-                val data = chart.data
+                val data = chart.barData
                 if (data != null) {
                     val position = chart.getPosition(
                         entry, data.getDataSetByIndex(highlight.dataSetIndex)?.axisDependency
@@ -348,7 +348,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
         }
 
         val set1: BarDataSet
-        val chartData = localChart.data
+        val chartData = localChart.barData
 
         if (chartData != null && chartData.dataSetCount > 0) {
             set1 = chartData.getDataSetByIndex(0) as BarDataSet
@@ -367,7 +367,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
             data.setValueTextSize(10f)
             data.setValueTypeface(tfLight)
             data.barWidth = barWidth
-            localChart.data = data
+            localChart.setData(data)
         }
 
         localChart.setFitBars(true)
@@ -376,7 +376,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
 
     private fun toggleValues() {
         chart?.let {
-            it.data?.dataSets?.forEach {
+            it.barData?.dataSets?.forEach {
                 it.isDrawValues = !it.isDrawValues
             }
             it.invalidate()
@@ -384,46 +384,36 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
     }
 
     private fun toggleIcons() {
-        chart?.let {
-            val sets = it.data?.dataSets ?: return
-            for (iSet in sets) {
-                iSet.isDrawIcons = !iSet.isDrawIcons
-            }
-            it.invalidate()
+        val sets = chart?.barData?.dataSets ?: return
+        for (iSet in sets) {
+            iSet.isDrawIcons = !iSet.isDrawIcons
         }
+        chart?.invalidate()
     }
 
     private fun toggleHighlight() {
-        chart?.let {
-            val chartData = it.data
-            if (chartData != null) {
-                chartData.isHighlightEnabled = !chartData.isHighlightEnabled
-                it.invalidate()
-            }
+        val chartData = chart?.barData
+        if (chartData != null) {
+            chartData.isHighlightEnabled = !chartData.isHighlightEnabled
+            chart?.invalidate()
         }
     }
 
     private fun togglePinchZoom() {
-        chart?.let {
-            it.setPinchZoom(!it.isPinchZoomEnabled)
-            it.invalidate()
-        }
+        chart?.isPinchZoomEnabled?.let { chart?.setPinchZoom(!it) }
+        chart?.invalidate()
     }
 
     private fun toggleAutoScaleMinMax() {
-        chart?.let {
-            it.isAutoScaleMinMaxEnabled = !it.isAutoScaleMinMaxEnabled
-            it.notifyDataSetChanged()
-        }
+        chart?.isAutoScaleMinMaxEnabled?.let { chart?.isAutoScaleMinMaxEnabled = !it }
+        chart?.notifyDataSetChanged()
     }
 
     private fun toggleBarBorders() {
-        chart?.let {
-            for (set in it.data?.dataSets ?: return) {
-                (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
-            }
-            it.invalidate()
+        for (set in chart?.barData?.dataSets ?: return) {
+            (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
         }
+        chart?.invalidate()
     }
 
     private fun animateX() {

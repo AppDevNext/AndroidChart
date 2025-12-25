@@ -111,12 +111,12 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
         val set1: BarDataSet
 
-        if (binding.chart1.data != null &&
-            binding.chart1.data!!.dataSetCount > 0
+        if (binding.chart1.barData != null &&
+            binding.chart1.barData!!.dataSetCount > 0
         ) {
-            set1 = binding.chart1.data!!.getDataSetByIndex(0) as BarDataSet
+            set1 = binding.chart1.barData!!.getDataSetByIndex(0) as BarDataSet
             set1.entries = values
-            binding.chart1.data!!.notifyDataChanged()
+            binding.chart1.barData?.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {
             set1 = BarDataSet(values, "DataSet 1")
@@ -149,21 +149,21 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.barData?.dataSets?.forEach {
                     it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.barData?.dataSets?.forEach { set ->
                     set.isDrawIcons = !set.isDrawIcons
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                binding.chart1.data?.let {
+                binding.chart1.barData?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
                 }
                 binding.chart1.invalidate()
@@ -181,7 +181,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
             }
 
             R.id.actionToggleBarBorders -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.barData?.dataSets?.forEach { set ->
                     (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
                 }
                 binding.chart1.invalidate()
@@ -234,7 +234,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
         binding.chart1.getBarBounds(entry as BarEntry, bounds)
 
         val position = binding.chart1.getPosition(
-            entry, binding.chart1.data!!.getDataSetByIndex(highlight.dataSetIndex)?.axisDependency
+            entry, binding.chart1.barData!!.getDataSetByIndex(highlight.dataSetIndex)?.axisDependency
         )
 
         Timber.i("bounds $bounds")

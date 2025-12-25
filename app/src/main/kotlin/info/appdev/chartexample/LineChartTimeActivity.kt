@@ -158,35 +158,35 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data?.dataSets?.forEach {
+                binding.chart1.lineData.dataSets?.forEach {
                     it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                binding.chart1.data?.let {
+                binding.chart1.getData()?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.getData()?.dataSets?.forEach { set ->
                     set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.getData()?.dataSets?.forEach { set ->
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.getData()?.dataSets?.forEach { set ->
                     if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
                         set.lineMode = LineDataSet.Mode.LINEAR
                     else
@@ -196,7 +196,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleStepped -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
+                binding.chart1.getData()?.dataSets?.forEach { set ->
                     if (set.lineMode == LineDataSet.Mode.STEPPED)
                         set.lineMode = LineDataSet.Mode.LINEAR
                     else

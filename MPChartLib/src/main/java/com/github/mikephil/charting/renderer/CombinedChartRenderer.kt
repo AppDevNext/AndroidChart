@@ -84,7 +84,7 @@ open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, 
             val dataIndex = if (data == null)
                 -1
             else
-                (chart.data as CombinedData).allData.indexOf(data)
+                (chart.getData() as CombinedData).allData.indexOf(data)
 
             mHighlightBuffer.clear()
 

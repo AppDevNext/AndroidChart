@@ -18,9 +18,6 @@ import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.ceil
 import kotlin.math.min
 
-/**
- * Renderer for the HorizontalBarChart.
- */
 @Suppress("MemberVisibilityCanBePrivate")
 open class HorizontalBarChartRenderer(
     chart: BarDataProvider, animator: ChartAnimator,
@@ -168,7 +165,6 @@ open class HorizontalBarChartRenderer(
     }
 
     override fun drawValues(canvas: Canvas) {
-        // if values are drawn
         if (isDrawingValuesAllowed(dataProvider)) {
             val dataSets = dataProvider.barData?.dataSets
 
@@ -463,7 +459,6 @@ open class HorizontalBarChartRenderer(
     }
 
     override fun isDrawingValuesAllowed(baseProvider: IBaseProvider): Boolean {
-        return (baseProvider.data!!.entryCount < baseProvider.maxVisibleCount
-                * viewPortHandler.scaleY)
+        return baseProvider.getData()!!.entryCount < baseProvider.maxVisibleCount * viewPortHandler.scaleY
     }
 }

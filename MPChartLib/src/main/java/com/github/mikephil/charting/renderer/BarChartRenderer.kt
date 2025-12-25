@@ -254,7 +254,6 @@ open class BarChartRenderer(
 
     override fun drawValues(canvas: Canvas) {
         // if values are drawn
-
         if (isDrawingValuesAllowed(dataProvider)) {
             val dataSets = dataProvider.barData?.dataSets
 
