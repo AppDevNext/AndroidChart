@@ -23,7 +23,7 @@ class BarChartFrag : SimpleFragment(), OnChartGestureListener {
 
         // create a new chart object
         chart = BarChart(requireActivity())
-        chart!!.description.isEnabled = false
+        chart!!.description?.isEnabled = false
         chart!!.onChartGestureListener = this
 
         val mv = MyMarkerView(activity, R.layout.custom_marker_view)
@@ -37,8 +37,9 @@ class BarChartFrag : SimpleFragment(), OnChartGestureListener {
 
         chart!!.setData(generateBarData(1, 20000f))
 
-        val l = chart!!.legend
-        l.typeface = tf
+        chart!!.legend?.apply {
+            typeface = tf
+        }
 
         val leftAxis = chart!!.axisLeft
         leftAxis.typeface = tf

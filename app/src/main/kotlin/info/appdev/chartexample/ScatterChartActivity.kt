@@ -36,7 +36,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
 
         binding.seekBarX.setOnSeekBarChangeListener(this)
         binding.seekBarY.setOnSeekBarChangeListener(this)
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
         binding.chart1.setOnChartValueSelectedListener(this)
 
         binding.chart1.setDrawGridBackground(false)
@@ -53,13 +53,14 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         binding.seekBarX.progress = 45
         binding.seekBarY.progress = 100
 
-        val l = binding.chart1.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        l.orientation = Legend.LegendOrientation.VERTICAL
-        l.setDrawInside(false)
-        l.typeface = tfLight
-        l.xOffset = 5f
+        binding.chart1.legend?.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+            orientation = Legend.LegendOrientation.VERTICAL
+            setDrawInside(false)
+            typeface = tfLight
+            xOffset = 5f
+        }
 
         val yl = binding.chart1.axisLeft
         yl.typeface = tfLight

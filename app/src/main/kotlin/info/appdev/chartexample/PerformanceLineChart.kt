@@ -29,7 +29,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setDrawGridBackground(false)
 
         // no description text
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
@@ -78,8 +78,9 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setData(data)
 
         // get the legend (only possible after setting data)
-        val l = binding.chart1.legend
-        l.isEnabled = false
+        binding.chart1.legend?.apply {
+            isEnabled = false
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -33,7 +33,7 @@ class RadarChartActivity : DemoBase() {
         setContentView(binding.root)
 
         binding.chart1.setBackgroundColor(Color.rgb(60, 65, 82))
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         binding.chart1.webLineWidth = 1f
         binding.chart1.webColor = Color.LTGRAY
@@ -73,15 +73,16 @@ class RadarChartActivity : DemoBase() {
         yAxis.axisMaximum = 80f
         yAxis.setDrawLabels(false)
 
-        val l = binding.chart1.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-        l.orientation = Legend.LegendOrientation.HORIZONTAL
-        l.setDrawInside(false)
-        l.typeface = tfLight
-        l.xEntrySpace = 7f
-        l.yEntrySpace = 5f
-        l.textColor = Color.WHITE
+        binding.chart1.legend?.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+            orientation = Legend.LegendOrientation.HORIZONTAL
+            setDrawInside(false)
+            typeface = tfLight
+            xEntrySpace = 7f
+            yEntrySpace = 5f
+            textColor = Color.WHITE
+        }
     }
 
     private fun setData() {

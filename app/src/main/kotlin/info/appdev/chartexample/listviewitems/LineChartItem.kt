@@ -37,7 +37,7 @@ class LineChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {
 
         // apply styling
         // holder.chart.setValueTypeface(mTf);
-        holder.chart!!.description.isEnabled = false
+        holder.chart!!.description?.isEnabled = false
         holder.chart!!.setDrawGridBackground(false)
 
         val xAxis = holder.chart!!.xAxis

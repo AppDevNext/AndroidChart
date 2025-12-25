@@ -17,10 +17,10 @@ class CandleStickChart : BarLineChartBase<CandleData?>, CandleDataProvider {
 
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    protected override fun init() {
+    override fun init() {
         super.init()
 
-        mRenderer = CandleStickChartRenderer(this, mAnimator, mViewPortHandler)
+        mRenderer = CandleStickChartRenderer(this, mAnimator, viewPortHandler)
 
         xAxis.spaceMin = 0.5f
         xAxis.spaceMax = 0.5f
@@ -29,11 +29,6 @@ class CandleStickChart : BarLineChartBase<CandleData?>, CandleDataProvider {
     override val candleData: CandleData?
         get() = mData
 
-    override fun getAccessibilityDescription(): String {
-        return "This is a candlestick chart"
-    }
-
-    override fun setData(data: CandleData?) {
-        super.setData(data)
-    }
+    override val accessibilityDescription: String
+        get() = "This is a candlestick chart"
 }

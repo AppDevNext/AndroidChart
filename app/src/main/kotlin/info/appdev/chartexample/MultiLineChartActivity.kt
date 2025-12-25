@@ -39,7 +39,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         binding.seekBarY.setOnSeekBarChangeListener(this)
         binding.chart1.setOnChartValueSelectedListener(this)
         binding.chart1.setDrawGridBackground(false)
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
         binding.chart1.setDrawBorders(false)
 
         binding.chart1.axisLeft.isEnabled = false
@@ -61,7 +61,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         binding.seekBarX.progress = 20
         binding.seekBarY.progress = 100
 
-        binding.chart1.legend.apply {
+        binding.chart1.legend?.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.TOP
             horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             orientation = Legend.LegendOrientation.VERTICAL

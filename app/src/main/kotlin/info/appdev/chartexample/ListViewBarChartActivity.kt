@@ -73,7 +73,7 @@ class ListViewBarChartActivity : DemoBase() {
                 data.setValueTypeface(tfLight)
                 data.setValueTextColor(Color.BLACK)
             }
-            holder.chart!!.description.isEnabled = false
+            holder.chart!!.description?.isEnabled = false
             holder.chart!!.setDrawGridBackground(false)
 
             val xAxis = holder.chart!!.xAxis

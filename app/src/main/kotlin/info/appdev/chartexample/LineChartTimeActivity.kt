@@ -41,12 +41,12 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         binding.seekBarX.setOnSeekBarChangeListener(this)
 
         // no description text
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
 
-        binding.chart1.setDragDecelerationFrictionCoef(0.9f)
+        binding.chart1.dragDecelerationFrictionCoef = 0.9f
 
         // enable scaling and dragging
         binding.chart1.setDragEnabled(true)
@@ -62,8 +62,9 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         binding.seekBarX.progress = 100
 
         // get the legend (only possible after setting data)
-        val l = binding.chart1.legend
-        l.isEnabled = false
+        binding.chart1.legend?.apply {
+            isEnabled = false
+        }
 
         val xAxis = binding.chart1.xAxis
         xAxis.position = XAxis.XAxisPosition.TOP_INSIDE

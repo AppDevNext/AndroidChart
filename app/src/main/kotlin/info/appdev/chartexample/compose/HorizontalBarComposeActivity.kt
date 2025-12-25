@@ -290,7 +290,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
 
         chart.setDrawBarShadow(false)
         chart.setDrawValueAboveBar(true)
-        chart.description.isEnabled = false
+        chart.description?.isEnabled = false
         chart.setMaxVisibleValueCount(60)
         chart.setPinchZoom(false)
         chart.setDrawGridBackground(false)
@@ -320,13 +320,14 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
         chart.setFitBars(true)
         chart.animateY(2500)
 
-        val l = chart.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-        l.orientation = Legend.LegendOrientation.HORIZONTAL
-        l.setDrawInside(false)
-        l.formSize = 8f
-        l.xEntrySpace = 4f
+        chart.legend?.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+            orientation = Legend.LegendOrientation.HORIZONTAL
+            setDrawInside(false)
+            formSize = 8f
+            xEntrySpace = 4f
+        }
     }
 
     private fun setData(count: Int, range: Float) {

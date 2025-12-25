@@ -2,7 +2,6 @@ package com.github.mikephil.charting.charts
 
 import android.content.Context
 import android.util.AttributeSet
-import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.ScatterData
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider
 import com.github.mikephil.charting.renderer.ScatterChartRenderer
@@ -20,10 +19,10 @@ class ScatterChart : BarLineChartBase<ScatterData>, ScatterDataProvider {
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
 
-    protected override fun init() {
+    override fun init() {
         super.init()
 
-        mRenderer = ScatterChartRenderer(this, mAnimator, mViewPortHandler)
+        mRenderer = ScatterChartRenderer(this, mAnimator, viewPortHandler)
 
         xAxis.spaceMin = 0.5f
         xAxis.spaceMax = 0.5f
@@ -63,11 +62,6 @@ class ScatterChart : BarLineChartBase<ScatterData>, ScatterDataProvider {
         }
     }
 
-    override fun getAccessibilityDescription(): String {
-        return "This is scatter chart"
-    }
-
-    override fun setData(data: ScatterData?) {
-        super.setData(data)
-    }
+    override val accessibilityDescription: String
+        get() = "This is scatter chart"
 }

@@ -46,7 +46,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         binding.chart1.setBackgroundColor(Color.WHITE)
 
         // disable description text
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
@@ -137,7 +137,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
         // get the legend (only possible after setting data)
         val legend = binding.chart1.legend
-        legend.form = LegendForm.LINE
+        legend?.form = LegendForm.LINE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -44,7 +44,7 @@ class CombinedChartActivity : DemoBase() {
         binding = ActivityCombinedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
         binding.chart1.setBackgroundColor(Color.WHITE)
         binding.chart1.setDrawGridBackground(false)
         binding.chart1.setDrawBarShadow(false)
@@ -55,12 +55,13 @@ class CombinedChartActivity : DemoBase() {
             DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
         )
 
-        val l = binding.chart1.legend
-        l.isWordWrapEnabled = true
-        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-        l.orientation = Legend.LegendOrientation.HORIZONTAL
-        l.setDrawInside(false)
+        binding.chart1.legend?.apply {
+            isWordWrapEnabled = true
+            verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+            orientation = Legend.LegendOrientation.HORIZONTAL
+            setDrawInside(false)
+        }
 
         val rightAxis = binding.chart1.axisRight
         rightAxis.setDrawGridLines(false)

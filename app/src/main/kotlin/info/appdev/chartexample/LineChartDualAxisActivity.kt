@@ -47,12 +47,12 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         binding.chart1.setOnChartValueSelectedListener(this)
 
         // no description text
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
 
-        binding.chart1.setDragDecelerationFrictionCoef(0.9f)
+        binding.chart1.dragDecelerationFrictionCoef = 0.9f
 
         // enable scaling and dragging
         binding.chart1.setDragEnabled(true)
@@ -73,17 +73,16 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         binding.chart1.animateX(1500)
 
         // get the legend (only possible after setting data)
-        val l = binding.chart1.legend
-
-        // modify the legend ...
-        l.form = LegendForm.LINE
-        l.typeface = tfLight
-        l.textSize = 11f
-        l.textColor = Color.WHITE
-        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-        l.orientation = Legend.LegendOrientation.HORIZONTAL
-        l.setDrawInside(false)
+        binding.chart1.legend?.apply {
+            form = LegendForm.LINE
+            typeface = tfLight
+            textSize = 11f
+            textColor = Color.WHITE
+            verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+            orientation = Legend.LegendOrientation.HORIZONTAL
+            setDrawInside(false)
+        }
 
         //        l.setYOffset(11f);
         val xAxis = binding.chart1.xAxis

@@ -36,7 +36,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setBackgroundColor(Color.rgb(104, 241, 175))
 
         // no description text
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
@@ -74,7 +74,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         binding.seekBarX.progress = 45
         binding.seekBarY.progress = 100
 
-        binding.chart1.legend.isEnabled = false
+        binding.chart1.legend?.isEnabled = false
 
         binding.chart1.animateXY(2000, 2000)
 

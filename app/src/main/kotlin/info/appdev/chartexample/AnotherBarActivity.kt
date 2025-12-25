@@ -31,7 +31,7 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
 
         binding.seekBarX.setOnSeekBarChangeListener(this)
         binding.seekBarY.setOnSeekBarChangeListener(this)
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be drawn
         binding.chart1.setMaxVisibleValueCount(60)
@@ -55,7 +55,7 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
         // add a nice and smooth animation
         binding.chart1.animateY(1500)
 
-        binding.chart1.legend.isEnabled = false
+        binding.chart1.legend?.isEnabled = false
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

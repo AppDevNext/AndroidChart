@@ -48,7 +48,7 @@ class PieChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {
         }
 
         // apply styling
-        holder.chart!!.description.isEnabled = false
+        holder.chart!!.description?.isEnabled = false
         holder.chart!!.holeRadius = 52f
         holder.chart!!.transparentCircleRadius = 57f
         holder.chart!!.centerText = centerText

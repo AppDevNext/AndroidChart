@@ -49,7 +49,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         binding.chart1.setDrawGridBackground(false)
 
         // no description text
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
@@ -115,10 +115,9 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         //mChart.invalidate();
 
         // get the legend (only possible after setting data)
-        val l = binding.chart1.legend
-
-        // modify the legend ...
-        l.form = LegendForm.LINE
+        binding.chart1.legend?.apply {
+            form = LegendForm.LINE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

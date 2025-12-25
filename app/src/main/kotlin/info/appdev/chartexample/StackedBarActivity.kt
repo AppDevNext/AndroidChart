@@ -43,7 +43,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
         binding.chart1.setOnChartValueSelectedListener(this)
 
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -74,14 +74,15 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         binding.seekBarX.progress = 12
         binding.seekBarY.progress = 100
 
-        val l = binding.chart1.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        l.orientation = Legend.LegendOrientation.HORIZONTAL
-        l.setDrawInside(false)
-        l.formSize = 8f
-        l.formToTextSpace = 4f
-        l.xEntrySpace = 6f
+        binding.chart1.legend?.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+            orientation = Legend.LegendOrientation.HORIZONTAL
+            setDrawInside(false)
+            formSize = 8f
+            formToTextSpace = 4f
+            xEntrySpace = 6f
+        }
 
         // chart.setDrawLegend(false);
     }

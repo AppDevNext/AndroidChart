@@ -34,7 +34,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         setContentView(binding.root)
 
         binding.chart1.setOnChartValueSelectedListener(this)
-        binding.chart1.description.isEnabled = true
+        binding.chart1.description?.isEnabled = true
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
@@ -57,12 +57,11 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         binding.chart1.setData(data)
 
         // get the legend (only possible after setting data)
-        val l = binding.chart1.legend
-
-        // modify the legend ...
-        l.form = LegendForm.LINE
-        l.typeface = tfLight
-        l.textColor = Color.WHITE
+        binding.chart1.legend?.apply {
+            form = LegendForm.LINE
+            typeface = tfLight
+            textColor = Color.WHITE
+        }
 
         val xl = binding.chart1.xAxis
         xl.typeface = tfLight

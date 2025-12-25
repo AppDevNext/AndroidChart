@@ -2,7 +2,6 @@ package com.github.mikephil.charting.charts
 
 import android.content.Context
 import android.util.AttributeSet
-import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider
 import com.github.mikephil.charting.renderer.LineChartRenderer
@@ -16,7 +15,7 @@ open class LineChart : BarLineChartBase<LineData>, LineDataProvider {
 
     override fun init() {
         super.init()
-        mRenderer = LineChartRenderer(this, mAnimator, mViewPortHandler)
+        mRenderer = LineChartRenderer(this, mAnimator, viewPortHandler)
     }
 
     override var lineData: LineData
@@ -38,29 +37,27 @@ open class LineChart : BarLineChartBase<LineData>, LineDataProvider {
         super.onDetachedFromWindow()
     }
 
-    override fun getAccessibilityDescription(): String {
-        val lineData = lineData
-        val numberOfPoints = lineData.entryCount
+    override val accessibilityDescription: String
+        get() {
+            val lineData = lineData
+            val numberOfPoints = lineData.entryCount
 
-        // Min and max values...
-        val yAxisValueFormatter = axisLeft.valueFormatter
-        val minVal = yAxisValueFormatter?.getFormattedValue(lineData.yMin, null)
-        val maxVal = yAxisValueFormatter?.getFormattedValue(lineData.yMax, null)
+            // Min and max values...
+            val yAxisValueFormatter = axisLeft.valueFormatter
+            val minVal = yAxisValueFormatter?.getFormattedValue(lineData.yMin, null)
+            val maxVal = yAxisValueFormatter?.getFormattedValue(lineData.yMax, null)
 
-        // Data range...
-        val xAxisValueFormatter = xAxis.valueFormatter
-        val minRange = xAxisValueFormatter?.getFormattedValue(lineData.xMin, null)
-        val maxRange = xAxisValueFormatter?.getFormattedValue(lineData.xMax, null)
-        val entries = if (numberOfPoints == 1) "entry" else "entries"
-        return String.format(
-            Locale.getDefault(), "The line chart has %d %s. " +
-                    "The minimum value is %s and maximum value is %s." +
-                    "Data ranges from %s to %s.",
-            numberOfPoints, entries, minVal, maxVal, minRange, maxRange
-        )
-    }
+            // Data range...
+            val xAxisValueFormatter = xAxis.valueFormatter
+            val minRange = xAxisValueFormatter?.getFormattedValue(lineData.xMin, null)
+            val maxRange = xAxisValueFormatter?.getFormattedValue(lineData.xMax, null)
+            val entries = if (numberOfPoints == 1) "entry" else "entries"
+            return String.format(
+                Locale.getDefault(), "The line chart has %d %s. " +
+                        "The minimum value is %s and maximum value is %s." +
+                        "Data ranges from %s to %s.",
+                numberOfPoints, entries, minVal, maxVal, minRange, maxRange
+            )
+        }
 
-    override fun setData(data: LineData?) {
-        super.setData(data)
-    }
 }

@@ -38,7 +38,7 @@ class HalfPieChartActivity : DemoBase() {
         moveOffScreen()
 
         binding.chart1.setUsePercentValues(true)
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         binding.chart1.setCenterTextTypeface(tfLight)
         binding.chart1.centerText = generateCenterSpannableText()
@@ -65,14 +65,15 @@ class HalfPieChartActivity : DemoBase() {
 
         binding.chart1.animateY(1400, Easing.easeInOutQuad)
 
-        val l = binding.chart1.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-        l.orientation = Legend.LegendOrientation.HORIZONTAL
-        l.setDrawInside(false)
-        l.xEntrySpace = 7f
-        l.yEntrySpace = 0f
-        l.yOffset = 0f
+        binding.chart1.legend?.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+            orientation = Legend.LegendOrientation.HORIZONTAL
+            setDrawInside(false)
+            xEntrySpace = 7f
+            yEntrySpace = 0f
+            yOffset = 0f
+        }
 
         // entry label styling
         binding.chart1.setEntryLabelColor(Color.WHITE)

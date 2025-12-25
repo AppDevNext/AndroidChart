@@ -48,7 +48,7 @@ class LineChartActivityColored : DemoBase() {
         (data.getDataSetByIndex(0) as LineDataSet).circleHoleColor = color
 
         // no description text
-        chart.description.isEnabled = false
+        chart.description?.isEnabled = false
 
         // chart.setDrawHorizontalGrid(false);
         //
@@ -76,8 +76,9 @@ class LineChartActivityColored : DemoBase() {
         chart.setData(data)
 
         // get the legend (only possible after setting data)
-        val l = chart.legend
-        l.isEnabled = false
+        chart.legend?.apply {
+            isEnabled = false
+        }
 
         chart.axisLeft.isEnabled = false
         chart.axisLeft.spaceTop = 40f

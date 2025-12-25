@@ -45,7 +45,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         binding.seekBarY.setOnSeekBarChangeListener(this)
 
         binding.chart1.setOnChartValueSelectedListener(this)
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         //        chart.setDrawBorders(true);
 
@@ -65,16 +65,17 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         binding.seekBarX.progress = 10
         binding.seekBarY.progress = 100
 
-        val l = binding.chart1.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        l.orientation = Legend.LegendOrientation.VERTICAL
-        l.setDrawInside(true)
-        l.typeface = tfLight
-        l.yOffset = 0f
-        l.xOffset = 10f
-        l.yEntrySpace = 0f
-        l.textSize = 8f
+        binding.chart1.legend?.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+            orientation = Legend.LegendOrientation.VERTICAL
+            setDrawInside(true)
+            typeface = tfLight
+            yOffset = 0f
+            xOffset = 10f
+            yEntrySpace = 0f
+            textSize = 8f
+        }
 
         val xAxis = binding.chart1.xAxis
         xAxis.typeface = tfLight

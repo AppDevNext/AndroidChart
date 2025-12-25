@@ -39,7 +39,7 @@ class BarChartPositiveNegative : DemoBase() {
         binding.chart1.setDrawBarShadow(false)
         binding.chart1.setDrawValueAboveBar(true)
 
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // scaling can now only be done on x- and y-axis separately
         binding.chart1.setPinchZoom(false)
@@ -67,7 +67,7 @@ class BarChartPositiveNegative : DemoBase() {
         left.zeroLineColor = Color.GRAY
         left.zeroLineWidth = 0.7f
         binding.chart1.axisRight.isEnabled = false
-        binding.chart1.legend.isEnabled = false
+        binding.chart1.legend?.isEnabled = false
 
         // THIS IS THE ORIGINAL DATA YOU WANT TO PLOT
         val data: MutableList<Data> = ArrayList()
