@@ -555,13 +555,10 @@ open class BarChartRenderer(
 
     /**
      * Sets the drawing position of the highlight object based on the riven bar-rect.
-     *
-     * @param high
      */
     protected open fun setHighlightDrawPos(high: Highlight, bar: RectF) {
         high.setDraw(bar.centerX(), bar.top)
     }
 
-    override fun drawExtras(canvas: Canvas) {
-    }
+    override fun drawExtras(canvas: Canvas) = Unit
 }
