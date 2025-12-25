@@ -4,12 +4,11 @@ import android.graphics.Color
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.Fill
 import java.lang.Float
-import kotlin.Array
 import kotlin.Boolean
 import kotlin.Deprecated
 import kotlin.Int
 import kotlin.String
-import kotlin.arrayOf
+import kotlin.let
 
 open class BarDataSet(yVals: MutableList<BarEntry>, label: String = "") : BarLineScatterCandleBubbleDataSet<BarEntry>(yVals, label), IBarDataSet {
     /**
@@ -44,14 +43,14 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String = "") : BarLin
     /**
      * array of labels used to describe the different values of the stacked bars
      */
-    private var mStackLabels: Array<String?>? = arrayOf<String?>()
+    private var mStackLabels: MutableList<String> = mutableListOf()
 
     /**
      * This method is deprecated.
      * Use getFills() instead.
      */
     @get:Deprecated("")
-    var gradients: MutableList<Fill>? = null
+    var gradients: MutableList<Fill> = mutableListOf()
         protected set
 
     init {
@@ -82,12 +81,14 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String = "") : BarLin
         barDataSet.mHighLightAlpha = mHighLightAlpha
     }
 
-    override fun getFills(): MutableList<Fill>? {
-        return this.gradients
-    }
+    override var fills: MutableList<Fill>
+        get() = this.gradients
+        set(value) {
+            this.gradients = value
+        }
 
     override fun getFill(index: Int): Fill? {
-        return gradients!![index % gradients!!.size]
+        return gradients[index % gradients.size]
     }
 
     @Deprecated("Use getFill(...) instead")
@@ -99,20 +100,13 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String = "") : BarLin
      * Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
      */
     fun setGradientColor(startColor: Int, endColor: Int) {
-        gradients?.clear()
-        gradients?.add(Fill(startColor, endColor))
+        gradients.clear()
+        gradients.add(Fill(startColor, endColor))
     }
 
     @Deprecated("Use setFills(...) instead")
-    fun setGradientColors(gradientColors: MutableList<Fill>?) {
+    fun setGradientColors(gradientColors: MutableList<Fill>) {
         this.gradients = gradientColors
-    }
-
-    /**
-     * Sets the fills for the bars in this dataset.
-     */
-    fun setFills(fills: MutableList<Fill>?) {
-        this.gradients = fills
     }
 
     /**
@@ -158,79 +152,60 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String = "") : BarLin
         }
     }
 
-    override fun getStackSize(): Int {
-        return mStackSize
-    }
+    override var stackSize: Int
+        get() = mStackSize
+        set(value) {
+            mStackSize = value
+        }
 
-    override fun isStacked(): Boolean {
-        return mStackSize > 1
-    }
+    override val isStacked: Boolean
+        get() = mStackSize > 1
 
     /**
      * Sets the color used for drawing the bar-shadows. The bar shadows is a
      * surface behind the bar that indicates the maximum value. Don't for get to
      * use getResources().getColor(...) to set this. Or Color.rgb(...).
      */
-    fun setBarShadowColor(color: Int) {
-        mBarShadowColor = color
-    }
+    override var barShadowColor: Int
+        get() = mBarShadowColor
+        set(value) {
+            mBarShadowColor = value
+        }
 
-    override fun getBarShadowColor(): Int {
-        return mBarShadowColor
-    }
+    override var barBorderColor: Int
+        get() = mBarBorderColor
+        set(value) {
+            mBarBorderColor = value
+        }
 
     /**
-     * Sets the width used for drawing borders around the bars.
+     * The width used for drawing borders around the bars.
      * If borderWidth == 0, no border will be drawn.
      */
-    fun setBarBorderWidth(width: kotlin.Float) {
-        mBarBorderWidth = width
-    }
-
-    /**
-     * Returns the width used for drawing borders around the bars.
-     * If borderWidth == 0, no border will be drawn.
-     */
-    override fun getBarBorderWidth(): kotlin.Float {
-        return mBarBorderWidth
-    }
-
-    /**
-     * Sets the color drawing borders around the bars.
-     */
-    fun setBarBorderColor(color: Int) {
-        mBarBorderColor = color
-    }
-
-    /**
-     * Returns the color drawing borders around the bars.
-     */
-    override fun getBarBorderColor(): Int {
-        return mBarBorderColor
-    }
+    override var barBorderWidth: kotlin.Float
+        get() = mBarBorderWidth
+        set(value) {
+            mBarBorderWidth = value
+        }
 
     /**
      * Set the alpha value (transparency) that is used for drawing the highlight
      * indicator bar. min = 0 (fully transparent), max = 255 (fully opaque)
      */
-    fun setHighLightAlpha(alpha: Int) {
-        mHighLightAlpha = alpha
-    }
-
-    override fun getHighLightAlpha(): Int {
-        return mHighLightAlpha
-    }
+    override var highLightAlpha: Int
+        get() = mHighLightAlpha
+        set(value) {
+            mHighLightAlpha = value
+        }
 
     /**
      * Sets labels for different values of bar-stacks, in case there are one.
      */
-    fun setStackLabels(labels: Array<String?>?) {
-        mStackLabels = labels
-    }
-
-    override fun getStackLabels(): Array<String?>? {
-        return mStackLabels
-    }
+    override var stackLabels: MutableList<String>
+        get() = mStackLabels
+        set(value) {
+            mStackLabels = value
+        }
 
     override fun getEntryIndex(entry: BarEntry): Int {
         return this.getEntryIndex(entry)

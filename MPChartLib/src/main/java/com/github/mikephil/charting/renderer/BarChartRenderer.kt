@@ -170,7 +170,7 @@ open class BarChartRenderer(
         }
         trans!!.pointValuesToPixel(buffer.buffer)
 
-        val isCustomFill = dataSet.fills != null && dataSet.fills.isNotEmpty()
+        val isCustomFill = dataSet.fills.isNotEmpty()
         val isSingleColor = dataSet.colors.size == 1
         val isInverted = dataProvider.isInverted(dataSet.axisDependency)
 
@@ -197,16 +197,15 @@ open class BarChartRenderer(
             }
 
             if (isCustomFill) {
-                dataSet.getFill(pos)
-                    .fillRect(
-                        canvas, paintRender,
-                        buffer.buffer[j],
-                        buffer.buffer[j + 1],
-                        buffer.buffer[j + 2],
-                        buffer.buffer[j + 3],
-                        if (isInverted) Fill.Direction.DOWN else Fill.Direction.UP,
-                        roundedBarRadius
-                    )
+                dataSet.getFill(pos)?.fillRect(
+                    canvas, paintRender,
+                    buffer.buffer[j],
+                    buffer.buffer[j + 1],
+                    buffer.buffer[j + 2],
+                    buffer.buffer[j + 3],
+                    if (isInverted) Fill.Direction.DOWN else Fill.Direction.UP,
+                    roundedBarRadius
+                )
             } else {
                 if (drawRoundedBars) {
                     canvas.drawRoundRect(

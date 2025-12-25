@@ -137,7 +137,7 @@ class CombinedChartActivity : DemoBase() {
         set1.axisDependency = YAxis.AxisDependency.LEFT
 
         val set2 = BarDataSet(entries2, "")
-        set2.stackLabels = arrayOf("Stack 1", "Stack 2")
+        set2.stackLabels = mutableListOf("Stack 1", "Stack 2")
         set2.setColors(Color.rgb(61, 165, 255), Color.rgb(23, 197, 255))
         set2.setSingleValueTextColor(Color.rgb(61, 165, 255))
         set2.valueTextSize = 10f

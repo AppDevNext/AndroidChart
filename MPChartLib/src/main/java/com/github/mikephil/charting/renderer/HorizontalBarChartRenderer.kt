@@ -108,7 +108,7 @@ open class HorizontalBarChartRenderer(
 
         trans!!.pointValuesToPixel(buffer.buffer)
 
-        val isCustomFill = dataSet.fills != null && dataSet.fills.isNotEmpty()
+        val isCustomFill = dataSet.fills.isNotEmpty()
         val isSingleColor = dataSet.colors.size == 1
         val isInverted = dataProvider.isInverted(dataSet.axisDependency)
 
@@ -136,8 +136,7 @@ open class HorizontalBarChartRenderer(
             }
 
             if (isCustomFill) {
-                dataSet.getFill(pos)
-                    .fillRect(
+                dataSet.getFill(pos)?.fillRect(
                         canvas, paintRender,
                         buffer.buffer[j],
                         buffer.buffer[j + 1],

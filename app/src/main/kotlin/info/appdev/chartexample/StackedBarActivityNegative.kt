@@ -106,7 +106,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         set.valueTextSize = 7f
         set.axisDependency = YAxis.AxisDependency.RIGHT
         set.setColors(Color.rgb(67, 67, 72), Color.rgb(124, 181, 236))
-        set.stackLabels = arrayOf("Men", "Women")
+        set.stackLabels = mutableListOf("Men", "Women")
 
         val data = BarData(set)
         data.barWidth = 8.5f

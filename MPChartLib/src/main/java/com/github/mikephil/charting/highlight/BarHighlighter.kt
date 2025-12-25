@@ -14,7 +14,7 @@ open class BarHighlighter(barDataProvider: BarDataProvider) : ChartHighlighter<B
 
         provider.barData?.let { barData ->
             barData.getDataSetByIndex(high.dataSetIndex)?.let { set ->
-                if (set.isStacked()) {
+                if (set.isStacked) {
                     return getStackedHighlight(
                         high,
                         set,
