@@ -17,10 +17,12 @@ import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.interfaces.datasets.ICandleDataSet
 import info.appdev.charting.interfaces.datasets.IPieDataSet
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
+import info.appdev.charting.utils.calcTextWidth
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.getLineHeight
+import info.appdev.charting.utils.getLineSpacing
 import java.util.Collections
 import kotlin.math.min
 
@@ -207,8 +209,8 @@ open class LegendRenderer(
         labelPaint.textSize = legend.textSize
         labelPaint.color = legend.textColor
 
-        val labelLineHeight = Utils.getLineHeight(labelPaint, legendFontMetrics)
-        val labelLineSpacing = (Utils.getLineSpacing(labelPaint, legendFontMetrics)
+        val labelLineHeight = labelPaint.getLineHeight(legendFontMetrics)
+        val labelLineSpacing = (labelPaint.getLineSpacing(legendFontMetrics)
                 + legend.yEntrySpace.convertDpToPixel())
         val formYOffset = labelLineHeight - labelPaint.calcTextHeight("ABC") / 2f
 
@@ -391,7 +393,7 @@ open class LegendRenderer(
                             -formToTextSpace
                         else if (wasStacked) posX = originPosX
 
-                        if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= Utils.calcTextWidth(labelPaint, entry.label).toFloat()
+                        if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= labelPaint.calcTextWidth(entry.label).toFloat()
 
                         if (!wasStacked) {
                             drawLabel(canvas, posX, posY + labelLineHeight, entry.label)

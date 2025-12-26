@@ -47,7 +47,7 @@ fun Float.getDecimals(): Int {
 /**
  * rounds the given number to the next significant number
  */
-fun kotlin.Double.roundToNextSignificant(): Float {
+fun Double.roundToNextSignificant(): Float {
     if (this.isInfinite() ||
         this.isNaN() || this == 0.0
     ) {
@@ -65,7 +65,7 @@ fun kotlin.Double.roundToNextSignificant(): Float {
  * This method converts dp unit to equivalent pixels, depending on device
  * density. NEEDS UTILS TO BE INITIALIZED BEFORE USAGE.
  *
- * @param dp A value in dp (density independent pixels) unit. Which we need
+ * dp A value in dp (density independent pixels) unit. Which we need
  * to convert into pixels
  * @return A float value to represent px equivalent to dp depending on
  * device density
@@ -166,4 +166,53 @@ fun Paint.calcTextHeight(demoText: String): Int {
     r.set(0, 0, 0, 0)
     this.getTextBounds(demoText, 0, demoText.length, r)
     return r.height()
+}
+
+private val mFontMetrics = Paint.FontMetrics()
+
+fun Paint.getLineHeight(): Float {
+    return this.getLineHeight(mFontMetrics)
+}
+
+fun Paint.getLineHeight(fontMetrics: Paint.FontMetrics): Float {
+    this.getFontMetrics(fontMetrics)
+    return fontMetrics.descent - fontMetrics.ascent
+}
+
+fun Paint.getLineSpacing(): Float {
+    return this.getLineSpacing(mFontMetrics)
+}
+
+fun Paint.getLineSpacing(fontMetrics: Paint.FontMetrics): Float {
+    this.getFontMetrics(fontMetrics)
+    return fontMetrics.ascent - fontMetrics.top + fontMetrics.bottom
+}
+
+/**
+ * Returns a recyclable FSize instance.
+ * calculates the approximate size of a text, depending on a demo text
+ * avoid repeated calls (e.g. inside drawing methods)
+ *
+ * @return A Recyclable FSize instance
+ */
+fun Paint.calcTextSize(demoText: String): FSize {
+    val result = FSize.getInstance(0f, 0f)
+    calcTextSize(demoText, result)
+    return result
+}
+
+private val mCalcTextSizeRect = Rect()
+
+/**
+ * calculates the approximate size of a text, depending on a demo text
+ * avoid repeated calls (e.g. inside drawing methods)
+ *
+ * @param outputFSize An output variable, modified by the function.
+ */
+fun Paint.calcTextSize(demoText: String, outputFSize: FSize) {
+    val r = mCalcTextSizeRect
+    r.set(0, 0, 0, 0)
+    this.getTextBounds(demoText, 0, demoText.length, r)
+    outputFSize.width = r.width().toFloat()
+    outputFSize.height = r.height().toFloat()
 }

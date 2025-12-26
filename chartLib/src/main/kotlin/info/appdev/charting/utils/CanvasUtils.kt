@@ -114,6 +114,14 @@ fun Canvas.drawXAxisValue(
 }
 
 /**
+ * calculates the approximate width of a text, depending on a demo text
+ * avoid repeated calls (e.g. inside drawing methods)
+ */
+fun Paint.calcTextWidth(demoText: String?): Int {
+    return measureText(demoText).toInt()
+}
+
+/**
  * Returns a recyclable FSize instance.
  * Represents size of a rotated rectangle by degrees.
  *

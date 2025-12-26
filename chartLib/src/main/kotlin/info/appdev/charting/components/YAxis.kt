@@ -2,8 +2,8 @@ package info.appdev.charting.components
 
 import android.graphics.Color
 import android.graphics.Paint
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.calcTextHeight
+import info.appdev.charting.utils.calcTextWidth
 import info.appdev.charting.utils.convertDpToPixel
 import kotlin.math.abs
 import kotlin.math.max
@@ -53,29 +53,17 @@ class YAxis : AxisBase {
         protected set
 
     /**
-     * Returns true if autoscale restriction for axis min value is enabled
-     */
-    /**
-     * Sets autoscale restriction for axis min value as enabled/disabled
-     */
-    /**
      * flag indicating that auto scale min restriction should be used
      */
-    @get:Deprecated("")
-    @set:Deprecated("")
+    @get:Deprecated("flag indicating that auto scale min restriction should be used")
+    @set:Deprecated("flag indicating that auto scale min restriction should be used")
     var isUseAutoScaleMinRestriction: Boolean = false
 
     /**
-     * Returns true if autoscale restriction for axis max value is enabled
-     */
-    /**
-     * Sets autoscale restriction for axis max value as enabled/disabled
-     */
-    /**
      * flag indicating that auto scale max restriction should be used
      */
-    @get:Deprecated("")
-    @set:Deprecated("")
+    @get:Deprecated("flag indicating that auto scale max restriction should be used")
+    @set:Deprecated("flag indicating that auto scale max restriction should be used")
     var isUseAutoScaleMaxRestriction: Boolean = false
 
     /**
@@ -240,7 +228,7 @@ class YAxis : AxisBase {
         p.textSize = mTextSize
 
         val label = getLongestLabel(p)
-        var width = Utils.calcTextWidth(p, label).toFloat() + xOffset * 2f
+        var width = p.calcTextWidth(label).toFloat() + xOffset * 2f
 
         var minWidth = this.minWidth
         var maxWidth = this.maxWidth
