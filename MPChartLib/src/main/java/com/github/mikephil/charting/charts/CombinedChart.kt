@@ -3,7 +3,6 @@ package com.github.mikephil.charting.charts
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
-import android.util.Log
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BubbleData
 import com.github.mikephil.charting.data.CandleData
@@ -16,6 +15,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.dataprovider.CombinedDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.renderer.CombinedChartRenderer
+import timber.log.Timber
 
 /**
  * This chart class allows the combination of lines, bars, scatter and candle
@@ -97,7 +97,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
      */
     override fun getHighlightByTouchPoint(x: Float, y: Float): Highlight? {
         if (mData == null) {
-            Log.e(LOG_TAG, "Can't select by touch. No data set.")
+            Timber.e("Can't select by touch. No data set.")
             return null
         } else {
             highlighter?.let {

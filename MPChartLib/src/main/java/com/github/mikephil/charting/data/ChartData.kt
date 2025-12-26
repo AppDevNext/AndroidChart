@@ -1,11 +1,11 @@
 package com.github.mikephil.charting.data
 
 import android.graphics.Typeface
-import android.util.Log
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IDataSet
+import timber.log.Timber
 import java.io.Serializable
 import java.util.Collections
 
@@ -376,7 +376,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
 
             calcMinMax(entry, set.axisDependency)
         } else {
-            Log.e("addEntry", "Cannot add Entry because dataSetIndex too high or too low.")
+            Timber.e("Cannot add Entry because dataSetIndex too high or too low.")
         }
     }
 

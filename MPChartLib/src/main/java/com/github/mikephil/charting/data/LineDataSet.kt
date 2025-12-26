@@ -3,12 +3,12 @@ package com.github.mikephil.charting.data
 import android.content.Context
 import android.graphics.Color
 import android.graphics.DashPathEffect
-import android.util.Log
 import com.github.mikephil.charting.formatter.DefaultFillFormatter
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.convertDpToPixel
+import timber.log.Timber
 
 open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRadarDataSet<Entry>(yVals, label), ILineDataSet {
     /**
@@ -179,7 +179,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
             if (value >= 1f) {
                 mCircleRadius = value.convertDpToPixel()
             } else {
-                Log.e("LineDataSet", "Circle radius cannot be < 1")
+                Timber.e("Circle radius cannot be < 1")
             }
         }
 
@@ -193,7 +193,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
             if (value >= 0.5f) {
                 mCircleHoleRadius = value.convertDpToPixel()
             } else {
-                Log.e("LineDataSet", "Circle radius cannot be < 0.5")
+                Timber.e("Circle radius cannot be < 0.5")
             }
         }
 

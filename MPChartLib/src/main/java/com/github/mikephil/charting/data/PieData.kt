@@ -1,8 +1,8 @@
 package com.github.mikephil.charting.data
 
-import android.util.Log
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
+import timber.log.Timber
 
 /**
  * A PieData object can only represent one DataSet. Unlike all other charts, the
@@ -34,7 +34,7 @@ class PieData : ChartData<IPieDataSet> {
         get() {
             super.dataSets?.let {
                 if (it.isEmpty()) {
-                    Log.e("AndroidChart", "Found multiple data sets while pie chart only allows one")
+                    Timber.e("Found multiple data sets while pie chart only allows one")
                 }
             }
             return super.dataSets

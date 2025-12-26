@@ -12,7 +12,6 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.accessibility.AccessibilityEvent
@@ -45,6 +44,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler
 import com.github.mikephil.charting.utils.convertDpToPixel
 import com.github.mikephil.charting.utils.getDecimals
 import com.github.mikephil.charting.utils.initUtils
+import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -274,7 +274,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
         mInfoPaint!!.textSize = 12f.convertDpToPixel()
 
         if (this.isLogEnabled) {
-            Log.i("", "Chart.init()")
+            Timber.i("Chart.init()")
 
             // enable being detected by ScreenReader
             setFocusable(true)
@@ -339,7 +339,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
         notifyDataSetChanged()
 
         if (this.isLogEnabled) {
-            Log.i(LOG_TAG, "Data is set.")
+            Timber.i("Data is set.")
         }
     }
 
@@ -649,7 +649,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
             this.highlighted = null
         } else {
             if (this.isLogEnabled) {
-                Log.i(LOG_TAG, "Highlighted: $high")
+                Timber.i("Highlighted: $high")
             }
 
             entry = mData!!.getEntryForHighlight(high)
@@ -685,7 +685,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      */
     open fun getHighlightByTouchPoint(x: Float, y: Float): Highlight? {
         if (mData == null) {
-            Log.e(LOG_TAG, "Can't select by touch. No data set.")
+            Timber.e("Can't select by touch. No data set.")
             return null
         } else {
             return this.highlighter!!.getHighlight(x, y)
@@ -1292,17 +1292,17 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         if (this.isLogEnabled) {
-            Log.i(LOG_TAG, "OnSizeChanged()")
+            Timber.i("OnSizeChanged()")
         }
 
         if (w > 0 && h > 0 && w < 10000 && h < 10000) {
             if (this.isLogEnabled) {
-                Log.i(LOG_TAG, "Setting chart dimens, width: $w, height: $h")
+                Timber.i("Setting chart dimens, width: $w, height: $h")
             }
             viewPortHandler.setChartDimens(w.toFloat(), h.toFloat())
         } else {
             if (this.isLogEnabled) {
-                Log.w(LOG_TAG, "*Avoiding* setting chart dimens! width: $w, height: $h")
+                Timber.w("*Avoiding* setting chart dimens! width: $w, height: $h")
             }
         }
 
@@ -1334,7 +1334,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        //Log.i(LOG_TAG, "Detaching...");
+        //Timber.i("Detaching...");
         if (mUnbind) {
             unbindDrawables(this)
         }
@@ -1380,7 +1380,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
 
     override fun dispatchPopulateAccessibilityEvent(event: AccessibilityEvent): Boolean {
         val completed = super.dispatchPopulateAccessibilityEvent(event)
-        Log.d(LOG_TAG, "Dispatch called for Chart <View> and completed as $completed")
+        Timber.d("Dispatch called for Chart <View> and completed as $completed")
 
         event.text.add(this.accessibilityDescription)
 
@@ -1393,8 +1393,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     } // endregion
 
     companion object {
-        const val LOG_TAG: String = "AndroidChart"
-
         /**
          * paint for the grid background (only line and barchart)
          */

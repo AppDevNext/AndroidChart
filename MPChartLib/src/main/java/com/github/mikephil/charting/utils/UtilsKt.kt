@@ -3,9 +3,8 @@ package com.github.mikephil.charting.utils
 import android.content.Context
 import android.os.Build
 import android.util.DisplayMetrics
-import android.util.Log
-import android.util.Log.i
 import android.view.ViewConfiguration
+import timber.log.Timber
 import java.lang.Double
 import kotlin.Boolean
 import kotlin.Char
@@ -18,7 +17,6 @@ import kotlin.math.ceil
 import kotlin.math.log10
 import kotlin.math.pow
 import kotlin.math.roundToInt
-import kotlin.time.times
 
 var metrics: DisplayMetrics? = null
 var minimumFlingVelocity = 0
@@ -73,10 +71,7 @@ fun kotlin.Double.roundToNextSignificant(): Float {
  */
 fun Float.convertDpToPixel(): Float {
     if (metrics == null) {
-        Log.e(
-            "chartLib-Utils",
-            "Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place."
-        )
+        Timber.e("Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place.")
         return this
     } else
         return this * metrics!!.density

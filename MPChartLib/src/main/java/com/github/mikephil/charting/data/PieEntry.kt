@@ -2,7 +2,7 @@ package com.github.mikephil.charting.data
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
-import android.util.Log
+import timber.log.Timber
 
 @SuppressLint("ParcelCreator")
 class PieEntry : Entry {
@@ -43,12 +43,12 @@ class PieEntry : Entry {
     @set:Deprecated("")
     override var x: Float
         get() {
-            Log.i("DEPRECATED", "Pie entries do not have x values")
+            Timber.i("Pie entries do not have x values")
             return super.x
         }
         set(x) {
             super.x = x
-            Log.i("DEPRECATED", "Pie entries do not have x values")
+            Timber.i("Pie entries do not have x values")
         }
 
     override fun copy(): PieEntry {
