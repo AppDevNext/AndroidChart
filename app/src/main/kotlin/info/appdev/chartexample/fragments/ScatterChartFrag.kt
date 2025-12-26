@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.github.mikephil.charting.charts.ScatterChart
-import com.github.mikephil.charting.components.XAxis.XAxisPosition
+import info.appdev.charting.charts.ScatterChart
+import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.chartexample.R
 import info.appdev.chartexample.custom.MyMarkerView
 

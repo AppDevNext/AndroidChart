@@ -2,10 +2,10 @@ package info.appdev.chartexample.custom
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet
-import com.github.mikephil.charting.renderer.scatter.IShapeRenderer
-import com.github.mikephil.charting.utils.ViewPortHandler
-import com.github.mikephil.charting.utils.convertDpToPixel
+import info.appdev.charting.interfaces.datasets.IScatterDataSet
+import info.appdev.charting.renderer.scatter.IShapeRenderer
+import info.appdev.charting.utils.ViewPortHandler
+import info.appdev.charting.utils.convertDpToPixel
 
 /**
  * Custom shape renderer that draws a single line.

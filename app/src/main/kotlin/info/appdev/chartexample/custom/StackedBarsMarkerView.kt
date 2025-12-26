@@ -3,12 +3,12 @@ package info.appdev.chartexample.custom
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.TextView
-import com.github.mikephil.charting.components.MarkerView
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.utils.MPPointF
-import com.github.mikephil.charting.utils.formatNumber
+import info.appdev.charting.components.MarkerView
+import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.Entry
+import info.appdev.charting.highlight.Highlight
+import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.formatNumber
 import info.appdev.chartexample.R
 
 /**

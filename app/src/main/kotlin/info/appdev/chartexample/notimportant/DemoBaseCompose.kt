@@ -12,7 +12,7 @@ import androidx.core.net.toUri
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.github.mikephil.charting.charts.Chart
+import info.appdev.charting.charts.Chart
 
 open class DemoBaseCompose : ComponentActivity() {
     protected var tfLight: Typeface? = null

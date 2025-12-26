@@ -1,8 +1,8 @@
 package info.appdev.chartexample.formatter
 
-import com.github.mikephil.charting.charts.BarLineChartBase
-import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import info.appdev.charting.charts.BarLineChartBase
+import info.appdev.charting.components.AxisBase
+import info.appdev.charting.formatter.IAxisValueFormatter
 import kotlin.math.max
 
 class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValueFormatter {

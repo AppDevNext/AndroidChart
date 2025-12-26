@@ -1,7 +1,7 @@
 package info.appdev.chartexample.formatter
 
-import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import info.appdev.charting.components.AxisBase
+import info.appdev.charting.formatter.IAxisValueFormatter
 import java.text.DecimalFormat
 
 class MyAxisValueFormatter : IAxisValueFormatter {

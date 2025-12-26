@@ -47,7 +47,7 @@ jobs:
 #        run: |
 #          signing/decrypt.sh
 #          cat signing/gradle_secure.properties >> gradle.properties
-#          ./gradlew MPChartLib:publishMavenPublicationToMavenCentralRepository
+#          ./gradlew chartLib:publishMavenPublicationToMavenCentralRepository
 #        env:
 #          CRYPT_PASS: ${{ secrets.CRYPT_PASS }}
 
@@ -58,6 +58,6 @@ jobs:
           name: ${{steps.tagger.outputs.tag}}
           generate_release_notes: true
           body: ${{steps.github_release.outputs.changelog}}
-          files: MPChartLib/build/outputs/aar/MPChartLib-release.aar
+          files: chartLib/build/outputs/aar/chartLib-release.aar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

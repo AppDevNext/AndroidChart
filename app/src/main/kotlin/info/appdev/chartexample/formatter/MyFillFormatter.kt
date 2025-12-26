@@ -1,8 +1,8 @@
 package info.appdev.chartexample.formatter
 
-import com.github.mikephil.charting.formatter.IFillFormatter
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import info.appdev.charting.formatter.IFillFormatter
+import info.appdev.charting.interfaces.dataprovider.LineDataProvider
+import info.appdev.charting.interfaces.datasets.ILineDataSet
 
 @Suppress("unused")
 class MyFillFormatter(private val fillPos: Float) : IFillFormatter {

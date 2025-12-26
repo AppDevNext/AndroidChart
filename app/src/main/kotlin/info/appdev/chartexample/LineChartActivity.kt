@@ -11,15 +11,15 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.components.Legend.LegendForm
-import com.github.mikephil.charting.components.LimitLine
-import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition
-import com.github.mikephil.charting.components.LimitRange
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import info.appdev.charting.animation.Easing
+import info.appdev.charting.components.Legend.LegendForm
+import info.appdev.charting.components.LimitLine
+import info.appdev.charting.components.LimitLine.LimitLabelPosition
+import info.appdev.charting.components.LimitRange
+import info.appdev.charting.data.Entry
+import info.appdev.charting.data.LineDataSet
+import info.appdev.charting.highlight.Highlight
+import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.chartexample.DataTools.Companion.setData
 import info.appdev.chartexample.custom.MyMarkerView
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
@@ -27,7 +27,7 @@ import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 /**
- * Example of a heavily customized [com.github.mikephil.charting.charts.LineChart] with limit lines, custom line shapes, etc.
+ * Example of a heavily customized [info.appdev.charting.charts.LineChart] with limit lines, custom line shapes, etc.
  */
 class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
 

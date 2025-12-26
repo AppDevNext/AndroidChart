@@ -2,7 +2,7 @@ package info.appdev.chartexample.listviewitems
 
 import android.content.Context
 import android.view.View
-import com.github.mikephil.charting.data.ChartData
+import info.appdev.charting.data.ChartData
 
 /**
  * Base class of the Chart ListView items

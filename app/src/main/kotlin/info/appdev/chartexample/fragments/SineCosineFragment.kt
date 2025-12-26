@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.github.mikephil.charting.charts.LineChart
+import info.appdev.charting.charts.LineChart
 import info.appdev.chartexample.R
 
 class SineCosineFragment : SimpleFragment() {

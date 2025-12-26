@@ -11,12 +11,12 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.Legend.LegendForm
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.utils.loadBarEntriesFromAssets
+import info.appdev.charting.components.Legend
+import info.appdev.charting.components.Legend.LegendForm
+import info.appdev.charting.data.BarData
+import info.appdev.charting.data.BarDataSet
+import info.appdev.charting.data.BarEntry
+import info.appdev.charting.utils.loadBarEntriesFromAssets
 import info.appdev.chartexample.databinding.ActivityBarchartSinusBinding
 import info.appdev.chartexample.notimportant.DemoBase
 

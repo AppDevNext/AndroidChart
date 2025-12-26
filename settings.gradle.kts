@@ -1,2 +1,2 @@
-include("MPChartLib")
+include("chartLib")
 include("app")

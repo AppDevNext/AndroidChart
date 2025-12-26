@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.net.toUri
-import com.github.mikephil.charting.components.XAxis.XAxisPosition
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.utils.ColorTemplate
+import info.appdev.charting.components.XAxis.XAxisPosition
+import info.appdev.charting.data.BarData
+import info.appdev.charting.data.BarDataSet
+import info.appdev.charting.data.BarEntry
+import info.appdev.charting.utils.ColorTemplate
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityScrollviewBinding
 import info.appdev.chartexample.notimportant.DemoBase

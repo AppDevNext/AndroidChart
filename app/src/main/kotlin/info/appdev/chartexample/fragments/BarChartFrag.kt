@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.listener.ChartTouchListener.ChartGesture
-import com.github.mikephil.charting.listener.OnChartGestureListener
+import info.appdev.charting.charts.BarChart
+import info.appdev.charting.listener.ChartTouchListener.ChartGesture
+import info.appdev.charting.listener.OnChartGestureListener
 import info.appdev.chartexample.R
 import info.appdev.chartexample.custom.MyMarkerView
 import timber.log.Timber
