@@ -41,8 +41,8 @@ import androidx.core.net.toUri
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.github.mikephil.charting.utils.Utils
-import com.github.mikephil.charting.utils.initUtils
+import info.appdev.charting.utils.Utils
+import info.appdev.charting.utils.initUtils
 import info.appdev.chartexample.AnotherBarActivity
 import info.appdev.chartexample.BarChartActivity
 import info.appdev.chartexample.BarChartActivityMultiDataset

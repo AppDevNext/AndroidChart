@@ -10,12 +10,12 @@ import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
-import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.ChartData
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
+import info.appdev.charting.charts.PieChart
+import info.appdev.charting.components.Legend
+import info.appdev.charting.data.ChartData
+import info.appdev.charting.data.PieData
+import info.appdev.charting.formatter.PercentFormatter
+import info.appdev.charting.utils.ColorTemplate
 import info.appdev.chartexample.R
 
 class PieChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {

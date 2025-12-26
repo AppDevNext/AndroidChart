@@ -6,10 +6,10 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import info.appdev.charting.charts.LineChart
+import info.appdev.charting.data.Entry
+import info.appdev.charting.data.LineData
+import info.appdev.charting.data.LineDataSet
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBase
 import androidx.core.net.toUri

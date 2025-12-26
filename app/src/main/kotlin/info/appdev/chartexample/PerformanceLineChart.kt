@@ -8,9 +8,9 @@ import android.view.MenuItem
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.net.toUri
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import info.appdev.charting.data.Entry
+import info.appdev.charting.data.LineData
+import info.appdev.charting.data.LineDataSet
 import info.appdev.chartexample.DataTools.Companion.getMuchValues
 import info.appdev.chartexample.databinding.ActivityPerformanceLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase

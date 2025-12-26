@@ -1,8 +1,8 @@
 package info.appdev.chartexample.formatter
 
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.formatter.IValueFormatter
-import com.github.mikephil.charting.utils.ViewPortHandler
+import info.appdev.charting.data.Entry
+import info.appdev.charting.formatter.IValueFormatter
+import info.appdev.charting.utils.ViewPortHandler
 import java.text.DecimalFormat
 
 class MyValueFormatter : IValueFormatter {

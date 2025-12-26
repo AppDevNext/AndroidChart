@@ -3,11 +3,11 @@ package info.appdev.chartexample.custom
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.TextView
-import com.github.mikephil.charting.components.MarkerView
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.utils.MPPointF
+import info.appdev.charting.components.MarkerView
+import info.appdev.charting.data.Entry
+import info.appdev.charting.formatter.IAxisValueFormatter
+import info.appdev.charting.highlight.Highlight
+import info.appdev.charting.utils.MPPointF
 import info.appdev.chartexample.R
 import java.text.DecimalFormat
 

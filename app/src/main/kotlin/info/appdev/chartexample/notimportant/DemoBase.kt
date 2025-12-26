@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.get
 import androidx.core.view.size
-import com.github.mikephil.charting.charts.Chart
+import info.appdev.charting.charts.Chart
 import com.google.android.material.snackbar.Snackbar
 import info.appdev.chartexample.R
 import java.text.DateFormatSymbols

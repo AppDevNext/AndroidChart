@@ -5,10 +5,10 @@ import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
-import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.components.XAxis.XAxisPosition
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.ChartData
+import info.appdev.charting.charts.BarChart
+import info.appdev.charting.components.XAxis.XAxisPosition
+import info.appdev.charting.data.BarData
+import info.appdev.charting.data.ChartData
 import info.appdev.chartexample.R
 
 class BarChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {

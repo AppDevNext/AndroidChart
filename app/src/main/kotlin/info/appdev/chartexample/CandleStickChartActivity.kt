@@ -13,11 +13,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
-import com.github.mikephil.charting.components.XAxis.XAxisPosition
-import com.github.mikephil.charting.components.YAxis.AxisDependency
-import com.github.mikephil.charting.data.CandleData
-import com.github.mikephil.charting.data.CandleDataSet
-import com.github.mikephil.charting.data.CandleEntry
+import info.appdev.charting.components.XAxis.XAxisPosition
+import info.appdev.charting.components.YAxis.AxisDependency
+import info.appdev.charting.data.CandleData
+import info.appdev.charting.data.CandleDataSet
+import info.appdev.charting.data.CandleEntry
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityCandlechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
