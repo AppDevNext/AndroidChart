@@ -23,7 +23,7 @@ import kotlin.math.roundToInt
 
 open class XAxisRenderer(
     viewPortHandler: ViewPortHandler,
-    @JvmField protected var xAxis: XAxis,
+    protected var xAxis: XAxis,
     transformer: Transformer?
 ) : AxisRenderer(viewPortHandler, transformer, xAxis) {
     protected fun setupGridPaint() {

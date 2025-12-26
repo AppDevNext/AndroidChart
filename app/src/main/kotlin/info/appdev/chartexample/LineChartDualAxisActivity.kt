@@ -55,7 +55,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         binding.chart1.dragDecelerationFrictionCoef = 0.9f
 
         // enable scaling and dragging
-        binding.chart1.setDragEnabled(true)
+        binding.chart1.isDragEnabled = true
         binding.chart1.setScaleEnabled(true)
         binding.chart1.setDrawGridBackground(false)
         binding.chart1.isHighlightPerDragEnabled = true

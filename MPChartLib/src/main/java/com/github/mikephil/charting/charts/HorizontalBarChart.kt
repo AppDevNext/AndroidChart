@@ -35,7 +35,7 @@ open class HorizontalBarChart : BarChart {
 
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    override fun init() {
+    init {
         viewPortHandler = HorizontalViewPortHandler()
 
         super.init()
@@ -46,9 +46,9 @@ open class HorizontalBarChart : BarChart {
         mRenderer = HorizontalBarChartRenderer(this, mAnimator, viewPortHandler)
         setHighlighter(HorizontalBarHighlighter(this))
 
-        mAxisRendererLeft = YAxisRendererHorizontalBarChart(viewPortHandler, mAxisLeft, mLeftAxisTransformer)
-        mAxisRendererRight = YAxisRendererHorizontalBarChart(viewPortHandler, mAxisRight, mRightAxisTransformer)
-        mXAxisRenderer = XAxisRendererHorizontalBarChart(viewPortHandler, mXAxis, mLeftAxisTransformer)
+        axisRendererLeft = YAxisRendererHorizontalBarChart(viewPortHandler, mAxisLeft, mLeftAxisTransformer)
+        axisRendererRight = YAxisRendererHorizontalBarChart(viewPortHandler, mAxisRight, mRightAxisTransformer)
+        xAxisRenderer = XAxisRendererHorizontalBarChart(viewPortHandler, mXAxis, mLeftAxisTransformer)
     }
 
     private val mOffsetsBuffer = RectF()
@@ -99,7 +99,7 @@ open class HorizontalBarChart : BarChart {
 
                         if (mAxisLeft.isEnabled && mAxisLeft.isDrawLabelsEnabled) {
                             offsets.top += mAxisLeft.getRequiredHeightSpace(
-                                mAxisRendererLeft.paintAxisLabels
+                                axisRendererLeft.paintAxisLabels
                             )
                         }
                     }
@@ -112,7 +112,7 @@ open class HorizontalBarChart : BarChart {
 
                         if (mAxisRight.isEnabled && mAxisRight.isDrawLabelsEnabled) {
                             offsets.bottom += mAxisRight.getRequiredHeightSpace(
-                                mAxisRendererRight.paintAxisLabels
+                                axisRendererRight.paintAxisLabels
                             )
                         }
                     }
@@ -138,11 +138,11 @@ open class HorizontalBarChart : BarChart {
 
         // offsets for y-labels
         if (mAxisLeft.needsOffset()) {
-            offsetTop += mAxisLeft.getRequiredHeightSpace(mAxisRendererLeft.paintAxisLabels)
+            offsetTop += mAxisLeft.getRequiredHeightSpace(axisRendererLeft.paintAxisLabels)
         }
 
         if (mAxisRight.needsOffset()) {
-            offsetBottom += mAxisRight.getRequiredHeightSpace(mAxisRendererRight.paintAxisLabels)
+            offsetBottom += mAxisRight.getRequiredHeightSpace(axisRendererRight.paintAxisLabels)
         }
 
         val xLabelWidth = mXAxis.mLabelWidth.toFloat()
@@ -175,7 +175,7 @@ open class HorizontalBarChart : BarChart {
         offsetBottom += extraBottomOffset
         offsetLeft += extraLeftOffset
 
-        val minOffset = mMinOffset.convertDpToPixel()
+        val minOffset = minOffset.convertDpToPixel()
 
         viewPortHandler.restrainViewPort(
             max(minOffset, offsetLeft),

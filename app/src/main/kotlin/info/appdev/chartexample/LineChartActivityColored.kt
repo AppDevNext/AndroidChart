@@ -61,7 +61,7 @@ class LineChartActivityColored : DemoBase() {
         chart.setTouchEnabled(true)
 
         // enable scaling and dragging
-        chart.setDragEnabled(true)
+        chart.isDragEnabled = true
         chart.setScaleEnabled(true)
 
         // if disabled, scaling can be done on x- and y-axis separately
