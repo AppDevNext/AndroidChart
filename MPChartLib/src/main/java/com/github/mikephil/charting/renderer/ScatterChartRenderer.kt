@@ -15,8 +15,7 @@ import kotlin.math.min
 
 open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     LineScatterCandleRadarRenderer(animator, viewPortHandler) {
-    override fun initBuffers() {
-    }
+    override fun initBuffers() = Unit
 
     override fun drawData(canvas: Canvas) {
         val scatterData = dataProvider.scatterData

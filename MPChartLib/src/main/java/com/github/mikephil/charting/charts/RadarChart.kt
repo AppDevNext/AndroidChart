@@ -188,7 +188,7 @@ class RadarChart : PieRadarChartBase<RadarData> {
             if (mData == null) {
                 return false
             }
-            return colorList.size == this.yAxis.mEntryCount
+            return colorList.size == this.yAxis.entryCount
         }
 
     var layerColorList: MutableList<Int>

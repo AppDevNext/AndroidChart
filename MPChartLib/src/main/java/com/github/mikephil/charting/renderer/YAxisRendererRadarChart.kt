@@ -25,9 +25,9 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         val range = abs((max - min).toDouble())
 
         if (labelCount == 0 || range <= 0 || java.lang.Double.isInfinite(range)) {
-            axis.mEntries = floatArrayOf()
-            axis.mCenteredEntries = floatArrayOf()
-            axis.mEntryCount = 0
+            axis.entries = floatArrayOf()
+            axis.centeredEntries = floatArrayOf()
+            axis.entryCount = 0
             return
         }
 
@@ -56,17 +56,17 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         // force label count
         if (axis.isForceLabelsEnabled) {
             val step = range.toFloat() / (labelCount - 1).toFloat()
-            axis.mEntryCount = labelCount
+            axis.entryCount = labelCount
 
-            if (axis.mEntries.size < labelCount) {
+            if (axis.entries.size < labelCount) {
                 // Ensure stops contains at least numStops elements.
-                axis.mEntries = FloatArray(labelCount)
+                axis.entries = FloatArray(labelCount)
             }
 
             var v = min
 
             for (i in 0..<labelCount) {
-                axis.mEntries[i] = v
+                axis.entries[i] = v
                 v += step
             }
 
@@ -93,11 +93,11 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
             n++
 
-            axis.mEntryCount = n
+            axis.entryCount = n
 
-            if (axis.mEntries.size < n) {
+            if (axis.entries.size < n) {
                 // Ensure stops contains at least numStops elements.
-                axis.mEntries = FloatArray(n)
+                axis.entries = FloatArray(n)
             }
 
             f = first
@@ -106,7 +106,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
                 if (f == 0.0)  // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
                     f = 0.0
 
-                axis.mEntries[i] = f.toFloat()
+                axis.entries[i] = f.toFloat()
                 f += interval
                 ++i
             }
@@ -120,19 +120,19 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         }
 
         if (centeringEnabled) {
-            if (axis.mCenteredEntries.size < n) {
-                axis.mCenteredEntries = FloatArray(n)
+            if (axis.centeredEntries.size < n) {
+                axis.centeredEntries = FloatArray(n)
             }
 
-            val offset = (axis.mEntries[1] - axis.mEntries[0]) / 2f
+            val offset = (axis.entries[1] - axis.entries[0]) / 2f
 
             for (i in 0..<n) {
-                axis.mCenteredEntries[i] = axis.mEntries[i] + offset
+                axis.centeredEntries[i] = axis.entries[i] + offset
             }
         }
 
-        axis.mAxisMinimum = axis.mEntries[0]
-        axis.mAxisMaximum = axis.mEntries[n - 1]
+        axis.mAxisMinimum = axis.entries[0]
+        axis.mAxisMaximum = axis.entries[n - 1]
         axis.mAxisRange = abs((axis.mAxisMaximum - axis.mAxisMinimum).toDouble()).toFloat()
     }
 
@@ -150,14 +150,14 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
         val from = if (yAxis.isDrawBottomYLabelEntryEnabled) 0 else 1
         val to = if (yAxis.isDrawTopYLabelEntryEnabled)
-            yAxis.mEntryCount
+            yAxis.entryCount
         else
-            (yAxis.mEntryCount - 1)
+            (yAxis.entryCount - 1)
 
         val xOffset = yAxis.labelXOffset
 
         for (j in from..<to) {
-            val r = (yAxis.mEntries[j] - yAxis.mAxisMinimum) * factor
+            val r = (yAxis.entries[j] - yAxis.mAxisMinimum) * factor
 
             Utils.getPosition(center, r, chart.rotationAngle, pOut)
 

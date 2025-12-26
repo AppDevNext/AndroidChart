@@ -173,14 +173,14 @@ open class XAxisRenderer(
                 i += 2
             }
         } else {
-            positions = FloatArray(xAxis.mEntryCount * 2)
+            positions = FloatArray(xAxis.entryCount * 2)
             var i = 0
             while (i < positions.size) {
                 // only fill x values
                 if (centeringEnabled) {
-                    positions[i] = xAxis.mCenteredEntries[i / 2]
+                    positions[i] = xAxis.centeredEntries[i / 2]
                 } else {
-                    positions[i] = xAxis.mEntries[i / 2]
+                    positions[i] = xAxis.entries[i / 2]
                 }
                 i += 2
             }
@@ -196,12 +196,12 @@ open class XAxisRenderer(
                 val label = if (xAxis.isShowSpecificPositions)
                     xAxis.valueFormatter?.getFormattedValue(xAxis.specificPositions[i / 2], xAxis)
                 else
-                    xAxis.valueFormatter?.getFormattedValue(xAxis.mEntries[i / 2], xAxis)
+                    xAxis.valueFormatter?.getFormattedValue(xAxis.entries[i / 2], xAxis)
 
                 if (xAxis.isAvoidFirstLastClippingEnabled) {
                     // avoid clipping of the last
 
-                    if (i / 2 == xAxis.mEntryCount - 1 && xAxis.mEntryCount > 1) {
+                    if (i / 2 == xAxis.entryCount - 1 && xAxis.entryCount > 1) {
                         val width = Utils.calcTextWidth(paintAxisLabels, label).toFloat()
 
                         if (width > viewPortHandler.offsetRight() * 2
@@ -225,23 +225,23 @@ open class XAxisRenderer(
         Utils.drawXAxisValue(canvas, formattedLabel, x, y, paintAxisLabels, anchor, angleDegrees)
     }
 
-    protected open var mRenderGridLinesPath: Path = Path()
-    protected open var mRenderGridLinesBuffer: FloatArray = FloatArray(2)
+    protected open var renderGridLinesPath: Path = Path()
+    protected open var renderGridLinesBuffer: FloatArray = FloatArray(2)
     override fun renderGridLines(canvas: Canvas) {
         if (!xAxis.isDrawGridLinesEnabled || !xAxis.isEnabled)
             return
 
         canvas.withClip(gridClippingRect!!) {
             if (axis.isShowSpecificPositions) {
-                if (mRenderGridLinesBuffer.size != axis.specificPositions.size * 2) {
-                    mRenderGridLinesBuffer = FloatArray(xAxis.specificPositions.size * 2)
+                if (renderGridLinesBuffer.size != axis.specificPositions.size * 2) {
+                    renderGridLinesBuffer = FloatArray(xAxis.specificPositions.size * 2)
                 }
             } else {
-                if (mRenderGridLinesBuffer.size != axis.mEntryCount * 2) {
-                    mRenderGridLinesBuffer = FloatArray(xAxis.mEntryCount * 2)
+                if (renderGridLinesBuffer.size != axis.entryCount * 2) {
+                    renderGridLinesBuffer = FloatArray(xAxis.entryCount * 2)
                 }
             }
-            val positions = mRenderGridLinesBuffer
+            val positions = renderGridLinesBuffer
 
             run {
                 var i = 0
@@ -250,8 +250,8 @@ open class XAxisRenderer(
                         positions[i] = xAxis.specificPositions[i / 2]
                         positions[i + 1] = xAxis.specificPositions[i / 2]
                     } else {
-                        positions[i] = xAxis.mEntries[i / 2]
-                        positions[i + 1] = xAxis.mEntries[i / 2]
+                        positions[i] = xAxis.entries[i / 2]
+                        positions[i + 1] = xAxis.entries[i / 2]
                     }
                     i += 2
                 }
@@ -261,7 +261,7 @@ open class XAxisRenderer(
 
             setupGridPaint()
 
-            val gridLinePath = mRenderGridLinesPath
+            val gridLinePath = renderGridLinesPath
             gridLinePath.reset()
 
             var i = 0

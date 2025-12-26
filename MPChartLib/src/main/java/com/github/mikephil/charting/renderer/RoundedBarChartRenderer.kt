@@ -17,7 +17,7 @@ import kotlin.math.min
 class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     BarChartRenderer(chart, animator, viewPortHandler) {
     private val mBarShadowRectBuffer = RectF()
-    private val mRadius = 20f
+    private val radius = 20f
     private var roundedShadowRadius = 0f
     private var roundedPositiveDataSetRadius = 0f
     private var roundedNegativeDataSetRadius = 0f
@@ -305,7 +305,7 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
                         RectF(
                             barRect.left, barRect.top, barRect.right,
                             barRect.bottom
-                        ), mRadius, mRadius, tl = true, tr = true, br = true, bl = true
+                        ), radius, radius, tl = true, tr = true, br = true, bl = true
                     )
 
                     canvas.drawPath(path2, paintHighlight)

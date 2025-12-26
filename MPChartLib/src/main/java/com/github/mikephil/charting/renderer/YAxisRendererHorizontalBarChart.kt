@@ -133,9 +133,9 @@ open class YAxisRendererHorizontalBarChart(
 
         val from = if (yAxis.isDrawBottomYLabelEntryEnabled) 0 else 1
         val to = if (yAxis.isDrawTopYLabelEntryEnabled)
-            yAxis.mEntryCount
+            yAxis.entryCount
         else
-            (yAxis.mEntryCount - 1)
+            (yAxis.entryCount - 1)
 
         val xOffset = yAxis.labelXOffset
 
@@ -155,15 +155,15 @@ open class YAxisRendererHorizontalBarChart(
 
     override val transformedPositions: FloatArray
         get() {
-            if (mGetTransformedPositionsBuffer.size != yAxis.mEntryCount * 2) {
-                mGetTransformedPositionsBuffer = FloatArray(yAxis.mEntryCount * 2)
+            if (mGetTransformedPositionsBuffer.size != yAxis.entryCount * 2) {
+                mGetTransformedPositionsBuffer = FloatArray(yAxis.entryCount * 2)
             }
             val positions = mGetTransformedPositionsBuffer
 
             var i = 0
             while (i < positions.size) {
                 // only fill x values, y values are not needed for x-labels
-                positions[i] = yAxis.mEntries[i / 2]
+                positions[i] = yAxis.entries[i / 2]
                 i += 2
             }
 

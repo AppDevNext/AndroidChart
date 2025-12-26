@@ -15,7 +15,7 @@ class AxisRendererTest {
         var renderer: AxisRenderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(0f, 100f, false)
-        var entries = yAxis.mEntries
+        var entries = yAxis.entries
 
         Assert.assertEquals(6, entries.size)
         Assert.assertEquals(20.0, (entries[1] - entries[0]).toDouble(), 0.01) // interval 20
@@ -28,7 +28,7 @@ class AxisRendererTest {
         renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(0f, 100f, false)
-        entries = yAxis.mEntries
+        entries = yAxis.entries
 
         Assert.assertEquals(3, entries.size)
         Assert.assertEquals(50.0, (entries[1] - entries[0]).toDouble(), 0.01) // interval 50
@@ -40,7 +40,7 @@ class AxisRendererTest {
         renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(0f, 100f, false)
-        entries = yAxis.mEntries
+        entries = yAxis.entries
 
         Assert.assertEquals(5, entries.size)
         Assert.assertEquals(25.0, (entries[1] - entries[0]).toDouble(), 0.01) // interval 25
@@ -52,7 +52,7 @@ class AxisRendererTest {
         renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(0f, 0.01f, false)
-        entries = yAxis.mEntries
+        entries = yAxis.entries
 
         Assert.assertEquals(5, entries.size)
         Assert.assertEquals(0.0025, (entries[1] - entries[0]).toDouble(), 0.0001)
@@ -64,7 +64,7 @@ class AxisRendererTest {
         renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(0f, 0.01f, false)
-        entries = yAxis.mEntries
+        entries = yAxis.entries
 
         Assert.assertEquals(5, entries.size)
         Assert.assertEquals(0.0020, (entries[1] - entries[0]).toDouble(), 0.0001)
@@ -76,7 +76,7 @@ class AxisRendererTest {
         renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(-50f, 50f, false)
-        entries = yAxis.mEntries
+        entries = yAxis.entries
 
         Assert.assertEquals(5, entries.size)
         Assert.assertEquals(-40.0, entries[0].toDouble(), 0.0001)
@@ -88,7 +88,7 @@ class AxisRendererTest {
         renderer = YAxisRenderer(ViewPortHandler(), yAxis, null)
 
         renderer.computeAxis(-50f, 100f, false)
-        entries = yAxis.mEntries
+        entries = yAxis.entries
 
         Assert.assertEquals(5, entries.size)
         Assert.assertEquals(-30.0, entries[0].toDouble(), 0.0001)

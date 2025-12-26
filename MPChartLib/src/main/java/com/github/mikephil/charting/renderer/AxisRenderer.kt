@@ -119,9 +119,9 @@ abstract class AxisRenderer(
         val range = abs((max - min).toDouble())
 
         if (labelCount == 0 || range <= 0 || java.lang.Double.isInfinite(range)) {
-            axis.mEntries = floatArrayOf()
-            axis.mCenteredEntries = floatArrayOf()
-            axis.mEntryCount = 0
+            axis.entries = floatArrayOf()
+            axis.centeredEntries = floatArrayOf()
+            axis.entryCount = 0
             return
         }
 
@@ -153,15 +153,15 @@ abstract class AxisRenderer(
             // If granularity is enabled, then do not allow the interval to go below specified granularity.
             if (axis.isGranularityEnabled) interval = if (interval < axis.granularity) axis.granularity.toDouble() else interval
 
-            axis.mEntryCount = labelCount
+            axis.entryCount = labelCount
 
             // Ensure stops contains at least numStops elements.
-            axis.mEntries = FloatArray(labelCount)
+            axis.entries = FloatArray(labelCount)
 
             var v = min
 
             for (i in 0..<labelCount) {
-                axis.mEntries[i] = v
+                axis.entries[i] = v
                 v += interval.toFloat()
             }
 
@@ -191,9 +191,9 @@ abstract class AxisRenderer(
                 n = 1
             }
 
-            axis.mEntryCount = n
+            axis.entryCount = n
 
-            axis.mEntries = FloatArray(n)
+            axis.entries = FloatArray(n)
 
             f = first
             var i = 0
@@ -201,7 +201,7 @@ abstract class AxisRenderer(
                 if (f == 0.0)  // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
                     f = 0.0
 
-                axis.mEntries[i] = f.toFloat()
+                axis.entries[i] = f.toFloat()
                 f += interval
                 ++i
             }
@@ -215,14 +215,14 @@ abstract class AxisRenderer(
         }
 
         if (axis.isCenterAxisLabelsEnabled) {
-            if (axis.mCenteredEntries.size < n) {
-                axis.mCenteredEntries = FloatArray(n)
+            if (axis.centeredEntries.size < n) {
+                axis.centeredEntries = FloatArray(n)
             }
 
             val offset = interval.toFloat() / 2f
 
             for (i in 0..<n) {
-                axis.mCenteredEntries[i] = axis.mEntries[i] + offset
+                axis.centeredEntries[i] = axis.entries[i] + offset
             }
         }
     }

@@ -110,9 +110,9 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         } else {
             from = if (yAxis.isDrawBottomYLabelEntryEnabled) 0 else 1
             to = if (yAxis.isDrawTopYLabelEntryEnabled)
-                yAxis.mEntryCount
+                yAxis.entryCount
             else
-                (yAxis.mEntryCount - 1)
+                (yAxis.entryCount - 1)
         }
 
         val xOffset = yAxis.labelXOffset
@@ -199,8 +199,8 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                     mGetTransformedPositionsBuffer = FloatArray(yAxis.specificPositions.size * 2)
                 }
             } else {
-                if (mGetTransformedPositionsBuffer.size != yAxis.mEntryCount * 2) {
-                    mGetTransformedPositionsBuffer = FloatArray(yAxis.mEntryCount * 2)
+                if (mGetTransformedPositionsBuffer.size != yAxis.entryCount * 2) {
+                    mGetTransformedPositionsBuffer = FloatArray(yAxis.entryCount * 2)
                 }
             }
             val positions = mGetTransformedPositionsBuffer
@@ -211,7 +211,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                 if (yAxis.isShowSpecificPositions) {
                     positions[i + 1] = yAxis.specificPositions[i / 2]
                 } else {
-                    positions[i + 1] = yAxis.mEntries[i / 2]
+                    positions[i + 1] = yAxis.entries[i / 2]
                 }
                 i += 2
             }

@@ -43,18 +43,18 @@ abstract class AxisBase : ComponentBase() {
     /**
      * the actual array of entries
      */
-    var mEntries: FloatArray = floatArrayOf()
+    var entries: FloatArray = floatArrayOf()
 
     /**
      * axis label entries only used for centered labels
      */
-    var mCenteredEntries: FloatArray = floatArrayOf()
+    var centeredEntries: FloatArray = floatArrayOf()
 
     /**
      * the number of entries the legend contains
      */
     @JvmField
-    var mEntryCount: Int = 0
+    var entryCount: Int = 0
 
     /**
      * the number of decimal digits to use
@@ -304,7 +304,7 @@ abstract class AxisBase : ComponentBase() {
     }
 
     val isCenterAxisLabelsEnabled: Boolean
-        get() = mCenterAxisLabels && mEntryCount > 0
+        get() = mCenterAxisLabels && entryCount > 0
 
     var axisLineWidth: Float
         /**
@@ -465,7 +465,7 @@ abstract class AxisBase : ComponentBase() {
         get() {
             var longest: String? = ""
 
-            for (i in mEntries.indices) {
+            for (i in entries.indices) {
                 val text = getFormattedLabel(i)
 
                 if (text != null && longest!!.length < text.length) longest = text
@@ -486,7 +486,7 @@ abstract class AxisBase : ComponentBase() {
         var longest: String? = ""
         val max = 0f
 
-        for (i in mEntries.indices) {
+        for (i in entries.indices) {
             val text = getFormattedLabel(i)
             if (text != null) {
                 val width = p.measureText(text)
@@ -500,10 +500,10 @@ abstract class AxisBase : ComponentBase() {
     }
 
     fun getFormattedLabel(index: Int): String? {
-        return if (index < 0 || index >= mEntries.size)
+        return if (index < 0 || index >= entries.size)
             ""
         else
-            this.valueFormatter!!.getFormattedValue(mEntries[index], this)
+            this.valueFormatter!!.getFormattedValue(entries[index], this)
     }
 
     var valueFormatter: IAxisValueFormatter?

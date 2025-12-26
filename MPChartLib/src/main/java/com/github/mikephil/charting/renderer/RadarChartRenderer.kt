@@ -244,7 +244,7 @@ open class RadarChartRenderer(
         webPaint.color = chart.webColorInner
         webPaint.alpha = chart.webAlpha
 
-        val labelCount = chart.yAxis.mEntryCount
+        val labelCount = chart.yAxis.entryCount
 
         val p1out = MPPointF.getInstance(0f, 0f)
         val p2out = MPPointF.getInstance(0f, 0f)
@@ -254,7 +254,7 @@ open class RadarChartRenderer(
                 paint.color = chart.layerColorList[j]
             }
             for (i in 0..<chart.getData()!!.entryCount) {
-                val r = (chart.yAxis.mEntries[j] - chart.yChartMin) * factor
+                val r = (chart.yAxis.entries[j] - chart.yChartMin) * factor
 
                 Utils.getPosition(center, r, sliceAngle * i + rotationAngle, p1out)
                 Utils.getPosition(center, r, sliceAngle * (i + 1) + rotationAngle, p2out)
