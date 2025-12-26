@@ -19,6 +19,7 @@ import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.github.mikephil.charting.utils.convertDpToPixel
+import com.github.mikephil.charting.utils.drawXAxisValue
 import kotlin.math.roundToInt
 
 open class XAxisRenderer(
@@ -102,21 +103,25 @@ open class XAxisRenderer(
                 pointF.y = 1.0f
                 drawLabels(canvas, viewPortHandler.contentTop() - yOffset, pointF)
             }
+
             XAxisPosition.TOP_INSIDE -> {
                 pointF.x = 0.5f
                 pointF.y = 1.0f
                 drawLabels(canvas, viewPortHandler.contentTop() + yOffset + xAxis.mLabelHeight, pointF)
             }
+
             XAxisPosition.BOTTOM -> {
                 pointF.x = 0.5f
                 pointF.y = 0.0f
                 drawLabels(canvas, viewPortHandler.contentBottom() + yOffset, pointF)
             }
+
             XAxisPosition.BOTTOM_INSIDE -> {
                 pointF.x = 0.5f
                 pointF.y = 0.0f
                 drawLabels(canvas, viewPortHandler.contentBottom() - yOffset - xAxis.mLabelHeight, pointF)
             }
+
             else -> { // BOTH SIDED
                 pointF.x = 0.5f
                 pointF.y = 1.0f
@@ -222,7 +227,7 @@ open class XAxisRenderer(
     }
 
     protected fun drawLabel(canvas: Canvas, formattedLabel: String?, x: Float, y: Float, anchor: MPPointF, angleDegrees: Float) {
-        formattedLabel?.let { Utils.drawXAxisValue(canvas, it, x, y, paintAxisLabels, anchor, angleDegrees) }
+        formattedLabel?.let { canvas.drawXAxisValue(it, x, y, paintAxisLabels, anchor, angleDegrees) }
     }
 
     protected open var renderGridLinesPath: Path = Path()
