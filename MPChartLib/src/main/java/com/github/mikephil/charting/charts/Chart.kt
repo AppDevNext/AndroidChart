@@ -158,7 +158,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     protected var mSelectionListener: OnChartValueSelectedListener? = null
 
     @JvmField
-    protected var mChartTouchListener: ChartTouchListener<*>? = null
+    protected var chartTouchListener: ChartTouchListener<*>? = null
 
     /**
      * text that is displayed when the chart is empty
@@ -351,7 +351,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
         mData = null
         mOffsetsCalculated = false
         this.highlighted = null
-        mChartTouchListener!!.setLastHighlighted(null)
+        chartTouchListener!!.setLastHighlighted(null)
         invalidate()
     }
 
@@ -523,9 +523,9 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      */
     protected fun setLastHighlighted(highs: Array<Highlight>?) {
         if (highs == null || highs.isEmpty()) {
-            mChartTouchListener!!.setLastHighlighted(null)
+            chartTouchListener!!.setLastHighlighted(null)
         } else {
-            mChartTouchListener!!.setLastHighlighted(highs[0])
+            chartTouchListener!!.setLastHighlighted(highs[0])
         }
     }
 
@@ -696,13 +696,13 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
         /**
          * Returns an instance of the currently active touch listener.
          */
-        get() = mChartTouchListener!!
+        get() = chartTouchListener!!
         /**
          * Set a new (e.g. custom) ChartTouchListener NOTE: make sure to
          * setTouchEnabled(true); if you need touch gestures on the chart
          */
         set(touchListener) {
-            this.mChartTouchListener = touchListener
+            this.chartTouchListener = touchListener
         }
 
     /**

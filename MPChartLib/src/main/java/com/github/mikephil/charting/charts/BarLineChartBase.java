@@ -170,7 +170,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
 		setHighlighter(new ChartHighlighter<>(this));
 
-		mChartTouchListener = new BarLineChartTouchListener(this, getViewPortHandler().getMatrixTouch(), 3f);
+		chartTouchListener = new BarLineChartTouchListener(this, getViewPortHandler().getMatrixTouch(), 3f);
 
 		mGridBackgroundPaint = new Paint();
 		mGridBackgroundPaint.setStyle(Style.FILL);
@@ -562,7 +562,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 	public boolean onTouchEvent(MotionEvent event) {
 		super.onTouchEvent(event);
 
-		if (mChartTouchListener == null || mData == null) {
+		if (chartTouchListener == null || mData == null) {
 			return false;
 		}
 
@@ -570,15 +570,15 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 		if (!mTouchEnabled) {
 			return false;
 		} else {
-			return mChartTouchListener.onTouch(this, event);
+			return chartTouchListener.onTouch(this, event);
 		}
 	}
 
 	@Override
 	public void computeScroll() {
 
-		if (mChartTouchListener instanceof BarLineChartTouchListener) {
-			((BarLineChartTouchListener) mChartTouchListener).computeScroll();
+		if (chartTouchListener instanceof BarLineChartTouchListener) {
+			((BarLineChartTouchListener) chartTouchListener).computeScroll();
 		}
 	}
 

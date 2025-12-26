@@ -105,7 +105,7 @@ open class PieChartRenderer(
         val pieData = chart.getData()
 
         for (set in pieData?.dataSets ?: return) {
-            if (set.isVisible && set.entryCount > 0) drawDataSet(set as IPieDataSet)
+            if (set.isVisible && set.entryCount > 0) drawDataSet(set)
         }
     }
 
@@ -160,7 +160,7 @@ open class PieChartRenderer(
         if (!dataSet.isAutomaticallyDisableSliceSpacingEnabled) return dataSet.sliceSpace
 
         val spaceSizeRatio = dataSet.sliceSpace / viewPortHandler.smallestContentExtension
-        val minValueRatio = dataSet.yMin / (chart.getData()!! as PieData).yValueSum * 2
+        val minValueRatio = dataSet.yMin / chart.getData()!!.yValueSum * 2
 
         val sliceSpace = if (spaceSizeRatio > minValueRatio) 0f else dataSet.sliceSpace
 
@@ -375,7 +375,7 @@ open class PieChartRenderer(
 
         val labelRadius = radius - labelRadiusOffset
 
-        val data = chart.getData() as PieData?
+        val data = chart.getData()
         val dataSets = data!!.dataSets
 
         val yValueSum = data.yValueSum
@@ -766,7 +766,7 @@ open class PieChartRenderer(
 
             if (index >= drawAngles.size) continue
 
-            val set = chart.getData()?.getDataSetByIndex(indices[i].dataSetIndex) as? IPieDataSet
+            val set = chart.getData()?.getDataSetByIndex(indices[i].dataSetIndex)
 
             if (set == null || !set.isHighlightEnabled) continue
 
@@ -906,7 +906,7 @@ open class PieChartRenderer(
         if (!chart.isDrawRoundedSlicesEnabled)
             return
 
-        val dataSet = (chart.getData()!! as PieData).dataSet
+        val dataSet = chart.getData()!!.dataSet
 
         if (!dataSet.isVisible)
             return

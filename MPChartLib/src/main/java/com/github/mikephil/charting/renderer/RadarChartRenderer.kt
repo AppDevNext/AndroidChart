@@ -38,7 +38,7 @@ open class RadarChartRenderer(
 
             radarData.dataSets?.forEach { set ->
                 if (set.isVisible) {
-                    drawDataSet(canvas, set as IRadarDataSet, mostEntries)
+                    drawDataSet(canvas, set, mostEntries)
                 }
             }
         }
@@ -299,7 +299,7 @@ open class RadarChartRenderer(
         val radarData = chart.getData()
 
         for (high in indices) {
-            val set = radarData!!.getDataSetByIndex(high.dataSetIndex) as IRadarDataSet?
+            val set = radarData!!.getDataSetByIndex(high.dataSetIndex)
 
             if (set == null || !set.isHighlightEnabled)
                 continue

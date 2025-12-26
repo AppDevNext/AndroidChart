@@ -81,7 +81,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
     override fun init() {
         super.init()
 
-        mChartTouchListener = PieRadarChartTouchListener(this)
+        chartTouchListener = PieRadarChartTouchListener(this)
     }
 
     override fun calcMinMax() {
@@ -93,14 +93,14 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         // use the Pie- and RadarChart listener own listener
-        return if (mTouchEnabled && mChartTouchListener != null)
-            mChartTouchListener!!.onTouch(this, event)
+        return if (mTouchEnabled && chartTouchListener != null)
+            chartTouchListener!!.onTouch(this, event)
         else
             super.onTouchEvent(event)
     }
 
     override fun computeScroll() {
-        if (mChartTouchListener is PieRadarChartTouchListener) (mChartTouchListener as PieRadarChartTouchListener).computeScroll()
+        if (chartTouchListener is PieRadarChartTouchListener) (chartTouchListener as PieRadarChartTouchListener).computeScroll()
     }
 
     override fun notifyDataSetChanged() {
