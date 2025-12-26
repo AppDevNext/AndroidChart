@@ -653,7 +653,8 @@ open class LineChartRenderer(
         for (high in indices) {
             val set = lineData?.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled) continue
+            if (set == null || !set.isHighlightEnabled)
+                continue
 
             set.getEntryForXValue(high.x, high.y)?.let { entry ->
 

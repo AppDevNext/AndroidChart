@@ -262,9 +262,9 @@ class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, v
             for (high in indices) {
                 val set = barData.getDataSetByIndex(high.dataSetIndex)
 
-                if (set == null || !set.isHighlightEnabled) {
+                if (set == null || !set.isHighlightEnabled)
                     continue
-                }
+
 
                 set.getEntryForXValue(high.x, high.y)?.let { barEntry ->
 

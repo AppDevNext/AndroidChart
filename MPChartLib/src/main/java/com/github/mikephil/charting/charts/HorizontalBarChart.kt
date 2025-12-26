@@ -226,7 +226,7 @@ open class HorizontalBarChart : BarChart {
 
             outputRect.set(left, top, right, bottom)
 
-            getTransformer(set!!.axisDependency)!!.rectValueToPixel(outputRect)
+            getTransformer(set!!.axisDependency).rectValueToPixel(outputRect)
         }
     }
 
@@ -244,7 +244,7 @@ open class HorizontalBarChart : BarChart {
         vals[0] = e.y
         vals[1] = e.x
 
-        getTransformer(axis)!!.pointValuesToPixel(vals)
+        getTransformer(axis).pointValuesToPixel(vals)
 
         return getInstance(vals[0], vals[1])
     }
@@ -266,7 +266,7 @@ open class HorizontalBarChart : BarChart {
 
     override val lowestVisibleX: Float
         get() {
-            getTransformer(AxisDependency.LEFT)!!.getValuesByTouchPoint(
+            getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentBottom(), posForGetLowestVisibleX
             )
@@ -275,7 +275,7 @@ open class HorizontalBarChart : BarChart {
 
     override val highestVisibleX: Float
         get() {
-            getTransformer(AxisDependency.LEFT)!!.getValuesByTouchPoint(
+            getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentTop(), posForGetHighestVisibleX
             )

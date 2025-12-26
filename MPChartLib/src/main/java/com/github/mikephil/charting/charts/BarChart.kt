@@ -187,7 +187,7 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
 
             outputRect.set(left, top, right, bottom)
 
-            getTransformer(set.axisDependency)!!.rectValueToPixel(outputRect)
+            getTransformer(set.axisDependency).rectValueToPixel(outputRect)
         }
     }
 

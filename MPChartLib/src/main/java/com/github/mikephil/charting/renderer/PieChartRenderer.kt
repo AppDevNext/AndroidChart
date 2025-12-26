@@ -14,7 +14,6 @@ import androidx.core.graphics.createBitmap
 import androidx.core.graphics.withSave
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet.ValuePosition
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
@@ -546,7 +545,8 @@ open class PieChartRenderer(
 
                                 // draw everything, depending on settings
                                 if (drawXInside && drawYInside) {
-                                    drawValue(this, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j)
+                                    drawValue(
+                                        this, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j)
                                     )
 
                                     if (j < data.entryCount && entryLabel != null) {
@@ -768,7 +768,8 @@ open class PieChartRenderer(
 
             val set = chart.getData()?.getDataSetByIndex(indices[i].dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled) continue
+            if (set == null || !set.isHighlightEnabled)
+                continue
 
             val entryCount = set.entryCount
             var visibleAngleCount = 0

@@ -504,9 +504,8 @@ open class BarChartRenderer(
         for (high in indices) {
             val set = barData?.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled) {
+            if (set == null || !set.isHighlightEnabled)
                 continue
-            }
 
             val barEntry = set.getEntryForXValue(high.x, high.y)!!
 

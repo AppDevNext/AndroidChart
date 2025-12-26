@@ -550,6 +550,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 	 * responsible for transforming values into pixels on the screen and
 	 * backwards.
 	 */
+	@NonNull
 	public Transformer getTransformer(AxisDependency which) {
 		if (which == AxisDependency.LEFT) {
 			return mLeftAxisTransformer;
