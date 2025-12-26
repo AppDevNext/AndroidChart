@@ -117,7 +117,7 @@ jobs:
       - name: Run tests
         run: ./gradlew test
       - name: Test jitpack publish command
-        run: ./gradlew :MPChartLib:publishToMavenLocal
+        run: ./gradlew :chartLib:publishToMavenLocal
       - name: Code checks
         run: ./gradlew check
       - name: Archive Lint report

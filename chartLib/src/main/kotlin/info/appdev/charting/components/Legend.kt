@@ -202,8 +202,7 @@ class Legend() : ComponentBase() {
                 entry.formSize).convertDpToPixel()
             if (formSize > maxFormSize) maxFormSize = formSize
 
-            val label = entry.label
-            if (label == null) continue
+            val label = entry.label ?: continue
 
             val length = Utils.calcTextWidth(p, label).toFloat()
 
