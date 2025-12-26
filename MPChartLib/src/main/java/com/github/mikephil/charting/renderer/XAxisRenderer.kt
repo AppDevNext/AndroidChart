@@ -222,7 +222,7 @@ open class XAxisRenderer(
     }
 
     protected fun drawLabel(canvas: Canvas, formattedLabel: String?, x: Float, y: Float, anchor: MPPointF, angleDegrees: Float) {
-        Utils.drawXAxisValue(canvas, formattedLabel, x, y, paintAxisLabels, anchor, angleDegrees)
+        formattedLabel?.let { Utils.drawXAxisValue(canvas, it, x, y, paintAxisLabels, anchor, angleDegrees) }
     }
 
     protected open var renderGridLinesPath: Path = Path()
