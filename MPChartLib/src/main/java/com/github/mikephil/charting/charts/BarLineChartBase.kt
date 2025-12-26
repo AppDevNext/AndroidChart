@@ -46,7 +46,7 @@ import kotlin.math.min
  */
 @Suppress("unused")
 @SuppressLint("RtlHardcoded")
-abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineScatterCandleBubbleDataSet<out Entry>>> : Chart<T>,
+abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out Entry>>> : Chart<T>,
     BarLineScatterCandleBubbleDataProvider {
     /**
      * the maximum number of entries to which values will be drawn
@@ -498,13 +498,21 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
                 val xLabelHeight = mXAxis.mLabelHeight + mXAxis.yOffset
 
                 // offsets for x-labels
-                if (mXAxis.position == XAxisPosition.BOTTOM) {
-                    offsetBottom += xLabelHeight
-                } else if (mXAxis.position == XAxisPosition.TOP) {
-                    offsetTop += xLabelHeight
-                } else if (mXAxis.position == XAxisPosition.BOTH_SIDED) {
-                    offsetBottom += xLabelHeight
-                    offsetTop += xLabelHeight
+                when (mXAxis.position) {
+                    XAxisPosition.BOTTOM -> {
+                        offsetBottom += xLabelHeight
+                    }
+                    XAxisPosition.TOP -> {
+                        offsetTop += xLabelHeight
+                    }
+                    XAxisPosition.BOTH_SIDED -> {
+                        offsetBottom += xLabelHeight
+                        offsetTop += xLabelHeight
+                    }
+
+                    XAxisPosition.TOP_INSIDE -> TODO()
+                    XAxisPosition.BOTTOM_INSIDE -> TODO()
+                    null -> Log.e(LOG_TAG, "calculateOffsets(): Cannot calculate offset for XAxisPosition.TOP_INSIDE or BOTTOM_INSIDE")
                 }
             }
 
