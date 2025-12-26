@@ -46,7 +46,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
 
         binding.chart1.setDrawValueAboveBar(true)
 
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -87,13 +87,14 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         binding.seekBarY.progress = 50
         binding.seekBarX.progress = 12
 
-        val l = binding.chart1.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-        l.orientation = Legend.LegendOrientation.HORIZONTAL
-        l.setDrawInside(false)
-        l.formSize = 8f
-        l.xEntrySpace = 4f
+        binding.chart1.legend?.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+            orientation = Legend.LegendOrientation.HORIZONTAL
+            setDrawInside(false)
+            formSize = 8f
+            xEntrySpace = 4f
+        }
     }
 
     private fun setData(count: Int, range: Float) {

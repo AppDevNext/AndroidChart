@@ -21,7 +21,7 @@ class PieChartFrag : SimpleFragment() {
         val v = inflater.inflate(R.layout.frag_simple_pie, container, false)
 
         chart = v.findViewById(R.id.pieChart1)
-        chart!!.description.isEnabled = false
+        chart!!.description?.isEnabled = false
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 
@@ -34,11 +34,12 @@ class PieChartFrag : SimpleFragment() {
         chart!!.holeRadius = 45f
         chart!!.transparentCircleRadius = 50f
 
-        val l = chart!!.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        l.orientation = Legend.LegendOrientation.VERTICAL
-        l.setDrawInside(false)
+        chart!!.legend?.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+            orientation = Legend.LegendOrientation.VERTICAL
+            setDrawInside(false)
+        }
 
         chart!!.setData(generatePieData())
 

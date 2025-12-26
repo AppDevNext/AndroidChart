@@ -3,7 +3,6 @@ package com.github.mikephil.charting.charts
 import android.content.Context
 import android.util.AttributeSet
 import com.github.mikephil.charting.data.BubbleData
-import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider
 import com.github.mikephil.charting.renderer.BubbleChartRenderer
 
@@ -20,20 +19,15 @@ class BubbleChart : BarLineChartBase<BubbleData?>, BubbleDataProvider {
 
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    protected override fun init() {
+    override fun init() {
         super.init()
 
-        mRenderer = BubbleChartRenderer(this, mAnimator, mViewPortHandler)
+        mRenderer = BubbleChartRenderer(this, mAnimator, viewPortHandler)
     }
 
     override val bubbleData: BubbleData?
         get() = mData
 
-    override fun getAccessibilityDescription(): String {
-        return "This is bubble chart"
-    }
-
-    override fun setData(data: BubbleData?) {
-        super.setData(data)
-    }
+    override val accessibilityDescription: String
+        get() = "This is bubble chart"
 }

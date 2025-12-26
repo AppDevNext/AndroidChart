@@ -64,7 +64,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    protected override fun init() {
+    override fun init() {
         super.init()
 
         // Default values are not ready here yet
@@ -77,7 +77,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
         // Old default behaviour
         isHighlightFullBarEnabled = true
 
-        mRenderer = CombinedChartRenderer(this, mAnimator, mViewPortHandler)
+        mRenderer = CombinedChartRenderer(this, mAnimator, viewPortHandler)
     }
 
     override val combinedData: CombinedData?
@@ -87,7 +87,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
         super.setData(data)
         setHighlighter(CombinedHighlighter(this, this))
         (mRenderer as CombinedChartRenderer).createRenderers()
-        mRenderer.initBuffers()
+        mRenderer?.initBuffers()
     }
 
     /**
@@ -100,22 +100,25 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
             Log.e(LOG_TAG, "Can't select by touch. No data set.")
             return null
         } else {
-            val highlight = highlighter.getHighlight(x, y)
-            if (highlight == null || !isHighlightFullBarEnabled) {
-                return highlight
-            }
+            highlighter?.let {
+                val highlight = it.getHighlight(x, y)
+                if (highlight == null || !isHighlightFullBarEnabled) {
+                    return highlight
+                }
 
-            // For isHighlightFullBarEnabled, remove stackIndex
-            return Highlight(
-                highlight.x,
-                highlight.y,
-                highlight.xPx,
-                highlight.yPx,
-                highlight.dataSetIndex,
-                -1,
-                highlight.axis
-            )
+                // For isHighlightFullBarEnabled, remove stackIndex
+                return Highlight(
+                    highlight.x,
+                    highlight.y,
+                    highlight.xPx,
+                    highlight.yPx,
+                    highlight.dataSetIndex,
+                    -1,
+                    highlight.axis
+                )
+            }
         }
+        return null
     }
 
     override val lineData: LineData?
@@ -196,47 +199,49 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
     override fun drawMarkers(canvas: Canvas) {
         // if there is no marker view or drawing marker is disabled
 
-        if (mMarkers == null || !isDrawMarkersEnabled || !valuesToHighlight()) {
+        if (!isDrawMarkersEnabled || !valuesToHighlight()) {
             return
         }
 
-        for (i in mIndicesToHighlight.indices) {
-            val highlight = mIndicesToHighlight[i]
-            val dataset = mData!!.getDataSetByHighlight(highlight)
+        highlighted?.let {
+            for (i in it.indices) {
+                val highlight = it[i]
+                val dataset = mData!!.getDataSetByHighlight(highlight)
 
-            val e = mData!!.getEntryForHighlight(highlight)
-            if (e == null || dataset == null) {
-                continue
-            }
+                val e = mData!!.getEntryForHighlight(highlight)
+                if (e == null || dataset == null) {
+                    continue
+                }
 
-            @Suppress("UNCHECKED_CAST")
-            val set = dataset as IDataSet<Entry>
-            val entryIndex = set.getEntryIndex(e)
+                @Suppress("UNCHECKED_CAST")
+                val set = dataset as IDataSet<Entry>
+                val entryIndex = set.getEntryIndex(e)
 
-            // make sure entry not null
-            if (entryIndex > set.entryCount * mAnimator.phaseX) {
-                continue
-            }
+                // make sure entry not null
+                if (entryIndex > set.entryCount * mAnimator.phaseX) {
+                    continue
+                }
 
-            val pos = getMarkerPosition(highlight)
+                val pos = getMarkerPosition(highlight)
 
-            // check bounds
-            if (!mViewPortHandler.isInBounds(pos[0], pos[1])) {
-                continue
-            }
+                // check bounds
+                if (!viewPortHandler.isInBounds(pos[0], pos[1])) {
+                    continue
+                }
 
-            // callbacks to update the content
-            if (!mMarkers.isEmpty()) {
-                val markerItem = mMarkers[i % mMarkers.size]
-                markerItem.refreshContent(e, highlight)
+                // callbacks to update the content
+                if (!marker.isEmpty()) {
+                    val markerItem = marker[i % marker.size]
+                    markerItem.refreshContent(e, highlight)
 
-                // draw the marker
-                markerItem.draw(canvas, pos[0], pos[1])
+                    // draw the marker
+                    markerItem.draw(canvas, pos[0], pos[1])
+                }
             }
         }
     }
 
-    override fun getAccessibilityDescription(): String {
-        return "This is a combined chart"
-    }
+    override val accessibilityDescription: String
+        get() = "This is a combined chart"
+
 }

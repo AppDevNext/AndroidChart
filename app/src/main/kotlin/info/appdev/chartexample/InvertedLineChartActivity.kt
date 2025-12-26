@@ -40,7 +40,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         binding.chart1.setDrawGridBackground(false)
 
         // no description text
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
@@ -83,10 +83,9 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         // chart.centerViewPort(10, 50);
 
         // get the legend (only possible after setting data)
-        val l = binding.chart1.legend
-
-        // modify the legend ...
-        l.form = LegendForm.LINE
+        binding.chart1.legend?.apply {
+            form = LegendForm.LINE
+        }
 
         // don't forget to refresh the drawing
         binding.chart1.invalidate()

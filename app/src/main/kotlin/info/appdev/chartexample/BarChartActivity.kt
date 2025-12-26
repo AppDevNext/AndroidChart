@@ -53,7 +53,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         binding.chart1.setDrawBarShadow(false)
         binding.chart1.setDrawValueAboveBar(true)
 
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -93,15 +93,16 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         rightAxis.spaceTop = 15f
         rightAxis.axisMinimum = 0f// this replaces setStartAtZero(true)
 
-        val l = binding.chart1.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-        l.orientation = Legend.LegendOrientation.HORIZONTAL
-        l.setDrawInside(false)
-        l.form = LegendForm.SQUARE
-        l.formSize = 9f
-        l.textSize = 11f
-        l.xEntrySpace = 4f
+        binding.chart1.legend?.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+            orientation = Legend.LegendOrientation.HORIZONTAL
+            setDrawInside(false)
+            form = LegendForm.SQUARE
+            formSize = 9f
+            textSize = 11f
+            xEntrySpace = 4f
+        }
 
         val mv = XYMarkerView(this, xAxisFormatter)
         mv.chartView = binding.chart1 // For bounds control

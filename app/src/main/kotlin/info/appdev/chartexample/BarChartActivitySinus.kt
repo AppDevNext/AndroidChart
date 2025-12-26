@@ -35,7 +35,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setDrawBarShadow(false)
         binding.chart1.setDrawValueAboveBar(true)
 
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be drawn
         binding.chart1.setMaxVisibleValueCount(60)
@@ -72,7 +72,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         binding.seekbarValues.setOnSeekBarChangeListener(this)
         binding.seekbarValues.progress = 150 // set data
 
-        binding.chart1.legend.apply {
+        binding.chart1.legend?.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
             orientation = Legend.LegendOrientation.HORIZONTAL

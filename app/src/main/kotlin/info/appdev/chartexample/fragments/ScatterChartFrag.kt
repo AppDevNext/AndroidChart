@@ -18,7 +18,7 @@ class ScatterChartFrag : SimpleFragment() {
         val v = inflater.inflate(R.layout.frag_simple_scatter, container, false)
 
         chart = v.findViewById(R.id.scatterChart1)
-        chart!!.description.isEnabled = false
+        chart!!.description?.isEnabled = false
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 
@@ -40,14 +40,15 @@ class ScatterChartFrag : SimpleFragment() {
         rightAxis.typeface = tf
         rightAxis.setDrawGridLines(false)
 
-        val l = chart!!.legend
-        l.isWordWrapEnabled = true
-        l.typeface = tf
-        l.formSize = 14f
-        l.textSize = 9f
+        chart!!.legend?.apply {
+            isWordWrapEnabled = true
+            typeface = tf
+            formSize = 14f
+            textSize = 9f
+            // increase the space between legend & bottom and legend & content
+            yOffset = 13f
+        }
 
-        // increase the space between legend & bottom and legend & content
-        l.yOffset = 13f
         chart!!.extraBottomOffset = 16f
 
         return v

@@ -17,7 +17,7 @@ class SineCosineFragment : SimpleFragment() {
 
         chart = v.findViewById(R.id.lineChart1)
 
-        chart!!.description.isEnabled = false
+        chart!!.description?.isEnabled = false
 
         chart!!.setDrawGridBackground(false)
 
@@ -26,8 +26,9 @@ class SineCosineFragment : SimpleFragment() {
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 
-        val l = chart!!.legend
-        l.typeface = tf
+        chart!!.legend?.apply {
+            typeface = tf
+        }
 
         val leftAxis = chart!!.axisLeft
         leftAxis.typeface = tf

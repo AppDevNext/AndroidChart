@@ -93,7 +93,8 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         // use the Pie- and RadarChart listener own listener
-        return if (mTouchEnabled && mChartTouchListener != null) mChartTouchListener.onTouch(this, event)
+        return if (mTouchEnabled && mChartTouchListener != null)
+            mChartTouchListener!!.onTouch(this, event)
         else
             super.onTouchEvent(event)
     }
@@ -107,7 +108,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
 
         calcMinMax()
 
-        if (mLegend != null) mLegendRenderer.computeLegend(mData!!)
+        if (legend != null) legendRenderer?.computeLegend(mData!!)
 
         calculateOffsets()
     }
@@ -118,113 +119,145 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
         var legendBottom = 0f
         var legendTop = 0f
 
-        if (mLegend != null && mLegend.isEnabled && !mLegend.isDrawInsideEnabled) {
-            val fullLegendWidth = min(
-                mLegend.mNeededWidth,
-                mViewPortHandler.chartWidth * mLegend.maxSizePercent
-            )
+        legend?.let { legend ->
+            if (legend.isEnabled && !legend.isDrawInsideEnabled) {
+                val fullLegendWidth = min(
+                    legend.mNeededWidth,
+                    viewPortHandler.chartWidth * legend.maxSizePercent
+                )
+                val fullLegendHeight = min(
+                    legend.mNeededHeight,
+                    viewPortHandler.chartHeight * legend.maxSizePercent
+                )
 
-            when (mLegend.orientation) {
-                LegendOrientation.VERTICAL -> {
-                    var xLegendOffset = 0f
-
-                    if (mLegend.horizontalAlignment == LegendHorizontalAlignment.LEFT
-                        || mLegend.horizontalAlignment == LegendHorizontalAlignment.RIGHT
-                    ) {
-                        if (mLegend.verticalAlignment == LegendVerticalAlignment.CENTER) {
-                            // this is the space between the legend and the chart
-                            val spacing = 13f.convertDpToPixel()
-
-                            xLegendOffset = fullLegendWidth + spacing
-                        } else {
-                            // this is the space between the legend and the chart
-                            val spacing = 8f.convertDpToPixel()
-
-                            val legendWidth = fullLegendWidth + spacing
-                            val legendHeight = mLegend.mNeededHeight + mLegend.mTextHeightMax
-
-                            val center = getCenter()
-
-                            val bottomX = if (mLegend.horizontalAlignment ==
-                                LegendHorizontalAlignment.RIGHT
-                            )
-                                width - legendWidth + 15f
-                            else
-                                legendWidth - 15f
-                            val bottomY = legendHeight + 15f
-                            val distLegend = distanceToCenter(bottomX, bottomY)
-
-                            val reference = getPosition(
-                                center, this.radius,
-                                getAngleForPoint(bottomX, bottomY)
-                            )
-
-                            val distReference = distanceToCenter(reference.x, reference.y)
-                            val minOffset = 5f.convertDpToPixel()
-
-                            if (bottomY >= center.y && height - legendWidth > width) {
-                                xLegendOffset = legendWidth
-                            } else if (distLegend < distReference) {
-                                val diff = distReference - distLegend
-                                xLegendOffset = minOffset + diff
+                when (legend.orientation) {
+                    LegendOrientation.VERTICAL -> {
+                        when (legend.horizontalAlignment) {
+                            LegendHorizontalAlignment.LEFT -> legendLeft = fullLegendWidth
+                            LegendHorizontalAlignment.RIGHT -> legendRight = fullLegendWidth
+                            LegendHorizontalAlignment.CENTER -> {
+                                // do nothing for center
                             }
-
-                            recycleInstance(center)
-                            recycleInstance(reference)
                         }
                     }
 
-                    when (mLegend.horizontalAlignment) {
-                        LegendHorizontalAlignment.LEFT -> legendLeft = xLegendOffset
-                        LegendHorizontalAlignment.RIGHT -> legendRight = xLegendOffset
-                        LegendHorizontalAlignment.CENTER -> when (mLegend.verticalAlignment) {
-                            LegendVerticalAlignment.TOP -> legendTop = min(
-                                mLegend.mNeededHeight,
-                                mViewPortHandler.chartHeight * mLegend.maxSizePercent
-                            )
-
-                            LegendVerticalAlignment.BOTTOM -> legendBottom = min(
-                                mLegend.mNeededHeight,
-                                mViewPortHandler.chartHeight * mLegend.maxSizePercent
-                            )
-
-                            LegendVerticalAlignment.CENTER -> Log.e(LOG_TAG, "LegendCenter/VerticalCenter not supported for PieRadarChart")
-                        }
-                    }
-                }
-
-                LegendOrientation.HORIZONTAL -> {
-                    val yLegendOffset: Float
-
-                    if (mLegend.verticalAlignment == LegendVerticalAlignment.TOP ||
-                        mLegend.verticalAlignment == LegendVerticalAlignment.BOTTOM
-                    ) {
-                        // It's possible that we do not need this offset anymore as it
-                        //   is available through the extraOffsets, but changing it can mean
-                        //   changing default visibility for existing apps.
-
-                        val yOffset = this.requiredLegendOffset
-
-                        yLegendOffset = min(
-                            mLegend.mNeededHeight + yOffset,
-                            mViewPortHandler.chartHeight * mLegend.maxSizePercent
-                        )
-
-                        when (mLegend.verticalAlignment) {
-                            LegendVerticalAlignment.TOP -> legendTop = yLegendOffset
-                            LegendVerticalAlignment.BOTTOM -> legendBottom = yLegendOffset
-                            LegendVerticalAlignment.CENTER -> Log.e(LOG_TAG, "LegendCenter/HorizontalCenter not supported for PieRadarChart")
+                    LegendOrientation.HORIZONTAL -> {
+                        when (legend.verticalAlignment) {
+                            LegendVerticalAlignment.TOP -> legendTop = fullLegendHeight
+                            LegendVerticalAlignment.BOTTOM -> legendBottom = fullLegendHeight
+                            LegendVerticalAlignment.CENTER -> {
+                                // do nothing for center
+                            }
                         }
                     }
                 }
             }
 
-            legendLeft += this.requiredBaseOffset
-            legendRight += this.requiredBaseOffset
-            legendTop += this.requiredBaseOffset
-            legendBottom += this.requiredBaseOffset
-        }
+            if (legend.isEnabled && !legend.isDrawInsideEnabled) {
+                val fullLegendWidth = min(
+                    legend.mNeededWidth,
+                    viewPortHandler.chartWidth * legend.maxSizePercent
+                )
 
+                when (legend.orientation) {
+                    LegendOrientation.VERTICAL -> {
+                        var xLegendOffset = 0f
+
+                        if (legend.horizontalAlignment == LegendHorizontalAlignment.LEFT
+                            || legend.horizontalAlignment == LegendHorizontalAlignment.RIGHT
+                        ) {
+                            if (legend.verticalAlignment == LegendVerticalAlignment.CENTER) {
+                                // this is the space between the legend and the chart
+                                val spacing = 13f.convertDpToPixel()
+
+                                xLegendOffset = fullLegendWidth + spacing
+                            } else {
+                                // this is the space between the legend and the chart
+                                val spacing = 8f.convertDpToPixel()
+
+                                val legendWidth = fullLegendWidth + spacing
+                                val legendHeight = legend.mNeededHeight + legend.mTextHeightMax
+
+                                val bottomX = if (legend.horizontalAlignment ==
+                                    LegendHorizontalAlignment.RIGHT
+                                )
+                                    width - legendWidth + 15f
+                                else
+                                    legendWidth - 15f
+                                val bottomY = legendHeight + 15f
+                                val distLegend = distanceToCenter(bottomX, bottomY)
+
+                                val reference = getPosition(
+                                    center, this.radius,
+                                    getAngleForPoint(bottomX, bottomY)
+                                )
+
+                                val distReference = distanceToCenter(reference.x, reference.y)
+                                val minOffset = 5f.convertDpToPixel()
+
+                                if (bottomY >= center.y && height - legendWidth > width) {
+                                    xLegendOffset = legendWidth
+                                } else if (distLegend < distReference) {
+                                    val diff = distReference - distLegend
+                                    xLegendOffset = minOffset + diff
+                                }
+
+                                recycleInstance(center)
+                                recycleInstance(reference)
+                            }
+                        }
+
+                        when (legend.horizontalAlignment) {
+                            LegendHorizontalAlignment.LEFT -> legendLeft = xLegendOffset
+                            LegendHorizontalAlignment.RIGHT -> legendRight = xLegendOffset
+                            LegendHorizontalAlignment.CENTER -> when (legend.verticalAlignment) {
+                                LegendVerticalAlignment.TOP -> legendTop = min(
+                                    legend.mNeededHeight,
+                                    viewPortHandler.chartHeight * legend.maxSizePercent
+                                )
+
+                                LegendVerticalAlignment.BOTTOM -> legendBottom = min(
+                                    legend.mNeededHeight,
+                                    viewPortHandler.chartHeight * legend.maxSizePercent
+                                )
+
+                                LegendVerticalAlignment.CENTER -> Log.e(LOG_TAG, "LegendCenter/VerticalCenter not supported for PieRadarChart")
+                            }
+                        }
+                    }
+
+                    LegendOrientation.HORIZONTAL -> {
+                        val yLegendOffset: Float
+
+                        if (legend.verticalAlignment == LegendVerticalAlignment.TOP ||
+                            legend.verticalAlignment == LegendVerticalAlignment.BOTTOM
+                        ) {
+                            // It's possible that we do not need this offset anymore as it
+                            //   is available through the extraOffsets, but changing it can mean
+                            //   changing default visibility for existing apps.
+
+                            val yOffset = this.requiredLegendOffset
+
+                            yLegendOffset = min(
+                                legend.mNeededHeight + yOffset,
+                                viewPortHandler.chartHeight * legend.maxSizePercent
+                            )
+
+                            when (legend.verticalAlignment) {
+                                LegendVerticalAlignment.TOP -> legendTop = yLegendOffset
+                                LegendVerticalAlignment.BOTTOM -> legendBottom = yLegendOffset
+                                LegendVerticalAlignment.CENTER -> Log.e(LOG_TAG, "LegendCenter/HorizontalCenter not supported for PieRadarChart")
+                            }
+                        }
+                    }
+                }
+
+                legendLeft += this.requiredBaseOffset
+                legendRight += this.requiredBaseOffset
+                legendTop += this.requiredBaseOffset
+                legendBottom += this.requiredBaseOffset
+            }
+        }
         var minOffset = minOffset.convertDpToPixel()
 
         if (this is RadarChart) {
@@ -245,12 +278,10 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
         val offsetRight = max(minOffset, legendRight)
         val offsetBottom = max(minOffset, max(this.requiredBaseOffset, legendBottom))
 
-        mViewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom)
+        viewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom)
 
-        if (mLogEnabled) Log.i(
-            LOG_TAG, ("offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop
-                    + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom)
-        )
+        if (isLogEnabled)
+            Log.i(LOG_TAG, "offsetLeft: $offsetLeft, offsetTop: $offsetTop, offsetRight: $offsetRight, offsetBottom: $offsetBottom")
     }
 
     /**
@@ -259,7 +290,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
      * 90° is EAST, ...
      */
     fun getAngleForPoint(x: Float, y: Float): Float {
-        centerOffsets?.let { c ->
+        centerOffsets.let { c ->
 
             val tx = (x - c.x).toDouble()
             val ty = (y - c.y).toDouble()
@@ -280,7 +311,6 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
             recycleInstance(c)
             return angle
         }
-        return 0f
     }
 
     /**
@@ -304,7 +334,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
      * Returns the distance of a certain point on the chart to the center of the chart.
      */
     fun distanceToCenter(x: Float, y: Float): Float {
-        centerOffsets?.let { c ->
+        centerOffsets.let { c ->
 
             val dist: Float
 
@@ -327,7 +357,6 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
 
             return dist
         }
-        return 0f
     }
 
     /**
@@ -356,7 +385,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
          * returns the diameter of the pie- or radar-chart
          */
         get() {
-            val content = mViewPortHandler.contentRect
+            val content = viewPortHandler.contentRect
             content.left += extraLeftOffset
             content.top += extraTopOffset
             content.right -= extraRightOffset

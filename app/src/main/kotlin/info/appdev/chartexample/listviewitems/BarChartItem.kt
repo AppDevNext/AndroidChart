@@ -36,7 +36,7 @@ class BarChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {
         }
 
         // apply styling
-        holder.chart!!.description.isEnabled = false
+        holder.chart!!.description?.isEnabled = false
         holder.chart!!.setDrawGridBackground(false)
         holder.chart!!.setDrawBarShadow(false)
 

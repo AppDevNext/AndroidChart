@@ -49,7 +49,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         val yl = binding.chart1.axisLeft
         yl.typeface = tfRegular
 
-        binding.chart1.legend.isEnabled = false
+        binding.chart1.legend?.isEnabled = false
 
         // chart.setYRange(-40f, 40f, true);
         // call this to reset the changed y-range
@@ -134,7 +134,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         Timber.i("DataSet drawn. ${dataSet.toSimpleString()}")
 
         // prepare the legend again
-        binding.chart1.getData()?.let { binding.chart1.legendRenderer.computeLegend(it) }
+        binding.chart1.getData()?.let { binding.chart1.legendRenderer?.computeLegend(it) }
     }
 
     override fun onEntryMoved(entry: Entry) {

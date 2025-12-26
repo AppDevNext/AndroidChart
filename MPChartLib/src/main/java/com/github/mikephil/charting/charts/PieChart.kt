@@ -7,7 +7,6 @@ import android.graphics.Typeface
 import android.text.TextUtils
 import android.util.AttributeSet
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.ChartData
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.highlight.PieHighlighter
@@ -144,26 +143,25 @@ class PieChart : PieRadarChartBase<PieData> {
     override fun init() {
         super.init()
 
-        mRenderer = PieChartRenderer(this, mAnimator, mViewPortHandler)
-        mXAxis = null
-
-        mHighlighter = PieHighlighter(this)
+        mRenderer = PieChartRenderer(this, mAnimator, viewPortHandler)
+        highlighter = PieHighlighter(this)
     }
 
-    protected override fun onDraw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         if (mData == null) return
 
-        mRenderer.drawData(canvas)
+        mRenderer?.drawData(canvas)
 
-        if (valuesToHighlight()) mRenderer.drawHighlighted(canvas, mIndicesToHighlight)
+        if (valuesToHighlight())
+            mRenderer?.drawHighlighted(canvas, highlighted!!)
 
-        mRenderer.drawExtras(canvas)
+        mRenderer?.drawExtras(canvas)
 
-        mRenderer.drawValues(canvas)
+        mRenderer?.drawValues(canvas)
 
-        mLegendRenderer.renderLegend(canvas)
+        legendRenderer?.renderLegend(canvas)
 
         drawDescription(canvas)
 
@@ -196,7 +194,7 @@ class PieChart : PieRadarChartBase<PieData> {
         calcAngles()
     }
 
-    override fun getMarkerPosition(highlight: Highlight): FloatArray {
+    override fun getMarkerPosition(high: Highlight): FloatArray {
         val center = this.centerCircleBox
         var r = radius
 
@@ -210,7 +208,7 @@ class PieChart : PieRadarChartBase<PieData> {
 
         val rotationAngle = rotationAngle
 
-        val entryIndex = highlight.x.toInt()
+        val entryIndex = high.x.toInt()
 
         // offset needed to center the drawn text in the slice
         val offset = this.drawAngles[entryIndex] / 2
@@ -321,10 +319,11 @@ class PieChart : PieRadarChartBase<PieData> {
         if (!valuesToHighlight()) return false
 
         // check if the xvalue for the given dataset needs highlight
-        for (highlight in mIndicesToHighlight)
-            if (highlight.x.toInt() == index)
-                return true
-
+        highlighted?.let {
+            for (highlight in it)
+                if (highlight.x.toInt() == index)
+                    return true
+        }
         return false
     }
 
@@ -339,9 +338,8 @@ class PieChart : PieRadarChartBase<PieData> {
      * This will throw an exception, PieChart has no XAxis object.
      */
     @Deprecated("")
-    override fun getXAxis(): XAxis {
-        throw RuntimeException("PieChart has no XAxis")
-    }
+    override val xAxis: XAxis
+        get() = throw RuntimeException("PieChart has no XAxis")
 
     override fun getIndexForAngle(angle: Float): Int {
         // take the current angle of the chart into consideration
@@ -404,7 +402,12 @@ class PieChart : PieRadarChartBase<PieData> {
     }
 
     override val requiredLegendOffset: Float
-        get() = mLegendRenderer.labelPaint.textSize * 2f
+        get() {
+            legendRenderer?.let {
+                return it.labelPaint.textSize * 2f
+            }
+            return 0f
+        }
 
     override val requiredBaseOffset: Float
         get() = 0f
@@ -578,7 +581,7 @@ class PieChart : PieRadarChartBase<PieData> {
             this.mMinAngleForSlices = minAngle
         }
 
-    protected override fun onDetachedFromWindow() {
+    override fun onDetachedFromWindow() {
         // releases the bitmap in the renderer to avoid oom error
         if (mRenderer != null && mRenderer is PieChartRenderer) {
             (mRenderer as PieChartRenderer).releaseBitmap()
@@ -586,32 +589,30 @@ class PieChart : PieRadarChartBase<PieData> {
         super.onDetachedFromWindow()
     }
 
-    override fun getAccessibilityDescription(): String {
-        val pieData = getData() as PieData?
+    override val accessibilityDescription: String
+        get() {
+            val pieData = getData()
 
-        var entryCount = 0
-        if (pieData != null) entryCount = pieData.entryCount
+            var entryCount = 0
+            if (pieData != null) entryCount = pieData.entryCount
 
-        val builder = StringBuilder()
+            val builder = StringBuilder()
 
-        builder.append(String.format(Locale.getDefault(), "The pie chart has %d entries.", entryCount))
+            builder.append(String.format(Locale.getDefault(), "The pie chart has %d entries.", entryCount))
 
-        for (i in 0..<entryCount) {
-            val entry = pieData!!.dataSet.getEntryForIndex(i)
-            val percentage = (entry!!.value / pieData.yValueSum) * 100
-            builder.append(
-                String.format(
-                    Locale.getDefault(), "%s has %.2f percent pie taken",
-                    (if (TextUtils.isEmpty(entry.label)) "No Label" else entry.label),
-                    percentage
+            for (i in 0..<entryCount) {
+                val entry = pieData!!.dataSet.getEntryForIndex(i)
+                val percentage = (entry!!.value / pieData.yValueSum) * 100
+                builder.append(
+                    String.format(
+                        Locale.getDefault(), "%s has %.2f percent pie taken",
+                        (if (TextUtils.isEmpty(entry.label)) "No Label" else entry.label),
+                        percentage
+                    )
                 )
-            )
+            }
+
+            return builder.toString()
         }
 
-        return builder.toString()
-    }
-
-    override fun setData(data: PieData?) {
-        super.setData(data)
-    }
 }

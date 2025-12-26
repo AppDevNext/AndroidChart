@@ -68,10 +68,10 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
 
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    protected override fun init() {
+    override fun init() {
         super.init()
 
-        mRenderer = BarChartRenderer(this, mAnimator, mViewPortHandler, mDrawRoundedBars, mRoundedBarRadius)
+        mRenderer = BarChartRenderer(this, mAnimator, viewPortHandler, mDrawRoundedBars, mRoundedBarRadius)
 
         setHighlighter(BarHighlighter(this))
 
@@ -79,7 +79,7 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
         xAxis.spaceMax = 0.5f
     }
 
-    protected override fun calcMinMax() {
+    override fun calcMinMax() {
         mData?.let { barData ->
             if (mFitBars) {
                 mXAxis.calculate(barData.xMin - barData.barWidth / 2f, barData.xMax + barData.barWidth / 2f)
@@ -108,17 +108,48 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
             Log.e(LOG_TAG, "Can't select by touch. No data set.")
             return null
         } else {
-            val h = highlighter.getHighlight(x, y)
-            if (h == null || !isHighlightFullBarEnabled) return h
+            highlighter?.let {
+                val h = it.getHighlight(x, y)
+                if (h == null || !isHighlightFullBarEnabled) return h
 
-            // For isHighlightFullBarEnabled, remove stackIndex
-            return Highlight(
-                h.x, h.y,
-                h.xPx, h.yPx,
-                h.dataSetIndex, -1, h.axis
-            )
+                // For isHighlightFullBarEnabled, remove stackIndex
+                return Highlight(
+                    h.x, h.y,
+                    h.xPx, h.yPx,
+                    h.dataSetIndex, -1, h.axis
+                )
+            }
         }
+        return null
     }
+
+    override val accessibilityDescription: String
+        get() {
+            barData?.let { barData ->
+                val entryCount = barData.entryCount
+
+                // Find the min and max index
+                val yAxisValueFormatter = axisLeft.valueFormatter
+                val minVal = yAxisValueFormatter!!.getFormattedValue(barData.yMin, null)
+                val maxVal = yAxisValueFormatter.getFormattedValue(barData.yMax, null)
+
+                // Data range...
+                val xAxisValueFormatter = xAxis.valueFormatter
+                val minRange = xAxisValueFormatter!!.getFormattedValue(barData.xMin, null)
+                val maxRange = xAxisValueFormatter.getFormattedValue(barData.xMax, null)
+
+                val entries = if (entryCount == 1) "entry" else "entries"
+
+                // Format the values of min and max; to recite them back
+                return String.format(
+                    Locale.getDefault(), "The bar chart has %d %s. " +
+                            "The minimum value is %s and maximum value is %s." +
+                            "Data ranges from %s to %s.",
+                    entryCount, entries, minVal, maxVal, minRange, maxRange
+                )
+            }
+            return ""
+        }
 
     /**
      * Returns the bounding box of the specified Entry in the specified DataSet. Returns null if the Entry could not be
@@ -180,10 +211,10 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
     /**
      * Highlights the value at the given x-value in the given DataSet. Provide
      * -1 as the dataSetIndex to undo all highlighting.
-     * @param stackIndex   the index inside the stack - only relevant for stacked entries
+     * @param dataIndex   the index inside the stack - only relevant for stacked entries
      */
-    override fun highlightValue(x: Float, dataSetIndex: Int, stackIndex: Int) {
-        highlightValue(Highlight(x, dataSetIndex, stackIndex), false)
+    override fun getHighlightValue(x: Float, dataSetIndex: Int, dataIndex: Int) {
+        highlightValue(Highlight(x, dataSetIndex, dataIndex), false)
     }
 
     override val barData: BarData?
@@ -225,34 +256,8 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
         init()
     }
 
-    override fun getAccessibilityDescription(): String {
-        barData?.let { barData ->
-            val entryCount = barData.entryCount
-
-            // Find the min and max index
-            val yAxisValueFormatter = axisLeft.valueFormatter
-            val minVal = yAxisValueFormatter!!.getFormattedValue(barData.yMin, null)
-            val maxVal = yAxisValueFormatter.getFormattedValue(barData.yMax, null)
-
-            // Data range...
-            val xAxisValueFormatter = xAxis.valueFormatter
-            val minRange = xAxisValueFormatter!!.getFormattedValue(barData.xMin, null)
-            val maxRange = xAxisValueFormatter.getFormattedValue(barData.xMax, null)
-
-            val entries = if (entryCount == 1) "entry" else "entries"
-
-            // Format the values of min and max; to recite them back
-            return String.format(
-                Locale.getDefault(), "The bar chart has %d %s. " +
-                        "The minimum value is %s and maximum value is %s." +
-                        "Data ranges from %s to %s.",
-                entryCount, entries, minVal, maxVal, minRange, maxRange
-            )
-        }
-        return ""
-    }
-
-    override fun setData(data: BarData?) {
-        super.setData(data)
-    }
+//    override val width: Int
+//        get() = TODO("Not yet implemented")
+//    override val height: Int
+//        get() = TODO("Not yet implemented")
 }

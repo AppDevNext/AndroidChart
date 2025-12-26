@@ -45,10 +45,10 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
         binding.seekBarY.setOnSeekBarChangeListener(this)
 
         binding.chart1.setUsePercentValues(true)
-        binding.chart1.description.isEnabled = false
+        binding.chart1.description?.isEnabled = false
         binding.chart1.setExtraOffsets(5f, 10f, 5f, 5f)
 
-        binding.chart1.setDragDecelerationFrictionCoef(0.95f)
+        binding.chart1.dragDecelerationFrictionCoef = 0.95f
 
         tf = Typeface.createFromAsset(assets, "OpenSans-Regular.ttf")
 
@@ -85,12 +85,13 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
         binding.chart1.animateY(1400, Easing.easeInOutQuad)
 
         // chart.spin(2000, 0, 360);
-        val l = binding.chart1.legend
-        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        l.orientation = Legend.LegendOrientation.VERTICAL
-        l.setDrawInside(false)
-        l.isEnabled = false
+        binding.chart1.legend?.apply {
+            verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+            orientation = Legend.LegendOrientation.VERTICAL
+            setDrawInside(false)
+            isEnabled = false
+        }
     }
 
     private fun setData(count: Int, range: Float) {
