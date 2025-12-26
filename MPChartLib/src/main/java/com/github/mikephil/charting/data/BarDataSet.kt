@@ -10,7 +10,7 @@ import kotlin.Int
 import kotlin.String
 import kotlin.let
 
-open class BarDataSet(yVals: MutableList<BarEntry>, label: String = "") : BarLineScatterCandleBubbleDataSet<BarEntry>(yVals, label), IBarDataSet {
+open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScatterCandleBubbleDataSet<BarEntry>(yVals, label), IBarDataSet {
     /**
      * the maximum number of bars that are stacked upon each other, this value
      * is calculated from the Entries that are added to the DataSet

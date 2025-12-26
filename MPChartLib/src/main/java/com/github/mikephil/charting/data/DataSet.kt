@@ -16,10 +16,8 @@ import kotlin.math.abs
  * LineChart, or the values of a specific group of bars in the BarChart).
  */
 abstract class DataSet<T : Entry>(
-    /**
-     * the entries that this DataSet represents / holds together
-     */
-    @JvmField protected var mEntries: MutableList<T>?, label: String = ""
+    @JvmField protected var mEntries: MutableList<T>?,
+    label: String = ""
 ) : BaseDataSet<T>(label), Serializable {
     /**
      * maximum y-value in the value array
