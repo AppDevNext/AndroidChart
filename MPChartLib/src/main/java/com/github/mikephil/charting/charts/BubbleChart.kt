@@ -12,7 +12,7 @@ import com.github.mikephil.charting.renderer.BubbleChartRenderer
  * is the area of the bubble, not the radius or diameter of the bubble that
  * conveys the data.
  */
-class BubbleChart : BarLineChartBase<BubbleData?>, BubbleDataProvider {
+class BubbleChart : BarLineChartBase<BubbleData>, BubbleDataProvider {
     constructor(context: Context?) : super(context)
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)

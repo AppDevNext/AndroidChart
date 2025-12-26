@@ -35,10 +35,8 @@ open class HorizontalBarChart : BarChart {
 
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
-    override fun init() {
+    init {
         viewPortHandler = HorizontalViewPortHandler()
-
-        super.init()
 
         mLeftAxisTransformer = TransformerHorizontalBarChart(viewPortHandler)
         mRightAxisTransformer = TransformerHorizontalBarChart(viewPortHandler)
@@ -174,7 +172,7 @@ open class HorizontalBarChart : BarChart {
         offsetBottom += extraBottomOffset
         offsetLeft += extraLeftOffset
 
-        val minOffset = mMinOffset.convertDpToPixel()
+        val minOffset = minOffset.convertDpToPixel()
 
         viewPortHandler.restrainViewPort(
             max(minOffset, offsetLeft),
@@ -226,7 +224,7 @@ open class HorizontalBarChart : BarChart {
 
             outputRect.set(left, top, right, bottom)
 
-            getTransformer(set!!.axisDependency)!!.rectValueToPixel(outputRect)
+            getTransformer(set!!.axisDependency).rectValueToPixel(outputRect)
         }
     }
 
@@ -244,7 +242,7 @@ open class HorizontalBarChart : BarChart {
         vals[0] = e.y
         vals[1] = e.x
 
-        getTransformer(axis)!!.pointValuesToPixel(vals)
+        getTransformer(axis).pointValuesToPixel(vals)
 
         return getInstance(vals[0], vals[1])
     }
@@ -266,7 +264,7 @@ open class HorizontalBarChart : BarChart {
 
     override val lowestVisibleX: Float
         get() {
-            getTransformer(AxisDependency.LEFT)!!.getValuesByTouchPoint(
+            getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentBottom(), posForGetLowestVisibleX
             )
@@ -275,7 +273,7 @@ open class HorizontalBarChart : BarChart {
 
     override val highestVisibleX: Float
         get() {
-            getTransformer(AxisDependency.LEFT)!!.getValuesByTouchPoint(
+            getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentTop(), posForGetHighestVisibleX
             )

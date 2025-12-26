@@ -35,7 +35,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setTouchEnabled(true)
 
         // enable scaling and dragging
-        binding.chart1.setDragEnabled(true)
+        binding.chart1.isDragEnabled = true
         binding.chart1.setScaleEnabled(true)
 
         // if disabled, scaling can be done on x- and y-axis separately
