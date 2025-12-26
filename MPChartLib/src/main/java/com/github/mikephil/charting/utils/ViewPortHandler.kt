@@ -342,7 +342,7 @@ open class ViewPortHandler {
     /**
      * limits the maximum scale and X translation of the given matrix
      */
-    fun limitTransAndScale(matrix: Matrix, content: RectF?) {
+    fun limitTransAndScale(matrix: Matrix, content: RectF) {
         matrix.getValues(matrixBuffer)
 
         val curTransX = matrixBuffer[Matrix.MTRANS_X]
@@ -357,13 +357,8 @@ open class ViewPortHandler {
         // min scale-y is 1f
         scaleY = min(max(minScaleY.toDouble(), curScaleY.toDouble()), maxScaleY.toDouble()).toFloat()
 
-        var width = 0f
-        var height = 0f
-
-        if (content != null) {
-            width = content.width()
-            height = content.height()
-        }
+        val width: Float = content.width()
+        val height: Float = content.height()
 
         val maxTransX = -width * (scaleX - 1f)
         transX = min(max(curTransX.toDouble(), (maxTransX - transOffsetX).toDouble()), transOffsetX.toDouble()).toFloat()
