@@ -232,10 +232,13 @@ open class LegendRenderer(
 
         when (horizontalAlignment) {
             LegendHorizontalAlignment.LEFT -> {
-                originPosX = if (orientation == LegendOrientation.VERTICAL) xOffset
-                else viewPortHandler.contentLeft() + xOffset
+                originPosX = if (orientation == LegendOrientation.VERTICAL)
+                    xOffset
+                else
+                    viewPortHandler.contentLeft() + xOffset
 
-                if (direction == LegendDirection.RIGHT_TO_LEFT) originPosX += legend.neededWidth
+                if (direction == LegendDirection.RIGHT_TO_LEFT)
+                    originPosX += legend.neededWidth
             }
 
             LegendHorizontalAlignment.RIGHT -> {
@@ -285,11 +288,13 @@ open class LegendRenderer(
                 var lineIndex = 0
 
                 var i = 0
-                val count = entries.size
-                while (i < count) {
-                    val e = entries[i]
-                    val drawingForm = e.form != LegendForm.NONE
-                    val formSize = if (java.lang.Float.isNaN(e.formSize)) defaultFormSize else e.formSize.convertDpToPixel()
+                while (i < entries.size) {
+                    val entry = entries[i]
+                    val drawingForm = entry.form != LegendForm.NONE
+                    val formSize = if (java.lang.Float.isNaN(entry.formSize))
+                        defaultFormSize
+                    else
+                        entry.formSize.convertDpToPixel()
 
                     if (i < calculatedLabelBreakPoints.size && calculatedLabelBreakPoints[i] == true) {
                         posX = originPosX
@@ -306,12 +311,12 @@ open class LegendRenderer(
                         lineIndex++
                     }
 
-                    val isStacked = e.label == null // grouped forms have null labels
+                    val isStacked = entry.label == null // grouped forms have null labels
 
                     if (drawingForm) {
                         if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= formSize
 
-                        drawForm(canvas, posX, posY + formYOffset, e, legend)
+                        drawForm(canvas, posX, posY + formYOffset, entry, legend)
 
                         if (direction == LegendDirection.LEFT_TO_RIGHT) posX += formSize
                     }
@@ -322,8 +327,8 @@ open class LegendRenderer(
                         if (direction == LegendDirection.RIGHT_TO_LEFT)
                             posX -= calculatedLabelSizes[i]?.width ?: 0f
 
-                        if (e.label != null)
-                            drawLabel(canvas, posX, posY + labelLineHeight, e.label!!)
+                        if (entry.label != null)
+                            drawLabel(canvas, posX, posY + labelLineHeight, entry.label!!)
 
                         if (direction == LegendDirection.LEFT_TO_RIGHT)
                             posX += calculatedLabelSizes[i]?.width ?: 0f

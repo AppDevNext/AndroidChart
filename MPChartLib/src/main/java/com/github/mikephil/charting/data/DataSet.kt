@@ -161,7 +161,6 @@ abstract class DataSet<T : Entry>(
      */
     abstract fun copy(): DataSet<T>?
 
-
     protected fun copy(dataSet: DataSet<*>) {
         super.copy(dataSet)
     }
