@@ -38,10 +38,10 @@ open class Transformer(@JvmField protected var viewPortHandler: ViewPortHandler)
         var scaleX = viewPortHandler.contentWidth() / deltaX
         var scaleY = viewPortHandler.contentHeight() / deltaY
 
-        if (java.lang.Float.isInfinite(scaleX)) {
+        if (scaleX.isInfinite()) {
             scaleX = 0f
         }
-        if (java.lang.Float.isInfinite(scaleY)) {
+        if (scaleY.isInfinite()) {
             scaleY = 0f
         }
 

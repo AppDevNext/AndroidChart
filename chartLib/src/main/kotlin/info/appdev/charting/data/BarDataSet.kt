@@ -3,7 +3,6 @@ package info.appdev.charting.data
 import android.graphics.Color
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.Fill
-import java.lang.Float
 import kotlin.Boolean
 import kotlin.Deprecated
 import kotlin.Int
@@ -137,7 +136,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
     }
 
     override fun calcMinMax(entry: BarEntry) {
-        if (!Float.isNaN(entry.y)) {
+        if (!entry.y.isNaN()) {
             if (entry.yVals == null) {
                 if (entry.y < yMin) yMin = entry.y
 

@@ -8,7 +8,6 @@ import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.convertDpToPixel
-import java.lang.Float
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.IntArray
@@ -126,12 +125,12 @@ class Legend() : ComponentBase() {
     /**
      * the size of the legend forms/shapes
      */
-    var formSize: kotlin.Float = 8f
+    var formSize: Float = 8f
 
     /**
      * the size of the legend forms/shapes
      */
-    var formLineWidth: kotlin.Float = 3f
+    var formLineWidth: Float = 3f
 
     /**
      * Line dash path effect used for shapes that consist of lines.
@@ -141,24 +140,24 @@ class Legend() : ComponentBase() {
     /**
      * the space between the legend entries on a horizontal axis, default 6f
      */
-    var xEntrySpace: kotlin.Float = 6f
+    var xEntrySpace: Float = 6f
 
     /**
      * the space between the legend entries on a vertical axis, default 5f
      */
-    var yEntrySpace: kotlin.Float = 0f
+    var yEntrySpace: Float = 0f
 
     /**
      * the space between the legend entries on a vertical axis, default 2f
      * private float mYEntrySpace = 2f; / ** the space between the form and the
      * actual label/text
      */
-    var formToTextSpace: kotlin.Float = 5f
+    var formToTextSpace: Float = 5f
 
     /**
      * the space that should be left between stacked forms
      */
-    var stackSpace: kotlin.Float = 3f
+    var stackSpace: Float = 3f
 
     /**
      * The maximum relative size out of the whole chart view. / If the legend is
@@ -168,7 +167,7 @@ class Legend() : ComponentBase() {
      * piechart, then this defines the size of the rectangular bounds out of the
      * size of the "hole". / default: 0.95f (95%)
      */
-    var maxSizePercent: kotlin.Float = 0.95f
+    var maxSizePercent: Float = 0.95f
 
     /**
      * Constructor. Provide entries for the legend.
@@ -190,13 +189,13 @@ class Legend() : ComponentBase() {
      *
      * @param p the paint object used for rendering the text
      */
-    fun getMaximumEntryWidth(p: Paint): kotlin.Float {
+    fun getMaximumEntryWidth(p: Paint): Float {
         var max = 0f
         var maxFormSize = 0f
         val formToTextSpace = formToTextSpace.convertDpToPixel()
 
         for (entry in this.entries) {
-            val formSize = (if (Float.isNaN(entry.formSize))
+            val formSize = (if (entry.formSize.isNaN())
                 this.formSize
             else
                 entry.formSize).convertDpToPixel()
@@ -217,7 +216,7 @@ class Legend() : ComponentBase() {
      *
      * @param p the paint object used for rendering the text
      */
-    fun getMaximumEntryHeight(p: Paint): kotlin.Float {
+    fun getMaximumEntryHeight(p: Paint): Float {
         var max = 0f
 
         for (entry in this.entries) {
@@ -311,18 +310,18 @@ class Legend() : ComponentBase() {
      * the total width of the legend (needed width space)
      */
     @JvmField
-    var neededWidth: kotlin.Float = 0f
+    var neededWidth: Float = 0f
 
     /**
      * the total height of the legend (needed height space)
      */
     @JvmField
-    var neededHeight: kotlin.Float = 0f
+    var neededHeight: Float = 0f
 
     @JvmField
-    var mTextHeightMax: kotlin.Float = 0f
+    var mTextHeightMax: Float = 0f
 
-    var mTextWidthMax: kotlin.Float = 0f
+    var mTextWidthMax: Float = 0f
 
     /**
      * If this is set, then word wrapping the legend is enabled. This means the
@@ -383,7 +382,7 @@ class Legend() : ComponentBase() {
                 while (i < entryCount) {
                     val e = entries[i]
                     val drawingForm = e.form != LegendForm.NONE
-                    val formSize = if (Float.isNaN(e.formSize))
+                    val formSize = if (e.formSize.isNaN())
                         defaultFormSize
                     else
                         e.formSize.convertDpToPixel()
@@ -444,7 +443,7 @@ class Legend() : ComponentBase() {
                 while (i < entryCount) {
                     val e = entries[i]
                     val drawingForm = e.form != LegendForm.NONE
-                    val formSize = if (Float.isNaN(e.formSize))
+                    val formSize = if (e.formSize.isNaN())
                         defaultFormSize
                     else
                         e.formSize.convertDpToPixel()

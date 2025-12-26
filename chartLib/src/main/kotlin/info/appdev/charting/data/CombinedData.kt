@@ -1,11 +1,9 @@
 package info.appdev.charting.data
 
-import android.util.Log
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import timber.log.Timber
-import java.lang.Float
 import kotlin.Boolean
 import kotlin.Deprecated
 import kotlin.Int
@@ -152,7 +150,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
         val entries = data.getDataSetByIndex(highlight.dataSetIndex)!!
             .getEntriesForXValue(highlight.x)
         for (entry in entries!!) if (entry.y == highlight.y ||
-            Float.isNaN(highlight.y)
+            highlight.y.isNaN()
         ) return entry
 
         return null
@@ -209,7 +207,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
     }
 
     @Deprecated("")
-    override fun removeEntry(xValue: kotlin.Float, dataSetIndex: Int): Boolean {
+    override fun removeEntry(xValue: Float, dataSetIndex: Int): Boolean {
         Timber.e("removeEntry(...) not supported for CombinedData")
         return false
     }
