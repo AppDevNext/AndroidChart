@@ -5,9 +5,6 @@ import android.animation.ValueAnimator.AnimatorUpdateListener
 import androidx.annotation.RequiresApi
 import com.github.mikephil.charting.animation.Easing.EasingFunction
 
-/**
- * Object responsible for all animations in the Chart. Animations require API level 11.
- */
 class ChartAnimator {
     /** object that is updated upon animation update  */
     private var animatorUpdateListener: AnimatorUpdateListener? = null
