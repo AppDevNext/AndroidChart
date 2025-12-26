@@ -88,7 +88,8 @@ open class XAxisRenderer(
     }
 
     override fun renderAxisLabels(canvas: Canvas) {
-        if (!xAxis.isEnabled || !xAxis.isDrawLabelsEnabled) return
+        if (!xAxis.isEnabled || !xAxis.isDrawLabelsEnabled)
+            return
 
         val yOffset = xAxis.yOffset
 
@@ -101,25 +102,21 @@ open class XAxisRenderer(
                 pointF.y = 1.0f
                 drawLabels(canvas, viewPortHandler.contentTop() - yOffset, pointF)
             }
-
             XAxisPosition.TOP_INSIDE -> {
                 pointF.x = 0.5f
                 pointF.y = 1.0f
                 drawLabels(canvas, viewPortHandler.contentTop() + yOffset + xAxis.mLabelHeight, pointF)
             }
-
             XAxisPosition.BOTTOM -> {
                 pointF.x = 0.5f
                 pointF.y = 0.0f
                 drawLabels(canvas, viewPortHandler.contentBottom() + yOffset, pointF)
             }
-
             XAxisPosition.BOTTOM_INSIDE -> {
                 pointF.x = 0.5f
                 pointF.y = 0.0f
                 drawLabels(canvas, viewPortHandler.contentBottom() - yOffset - xAxis.mLabelHeight, pointF)
             }
-
             else -> { // BOTH SIDED
                 pointF.x = 0.5f
                 pointF.y = 1.0f
