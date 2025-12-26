@@ -133,7 +133,8 @@ open class XAxisRenderer(
     }
 
     override fun renderAxisLine(canvas: Canvas) {
-        if (!xAxis.isDrawAxisLineEnabled || !xAxis.isEnabled) return
+        if (!xAxis.isDrawAxisLineEnabled || !xAxis.isEnabled)
+            return
 
         paintAxisLine.color = xAxis.axisLineColor
         paintAxisLine.strokeWidth = xAxis.axisLineWidth
@@ -349,71 +350,67 @@ open class XAxisRenderer(
         position[0] = 0f
         position[1] = 0f
 
-        for (i in limitLines.indices) {
-            val limitLine = limitLines[i]
+        limitLines.forEach { limitLine ->
+            if (limitLine.isEnabled) {
+                canvas.withSave {
+                    mLimitLineClippingRect.set(viewPortHandler.contentRect)
+                    mLimitLineClippingRect.inset(-limitLine.lineWidth, 0f)
+                    canvas.clipRect(mLimitLineClippingRect)
 
-            if (!limitLine.isEnabled) continue
+                    position[0] = limitLine.limit
+                    position[1] = 0f
 
-            canvas.withSave {
-                mLimitLineClippingRect.set(viewPortHandler.contentRect)
-                mLimitLineClippingRect.inset(-limitLine.lineWidth, 0f)
-                canvas.clipRect(mLimitLineClippingRect)
+                    this@XAxisRenderer.transformer?.pointValuesToPixel(position)
 
-                position[0] = limitLine.limit
-                position[1] = 0f
-
-                this@XAxisRenderer.transformer!!.pointValuesToPixel(position)
-
-                renderLimitLineLine(canvas, limitLine, position)
-                renderLimitLineLabel(canvas, limitLine, position, 2f + limitLine.yOffset)
-
+                    renderLimitLineLine(canvas, limitLine, position)
+                    renderLimitLineLabel(canvas, limitLine, position, 2f + limitLine.yOffset)
+                }
             }
         }
     }
 
     fun renderLimitLineLabel(canvas: Canvas, limitLine: LimitLine, position: FloatArray, yOffset: Float) {
-        val label = limitLine.label
-
         // if drawing the limit-value label is enabled
-        if (label != null && label != "") {
-            limitLinePaint.style = limitLine.textStyle
-            limitLinePaint.pathEffect = null
-            limitLinePaint.color = limitLine.textColor
-            limitLinePaint.strokeWidth = 0.5f
-            limitLinePaint.textSize = limitLine.textSize
+        limitLine.label?.let { label ->
+            if (label.isNotEmpty() && limitLine.isEnabled) {
+                limitLinePaint.style = limitLine.textStyle
+                limitLinePaint.pathEffect = null
+                limitLinePaint.color = limitLine.textColor
+                limitLinePaint.strokeWidth = 0.5f
+                limitLinePaint.textSize = limitLine.textSize
 
+                val xOffset = limitLine.lineWidth + limitLine.xOffset
 
-            val xOffset = limitLine.lineWidth + limitLine.xOffset
+                val labelPosition = limitLine.labelPosition
 
-            val labelPosition = limitLine.labelPosition
+                when (labelPosition) {
+                    LimitLabelPosition.RIGHT_TOP -> {
+                        val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                        limitLinePaint.textAlign = Align.LEFT
+                        canvas.drawText(
+                            label, position[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
+                            limitLinePaint
+                        )
+                    }
 
-            when (labelPosition) {
-                LimitLabelPosition.RIGHT_TOP -> {
-                    val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                    limitLinePaint.textAlign = Align.LEFT
-                    canvas.drawText(
-                        label, position[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
-                        limitLinePaint
-                    )
-                }
+                    LimitLabelPosition.RIGHT_BOTTOM -> {
+                        limitLinePaint.textAlign = Align.LEFT
+                        canvas.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+                    }
 
-                LimitLabelPosition.RIGHT_BOTTOM -> {
-                    limitLinePaint.textAlign = Align.LEFT
-                    canvas.drawText(label, position[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
-                }
+                    LimitLabelPosition.LEFT_TOP -> {
+                        limitLinePaint.textAlign = Align.RIGHT
+                        val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                        canvas.drawText(
+                            label, position[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
+                            limitLinePaint
+                        )
+                    }
 
-                LimitLabelPosition.LEFT_TOP -> {
-                    limitLinePaint.textAlign = Align.RIGHT
-                    val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
-                    canvas.drawText(
-                        label, position[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
-                        limitLinePaint
-                    )
-                }
-
-                else -> {
-                    limitLinePaint.textAlign = Align.RIGHT
-                    canvas.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+                    else -> {
+                        limitLinePaint.textAlign = Align.RIGHT
+                        canvas.drawText(label, position[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
+                    }
                 }
             }
         }
