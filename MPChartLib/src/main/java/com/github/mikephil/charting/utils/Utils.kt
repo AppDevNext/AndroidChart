@@ -13,7 +13,6 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.FSize.Companion.recycleInstance
 import com.github.mikephil.charting.utils.MPPointF.Companion.instance
-import java.lang.Double
 import java.lang.Float
 import kotlin.Int
 import kotlin.IntArray
@@ -27,21 +26,14 @@ import kotlin.math.sin
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
  * calling Utils.init(...) before usage. Inside the Chart.init() method, this is
- * done, if the Utils are used before that, Utils.init(...) needs to be called
- * manually.
- *
- * @author Philipp Jahoda
+ * done, if the Utils are used before that, Utils.init(...) needs to be called manually.
  */
 object Utils {
     var minimumFlingVelocity: Int = 50
     var maximumFlingVelocity: Int = 8000
-    val DEG2RAD: kotlin.Double = (Math.PI / 180.0)
-    val FDEG2RAD: kotlin.Float = (Math.PI.toFloat() / 180f)
+    const val DEG2RAD: Double = (Math.PI / 180.0)
+    const val FDEG2RAD: kotlin.Float = (Math.PI.toFloat() / 180f)
 
-    @Suppress("unused")
-    val DOUBLE_EPSILON: kotlin.Double = Double.longBitsToDouble(1)
-
-    @Suppress("unused")
     val FLOAT_EPSILON: kotlin.Float = Float.intBitsToFloat(1)
 
     /**

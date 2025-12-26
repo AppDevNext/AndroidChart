@@ -13,8 +13,6 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 private val mDrawableBoundsCache = Rect()
-val DEG2RAD: Double = (Math.PI / 180.0)
-val FDEG2RAD: Float = (Math.PI.toFloat() / 180f)
 
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
