@@ -229,37 +229,27 @@ abstract class AxisRenderer(
 
     /**
      * Draws the axis labels to the screen.
-     *
-     * @param canvas
      */
     abstract fun renderAxisLabels(canvas: Canvas)
 
     /**
      * Draws the grid lines belonging to the axis.
-     *
-     * @param canvas
      */
     abstract fun renderGridLines(canvas: Canvas)
 
     /**
      * Draws the line that goes alongside the axis.
-     *
-     * @param canvas
      */
     abstract fun renderAxisLine(canvas: Canvas)
 
     /**
      * Draws the LimitLines associated with this axis to the screen.
-     *
-     * @param canvas
      */
     abstract fun renderLimitLines(canvas: Canvas)
 
     /**
      * Sets the text color to use for the labels. Make sure to use
      * ContextCompat.getColor(context,...) when using a color from the resources.
-     *
-     * @param color
      */
     fun setTextColor(color: Int) {
         axis.textColor = color

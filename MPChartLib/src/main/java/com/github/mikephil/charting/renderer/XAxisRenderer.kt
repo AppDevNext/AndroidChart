@@ -24,9 +24,8 @@ import kotlin.math.roundToInt
 open class XAxisRenderer(
     viewPortHandler: ViewPortHandler,
     @JvmField protected var xAxis: XAxis,
-    trans: Transformer?
-) :
-    AxisRenderer(viewPortHandler, trans, xAxis) {
+    transformer: Transformer?
+) : AxisRenderer(viewPortHandler, transformer, xAxis) {
     protected fun setupGridPaint() {
         paintGrid.color = xAxis.gridColor
         paintGrid.strokeWidth = xAxis.gridLineWidth
@@ -40,8 +39,8 @@ open class XAxisRenderer(
         var minLocal = min
         var maxLocal = max
         if (viewPortHandler.contentWidth() > 10 && !viewPortHandler.isFullyZoomedOutX) {
-            val p1 = transformer!!.getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentTop())
-            val p2 = transformer!!.getValuesByTouchPoint(viewPortHandler.contentRight(), viewPortHandler.contentTop())
+            val p1 = this@XAxisRenderer.transformer!!.getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentTop())
+            val p2 = this@XAxisRenderer.transformer!!.getValuesByTouchPoint(viewPortHandler.contentRight(), viewPortHandler.contentTop())
 
             if (inverted) {
                 minLocal = p2.x.toFloat()
@@ -189,7 +188,7 @@ open class XAxisRenderer(
             }
         }
 
-        transformer!!.pointValuesToPixel(positions)
+        this@XAxisRenderer.transformer!!.pointValuesToPixel(positions)
 
         var i = 0
         while (i < positions.size) {
@@ -259,7 +258,7 @@ open class XAxisRenderer(
                 }
             }
 
-            transformer!!.pointValuesToPixel(positions)
+            this@XAxisRenderer.transformer!!.pointValuesToPixel(positions)
 
             setupGridPaint()
 
@@ -363,7 +362,7 @@ open class XAxisRenderer(
                 position[0] = limitLine.limit
                 position[1] = 0f
 
-                transformer!!.pointValuesToPixel(position)
+                this@XAxisRenderer.transformer!!.pointValuesToPixel(position)
 
                 renderLimitLineLine(canvas, limitLine, position)
                 renderLimitLineLabel(canvas, limitLine, position, 2f + limitLine.yOffset)
