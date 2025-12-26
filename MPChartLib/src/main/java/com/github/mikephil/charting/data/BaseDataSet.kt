@@ -255,7 +255,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
 
     override var valueFormatter: IValueFormatter
         get() = if (needsFormatter())
-            Utils.getDefaultValueFormatter()
+            Utils.defaultValueFormatter
         else
             mValueFormatter!!
         set(value) {
