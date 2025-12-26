@@ -150,7 +150,7 @@ open class RadarChartRenderer(
                 for (j in 0..<dataSet.entryCount) {
                     dataSet.getEntryForIndex(j)?.let { entry ->
 
-                        pOut = center.getPosition(
+                        pOut = getPosition(
                             (entry.y - chart.yChartMin) * factor * phaseY,
                             sliceAngle * j * phaseX + chart.rotationAngle
                     )

@@ -87,7 +87,7 @@ fun Context.convertDpToPixel(dp: Float) = dp * this.resources.displayMetrics.den
 
 fun getDefaultValueFormatter() = DefaultValueFormatter(1)
 
-fun MPPointF.getPosition(dist: Float, angle: Float) :MPPointF {
+fun getPosition(dist: Float, angle: Float) :MPPointF {
     return MPPointF().apply {
         x = (this.x + dist * cos(Math.toRadians(angle.toDouble()))).toFloat()
         y = (this.y + dist * sin(Math.toRadians(angle.toDouble()))).toFloat()

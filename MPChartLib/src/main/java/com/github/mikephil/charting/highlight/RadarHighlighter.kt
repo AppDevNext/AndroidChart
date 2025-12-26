@@ -50,7 +50,7 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
 
             val y = (entry!!.y - chartPieRadar.yChartMin)
 
-            pOut = chartPieRadar.centerOffsets.getPosition(
+            pOut = getPosition(
                 y * factor * phaseY,
                 sliceAngle * index * phaseX + chartPieRadar.rotationAngle
             )

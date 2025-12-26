@@ -159,7 +159,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         for (j in from..<to) {
             val r = (yAxis.mEntries[j] - yAxis.mAxisMinimum) * factor
 
-            pOut = center.getPosition(r, chart.rotationAngle)
+            pOut = getPosition(r, chart.rotationAngle)
 
             val label = yAxis.getFormattedLabel(j)
 
@@ -196,7 +196,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
             chart.getData()!!.maxEntryCountSet?.let { maxEntryCountSet ->
                 for (j in 0..<maxEntryCountSet.entryCount) {
-                    pOut = center.getPosition(r, sliceAngle * j + chart.rotationAngle)
+                    pOut = getPosition(r, sliceAngle * j + chart.rotationAngle)
 
                     if (j == 0)
                         limitPath.moveTo(pOut.x, pOut.y)

@@ -33,7 +33,7 @@ class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, pr
 
                 val angle = (sliceAngle * i + chart.rotationAngle) % 360f
 
-                pOut = center.getPosition(
+                pOut = getPosition(
                     chart.yRange * factor + xAxis.mLabelWidth / 2f, angle
                 )
 
