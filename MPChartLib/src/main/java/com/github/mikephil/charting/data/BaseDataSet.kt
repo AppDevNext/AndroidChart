@@ -313,7 +313,8 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
 
     override fun getIndexInEntries(xIndex: Int): Int {
         for (i in 0..<entryCount) {
-            if (xIndex.toFloat() == getEntryForIndex(i)!!.x) return i
+            if (xIndex.toFloat() == getEntryForIndex(i)!!.x)
+                return i
         }
 
         return -1
@@ -345,9 +346,9 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
 
     override fun contains(entry: T): Boolean {
         for (i in 0..<entryCount) {
-            if (getEntryForIndex(i) == entry) return true
+            if (getEntryForIndex(i) == entry)
+                return true
         }
-
         return false
     }
 

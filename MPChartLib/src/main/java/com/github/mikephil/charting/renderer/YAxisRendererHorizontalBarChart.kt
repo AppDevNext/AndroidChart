@@ -65,7 +65,8 @@ open class YAxisRendererHorizontalBarChart(
      * draws the y-axis labels to the screen
      */
     override fun renderAxisLabels(canvas: Canvas) {
-        if (!yAxis.isEnabled || !yAxis.isDrawLabelsEnabled) return
+        if (!yAxis.isEnabled || !yAxis.isDrawLabelsEnabled)
+            return
 
         val positions = transformedPositions
 
@@ -98,7 +99,8 @@ open class YAxisRendererHorizontalBarChart(
     }
 
     override fun renderAxisLine(canvas: Canvas) {
-        if (!yAxis.isEnabled || !yAxis.isDrawAxisLineEnabled) return
+        if (!yAxis.isEnabled || !yAxis.isDrawAxisLineEnabled)
+            return
 
         paintAxisLine.color = yAxis.axisLineColor
         paintAxisLine.strokeWidth = yAxis.axisLineWidth
@@ -223,7 +225,8 @@ open class YAxisRendererHorizontalBarChart(
     override fun renderLimitLines(canvas: Canvas) {
         val limitLines = yAxis.limitLines
 
-        if (limitLines.isEmpty()) return
+        if (limitLines.isEmpty())
+            return
 
         val pts = renderLimitLinesBuffer
         pts[0] = 0f

@@ -75,7 +75,8 @@ open class XAxisRendererHorizontalBarChart(
     }
 
     override fun renderAxisLabels(canvas: Canvas) {
-        if (!xAxis.isEnabled || !xAxis.isDrawLabelsEnabled) return
+        if (!xAxis.isEnabled || !xAxis.isDrawLabelsEnabled)
+            return
 
         val xOffset = xAxis.xOffset
 
@@ -174,7 +175,8 @@ open class XAxisRendererHorizontalBarChart(
     }
 
     override fun renderAxisLine(canvas: Canvas) {
-        if (!xAxis.isDrawAxisLineEnabled || !xAxis.isEnabled) return
+        if (!xAxis.isDrawAxisLineEnabled || !xAxis.isEnabled)
+            return
 
         paintAxisLine.color = xAxis.axisLineColor
         paintAxisLine.strokeWidth = xAxis.axisLineWidth
@@ -205,7 +207,8 @@ open class XAxisRendererHorizontalBarChart(
     override fun renderLimitLines(canvas: Canvas) {
         val limitLines = xAxis.limitLines
 
-        if (limitLines.isEmpty()) return
+        if (limitLines.isEmpty())
+            return
 
         val pts = mRenderLimitLinesBuffer
         pts[0] = 0f

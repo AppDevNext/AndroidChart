@@ -12,7 +12,8 @@ class ApproximatorN {
         val pointCount = points.size / 2
 
         // if a shape has 2 or less points it cannot be reduced
-        if (resultCount <= 2 || resultCount >= pointCount) return points
+        if (resultCount <= 2 || resultCount >= pointCount)
+            return points
 
         val keep = BooleanArray(pointCount)
 

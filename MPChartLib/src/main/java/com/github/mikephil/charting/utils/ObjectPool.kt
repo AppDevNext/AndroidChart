@@ -86,7 +86,8 @@ class ObjectPool<T : Poolable<T>> private constructor(withCapacity: Int, poolObj
      */
     @Synchronized
     fun recycle(`object`: T?) {
-        if (`object` == null) return
+        if (`object` == null)
+            return
 
         if (`object`.currentOwnerId != Poolable.NO_OWNER) {
             require(`object`.currentOwnerId != this.poolId) { "The object passed is already stored in this pool!" }

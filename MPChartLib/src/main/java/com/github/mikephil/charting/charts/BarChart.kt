@@ -110,7 +110,8 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
         } else {
             highlighter?.let {
                 val h = it.getHighlight(x, y)
-                if (h == null || !isHighlightFullBarEnabled) return h
+                if (h == null || !isHighlightFullBarEnabled)
+                    return h
 
                 // For isHighlightFullBarEnabled, remove stackIndex
                 return Highlight(

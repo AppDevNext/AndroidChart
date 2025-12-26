@@ -45,7 +45,8 @@ open class BubbleChartRenderer(
     }
 
     protected fun drawDataSet(canvas: Canvas, dataSet: IBubbleDataSet) {
-        if (dataSet.entryCount < 1) return
+        if (dataSet.entryCount < 1)
+            return
 
         val trans = dataProvider.getTransformer(dataSet.axisDependency)
 

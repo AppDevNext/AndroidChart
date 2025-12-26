@@ -228,7 +228,8 @@ open class XAxisRenderer(
     protected open var mRenderGridLinesPath: Path = Path()
     protected open var mRenderGridLinesBuffer: FloatArray = FloatArray(2)
     override fun renderGridLines(canvas: Canvas) {
-        if (!xAxis.isDrawGridLinesEnabled || !xAxis.isEnabled) return
+        if (!xAxis.isDrawGridLinesEnabled || !xAxis.isEnabled)
+            return
 
         canvas.withClip(gridClippingRect!!) {
             if (axis.isShowSpecificPositions) {
@@ -341,7 +342,8 @@ open class XAxisRenderer(
     override fun renderLimitLines(canvas: Canvas) {
         val limitLines = xAxis.limitLines
 
-        if (limitLines.isEmpty()) return
+        if (limitLines.isEmpty())
+            return
 
         val position = mRenderLimitLinesBuffer
         position[0] = 0f

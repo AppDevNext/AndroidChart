@@ -104,7 +104,8 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
     }
 
     override fun notifyDataSetChanged() {
-        if (mData == null) return
+        if (mData == null)
+            return
 
         calcMinMax()
 

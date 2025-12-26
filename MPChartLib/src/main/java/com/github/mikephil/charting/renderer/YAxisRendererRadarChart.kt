@@ -137,7 +137,8 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
     }
 
     override fun renderAxisLabels(canvas: Canvas) {
-        if (!yAxis.isEnabled || !yAxis.isDrawLabelsEnabled) return
+        if (!yAxis.isEnabled || !yAxis.isDrawLabelsEnabled)
+            return
 
         paintAxisLabels.typeface = yAxis.typeface
         paintAxisLabels.textSize = yAxis.textSize

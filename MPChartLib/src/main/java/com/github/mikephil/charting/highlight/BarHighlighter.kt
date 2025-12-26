@@ -77,8 +77,10 @@ open class BarHighlighter(barDataProvider: BarDataProvider) : ChartHighlighter<B
         var stackIndex = 0
 
         for (range in ranges) {
-            if (range.contains(value)) return stackIndex
-            else stackIndex++
+            if (range.contains(value))
+                return stackIndex
+            else
+                stackIndex++
         }
 
         val length = max(ranges.size - 1, 0)

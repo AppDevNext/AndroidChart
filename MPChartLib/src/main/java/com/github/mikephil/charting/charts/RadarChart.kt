@@ -133,7 +133,8 @@ class RadarChart : PieRadarChartBase<RadarData> {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        if (mData == null) return
+        if (mData == null)
+            return
 
         //        if (mYAxis.isEnabled())
 //            mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());

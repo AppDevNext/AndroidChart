@@ -506,8 +506,10 @@ abstract class AxisBase : ComponentBase() {
     }
 
     fun getFormattedLabel(index: Int): String? {
-        if (index < 0 || index >= mEntries.size) return ""
-        else return this.valueFormatter!!.getFormattedValue(mEntries[index], this)
+        return if (index < 0 || index >= mEntries.size)
+            ""
+        else
+            this.valueFormatter!!.getFormattedValue(mEntries[index], this)
     }
 
     var valueFormatter: IAxisValueFormatter?

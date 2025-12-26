@@ -136,7 +136,8 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
     protected var renderGridLinesPath: Path = Path()
     override fun renderGridLines(canvas: Canvas) {
-        if (!yAxis.isEnabled) return
+        if (!yAxis.isEnabled)
+            return
 
         if (yAxis.isDrawGridLinesEnabled) {
             canvas.withClip(gridClippingRect!!) {

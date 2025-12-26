@@ -159,7 +159,8 @@ open class BarEntry : Entry {
     }
 
     fun getSumBelow(stackIndex: Int): Float {
-        if (this.yVals == null) return 0f
+        if (this.yVals == null)
+            return 0f
 
         var remainder = 0f
         var index = yVals!!.size - 1
@@ -194,7 +195,8 @@ open class BarEntry : Entry {
     protected fun calcRanges() {
         val values = this.yVals
 
-        if (values == null || values.isEmpty()) return
+        if (values == null || values.isEmpty())
+            return
 
         this.ranges = arrayOf()
 
@@ -219,7 +221,8 @@ open class BarEntry : Entry {
          * Calculates the sum across all values of the given stack.
          */
         private fun calcSum(vals: FloatArray?): Float {
-            if (vals == null) return 0f
+            if (vals == null)
+                return 0f
 
             var sum = 0f
 

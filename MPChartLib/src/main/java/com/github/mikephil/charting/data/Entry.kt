@@ -81,13 +81,17 @@ open class Entry : BaseEntry, Parcelable, Serializable {
      * it's done by the "equals" method.
      */
     fun equalTo(e: Entry?): Boolean {
-        if (e == null) return false
+        if (e == null)
+            return false
 
-        if (e.data !== this.data) return false
+        if (e.data !== this.data)
+            return false
 
-        if (abs((e.x - this.x).toDouble()) > Utils.FLOAT_EPSILON) return false
+        if (abs((e.x - this.x).toDouble()) > Utils.FLOAT_EPSILON)
+            return false
 
-        if (abs((e.y - this.y).toDouble()) > Utils.FLOAT_EPSILON) return false
+        if (abs((e.y - this.y).toDouble()) > Utils.FLOAT_EPSILON)
+            return false
 
         return true
     }

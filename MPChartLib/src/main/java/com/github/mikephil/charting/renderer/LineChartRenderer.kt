@@ -180,7 +180,8 @@ open class LineChartRenderer(
             var next = cur
             var nextIndex = -1
 
-            if (cur == null) return
+            if (cur == null)
+                return
 
             // let the spline start
             cubicPath.moveTo(cur.x, cur.y * phaseY)

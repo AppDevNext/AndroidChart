@@ -150,7 +150,8 @@ class PieChart : PieRadarChartBase<PieData> {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        if (mData == null) return
+        if (mData == null)
+            return
 
         mRenderer?.drawData(canvas)
 
@@ -316,7 +317,8 @@ class PieChart : PieRadarChartBase<PieData> {
      * Checks if the given index is set to be highlighted.
      */
     fun needsHighlight(index: Int): Boolean {
-        if (!valuesToHighlight()) return false
+        if (!valuesToHighlight())
+            return false
 
         // check if the xvalue for the given dataset needs highlight
         highlighted?.let {
@@ -347,7 +349,8 @@ class PieChart : PieRadarChartBase<PieData> {
         val a = Utils.getNormalizedAngle(angle - rotationAngle)
 
         for (i in absoluteAngles.indices) {
-            if (this.absoluteAngles[i] > a) return i
+            if (this.absoluteAngles[i] > a)
+                return i
         }
 
         return -1 // return -1 if no index found
@@ -360,7 +363,8 @@ class PieChart : PieRadarChartBase<PieData> {
         val dataSets = mData?.dataSets
 
         for (i in dataSets!!.indices) {
-            if (dataSets[i].getEntryForXValue(xIndex.toFloat(), Float.NaN) != null) return i
+            if (dataSets[i].getEntryForXValue(xIndex.toFloat(), Float.NaN) != null)
+                return i
         }
 
         return -1

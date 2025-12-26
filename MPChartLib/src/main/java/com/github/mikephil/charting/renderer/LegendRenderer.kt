@@ -198,7 +198,8 @@ open class LegendRenderer(
     protected var legendFontMetrics: Paint.FontMetrics = Paint.FontMetrics()
 
     fun renderLegend(canvas: Canvas) {
-        if (!legend.isEnabled) return
+        if (!legend.isEnabled)
+            return
 
         val tf = legend.typeface
 
@@ -437,7 +438,8 @@ open class LegendRenderer(
         entry: LegendEntry,
         legend: Legend
     ) {
-        if (entry.formColor == ColorTemplate.COLOR_SKIP || entry.formColor == ColorTemplate.COLOR_NONE || entry.formColor == 0) return
+        if (entry.formColor == ColorTemplate.COLOR_SKIP || entry.formColor == ColorTemplate.COLOR_NONE || entry.formColor == 0)
+            return
 
         canvas.withSave {
 

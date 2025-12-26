@@ -213,7 +213,8 @@ abstract class DataSet<T : Entry>(
     }
 
     override fun removeEntry(entry: T): Boolean {
-        if (mEntries == null) return false
+        if (mEntries == null)
+            return false
 
         // remove the entry
         val removed = mEntries!!.remove(entry)

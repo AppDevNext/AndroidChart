@@ -267,8 +267,10 @@ class YAxis : AxisBase {
      * Returns true if this axis needs horizontal offset, false if no offset is needed.
      */
     fun needsOffset(): Boolean {
-        if (isEnabled && isDrawLabelsEnabled && this.labelPosition == YAxisLabelPosition.OUTSIDE_CHART) return true
-        else return false
+        return if (isEnabled && isDrawLabelsEnabled && this.labelPosition == YAxisLabelPosition.OUTSIDE_CHART)
+            true
+        else
+            false
     }
 
 

@@ -114,7 +114,8 @@ class BarLineChartTouchListener(
             gestureDetector?.onTouchEvent(event)
         }
 
-        if (!chart.isDragEnabled && (!chart.isScaleXEnabled && !chart.isScaleYEnabled)) return true
+        if (!chart.isDragEnabled && (!chart.isScaleXEnabled && !chart.isScaleYEnabled))
+            return true
 
         // Handle touch events here...
         when (event.action and MotionEvent.ACTION_MASK) {
@@ -553,7 +554,8 @@ class BarLineChartTouchListener(
     }
 
     fun computeScroll() {
-        if (decelerationVelocity.x == 0f && decelerationVelocity.y == 0f) return  // There's no deceleration in progress
+        if (decelerationVelocity.x == 0f && decelerationVelocity.y == 0f)
+            return  // There's no deceleration in progress
 
 
         val currentTime = AnimationUtils.currentAnimationTimeMillis()

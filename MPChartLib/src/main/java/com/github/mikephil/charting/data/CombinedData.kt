@@ -138,11 +138,13 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
      * @return the entry that is highlighted
      */
     override fun getEntryForHighlight(highlight: Highlight): Entry? {
-        if (highlight.dataIndex >= this.allData.size) return null
+        if (highlight.dataIndex >= this.allData.size)
+            return null
 
         val data: ChartData<*> = getDataByIndex(highlight.dataIndex)
 
-        if (highlight.dataSetIndex >= data.dataSetCount) return null
+        if (highlight.dataSetIndex >= data.dataSetCount)
+            return null
 
         // The value of the highlighted entry could be NaN -
         //   if we are not interested in highlighting a specific value.
@@ -162,11 +164,13 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
      * @return dataset related to highlight
      */
     fun getDataSetByHighlight(highlight: Highlight): IBarLineScatterCandleBubbleDataSet<out Entry>? {
-        if (highlight.dataIndex >= this.allData.size) return null
+        if (highlight.dataIndex >= this.allData.size)
+            return null
 
         val data = getDataByIndex(highlight.dataIndex)
 
-        if (highlight.dataSetIndex >= data.dataSetCount) return null
+        if (highlight.dataSetIndex >= data.dataSetCount)
+            return null
 
         return data.dataSets!![highlight.dataSetIndex] as IBarLineScatterCandleBubbleDataSet<out Entry>?
     }

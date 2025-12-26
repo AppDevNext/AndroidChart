@@ -156,7 +156,8 @@ open class PieChartRenderer(
      * Calculates the sliceSpace to use based on visible values and their size compared to the set sliceSpace.
      */
     protected fun getSliceSpace(dataSet: IPieDataSet): Float {
-        if (!dataSet.isAutomaticallyDisableSliceSpacingEnabled) return dataSet.sliceSpace
+        if (!dataSet.isAutomaticallyDisableSliceSpacingEnabled)
+            return dataSet.sliceSpace
 
         val spaceSizeRatio = dataSet.sliceSpace / viewPortHandler.smallestContentExtension
         val minValueRatio = dataSet.yMin / chart.getData()!!.yValueSum * 2
@@ -739,7 +740,8 @@ open class PieChartRenderer(
                 */
 
         val drawInnerArc = chart.isDrawHoleEnabled && !chart.isDrawSlicesUnderHoleEnabled
-        if (drawInnerArc && chart.isDrawRoundedSlicesEnabled) return
+        if (drawInnerArc && chart.isDrawRoundedSlicesEnabled)
+            return
 
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
