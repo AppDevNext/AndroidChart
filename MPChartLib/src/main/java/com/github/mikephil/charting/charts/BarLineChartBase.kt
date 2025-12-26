@@ -98,7 +98,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
     var isFlingEnabled: Boolean = false
 
     /**
-     * paint object for the (by default) lightgrey background of the grid
+     * paint object for the (by default) light grey background of the grid
      */
     protected var mGridBackgroundPaint: Paint? = null
 
@@ -186,7 +186,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
 
         mXAxisRenderer = XAxisRenderer(viewPortHandler, mXAxis, mLeftAxisTransformer)
 
-        setHighlighter(ChartHighlighter<BarLineChartBase<T>>(this))
+        setHighlighter(ChartHighlighter(this))
 
         mChartTouchListener = BarLineChartTouchListener(this, viewPortHandler.matrixTouch, 3f)
 
@@ -215,7 +215,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
             return
         }
 
-        val starttime = System.currentTimeMillis()
+        val startTime = System.currentTimeMillis()
 
         // execute all drawing commands
         drawGridBackground(canvas)
@@ -335,11 +335,11 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
         drawMarkers(canvas)
 
         if (isLogEnabled) {
-            val drawtime = (System.currentTimeMillis() - starttime)
+            val drawtime = (System.currentTimeMillis() - startTime)
             totalTime += drawtime
             drawCycles += 1
             val average = totalTime / drawCycles
-            Log.i(LOG_TAG, "Drawtime: " + drawtime + " ms, average: " + average + " ms, cycles: " + drawCycles)
+            Log.i(LOG_TAG, "Drawtime: $drawtime ms, average: $average ms, cycles: $drawCycles")
         }
     }
 
@@ -353,7 +353,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
 
     protected open fun prepareValuePxMatrix() {
         if (isLogEnabled) {
-            Log.i(LOG_TAG, "Preparing Value-Px Matrix, xmin: " + mXAxis.mAxisMinimum + ", xmax: " + mXAxis.mAxisMaximum + ", xdelta: " + mXAxis.mAxisRange)
+            Log.i(LOG_TAG, "Preparing Value-Px Matrix, xMin: " + mXAxis.mAxisMinimum + ", xMax: " + mXAxis.mAxisMaximum + ", xDelta: " + mXAxis.mAxisRange)
         }
 
         mRightAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum, mXAxis.mAxisRange, mAxisRight.mAxisRange, this.mAxisRight.mAxisMinimum)
@@ -518,7 +518,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
             viewPortHandler.restrainViewPort(max(minOffset, offsetLeft), max(minOffset, offsetTop), max(minOffset, offsetRight), max(minOffset, offsetBottom))
 
             if (isLogEnabled) {
-                Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom)
+                Log.i(LOG_TAG, "offsetLeft: $offsetLeft, offsetTop: $offsetTop, offsetRight: $offsetRight, offsetBottom: $offsetBottom")
                 Log.i(LOG_TAG, "Content: " + viewPortHandler.contentRect)
             }
         }
@@ -548,10 +548,10 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
      * backwards.
      */
     override fun getTransformer(axis: AxisDependency?): Transformer {
-        if (axis == AxisDependency.LEFT) {
-            return mLeftAxisTransformer
+        return if (axis == AxisDependency.LEFT) {
+            mLeftAxisTransformer
         } else {
-            return mRightAxisTransformer
+            mRightAxisTransformer
         }
     }
 
@@ -563,10 +563,10 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
         }
 
         // check if touch gestures are enabled
-        if (!mTouchEnabled) {
-            return false
+        return if (!mTouchEnabled) {
+            false
         } else {
-            return mChartTouchListener!!.onTouch(this, event)
+            mChartTouchListener!!.onTouch(this, event)
         }
     }
 
@@ -909,13 +909,11 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
      */
     fun setViewPortOffsets(left: Float, top: Float, right: Float, bottom: Float) {
         mCustomViewPortEnabled = true
-        post(object : Runnable {
-            override fun run() {
-                viewPortHandler.restrainViewPort(left, top, right, bottom)
-                prepareOffsetMatrix()
-                prepareValuePxMatrix()
-            }
-        })
+        post {
+            viewPortHandler.restrainViewPort(left, top, right, bottom)
+            prepareOffsetMatrix()
+            prepareValuePxMatrix()
+        }
     }
 
     /**
@@ -931,10 +929,10 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
      * Returns the range of the specified axis.
      */
     protected fun getAxisRange(axis: AxisDependency?): Float {
-        if (axis == AxisDependency.LEFT) {
-            return mAxisLeft.mAxisRange
+        return if (axis == AxisDependency.LEFT) {
+            mAxisLeft.mAxisRange
         } else {
-            return mAxisRight.mAxisRange
+            mAxisRight.mAxisRange
         }
     }
 
@@ -1176,10 +1174,10 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
      * horizontal bar-chart, LEFT == top, RIGHT == BOTTOM
      */
     fun getAxis(axis: AxisDependency?): YAxis {
-        if (axis == AxisDependency.LEFT) {
-            return mAxisLeft
+        return if (axis == AxisDependency.LEFT) {
+            mAxisLeft
         } else {
-            return mAxisRight
+            mAxisRight
         }
     }
 
@@ -1240,7 +1238,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<out IBarLineS
     var rendererRightYAxis: YAxisRenderer
         get() = mAxisRendererRight
         /**
-         * Sets a custom axis renderer for the right acis and overwrites the existing one.
+         * Sets a custom axis renderer for the right axis and overwrites the existing one.
          */
         set(rendererRightYAxis) {
             mAxisRendererRight = rendererRightYAxis
