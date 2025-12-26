@@ -123,9 +123,7 @@ open class LegendRenderer(
                         )
                     }
 
-                    is ICandleDataSet if dataSet.decreasingColor !=
-                            ColorTemplate.COLOR_NONE
-                        -> {
+                    is ICandleDataSet if dataSet.decreasingColor != ColorTemplate.COLOR_NONE -> {
                         val decreasingColor = dataSet.decreasingColor
                         val increasingColor = dataSet.increasingColor
 
