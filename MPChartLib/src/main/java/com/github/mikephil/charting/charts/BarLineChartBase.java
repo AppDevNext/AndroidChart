@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
@@ -1460,7 +1459,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 	}
 
 	@Override
-	public void setPaint(Paint p, int which) {
+	public void setPaint(@NonNull Paint p, int which) {
 		super.setPaint(p, which);
 
 		if (which == PAINT_GRID_BACKGROUND) {
