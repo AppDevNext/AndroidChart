@@ -4,6 +4,7 @@ import android.util.Log
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
+import timber.log.Timber
 import java.lang.Float
 import kotlin.Boolean
 import kotlin.Deprecated
@@ -197,19 +198,19 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
 
     @Deprecated("")
     override fun removeDataSet(index: Int): Boolean {
-        Log.e("AndroidChart", "removeDataSet(int index) not supported for CombinedData")
+        Timber.e("removeDataSet(int index) not supported for CombinedData")
         return false
     }
 
     @Deprecated("")
     override fun removeEntry(entry: Entry?, dataSetIndex: Int): Boolean {
-        Log.e("AndroidChart", "removeEntry(...) not supported for CombinedData")
+        Timber.e("removeEntry(...) not supported for CombinedData")
         return false
     }
 
     @Deprecated("")
     override fun removeEntry(xValue: kotlin.Float, dataSetIndex: Int): Boolean {
-        Log.e("AndroidChart", "removeEntry(...) not supported for CombinedData")
+        Timber.e("removeEntry(...) not supported for CombinedData")
         return false
     }
 }

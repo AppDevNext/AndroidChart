@@ -35,6 +35,7 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.UtilsKtKt;
 
 import androidx.annotation.NonNull;
+import timber.log.Timber;
 
 /**
  * Base-class of LineChart, BarChart, ScatterChart and CandleStickChart.
@@ -320,7 +321,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 			totalTime += drawtime;
 			drawCycles += 1;
 			long average = totalTime / drawCycles;
-			Log.i(LOG_TAG, "Drawtime: " + drawtime + " ms, average: " + average + " ms, cycles: " + drawCycles);
+			Timber.i("Drawtime: " + drawtime + " ms, average: " + average + " ms, cycles: " + drawCycles);
 		}
 	}
 
@@ -335,7 +336,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 	protected void prepareValuePxMatrix() {
 
 		if (isLogEnabled()) {
-			Log.i(LOG_TAG, "Preparing Value-Px Matrix, xmin: " + mXAxis.mAxisMinimum + ", xmax: " + mXAxis.mAxisMaximum + ", xdelta: " + mXAxis.mAxisRange);
+			Timber.i("Preparing Value-Px Matrix, xmin: " + mXAxis.mAxisMinimum + ", xmax: " + mXAxis.mAxisMaximum + ", xdelta: " + mXAxis.mAxisRange);
 		}
 
 		mRightAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum, mXAxis.mAxisRange, mAxisRight.mAxisRange, mAxisRight.mAxisMinimum);
@@ -353,12 +354,12 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
 		if (mData == null) {
 			if (isLogEnabled()) {
-				Log.i(LOG_TAG, "Preparing... DATA NOT SET.");
+				Timber.i("Preparing... DATA NOT SET.");
 			}
 			return;
 		} else {
 			if (isLogEnabled()) {
-				Log.i(LOG_TAG, "Preparing...");
+				Timber.i("Preparing data...");
 			}
 		}
 
@@ -520,8 +521,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 			getViewPortHandler().restrainViewPort(Math.max(minOffset, offsetLeft), Math.max(minOffset, offsetTop), Math.max(minOffset, offsetRight), Math.max(minOffset, offsetBottom));
 
 			if (isLogEnabled()) {
-				Log.i(LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
-				Log.i(LOG_TAG, "Content: " + getViewPortHandler().getContentRect());
+				Timber.i("offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
+				Timber.i("Content: " + getViewPortHandler().getContentRect());
 			}
 		}
 

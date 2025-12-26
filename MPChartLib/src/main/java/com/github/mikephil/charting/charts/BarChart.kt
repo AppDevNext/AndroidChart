@@ -3,7 +3,6 @@ package com.github.mikephil.charting.charts
 import android.content.Context
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarEntry
@@ -11,6 +10,7 @@ import com.github.mikephil.charting.highlight.BarHighlighter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.renderer.BarChartRenderer
+import timber.log.Timber
 import java.util.Locale
 
 /**
@@ -105,7 +105,7 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
      */
     override fun getHighlightByTouchPoint(x: Float, y: Float): Highlight? {
         if (mData == null) {
-            Log.e(LOG_TAG, "Can't select by touch. No data set.")
+            Timber.e("Can't select by touch. No data set.")
             return null
         } else {
             highlighter?.let {

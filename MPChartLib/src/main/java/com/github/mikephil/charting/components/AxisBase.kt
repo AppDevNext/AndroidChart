@@ -3,10 +3,10 @@ package com.github.mikephil.charting.components
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.graphics.Paint
-import android.util.Log
 import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.utils.convertDpToPixel
+import timber.log.Timber
 import kotlin.math.abs
 
 /**
@@ -398,10 +398,7 @@ abstract class AxisBase : ComponentBase() {
         limitLines.add(l)
 
         if (limitLines.size > 6) {
-            Log.e(
-                "MPAndroiChart",
-                "Warning! You have more than 6 LimitLines on your axis, do you really want that?"
-            )
+            Timber.e("Warning! You have more than 6 LimitLines on your axis, do you really want that?")
         }
     }
 
@@ -412,10 +409,7 @@ abstract class AxisBase : ComponentBase() {
         limitRanges.add(l)
 
         if (limitRanges.size > 6) {
-            Log.e(
-                "MPAndroiChart",
-                "Warning! You have more than 6 LimitLines on your axis, do you really want that?"
-            )
+            Timber.e("Warning! You have more than 6 LimitLines on your axis, do you really want that?")
         }
     }
 

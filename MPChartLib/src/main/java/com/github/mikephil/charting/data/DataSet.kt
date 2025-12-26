@@ -1,6 +1,6 @@
 package com.github.mikephil.charting.data
 
-import android.util.Log
+import timber.log.Timber
 import java.io.Serializable
 import java.lang.Float
 import kotlin.Boolean
@@ -243,10 +243,10 @@ abstract class DataSet<T : Entry>(
 
     override fun getEntryForIndex(index: Int): T? {
         if (index < 0) {
-            Log.e("DataSet", "index $index is < 0 for getEntryForIndex")
+            Timber.e("index $index is < 0 for getEntryForIndex")
             return null
         } else if (index >= mEntries!!.size) {
-            Log.e("DataSet", "index " + index + "/" + mEntries!!.size + " is out of range for getEntryForIndex")
+            Timber.e("index " + index + "/" + mEntries!!.size + " is out of range for getEntryForIndex")
             return null
         }
         return mEntries!![index]

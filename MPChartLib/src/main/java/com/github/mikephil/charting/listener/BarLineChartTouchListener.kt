@@ -2,7 +2,6 @@ package com.github.mikephil.charting.listener
 
 import android.annotation.SuppressLint
 import android.graphics.Matrix
-import android.util.Log
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
@@ -16,6 +15,7 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.convertDpToPixel
+import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -503,7 +503,7 @@ class BarLineChartTouchListener(
             chart.zoom(scaleX, scaleY, trans.x, trans.y)
 
             if (chart.isLogEnabled)
-                Log.i("BarlineChartTouch", "Double-Tap, Zooming In, x: ${trans.x} y: ${trans.y}")
+                Timber.i("Double-Tap, Zooming In, x: ${trans.x} y: ${trans.y}")
 
             onChartGestureListener?.onChartScale(e, scaleX, scaleY)
 

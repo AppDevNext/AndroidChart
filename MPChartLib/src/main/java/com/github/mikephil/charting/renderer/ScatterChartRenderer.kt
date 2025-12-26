@@ -1,7 +1,6 @@
 package com.github.mikephil.charting.renderer
 
 import android.graphics.Canvas
-import android.util.Log
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.dataprovider.ScatterDataProvider
@@ -10,6 +9,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.github.mikephil.charting.utils.convertDpToPixel
+import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.min
 
@@ -43,7 +43,7 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
 
         val renderer = dataSet.shapeRenderer
         if (renderer == null) {
-            Log.i("MISSING", "There's no IShapeRenderer specified for ScatterDataSet")
+            Timber.i("There's no IShapeRenderer specified for ScatterDataSet")
             return
         }
 

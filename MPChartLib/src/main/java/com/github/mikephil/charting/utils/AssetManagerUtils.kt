@@ -1,9 +1,10 @@
 package com.github.mikephil.charting.utils
 
 import android.content.res.AssetManager
-import android.util.Log
+import android.webkit.ConsoleMessage
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
+import timber.log.Timber
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -12,7 +13,6 @@ import java.nio.charset.StandardCharsets
 /**
  * Utilities class for interacting with the assets and the devices storage to load and save DataSet objects from and to .txt files.
  */
-private const val LOG = "Chart-FileUtils"
 
 /**
  * Loads an array of Entries from a textfile from the assets folder.
@@ -46,7 +46,7 @@ fun AssetManager.loadEntriesFromAssets(path: String): MutableList<Entry> {
             }
         }
     } catch (e: IOException) {
-        Log.e(LOG, e.toString())
+        Timber.e(e.toString())
     }
 
     return entries
@@ -65,7 +65,7 @@ fun AssetManager.loadBarEntriesFromAssets(path: String): MutableList<BarEntry> {
             }
         }
     } catch (e: IOException) {
-        Log.e(LOG, e.toString())
+        Timber.e(e.toString())
     }
 
     return entries

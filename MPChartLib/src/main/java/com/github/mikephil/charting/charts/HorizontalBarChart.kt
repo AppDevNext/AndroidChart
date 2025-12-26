@@ -3,7 +3,6 @@ package com.github.mikephil.charting.charts
 import android.content.Context
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import com.github.mikephil.charting.components.Legend.LegendHorizontalAlignment
 import com.github.mikephil.charting.components.Legend.LegendOrientation
 import com.github.mikephil.charting.components.Legend.LegendVerticalAlignment
@@ -21,6 +20,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.MPPointF.Companion.getInstance
 import com.github.mikephil.charting.utils.TransformerHorizontalBarChart
 import com.github.mikephil.charting.utils.convertDpToPixel
+import timber.log.Timber
 import kotlin.math.max
 import kotlin.math.min
 
@@ -154,9 +154,11 @@ open class HorizontalBarChart : BarChart {
                 XAxisPosition.BOTTOM -> {
                     offsetLeft += xLabelWidth
                 }
+
                 XAxisPosition.TOP -> {
                     offsetRight += xLabelWidth
                 }
+
                 XAxisPosition.BOTH_SIDED -> {
                     offsetLeft += xLabelWidth
                     offsetRight += xLabelWidth
@@ -164,7 +166,7 @@ open class HorizontalBarChart : BarChart {
 
                 XAxisPosition.TOP_INSIDE -> TODO()
                 XAxisPosition.BOTTOM_INSIDE -> TODO()
-                null -> Log.w(LOG_TAG, "XAxisPosition is null")
+                null -> Timber.w("XAxisPosition is null")
             }
         }
 
@@ -183,11 +185,8 @@ open class HorizontalBarChart : BarChart {
         )
 
         if (isLogEnabled) {
-            Log.i(
-                LOG_TAG, "offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop + ", offsetRight: " +
-                        offsetRight + ", offsetBottom: " + offsetBottom
-            )
-            Log.i(LOG_TAG, "Content: " + viewPortHandler.contentRect)
+            Timber.i("offsetLeft: $offsetLeft, offsetTop: $offsetTop, offsetRight: $offsetRight, offsetBottom: $offsetBottom")
+            Timber.i("Content: ${viewPortHandler.contentRect}")
         }
 
         prepareOffsetMatrix()
@@ -255,7 +254,7 @@ open class HorizontalBarChart : BarChart {
     override fun getHighlightByTouchPoint(x: Float, y: Float): Highlight? {
         if (mData == null) {
             if (isLogEnabled) {
-                Log.e(LOG_TAG, "Can't select by touch. No data set.")
+                Timber.e("Can't select by touch. No data set.")
             }
             return null
         } else {

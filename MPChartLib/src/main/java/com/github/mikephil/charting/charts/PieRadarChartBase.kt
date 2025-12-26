@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import com.github.mikephil.charting.animation.Easing.EasingFunction
 import com.github.mikephil.charting.components.Legend.LegendHorizontalAlignment
@@ -19,6 +18,7 @@ import com.github.mikephil.charting.utils.MPPointF.Companion.getInstance
 import com.github.mikephil.charting.utils.MPPointF.Companion.recycleInstance
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.convertDpToPixel
+import timber.log.Timber
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.max
@@ -222,7 +222,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
                                     viewPortHandler.chartHeight * legend.maxSizePercent
                                 )
 
-                                LegendVerticalAlignment.CENTER -> Log.e(LOG_TAG, "LegendCenter/VerticalCenter not supported for PieRadarChart")
+                                LegendVerticalAlignment.CENTER -> Timber.e("LegendCenter/VerticalCenter not supported for PieRadarChart")
                             }
                         }
                     }
@@ -247,7 +247,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
                             when (legend.verticalAlignment) {
                                 LegendVerticalAlignment.TOP -> legendTop = yLegendOffset
                                 LegendVerticalAlignment.BOTTOM -> legendBottom = yLegendOffset
-                                LegendVerticalAlignment.CENTER -> Log.e(LOG_TAG, "LegendCenter/HorizontalCenter not supported for PieRadarChart")
+                                LegendVerticalAlignment.CENTER -> Timber.e("LegendCenter/HorizontalCenter not supported for PieRadarChart")
                             }
                         }
                     }
@@ -282,7 +282,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
         viewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom)
 
         if (isLogEnabled)
-            Log.i(LOG_TAG, "offsetLeft: $offsetLeft, offsetTop: $offsetTop, offsetRight: $offsetRight, offsetBottom: $offsetBottom")
+            Timber.i("offsetLeft: $offsetLeft, offsetTop: $offsetTop, offsetRight: $offsetRight, offsetBottom: $offsetBottom")
     }
 
     /**
