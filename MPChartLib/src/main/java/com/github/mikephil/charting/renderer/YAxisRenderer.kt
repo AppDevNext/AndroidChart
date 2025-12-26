@@ -11,10 +11,10 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition
 import com.github.mikephil.charting.utils.Transformer
-import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import androidx.core.graphics.withSave
 import androidx.core.graphics.withClip
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.convertDpToPixel
 
 open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected var yAxis: YAxis, trans: Transformer?) :
@@ -61,7 +61,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         paintAxisLabels.textSize = yAxis.textSize
         paintAxisLabels.color = yAxis.textColor
 
-        val yOffset = Utils.calcTextHeight(paintAxisLabels, "A") / 2.5f + yAxis.yOffset
+        val yOffset = paintAxisLabels.calcTextHeight("A") / 2.5f + yAxis.yOffset
 
         val axisDependency = yAxis.axisDependency
         val labelPosition = yAxis.labelPosition
@@ -317,7 +317,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                         limitLinePaint.strokeWidth = 0.5f
                         limitLinePaint.textSize = limitLine.textSize
 
-                        val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                        val labelLineHeight = limitLinePaint.calcTextHeight( label).toFloat()
                         val xOffset = 4f.convertDpToPixel() + limitLine.xOffset
                         val yOffset = limitLine.lineWidth + labelLineHeight + limitLine.yOffset
 
@@ -436,7 +436,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
                     limitRangePaint.strokeWidth = 0.5f
                     limitRangePaint.textSize = limitRange.textSize
 
-                    val labelLineHeight = Utils.calcTextHeight(limitRangePaint, label).toFloat()
+                    val labelLineHeight = limitRangePaint.calcTextHeight(label).toFloat()
                     val xOffset = 4f.convertDpToPixel() + limitRange.xOffset
                     val yOffset = limitRange.lineWidth + labelLineHeight + limitRange.yOffset
 

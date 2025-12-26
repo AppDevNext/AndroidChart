@@ -3,7 +3,6 @@ package com.github.mikephil.charting.utils
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Paint.Align
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.view.MotionEvent
@@ -11,9 +10,7 @@ import android.view.VelocityTracker
 import android.view.ViewConfiguration
 import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.IValueFormatter
-import com.github.mikephil.charting.utils.FSize.Companion.recycleInstance
 import com.github.mikephil.charting.utils.MPPointF.Companion.instance
-import java.lang.Double
 import java.lang.Float
 import kotlin.Int
 import kotlin.IntArray
@@ -27,21 +24,14 @@ import kotlin.math.sin
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
  * calling Utils.init(...) before usage. Inside the Chart.init() method, this is
- * done, if the Utils are used before that, Utils.init(...) needs to be called
- * manually.
- *
- * @author Philipp Jahoda
+ * done, if the Utils are used before that, Utils.init(...) needs to be called manually.
  */
 object Utils {
     var minimumFlingVelocity: Int = 50
     var maximumFlingVelocity: Int = 8000
-    val DEG2RAD: kotlin.Double = (Math.PI / 180.0)
-    val FDEG2RAD: kotlin.Float = (Math.PI.toFloat() / 180f)
+    const val DEG2RAD: Double = (Math.PI / 180.0)
+    const val FDEG2RAD: kotlin.Float = (Math.PI.toFloat() / 180f)
 
-    @Suppress("unused")
-    val DOUBLE_EPSILON: kotlin.Double = Double.longBitsToDouble(1)
-
-    @Suppress("unused")
     val FLOAT_EPSILON: kotlin.Float = Float.intBitsToFloat(1)
 
     /**
@@ -60,19 +50,6 @@ object Utils {
      */
     fun calcTextWidth(paint: Paint, demoText: String?): Int {
         return paint.measureText(demoText).toInt()
-    }
-
-    private val mCalcTextHeightRect = Rect()
-
-    /**
-     * calculates the approximate height of a text, depending on a demo text
-     * avoid repeated calls (e.g. inside drawing methods)
-     */
-    fun calcTextHeight(paint: Paint, demoText: String): Int {
-        val r = mCalcTextHeightRect
-        r.set(0, 0, 0, 0)
-        paint.getTextBounds(demoText, 0, demoText.length, r)
-        return r.height()
     }
 
     private val mFontMetrics = Paint.FontMetrics()
@@ -229,76 +206,6 @@ object Utils {
         canvas.translate(drawOffset.x, drawOffset.y)
         drawable.draw(canvas)
         canvas.restoreToCount(saveId)
-    }
-
-    private val mDrawTextRectBuffer = Rect()
-    private val mFontMetricsBuffer = Paint.FontMetrics()
-
-    fun drawXAxisValue(
-        canvas: Canvas, text: String, x: kotlin.Float, y: kotlin.Float,
-        paint: Paint,
-        anchor: MPPointF, angleDegrees: kotlin.Float
-    ) {
-        var drawOffsetX = 0f
-        var drawOffsetY = 0f
-
-        val lineHeight = paint.getFontMetrics(mFontMetricsBuffer)
-        paint.getTextBounds(text, 0, text.length, mDrawTextRectBuffer)
-
-        // Android sometimes has pre-padding
-        drawOffsetX -= mDrawTextRectBuffer.left.toFloat()
-
-        // Android does not snap the bounds to line boundaries,
-        //  and draws from bottom to top.
-        // And we want to normalize it.
-        drawOffsetY -= mFontMetricsBuffer.ascent
-
-        // To have a consistent point of reference, we always draw left-aligned
-        val originalTextAlign = paint.textAlign
-        paint.textAlign = Align.LEFT
-
-        if (angleDegrees != 0f) {
-            // Move the text drawing rect in a way that it always rotates around its center
-
-            drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f
-            drawOffsetY -= lineHeight * 0.5f
-
-            var translateX = x
-            var translateY = y
-
-            // Move the "outer" rect relative to the anchor, assuming its centered
-            if (anchor.x != 0.5f || anchor.y != 0.5f) {
-                val rotatedSize = getSizeOfRotatedRectangleByDegrees(
-                    mDrawTextRectBuffer.width().toFloat(),
-                    lineHeight,
-                    angleDegrees
-                )
-
-                translateX -= rotatedSize.width * (anchor.x - 0.5f)
-                translateY -= rotatedSize.height * (anchor.y - 0.5f)
-                recycleInstance(rotatedSize)
-            }
-
-            canvas.save()
-            canvas.translate(translateX, translateY)
-            canvas.rotate(angleDegrees)
-
-            canvas.drawText(text, drawOffsetX, drawOffsetY, paint)
-
-            canvas.restore()
-        } else {
-            if (anchor.x != 0f || anchor.y != 0f) {
-                drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x
-                drawOffsetY -= lineHeight * anchor.y
-            }
-
-            drawOffsetX += x
-            drawOffsetY += y
-
-            canvas.drawText(text, drawOffsetX, drawOffsetY, paint)
-        }
-
-        paint.textAlign = originalTextAlign
     }
 
     /**

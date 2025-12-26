@@ -12,8 +12,8 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition
 import com.github.mikephil.charting.utils.MPPointD
 import com.github.mikephil.charting.utils.Transformer
-import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.convertDpToPixel
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -76,7 +76,7 @@ open class YAxisRendererHorizontalBarChart(
         paintAxisLabels.textAlign = Align.CENTER
 
         val baseYOffset = 2.5f.convertDpToPixel()
-        val textHeight = Utils.calcTextHeight(paintAxisLabels, "Q").toFloat()
+        val textHeight = paintAxisLabels.calcTextHeight("Q").toFloat()
 
         val dependency = yAxis.axisDependency
         val labelPosition = yAxis.labelPosition
@@ -283,7 +283,7 @@ open class YAxisRendererHorizontalBarChart(
 
                     when (position) {
                         LimitLabelPosition.RIGHT_TOP -> {
-                            val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                            val labelLineHeight = limitLinePaint.calcTextHeight(label).toFloat()
                             limitLinePaint.textAlign = Align.LEFT
                             canvas.drawText(label, pts[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint)
                         }
@@ -293,7 +293,7 @@ open class YAxisRendererHorizontalBarChart(
                         }
                         LimitLabelPosition.LEFT_TOP -> {
                             limitLinePaint.textAlign = Align.RIGHT
-                            val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                            val labelLineHeight = limitLinePaint.calcTextHeight(label).toFloat()
                             canvas.drawText(label, pts[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint)
                         }
                         else -> {

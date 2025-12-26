@@ -56,7 +56,7 @@ object SaveUtils {
         // restrain quality
         var fileName = fileName
         var quality = quality
-        if (quality < 0 || quality > 100) {
+        if (quality !in 0..100) {
             quality = 50
         }
 

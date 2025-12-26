@@ -1,6 +1,8 @@
 package com.github.mikephil.charting.utils
 
 import android.content.Context
+import android.graphics.Paint
+import android.graphics.Rect
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.ViewConfiguration
@@ -152,4 +154,17 @@ fun Float.formatNumber(digitCount: Int, separateThousands: Boolean, separateChar
 
     // use this instead of "new String(...)" because of issue < Android 4.0
     return String(out, start, out.size - start)
+}
+
+private val mCalcTextHeightRect = Rect()
+
+/**
+ * calculates the approximate height of a text, depending on a demo text
+ * avoid repeated calls (e.g. inside drawing methods)
+ */
+fun Paint.calcTextHeight(demoText: String): Int {
+    val r = mCalcTextHeightRect
+    r.set(0, 0, 0, 0)
+    this.getTextBounds(demoText, 0, demoText.length, r)
+    return r.height()
 }

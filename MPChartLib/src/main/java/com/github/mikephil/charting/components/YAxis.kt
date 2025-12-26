@@ -3,6 +3,7 @@ package com.github.mikephil.charting.components
 import android.graphics.Color
 import android.graphics.Paint
 import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.abs
 import kotlin.math.max
@@ -169,7 +170,7 @@ class YAxis : AxisBase {
      * use Inifinity for disabling the maximum
      * default: Float.POSITIVE_INFINITY (no maximum specified)
      */
-    var maxWidth: Float = Float.Companion.POSITIVE_INFINITY
+    var maxWidth: Float = Float.POSITIVE_INFINITY
 
     /**
      * Enum that specifies the axis a DataSet should be plotted against, either LEFT or RIGHT.
@@ -236,7 +237,7 @@ class YAxis : AxisBase {
      * This is for normal (not horizontal) charts horizontal spacing.
      */
     fun getRequiredWidthSpace(p: Paint): Float {
-        p.setTextSize(mTextSize)
+        p.textSize = mTextSize
 
         val label = getLongestLabel(p)
         var width = Utils.calcTextWidth(p, label).toFloat() + xOffset * 2f
@@ -246,7 +247,7 @@ class YAxis : AxisBase {
 
         if (minWidth > 0f) minWidth = minWidth.convertDpToPixel()
 
-        if (maxWidth > 0f && maxWidth != Float.Companion.POSITIVE_INFINITY) maxWidth = maxWidth.convertDpToPixel()
+        if (maxWidth > 0f && maxWidth != Float.POSITIVE_INFINITY) maxWidth = maxWidth.convertDpToPixel()
 
         width = max(minWidth, min(width, if (maxWidth > 0.0) maxWidth else width))
 
@@ -257,24 +258,20 @@ class YAxis : AxisBase {
      * This is for HorizontalBarChart vertical spacing.
      */
     fun getRequiredHeightSpace(p: Paint): Float {
-        p.setTextSize(mTextSize)
+        p.textSize = mTextSize
 
         val label = getLongestLabel(p)
-        return Utils.calcTextHeight(p, label).toFloat() + yOffset * 2f
+        return p.calcTextHeight(label).toFloat() + yOffset * 2f
     }
 
     /**
      * Returns true if this axis needs horizontal offset, false if no offset is needed.
      */
     fun needsOffset(): Boolean {
-        return if (isEnabled && isDrawLabelsEnabled && this.labelPosition == YAxisLabelPosition.OUTSIDE_CHART)
-            true
-        else
-            false
+        return isEnabled && isDrawLabelsEnabled && this.labelPosition == YAxisLabelPosition.OUTSIDE_CHART
     }
 
-
-    public override fun calculate(dataMin: Float, dataMax: Float) {
+    override fun calculate(dataMin: Float, dataMax: Float) {
         var min = dataMin
         var max = dataMax
 

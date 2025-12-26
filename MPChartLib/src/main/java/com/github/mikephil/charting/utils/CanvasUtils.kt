@@ -5,16 +5,12 @@ import android.graphics.Paint
 import android.graphics.Paint.Align
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.text.StaticLayout
-import android.text.TextPaint
 import com.github.mikephil.charting.utils.Utils.FDEG2RAD
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
 private val mDrawableBoundsCache = Rect()
-val DEG2RAD: Double = (Math.PI / 180.0)
-val FDEG2RAD: Float = (Math.PI.toFloat() / 180f)
 
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
@@ -112,84 +108,6 @@ fun Canvas.drawXAxisValue(
         drawOffsetY += y
 
         text?.let { this.drawText(it, drawOffsetX, drawOffsetY, paint) }
-    }
-
-    paint.textAlign = originalTextAlign
-}
-
-fun Canvas.drawMultilineText(
-    textLayout: StaticLayout,
-    x: Float, y: Float,
-    paint: TextPaint,
-    anchor: MPPointF, angleDegrees: Float
-) {
-    var drawOffsetX = 0f
-    var drawOffsetY = 0f
-    val drawWidth: Float
-    val drawHeight: Float
-
-    val lineHeight = paint.getFontMetrics(mFontMetricsBuffer)
-
-    drawWidth = textLayout.width.toFloat()
-    drawHeight = textLayout.lineCount * lineHeight
-
-    // Android sometimes has pre-padding
-    drawOffsetX -= mDrawTextRectBuffer.left.toFloat()
-
-    // Android does not snap the bounds to line boundaries,
-    //  and draws from bottom to top.
-    // And we want to normalize it.
-    drawOffsetY += drawHeight
-
-    // To have a consistent point of reference, we always draw left-aligned
-    val originalTextAlign = paint.textAlign
-    paint.textAlign = Align.LEFT
-
-    if (angleDegrees != 0f) {
-        // Move the text drawing rect in a way that it always rotates around its center
-
-        drawOffsetX -= drawWidth * 0.5f
-        drawOffsetY -= drawHeight * 0.5f
-
-        var translateX = x
-        var translateY = y
-
-        // Move the "outer" rect relative to the anchor, assuming its centered
-        if (anchor.x != 0.5f || anchor.y != 0.5f) {
-            val rotatedSize = getSizeOfRotatedRectangleByDegrees(
-                drawWidth,
-                drawHeight,
-                angleDegrees
-            )
-
-            translateX -= rotatedSize.width * (anchor.x - 0.5f)
-            translateY -= rotatedSize.height * (anchor.y - 0.5f)
-            FSize.recycleInstance(rotatedSize)
-        }
-
-        this.save()
-        this.translate(translateX, translateY)
-        this.rotate(angleDegrees)
-
-        this.translate(drawOffsetX, drawOffsetY)
-        textLayout.draw(this)
-
-        this.restore()
-    } else {
-        if (anchor.x != 0f || anchor.y != 0f) {
-            drawOffsetX -= drawWidth * anchor.x
-            drawOffsetY -= drawHeight * anchor.y
-        }
-
-        drawOffsetX += x
-        drawOffsetY += y
-
-        this.save()
-
-        this.translate(drawOffsetX, drawOffsetY)
-        textLayout.draw(this)
-
-        this.restore()
     }
 
     paint.textAlign = originalTextAlign

@@ -10,6 +10,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.abs
 import kotlin.math.max
@@ -98,7 +99,7 @@ open class BubbleChartRenderer(
         if (isDrawingValuesAllowed(dataProvider)) {
             val dataSets = bubbleData.dataSets
 
-            val lineHeight = Utils.calcTextHeight(paintValues, "1").toFloat()
+            val lineHeight = paintValues.calcTextHeight("1").toFloat()
 
             dataSets?.let {
                 for (i in it.indices) {

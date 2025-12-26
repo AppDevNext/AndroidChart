@@ -21,6 +21,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.convertDpToPixel
 import java.lang.ref.WeakReference
 import kotlin.math.abs
@@ -405,7 +406,7 @@ open class PieChartRenderer(
                     // apply the text-styling defined by the DataSet
                     applyValueTextStyle(dataSet)
 
-                    val lineHeight = (Utils.calcTextHeight(paintValues, "Q")
+                    val lineHeight = (paintValues.calcTextHeight("Q")
                             + 4f.convertDpToPixel())
 
                     val formatter = dataSet.valueFormatter
