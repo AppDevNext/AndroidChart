@@ -123,11 +123,11 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
         legend?.let { legend ->
             if (legend.isEnabled && !legend.isDrawInsideEnabled) {
                 val fullLegendWidth = min(
-                    legend.mNeededWidth,
+                    legend.neededWidth,
                     viewPortHandler.chartWidth * legend.maxSizePercent
                 )
                 val fullLegendHeight = min(
-                    legend.mNeededHeight,
+                    legend.neededHeight,
                     viewPortHandler.chartHeight * legend.maxSizePercent
                 )
 
@@ -156,7 +156,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
 
             if (legend.isEnabled && !legend.isDrawInsideEnabled) {
                 val fullLegendWidth = min(
-                    legend.mNeededWidth,
+                    legend.neededWidth,
                     viewPortHandler.chartWidth * legend.maxSizePercent
                 )
 
@@ -177,7 +177,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
                                 val spacing = 8f.convertDpToPixel()
 
                                 val legendWidth = fullLegendWidth + spacing
-                                val legendHeight = legend.mNeededHeight + legend.mTextHeightMax
+                                val legendHeight = legend.neededHeight + legend.mTextHeightMax
 
                                 val bottomX = if (legend.horizontalAlignment ==
                                     LegendHorizontalAlignment.RIGHT
@@ -213,12 +213,12 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
                             LegendHorizontalAlignment.RIGHT -> legendRight = xLegendOffset
                             LegendHorizontalAlignment.CENTER -> when (legend.verticalAlignment) {
                                 LegendVerticalAlignment.TOP -> legendTop = min(
-                                    legend.mNeededHeight,
+                                    legend.neededHeight,
                                     viewPortHandler.chartHeight * legend.maxSizePercent
                                 )
 
                                 LegendVerticalAlignment.BOTTOM -> legendBottom = min(
-                                    legend.mNeededHeight,
+                                    legend.neededHeight,
                                     viewPortHandler.chartHeight * legend.maxSizePercent
                                 )
 
@@ -240,7 +240,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
                             val yOffset = this.requiredLegendOffset
 
                             yLegendOffset = min(
-                                legend.mNeededHeight + yOffset,
+                                legend.neededHeight + yOffset,
                                 viewPortHandler.chartHeight * legend.maxSizePercent
                             )
 

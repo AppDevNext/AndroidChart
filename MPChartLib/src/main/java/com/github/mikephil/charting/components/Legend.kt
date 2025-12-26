@@ -311,13 +311,13 @@ class Legend() : ComponentBase() {
      * the total width of the legend (needed width space)
      */
     @JvmField
-    var mNeededWidth: kotlin.Float = 0f
+    var neededWidth: kotlin.Float = 0f
 
     /**
      * the total height of the legend (needed height space)
      */
     @JvmField
-    var mNeededHeight: kotlin.Float = 0f
+    var neededHeight: kotlin.Float = 0f
 
     @JvmField
     var mTextHeightMax: kotlin.Float = 0f
@@ -421,8 +421,8 @@ class Legend() : ComponentBase() {
                     i++
                 }
 
-                mNeededWidth = maxWidth
-                mNeededHeight = maxHeight
+                neededWidth = maxWidth
+                neededHeight = maxHeight
             }
 
             LegendOrientation.HORIZONTAL -> {
@@ -515,8 +515,8 @@ class Legend() : ComponentBase() {
                     i++
                 }
 
-                mNeededWidth = maxLineWidth
-                mNeededHeight = (labelLineHeight
+                neededWidth = maxLineWidth
+                neededHeight = (labelLineHeight
                         * (calculatedLineSizes.size).toFloat()
                         + labelLineSpacing * (if (calculatedLineSizes.isEmpty())
                     0
@@ -525,7 +525,7 @@ class Legend() : ComponentBase() {
             }
         }
 
-        mNeededHeight += mYOffset
-        mNeededWidth += mXOffset
+        neededHeight += mYOffset
+        neededWidth += mXOffset
     }
 }

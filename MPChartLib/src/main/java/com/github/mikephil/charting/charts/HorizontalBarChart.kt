@@ -59,31 +59,30 @@ open class HorizontalBarChart : BarChart {
         offsets.top = 0f
         offsets.bottom = 0f
 
-        if (legend == null || !legend!!.isEnabled || legend!!.isDrawInsideEnabled) {
-            return
-        }
-
         legend?.let { legend ->
+            if (!legend.isEnabled || legend.isDrawInsideEnabled) {
+                return
+            }
             when (legend.orientation) {
                 LegendOrientation.VERTICAL -> when (legend.horizontalAlignment) {
                     LegendHorizontalAlignment.LEFT -> offsets.left += min(
-                        legend.mNeededWidth,
+                        legend.neededWidth,
                         viewPortHandler.chartWidth * legend.maxSizePercent
                     ) + legend.xOffset
 
                     LegendHorizontalAlignment.RIGHT -> offsets.right += min(
-                        legend.mNeededWidth,
+                        legend.neededWidth,
                         viewPortHandler.chartWidth * legend.maxSizePercent
                     ) + legend.xOffset
 
                     LegendHorizontalAlignment.CENTER -> when (legend.verticalAlignment) {
                         LegendVerticalAlignment.TOP -> offsets.top += min(
-                            legend.mNeededHeight,
+                            legend.neededHeight,
                             viewPortHandler.chartHeight * legend.maxSizePercent
                         ) + legend.yOffset
 
                         LegendVerticalAlignment.BOTTOM -> offsets.bottom += min(
-                            legend.mNeededHeight,
+                            legend.neededHeight,
                             viewPortHandler.chartHeight * legend.maxSizePercent
                         ) + legend.yOffset
 
@@ -94,7 +93,7 @@ open class HorizontalBarChart : BarChart {
                 LegendOrientation.HORIZONTAL -> when (legend.verticalAlignment) {
                     LegendVerticalAlignment.TOP -> {
                         offsets.top += min(
-                            legend.mNeededHeight,
+                            legend.neededHeight,
                             viewPortHandler.chartHeight * legend.maxSizePercent
                         ) + legend.yOffset
 
@@ -107,7 +106,7 @@ open class HorizontalBarChart : BarChart {
 
                     LegendVerticalAlignment.BOTTOM -> {
                         offsets.bottom += min(
-                            legend.mNeededHeight,
+                            legend.neededHeight,
                             viewPortHandler.chartHeight * legend.maxSizePercent
                         ) + legend.yOffset
 

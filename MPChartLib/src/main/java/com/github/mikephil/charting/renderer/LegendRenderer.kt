@@ -235,7 +235,7 @@ open class LegendRenderer(
                 originPosX = if (orientation == LegendOrientation.VERTICAL) xOffset
                 else viewPortHandler.contentLeft() + xOffset
 
-                if (direction == LegendDirection.RIGHT_TO_LEFT) originPosX += legend.mNeededWidth
+                if (direction == LegendDirection.RIGHT_TO_LEFT) originPosX += legend.neededWidth
             }
 
             LegendHorizontalAlignment.RIGHT -> {
@@ -243,7 +243,7 @@ open class LegendRenderer(
                 else viewPortHandler.contentRight() - xOffset
 
                 if (direction == LegendDirection.LEFT_TO_RIGHT)
-                    originPosX -= legend.mNeededWidth
+                    originPosX -= legend.neededWidth
             }
 
             LegendHorizontalAlignment.CENTER -> {
@@ -261,9 +261,9 @@ open class LegendRenderer(
                 // So here we offset the vertical ones only.
                 if (orientation == LegendOrientation.VERTICAL) {
                     originPosX += (if (direction == LegendDirection.LEFT_TO_RIGHT)
-                        -legend.mNeededWidth / 2.0 + xOffset
+                        -legend.neededWidth / 2.0 + xOffset
                     else
-                        legend.mNeededWidth / 2.0 - xOffset).toFloat()
+                        legend.neededWidth / 2.0 - xOffset).toFloat()
                 }
             }
         }
@@ -278,8 +278,8 @@ open class LegendRenderer(
 
                 var posY: Float = when (verticalAlignment) {
                     LegendVerticalAlignment.TOP -> yOffset
-                    LegendVerticalAlignment.BOTTOM -> viewPortHandler.chartHeight - yOffset - legend.mNeededHeight
-                    LegendVerticalAlignment.CENTER -> (viewPortHandler.chartHeight - legend.mNeededHeight) / 2f + yOffset
+                    LegendVerticalAlignment.BOTTOM -> viewPortHandler.chartHeight - yOffset - legend.neededHeight
+                    LegendVerticalAlignment.CENTER -> (viewPortHandler.chartHeight - legend.neededHeight) / 2f + yOffset
                 }
 
                 var lineIndex = 0
@@ -354,11 +354,11 @@ open class LegendRenderer(
                             viewPortHandler.chartHeight
                         else
                             viewPortHandler.contentBottom())
-                        posY -= legend.mNeededHeight + yOffset
+                        posY -= legend.neededHeight + yOffset
                     }
 
                     LegendVerticalAlignment.CENTER -> posY = (viewPortHandler.chartHeight / 2f
-                            - legend.mNeededHeight / 2f
+                            - legend.neededHeight / 2f
                             + legend.yOffset)
                 }
 

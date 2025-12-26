@@ -418,22 +418,22 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
 				switch (getLegend().getHorizontalAlignment()) {
 					case LEFT:
-						offsets.left += Math.min(getLegend().mNeededWidth, getViewPortHandler().getChartWidth() * getLegend().getMaxSizePercent()) + getLegend().getXOffset();
+						offsets.left += Math.min(getLegend().neededWidth, getViewPortHandler().getChartWidth() * getLegend().getMaxSizePercent()) + getLegend().getXOffset();
 						break;
 
 					case RIGHT:
-						offsets.right += Math.min(getLegend().mNeededWidth, getViewPortHandler().getChartWidth() * getLegend().getMaxSizePercent()) + getLegend().getXOffset();
+						offsets.right += Math.min(getLegend().neededWidth, getViewPortHandler().getChartWidth() * getLegend().getMaxSizePercent()) + getLegend().getXOffset();
 						break;
 
 					case CENTER:
 
 						switch (getLegend().getVerticalAlignment()) {
 							case TOP:
-								offsets.top += Math.min(getLegend().mNeededHeight, getViewPortHandler().getChartHeight() * getLegend().getMaxSizePercent()) + getLegend().getYOffset();
+								offsets.top += Math.min(getLegend().neededHeight, getViewPortHandler().getChartHeight() * getLegend().getMaxSizePercent()) + getLegend().getYOffset();
 								break;
 
 							case BOTTOM:
-								offsets.bottom += Math.min(getLegend().mNeededHeight, getViewPortHandler().getChartHeight() * getLegend().getMaxSizePercent()) + getLegend().getYOffset();
+								offsets.bottom += Math.min(getLegend().neededHeight, getViewPortHandler().getChartHeight() * getLegend().getMaxSizePercent()) + getLegend().getYOffset();
 								break;
 
 							default:
@@ -447,13 +447,13 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
 				switch (getLegend().getVerticalAlignment()) {
 					case TOP:
-						offsets.top += Math.min(getLegend().mNeededHeight, getViewPortHandler().getChartHeight() * getLegend().getMaxSizePercent()) + getLegend().getYOffset();
+						offsets.top += Math.min(getLegend().neededHeight, getViewPortHandler().getChartHeight() * getLegend().getMaxSizePercent()) + getLegend().getYOffset();
 
 
 						break;
 
 					case BOTTOM:
-						offsets.bottom += Math.min(getLegend().mNeededHeight, getViewPortHandler().getChartHeight() * getLegend().getMaxSizePercent()) + getLegend().getYOffset();
+						offsets.bottom += Math.min(getLegend().neededHeight, getViewPortHandler().getChartHeight() * getLegend().getMaxSizePercent()) + getLegend().getYOffset();
 
 
 						break;
