@@ -52,19 +52,6 @@ object Utils {
         return paint.measureText(demoText).toInt()
     }
 
-    private val mCalcTextHeightRect = Rect()
-
-    /**
-     * calculates the approximate height of a text, depending on a demo text
-     * avoid repeated calls (e.g. inside drawing methods)
-     */
-    fun calcTextHeight(paint: Paint, demoText: String): Int {
-        val r = mCalcTextHeightRect
-        r.set(0, 0, 0, 0)
-        paint.getTextBounds(demoText, 0, demoText.length, r)
-        return r.height()
-    }
-
     private val mFontMetrics = Paint.FontMetrics()
 
     fun getLineHeight(paint: Paint): kotlin.Float {

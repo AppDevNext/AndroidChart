@@ -18,6 +18,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.convertDpToPixel
 import com.github.mikephil.charting.utils.drawXAxisValue
 import kotlin.math.roundToInt
@@ -73,7 +74,7 @@ open class XAxisRenderer(
         val labelSize = Utils.calcTextSize(paintAxisLabels, longest)
 
         val labelWidth = labelSize.width
-        val labelHeight = Utils.calcTextHeight(paintAxisLabels, "Q").toFloat()
+        val labelHeight = paintAxisLabels.calcTextHeight("Q").toFloat()
 
         val labelRotatedSize = Utils.getSizeOfRotatedRectangleByDegrees(
             labelWidth,
@@ -389,7 +390,7 @@ open class XAxisRenderer(
 
                 when (labelPosition) {
                     LimitLabelPosition.RIGHT_TOP -> {
-                        val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                        val labelLineHeight = limitLinePaint.calcTextHeight(label).toFloat()
                         limitLinePaint.textAlign = Align.LEFT
                         canvas.drawText(
                             label, position[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
@@ -404,7 +405,7 @@ open class XAxisRenderer(
 
                     LimitLabelPosition.LEFT_TOP -> {
                         limitLinePaint.textAlign = Align.RIGHT
-                        val labelLineHeight = Utils.calcTextHeight(limitLinePaint, label).toFloat()
+                        val labelLineHeight = limitLinePaint.calcTextHeight(label).toFloat()
                         canvas.drawText(
                             label, position[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight,
                             limitLinePaint

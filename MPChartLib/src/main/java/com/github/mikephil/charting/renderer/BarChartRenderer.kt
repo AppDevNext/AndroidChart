@@ -14,6 +14,7 @@ import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.Transformer
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.utils.calcTextHeight
 import com.github.mikephil.charting.utils.convertDpToPixel
 import kotlin.math.ceil
 import kotlin.math.min
@@ -278,7 +279,7 @@ open class BarChartRenderer(
 
                     // calculate the correct offset depending on the draw position of
                     // the value
-                    val valueTextHeight = Utils.calcTextHeight(paintValues, "8").toFloat()
+                    val valueTextHeight = paintValues.calcTextHeight("8").toFloat()
                     posOffset = (if (drawValueAboveBar) -valueOffsetPlus else valueTextHeight + valueOffsetPlus)
                     negOffset = (if (drawValueAboveBar) valueTextHeight + valueOffsetPlus else -valueOffsetPlus)
 
