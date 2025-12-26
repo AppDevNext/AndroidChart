@@ -44,7 +44,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         binding.chart1.maxHighlightDistance = 50f
 
         // enable scaling and dragging
-        binding.chart1.setDragEnabled(true)
+        binding.chart1.isDragEnabled = true
         binding.chart1.setScaleEnabled(true)
 
         binding.chart1.setMaxVisibleValueCount(200)

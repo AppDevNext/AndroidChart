@@ -157,7 +157,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      */
     protected var mSelectionListener: OnChartValueSelectedListener? = null
 
-    @JvmField
     protected var chartTouchListener: ChartTouchListener<*>? = null
 
     /**
@@ -242,10 +241,8 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
         init()
     }
 
-    /**
-     * initialize all paints and stuff
-     */
-    protected open fun init() {
+    init {
+        mXAxis = XAxis()
         setWillNotDraw(false)
 
         // setLayerType(View.LAYER_TYPE_HARDWARE, null);
@@ -257,14 +254,9 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
         // initialize the utils
         Utils.init(context)
         context.initUtils()
-        mMaxHighlightDistance = 500f.convertDpToPixel()
 
         this.description = Description()
         this.legend = Legend()
-
-        this.legendRenderer = LegendRenderer(this.viewPortHandler, this.legend!!)
-
-        mXAxis = XAxis()
 
         mDescPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
@@ -279,6 +271,14 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
             // enable being detected by ScreenReader
             setFocusable(true)
         }
+    }
+
+    /**
+     * initialize all paints and stuff
+     */
+    protected open fun init() {
+        mMaxHighlightDistance = 500f.convertDpToPixel()
+        this.legendRenderer = LegendRenderer(this.viewPortHandler, this.legend!!)
     }
 
     // public void initWithDummyData() {
