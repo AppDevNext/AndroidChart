@@ -139,8 +139,7 @@ open class ViewPortHandler {
 
     /** CODE BELOW THIS RELATED TO SCALING AND GESTURES  */
     /**
-     * Zooms in by 1.4f, x and y are the coordinates (in pixels) of the zoom
-     * center.
+     * Zooms in by 1.4f, x and y are the coordinates (in pixels) of the zoom center.
      */
     fun zoomIn(x: Float, y: Float): Matrix {
         val save = Matrix()
@@ -155,8 +154,7 @@ open class ViewPortHandler {
     }
 
     /**
-     * Zooms out by 0.7f, x and y are the coordinates (in pixels) of the zoom
-     * center.
+     * Zooms out by 0.7f, x and y are the coordinates (in pixels) of the zoom center.
      */
     fun zoomOut(x: Float, y: Float): Matrix {
         val save = Matrix()
@@ -200,11 +198,6 @@ open class ViewPortHandler {
 
     /**
      * Post-scales by the specified scale factors. x and y is pivot.
-     *
-     * @param scaleX
-     * @param scaleY
-     * @param x
-     * @param y
      */
     fun zoom(scaleX: Float, scaleY: Float, x: Float, y: Float): Matrix {
         val save = Matrix()
@@ -248,8 +241,7 @@ open class ViewPortHandler {
     protected var valsBufferForFitScreen: FloatArray = FloatArray(9)
 
     /**
-     * Resets all zooming and dragging and makes the chart fit exactly it's
-     * bounds.
+     * Resets all zooming and dragging and makes the chart fit exactly it's bounds.
      */
     fun fitScreen(): Matrix {
         val save = Matrix()
@@ -285,8 +277,6 @@ open class ViewPortHandler {
 
     /**
      * Post-translates to the specified points.  Less Performant.
-     *
-     * @param transformedPts
      */
     fun translate(transformedPts: FloatArray): Matrix {
         val save = Matrix()
@@ -296,8 +286,6 @@ open class ViewPortHandler {
 
     /**
      * Post-translates to the specified points.  Output matrix allows for caching objects.
-     *
-     * @param transformedPts
      */
     fun translate(transformedPts: FloatArray, outputMatrix: Matrix) {
         outputMatrix.reset()
@@ -316,8 +304,6 @@ open class ViewPortHandler {
      * setScaleMinima(...) method.
      *
      * @param transformedPts the position to center view viewport to
-     * @param view
-     * @return save
      */
     fun centerViewPort(transformedPts: FloatArray, view: View?) {
         val save = mCenterViewPortMatrixBuffer
@@ -339,8 +325,6 @@ open class ViewPortHandler {
 
     /**
      * call this method to refresh the graph with a given matrix
-     *
-     * @param newMatrix
      */
     fun refresh(newMatrix: Matrix, view: View?, invalidate: Boolean): Matrix {
         matrixTouch.set(newMatrix)
@@ -357,8 +341,6 @@ open class ViewPortHandler {
 
     /**
      * limits the maximum scale and X translation of the given matrix
-     *
-     * @param matrix
      */
     fun limitTransAndScale(matrix: Matrix, content: RectF?) {
         matrix.getValues(matrixBuffer)
@@ -567,4 +549,8 @@ open class ViewPortHandler {
      * Returns true if the chart is not yet fully zoomed in on the y-axis
      */
     fun canZoomInMoreY(): Boolean = scaleY < maxScaleY
+
+    override fun toString(): String {
+        return "ViewPortHandler: \nContentRect: $contentRect\nMatrixTouch: $matrixTouch\nScaleX: $scaleX, ScaleY: $scaleY\nTransX: $transX, TransY: $transY"
+    }
 }
