@@ -517,7 +517,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
 			float minOffset = UtilsKtKt.convertDpToPixel(mMinOffset);
 
-			getViewPortHandler().restrainViewPort(Math.max(minOffset, offsetLeft), Math.max(minOffset, offsetTop), Math.max(minOffset, offsetRight), Math.max(minOffset, offsetBottom));
+			getViewPortHandler().restrainViewPort(Math.max(minOffset, offsetLeft), Math.max(minOffset, offsetTop), Math.max(minOffset, offsetRight), Math.max(minOffset, offsetBottom), false);
 
 			if (isLogEnabled()) {
 				Timber.i("offsetLeft: " + offsetLeft + ", offsetTop: " + offsetTop + ", offsetRight: " + offsetRight + ", offsetBottom: " + offsetBottom);
@@ -911,7 +911,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 			@Override
 			public void run() {
 
-				getViewPortHandler().restrainViewPort(left, top, right, bottom);
+				getViewPortHandler().restrainViewPort(left, top, right, bottom, false);
 				prepareOffsetMatrix();
 				prepareValuePxMatrix();
 			}

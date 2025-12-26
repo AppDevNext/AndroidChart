@@ -3,6 +3,7 @@ package com.github.mikephil.charting.utils
 import android.graphics.Matrix
 import android.graphics.RectF
 import android.view.View
+import timber.log.Timber
 import kotlin.math.max
 import kotlin.math.min
 
@@ -103,8 +104,10 @@ open class ViewPortHandler {
 
     fun hasChartDimens(): Boolean = chartHeight > 0 && chartWidth > 0
 
-    fun restrainViewPort(offsetLeft: Float, offsetTop: Float, offsetRight: Float, offsetBottom: Float) {
+    fun restrainViewPort(offsetLeft: Float, offsetTop: Float, offsetRight: Float, offsetBottom: Float, logging: Boolean = false) {
         contentRect[offsetLeft, offsetTop, chartWidth - offsetRight] = (chartHeight - offsetBottom)
+        if (logging)
+            Timber.i(contentRect.toString())
     }
 
     fun offsetLeft(): Float = contentRect.left
