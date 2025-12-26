@@ -327,8 +327,7 @@ open class LegendRenderer(
                         if (direction == LegendDirection.RIGHT_TO_LEFT)
                             posX -= calculatedLabelSizes[i]?.width ?: 0f
 
-                        if (entry.label != null)
-                            drawLabel(canvas, posX, posY + labelLineHeight, entry.label!!)
+                        drawLabel(canvas, posX, posY + labelLineHeight, entry.label)
 
                         if (direction == LegendDirection.LEFT_TO_RIGHT)
                             posX += calculatedLabelSizes[i]?.width ?: 0f
@@ -369,9 +368,9 @@ open class LegendRenderer(
 
                 var i = 0
                 while (i < entries.size) {
-                    val e = entries[i]
-                    val drawingForm = e.form != LegendForm.NONE
-                    val formSize = if (java.lang.Float.isNaN(e.formSize)) defaultFormSize else e.formSize.convertDpToPixel()
+                    val entry = entries[i]
+                    val drawingForm = entry.form != LegendForm.NONE
+                    val formSize = if (java.lang.Float.isNaN(entry.formSize)) defaultFormSize else entry.formSize.convertDpToPixel()
 
                     var posX = originPosX
 
@@ -381,27 +380,26 @@ open class LegendRenderer(
                         else
                             posX -= formSize - stack
 
-                        drawForm(canvas, posX, posY + formYOffset, e, legend)
+                        drawForm(canvas, posX, posY + formYOffset, entry, legend)
 
                         if (direction == LegendDirection.LEFT_TO_RIGHT) posX += formSize
                     }
 
-                    if (e.label != null) {
+                    if (entry.label != null) {
                         if (drawingForm && !wasStacked) posX += if (direction == LegendDirection.LEFT_TO_RIGHT)
                             formToTextSpace
                         else
                             -formToTextSpace
                         else if (wasStacked) posX = originPosX
 
-                        if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= Utils.calcTextWidth(labelPaint, e.label).toFloat()
+                        if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= Utils.calcTextWidth(labelPaint, entry.label).toFloat()
 
-                        if (e.label != null)
-                            if (!wasStacked) {
-                                drawLabel(canvas, posX, posY + labelLineHeight, e.label!!)
-                            } else {
-                                posY += labelLineHeight + labelLineSpacing
-                                drawLabel(canvas, posX, posY + labelLineHeight, e.label!!)
-                            }
+                        if (!wasStacked) {
+                            drawLabel(canvas, posX, posY + labelLineHeight, entry.label)
+                        } else {
+                            posY += labelLineHeight + labelLineSpacing
+                            drawLabel(canvas, posX, posY + labelLineHeight, entry.label)
+                        }
 
                         // make a step down
                         posY += labelLineHeight + labelLineSpacing
@@ -503,11 +501,11 @@ open class LegendRenderer(
      * Draws the provided label at the given position.
      *
      * @param canvas     canvas to draw with
-     * @param x
-     * @param y
      * @param label the label to draw
      */
-    protected fun drawLabel(canvas: Canvas, x: Float, y: Float, label: String) {
-        canvas.drawText(label, x, y, labelPaint)
+    protected fun drawLabel(canvas: Canvas, x: Float, y: Float, label: String?) {
+        label?.let {
+            canvas.drawText(it, x, y, labelPaint)
+        }
     }
 }
