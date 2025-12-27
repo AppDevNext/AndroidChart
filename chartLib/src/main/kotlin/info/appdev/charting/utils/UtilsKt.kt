@@ -7,7 +7,6 @@ import android.os.Build
 import android.util.DisplayMetrics
 import android.view.ViewConfiguration
 import timber.log.Timber
-import java.lang.Double
 import kotlin.Boolean
 import kotlin.Char
 import kotlin.CharArray
@@ -38,7 +37,7 @@ fun Context.initUtils() {
 fun Float.getDecimals(): Int {
     val i = this.toDouble().roundToNextSignificant()
 
-    if (java.lang.Float.isInfinite(i)) {
+    if (i.isInfinite()) {
         return 0
     }
 
@@ -49,8 +48,8 @@ fun Float.getDecimals(): Int {
  * rounds the given number to the next significant number
  */
 fun kotlin.Double.roundToNextSignificant(): Float {
-    if (Double.isInfinite(this) ||
-        Double.isNaN(this) || this == 0.0
+    if (this.isInfinite() ||
+        this.isNaN() || this == 0.0
     ) {
         return 0f
     }

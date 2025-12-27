@@ -78,7 +78,8 @@ open class RadarChartRenderer(
                     sliceAngle * j * phaseX + chart.rotationAngle, pOut
                 )
             }
-            if (java.lang.Float.isNaN(pOut.x)) continue
+            if (pOut.x.isNaN())
+                continue
 
             if (!hasMovedToPoint) {
                 surface.moveTo(pOut.x, pOut.y)
@@ -324,7 +325,7 @@ open class RadarChartRenderer(
             drawHighlightLines(canvas, pOut.x, pOut.y, set)
 
             if (set.isDrawHighlightCircleEnabled) {
-                if (!java.lang.Float.isNaN(pOut.x) && !java.lang.Float.isNaN(pOut.y)) {
+                if (!pOut.x.isNaN() && !pOut.y.isNaN()) {
                     var strokeColor = set.highlightCircleStrokeColor
                     if (strokeColor == ColorTemplate.COLOR_NONE) {
                         strokeColor = set.getColorByIndex(0)

@@ -11,7 +11,6 @@ import android.view.ViewConfiguration
 import info.appdev.charting.formatter.DefaultValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.utils.MPPointF.Companion.instance
-import java.lang.Float
 import kotlin.Int
 import kotlin.IntArray
 import kotlin.String
@@ -30,9 +29,9 @@ object Utils {
     var minimumFlingVelocity: Int = 50
     var maximumFlingVelocity: Int = 8000
     const val DEG2RAD: Double = (Math.PI / 180.0)
-    const val FDEG2RAD: kotlin.Float = (Math.PI.toFloat() / 180f)
+    const val FDEG2RAD: Float = (Math.PI.toFloat() / 180f)
 
-    val FLOAT_EPSILON: kotlin.Float = Float.intBitsToFloat(1)
+    val FLOAT_EPSILON: Float = java.lang.Float.intBitsToFloat(1)
 
     /**
      * initialize method, called inside the Chart.init() method.
@@ -54,20 +53,20 @@ object Utils {
 
     private val mFontMetrics = Paint.FontMetrics()
 
-    fun getLineHeight(paint: Paint): kotlin.Float {
+    fun getLineHeight(paint: Paint): Float {
         return getLineHeight(paint, mFontMetrics)
     }
 
-    fun getLineHeight(paint: Paint, fontMetrics: Paint.FontMetrics): kotlin.Float {
+    fun getLineHeight(paint: Paint, fontMetrics: Paint.FontMetrics): Float {
         paint.getFontMetrics(fontMetrics)
         return fontMetrics.descent - fontMetrics.ascent
     }
 
-    fun getLineSpacing(paint: Paint): kotlin.Float {
+    fun getLineSpacing(paint: Paint): Float {
         return getLineSpacing(paint, mFontMetrics)
     }
 
-    fun getLineSpacing(paint: Paint, fontMetrics: Paint.FontMetrics): kotlin.Float {
+    fun getLineSpacing(paint: Paint, fontMetrics: Paint.FontMetrics): Float {
         paint.getFontMetrics(fontMetrics)
         return fontMetrics.ascent - fontMetrics.top + fontMetrics.bottom
     }
@@ -130,13 +129,13 @@ object Utils {
      * @param angle  in degrees, converted to radians internally
      * @return
      */
-    fun getPosition(center: MPPointF, dist: kotlin.Float, angle: kotlin.Float): MPPointF {
+    fun getPosition(center: MPPointF, dist: Float, angle: Float): MPPointF {
         val p = MPPointF.getInstance(0f, 0f)
         getPosition(center, dist, angle, p)
         return p
     }
 
-    fun getPosition(center: MPPointF, dist: kotlin.Float, angle: kotlin.Float, outputPoint: MPPointF) {
+    fun getPosition(center: MPPointF, dist: Float, angle: Float, outputPoint: MPPointF) {
         outputPoint.x = (center.x + dist * cos(Math.toRadians(angle.toDouble()))).toFloat()
         outputPoint.y = (center.y + dist * sin(Math.toRadians(angle.toDouble()))).toFloat()
     }
@@ -174,7 +173,7 @@ object Utils {
     /**
      * returns an angle between 0.f < 360.f (not less than zero, less than 360)
      */
-    fun getNormalizedAngle(angle: kotlin.Float): kotlin.Float {
+    fun getNormalizedAngle(angle: Float): Float {
         var angle = angle
         while (angle < 0f) {
             angle += 360f
@@ -217,7 +216,7 @@ object Utils {
      * @param degrees
      * @return A Recyclable FSize instance
      */
-    fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: kotlin.Float, rectangleHeight: kotlin.Float, degrees: kotlin.Float): FSize {
+    fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: Float, rectangleHeight: Float, degrees: Float): FSize {
         val radians = degrees * FDEG2RAD
         return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians)
     }
@@ -231,7 +230,7 @@ object Utils {
      * @param radians
      * @return A Recyclable FSize instance
      */
-    fun getSizeOfRotatedRectangleByRadians(rectangleWidth: kotlin.Float, rectangleHeight: kotlin.Float, radians: kotlin.Float): FSize {
+    fun getSizeOfRotatedRectangleByRadians(rectangleWidth: Float, rectangleHeight: Float, radians: Float): FSize {
         return FSize.getInstance(
             abs(rectangleWidth * cos(radians.toDouble()).toFloat()) + abs(rectangleHeight * sin(radians.toDouble()).toFloat()),
             abs(rectangleWidth * sin(radians.toDouble()).toFloat()) + abs(rectangleHeight * cos(radians.toDouble()).toFloat())

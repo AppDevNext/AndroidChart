@@ -2,7 +2,6 @@ package info.appdev.charting.data
 
 import timber.log.Timber
 import java.io.Serializable
-import java.lang.Float
 import kotlin.Boolean
 import kotlin.Deprecated
 import kotlin.Int
@@ -22,25 +21,25 @@ abstract class DataSet<T : Entry>(
     /**
      * maximum y-value in the value array
      */
-    override var yMax: kotlin.Float = -Float.MAX_VALUE
+    override var yMax: Float = -Float.MAX_VALUE
         protected set
 
     /**
      * minimum y-value in the value array
      */
-    override var yMin: kotlin.Float = Float.MAX_VALUE
+    override var yMin: Float = Float.MAX_VALUE
         protected set
 
     /**
      * maximum x-value in the value array
      */
-    override var xMax: kotlin.Float = -Float.MAX_VALUE
+    override var xMax: Float = -Float.MAX_VALUE
         protected set
 
     /**
      * minimum x-value in the value array
      */
-    override var xMin: kotlin.Float = Float.MAX_VALUE
+    override var xMin: Float = Float.MAX_VALUE
         protected set
 
 
@@ -72,7 +71,7 @@ abstract class DataSet<T : Entry>(
         }
     }
 
-    override fun calcMinMaxY(fromX: kotlin.Float, toX: kotlin.Float) {
+    override fun calcMinMaxY(fromX: Float, toX: Float) {
         this.yMax = -Float.MAX_VALUE
         this.yMin = Float.MAX_VALUE
 
@@ -179,7 +178,7 @@ abstract class DataSet<T : Entry>(
 
     override fun addEntryOrdered(entry: T) {
         if (mEntries == null) {
-            mEntries = ArrayList<T>()
+            mEntries = ArrayList()
         }
 
         calcMinMax(entry)
@@ -200,7 +199,7 @@ abstract class DataSet<T : Entry>(
     override fun addEntry(entry: T): Boolean {
         var values = this.entries
         if (values == null) {
-            values = ArrayList<T>()
+            values = ArrayList()
         }
 
         calcMinMax(entry)
@@ -229,7 +228,7 @@ abstract class DataSet<T : Entry>(
     }
 
 
-    override fun getEntryForXValue(xValue: kotlin.Float, closestToY: kotlin.Float, rounding: Rounding?): T? {
+    override fun getEntryForXValue(xValue: Float, closestToY: Float, rounding: Rounding?): T? {
         val index = getEntryIndex(xValue, closestToY, rounding)
         if (index > -1) {
             return mEntries!![index]
@@ -237,7 +236,7 @@ abstract class DataSet<T : Entry>(
         return null
     }
 
-    override fun getEntryForXValue(xValue: kotlin.Float, closestToY: kotlin.Float): T? {
+    override fun getEntryForXValue(xValue: Float, closestToY: Float): T? {
         return getEntryForXValue(xValue, closestToY, Rounding.CLOSEST)
     }
 
@@ -252,7 +251,7 @@ abstract class DataSet<T : Entry>(
         return mEntries!![index]
     }
 
-    override fun getEntryIndex(xValue: kotlin.Float, closestToY: kotlin.Float, rounding: Rounding?): Int {
+    override fun getEntryIndex(xValue: Float, closestToY: Float, rounding: Rounding?): Int {
         if (mEntries == null || mEntries!!.isEmpty()) {
             return -1
         }
@@ -311,7 +310,7 @@ abstract class DataSet<T : Entry>(
         }
 
         // Search by closest to y-value
-        if (!Float.isNaN(closestToY)) {
+        if (!closestToY.isNaN()) {
             while (closest > 0 && mEntries!![closest - 1].x == closestXValue) {
                 closest -= 1
             }
@@ -342,7 +341,7 @@ abstract class DataSet<T : Entry>(
         return closest
     }
 
-    override fun getEntriesForXValue(xValue: kotlin.Float): MutableList<T> {
+    override fun getEntriesForXValue(xValue: Float): MutableList<T> {
         val entries: MutableList<T> = mutableListOf()
 
         var low = 0

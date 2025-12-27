@@ -290,7 +290,7 @@ open class LegendRenderer(
                 while (i < entries.size) {
                     val entry = entries[i]
                     val drawingForm = entry.form != LegendForm.NONE
-                    val formSize = if (java.lang.Float.isNaN(entry.formSize))
+                    val formSize = if (entry.formSize.isNaN())
                         defaultFormSize
                     else
                         entry.formSize.convertDpToPixel()
@@ -369,7 +369,7 @@ open class LegendRenderer(
                 while (i < entries.size) {
                     val entry = entries[i]
                     val drawingForm = entry.form != LegendForm.NONE
-                    val formSize = if (java.lang.Float.isNaN(entry.formSize)) defaultFormSize else entry.formSize.convertDpToPixel()
+                    val formSize = if (entry.formSize.isNaN()) defaultFormSize else entry.formSize.convertDpToPixel()
 
                     var posX = originPosX
 
@@ -451,7 +451,7 @@ open class LegendRenderer(
             formPaint.color = entry.formColor
 
             val formSize = (
-                    if (java.lang.Float.isNaN(entry.formSize))
+                    if (entry.formSize.isNaN())
                         legend.formSize
                     else
                         entry.formSize
@@ -473,7 +473,7 @@ open class LegendRenderer(
 
                 LegendForm.LINE -> {
                     val formLineWidth = (
-                            if (java.lang.Float.isNaN(entry.formLineWidth))
+                            if (entry.formLineWidth.isNaN())
                                 legend.formLineWidth
                             else
                                 entry.formLineWidth
