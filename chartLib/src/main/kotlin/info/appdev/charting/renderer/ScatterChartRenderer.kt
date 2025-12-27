@@ -6,9 +6,9 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.ScatterDataProvider
 import info.appdev.charting.interfaces.datasets.IScatterDataSet
 import info.appdev.charting.utils.PointF
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.drawImage
 import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.min
@@ -139,8 +139,7 @@ open class ScatterChartRenderer(
                                 val icon = entry.icon
 
                                 icon?.let {
-                                    Utils.drawImage(
-                                        canvas,
+                                    canvas.drawImage(
                                         it,
                                         (positions[j] + iconsOffset.x).toInt(),
                                         (positions[j + 1] + iconsOffset.y).toInt()

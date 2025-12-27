@@ -16,9 +16,9 @@ import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Transformer
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.drawImage
 import java.lang.ref.WeakReference
 import kotlin.math.max
 import kotlin.math.min
@@ -533,8 +533,7 @@ open class LineChartRenderer(
                                 val icon = entry.icon
 
                                 icon?.let {
-                                    Utils.drawImage(
-                                        canvas,
+                                    canvas.drawImage(
                                         it,
                                         (x + iconsOffset.x).toInt(),
                                         (y + iconsOffset.y).toInt()
