@@ -2,7 +2,7 @@ package info.appdev.charting.highlight
 
 import info.appdev.charting.interfaces.dataprovider.BarDataProvider
 import info.appdev.charting.interfaces.datasets.IBarDataSet
-import info.appdev.charting.utils.MPPointD
+import info.appdev.charting.utils.PointD
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -24,7 +24,7 @@ open class BarHighlighter(barDataProvider: BarDataProvider) : ChartHighlighter<B
                 }
             }
         }
-        MPPointD.recycleInstance(pos)
+        PointD.recycleInstance(pos)
 
         return high
     }
@@ -58,7 +58,7 @@ open class BarHighlighter(barDataProvider: BarDataProvider) : ChartHighlighter<B
                         high.axis
                     )
 
-                    MPPointD.recycleInstance(pixels)
+                    PointD.recycleInstance(pixels)
 
                     return stackedHigh
                 }

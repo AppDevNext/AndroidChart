@@ -8,7 +8,7 @@ import info.appdev.charting.charts.Chart
 import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.utils.FSize
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import java.lang.ref.WeakReference
 
 /**
@@ -17,8 +17,8 @@ import java.lang.ref.WeakReference
 class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMarker {
     private var drawable: Drawable? = null
 
-    private var mOffset: MPPointF = MPPointF()
-    private val mOffset2 = MPPointF()
+    private var mOffset: PointF = PointF()
+    private val mOffset2 = PointF()
     private var mWeakChart: WeakReference<Chart<*>?>? = null
 
     private var mSize: FSize? = FSize()
@@ -39,7 +39,7 @@ class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMar
         mOffset.y = offsetY
     }
 
-    override var offset: MPPointF
+    override var offset: PointF
         get() = mOffset
         set(offset) {
             mOffset = offset
@@ -61,7 +61,7 @@ class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMar
             mWeakChart = WeakReference<Chart<*>?>(chart)
         }
 
-    override fun getOffsetForDrawingAtPoint(posX: Float, posY: Float): MPPointF {
+    override fun getOffsetForDrawingAtPoint(posX: Float, posY: Float): PointF {
         val offset = offset
         mOffset2.x = offset.x
         mOffset2.y = offset.y
@@ -99,7 +99,7 @@ class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMar
         if (drawable == null)
             return
 
-        val offset: MPPointF = getOffsetForDrawingAtPoint(posX, posY)
+        val offset: PointF = getOffsetForDrawingAtPoint(posX, posY)
 
         var width = mSize!!.width
         var height = mSize!!.height

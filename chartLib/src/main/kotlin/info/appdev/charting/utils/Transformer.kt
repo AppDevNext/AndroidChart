@@ -8,7 +8,7 @@ import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 import info.appdev.charting.interfaces.datasets.ICandleDataSet
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.interfaces.datasets.IScatterDataSet
-import info.appdev.charting.utils.MPPointD.Companion.getInstance
+import info.appdev.charting.utils.PointD.Companion.getInstance
 import kotlin.Boolean
 import kotlin.FloatArray
 import kotlin.Int
@@ -334,19 +334,19 @@ open class Transformer(@JvmField protected var viewPortHandler: ViewPortHandler)
     var ptsBuffer: FloatArray = FloatArray(2)
 
     /**
-     * Returns a recyclable MPPointD instance.
+     * Returns a recyclable PointD instance.
      * returns the x and y values in the chart at the given touch point
-     * (encapsulated in a MPPointD). This method transforms pixel coordinates to
+     * (encapsulated in a PointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
      * getPixelForValues(...).
      */
-    fun getValuesByTouchPoint(x: Float, y: Float): MPPointD {
+    fun getValuesByTouchPoint(x: Float, y: Float): PointD {
         val result = getInstance(0.0, 0.0)
         getValuesByTouchPoint(x, y, result)
         return result
     }
 
-    fun getValuesByTouchPoint(x: Float, y: Float, outputPoint: MPPointD) {
+    fun getValuesByTouchPoint(x: Float, y: Float, outputPoint: PointD) {
         ptsBuffer[0] = x
         ptsBuffer[1] = y
 
@@ -357,10 +357,10 @@ open class Transformer(@JvmField protected var viewPortHandler: ViewPortHandler)
     }
 
     /**
-     * Returns a recyclable MPPointD instance.
+     * Returns a recyclable PointD instance.
      * Returns the x and y coordinates (pixels) for a given x and y value in the chart.
      */
-    fun getPixelForValues(x: Float, y: Float): MPPointD {
+    fun getPixelForValues(x: Float, y: Float): PointD {
         ptsBuffer[0] = x
         ptsBuffer[1] = y
 

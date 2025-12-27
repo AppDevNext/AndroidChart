@@ -10,7 +10,7 @@ import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.convertDpToPixel
 
@@ -76,7 +76,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     /**
      * the offset for drawing icons (in dp)
      */
-    protected var mIconsOffset: MPPointF = MPPointF()
+    protected var mIconsOffset: PointF = PointF()
 
     /**
      * the size of the value-text labels
@@ -151,7 +151,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
             mIsDrawIcons = value
         }
 
-    override var iconsOffset: MPPointF
+    override var iconsOffset: PointF
         get() = mIconsOffset
         set(value) {
             mIconsOffset = value

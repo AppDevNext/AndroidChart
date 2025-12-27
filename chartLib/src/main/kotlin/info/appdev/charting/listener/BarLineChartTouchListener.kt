@@ -12,7 +12,7 @@ import info.appdev.charting.data.BarLineScatterCandleBubbleData
 import info.appdev.charting.data.Entry
 import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import info.appdev.charting.interfaces.datasets.IDataSet
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.convertDpToPixel
 import timber.log.Timber
@@ -44,12 +44,12 @@ class BarLineChartTouchListener(
     /**
      * point where the touch action started
      */
-    private val touchStartPoint: MPPointF = MPPointF.getInstance(0f, 0f)
+    private val touchStartPoint: PointF = PointF.getInstance(0f, 0f)
 
     /**
      * center between two pointers (fingers on the display)
      */
-    private val touchPointCenter: MPPointF = MPPointF.getInstance(0f, 0f)
+    private val touchPointCenter: PointF = PointF.getInstance(0f, 0f)
 
     private var savedXDist = 1f
     private var savedYDist = 1f
@@ -63,8 +63,8 @@ class BarLineChartTouchListener(
     private var velocityTracker: VelocityTracker? = null
 
     private var decelerationLastTime: Long = 0
-    private val decelerationCurrentPoint: MPPointF = MPPointF.getInstance(0f, 0f)
-    private val decelerationVelocity: MPPointF = MPPointF.getInstance(0f, 0f)
+    private val decelerationCurrentPoint: PointF = PointF.getInstance(0f, 0f)
+    private val decelerationVelocity: PointF = PointF.getInstance(0f, 0f)
 
     /**
      * the distance of movement that will be counted as a drag
@@ -380,7 +380,7 @@ class BarLineChartTouchListener(
                     }
                 }
 
-                MPPointF.recycleInstance(t)
+                PointF.recycleInstance(t)
             }
         }
     }
@@ -388,7 +388,7 @@ class BarLineChartTouchListener(
     /**
      * limit scaleX range
      */
-    private fun getLimitedScaleX(scaleX: Float, t: MPPointF): Float {
+    private fun getLimitedScaleX(scaleX: Float, t: PointF): Float {
         val h = chart.viewPortHandler
         tempMatrix.set(savedMatrix)
         tempMatrix.postScale(scaleX, 1f, t.x, t.y)
@@ -412,7 +412,7 @@ class BarLineChartTouchListener(
     /**
      * limit scaleY range
      */
-    private fun getLimitedScaleY(scaleY: Float, t: MPPointF): Float {
+    private fun getLimitedScaleY(scaleY: Float, t: PointF): Float {
         val h = chart.viewPortHandler
         tempMatrix.set(savedMatrix)
         tempMatrix.postScale(1f, scaleY, t.x, t.y)
@@ -449,11 +449,11 @@ class BarLineChartTouchListener(
 
 
     /**
-     * Returns a recyclable MPPointF instance.
+     * Returns a recyclable PointF instance.
      * returns the correct translation depending on the provided x and y touch
      * points
      */
-    fun getTrans(x: Float, y: Float): MPPointF {
+    fun getTrans(x: Float, y: Float): PointF {
         val vph = chart.viewPortHandler
 
         val xTrans = x - vph.offsetLeft()
@@ -465,7 +465,7 @@ class BarLineChartTouchListener(
             -(chart.measuredHeight - y - vph.offsetBottom())
         }
 
-        return MPPointF.getInstance(xTrans, yTrans)
+        return PointF.getInstance(xTrans, yTrans)
     }
 
     /**
@@ -507,7 +507,7 @@ class BarLineChartTouchListener(
 
             onChartGestureListener?.onChartScale(e, scaleX, scaleY)
 
-            MPPointF.recycleInstance(trans)
+            PointF.recycleInstance(trans)
         }
 
         return super.onDoubleTap(e)
@@ -610,7 +610,7 @@ class BarLineChartTouchListener(
          * @param point
          * @param event
          */
-        private fun midPoint(point: MPPointF, event: MotionEvent) {
+        private fun midPoint(point: PointF, event: MotionEvent) {
             val x = event.getX(0) + event.getX(1)
             val y = event.getY(0) + event.getY(1)
             point.x = (x / 2f)

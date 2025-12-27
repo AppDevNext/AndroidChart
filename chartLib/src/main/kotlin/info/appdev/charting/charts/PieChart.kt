@@ -11,9 +11,9 @@ import info.appdev.charting.data.PieData
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.highlight.PieHighlighter
 import info.appdev.charting.renderer.PieChartRenderer
-import info.appdev.charting.utils.MPPointF
-import info.appdev.charting.utils.MPPointF.Companion.getInstance
-import info.appdev.charting.utils.MPPointF.Companion.recycleInstance
+import info.appdev.charting.utils.PointF
+import info.appdev.charting.utils.PointF.Companion.getInstance
+import info.appdev.charting.utils.PointF.Companion.recycleInstance
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.convertDpToPixel
 import java.util.Locale
@@ -421,7 +421,7 @@ class PieChart : PieRadarChartBase<PieData> {
             return min(circleBox.width() / 2f, circleBox.height() / 2f)
         }
 
-    val centerCircleBox: MPPointF
+    val centerCircleBox: PointF
         get() = getInstance(circleBox.centerX(), circleBox.centerY())
 
     fun setCenterTextTypeface(t: Typeface?) {
@@ -450,7 +450,7 @@ class PieChart : PieRadarChartBase<PieData> {
         mCenterTextOffset.y = y.convertDpToPixel()
     }
 
-    val centerTextOffset: MPPointF
+    val centerTextOffset: PointF
         /**
          * Returns the offset on the x- and y-axis the center text has in dp.
          */

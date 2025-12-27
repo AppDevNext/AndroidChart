@@ -9,7 +9,7 @@ import android.view.VelocityTracker
 import android.view.ViewConfiguration
 import info.appdev.charting.formatter.DefaultValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
-import info.appdev.charting.utils.MPPointF.Companion.instance
+import info.appdev.charting.utils.PointF.Companion.instance
 import kotlin.Int
 import kotlin.IntArray
 import kotlin.Suppress
@@ -57,7 +57,7 @@ object Utils {
     }
 
     /**
-     * Returns a recyclable MPPointF instance.
+     * Returns a recyclable PointF instance.
      * Calculates the position around a center point, depending on the distance
      * from the center, and the angle of the position around the center.
      *
@@ -66,13 +66,13 @@ object Utils {
      * @param angle  in degrees, converted to radians internally
      * @return
      */
-    fun getPosition(center: MPPointF, dist: Float, angle: Float): MPPointF {
-        val p = MPPointF.getInstance(0f, 0f)
+    fun getPosition(center: PointF, dist: Float, angle: Float): PointF {
+        val p = PointF.getInstance(0f, 0f)
         getPosition(center, dist, angle, p)
         return p
     }
 
-    fun getPosition(center: MPPointF, dist: Float, angle: Float, outputPoint: MPPointF) {
+    fun getPosition(center: PointF, dist: Float, angle: Float, outputPoint: PointF) {
         outputPoint.x = (center.x + dist * cos(Math.toRadians(angle.toDouble()))).toFloat()
         outputPoint.y = (center.y + dist * sin(Math.toRadians(angle.toDouble()))).toFloat()
     }

@@ -28,12 +28,12 @@ import info.appdev.charting.listener.BarLineChartTouchListener
 import info.appdev.charting.listener.OnDrawListener
 import info.appdev.charting.renderer.XAxisRenderer
 import info.appdev.charting.renderer.YAxisRenderer
-import info.appdev.charting.utils.MPPointD
-import info.appdev.charting.utils.MPPointD.Companion.getInstance
-import info.appdev.charting.utils.MPPointD.Companion.recycleInstance
-import info.appdev.charting.utils.MPPointF
-import info.appdev.charting.utils.MPPointF.Companion.getInstance
-import info.appdev.charting.utils.MPPointF.Companion.recycleInstance
+import info.appdev.charting.utils.PointD
+import info.appdev.charting.utils.PointD.Companion.getInstance
+import info.appdev.charting.utils.PointD.Companion.recycleInstance
+import info.appdev.charting.utils.PointF
+import info.appdev.charting.utils.PointF.Companion.getInstance
+import info.appdev.charting.utils.PointF.Companion.recycleInstance
 import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.convertDpToPixel
 import timber.log.Timber
@@ -951,11 +951,11 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
     protected var mGetPositionBuffer: FloatArray = FloatArray(2)
 
     /**
-     * Returns a recyclable MPPointF instance.
+     * Returns a recyclable PointF instance.
      * Returns the position (in pixels) the provided Entry has inside the chart
      * view or null, if the provided Entry is null.
      */
-    open fun getPosition(e: Entry?, axis: AxisDependency?): MPPointF? {
+    open fun getPosition(e: Entry?, axis: AxisDependency?): PointF? {
         if (e == null) {
             return null
         }
@@ -1054,28 +1054,28 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
     }
 
     /**
-     * Returns a recyclable MPPointD instance
+     * Returns a recyclable PointD instance
      * Returns the x and y values in the chart at the given touch point
-     * (encapsulated in a MPPointD). This method transforms pixel coordinates to
+     * (encapsulated in a PointD). This method transforms pixel coordinates to
      * coordinates / values in the chart. This is the opposite method to
      * getPixelForValues(...).
      */
-    fun getValuesByTouchPoint(x: Float, y: Float, axis: AxisDependency?): MPPointD {
+    fun getValuesByTouchPoint(x: Float, y: Float, axis: AxisDependency?): PointD {
         val result = getInstance(0.0, 0.0)
         getValuesByTouchPoint(x, y, axis, result)
         return result
     }
 
-    fun getValuesByTouchPoint(x: Float, y: Float, axis: AxisDependency?, outputPoint: MPPointD) {
+    fun getValuesByTouchPoint(x: Float, y: Float, axis: AxisDependency?, outputPoint: PointD) {
         getTransformer(axis).getValuesByTouchPoint(x, y, outputPoint)
     }
 
     /**
-     * Returns a recyclable MPPointD instance
+     * Returns a recyclable PointD instance
      * Transforms the given chart values into pixels. This is the opposite
      * method to getValuesByTouchPoint(...).
      */
-    fun getPixelForValues(x: Float, y: Float, axis: AxisDependency?): MPPointD {
+    fun getPixelForValues(x: Float, y: Float, axis: AxisDependency?): PointD {
         return getTransformer(axis).getPixelForValues(x, y)
     }
 
@@ -1104,7 +1104,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
     /**
      * buffer for storing lowest visible x point
      */
-    protected var posForGetLowestVisibleX: MPPointD = getInstance(0.0, 0.0)
+    protected var posForGetLowestVisibleX: PointD = getInstance(0.0, 0.0)
 
     override val lowestVisibleX: Float
         /**
@@ -1118,7 +1118,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
     /**
      * buffer for storing highest visible x point
      */
-    protected var posForGetHighestVisibleX: MPPointD = getInstance(0.0, 0.0)
+    protected var posForGetHighestVisibleX: PointD = getInstance(0.0, 0.0)
 
     override val highestVisibleX: Float
         /**

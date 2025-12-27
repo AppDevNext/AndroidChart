@@ -7,15 +7,15 @@ import android.widget.RelativeLayout
 import info.appdev.charting.charts.Chart
 import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import java.lang.ref.WeakReference
 
 /**
  * View that can be displayed when selecting values in the chart. Extend this class to provide custom layouts for your markers.
  */
 open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(context), IMarker {
-    private var mOffset: MPPointF = MPPointF()
-    private val mOffset2 = MPPointF()
+    private var mOffset: PointF = PointF()
+    private val mOffset2 = PointF()
     private var mWeakChart: WeakReference<Chart<*>?>? = null
 
     /**
@@ -43,7 +43,7 @@ open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(c
         inflated.layout(0, 0, inflated.measuredWidth, inflated.measuredHeight)
     }
 
-    override var offset: MPPointF
+    override var offset: PointF
         get() = mOffset
         set(offset) {
             mOffset = offset
@@ -55,7 +55,7 @@ open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(c
             mWeakChart = WeakReference(chart)
         }
 
-    override fun getOffsetForDrawingAtPoint(posX: Float, posY: Float): MPPointF {
+    override fun getOffsetForDrawingAtPoint(posX: Float, posY: Float): PointF {
         val offset = offset
         mOffset2.x = offset.x
         mOffset2.y = offset.y
@@ -89,7 +89,7 @@ open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(c
     }
 
     override fun draw(canvas: Canvas, posX: Float, posY: Float) {
-        val offset: MPPointF = getOffsetForDrawingAtPoint(posX, posY)
+        val offset: PointF = getOffsetForDrawingAtPoint(posX, posY)
 
         val saveId = canvas.save()
         // translate to the correct position and draw

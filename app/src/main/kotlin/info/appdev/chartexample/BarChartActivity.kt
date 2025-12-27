@@ -26,7 +26,7 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.Fill
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.XYMarkerView
 import info.appdev.chartexample.databinding.ActivityBarchartBinding
@@ -288,7 +288,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         Timber.i("position = $position")
         Timber.i("x-index low: ${+binding.chart1.lowestVisibleX}, high: ${+binding.chart1.highestVisibleX}")
 
-        MPPointF.recycleInstance(position)
+        PointF.recycleInstance(position)
     }
 
     override fun onNothingSelected() = Unit

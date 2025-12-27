@@ -10,7 +10,7 @@ import info.appdev.charting.components.LimitLine.LimitLabelPosition
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.components.YAxis.YAxisLabelPosition
-import info.appdev.charting.utils.MPPointD
+import info.appdev.charting.utils.PointD
 import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
@@ -54,8 +54,8 @@ open class YAxisRendererHorizontalBarChart(
                 yMax = p1.x.toFloat()
             }
 
-            MPPointD.recycleInstance(p1)
-            MPPointD.recycleInstance(p2)
+            PointD.recycleInstance(p1)
+            PointD.recycleInstance(p2)
         }
 
         computeAxisValues(yMin, yMax)

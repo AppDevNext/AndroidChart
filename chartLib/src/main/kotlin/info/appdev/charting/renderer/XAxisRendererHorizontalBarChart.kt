@@ -10,8 +10,8 @@ import info.appdev.charting.components.LimitLine.LimitLabelPosition
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.utils.FSize
-import info.appdev.charting.utils.MPPointD
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointD
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
@@ -46,8 +46,8 @@ open class XAxisRendererHorizontalBarChart(
                 maxLocal = p2.y.toFloat()
             }
 
-            MPPointD.recycleInstance(p1)
-            MPPointD.recycleInstance(p2)
+            PointD.recycleInstance(p1)
+            PointD.recycleInstance(p2)
         }
 
         computeAxisValues(minLocal, maxLocal)
@@ -86,7 +86,7 @@ open class XAxisRendererHorizontalBarChart(
         paintAxisLabels.textSize = xAxis.textSize
         paintAxisLabels.color = xAxis.textColor
 
-        val pointF = MPPointF.getInstance(0f, 0f)
+        val pointF = PointF.getInstance(0f, 0f)
 
         when (xAxis.position) {
             XAxisPosition.TOP -> {
@@ -123,10 +123,10 @@ open class XAxisRendererHorizontalBarChart(
             }
         }
 
-        MPPointF.recycleInstance(pointF)
+        PointF.recycleInstance(pointF)
     }
 
-    override fun drawLabels(canvas: Canvas, pos: Float, anchor: MPPointF) {
+    override fun drawLabels(canvas: Canvas, pos: Float, anchor: PointF) {
         val labelRotationAngleDegrees = xAxis.labelRotationAngle
         val centeringEnabled = xAxis.isCenterAxisLabelsEnabled
 

@@ -13,8 +13,8 @@ import info.appdev.charting.components.LimitLine.LimitLabelPosition
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.utils.FSize
-import info.appdev.charting.utils.MPPointD
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointD
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
@@ -54,8 +54,8 @@ open class XAxisRenderer(
                 maxLocal = p2.x.toFloat()
             }
 
-            MPPointD.recycleInstance(p1)
-            MPPointD.recycleInstance(p2)
+            PointD.recycleInstance(p1)
+            PointD.recycleInstance(p2)
         }
 
         computeAxisValues(minLocal, maxLocal)
@@ -99,7 +99,7 @@ open class XAxisRenderer(
 
         paintAxisLabels.color = xAxis.textColor
 
-        val pointF = MPPointF.getInstance(0f, 0f)
+        val pointF = PointF.getInstance(0f, 0f)
         when (xAxis.position) {
             XAxisPosition.TOP -> {
                 pointF.x = 0.5f
@@ -134,7 +134,7 @@ open class XAxisRenderer(
                 drawLabels(canvas, viewPortHandler.contentBottom() + yOffset, pointF)
             }
         }
-        MPPointF.recycleInstance(pointF)
+        PointF.recycleInstance(pointF)
     }
 
     override fun renderAxisLine(canvas: Canvas) {
@@ -167,7 +167,7 @@ open class XAxisRenderer(
      *
      * @param pos
      */
-    protected open fun drawLabels(canvas: Canvas, pos: Float, anchor: MPPointF) {
+    protected open fun drawLabels(canvas: Canvas, pos: Float, anchor: PointF) {
         val labelRotationAngleDegrees = xAxis.labelRotationAngle
         val centeringEnabled = xAxis.isCenterAxisLabelsEnabled
 
@@ -229,7 +229,7 @@ open class XAxisRenderer(
         }
     }
 
-    protected fun drawLabel(canvas: Canvas, formattedLabel: String?, x: Float, y: Float, anchor: MPPointF, angleDegrees: Float) {
+    protected fun drawLabel(canvas: Canvas, formattedLabel: String?, x: Float, y: Float, anchor: PointF, angleDegrees: Float) {
         formattedLabel?.let { canvas.drawXAxisValue(it, x, y, paintAxisLabels, anchor, angleDegrees) }
     }
 

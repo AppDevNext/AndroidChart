@@ -22,7 +22,7 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityBubblechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
@@ -115,7 +115,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
 
         val set2 = BubbleDataSet(values2, "DS 2")
         set2.isDrawIcons = false
-        set2.iconsOffset = MPPointF(0f, 15f)
+        set2.iconsOffset = PointF(0f, 15f)
         set2.setColor(ColorTemplate.COLORFUL_COLORS[1], 130)
         set2.isDrawValues = true
 

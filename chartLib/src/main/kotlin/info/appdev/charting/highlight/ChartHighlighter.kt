@@ -6,7 +6,7 @@ import info.appdev.charting.data.DataSet
 import info.appdev.charting.data.Entry
 import info.appdev.charting.interfaces.dataprovider.base.BarLineScatterCandleBubbleDataProvider
 import info.appdev.charting.interfaces.datasets.IDataSet
-import info.appdev.charting.utils.MPPointD
+import info.appdev.charting.utils.PointD
 import kotlin.math.abs
 import kotlin.math.hypot
 
@@ -19,17 +19,17 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
     override fun getHighlight(x: Float, y: Float): Highlight? {
         val pos = getValsForTouch(x, y)
         val xVal = pos.x.toFloat()
-        MPPointD.recycleInstance(pos)
+        PointD.recycleInstance(pos)
 
         val high = getHighlightForX(xVal, x, y)
         return high
     }
 
     /**
-     * Returns a recyclable MPPointD instance.
+     * Returns a recyclable PointD instance.
      * Returns the corresponding xPos for a given touch-position in pixels.
      */
-    protected fun getValsForTouch(x: Float, y: Float): MPPointD {
+    protected fun getValsForTouch(x: Float, y: Float): PointD {
         // take any transformer to determine the x-axis value
 
         return provider.getTransformer(AxisDependency.LEFT)!!.getValuesByTouchPoint(x, y)

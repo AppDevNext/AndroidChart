@@ -16,8 +16,8 @@ import info.appdev.charting.renderer.HorizontalBarChartRenderer
 import info.appdev.charting.renderer.XAxisRendererHorizontalBarChart
 import info.appdev.charting.renderer.YAxisRendererHorizontalBarChart
 import info.appdev.charting.utils.HorizontalViewPortHandler
-import info.appdev.charting.utils.MPPointF
-import info.appdev.charting.utils.MPPointF.Companion.getInstance
+import info.appdev.charting.utils.PointF
+import info.appdev.charting.utils.PointF.Companion.getInstance
 import info.appdev.charting.utils.TransformerHorizontalBarChart
 import info.appdev.charting.utils.convertDpToPixel
 import timber.log.Timber
@@ -231,9 +231,9 @@ open class HorizontalBarChart : BarChart {
     protected var getPositionBuffer: FloatArray = FloatArray(2)
 
     /**
-     * Returns a recyclable MPPointF instance.
+     * Returns a recyclable PointF instance.
      */
-    override fun getPosition(e: Entry?, axis: AxisDependency?): MPPointF? {
+    override fun getPosition(e: Entry?, axis: AxisDependency?): PointF? {
         if (e == null) {
             return null
         }
