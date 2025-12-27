@@ -3,7 +3,7 @@ package info.appdev.charting.highlight
 import info.appdev.charting.charts.RadarChart
 import info.appdev.charting.data.Entry
 import info.appdev.charting.utils.PointF
-import info.appdev.charting.utils.Utils
+import info.appdev.charting.utils.changePosition
 import kotlin.math.abs
 
 open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>(chart) {
@@ -50,8 +50,8 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
 
             val y = (entry!!.y - chartPieRadar.yChartMin)
 
-            Utils.getPosition(
-                chartPieRadar.centerOffsets, y * factor * phaseY,
+            chartPieRadar.centerOffsets.changePosition(
+                y * factor * phaseY,
                 sliceAngle * index * phaseX + chartPieRadar.rotationAngle, pOut
             )
 
