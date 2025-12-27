@@ -12,10 +12,10 @@ import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.Fill
 import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Transformer
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.drawImage
 import kotlin.math.ceil
 import kotlin.math.min
 
@@ -332,8 +332,7 @@ open class BarChartRenderer(
                                     py += iconsOffset.y
 
                                     icon?.let {
-                                        Utils.drawImage(
-                                            canvas,
+                                        canvas.drawImage(
                                             it,
                                             px.toInt(),
                                             py.toInt()
@@ -392,8 +391,7 @@ open class BarChartRenderer(
                                         py += iconsOffset.y
 
                                         icon?.let {
-                                            Utils.drawImage(
-                                                canvas,
+                                            canvas.drawImage(
                                                 it,
                                                 px.toInt(),
                                                 py.toInt()
@@ -471,8 +469,7 @@ open class BarChartRenderer(
                                             val icon = barEntry.icon
 
                                             icon?.let {
-                                                Utils.drawImage(
-                                                    canvas,
+                                                canvas.drawImage(
                                                     it,
                                                     (x + iconsOffset.x).toInt(),
                                                     (y + iconsOffset.y).toInt()
