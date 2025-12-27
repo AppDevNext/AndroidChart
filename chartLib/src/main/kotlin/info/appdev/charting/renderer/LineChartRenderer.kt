@@ -14,7 +14,7 @@ import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
@@ -512,7 +512,7 @@ open class LineChartRenderer(
                             .phaseY, xBounds.min, xBounds.max
                     )
 
-                    val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                    val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
                     iconsOffset.x = iconsOffset.x.convertDpToPixel()
                     iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
@@ -554,7 +554,7 @@ open class LineChartRenderer(
                         j += 2
                     }
 
-                    MPPointF.recycleInstance(iconsOffset)
+                    PointF.recycleInstance(iconsOffset)
                 }
             }
         }

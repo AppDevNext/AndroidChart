@@ -24,7 +24,7 @@ fun Canvas.drawImage(
 ) {
     val width: Int = drawable.intrinsicWidth
     val height: Int = drawable.intrinsicHeight
-    val drawOffset = MPPointF.getInstance(width.toFloat(), height.toFloat())
+    val drawOffset = PointF.getInstance(width.toFloat(), height.toFloat())
     drawOffset.x = x - (width.toFloat() / 2)
     drawOffset.y = y - (height.toFloat() / 2)
 
@@ -49,7 +49,7 @@ private val mFontMetricsBuffer = Paint.FontMetrics()
 fun Canvas.drawXAxisValue(
     text: String?, x: Float, y: Float,
     paint: Paint,
-    anchor: MPPointF, angleDegrees: Float
+    anchor: PointF, angleDegrees: Float
 ) {
     var drawOffsetX = 0f
     var drawOffsetY = 0f

@@ -21,7 +21,7 @@ import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityHorizontalbarchartBinding
 import info.appdev.chartexample.notimportant.DemoBase
@@ -245,7 +245,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         Timber.i(bounds.toString())
         Timber.i(position.toString())
 
-        MPPointF.recycleInstance(position)
+        PointF.recycleInstance(position)
     }
 
     override fun onNothingSelected() {}

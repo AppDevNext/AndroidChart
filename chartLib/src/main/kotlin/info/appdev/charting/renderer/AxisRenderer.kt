@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import info.appdev.charting.components.AxisBase
-import info.appdev.charting.utils.MPPointD
+import info.appdev.charting.utils.PointD
 import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.roundToNextSignificant
@@ -104,8 +104,8 @@ abstract class AxisRenderer(
                     maxLocal = p2.y.toFloat()
                 }
 
-                MPPointD.recycleInstance(p1)
-                MPPointD.recycleInstance(p2)
+                PointD.recycleInstance(p1)
+                PointD.recycleInstance(p2)
             }
         }
         computeAxisValues(minLocal, maxLocal)

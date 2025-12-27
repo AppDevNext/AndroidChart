@@ -7,7 +7,7 @@ import android.widget.TextView
 import info.appdev.charting.components.MarkerView
 import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.chartexample.R
 import java.text.DecimalFormat
 
@@ -31,6 +31,6 @@ class RadarMarkerView(context: Context, layoutResource: Int) : MarkerView(contex
         super.refreshContent(entry, highlight)
     }
 
-    override var offset: MPPointF = MPPointF()
-        get() = MPPointF(-(width / 2).toFloat(), (-height - 10).toFloat())
+    override var offset: PointF = PointF()
+        get() = PointF(-(width / 2).toFloat(), (-height - 10).toFloat())
 }

@@ -1,7 +1,7 @@
 package info.appdev.charting.components
 
 import android.graphics.Paint.Align
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.convertDpToPixel
 
 class Description : ComponentBase() {
@@ -20,7 +20,7 @@ class Description : ComponentBase() {
     /**
      * the custom position of the description text
      */
-    var position: MPPointF? = null
+    var position: PointF? = null
         private set
 
     /**
@@ -44,7 +44,7 @@ class Description : ComponentBase() {
      */
     fun setPosition(x: Float, y: Float) {
         if (this.position == null) {
-            this.position = MPPointF.getInstance(x, y)
+            this.position = PointF.getInstance(x, y)
         } else {
             position!!.x = x
             position!!.y = y

@@ -10,7 +10,7 @@ import info.appdev.charting.charts.RadarChart
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IRadarDataSet
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
@@ -61,7 +61,7 @@ open class RadarChartRenderer(
         val factor = chart.factor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
+        val pOut = PointF.getInstance(0f, 0f)
         val surface = drawDataSetSurfacePathBuffer
         surface.reset()
 
@@ -109,8 +109,8 @@ open class RadarChartRenderer(
         // draw the line (only if filled is disabled or alpha is below 255)
         if (!dataSet.isDrawFilledEnabled || dataSet.fillAlpha < 255) canvas.drawPath(surface, paintRender)
 
-        MPPointF.recycleInstance(center)
-        MPPointF.recycleInstance(pOut)
+        PointF.recycleInstance(center)
+        PointF.recycleInstance(pOut)
     }
 
     override fun drawValues(canvas: Canvas) {
@@ -124,8 +124,8 @@ open class RadarChartRenderer(
         val factor = chart.factor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
-        val pIcon = MPPointF.getInstance(0f, 0f)
+        val pOut = PointF.getInstance(0f, 0f)
+        val pIcon = PointF.getInstance(0f, 0f)
 
         val yOffset = 5f.convertDpToPixel()
 
@@ -143,7 +143,7 @@ open class RadarChartRenderer(
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet)
 
-                val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
                 iconsOffset.x = iconsOffset.x.convertDpToPixel()
                 iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
@@ -194,13 +194,13 @@ open class RadarChartRenderer(
                     }
                 }
 
-                MPPointF.recycleInstance(iconsOffset)
+                PointF.recycleInstance(iconsOffset)
             }
         }
 
-        MPPointF.recycleInstance(center)
-        MPPointF.recycleInstance(pOut)
-        MPPointF.recycleInstance(pIcon)
+        PointF.recycleInstance(center)
+        PointF.recycleInstance(pOut)
+        PointF.recycleInstance(pIcon)
     }
 
     override fun drawExtras(canvas: Canvas) {
@@ -225,7 +225,7 @@ open class RadarChartRenderer(
         val xIncrements = 1 + chart.skipWebLineCount
         val maxEntryCount = chart.getData()!!.maxEntryCountSet?.entryCount ?: 0
 
-        val p = MPPointF.getInstance(0f, 0f)
+        val p = PointF.getInstance(0f, 0f)
         var i = 0
         while (i < maxEntryCount) {
             Utils.getPosition(
@@ -238,7 +238,7 @@ open class RadarChartRenderer(
             canvas.drawLine(center.x, center.y, p.x, p.y, webPaint)
             i += xIncrements
         }
-        MPPointF.recycleInstance(p)
+        PointF.recycleInstance(p)
 
         // draw the inner-web
         webPaint.strokeWidth = chart.webLineWidthInner
@@ -247,8 +247,8 @@ open class RadarChartRenderer(
 
         val labelCount = chart.yAxis.entryCount
 
-        val p1out = MPPointF.getInstance(0f, 0f)
-        val p2out = MPPointF.getInstance(0f, 0f)
+        val p1out = PointF.getInstance(0f, 0f)
+        val p2out = PointF.getInstance(0f, 0f)
         for (j in 0..<labelCount) {
             if (chart.isCustomLayerColorEnable) {
                 innerAreaPath.rewind()
@@ -283,8 +283,8 @@ open class RadarChartRenderer(
                 previousPath.set(tempPath)
             }
         }
-        MPPointF.recycleInstance(p1out)
-        MPPointF.recycleInstance(p2out)
+        PointF.recycleInstance(p1out)
+        PointF.recycleInstance(p2out)
     }
 
     override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
@@ -295,7 +295,7 @@ open class RadarChartRenderer(
         val factor = chart.factor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
+        val pOut = PointF.getInstance(0f, 0f)
 
         val radarData = chart.getData()
 
@@ -348,8 +348,8 @@ open class RadarChartRenderer(
             }
         }
 
-        MPPointF.recycleInstance(center)
-        MPPointF.recycleInstance(pOut)
+        PointF.recycleInstance(center)
+        PointF.recycleInstance(pOut)
     }
 
     protected var mDrawHighlightCirclePathBuffer: Path = Path()
@@ -372,7 +372,7 @@ open class RadarChartRenderer(
 
     fun drawHighlightCircle(
         canvas: Canvas,
-        point: MPPointF,
+        point: PointF,
         innerRadius: Float,
         outerRadius: Float,
         fillColor: Int,

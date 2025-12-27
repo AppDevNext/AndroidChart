@@ -35,8 +35,8 @@ import info.appdev.charting.listener.OnChartGestureListener
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.renderer.DataRenderer
 import info.appdev.charting.renderer.LegendRenderer
-import info.appdev.charting.utils.MPPointF
-import info.appdev.charting.utils.MPPointF.Companion.getInstance
+import info.appdev.charting.utils.PointF
+import info.appdev.charting.utils.PointF.Companion.getInstance
 import info.appdev.charting.utils.SaveUtils.saveToGallery
 import info.appdev.charting.utils.SaveUtils.saveToPath
 import info.appdev.charting.utils.Utils
@@ -936,16 +936,16 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     override val xRange: Float
         get() = mXAxis.mAxisRange
 
-    val center: MPPointF
+    val center: PointF
         /**
-         * Returns a recyclable MPPointF instance.
+         * Returns a recyclable PointF instance.
          * Returns the center point of the chart (the whole View) in pixels.
          */
         get() = getInstance(width / 2f, height / 2f)
 
-    override val centerOffsets: MPPointF
+    override val centerOffsets: PointF
         /**
-         * Returns a recyclable MPPointF instance.
+         * Returns a recyclable PointF instance.
          * Returns the center of the chart taking offsets under consideration.
          * (returns the center of the content rectangle)
          */
@@ -1165,9 +1165,9 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
         this.highlighter = highlighter
     }
 
-    override val centerOfView: MPPointF
+    override val centerOfView: PointF
         /**
-         * Returns a recyclable MPPointF instance.
+         * Returns a recyclable PointF instance.
          */
         get() = this.center
 

@@ -27,7 +27,7 @@ import info.appdev.charting.formatter.PercentFormatter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityPiechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
@@ -119,7 +119,7 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         dataSet.isDrawIcons = false
 
         dataSet.sliceSpace = 3f
-        dataSet.iconsOffset = MPPointF(0f, 40f)
+        dataSet.iconsOffset = PointF(0f, 40f)
         dataSet.selectionShift = 5f
 
         // add a lot of colors

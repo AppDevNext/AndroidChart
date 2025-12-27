@@ -18,7 +18,7 @@ import info.appdev.charting.data.PieDataSet.ValuePosition
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IPieDataSet
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
@@ -113,7 +113,7 @@ open class PieChartRenderer(
     private val mInnerRectBuffer = RectF()
 
     protected fun calculateMinimumRadiusForSpacedSlice(
-        center: MPPointF,
+        center: PointF,
         radius: Float,
         angle: Float,
         arcStartPointX: Float,
@@ -346,7 +346,7 @@ open class PieChartRenderer(
             angle += sliceAngle * phaseX
         }
 
-        MPPointF.recycleInstance(center)
+        PointF.recycleInstance(center)
     }
 
     override fun drawValues(canvas: Canvas) {
@@ -420,7 +420,7 @@ open class PieChartRenderer(
 
                     val sliceSpace = getSliceSpace(dataSet)
 
-                    val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                    val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
                     iconsOffset.x = iconsOffset.x.convertDpToPixel()
                     iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
@@ -580,10 +580,10 @@ open class PieChartRenderer(
                         xIndex++
                     }
 
-                    MPPointF.recycleInstance(iconsOffset)
+                    PointF.recycleInstance(iconsOffset)
                 }
             }
-            MPPointF.recycleInstance(center)
+            PointF.recycleInstance(center)
         }
     }
 
@@ -632,7 +632,7 @@ open class PieChartRenderer(
                 // reset alpha
                 paintTransparentCircle.alpha = alpha
             }
-            MPPointF.recycleInstance(center)
+            PointF.recycleInstance(center)
         }
     }
 
@@ -698,8 +698,8 @@ open class PieChartRenderer(
 
             canvas.restore()
 
-            MPPointF.recycleInstance(center)
-            MPPointF.recycleInstance(offset)
+            PointF.recycleInstance(center)
+            PointF.recycleInstance(offset)
         }
     }
 
@@ -900,7 +900,7 @@ open class PieChartRenderer(
             bitmapCanvas!!.drawPath(mPathBuffer, paintRender)
         }
 
-        MPPointF.recycleInstance(center)
+        PointF.recycleInstance(center)
     }
 
     /**
@@ -946,7 +946,7 @@ open class PieChartRenderer(
             }
             angle += sliceAngle * phaseX
         }
-        MPPointF.recycleInstance(center)
+        PointF.recycleInstance(center)
     }
 
     /**

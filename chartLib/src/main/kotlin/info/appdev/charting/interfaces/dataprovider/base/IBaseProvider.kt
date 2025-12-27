@@ -3,7 +3,7 @@ package info.appdev.charting.interfaces.dataprovider.base
 import android.graphics.RectF
 import info.appdev.charting.data.ChartData
 import info.appdev.charting.formatter.IValueFormatter
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 
 /**
  * Interface that provides everything there is to know about the dimensions,
@@ -37,9 +37,9 @@ interface IBaseProvider {
      */
     var maxHighlightDistance: Float
 
-    val centerOfView: MPPointF?
+    val centerOfView: PointF?
 
-    val centerOffsets: MPPointF
+    val centerOffsets: PointF
 
     val contentRect: RectF?
 

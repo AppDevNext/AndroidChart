@@ -3,7 +3,7 @@ package info.appdev.charting.renderer
 import android.graphics.Canvas
 import info.appdev.charting.charts.RadarChart
 import info.appdev.charting.components.XAxis
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 
@@ -13,7 +13,7 @@ class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, pr
             return
 
         val labelRotationAngleDegrees = xAxis.labelRotationAngle
-        val drawLabelAnchor = MPPointF.getInstance(0.5f, 0.25f)
+        val drawLabelAnchor = PointF.getInstance(0.5f, 0.25f)
 
         paintAxisLabels.typeface = xAxis.typeface
         paintAxisLabels.textSize = xAxis.textSize
@@ -26,7 +26,7 @@ class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, pr
         val factor = chart.factor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
+        val pOut = PointF.getInstance(0f, 0f)
         chart.getData()!!.maxEntryCountSet?.let { maxEntryCountSet ->
             for (i in 0..<maxEntryCountSet.entryCount) {
                 val label = xAxis.valueFormatter?.getFormattedValue(i.toFloat(), xAxis)
@@ -43,9 +43,9 @@ class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, pr
                 )
             }
         }
-        MPPointF.recycleInstance(center)
-        MPPointF.recycleInstance(pOut)
-        MPPointF.recycleInstance(drawLabelAnchor)
+        PointF.recycleInstance(center)
+        PointF.recycleInstance(pOut)
+        PointF.recycleInstance(drawLabelAnchor)
     }
 
     /**

@@ -7,7 +7,7 @@ import info.appdev.charting.components.MarkerView
 import info.appdev.charting.data.CandleEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.formatNumber
 import info.appdev.chartexample.R
 
@@ -31,6 +31,6 @@ class MyMarkerView(context: Context?, layoutResource: Int) : MarkerView(context,
         super.refreshContent(entry, highlight)
     }
 
-    override var offset: MPPointF = MPPointF()
-        get() = MPPointF(-(width / 2).toFloat(), -height.toFloat())
+    override var offset: PointF = PointF()
+        get() = PointF(-(width / 2).toFloat(), -height.toFloat())
 }

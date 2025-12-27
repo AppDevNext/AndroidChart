@@ -2,7 +2,7 @@ package info.appdev.charting.highlight
 
 import info.appdev.charting.charts.RadarChart
 import info.appdev.charting.data.Entry
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Utils
 import kotlin.math.abs
 
@@ -42,7 +42,7 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
         val sliceAngle = chartPieRadar.sliceAngle
         val factor = chartPieRadar.factor
 
-        val pOut = MPPointF.getInstance(0f, 0f)
+        val pOut = PointF.getInstance(0f, 0f)
         for (i in 0..<chartPieRadar.getData()!!.dataSetCount) {
             val dataSet = chartPieRadar.getData()!!.getDataSetByIndex(i)
 

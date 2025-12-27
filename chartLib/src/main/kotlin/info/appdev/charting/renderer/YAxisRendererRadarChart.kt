@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Path
 import info.appdev.charting.charts.RadarChart
 import info.appdev.charting.components.YAxis
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.roundToNextSignificant
@@ -145,7 +145,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         paintAxisLabels.color = yAxis.textColor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
+        val pOut = PointF.getInstance(0f, 0f)
         val factor = chart.factor
 
         val from = if (yAxis.isDrawBottomYLabelEntryEnabled) 0 else 1
@@ -165,8 +165,8 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
             label?.let { canvas.drawText(it, pOut.x + xOffset, pOut.y, paintAxisLabels) }
         }
-        MPPointF.recycleInstance(center)
-        MPPointF.recycleInstance(pOut)
+        PointF.recycleInstance(center)
+        PointF.recycleInstance(pOut)
     }
 
     override fun renderLimitLines(canvas: Canvas) {
@@ -179,7 +179,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
         val factor = chart.factor
 
         val center = chart.centerOffsets
-        val pOut = MPPointF.getInstance(0f, 0f)
+        val pOut = PointF.getInstance(0f, 0f)
         for (i in limitLines.indices) {
             val limitLine = limitLines[i]
 
@@ -208,7 +208,7 @@ class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, pr
 
             canvas.drawPath(limitPath, limitLinePaint)
         }
-        MPPointF.recycleInstance(center)
-        MPPointF.recycleInstance(pOut)
+        PointF.recycleInstance(center)
+        PointF.recycleInstance(pOut)
     }
 }

@@ -131,8 +131,8 @@ open class ViewPortHandler {
 
     fun contentHeight(): Float = contentRect.height()
 
-    val contentCenter: MPPointF
-        get() = MPPointF.getInstance(contentRect.centerX(), contentRect.centerY())
+    val contentCenter: PointF
+        get() = PointF.getInstance(contentRect.centerX(), contentRect.centerY())
 
     /**
      * Returns the smallest extension of the content rect (width or height).

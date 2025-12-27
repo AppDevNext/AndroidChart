@@ -7,7 +7,7 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.CandleDataProvider
 import info.appdev.charting.interfaces.datasets.ICandleDataSet
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
@@ -234,7 +234,7 @@ open class CandleStickChartRenderer(
 
                         val yOffset = 5f.convertDpToPixel()
 
-                        val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                        val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
                         iconsOffset.x = iconsOffset.x.convertDpToPixel()
                         iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
@@ -280,7 +280,7 @@ open class CandleStickChartRenderer(
                             j += 2
                         }
 
-                        MPPointF.recycleInstance(iconsOffset)
+                        PointF.recycleInstance(iconsOffset)
                     }
                 }
             }

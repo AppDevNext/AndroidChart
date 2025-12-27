@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import info.appdev.charting.utils.ObjectPool.Poolable
 
-class MPPointF : Poolable<MPPointF> {
+class PointF : Poolable<PointF> {
     var x: Float = 0f
     var y: Float = 0f
 
@@ -27,8 +27,8 @@ class MPPointF : Poolable<MPPointF> {
         y = `in`.readFloat()
     }
 
-    override fun instantiate(): MPPointF {
-        return MPPointF(0f, 0f)
+    override fun instantiate(): PointF {
+        return PointF(0f, 0f)
     }
 
     override fun toString(): String {
@@ -36,44 +36,44 @@ class MPPointF : Poolable<MPPointF> {
     }
 
     companion object {
-        private var pool: ObjectPool<MPPointF> = ObjectPool.create(32, MPPointF(0f, 0f))
+        private var pool: ObjectPool<PointF> = ObjectPool.create(32, PointF(0f, 0f))
 
         init {
             pool.replenishPercentage = 0.5f
         }
 
-        fun getInstance(x: Float, y: Float): MPPointF {
-            val result: MPPointF = pool.get()
+        fun getInstance(x: Float, y: Float): PointF {
+            val result: PointF = pool.get()
             result.x = x
             result.y = y
             return result
         }
 
-        val instance: MPPointF
+        val instance: PointF
             get() = pool.get()
 
-        fun getInstance(copy: MPPointF): MPPointF {
-            val result: MPPointF = pool.get()
+        fun getInstance(copy: PointF): PointF {
+            val result: PointF = pool.get()
             result.x = copy.x
             result.y = copy.y
             return result
         }
 
         @JvmStatic
-        fun recycleInstance(instance: MPPointF?) {
+        fun recycleInstance(instance: PointF?) {
             pool.recycle(instance)
         }
 
-        fun recycleInstances(instances: MutableList<MPPointF>) {
+        fun recycleInstances(instances: MutableList<PointF>) {
             pool.recycle(instances)
         }
 
-        val CREATOR: Parcelable.Creator<MPPointF?> = object : Parcelable.Creator<MPPointF?> {
+        val CREATOR: Parcelable.Creator<PointF?> = object : Parcelable.Creator<PointF?> {
             /**
              * Return a new point from the data in the specified parcel.
              */
-            override fun createFromParcel(`in`: Parcel): MPPointF {
-                val r = MPPointF(0f, 0f)
+            override fun createFromParcel(`in`: Parcel): PointF {
+                val r = PointF(0f, 0f)
                 r.my_readFromParcel(`in`)
                 return r
             }
@@ -81,7 +81,7 @@ class MPPointF : Poolable<MPPointF> {
             /**
              * Return an array of rectangles of the specified size.
              */
-            override fun newArray(size: Int): Array<MPPointF?> {
+            override fun newArray(size: Int): Array<PointF?> {
                 return arrayOfNulls(size)
             }
         }

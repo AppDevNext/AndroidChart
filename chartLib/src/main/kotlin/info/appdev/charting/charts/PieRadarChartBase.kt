@@ -13,9 +13,9 @@ import info.appdev.charting.data.ChartData
 import info.appdev.charting.data.Entry
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.listener.PieRadarChartTouchListener
-import info.appdev.charting.utils.MPPointF
-import info.appdev.charting.utils.MPPointF.Companion.getInstance
-import info.appdev.charting.utils.MPPointF.Companion.recycleInstance
+import info.appdev.charting.utils.PointF
+import info.appdev.charting.utils.PointF.Companion.getInstance
+import info.appdev.charting.utils.PointF.Companion.recycleInstance
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.convertDpToPixel
 import timber.log.Timber
@@ -315,18 +315,18 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
     }
 
     /**
-     * Returns a recyclable MPPointF instance.
+     * Returns a recyclable PointF instance.
      * Calculates the position around a center point, depending on the distance
      * from the center, and the angle of the position around the center.
      * @param angle  in degrees, converted to radians internally
      */
-    fun getPosition(center: MPPointF, dist: Float, angle: Float): MPPointF {
+    fun getPosition(center: PointF, dist: Float, angle: Float): PointF {
         val p = getInstance(0f, 0f)
         getPosition(center, dist, angle, p)
         return p
     }
 
-    fun getPosition(center: MPPointF, dist: Float, angle: Float, outputPoint: MPPointF) {
+    fun getPosition(center: PointF, dist: Float, angle: Float, outputPoint: PointF) {
         outputPoint.x = (center.x + dist * cos(Math.toRadians(angle.toDouble()))).toFloat()
         outputPoint.y = (center.y + dist * sin(Math.toRadians(angle.toDouble()))).toFloat()
     }

@@ -3,7 +3,7 @@ package info.appdev.charting.components
 import android.graphics.Canvas
 import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 
 interface IMarker {
     /**
@@ -11,7 +11,7 @@ interface IMarker {
      * By returning x: -(width / 2) you will center the IMarker horizontally.
      * By returning y: -(height / 2) you will center the IMarker vertically.
      */
-    val offset: MPPointF
+    val offset: PointF
 
     /**
      * @return The offset for drawing at the specific `point`. This allows conditional adjusting of the Marker position.
@@ -22,7 +22,7 @@ interface IMarker {
      * @param posY This is the X position at which the marker wants to be drawn.
      * You can adjust the offset conditionally based on this argument.
      */
-    fun getOffsetForDrawingAtPoint(posX: Float, posY: Float): MPPointF?
+    fun getOffsetForDrawingAtPoint(posX: Float, posY: Float): PointF?
 
     /**
      * This method enables a specified custom IMarker to update it's content every time the IMarker is redrawn.

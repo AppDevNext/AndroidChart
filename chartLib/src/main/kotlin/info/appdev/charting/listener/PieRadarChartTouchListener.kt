@@ -5,12 +5,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
 import info.appdev.charting.charts.PieRadarChartBase
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.convertDpToPixel
 import kotlin.math.abs
 
 class PieRadarChartTouchListener(chart: PieRadarChartBase<*>) : ChartTouchListener<PieRadarChartBase<*>>(chart) {
-    private val touchStartPoint: MPPointF = MPPointF.getInstance(0f, 0f)
+    private val touchStartPoint: PointF = PointF.getInstance(0f, 0f)
 
     /**
      * the angle where the dragging started

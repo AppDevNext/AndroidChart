@@ -4,7 +4,7 @@ import info.appdev.charting.data.DataSet
 import info.appdev.charting.data.Entry
 import info.appdev.charting.interfaces.dataprovider.BarDataProvider
 import info.appdev.charting.interfaces.datasets.IDataSet
-import info.appdev.charting.utils.MPPointD
+import info.appdev.charting.utils.PointD
 import kotlin.math.abs
 
 class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(dataProvider) {
@@ -25,7 +25,7 @@ class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(d
                 )
             }
 
-            MPPointD.recycleInstance(pos)
+            PointD.recycleInstance(pos)
 
             return high
         }

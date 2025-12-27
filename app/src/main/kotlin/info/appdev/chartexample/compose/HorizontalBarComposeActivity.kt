@@ -46,7 +46,7 @@ import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.R
 import info.appdev.chartexample.notimportant.DemoBaseCompose
@@ -281,7 +281,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
                     Timber.tag("bounds $bounds")
                     Timber.tag("position $position")
 
-                    MPPointF.recycleInstance(position)
+                    PointF.recycleInstance(position)
                 }
             }
 

@@ -7,7 +7,7 @@ import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.DataSet
 import info.appdev.charting.data.Entry
 import info.appdev.charting.formatter.IValueFormatter
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 
 interface IDataSet<T : Entry> {
     /**
@@ -286,7 +286,7 @@ interface IDataSet<T : Entry> {
      * For all charts except Pie and Radar it will be ordinary (x offset,y offset).
      * For Pie and Radar chart it will be (y offset, distance from center offset); so if you want icon to be rendered under value, you should increase X component of CGPoint, and if you want icon to be rendered closet to center, you should decrease height component of CGPoint.
      */
-    var iconsOffset: MPPointF
+    var iconsOffset: PointF
 
     /**
      * Set the visibility of this DataSet. If not visible, the DataSet will not

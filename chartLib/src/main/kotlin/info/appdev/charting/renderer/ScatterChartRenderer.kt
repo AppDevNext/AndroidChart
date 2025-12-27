@@ -5,7 +5,7 @@ import info.appdev.charting.animation.ChartAnimator
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.ScatterDataProvider
 import info.appdev.charting.interfaces.datasets.IScatterDataSet
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
@@ -100,7 +100,7 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
 
                     val shapeSize = dataSet.scatterShapeSize.convertDpToPixel()
 
-                    val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                    val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
                     iconsOffset.x = iconsOffset.x.convertDpToPixel()
                     iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
@@ -148,7 +148,7 @@ open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider,
                         j += 2
                     }
 
-                    MPPointF.recycleInstance(iconsOffset)
+                    PointF.recycleInstance(iconsOffset)
                 }
             }
         }

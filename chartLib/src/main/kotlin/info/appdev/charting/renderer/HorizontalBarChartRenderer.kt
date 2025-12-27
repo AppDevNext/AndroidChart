@@ -10,7 +10,7 @@ import info.appdev.charting.interfaces.dataprovider.BarDataProvider
 import info.appdev.charting.interfaces.dataprovider.base.IBaseProvider
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.Fill
-import info.appdev.charting.utils.MPPointF
+import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
@@ -197,7 +197,7 @@ open class HorizontalBarChartRenderer(
 
                     val phaseY = animator.phaseY
 
-                    val iconsOffset = MPPointF.getInstance(dataSet.iconsOffset)
+                    val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
                     iconsOffset.x = iconsOffset.x.convertDpToPixel()
                     iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
@@ -435,7 +435,7 @@ open class HorizontalBarChartRenderer(
                         }
                     }
 
-                    MPPointF.recycleInstance(iconsOffset)
+                    PointF.recycleInstance(iconsOffset)
                 }
             }
         }
