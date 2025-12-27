@@ -133,3 +133,15 @@ fun Float.formatNumber(digitCount: Int, separateThousands: Boolean, separateChar
     // use this instead of "new String(...)" because of issue < Android 4.0
     return String(out, start, out.size - start)
 }
+
+/**
+ * returns an angle between 0.f < 360.f (not less than zero, less than 360)
+ */
+fun Float.getNormalizedAngle(): Float {
+    var angle = this
+    while (angle < 0f) {
+        angle += 360f
+    }
+
+    return angle % 360f
+}
