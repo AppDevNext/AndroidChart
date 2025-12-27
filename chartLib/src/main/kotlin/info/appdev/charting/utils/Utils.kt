@@ -4,16 +4,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.util.SizeF
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.ViewConfiguration
 import info.appdev.charting.formatter.DefaultValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.utils.PointF.Companion.instance
-import kotlin.Int
-import kotlin.IntArray
-import kotlin.Suppress
-import kotlin.intArrayOf
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
@@ -153,7 +150,7 @@ object Utils {
      * @param degrees
      * @return A Recyclable FSize instance
      */
-    fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: Float, rectangleHeight: Float, degrees: Float): FSize {
+    fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: Float, rectangleHeight: Float, degrees: Float): SizeF {
         val radians = degrees * FDEG2RAD
         return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians)
     }
@@ -167,8 +164,8 @@ object Utils {
      * @param radians
      * @return A Recyclable FSize instance
      */
-    fun getSizeOfRotatedRectangleByRadians(rectangleWidth: Float, rectangleHeight: Float, radians: Float): FSize {
-        return FSize.getInstance(
+    fun getSizeOfRotatedRectangleByRadians(rectangleWidth: Float, rectangleHeight: Float, radians: Float): SizeF {
+        return SizeF(
             abs(rectangleWidth * cos(radians.toDouble()).toFloat()) + abs(rectangleHeight * sin(radians.toDouble()).toFloat()),
             abs(rectangleWidth * sin(radians.toDouble()).toFloat()) + abs(rectangleHeight * cos(radians.toDouble()).toFloat())
         )

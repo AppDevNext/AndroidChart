@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.graphics.Paint.Align
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.util.SizeF
 import info.appdev.charting.utils.Utils.FDEG2RAD
 import kotlin.math.abs
 import kotlin.math.cos
@@ -88,7 +89,6 @@ fun Canvas.drawXAxisValue(
 
             translateX -= rotatedSize.width * (anchor.x - 0.5f)
             translateY -= rotatedSize.height * (anchor.y - 0.5f)
-            FSize.recycleInstance(rotatedSize)
         }
 
         this.save()
@@ -130,7 +130,7 @@ fun Paint.calcTextWidth(demoText: String?): Int {
  * @param degrees
  * @return A Recyclable FSize instance
  */
-fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: Float, rectangleHeight: Float, degrees: Float): FSize {
+fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: Float, rectangleHeight: Float, degrees: Float): SizeF {
     val radians = degrees * FDEG2RAD
     return getSizeOfRotatedRectangleByRadians(rectangleWidth, rectangleHeight, radians)
 }
@@ -144,8 +144,8 @@ fun getSizeOfRotatedRectangleByDegrees(rectangleWidth: Float, rectangleHeight: F
  * @param radians
  * @return A Recyclable FSize instance
  */
-fun getSizeOfRotatedRectangleByRadians(rectangleWidth: Float, rectangleHeight: Float, radians: Float): FSize {
-    return FSize.getInstance(
+fun getSizeOfRotatedRectangleByRadians(rectangleWidth: Float, rectangleHeight: Float, radians: Float): SizeF {
+    return SizeF(
         abs(rectangleWidth * cos(radians.toDouble()).toFloat()) + abs(rectangleHeight * sin(radians.toDouble()).toFloat()),
         abs(rectangleWidth * sin(radians.toDouble()).toFloat()) + abs(rectangleHeight * cos(radians.toDouble()).toFloat())
     )

@@ -4,10 +4,10 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.util.SizeF
 import info.appdev.charting.charts.Chart
 import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
-import info.appdev.charting.utils.FSize
 import info.appdev.charting.utils.PointF
 import java.lang.ref.WeakReference
 
@@ -21,7 +21,7 @@ class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMar
     private val mOffset2 = PointF()
     private var mWeakChart: WeakReference<Chart<*>?>? = null
 
-    private var mSize: FSize? = FSize()
+    private var mSize: SizeF? = SizeF(0f, 0f)
     private val mDrawableBoundsCache = Rect()
 
     /**
@@ -45,13 +45,13 @@ class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMar
             mOffset = offset
         }
 
-    var size: FSize?
+    var size: SizeF?
         get() = mSize
         set(size) {
             mSize = size
 
             if (mSize == null) {
-                mSize = FSize()
+                mSize = SizeF(0f, 0f)
             }
         }
 

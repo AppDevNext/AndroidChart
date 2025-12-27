@@ -12,7 +12,6 @@ import info.appdev.charting.components.LimitLine
 import info.appdev.charting.components.LimitLine.LimitLabelPosition
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.components.XAxis.XAxisPosition
-import info.appdev.charting.utils.FSize
 import info.appdev.charting.utils.PointD
 import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Transformer
@@ -86,9 +85,6 @@ open class XAxisRenderer(
 
         xAxis.mLabelWidth = labelRotatedSize.width.roundToInt()
         xAxis.mLabelHeight = labelRotatedSize.height.roundToInt()
-
-        FSize.recycleInstance(labelRotatedSize)
-        FSize.recycleInstance(labelSize)
     }
 
     override fun renderAxisLabels(canvas: Canvas) {

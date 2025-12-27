@@ -2,8 +2,8 @@ package info.appdev.charting.components
 
 import android.graphics.DashPathEffect
 import android.graphics.Paint
+import android.util.SizeF
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.charting.utils.FSize
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.calcTextWidth
@@ -332,9 +332,9 @@ class Legend() : ComponentBase() {
      */
     var isWordWrapEnabled: Boolean = false
 
-    val calculatedLabelSizes: MutableList<FSize?> = ArrayList<FSize?>(16)
+    val calculatedLabelSizes: MutableList<SizeF?> = ArrayList(16)
     val calculatedLabelBreakPoints: MutableList<Boolean?> = ArrayList<Boolean?>(16)
-    val calculatedLineSizes: MutableList<FSize?> = ArrayList<FSize?>(16)
+    val calculatedLineSizes: MutableList<SizeF?> = ArrayList(16)
 
     init {
         this.mTextSize = 10f.convertDpToPixel()
@@ -456,7 +456,7 @@ class Legend() : ComponentBase() {
                         requiredWidth += if (drawingForm) formToTextSpace + formSize else 0f
                         requiredWidth += calculatedLabelSizes.get(i)!!.width
                     } else {
-                        calculatedLabelSizes.add(FSize.getInstance(0f, 0f))
+                        calculatedLabelSizes.add(SizeF(0f, 0f))
                         requiredWidth += if (drawingForm) formSize else 0f
 
                         if (stackedStartIndex == -1) {
@@ -480,7 +480,7 @@ class Legend() : ComponentBase() {
 
                             // Add current line size to array
 
-                            calculatedLineSizes.add(FSize.getInstance(currentLineWidth, labelLineHeight))
+                            calculatedLineSizes.add(SizeF(currentLineWidth, labelLineHeight))
                             maxLineWidth = max(maxLineWidth, currentLineWidth)
 
                             // Start a new line
@@ -495,7 +495,7 @@ class Legend() : ComponentBase() {
 
                         if (i == entryCount - 1) {
                             // Add last line size to array
-                            calculatedLineSizes.add(FSize.getInstance(currentLineWidth, labelLineHeight))
+                            calculatedLineSizes.add(SizeF(currentLineWidth, labelLineHeight))
                             maxLineWidth = max(maxLineWidth, currentLineWidth)
                         }
                     }

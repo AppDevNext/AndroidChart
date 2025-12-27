@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Build
 import android.util.DisplayMetrics
+import android.util.SizeF
 import android.view.ViewConfiguration
 import timber.log.Timber
 import kotlin.Boolean
@@ -195,8 +196,8 @@ fun Paint.getLineSpacing(fontMetrics: Paint.FontMetrics): Float {
  *
  * @return A Recyclable FSize instance
  */
-fun Paint.calcTextSize(demoText: String): FSize {
-    val result = FSize.getInstance(0f, 0f)
+fun Paint.calcTextSize(demoText: String): SizeF {
+    val result = SizeF(0f, 0f)
     calcTextSize(demoText, result)
     return result
 }
@@ -209,10 +210,9 @@ private val mCalcTextSizeRect = Rect()
  *
  * @param outputFSize An output variable, modified by the function.
  */
-fun Paint.calcTextSize(demoText: String, outputFSize: FSize) {
+fun Paint.calcTextSize(demoText: String, outputFSize: SizeF): SizeF {
     val r = mCalcTextSizeRect
     r.set(0, 0, 0, 0)
     this.getTextBounds(demoText, 0, demoText.length, r)
-    outputFSize.width = r.width().toFloat()
-    outputFSize.height = r.height().toFloat()
+    return SizeF(r.width().toFloat(),r.height().toFloat())
 }
