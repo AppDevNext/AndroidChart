@@ -56,27 +56,6 @@ object Utils {
         return DefaultValueFormatter(1)
     }
 
-    /**
-     * Returns a recyclable PointF instance.
-     * Calculates the position around a center point, depending on the distance
-     * from the center, and the angle of the position around the center.
-     *
-     * @param center
-     * @param dist
-     * @param angle  in degrees, converted to radians internally
-     * @return
-     */
-    fun getPosition(center: PointF, dist: Float, angle: Float): PointF {
-        val p = PointF.getInstance(0f, 0f)
-        getPosition(center, dist, angle, p)
-        return p
-    }
-
-    fun getPosition(center: PointF, dist: Float, angle: Float, outputPoint: PointF) {
-        outputPoint.x = (center.x + dist * cos(Math.toRadians(angle.toDouble()))).toFloat()
-        outputPoint.y = (center.y + dist * sin(Math.toRadians(angle.toDouble()))).toFloat()
-    }
-
     fun velocityTrackerPointerUpCleanUpIfNecessary(ev: MotionEvent, tracker: VelocityTracker) {
         // Check the dot product of current velocities.
         // If the pointer that left was opposing another velocity vector, clear.
@@ -105,18 +84,6 @@ object Utils {
             }
             i++
         }
-    }
-
-    /**
-     * returns an angle between 0.f < 360.f (not less than zero, less than 360)
-     */
-    fun getNormalizedAngle(angle: Float): Float {
-        var angle = angle
-        while (angle < 0f) {
-            angle += 360f
-        }
-
-        return angle % 360f
     }
 
     private val mDrawableBoundsCache = Rect()

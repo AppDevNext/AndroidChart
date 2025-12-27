@@ -16,8 +16,8 @@ import info.appdev.charting.listener.PieRadarChartTouchListener
 import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.PointF.Companion.getInstance
 import info.appdev.charting.utils.PointF.Companion.recycleInstance
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.getNormalizedAngle
 import timber.log.Timber
 import kotlin.math.acos
 import kotlin.math.cos
@@ -378,7 +378,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
          */
         set(angle) {
             this.rawRotationAngle = angle
-            mRotationAngle = Utils.getNormalizedAngle(this.rawRotationAngle)
+            mRotationAngle = this.rawRotationAngle.getNormalizedAngle()
         }
 
     val diameter: Float

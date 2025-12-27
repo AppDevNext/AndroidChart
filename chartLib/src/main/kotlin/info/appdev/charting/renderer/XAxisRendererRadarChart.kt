@@ -4,8 +4,8 @@ import android.graphics.Canvas
 import info.appdev.charting.charts.RadarChart
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.utils.PointF
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
+import info.appdev.charting.utils.getPosition
 
 class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, private val chart: RadarChart) : XAxisRenderer(viewPortHandler, xAxis, null) {
     override fun renderAxisLabels(canvas: Canvas) {
@@ -26,16 +26,14 @@ class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, pr
         val factor = chart.factor
 
         val center = chart.centerOffsets
-        val pOut = PointF.getInstance(0f, 0f)
+        var pOut = PointF.getInstance(0f, 0f)
         chart.getData()!!.maxEntryCountSet?.let { maxEntryCountSet ->
             for (i in 0..<maxEntryCountSet.entryCount) {
                 val label = xAxis.valueFormatter?.getFormattedValue(i.toFloat(), xAxis)
 
                 val angle = (sliceAngle * i + chart.rotationAngle) % 360f
 
-                Utils.getPosition(
-                    center, chart.yRange * factor + xAxis.mLabelWidth / 2f, angle, pOut
-                )
+                pOut = center.getPosition(chart.yRange * factor + xAxis.mLabelWidth / 2f, angle)
 
                 drawLabel(
                     canvas, label, pOut.x, pOut.y - xAxis.mLabelHeight / 2f,

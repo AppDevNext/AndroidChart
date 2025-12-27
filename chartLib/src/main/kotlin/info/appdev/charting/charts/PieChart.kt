@@ -14,8 +14,8 @@ import info.appdev.charting.renderer.PieChartRenderer
 import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.PointF.Companion.getInstance
 import info.appdev.charting.utils.PointF.Companion.recycleInstance
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.getNormalizedAngle
 import java.util.Locale
 import java.util.Objects
 import kotlin.math.abs
@@ -346,7 +346,7 @@ class PieChart : PieRadarChartBase<PieData> {
     override fun getIndexForAngle(angle: Float): Int {
         // take the current angle of the chart into consideration
 
-        val a = Utils.getNormalizedAngle(angle - rotationAngle)
+        val a = (angle - rotationAngle).getNormalizedAngle()
 
         for (i in absoluteAngles.indices) {
             if (this.absoluteAngles[i] > a)
