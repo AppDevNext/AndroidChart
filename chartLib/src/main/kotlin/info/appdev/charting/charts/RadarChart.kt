@@ -11,8 +11,8 @@ import info.appdev.charting.highlight.RadarHighlighter
 import info.appdev.charting.renderer.RadarChartRenderer
 import info.appdev.charting.renderer.XAxisRendererRadarChart
 import info.appdev.charting.renderer.YAxisRendererRadarChart
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.getNormalizedAngle
 import kotlin.math.max
 import kotlin.math.min
 
@@ -203,16 +203,16 @@ class RadarChart : PieRadarChartBase<RadarData> {
     override fun getIndexForAngle(angle: Float): Int {
         // take the current angle of the chart into consideration
 
-        val a = Utils.getNormalizedAngle(angle - rotationAngle)
+        val a = (angle - rotationAngle).getNormalizedAngle()
 
-        val sliceangle = this.sliceAngle
+        val sliceAngle = this.sliceAngle
 
         val max = mData?.maxEntryCountSet!!.entryCount
 
         var index = 0
 
         for (i in 0..<max) {
-            val referenceAngle = sliceangle * (i + 1) - sliceangle / 2f
+            val referenceAngle = sliceAngle * (i + 1) - sliceAngle / 2f
 
             if (referenceAngle > a) {
                 index = i
