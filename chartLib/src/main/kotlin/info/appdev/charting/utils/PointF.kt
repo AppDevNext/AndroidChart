@@ -3,6 +3,8 @@ package info.appdev.charting.utils
 import android.os.Parcel
 import android.os.Parcelable
 import info.appdev.charting.utils.ObjectPool.Poolable
+import kotlin.math.cos
+import kotlin.math.sin
 
 class PointF : Poolable<PointF> {
     var x: Float = 0f
@@ -85,4 +87,22 @@ class PointF : Poolable<PointF> {
             }
         }
     }
+}
+
+/**
+ * Returns a recyclable PointF instance.
+ * Calculates the position around a center point, depending on the distance
+ * from the center, and the angle of the position around the center.
+ *
+ * @param angle  in degrees, converted to radians internally
+ */
+fun PointF.getPosition(dist: Float, angle: Float): PointF {
+    val pointF = PointF.getInstance(0f, 0f)
+    changePosition(dist, angle, pointF)
+    return pointF
+}
+
+fun PointF.changePosition(dist: Float, angle: Float, outputPoint: PointF) {
+    outputPoint.x = (this.x + dist * cos(Math.toRadians(angle.toDouble()))).toFloat()
+    outputPoint.y = (this.y + dist * sin(Math.toRadians(angle.toDouble()))).toFloat()
 }
