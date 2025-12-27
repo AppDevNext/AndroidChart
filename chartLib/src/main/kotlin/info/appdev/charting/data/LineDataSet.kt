@@ -3,6 +3,7 @@ package info.appdev.charting.data
 import android.content.Context
 import android.graphics.Color
 import android.graphics.DashPathEffect
+import androidx.core.content.ContextCompat
 import info.appdev.charting.formatter.DefaultFillFormatter
 import info.appdev.charting.formatter.IFillFormatter
 import info.appdev.charting.interfaces.datasets.ILineDataSet
@@ -108,18 +109,6 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
         lineDataSet.mFillFormatter = mFillFormatter
         lineDataSet.mLineDataSetMode = mLineDataSetMode
     }
-
-    @get:Deprecated("Deprecated because of unclarity. Use getCircleRadius instead")
-    @set:Deprecated("Deprecated because of unclarity. Use getCircleRadius instead")
-    var circleSize: Float
-        get() = circleRadius
-        /**
-         * sets the size (radius) of the circle shpaed value indicators,
-         * default size = 4f
-         */
-        set(size) {
-            circleRadius = size
-        }
 
     /**
      * Enables the line to be drawn in dashed mode, e.g. like this
@@ -275,7 +264,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
         clrs.clear()
 
         for (color in colors) {
-            clrs.add(context.resources.getColor(color))
+            clrs.add(ContextCompat.getColor(context, color))
         }
 
         this.circleColors = clrs

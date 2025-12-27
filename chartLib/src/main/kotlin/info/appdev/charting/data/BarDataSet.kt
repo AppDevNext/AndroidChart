@@ -45,11 +45,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
      */
     private var mStackLabels: MutableList<String> = mutableListOf()
 
-    /**
-     * This method is deprecated.
-     * Use getFills() instead.
-     */
-    @get:Deprecated("")
+    @get:Deprecated("Use getFills() instead")
     var gradients: MutableList<Fill> = mutableListOf()
         protected set
 
