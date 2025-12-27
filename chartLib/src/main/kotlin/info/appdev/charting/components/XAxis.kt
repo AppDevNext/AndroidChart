@@ -12,14 +12,12 @@ class XAxis : AxisBase() {
      * width of the x-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
-    @JvmField
     var mLabelWidth: Int = 1
 
     /**
      * height of the x-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
-    @JvmField
     var mLabelHeight: Int = 1
 
     /**

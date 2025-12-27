@@ -194,19 +194,19 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
         return success
     }
 
-    @Deprecated("")
+    @Deprecated("removeDataSet(int index) not supported for CombinedData")
     override fun removeDataSet(index: Int): Boolean {
         Timber.e("removeDataSet(int index) not supported for CombinedData")
         return false
     }
 
-    @Deprecated("")
+    @Deprecated("removeEntry(...) not supported for CombinedData")
     override fun removeEntry(entry: Entry?, dataSetIndex: Int): Boolean {
         Timber.e("removeEntry(...) not supported for CombinedData")
         return false
     }
 
-    @Deprecated("")
+    @Deprecated("removeEntry(...) not supported for CombinedData")
     override fun removeEntry(xValue: Float, dataSetIndex: Int): Boolean {
         Timber.e("removeEntry(...) not supported for CombinedData")
         return false
