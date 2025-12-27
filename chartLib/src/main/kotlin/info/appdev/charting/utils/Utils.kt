@@ -2,7 +2,6 @@ package info.appdev.charting.utils
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.view.MotionEvent
@@ -13,7 +12,6 @@ import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.utils.MPPointF.Companion.instance
 import kotlin.Int
 import kotlin.IntArray
-import kotlin.String
 import kotlin.Suppress
 import kotlin.intArrayOf
 import kotlin.math.abs
@@ -41,67 +39,6 @@ object Utils {
         val viewConfiguration = ViewConfiguration.get(context)
         minimumFlingVelocity = viewConfiguration.scaledMinimumFlingVelocity
         maximumFlingVelocity = viewConfiguration.scaledMaximumFlingVelocity
-    }
-
-    /**
-     * calculates the approximate width of a text, depending on a demo text
-     * avoid repeated calls (e.g. inside drawing methods)
-     */
-    fun calcTextWidth(paint: Paint, demoText: String?): Int {
-        return paint.measureText(demoText).toInt()
-    }
-
-    private val mFontMetrics = Paint.FontMetrics()
-
-    fun getLineHeight(paint: Paint): Float {
-        return getLineHeight(paint, mFontMetrics)
-    }
-
-    fun getLineHeight(paint: Paint, fontMetrics: Paint.FontMetrics): Float {
-        paint.getFontMetrics(fontMetrics)
-        return fontMetrics.descent - fontMetrics.ascent
-    }
-
-    fun getLineSpacing(paint: Paint): Float {
-        return getLineSpacing(paint, mFontMetrics)
-    }
-
-    fun getLineSpacing(paint: Paint, fontMetrics: Paint.FontMetrics): Float {
-        paint.getFontMetrics(fontMetrics)
-        return fontMetrics.ascent - fontMetrics.top + fontMetrics.bottom
-    }
-
-    /**
-     * Returns a recyclable FSize instance.
-     * calculates the approximate size of a text, depending on a demo text
-     * avoid repeated calls (e.g. inside drawing methods)
-     *
-     * @param paint
-     * @param demoText
-     * @return A Recyclable FSize instance
-     */
-    fun calcTextSize(paint: Paint, demoText: String): FSize {
-        val result = FSize.getInstance(0f, 0f)
-        calcTextSize(paint, demoText, result)
-        return result
-    }
-
-    private val mCalcTextSizeRect = Rect()
-
-    /**
-     * calculates the approximate size of a text, depending on a demo text
-     * avoid repeated calls (e.g. inside drawing methods)
-     *
-     * @param paint
-     * @param demoText
-     * @param outputFSize An output variable, modified by the function.
-     */
-    fun calcTextSize(paint: Paint, demoText: String, outputFSize: FSize) {
-        val r = mCalcTextSizeRect
-        r.set(0, 0, 0, 0)
-        paint.getTextBounds(demoText, 0, demoText.length, r)
-        outputFSize.width = r.width().toFloat()
-        outputFSize.height = r.height().toFloat()
     }
 
     /**

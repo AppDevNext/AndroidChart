@@ -4,10 +4,13 @@ import android.graphics.DashPathEffect
 import android.graphics.Paint
 import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.FSize
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
+import info.appdev.charting.utils.calcTextWidth
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.calcTextSize
+import info.appdev.charting.utils.getLineHeight
+import info.appdev.charting.utils.getLineSpacing
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.IntArray
@@ -203,7 +206,7 @@ class Legend() : ComponentBase() {
 
             val label = entry.label ?: continue
 
-            val length = Utils.calcTextWidth(p, label).toFloat()
+            val length = p.calcTextWidth(label).toFloat()
 
             if (length > max) max = length
         }
@@ -309,16 +312,13 @@ class Legend() : ComponentBase() {
     /**
      * the total width of the legend (needed width space)
      */
-    @JvmField
     var neededWidth: Float = 0f
 
     /**
      * the total height of the legend (needed height space)
      */
-    @JvmField
     var neededHeight: Float = 0f
 
-    @JvmField
     var mTextHeightMax: Float = 0f
 
     var mTextWidthMax: Float = 0f
@@ -375,7 +375,7 @@ class Legend() : ComponentBase() {
                 var maxWidth = 0f
                 var maxHeight = 0f
                 var width = 0f
-                val labelLineHeight = Utils.getLineHeight(labelpaint)
+                val labelLineHeight = labelpaint.getLineHeight()
                 var wasStacked = false
 
                 var i = 0
@@ -407,7 +407,7 @@ class Legend() : ComponentBase() {
                             wasStacked = false
                         }
 
-                        width += Utils.calcTextWidth(labelpaint, label).toFloat()
+                        width += labelpaint.calcTextWidth(label).toFloat()
 
                         maxHeight += labelLineHeight + yEntrySpace
                     } else {
@@ -425,8 +425,8 @@ class Legend() : ComponentBase() {
             }
 
             LegendOrientation.HORIZONTAL -> {
-                val labelLineHeight = Utils.getLineHeight(labelpaint)
-                val labelLineSpacing = Utils.getLineSpacing(labelpaint) + yEntrySpace
+                val labelLineHeight = labelpaint.getLineHeight()
+                val labelLineSpacing = labelpaint.getLineSpacing() + yEntrySpace
                 val contentWidth = viewPortHandler.contentWidth() * this.maxSizePercent
 
                 // Start calculating layout
@@ -462,7 +462,7 @@ class Legend() : ComponentBase() {
 
                     // grouped forms have null labels
                     if (label != null) {
-                        calculatedLabelSizes.add(Utils.calcTextSize(labelpaint, label))
+                        calculatedLabelSizes.add(labelpaint.calcTextSize(label))
                         requiredWidth += if (drawingForm) formToTextSpace + formSize else 0f
                         requiredWidth += calculatedLabelSizes.get(i)!!.width
                     } else {

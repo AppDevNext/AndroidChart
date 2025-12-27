@@ -15,6 +15,7 @@ import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
+import info.appdev.charting.utils.calcTextWidth
 import info.appdev.charting.utils.convertDpToPixel
 import kotlin.math.ceil
 import kotlin.math.min
@@ -225,7 +226,7 @@ open class HorizontalBarChartRenderer(
                                 val valueY = barEntry.y
                                 val formattedValue = formatter.getFormattedValue(valueY, barEntry, i, viewPortHandler)
                                 // calculate the correct offset depending on the draw position of the value
-                                val valueTextWidth = Utils.calcTextWidth(paintValues, formattedValue).toFloat()
+                                val valueTextWidth = paintValues.calcTextWidth(formattedValue).toFloat()
                                 posOffset = (if (drawValueAboveBar) valueOffsetPlus else -(valueTextWidth + valueOffsetPlus))
                                 negOffset = ((if (drawValueAboveBar) -(valueTextWidth + valueOffsetPlus) else valueOffsetPlus)
                                         - (buffer.buffer[j + 2] - buffer.buffer[j]))
@@ -302,7 +303,7 @@ open class HorizontalBarChartRenderer(
                                     )
 
                                     // calculate the correct offset depending on the draw position of the value
-                                    val valueTextWidth = Utils.calcTextWidth(paintValues, formattedValue).toFloat()
+                                    val valueTextWidth = paintValues.calcTextWidth(formattedValue).toFloat()
                                     posOffset = (if (drawValueAboveBar) valueOffsetPlus else -(valueTextWidth + valueOffsetPlus))
                                     negOffset = (if (drawValueAboveBar) -(valueTextWidth + valueOffsetPlus) else valueOffsetPlus)
 
@@ -380,7 +381,7 @@ open class HorizontalBarChartRenderer(
                                         )
 
                                         // calculate the correct offset depending on the draw position of the value
-                                        val valueTextWidth = Utils.calcTextWidth(paintValues, formattedValue).toFloat()
+                                        val valueTextWidth = paintValues.calcTextWidth(formattedValue).toFloat()
                                         posOffset = (if (drawValueAboveBar) valueOffsetPlus else -(valueTextWidth + valueOffsetPlus))
                                         negOffset = (if (drawValueAboveBar) -(valueTextWidth + valueOffsetPlus) else valueOffsetPlus)
 

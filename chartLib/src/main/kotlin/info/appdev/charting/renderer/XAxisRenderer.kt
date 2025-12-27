@@ -19,6 +19,8 @@ import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
+import info.appdev.charting.utils.calcTextSize
+import info.appdev.charting.utils.calcTextWidth
 import info.appdev.charting.utils.convertDpToPixel
 import info.appdev.charting.utils.drawXAxisValue
 import kotlin.math.roundToInt
@@ -71,7 +73,7 @@ open class XAxisRenderer(
         paintAxisLabels.typeface = xAxis.typeface
         paintAxisLabels.textSize = xAxis.textSize
 
-        val labelSize = Utils.calcTextSize(paintAxisLabels, longest)
+        val labelSize = paintAxisLabels.calcTextSize(longest)
 
         val labelWidth = labelSize.width
         val labelHeight = paintAxisLabels.calcTextHeight("Q").toFloat()
@@ -208,7 +210,7 @@ open class XAxisRenderer(
                     // avoid clipping of the last
 
                     if (i / 2 == xAxis.entryCount - 1 && xAxis.entryCount > 1) {
-                        val width = Utils.calcTextWidth(paintAxisLabels, label).toFloat()
+                        val width = paintAxisLabels.calcTextWidth(label).toFloat()
 
                         if (width > viewPortHandler.offsetRight() * 2
                             && x + width > viewPortHandler.chartWidth
@@ -216,7 +218,7 @@ open class XAxisRenderer(
 
                         // avoid clipping of the first
                     } else if (i == 0) {
-                        val width = Utils.calcTextWidth(paintAxisLabels, label).toFloat()
+                        val width = paintAxisLabels.calcTextWidth(label).toFloat()
                         x += width / 2
                     }
                 }
