@@ -17,7 +17,7 @@ import kotlin.Int
  * Transformer class that contains all matrices and is responsible for
  * transforming values into pixels on the screen and backwards.
  */
-open class Transformer(@JvmField protected var viewPortHandler: ViewPortHandler) {
+open class Transformer(protected var viewPortHandler: ViewPortHandler) {
     /**
      * matrix to map the values to the screen pixels
      */

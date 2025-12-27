@@ -6,7 +6,6 @@ import timber.log.Timber
 
 @SuppressLint("ParcelCreator")
 class PieEntry : Entry {
-    @JvmField
     var label: String? = null
 
     constructor(value: Float) : super(0f, value)

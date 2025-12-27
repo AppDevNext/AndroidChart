@@ -15,7 +15,7 @@ import kotlin.math.abs
  * LineChart, or the values of a specific group of bars in the BarChart).
  */
 abstract class DataSet<T : Entry>(
-    @JvmField protected var mEntries: MutableList<T>?,
+    protected var mEntries: MutableList<T>?,
     label: String = ""
 ) : BaseDataSet<T>(label), Serializable {
     /**

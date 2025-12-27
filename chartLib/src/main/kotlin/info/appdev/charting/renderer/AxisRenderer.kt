@@ -23,7 +23,6 @@ abstract class AxisRenderer(
     /** transformer to transform values to screen pixels and return  */
     var transformer: Transformer?,
     /** base axis this axis renderer works with  */
-    @JvmField
     protected var axis: AxisBase
 ) : Renderer(viewPortHandler) {
 
@@ -57,7 +56,6 @@ abstract class AxisRenderer(
     /**
      * paint used for the limit lines
      */
-    @JvmField
     protected var limitLinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
     }
@@ -65,7 +63,6 @@ abstract class AxisRenderer(
     /**
      * paint used for the limit ranges
      */
-    @JvmField
     protected var limitRangePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
     }
@@ -73,7 +70,6 @@ abstract class AxisRenderer(
     /**
      * paint used for the limit range fill
      */
-    @JvmField
     protected var limitRangePaintFill = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
     }

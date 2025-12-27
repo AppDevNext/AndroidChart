@@ -281,7 +281,6 @@ open class XAxisRenderer(
         }
     }
 
-    @JvmField
     protected var mGridClippingRect: RectF = RectF()
 
     open val gridClippingRect: RectF?
@@ -291,10 +290,8 @@ open class XAxisRenderer(
             return mGridClippingRect
         }
 
-    @JvmField
     protected var mRenderLimitLinesBuffer: FloatArray = FloatArray(2)
 
-    @JvmField
     protected var mLimitLineClippingRect: RectF = RectF()
 
     var limitLineSegmentsBuffer: FloatArray = FloatArray(4)

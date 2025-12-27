@@ -17,13 +17,11 @@ abstract class ComponentBase {
     /**
      * the offset in pixels this component has on the x-axis
      */
-    @JvmField
     protected var mXOffset: Float = 5f
 
     /**
      * the offset in pixels this component has on the Y-axis
      */
-    @JvmField
     protected var mYOffset: Float = 5f
 
     /**
@@ -34,7 +32,6 @@ abstract class ComponentBase {
     /**
      * the text size of the labels
      */
-    @JvmField
     protected var mTextSize: Float = 10f.convertDpToPixel()
 
     /**

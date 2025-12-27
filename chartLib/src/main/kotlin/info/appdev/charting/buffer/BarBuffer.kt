@@ -7,31 +7,20 @@ open class BarBuffer(size: Int, dataSetCount: Int, containsStacks: Boolean) : Ab
     protected var dataSetIndex: Int = 0
     protected var dataSetCount: Int = 1
 
-    @JvmField
     protected var containsStacks: Boolean = false
 
-    @JvmField
-    protected var inverted: Boolean = false
+    var inverted: Boolean = false
 
     /** width of the bar on the x-axis, in values (not pixels)  */
-    @JvmField
-    protected var barWidth: Float = 1f
+    var barWidth: Float = 1f
 
     init {
         this.dataSetCount = dataSetCount
         this.containsStacks = containsStacks
     }
 
-    fun setBarWidth(barWidthGiven: Float) {
-        this.barWidth = barWidthGiven
-    }
-
     fun setDataSet(index: Int) {
         this.dataSetIndex = index
-    }
-
-    fun setInverted(invertedGiven: Boolean) {
-        this.inverted = invertedGiven
     }
 
     protected fun addBar(left: Float, top: Float, right: Float, bottom: Float) {

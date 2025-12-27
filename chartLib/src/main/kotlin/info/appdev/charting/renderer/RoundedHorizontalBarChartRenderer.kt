@@ -71,8 +71,8 @@ class RoundedHorizontalBarChartRenderer(chart: BarDataProvider, animator: ChartA
             val buffer = barBuffers[index]!!
             buffer.setPhases(phaseX, phaseY)
             buffer.setDataSet(index)
-            buffer.setInverted(dataProvider.isInverted(dataSet.axisDependency))
-            dataProvider.barData?.let { buffer.setBarWidth(it.barWidth) }
+            buffer.inverted = dataProvider.isInverted(dataSet.axisDependency)
+            dataProvider.barData?.let { buffer.barWidth = it.barWidth }
             buffer.feed(dataSet)
             trans!!.pointValuesToPixel(buffer.buffer)
 

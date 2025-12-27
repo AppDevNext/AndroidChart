@@ -18,7 +18,7 @@ import info.appdev.charting.utils.convertDpToPixel
  */
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class DataRenderer(
-    @JvmField protected var animator: ChartAnimator, viewPortHandler: ViewPortHandler
+    protected var animator: ChartAnimator, viewPortHandler: ViewPortHandler
 ) : Renderer(viewPortHandler) {
 
     /**

@@ -8,10 +8,7 @@ class Description : ComponentBase() {
     /**
      * Sets the text to be shown as the description.
      * Never set this to null as this will cause nullpointer exception when drawing with Android Canvas.
-     *
-     * @param text
      */
-    @JvmField
     var text: String? = "Description Label"
 
     /**

@@ -13,7 +13,7 @@ import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.min
 
-open class ScatterChartRenderer(@JvmField var dataProvider: ScatterDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
+open class ScatterChartRenderer(var dataProvider: ScatterDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
     LineScatterCandleRadarRenderer(animator, viewPortHandler) {
     override fun initBuffers() = Unit
 

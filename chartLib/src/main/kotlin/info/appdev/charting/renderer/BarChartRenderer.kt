@@ -20,23 +20,19 @@ import kotlin.math.ceil
 import kotlin.math.min
 
 open class BarChartRenderer(
-    @JvmField var dataProvider: BarDataProvider,
+    var dataProvider: BarDataProvider,
     animator: ChartAnimator,
     viewPortHandler: ViewPortHandler
 ) : BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
     /**
      * the rect object that is used for drawing the bars
      */
-    @JvmField
     protected var barRect: RectF = RectF()
 
-    @JvmField
     protected var barBuffers: MutableList<BarBuffer?> = mutableListOf()
 
-    @JvmField
     protected var shadowPaint: Paint
 
-    @JvmField
     protected var barBorderPaint: Paint
 
     /**
@@ -162,14 +158,14 @@ open class BarChartRenderer(
         }
 
         // initialize the buffer
-        val buffer = barBuffers[index]!!.apply {
+        val buffer = barBuffers[index]?.apply {
             setPhases(phaseX, phaseY)
             setDataSet(index)
-            setInverted(dataProvider.isInverted(dataSet.axisDependency))
-            dataProvider.barData?.let { setBarWidth(it.barWidth) }
+            inverted = dataProvider.isInverted(dataSet.axisDependency)
+            dataProvider.barData?.let { barWidth = it.barWidth }
             feed(dataSet)
         }
-        trans!!.pointValuesToPixel(buffer.buffer)
+        trans!!.pointValuesToPixel(buffer!!.buffer)
 
         val isCustomFill = dataSet.fills.isNotEmpty()
         val isSingleColor = dataSet.colors.size == 1

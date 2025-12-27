@@ -7,19 +7,15 @@ package info.appdev.charting.buffer
 </T> */
 abstract class AbstractBuffer<T>(size: Int) {
     /** index in the buffer  */
-    @JvmField
     protected var index: Int = 0
 
     /** float-buffer that holds the data points to draw, order: x,y,x,y,...  */
-    @JvmField
     val buffer: FloatArray
 
     /** animation phase x-axis  */
-    @JvmField
     protected var phaseX: Float = 1f
 
     /** animation phase y-axis  */
-    @JvmField
     protected var phaseY: Float = 1f
 
     /** indicates from which x-index the visible data begins  */

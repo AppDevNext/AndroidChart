@@ -119,7 +119,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>) : ChartTouchListen
         }
 
         val high = chart.getHighlightByTouchPoint(e.x, e.y)
-        performHighlight(high, e)
+        performHighlight(high)
 
         return true
     }
