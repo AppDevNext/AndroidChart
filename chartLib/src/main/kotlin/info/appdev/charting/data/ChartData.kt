@@ -7,7 +7,6 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IDataSet
 import timber.log.Timber
 import java.io.Serializable
-import java.util.Collections
 
 /**
  * Class that holds all relevant data that represents the chart. That involves at least one (or more) DataSets, and an array of x-values.
@@ -38,59 +37,29 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     var xMin: Float = Float.MAX_VALUE
         protected set
 
-
-    @JvmField
     protected var mLeftAxisMax: Float = -Float.MAX_VALUE
 
-    @JvmField
     protected var mLeftAxisMin: Float = Float.MAX_VALUE
 
-    @JvmField
     protected var mRightAxisMax: Float = -Float.MAX_VALUE
 
-    @JvmField
     protected var mRightAxisMin: Float = Float.MAX_VALUE
 
-    /**
-     * Returns all DataSet objects this ChartData object holds.
-     */
     /**
      * array that holds all DataSets the ChartData object represents
      */
     open var dataSets: MutableList<T>? = null
         protected set
 
-    /**
-     * Default constructor.
-     */
     constructor() {
         this.dataSets = ArrayList<T>()
     }
 
-    /**
-     * Constructor taking single or multiple DataSet objects.
-     */
     constructor(vararg dataSets: T) {
         this.dataSets = dataSets.toMutableList()
         notifyDataChanged()
     }
 
-    /**
-     * Created because Arrays.asList(...) does not support modification.
-     */
-    private fun arrayToList(array: Array<T>): MutableList<T> {
-        val list: MutableList<T> = ArrayList()
-
-        Collections.addAll(list, *array)
-
-        return list
-    }
-
-    /**
-     * constructor for chart data
-     *
-     * @param sets the dataset array
-     */
     constructor(sets: MutableList<T>) {
         this.dataSets = sets
         notifyDataChanged()

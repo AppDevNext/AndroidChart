@@ -13,7 +13,6 @@ import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
 
 open class CandleStickChartRenderer(
-    @JvmField
     var dataProvider: CandleDataProvider, animator: ChartAnimator,
     viewPortHandler: ViewPortHandler
 ) : LineScatterCandleRadarRenderer(animator, viewPortHandler) {

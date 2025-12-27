@@ -8,8 +8,7 @@ import info.appdev.charting.charts.Chart
 import info.appdev.charting.highlight.Highlight
 import kotlin.math.sqrt
 
-abstract class ChartTouchListener<T : Chart<*>>(
-    @JvmField protected var chart: T) : SimpleOnGestureListener(), OnTouchListener {
+abstract class ChartTouchListener<T : Chart<*>>(protected var chart: T) : SimpleOnGestureListener(), OnTouchListener {
     enum class ChartGesture {
         NONE, DRAG, X_ZOOM, Y_ZOOM, PINCH_ZOOM, ROTATE, SINGLE_TAP, DOUBLE_TAP, LONG_PRESS, FLING
     }
@@ -32,37 +31,26 @@ abstract class ChartTouchListener<T : Chart<*>>(
     protected var mLastHighlighted: Highlight? = null
 
     /**
-     * the gesturedetector used for detecting taps and longpresses, ...
+     * the gesture detector used for detecting taps and long presses, ...
      */
-    @JvmField
     protected var gestureDetector: GestureDetector? = GestureDetector(chart.context, this)
 
     /**
      * Calls the OnChartGestureListener to do the start callback
-     *
-     * @param me
      */
     fun startAction(me: MotionEvent) {
-        val l = chart.onChartGestureListener
-
-        if (l != null) l.onChartGestureStart(me, this.lastGesture)
+        chart.onChartGestureListener?.onChartGestureStart(me, this.lastGesture)
     }
 
     /**
      * Calls the OnChartGestureListener to do the end callback
-     *
-     * @param me
      */
     fun endAction(me: MotionEvent) {
-        val l = chart.onChartGestureListener
-
-        if (l != null) l.onChartGestureEnd(me, this.lastGesture)
+        chart.onChartGestureListener?.onChartGestureEnd(me, this.lastGesture)
     }
 
     /**
      * Sets the last value that was highlighted via touch.
-     *
-     * @param high
      */
     fun setLastHighlighted(high: Highlight?) {
         mLastHighlighted = high
@@ -70,10 +58,8 @@ abstract class ChartTouchListener<T : Chart<*>>(
 
     /**
      * Perform a highlight operation.
-     *
-     * @param motionEvent
      */
-    protected fun performHighlight(highlight: Highlight?, motionEvent: MotionEvent?) {
+    protected fun performHighlight(highlight: Highlight?) {
         if (highlight == null || highlight.equalTo(mLastHighlighted)) {
             chart.highlightValue(null, true)
             mLastHighlighted = null
@@ -84,7 +70,6 @@ abstract class ChartTouchListener<T : Chart<*>>(
     }
 
     companion object {
-        // states
         protected const val NONE: Int = 0
         protected const val DRAG: Int = 1
         protected const val X_ZOOM: Int = 2
@@ -96,7 +81,6 @@ abstract class ChartTouchListener<T : Chart<*>>(
         /**
          * returns the distance between two points
          */
-        @JvmStatic
         protected fun distance(eventX: Float, startX: Float, eventY: Float, startY: Float): Float {
             val dx = eventX - startX
             val dy = eventY - startY

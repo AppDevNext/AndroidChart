@@ -59,7 +59,6 @@ class PointF : Poolable<PointF> {
             return result
         }
 
-        @JvmStatic
         fun recycleInstance(instance: PointF?) {
             pool.recycle(instance)
         }

@@ -533,7 +533,7 @@ class BarLineChartTouchListener(
         }
 
         val h = chart.getHighlightByTouchPoint(e.x, e.y)
-        performHighlight(h, e)
+        performHighlight(h)
 
         return super.onSingleTapUp(e)
     }

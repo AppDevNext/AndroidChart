@@ -324,18 +324,11 @@ class Legend() : ComponentBase() {
     var mTextWidthMax: Float = 0f
 
     /**
-     * If this is set, then word wrapping the legend is enabled. This means the
-     * legend will not be cut off if too long.
-     */
-    /**
      * Should the legend word wrap? / this is currently supported only for:
      * BelowChartLeft, BelowChartRight, BelowChartCenter. / note that word
      * wrapping a legend takes a toll on performance. / you may want to set
      * maxSizePercent when word wrapping, to set the point where the text wraps.
      * / default: false
-     */
-    /**
-     * flag that indicates if word wrapping is enabled
      */
     var isWordWrapEnabled: Boolean = false
 
@@ -343,9 +336,6 @@ class Legend() : ComponentBase() {
     val calculatedLabelBreakPoints: MutableList<Boolean?> = ArrayList<Boolean?>(16)
     val calculatedLineSizes: MutableList<FSize?> = ArrayList<FSize?>(16)
 
-    /**
-     * default constructor
-     */
     init {
         this.mTextSize = 10f.convertDpToPixel()
         this.mXOffset = 5f.convertDpToPixel()

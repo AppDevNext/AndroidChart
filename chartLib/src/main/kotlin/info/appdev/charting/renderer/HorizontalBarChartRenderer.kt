@@ -103,8 +103,8 @@ open class HorizontalBarChartRenderer(
         val buffer = barBuffers[index]!!
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
-        buffer.setInverted(dataProvider.isInverted(dataSet.axisDependency))
-        dataProvider.barData?.let { buffer.setBarWidth(it.barWidth) }
+        buffer.inverted = dataProvider.isInverted(dataSet.axisDependency)
+        dataProvider.barData?.let { buffer.barWidth = it.barWidth }
 
         buffer.feed(dataSet)
 
@@ -139,14 +139,14 @@ open class HorizontalBarChartRenderer(
 
             if (isCustomFill) {
                 dataSet.getFill(pos)?.fillRect(
-                        canvas, paintRender,
-                        buffer.buffer[j],
-                        buffer.buffer[j + 1],
-                        buffer.buffer[j + 2],
-                        buffer.buffer[j + 3],
-                        if (isInverted) Fill.Direction.LEFT else Fill.Direction.RIGHT,
-                        0f
-                    )
+                    canvas, paintRender,
+                    buffer.buffer[j],
+                    buffer.buffer[j + 1],
+                    buffer.buffer[j + 2],
+                    buffer.buffer[j + 3],
+                    if (isInverted) Fill.Direction.LEFT else Fill.Direction.RIGHT,
+                    0f
+                )
             } else {
                 canvas.drawRect(
                     buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],

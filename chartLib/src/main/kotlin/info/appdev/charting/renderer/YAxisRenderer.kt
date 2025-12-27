@@ -17,10 +17,9 @@ import androidx.core.graphics.withClip
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.convertDpToPixel
 
-open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected var yAxis: YAxis, trans: Transformer?) :
+open class YAxisRenderer(viewPortHandler: ViewPortHandler, protected var yAxis: YAxis, trans: Transformer?) :
     AxisRenderer(viewPortHandler, trans, yAxis) {
 
-    @JvmField
     protected var zeroLinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.GRAY
         strokeWidth = 1f
@@ -166,7 +165,6 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         }
     }
 
-    @JvmField
     protected var mGridClippingRect: RectF = RectF()
 
     open val gridClippingRect: RectF?
@@ -186,7 +184,6 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
         return p
     }
 
-    @JvmField
     protected var mGetTransformedPositionsBuffer: FloatArray = FloatArray(2)
     protected open val transformedPositions: FloatArray
         /**
@@ -222,7 +219,6 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
 
     protected var drawZeroLinePath: Path = Path()
 
-    @JvmField
     protected var zeroLineClippingRect: RectF = RectF()
 
     /**
@@ -257,7 +253,6 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, @JvmField protected v
     protected var renderLimitLines: Path = Path()
     protected open var renderLimitLinesBuffer: FloatArray = FloatArray(2)
 
-    @JvmField
     protected var limitLineClippingRect: RectF = RectF()
 
     init {

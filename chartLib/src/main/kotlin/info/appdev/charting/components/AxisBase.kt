@@ -53,7 +53,6 @@ abstract class AxisBase : ComponentBase() {
     /**
      * the number of entries the legend contains
      */
-    @JvmField
     var entryCount: Int = 0
 
     /**
@@ -215,19 +214,16 @@ abstract class AxisBase : ComponentBase() {
     /**
      * don't touch this direclty, use setter
      */
-    @JvmField
     var mAxisMaximum: Float = 0f
 
     /**
      * don't touch this directly, use setter
      */
-    @JvmField
     var mAxisMinimum: Float = 0f
 
     /**
      * the total range of values this axis covers
      */
-    @JvmField
     var mAxisRange: Float = 0f
 
     private var mAxisMinLabels = 2

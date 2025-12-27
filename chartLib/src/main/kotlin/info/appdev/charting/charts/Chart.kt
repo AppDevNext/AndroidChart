@@ -66,7 +66,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      * object that holds all data that was originally set for the chart, before
      * it was modified or any filtering algorithms had been applied
      */
-    @JvmField
     protected var mData: T? = null
 
     /**
@@ -120,13 +119,11 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     /**
      * the object representing the labels on the x-axis
      */
-    @JvmField
     protected var mXAxis: XAxis = XAxis()
 
     /**
      * if true, touch gestures are enabled on the chart
      */
-    @JvmField
     protected var mTouchEnabled: Boolean = true
 
     /**
@@ -186,7 +183,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     /**
      * object responsible for rendering the data
      */
-    @JvmField
     protected var mRenderer: DataRenderer? = null
 
     var highlighter: IHighlighter? = null
@@ -195,9 +191,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     /**
      * Returns the ViewPortHandler of the chart that is responsible for the
      * content area of the chart and its offsets and dimensions.
-     */
-    /**
-     * object that manages the bounds and drawing constraints of the chart
+     * Object that manages the bounds and drawing constraints of the chart
      */
     var viewPortHandler: ViewPortHandler = ViewPortHandler()
         protected set
@@ -281,39 +275,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
         this.legendRenderer = LegendRenderer(this.viewPortHandler, this.legend!!)
     }
 
-    // public void initWithDummyData() {
-    // ColorTemplate template = new ColorTemplate();
-    // template.addColorsForDataSets(ColorTemplate.COLORFUL_COLORS,
-    // getContext());
-    //
-    // setColorTemplate(template);
-    // setDrawYValues(false);
-    //
-    // ArrayList<String> xVals = new ArrayList<String>();
-    // Calendar calendar = Calendar.getInstance();
-    // for (int i = 0; i < 12; i++) {
-    // xVals.add(calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT,
-    // Locale.getDefault()));
-    // }
-    //
-    // ArrayList<DataSet> dataSets = new ArrayList<DataSet>();
-    // for (int i = 0; i < 3; i++) {
-    //
-    // ArrayList<Entry> yVals = new ArrayList<Entry>();
-    //
-    // for (int j = 0; j < 12; j++) {
-    // float val = (float) (Math.random() * 100);
-    // yVals.add(new Entry(val, j));
-    // }
-    //
-    // DataSet set = new DataSet(yVals, "DataSet " + i);
-    // dataSets.add(set); // add the datasets
-    // }
-    // // create a data object with the datasets
-    // ChartData data = new ChartData(xVals, dataSets);
-    // setData(data);
-    // invalidate();
-    // }
     /**
      * Sets a new data object for the chart. The data object contains all values
      * and information needed for displaying.
@@ -574,7 +535,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      * @param dataIndex    The data index to search in (only used in CombinedChartView currently)
      * @param callListener Should the listener be called for this change
      */
-    @JvmOverloads
     fun highlightValue(x: Float, dataSetIndex: Int, dataIndex: Int = -1, callListener: Boolean = true) {
         highlightValue(x, Float.NaN, dataSetIndex, dataIndex, callListener)
     }
@@ -601,7 +561,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      * @param dataSetIndex The dataset index to search in
      * @param dataIndex    The data index to search in (only used in CombinedChartView currently)
      */
-    @JvmOverloads
     fun highlightValue(x: Float, y: Float, dataSetIndex: Int, dataIndex: Int = -1, callListener: Boolean = true) {
         if (dataSetIndex < 0 || dataSetIndex >= mData!!.dataSetCount) {
             highlightValue(null, callListener)
@@ -1221,7 +1180,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      * @param quality         e.g. 50, min = 0, max = 100
      * @return returns true if saving was successful, false if not
      */
-    @JvmOverloads
     fun saveToGallery(
         fileName: String,
         subFolderPath: String? = "",
