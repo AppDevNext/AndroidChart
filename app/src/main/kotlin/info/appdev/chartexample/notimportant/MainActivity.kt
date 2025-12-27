@@ -54,6 +54,7 @@ import info.appdev.chartexample.CombinedChartActivity
 import info.appdev.chartexample.CubicLineChartActivity
 import info.appdev.chartexample.DynamicalAddingActivity
 import info.appdev.chartexample.FilledLineActivity
+import info.appdev.chartexample.GradientActivity
 import info.appdev.chartexample.HalfPieChartActivity
 import info.appdev.chartexample.HorizontalBarChartActivity
 import info.appdev.chartexample.InvertedLineChartActivity
@@ -208,6 +209,9 @@ class MainActivity : ComponentActivity() {
 
             add(ContentItem("Compose Horizontal"))
             add(ComposeItem("Horizontal", "Render bar chart horizontally.", HorizontalBarComposeActivity::class.java).toDemoBase())
+
+            add(ContentItem("Demonstrate and fix issues"))
+            add(ContentItem("Gradient", "Show a gradient edge case", GradientActivity::class.java))
         }
     }
 }
