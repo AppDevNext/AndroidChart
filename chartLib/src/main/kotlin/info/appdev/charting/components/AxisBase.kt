@@ -665,15 +665,12 @@ abstract class AxisBase : ComponentBase() {
     /**
      * Use setAxisMinimum(...) instead.
      */
-    @Deprecated("")
+    @Deprecated("Use setAxisMinimum(...) instead.")
     fun setAxisMinValue(min: Float) {
         this.axisMinimum = min
     }
 
-    /**
-     * Use setAxisMaximum(...) instead.
-     */
-    @Deprecated("")
+    @Deprecated("Use setAxisMaximum(...) instead.")
     fun setAxisMaxValue(max: Float) {
         this.axisMaximum = max
     }

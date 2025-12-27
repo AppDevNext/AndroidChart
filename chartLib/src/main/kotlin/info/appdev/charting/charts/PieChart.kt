@@ -487,9 +487,8 @@ class PieChart : PieRadarChartBase<PieData> {
     /**
      * Set this to true to draw the entry labels into the pie slices (Provided by the getLabel() method of the PieEntry class).
      * Deprecated -> use setDrawEntryLabels(...) instead.
-     *
      */
-    @Deprecated("")
+    @Deprecated("use setDrawEntryLabels(...) instead.")
     fun setDrawSliceText(enabled: Boolean) {
         this.isDrawEntryLabelsEnabled = enabled
     }

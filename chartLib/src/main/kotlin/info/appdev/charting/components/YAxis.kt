@@ -15,7 +15,7 @@ import kotlin.math.min
  * are suitable for the RadarChart. Customizations that affect the value range of the axis need to be applied before
  * setting data for the chart.
  */
-class YAxis : AxisBase {
+open class YAxis : AxisBase {
     /**
      * returns true if drawing the bottom y-axis label entry is enabled
      */
@@ -25,24 +25,15 @@ class YAxis : AxisBase {
     val isDrawBottomYLabelEntryEnabled: Boolean = true
 
     /**
-     * returns true if drawing the top y-axis label entry is enabled
-     */
-    /**
      * indicates if the top y-label entry is drawn or not
+     * Disabling this can be helpful when the top y-label and left x-label interfere with each other. default: true
      */
     var isDrawTopYLabelEntryEnabled: Boolean = true
-        private set
 
-    /**
-     * If this returns true, the y-axis is inverted.
-     */
     /**
      * If this is set to true, the y-axis is inverted which means that low values are on top of
      * the chart, high values
      * on bottom.
-     */
-    /**
-     * flag that indicates if the axis is inverted or not
      */
     var isInverted: Boolean = false
 
@@ -52,23 +43,6 @@ class YAxis : AxisBase {
     var isDrawZeroLineEnabled: Boolean = false
         protected set
 
-    /**
-     * flag indicating that auto scale min restriction should be used
-     */
-    @get:Deprecated("flag indicating that auto scale min restriction should be used")
-    @set:Deprecated("flag indicating that auto scale min restriction should be used")
-    var isUseAutoScaleMinRestriction: Boolean = false
-
-    /**
-     * flag indicating that auto scale max restriction should be used
-     */
-    @get:Deprecated("flag indicating that auto scale max restriction should be used")
-    @set:Deprecated("flag indicating that auto scale max restriction should be used")
-    var isUseAutoScaleMaxRestriction: Boolean = false
-
-    /**
-     * Sets the color of the zero line
-     */
     /**
      * Color of the zero line
      */
@@ -80,42 +54,21 @@ class YAxis : AxisBase {
     protected var mZeroLineWidth: Float = 1f
 
     /**
-     * Returns the top axis space in percent of the full range. Default 10f
-     */
-    /**
-     * Sets the top axis space in percent of the full range. Default 10f
-     */
-    /**
      * axis space from the largest value to the top in percent of the total axis range
      */
     var spaceTop: Float = 10f
 
-    /**
-     * Returns the bottom axis space in percent of the full range. Default 10f
-     */
-    /**
-     * Sets the bottom axis space in percent of the full range. Default 10f
-     */
     /**
      * axis space from the smallest value to the bottom in percent of the total axis range
      */
     var spaceBottom: Float = 10f
 
     /**
-     * returns the position of the y-labels
-     */
-    /**
      * the position of the y-labels relative to the chart
      */
     var labelPosition: YAxisLabelPosition? = YAxisLabelPosition.OUTSIDE_CHART
         private set
 
-    /**
-     * returns the horizontal offset of the y-label
-     */
-    /**
-     * sets the horizontal offset of the y-label
-     */
     /**
      * the horizontal offset of the y-label
      */
@@ -134,28 +87,13 @@ class YAxis : AxisBase {
     val axisDependency: AxisDependency?
 
     /**
-     * @return the minimum width that the axis should take (in dp).
-     */
-    /**
-     * Sets the minimum width that the axis should take (in dp).
-     */
-    /**
      * the minimum width that the axis should take (in dp).
-     *
-     *
-     * default: 0.0
      */
     var minWidth: Float = 0f
 
     /**
-     * @return the maximum width that the axis can take (in dp).
-     */
-    /**
-     * Sets the maximum width that the axis can take (in dp).
-     */
-    /**
      * the maximum width that the axis can take (in dp).
-     * use Inifinity for disabling the maximum
+     * use Infinity for disabling the maximum
      * default: Float.POSITIVE_INFINITY (no maximum specified)
      */
     var maxWidth: Float = Float.POSITIVE_INFINITY
@@ -168,7 +106,6 @@ class YAxis : AxisBase {
     }
 
     constructor() : super() {
-        // default left
         this.axisDependency = AxisDependency.LEFT
         this.mYOffset = 0f
     }
@@ -185,20 +122,7 @@ class YAxis : AxisBase {
         this.labelPosition = pos
     }
 
-    /**
-     * set this to true to enable drawing the top y-label entry. Disabling this can be helpful
-     * when the top y-label and
-     * left x-label interfere with each other. default: true
-     */
-    fun setDrawTopYLabelEntry(enabled: Boolean) {
-        this.isDrawTopYLabelEntryEnabled = enabled
-    }
-
-    /**
-     * This method is deprecated.
-     * Use setAxisMinimum(...) / setAxisMaximum(...) instead.
-     */
-    @Deprecated("")
+    @Deprecated("Use setAxisMinimum(...) / setAxisMaximum(...) instead.")
     fun setStartAtZero(startAtZero: Boolean) {
         if (startAtZero) axisMinimum = 0f
         else resetAxisMinimum()
@@ -214,9 +138,6 @@ class YAxis : AxisBase {
 
     var zeroLineWidth: Float
         get() = mZeroLineWidth
-        /**
-         * Sets the width of the zero line in dp
-         */
         set(width) {
             this.mZeroLineWidth = width.convertDpToPixel()
         }
@@ -281,8 +202,8 @@ class YAxis : AxisBase {
 
         // in case all values are equal
         if (range == 0f) {
-            max = max + 1f
-            min = min - 1f
+            max += 1f
+            min -= 1f
         }
 
         // recalculate
