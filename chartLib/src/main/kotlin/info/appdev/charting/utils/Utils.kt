@@ -1,15 +1,12 @@
 package info.appdev.charting.utils
 
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.ViewConfiguration
 import info.appdev.charting.formatter.DefaultValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
-import info.appdev.charting.utils.PointF.Companion.instance
 import kotlin.Int
 import kotlin.IntArray
 import kotlin.Suppress
@@ -87,29 +84,6 @@ object Utils {
     }
 
     private val mDrawableBoundsCache = Rect()
-
-    fun drawImage(canvas: Canvas, drawable: Drawable, x: Int, y: Int) {
-        val width = drawable.intrinsicWidth
-        val height = drawable.intrinsicHeight
-
-        val drawOffset = instance
-        drawOffset.x = x - (width / 2).toFloat()
-        drawOffset.y = y - (height / 2).toFloat()
-
-        drawable.copyBounds(mDrawableBoundsCache)
-        drawable.setBounds(
-            mDrawableBoundsCache.left,
-            mDrawableBoundsCache.top,
-            mDrawableBoundsCache.left + width,
-            mDrawableBoundsCache.top + width
-        )
-
-        val saveId = canvas.save()
-        // translate to the correct position and draw
-        canvas.translate(drawOffset.x, drawOffset.y)
-        drawable.draw(canvas)
-        canvas.restoreToCount(saveId)
-    }
 
     /**
      * Returns a recyclable FSize instance.

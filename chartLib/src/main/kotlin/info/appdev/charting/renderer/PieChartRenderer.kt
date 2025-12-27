@@ -23,6 +23,7 @@ import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.drawImage
 import java.lang.ref.WeakReference
 import kotlin.math.abs
 import kotlin.math.ceil
@@ -571,8 +572,8 @@ open class PieChartRenderer(
                                 y += iconsOffset.x
 
                                 icon?.let {
-                                    Utils.drawImage(
-                                        this, it, x.toInt(), y.toInt()
+                                    this.drawImage(
+                                        it, x.toInt(), y.toInt()
                                     )
                                 }
                             }
