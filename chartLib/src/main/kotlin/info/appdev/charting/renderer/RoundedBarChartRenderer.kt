@@ -31,7 +31,8 @@ class RoundedBarChartRenderer(
         barBorderPaint.strokeWidth = dataSet.barBorderWidth.convertDpToPixel()
         shadowPaint.color = dataSet.barShadowColor
 
-        if (dataProvider.isDrawBarShadowEnabled) {
+//        if (dataProvider.isDrawBarShadowEnabled) {
+        if (true) {
             shadowPaint.color = dataSet.barShadowColor
             dataProvider.barData?.let { barData ->
                 val barWidth = barData.barWidth
