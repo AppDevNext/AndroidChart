@@ -43,8 +43,8 @@ open class XAxisRenderer(
         var minLocal = min
         var maxLocal = max
         if (viewPortHandler.contentWidth() > 10 && !viewPortHandler.isFullyZoomedOutX) {
-            val p1 = this@XAxisRenderer.transformer!!.getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentTop())
-            val p2 = this@XAxisRenderer.transformer!!.getValuesByTouchPoint(viewPortHandler.contentRight(), viewPortHandler.contentTop())
+            val p1 = transformer!!.getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentTop())
+            val p2 = transformer!!.getValuesByTouchPoint(viewPortHandler.contentRight(), viewPortHandler.contentTop())
 
             if (inverted) {
                 minLocal = p2.x.toFloat()
@@ -194,7 +194,7 @@ open class XAxisRenderer(
             }
         }
 
-        this@XAxisRenderer.transformer!!.pointValuesToPixel(positions)
+        transformer!!.pointValuesToPixel(positions)
 
         var i = 0
         while (i < positions.size) {
@@ -265,7 +265,7 @@ open class XAxisRenderer(
                 }
             }
 
-            this@XAxisRenderer.transformer!!.pointValuesToPixel(positions)
+            transformer!!.pointValuesToPixel(positions)
 
             setupGridPaint()
 
@@ -364,7 +364,7 @@ open class XAxisRenderer(
                     position[0] = limitLine.limit
                     position[1] = 0f
 
-                    this@XAxisRenderer.transformer?.pointValuesToPixel(position)
+                    transformer?.pointValuesToPixel(position)
 
                     renderLimitLineLine(canvas, limitLine, position)
                     renderLimitLineLabel(canvas, limitLine, position, 2f + limitLine.yOffset)
