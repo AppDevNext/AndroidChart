@@ -11,6 +11,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityListviewChartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.charts.BarChart
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
@@ -18,10 +22,6 @@ import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
-import info.appdev.chartexample.databinding.ActivityListviewChartBinding
 
 /**
  * Demonstrates the use of charts inside a ListView. IMPORTANT: provide a
@@ -58,9 +58,7 @@ class ListViewBarChartActivity : DemoBase() {
             if (convertView == null) {
                 holder = ViewHolder()
 
-                convertView = LayoutInflater.from(context).inflate(
-                    R.layout.list_item_barchart, null
-                )
+                convertView = LayoutInflater.from(context).inflate(R.layout.list_item_barchart, null)
                 holder.chart = convertView.findViewById(R.id.chart)
 
                 convertView.tag = holder
@@ -68,36 +66,36 @@ class ListViewBarChartActivity : DemoBase() {
                 holder = convertView.tag as ViewHolder
             }
 
-            // apply styling
-            if (data != null) {
-                data.setValueTypeface(tfLight)
-                data.setValueTextColor(Color.BLACK)
+            data?.setValueTypeface(tfLight)
+            data?.setValueTextColor(Color.BLACK)
+            holder.chart?.description?.isEnabled = false
+            holder.chart?.setDrawGridBackground(false)
+
+
+            holder.chart?.xAxis?.apply {
+                this.position = XAxisPosition.BOTTOM
+                typeface = tfLight
+                setDrawGridLines(false)
             }
-            holder.chart!!.description?.isEnabled = false
-            holder.chart!!.setDrawGridBackground(false)
 
-            val xAxis = holder.chart!!.xAxis
-            xAxis.position = XAxisPosition.BOTTOM
-            xAxis.typeface = tfLight
-            xAxis.setDrawGridLines(false)
+            holder.chart?.axisLeft?.apply {
+                typeface = tfLight
+                setLabelCount(5, false)
+                spaceTop = 15f
+            }
 
-            val leftAxis = holder.chart!!.axisLeft
-            leftAxis.typeface = tfLight
-            leftAxis.setLabelCount(5, false)
-            leftAxis.spaceTop = 15f
+            holder.chart?.axisRight?.apply {
+                typeface = tfLight
+                setLabelCount(5, false)
+                spaceTop = 15f
+            }
 
-            val rightAxis = holder.chart!!.axisRight
-            rightAxis.typeface = tfLight
-            rightAxis.setLabelCount(5, false)
-            rightAxis.spaceTop = 15f
-
-            // set data
-            holder.chart!!.setData(data)
-            holder.chart!!.setFitBars(true)
+            holder.chart?.setData(data)
+            holder.chart?.setFitBars(true)
 
             // do not forget to refresh the chart
 //            holder.chart.invalidate();
-            holder.chart!!.animateY(700)
+            holder.chart?.animateY(700)
 
             return convertView
         }
@@ -109,8 +107,6 @@ class ListViewBarChartActivity : DemoBase() {
 
     /**
      * generates a random ChartData object with just one DataSet
-     *
-     * @return Bar data
      */
     private fun generateData(cnt: Int): BarData {
         val count = 12
