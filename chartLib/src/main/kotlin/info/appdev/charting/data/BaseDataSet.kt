@@ -129,8 +129,11 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
             mColors.add(value)
         }
 
-    override val colors: MutableList<Int>
+    override var colors: MutableList<Int>
         get() = mColors
+        set(value) {
+            mColors = value
+        }
 
     override fun getColorByIndex(index: Int): Int {
         return mColors[index % mColors.size]
