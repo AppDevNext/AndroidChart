@@ -36,7 +36,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
 
         binding.seekBarX.setOnSeekBarChangeListener(this)
         binding.seekBarY.setOnSeekBarChangeListener(this)
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
         binding.chart1.setOnChartValueSelectedListener(this)
 
         binding.chart1.setDrawGridBackground(false)

@@ -21,7 +21,7 @@ class PieChartFrag : SimpleFragment() {
         val v = inflater.inflate(R.layout.frag_simple_pie, container, false)
 
         chart = v.findViewById(R.id.pieChart1)
-        chart!!.description?.isEnabled = false
+        chart!!.description.isEnabled = false
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 

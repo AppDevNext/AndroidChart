@@ -47,7 +47,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         binding.chart1.setOnChartValueSelectedListener(this)
 
         // no description text
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)

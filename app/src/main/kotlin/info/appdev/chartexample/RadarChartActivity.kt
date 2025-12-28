@@ -33,7 +33,7 @@ class RadarChartActivity : DemoBase() {
         setContentView(binding.root)
 
         binding.chart1.setBackgroundColor(Color.rgb(60, 65, 82))
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         binding.chart1.webLineWidth = 1f
         binding.chart1.webColor = Color.LTGRAY

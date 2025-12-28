@@ -41,7 +41,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         binding.seekBarX.setOnSeekBarChangeListener(this)
 
         // no description text
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)

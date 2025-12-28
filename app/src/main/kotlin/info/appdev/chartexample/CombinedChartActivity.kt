@@ -44,7 +44,7 @@ class CombinedChartActivity : DemoBase() {
         binding = ActivityCombinedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
         binding.chart1.setBackgroundColor(Color.WHITE)
         binding.chart1.setDrawGridBackground(false)
         binding.chart1.setDrawBarShadow(false)

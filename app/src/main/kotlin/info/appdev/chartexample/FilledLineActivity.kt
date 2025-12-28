@@ -41,7 +41,7 @@ class FilledLineActivity : DemoBase() {
         binding.chart1.setDrawBorders(true)
 
         // no description text
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // if disabled, scaling can be done on x- and y-axis separately
         binding.chart1.setPinchZoom(false)

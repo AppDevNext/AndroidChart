@@ -33,7 +33,7 @@ class GradientActivity : DemoBase() {
         val chart: LineChart = findViewById(R.id.chart)
 
         // Minimal chart setup
-        chart.description?.isEnabled = false
+        chart.description.isEnabled = false
         chart.legend.isEnabled = false
         chart.axisRight.isEnabled = false
         chart.setDrawGridBackground(false)

@@ -108,13 +108,13 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      * paint object used for drawing the description text in the bottom right
      * corner of the chart
      */
-    protected var mDescPaint: Paint? = null
+    protected var mDescPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     /**
      * paint object for drawing the information text when there are no values in
      * the chart
      */
-    protected var mInfoPaint: Paint? = null
+    protected var mInfoPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     /**
      * the object representing the labels on the x-axis
@@ -136,7 +136,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     /**
      * the object responsible for representing the description text
      */
-    var description: Description? = null
+    var description = Description()
 
     /**
      * Returns the Legend object of the chart. This method can be used to get an
@@ -254,10 +254,9 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
 
         mDescPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-        mInfoPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        mInfoPaint!!.color = Color.rgb(247, 189, 51) // orange
-        mInfoPaint!!.textAlign = Align.CENTER
-        mInfoPaint!!.textSize = 12f.convertDpToPixel()
+        mInfoPaint.color = Color.rgb(247, 189, 51) // orange
+        mInfoPaint.textAlign = Align.CENTER
+        mInfoPaint.textSize = 12f.convertDpToPixel()
 
         if (this.isLogEnabled) {
             Timber.i("Chart.init()")
@@ -390,18 +389,18 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
             if (hasText) {
                 val pt = this.center
 
-                when (mInfoPaint!!.textAlign) {
+                when (mInfoPaint.textAlign) {
                     Align.LEFT -> {
                         pt.x = 0F
-                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint!!)
+                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint)
                     }
 
                     Align.RIGHT -> {
                         pt.x *= 2.0f
-                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint!!)
+                        canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint)
                     }
 
-                    else -> canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint!!)
+                    else -> canvas.drawText(mNoDataText, pt.x, pt.y, mInfoPaint)
                 }
             }
 
@@ -420,27 +419,27 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     protected fun drawDescription(c: Canvas) {
         // check if description should be drawn
 
-        if (this.description != null && description!!.isEnabled) {
-            val position = description!!.position
+        if (description.isEnabled) {
+            val position = description.position
 
-            mDescPaint!!.typeface = description!!.typeface
-            mDescPaint!!.textSize = description!!.textSize
-            mDescPaint!!.color = description!!.textColor
-            mDescPaint!!.textAlign = description!!.textAlign
+            mDescPaint.typeface = description.typeface
+            mDescPaint.textSize = description.textSize
+            mDescPaint.color = description.textColor
+            mDescPaint.textAlign = description.textAlign
 
             val x: Float
             val y: Float
 
             // if no position specified, draw on default position
             if (position == null) {
-                x = width - viewPortHandler.offsetRight() - description!!.xOffset
-                y = height - viewPortHandler.offsetBottom() - description!!.yOffset
+                x = width - viewPortHandler.offsetRight() - description.xOffset
+                y = height - viewPortHandler.offsetBottom() - description.yOffset
             } else {
                 x = position.x
                 y = position.y
             }
 
-            c.drawText(description!!.text!!, x, y, mDescPaint!!)
+            c.drawText(description.text!!, x, y, mDescPaint)
         }
     }
 
@@ -981,21 +980,21 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      * Sets the color of the no data text.
      */
     fun setNoDataTextColor(color: Int) {
-        mInfoPaint!!.color = color
+        mInfoPaint.color = color
     }
 
     /**
      * Sets the typeface to be used for the no data text.
      */
     fun setNoDataTextTypeface(tf: Typeface?) {
-        mInfoPaint!!.typeface = tf
+        mInfoPaint.typeface = tf
     }
 
     /**
      * alignment of the no data text
      */
     fun setNoDataTextAlignment(align: Align?) {
-        mInfoPaint!!.textAlign = align
+        mInfoPaint.textAlign = align
     }
 
     /**

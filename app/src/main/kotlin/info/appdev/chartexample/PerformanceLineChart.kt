@@ -29,7 +29,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setDrawGridBackground(false)
 
         // no description text
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)

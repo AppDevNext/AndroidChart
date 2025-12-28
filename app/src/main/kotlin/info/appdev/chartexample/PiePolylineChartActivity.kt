@@ -45,7 +45,7 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
         binding.seekBarY.setOnSeekBarChangeListener(this)
 
         binding.chart1.setUsePercentValues(true)
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
         binding.chart1.setExtraOffsets(5f, 10f, 5f, 5f)
 
         binding.chart1.dragDecelerationFrictionCoef = 0.95f

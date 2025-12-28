@@ -40,7 +40,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
 
         binding.chart1.setOnChartValueSelectedListener(this)
         binding.chart1.setDrawGridBackground(false)
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // scaling can now only be done on x- and y-axis separately
         binding.chart1.setPinchZoom(false)

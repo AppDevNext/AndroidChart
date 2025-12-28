@@ -48,7 +48,7 @@ class LineChartActivityColored : DemoBase() {
         (data.getDataSetByIndex(0) as LineDataSet).circleHoleColor = color
 
         // no description text
-        chart.description?.isEnabled = false
+        chart.description.isEnabled = false
 
         // chart.setDrawHorizontalGrid(false);
         //

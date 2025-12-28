@@ -53,7 +53,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         binding.chart1.setDrawBarShadow(false)
         binding.chart1.setDrawValueAboveBar(true)
 
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn

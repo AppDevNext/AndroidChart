@@ -23,7 +23,7 @@ class ScrollViewActivity : DemoBase() {
         binding = ActivityScrollviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // scaling can now only be done on x- and y-axis separately
         binding.chart1.setPinchZoom(false)

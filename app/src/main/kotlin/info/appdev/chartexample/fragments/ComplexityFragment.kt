@@ -17,7 +17,7 @@ class ComplexityFragment : SimpleFragment() {
 
         chart = v.findViewById(R.id.lineChart1)
 
-        chart!!.description?.isEnabled = false
+        chart!!.description.isEnabled = false
 
         chart!!.setDrawGridBackground(false)
 
