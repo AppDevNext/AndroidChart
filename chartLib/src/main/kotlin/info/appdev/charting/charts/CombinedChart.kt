@@ -18,41 +18,31 @@ import info.appdev.charting.renderer.CombinedChartRenderer
 import timber.log.Timber
 
 /**
- * This chart class allows the combination of lines, bars, scatter and candle
- * data all displayed in one chart area.
+ * This chart class allows the combination of lines, bars, scatter and candle data all displayed in one chart area.
  */
 @Suppress("unused")
 open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider {
     /**
-     * if set to true, all values are drawn above their bars, instead of below
-     * their top
+     * if set to true, all values are drawn above their bars, instead of below their top
      */
     override var isDrawValueAboveBarEnabled: Boolean = true
 
 
     /**
-     * @return true the highlight operation is be full-bar oriented, false if single-value
-     */
-    /**
      * Set this to true to make the highlight operation full-bar oriented,
      * false to make it highlight single values (relevant only for stacked).
-     */
-    /**
-     * flag that indicates whether the highlight should be full-bar oriented, or single-value?
      */
     override var isHighlightFullBarEnabled: Boolean = false
 
     /**
-     * if set to true, a grey area is drawn behind each bar that indicates the
-     * maximum value
+     * if set to true, a grey area is drawn behind each bar that indicates the maximum value
      */
     override var isDrawBarShadowEnabled: Boolean = false
 
     protected var mDrawOrder: MutableList<DrawOrder>? = null
 
     /**
-     * enum that allows to specify the order in which the different data objects
-     * for the combined-chart are drawn
+     * enum that allows to specify the order in which the different data objects for the combined-chart are drawn
      */
     enum class DrawOrder {
         BAR, BUBBLE, LINE, CANDLE, SCATTER
@@ -92,8 +82,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
     /**
      * Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch
-     * point
-     * inside the CombinedChart.
+     * point inside the CombinedChart.
      */
     override fun getHighlightByTouchPoint(x: Float, y: Float): Highlight? {
         if (mData == null) {
@@ -162,8 +151,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
         }
 
     /**
-     * If set to true, all values are drawn above their bars, instead of below
-     * their top.
+     * If set to true, all values are drawn above their bars, instead of below their top.
      */
     fun setDrawValueAboveBar(enabled: Boolean) {
         this.isDrawValueAboveBarEnabled = enabled
@@ -198,7 +186,6 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
      */
     override fun drawMarkers(canvas: Canvas) {
         // if there is no marker view or drawing marker is disabled
-
         if (!isDrawMarkersEnabled || !valuesToHighlight()) {
             return
         }
