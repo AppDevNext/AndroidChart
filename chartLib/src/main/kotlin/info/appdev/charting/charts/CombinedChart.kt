@@ -38,6 +38,12 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
      * false to make it highlight single values (relevant only for stacked).
      */
     var isHighlightFullBarEnabled: Boolean = false
+    override var isOwnRoundedRendererUsed: Boolean = false
+        set(value) {
+            if (value) {
+                Timber.e("CombinedChart does not support Rounded Renderer")
+            }
+        }
 
     /**
      * if set to true, a grey area is drawn behind each bar that indicates the maximum value
