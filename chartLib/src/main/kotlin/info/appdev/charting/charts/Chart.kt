@@ -146,7 +146,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     /**
      * the legend object containing all data associated with the legend
      */
-    var legend: Legend? = null
+    var legend: Legend = Legend()
         protected set
 
     /**
@@ -272,7 +272,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      */
     protected open fun init() {
         mMaxHighlightDistance = 500f.convertDpToPixel()
-        this.legendRenderer = LegendRenderer(this.viewPortHandler, this.legend!!)
+        this.legendRenderer = LegendRenderer(this.viewPortHandler, this.legend)
     }
 
     /**

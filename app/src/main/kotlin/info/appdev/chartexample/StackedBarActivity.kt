@@ -74,7 +74,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         binding.seekBarX.progress = 12
         binding.seekBarY.progress = 100
 
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             orientation = Legend.LegendOrientation.HORIZONTAL

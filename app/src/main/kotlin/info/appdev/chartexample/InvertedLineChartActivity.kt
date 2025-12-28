@@ -83,7 +83,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         // chart.centerViewPort(10, 50);
 
         // get the legend (only possible after setting data)
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             form = LegendForm.LINE
         }
 

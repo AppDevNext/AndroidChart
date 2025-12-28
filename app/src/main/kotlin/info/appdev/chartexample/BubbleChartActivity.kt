@@ -54,7 +54,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         binding.seekBarX.progress = 10
         binding.seekBarY.progress = 50
 
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.TOP
             horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             orientation = Legend.LegendOrientation.VERTICAL

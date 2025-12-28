@@ -72,7 +72,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         binding.seekbarValues.setOnSeekBarChangeListener(this)
         binding.seekbarValues.progress = 150 // set data
 
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
             orientation = Legend.LegendOrientation.HORIZONTAL

@@ -76,7 +76,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
             }
         }
 
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             orientation = Legend.LegendOrientation.HORIZONTAL

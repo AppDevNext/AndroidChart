@@ -34,7 +34,7 @@ class PieChartFrag : SimpleFragment() {
         chart!!.holeRadius = 45f
         chart!!.transparentCircleRadius = 50f
 
-        chart!!.legend?.apply {
+        chart!!.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.TOP
             horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             orientation = Legend.LegendOrientation.VERTICAL

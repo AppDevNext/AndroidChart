@@ -74,7 +74,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         binding.seekBarX.progress = 45
         binding.seekBarY.progress = 100
 
-        binding.chart1.legend?.isEnabled = false
+        binding.chart1.legend.isEnabled = false
 
         binding.chart1.animateXY(2000, 2000)
 

@@ -67,7 +67,7 @@ class BarChartPositiveNegative : DemoBase() {
         left.zeroLineColor = Color.GRAY
         left.zeroLineWidth = 0.7f
         binding.chart1.axisRight.isEnabled = false
-        binding.chart1.legend?.isEnabled = false
+        binding.chart1.legend.isEnabled = false
 
         // THIS IS THE ORIGINAL DATA YOU WANT TO PLOT
         val data: MutableList<Data> = ArrayList()

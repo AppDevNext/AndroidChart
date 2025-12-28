@@ -46,7 +46,7 @@ class FilledLineActivity : DemoBase() {
         // if disabled, scaling can be done on x- and y-axis separately
         binding.chart1.setPinchZoom(false)
 
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             isEnabled = false
         }
 

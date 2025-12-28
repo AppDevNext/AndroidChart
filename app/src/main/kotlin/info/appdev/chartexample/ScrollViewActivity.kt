@@ -37,7 +37,7 @@ class ScrollViewActivity : DemoBase() {
 
         binding.chart1.axisLeft.setDrawGridLines(false)
 
-        binding.chart1.legend?.isEnabled = false
+        binding.chart1.legend.isEnabled = false
 
         setData(10)
         binding.chart1.setFitBars(true)

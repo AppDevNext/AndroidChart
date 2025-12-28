@@ -26,7 +26,7 @@ class SineCosineFragment : SimpleFragment() {
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 
-        chart!!.legend?.apply {
+        chart!!.legend.apply {
             typeface = tf
         }
 

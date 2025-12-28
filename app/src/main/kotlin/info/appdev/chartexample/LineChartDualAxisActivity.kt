@@ -73,7 +73,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         binding.chart1.animateX(1500)
 
         // get the legend (only possible after setting data)
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             form = LegendForm.LINE
             typeface = tfLight
             textSize = 11f

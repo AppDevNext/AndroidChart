@@ -62,7 +62,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         binding.seekBarX.progress = 100
 
         // get the legend (only possible after setting data)
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             isEnabled = false
         }
 

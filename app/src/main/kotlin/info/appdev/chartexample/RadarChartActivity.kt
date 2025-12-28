@@ -73,7 +73,7 @@ class RadarChartActivity : DemoBase() {
         yAxis.axisMaximum = 80f
         yAxis.setDrawLabels(false)
 
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.TOP
             horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
             orientation = Legend.LegendOrientation.HORIZONTAL

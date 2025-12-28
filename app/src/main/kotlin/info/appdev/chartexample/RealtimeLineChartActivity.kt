@@ -57,7 +57,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         binding.chart1.setData(data)
 
         // get the legend (only possible after setting data)
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             form = LegendForm.LINE
             typeface = tfLight
             textColor = Color.WHITE

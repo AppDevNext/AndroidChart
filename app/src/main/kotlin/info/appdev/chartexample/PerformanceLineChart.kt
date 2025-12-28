@@ -78,7 +78,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setData(data)
 
         // get the legend (only possible after setting data)
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             isEnabled = false
         }
     }

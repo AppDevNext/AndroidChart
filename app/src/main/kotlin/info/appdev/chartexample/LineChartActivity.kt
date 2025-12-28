@@ -137,7 +137,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
         // get the legend (only possible after setting data)
         val legend = binding.chart1.legend
-        legend?.form = LegendForm.LINE
+        legend.form = LegendForm.LINE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
