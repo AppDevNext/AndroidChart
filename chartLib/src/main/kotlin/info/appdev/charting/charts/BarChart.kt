@@ -18,33 +18,18 @@ import java.util.Locale
  */
 open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
     /**
-     * @return true the highlight operation is be full-bar oriented, false if single-value
-     */
-    /**
      * Set this to true to make the highlight operation full-bar oriented, false to make it highlight single values (relevant
      * only for stacked). If enabled, highlighting operations will highlight the whole bar, even if only a single stack entry
      * was tapped.
      * Default: false
-     *
-     */
-    /**
-     * flag that indicates whether the highlight should be full-bar oriented, or single-value?
      */
     override var isHighlightFullBarEnabled: Boolean = false
 
-    /**
-     * returns true if drawing values above bars is enabled, false if not
-     *
-     */
     /**
      * if set to true, all values are drawn above their bars, instead of below their top
      */
     override var isDrawValueAboveBarEnabled: Boolean = true
 
-    /**
-     * returns true if drawing shadows (maxvalue) for each bar is enabled, false if not
-     *
-     */
     /**
      * if set to true, a grey area is drawn behind each bar that indicates the maximum value
      */
@@ -194,7 +179,6 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
 
     /**
      * If set to true, all values are drawn above their bars, instead of below their top.
-     *
      */
     fun setDrawValueAboveBar(enabled: Boolean) {
         this.isDrawValueAboveBarEnabled = enabled
@@ -203,7 +187,6 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
     /**
      * If set to true, a grey area is drawn behind each bar that indicates the maximum value. Enabling his will reduce
      * performance by about 50%.
-     *
      */
     fun setDrawBarShadow(enabled: Boolean) {
         this.isDrawBarShadowEnabled = enabled
@@ -225,7 +208,6 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
      * Adds half of the bar width to each side of the x-axis range in order to allow the bars of the barchart to be
      * fully displayed.
      * Default: false
-     *
      */
     fun setFitBars(enabled: Boolean) {
         mFitBars = enabled
@@ -256,9 +238,4 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
         this.mDrawRoundedBars = true
         init()
     }
-
-//    override val width: Int
-//        get() = TODO("Not yet implemented")
-//    override val height: Int
-//        get() = TODO("Not yet implemented")
 }
