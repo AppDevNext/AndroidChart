@@ -13,6 +13,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.HorizontalBarHighlighter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.renderer.HorizontalBarChartRenderer;
+import com.github.mikephil.charting.renderer.RoundedHorizontalBarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererHorizontalBarChart;
 import com.github.mikephil.charting.utils.HorizontalViewPortHandler;
@@ -41,6 +42,14 @@ public class HorizontalBarChart extends BarChart {
 	}
 
 	@Override
+	protected void setRenderer() {
+		if (isOwnRoundedRendererUsed())
+			mRenderer = new RoundedHorizontalBarChartRenderer(this, mAnimator, mViewPortHandler);
+		else
+			mRenderer = new HorizontalBarChartRenderer(this, mAnimator, mViewPortHandler);
+	}
+
+	@Override
 	protected void init() {
 
 		mViewPortHandler = new HorizontalViewPortHandler();
@@ -50,7 +59,6 @@ public class HorizontalBarChart extends BarChart {
 		mLeftAxisTransformer = new TransformerHorizontalBarChart(mViewPortHandler);
 		mRightAxisTransformer = new TransformerHorizontalBarChart(mViewPortHandler);
 
-		mRenderer = new HorizontalBarChartRenderer(this, mAnimator, mViewPortHandler);
 		setHighlighter(new HorizontalBarHighlighter(this));
 
 		mAxisRendererLeft = new YAxisRendererHorizontalBarChart(mViewPortHandler, mAxisLeft, mLeftAxisTransformer);

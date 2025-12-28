@@ -27,9 +27,9 @@ import androidx.core.net.toUri
 import info.appdev.chartexample.databinding.ActivityHorizontalbarchartBinding
 import timber.log.Timber
 
-class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
+open class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
 
-    private lateinit var binding: ActivityHorizontalbarchartBinding
+    lateinit var binding: ActivityHorizontalbarchartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

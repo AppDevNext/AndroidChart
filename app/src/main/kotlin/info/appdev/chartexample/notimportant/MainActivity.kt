@@ -48,6 +48,7 @@ import info.appdev.chartexample.BarChartActivity
 import info.appdev.chartexample.BarChartActivityMultiDataset
 import info.appdev.chartexample.BarChartActivitySinus
 import info.appdev.chartexample.BarChartPositiveNegative
+import info.appdev.chartexample.BarRoundedChartActivity
 import info.appdev.chartexample.BubbleChartActivity
 import info.appdev.chartexample.CandleStickChartActivity
 import info.appdev.chartexample.CombinedChartActivity
@@ -56,6 +57,7 @@ import info.appdev.chartexample.DynamicalAddingActivity
 import info.appdev.chartexample.FilledLineActivity
 import info.appdev.chartexample.HalfPieChartActivity
 import info.appdev.chartexample.HorizontalBarChartActivity
+import info.appdev.chartexample.HorizontalBarRoundedChartActivity
 import info.appdev.chartexample.InvertedLineChartActivity
 import info.appdev.chartexample.LineChartActivity
 import info.appdev.chartexample.LineChartActivityColored
@@ -166,9 +168,11 @@ class MainActivity : ComponentActivity() {
 
             add(ContentItem("Bar Charts"))
             add(ContentItem("Basic", "Simple bar chart.", BarChartActivity::class.java))
+            add(ContentItem("Basic with own rounded renderer", "Simple rounded bar chart.", BarRoundedChartActivity::class.java))
             add(ContentItem("Basic 2", "Variation of the simple bar chart.", AnotherBarActivity::class.java))
             add(ContentItem("Multiple", "Show multiple data sets.", BarChartActivityMultiDataset::class.java))
             add(ContentItem("Horizontal", "Render bar chart horizontally.", HorizontalBarChartActivity::class.java))
+            add(ContentItem("Horizontal with own rounded renderer", "Render bar rounded chart horizontally.", HorizontalBarRoundedChartActivity::class.java))
             add(ContentItem("Stacked", "Stacked bar chart.", StackedBarActivity::class.java))
             add(ContentItem("Negative", "Positive and negative values with unique colors.", BarChartPositiveNegative::class.java))
             //objects.add(ContentItem("Negative Horizontal", "demonstrates how to create a HorizontalBarChart with positive and negative values."))

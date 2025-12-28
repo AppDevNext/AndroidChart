@@ -14,6 +14,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
+import com.github.mikephil.charting.renderer.RoundedBarChartRenderer;
 
 import java.util.Locale;
 
@@ -50,8 +51,9 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
     private float mRoundedBarRadius = 0f;
 
     private boolean mFitBars = false;
+	private boolean mIsOwnRoundedRendererUsed = false;
 
-    public BarChart(Context context) {
+	public BarChart(Context context) {
         super(context);
     }
 
@@ -63,12 +65,17 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
         super(context, attrs, defStyle);
     }
 
+	protected void setRenderer() {
+		if (isOwnRoundedRendererUsed())
+			mRenderer = new RoundedBarChartRenderer(this, mAnimator, mViewPortHandler);
+		else
+			mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler, mDrawRoundedBars, mRoundedBarRadius);
+	}
+
     @Override
     protected void init() {
         super.init();
-
-        mRenderer = new BarChartRenderer(this, mAnimator, mViewPortHandler, mDrawRoundedBars, mRoundedBarRadius);
-
+		setRenderer();
         setHighlighter(new BarHighlighter(this));
 
         getXAxis().setSpaceMin(0.5f);
@@ -298,4 +305,14 @@ public class BarChart extends BarLineChartBase<BarData> implements BarDataProvid
                         "Data ranges from %s to %s.",
                 entryCount, entries, minVal, maxVal, minRange, maxRange);
     }
+
+	@Override
+	public boolean isOwnRoundedRendererUsed() {
+		return mIsOwnRoundedRendererUsed;
+	}
+
+	@Override
+	public void setOwnRoundedRendererUsed(boolean b) {
+		mIsOwnRoundedRendererUsed = b;
+	}
 }
