@@ -9,8 +9,10 @@ import info.appdev.charting.animation.ChartAnimator
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.getSDKInt
 
-abstract class LineRadarRenderer(animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
-    LineScatterCandleRadarRenderer(animator, viewPortHandler) {
+abstract class LineRadarRenderer(
+    animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
+) : LineScatterCandleRadarRenderer(animator, viewPortHandler) {
     /**
      * Draws the provided path in filled mode with the provided drawable.
      *

@@ -13,7 +13,8 @@ import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
 
 open class CandleStickChartRenderer(
-    var dataProvider: CandleDataProvider, animator: ChartAnimator,
+    var dataProvider: CandleDataProvider,
+    animator: ChartAnimator,
     viewPortHandler: ViewPortHandler
 ) : LineScatterCandleRadarRenderer(animator, viewPortHandler) {
     private val shadowBuffers = FloatArray(8)

@@ -6,8 +6,10 @@ import info.appdev.charting.animation.ChartAnimator
 import info.appdev.charting.interfaces.datasets.ILineScatterCandleRadarDataSet
 import info.appdev.charting.utils.ViewPortHandler
 
-abstract class LineScatterCandleRadarRenderer(animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
-    BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
+abstract class LineScatterCandleRadarRenderer(
+    animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
+) : BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
     /**
      * path that is used for drawing highlight-lines (drawLines(...) cannot be used because of dashes)
      */

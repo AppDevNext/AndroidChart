@@ -15,7 +15,11 @@ import kotlin.math.log10
 import kotlin.math.nextUp
 import kotlin.math.pow
 
-class YAxisRendererRadarChart(viewPortHandler: ViewPortHandler, yAxis: YAxis, private val chart: RadarChart) : YAxisRenderer(viewPortHandler, yAxis, null) {
+class YAxisRendererRadarChart(
+    viewPortHandler: ViewPortHandler,
+    yAxis: YAxis,
+    private val chart: RadarChart
+) : YAxisRenderer(viewPortHandler, yAxis, null) {
 
     private val renderLimitLinesPathBuffer = Path()
 

@@ -22,7 +22,8 @@ import kotlin.math.roundToInt
 
 @Suppress("MemberVisibilityCanBePrivate")
 open class XAxisRendererHorizontalBarChart(
-    viewPortHandler: ViewPortHandler, xAxis: XAxis,
+    viewPortHandler: ViewPortHandler,
+    xAxis: XAxis,
     trans: Transformer?
 ) : XAxisRenderer(viewPortHandler, xAxis, trans) {
 

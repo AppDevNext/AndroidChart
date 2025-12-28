@@ -6,19 +6,22 @@ import android.graphics.Paint
 import android.graphics.Paint.Align
 import android.graphics.Path
 import android.graphics.RectF
+import androidx.core.graphics.withClip
+import androidx.core.graphics.withSave
 import info.appdev.charting.components.LimitLine.LimitLabelPosition
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.components.YAxis.YAxisLabelPosition
 import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.ViewPortHandler
-import androidx.core.graphics.withSave
-import androidx.core.graphics.withClip
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.convertDpToPixel
 
-open class YAxisRenderer(viewPortHandler: ViewPortHandler, protected var yAxis: YAxis, trans: Transformer?) :
-    AxisRenderer(viewPortHandler, trans, yAxis) {
+open class YAxisRenderer(
+    viewPortHandler: ViewPortHandler,
+    protected var yAxis: YAxis,
+    trans: Transformer?
+) : AxisRenderer(viewPortHandler, trans, yAxis) {
 
     protected var zeroLinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.GRAY
@@ -312,7 +315,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, protected var yAxis: 
                         limitLinePaint.strokeWidth = 0.5f
                         limitLinePaint.textSize = limitLine.textSize
 
-                        val labelLineHeight = limitLinePaint.calcTextHeight( label).toFloat()
+                        val labelLineHeight = limitLinePaint.calcTextHeight(label).toFloat()
                         val xOffset = 4f.convertDpToPixel() + limitLine.xOffset
                         val yOffset = limitLine.lineWidth + labelLineHeight + limitLine.yOffset
 
@@ -327,6 +330,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, protected var yAxis: 
                                     pts[1] - yOffset + labelLineHeight, limitLinePaint
                                 )
                             }
+
                             LimitLabelPosition.RIGHT_BOTTOM -> {
                                 limitLinePaint.textAlign = Align.RIGHT
                                 canvas.drawText(
@@ -335,6 +339,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, protected var yAxis: 
                                     pts[1] + yOffset, limitLinePaint
                                 )
                             }
+
                             LimitLabelPosition.LEFT_TOP -> {
                                 limitLinePaint.textAlign = Align.LEFT
                                 canvas.drawText(
@@ -343,6 +348,7 @@ open class YAxisRenderer(viewPortHandler: ViewPortHandler, protected var yAxis: 
                                     pts[1] - yOffset + labelLineHeight, limitLinePaint
                                 )
                             }
+
                             else -> {
                                 limitLinePaint.textAlign = Align.LEFT
                                 canvas.drawText(

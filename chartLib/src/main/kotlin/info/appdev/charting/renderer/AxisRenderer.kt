@@ -20,9 +20,7 @@ import kotlin.math.pow
  */
 abstract class AxisRenderer(
     viewPortHandler: ViewPortHandler,
-    /** transformer to transform values to screen pixels and return  */
     var transformer: Transformer?,
-    /** base axis this axis renderer works with  */
     protected var axis: AxisBase
 ) : Renderer(viewPortHandler) {
 

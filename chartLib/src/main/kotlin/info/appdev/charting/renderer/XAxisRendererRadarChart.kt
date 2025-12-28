@@ -7,7 +7,11 @@ import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.getPosition
 
-class XAxisRendererRadarChart(viewPortHandler: ViewPortHandler, xAxis: XAxis, private val chart: RadarChart) : XAxisRenderer(viewPortHandler, xAxis, null) {
+class XAxisRendererRadarChart(
+    viewPortHandler: ViewPortHandler,
+    xAxis: XAxis,
+    private val chart: RadarChart
+) : XAxisRenderer(viewPortHandler, xAxis, null) {
     override fun renderAxisLabels(canvas: Canvas) {
         if (!xAxis.isEnabled || !xAxis.isDrawLabelsEnabled)
             return

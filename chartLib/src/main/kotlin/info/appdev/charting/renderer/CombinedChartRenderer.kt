@@ -15,7 +15,11 @@ import java.lang.ref.WeakReference
  * Renderer class that is responsible for rendering multiple different data-types.
  */
 @Suppress("MemberVisibilityCanBePrivate")
-open class CombinedChartRenderer(chart: CombinedChart, animator: ChartAnimator, viewPortHandler: ViewPortHandler) : DataRenderer(animator, viewPortHandler) {
+open class CombinedChartRenderer(
+    chart: CombinedChart,
+    animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
+) : DataRenderer(animator, viewPortHandler) {
     /**
      * all rederers for the different kinds of data this combined-renderer can draw
      */

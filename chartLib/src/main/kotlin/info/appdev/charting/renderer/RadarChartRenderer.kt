@@ -17,7 +17,8 @@ import info.appdev.charting.utils.convertDpToPixel
 import info.appdev.charting.utils.getPosition
 
 open class RadarChartRenderer(
-    protected var chart: RadarChart, animator: ChartAnimator,
+    protected var chart: RadarChart,
+    animator: ChartAnimator,
     viewPortHandler: ViewPortHandler
 ) : LineRadarRenderer(animator, viewPortHandler) {
     var webPaint: Paint

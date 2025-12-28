@@ -18,7 +18,8 @@ import info.appdev.charting.utils.convertDpToPixel
 
 @Suppress("MemberVisibilityCanBePrivate")
 open class YAxisRendererHorizontalBarChart(
-    viewPortHandler: ViewPortHandler, yAxis: YAxis,
+    viewPortHandler: ViewPortHandler,
+    yAxis: YAxis,
     trans: Transformer?
 ) : YAxisRenderer(viewPortHandler, yAxis, trans) {
 
@@ -287,15 +288,18 @@ open class YAxisRendererHorizontalBarChart(
                             limitLinePaint.textAlign = Align.LEFT
                             canvas.drawText(label, pts[0] + xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint)
                         }
+
                         LimitLabelPosition.RIGHT_BOTTOM -> {
                             limitLinePaint.textAlign = Align.LEFT
                             canvas.drawText(label, pts[0] + xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)
                         }
+
                         LimitLabelPosition.LEFT_TOP -> {
                             limitLinePaint.textAlign = Align.RIGHT
                             val labelLineHeight = limitLinePaint.calcTextHeight(label).toFloat()
                             canvas.drawText(label, pts[0] - xOffset, viewPortHandler.contentTop() + yOffset + labelLineHeight, limitLinePaint)
                         }
+
                         else -> {
                             limitLinePaint.textAlign = Align.RIGHT
                             canvas.drawText(label, pts[0] - xOffset, viewPortHandler.contentBottom() - yOffset, limitLinePaint)

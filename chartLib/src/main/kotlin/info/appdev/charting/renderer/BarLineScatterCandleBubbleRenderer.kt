@@ -10,7 +10,10 @@ import info.appdev.charting.utils.ViewPortHandler
 import kotlin.math.max
 import kotlin.math.min
 
-abstract class BarLineScatterCandleBubbleRenderer(animator: ChartAnimator, viewPortHandler: ViewPortHandler) : DataRenderer(animator, viewPortHandler) {
+abstract class BarLineScatterCandleBubbleRenderer(
+    animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
+) : DataRenderer(animator, viewPortHandler) {
     /**
      * buffer for storing the current minimum and maximum visible x
      */

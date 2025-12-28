@@ -13,8 +13,11 @@ import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.min
 
-open class ScatterChartRenderer(var dataProvider: ScatterDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
-    LineScatterCandleRadarRenderer(animator, viewPortHandler) {
+open class ScatterChartRenderer(
+    var dataProvider: ScatterDataProvider,
+    animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
+) : LineScatterCandleRadarRenderer(animator, viewPortHandler) {
     override fun initBuffers() = Unit
 
     override fun drawData(canvas: Canvas) {

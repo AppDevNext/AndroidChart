@@ -34,12 +34,12 @@ import kotlin.math.sqrt
 import kotlin.math.tan
 
 open class PieChartRenderer(
-    protected var chart: PieChart, animator: ChartAnimator,
+    protected var chart: PieChart,
+    animator: ChartAnimator,
     viewPortHandler: ViewPortHandler
 ) : DataRenderer(animator, viewPortHandler) {
     /**
-     * paint for the hole in the center of the pie chart and the transparent
-     * circle
+     * paint for the hole in the center of the pie chart and the transparent circle
      */
     var paintHole: Paint
         protected set

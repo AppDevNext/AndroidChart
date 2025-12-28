@@ -20,7 +20,8 @@ import kotlin.math.sqrt
 
 @Suppress("MemberVisibilityCanBePrivate")
 open class BubbleChartRenderer(
-    var dataProvider: BubbleDataProvider, animator: ChartAnimator,
+    var dataProvider: BubbleDataProvider,
+    animator: ChartAnimator,
     viewPortHandler: ViewPortHandler
 ) : BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
 

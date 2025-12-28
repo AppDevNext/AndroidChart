@@ -22,11 +22,11 @@ import kotlin.math.min
 
 @Suppress("MemberVisibilityCanBePrivate")
 open class HorizontalBarChartRenderer(
-    chart: BarDataProvider, animator: ChartAnimator,
+    dataProvider: BarDataProvider, animator: ChartAnimator,
     viewPortHandler: ViewPortHandler
-) : BarChartRenderer(chart, animator, viewPortHandler) {
+) : BarChartRenderer(dataProvider, animator, viewPortHandler) {
     override fun initBuffers() {
-        dataProvider.barData?.let { barData ->
+        this@HorizontalBarChartRenderer.dataProvider.barData?.let { barData ->
             barBuffers = arrayOfNulls<HorizontalBarBuffer>(barData.dataSetCount).toMutableList()
 
             for (i in barBuffers.indices) {
@@ -48,7 +48,7 @@ open class HorizontalBarChartRenderer(
     }
 
     override fun drawDataSet(canvas: Canvas, dataSet: IBarDataSet, index: Int) {
-        val trans = dataProvider.getTransformer(dataSet.axisDependency)
+        val trans = this@HorizontalBarChartRenderer.dataProvider.getTransformer(dataSet.axisDependency)
 
         barBorderPaint.color = dataSet.barBorderColor
         barBorderPaint.strokeWidth = dataSet.barBorderWidth.convertDpToPixel()
@@ -59,10 +59,10 @@ open class HorizontalBarChartRenderer(
         val phaseY = animator.phaseY
 
         // draw the bar shadow before the values
-        if (dataProvider.isDrawBarShadowEnabled) {
+        if (this@HorizontalBarChartRenderer.dataProvider.isDrawBarShadowEnabled) {
             shadowPaint.color = dataSet.barShadowColor
 
-            dataProvider.barData?.let { barData ->
+            this@HorizontalBarChartRenderer.dataProvider.barData?.let { barData ->
 
                 val barWidth = barData.barWidth
                 val barWidthHalf = barWidth / 2.0f
@@ -103,8 +103,8 @@ open class HorizontalBarChartRenderer(
         val buffer = barBuffers[index]!!
         buffer.setPhases(phaseX, phaseY)
         buffer.setDataSet(index)
-        buffer.inverted = dataProvider.isInverted(dataSet.axisDependency)
-        dataProvider.barData?.let { buffer.barWidth = it.barWidth }
+        buffer.inverted = this@HorizontalBarChartRenderer.dataProvider.isInverted(dataSet.axisDependency)
+        this@HorizontalBarChartRenderer.dataProvider.barData?.let { buffer.barWidth = it.barWidth }
 
         buffer.feed(dataSet)
 
@@ -112,7 +112,7 @@ open class HorizontalBarChartRenderer(
 
         val isCustomFill = dataSet.fills.isNotEmpty()
         val isSingleColor = dataSet.colors.size == 1
-        val isInverted = dataProvider.isInverted(dataSet.axisDependency)
+        val isInverted = this@HorizontalBarChartRenderer.dataProvider.isInverted(dataSet.axisDependency)
 
         if (isSingleColor) {
             paintRender.color = dataSet.color
@@ -166,15 +166,15 @@ open class HorizontalBarChartRenderer(
     }
 
     override fun drawValues(canvas: Canvas) {
-        if (isDrawingValuesAllowed(dataProvider)) {
-            val dataSets = dataProvider.barData?.dataSets
+        if (isDrawingValuesAllowed(this@HorizontalBarChartRenderer.dataProvider)) {
+            val dataSets = this@HorizontalBarChartRenderer.dataProvider.barData?.dataSets
 
             val valueOffsetPlus = 5f.convertDpToPixel()
             var posOffset: Float
             var negOffset: Float
-            val drawValueAboveBar = dataProvider.isDrawValueAboveBarEnabled
+            val drawValueAboveBar = this@HorizontalBarChartRenderer.dataProvider.isDrawValueAboveBarEnabled
 
-            dataProvider.barData?.let { barData ->
+            this@HorizontalBarChartRenderer.dataProvider.barData?.let { barData ->
                 for (i in 0..<barData.dataSetCount) {
                     val dataSet = dataSets!![i]
                     if (dataSet.entryCount == 0) {
@@ -184,7 +184,7 @@ open class HorizontalBarChartRenderer(
                         continue
                     }
 
-                    val isInverted = dataProvider.isInverted(dataSet.axisDependency)
+                    val isInverted = this@HorizontalBarChartRenderer.dataProvider.isInverted(dataSet.axisDependency)
 
                     // apply the text-styling defined by the DataSet
                     applyValueTextStyle(dataSet)
@@ -270,7 +270,7 @@ open class HorizontalBarChartRenderer(
 
                         // if each value of a potential stack should be drawn
                     } else {
-                        val trans = dataProvider.getTransformer(dataSet.axisDependency)
+                        val trans = this@HorizontalBarChartRenderer.dataProvider.getTransformer(dataSet.axisDependency)
 
                         var bufferIndex = 0
                         var index = 0
