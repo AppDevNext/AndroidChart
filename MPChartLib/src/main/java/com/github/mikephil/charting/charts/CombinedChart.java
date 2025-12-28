@@ -49,6 +49,16 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
 
 	protected DrawOrder[] mDrawOrder;
 
+	@Override
+	public boolean isOwnRoundedRendererUsed() {
+		return false;
+	}
+
+	@Override
+	public void setOwnRoundedRendererUsed(boolean b) {
+		Log.e(LOG_TAG, "CombinedChart does not support rounded bars.");
+	}
+
 	/**
 	 * enum that allows to specify the order in which the different data objects
 	 * for the combined-chart are drawn

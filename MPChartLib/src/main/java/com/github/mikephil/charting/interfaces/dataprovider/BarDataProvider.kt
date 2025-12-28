@@ -7,4 +7,5 @@ interface BarDataProvider : BarLineScatterCandleBubbleDataProvider {
     var isDrawBarShadowEnabled: Boolean
     var isDrawValueAboveBarEnabled: Boolean
     var isHighlightFullBarEnabled: Boolean
+    var isOwnRoundedRendererUsed : Boolean
 }

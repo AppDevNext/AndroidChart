@@ -36,8 +36,8 @@ import info.appdev.chartexample.formatter.MyAxisValueFormatter
 import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
-class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
-    private var chart: BarChart? = null
+open class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
+    var chart: BarChart? = null
     private var seekBarX: SeekBar? = null
     private var seekBarY: SeekBar? = null
     private var tvX: TextView? = null
