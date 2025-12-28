@@ -34,7 +34,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
         binding.seekBarX.setOnSeekBarChangeListener(this)
         binding.seekBarY.setOnSeekBarChangeListener(this)
         binding.chart1.setBackgroundColor(Color.WHITE)
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be drawn
         binding.chart1.setMaxVisibleValueCount(60)

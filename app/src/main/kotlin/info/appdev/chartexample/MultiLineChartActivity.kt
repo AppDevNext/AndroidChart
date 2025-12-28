@@ -39,7 +39,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         binding.seekBarY.setOnSeekBarChangeListener(this)
         binding.chart1.setOnChartValueSelectedListener(this)
         binding.chart1.setDrawGridBackground(false)
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
         binding.chart1.setDrawBorders(false)
 
         binding.chart1.axisLeft.isEnabled = false

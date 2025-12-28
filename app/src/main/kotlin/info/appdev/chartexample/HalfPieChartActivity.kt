@@ -38,7 +38,7 @@ class HalfPieChartActivity : DemoBase() {
         moveOffScreen()
 
         binding.chart1.setUsePercentValues(true)
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         binding.chart1.setCenterTextTypeface(tfLight)
         binding.chart1.centerText = generateCenterSpannableText()

@@ -34,7 +34,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         setContentView(binding.root)
 
         binding.chart1.setOnChartValueSelectedListener(this)
-        binding.chart1.description?.isEnabled = true
+        binding.chart1.description.isEnabled = true
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)

@@ -45,7 +45,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         binding.seekBarY.setOnSeekBarChangeListener(this)
 
         binding.chart1.setOnChartValueSelectedListener(this)
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         //        chart.setDrawBorders(true);
 

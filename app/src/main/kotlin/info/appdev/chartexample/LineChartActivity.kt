@@ -46,7 +46,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         binding.chart1.setBackgroundColor(Color.WHITE)
 
         // disable description text
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)

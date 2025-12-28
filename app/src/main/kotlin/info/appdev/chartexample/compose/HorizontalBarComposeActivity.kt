@@ -290,7 +290,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
 
         chart.setDrawBarShadow(false)
         chart.setDrawValueAboveBar(true)
-        chart.description?.isEnabled = false
+        chart.description.isEnabled = false
         chart.setMaxVisibleValueCount(60)
         chart.setPinchZoom(false)
         chart.setDrawGridBackground(false)

@@ -23,7 +23,7 @@ class BarChartFrag : SimpleFragment(), OnChartGestureListener {
 
         // create a new chart object
         chart = BarChart(requireActivity())
-        chart!!.description?.isEnabled = false
+        chart!!.description.isEnabled = false
         chart!!.onChartGestureListener = this
 
         val mv = MyMarkerView(activity, R.layout.custom_marker_view)

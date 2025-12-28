@@ -43,7 +43,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
         binding.chart1.setOnChartValueSelectedListener(this)
 
-        binding.chart1.description?.isEnabled = false
+        binding.chart1.description.isEnabled = false
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
