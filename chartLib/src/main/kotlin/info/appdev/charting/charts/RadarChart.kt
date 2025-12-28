@@ -19,7 +19,7 @@ import kotlin.math.min
 /**
  * Implementation of the RadarChart, a "spidernet"-like chart. It works best when displaying 5-10 entries per DataSet.
  */
-class RadarChart : PieRadarChartBase<RadarData> {
+open class RadarChart : PieRadarChartBase<RadarData> {
     /**
      * width of the main web lines
      */
@@ -69,7 +69,7 @@ class RadarChart : PieRadarChartBase<RadarData> {
     /**
      * flag indicating if the web lines should be drawn or not
      */
-    private var mDrawWeb = true
+    private var drawWeb = true
 
     /**
      * modulus that determines how many labels and web-lines are skipped before the next is drawn
@@ -77,7 +77,7 @@ class RadarChart : PieRadarChartBase<RadarData> {
     private var mSkipWebLineCount = 0
 
     /**
-     * the object reprsenting the y-axis labels
+     * the object representing the y-axis labels
      */
     private var mYAxis: YAxis? = null
 
@@ -142,7 +142,7 @@ class RadarChart : PieRadarChartBase<RadarData> {
 
         mXAxisRenderer!!.renderAxisLabels(canvas)
 
-        if (mDrawWeb)
+        if (drawWeb)
             mRenderer?.drawExtras(canvas)
 
         if (mYAxis!!.isEnabled && mYAxis!!.isDrawLimitLinesBehindDataEnabled) mYAxisRenderer!!.renderLimitLines(canvas)
@@ -250,15 +250,6 @@ class RadarChart : PieRadarChartBase<RadarData> {
         set(width) {
             mInnerWebLineWidth = width.convertDpToPixel()
         }
-
-    /**
-     * If set to true, drawing the web is enabled, if set to false, drawing the
-     * whole web is disabled. Default: true
-     *
-     */
-    fun setDrawWeb(enabled: Boolean) {
-        mDrawWeb = enabled
-    }
 
     var skipWebLineCount: Int
         get() = mSkipWebLineCount
