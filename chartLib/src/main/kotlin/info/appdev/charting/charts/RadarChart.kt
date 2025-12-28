@@ -123,7 +123,7 @@ open class RadarChart : PieRadarChartBase<RadarData> {
             mYAxisRenderer!!.computeAxis(mYAxis!!.mAxisMinimum, mYAxis!!.mAxisMaximum, mYAxis!!.isInverted)
             mXAxisRenderer!!.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
 
-            if (legend != null && !legend!!.isLegendCustom)
+            if (!legend.isLegendCustom)
                 legendRenderer?.computeLegend(data)
 
             calculateOffsets()

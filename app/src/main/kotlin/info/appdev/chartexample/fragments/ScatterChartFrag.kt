@@ -40,7 +40,7 @@ class ScatterChartFrag : SimpleFragment() {
         rightAxis.typeface = tf
         rightAxis.setDrawGridLines(false)
 
-        chart!!.legend?.apply {
+        chart!!.legend.apply {
             isWordWrapEnabled = true
             typeface = tf
             formSize = 14f

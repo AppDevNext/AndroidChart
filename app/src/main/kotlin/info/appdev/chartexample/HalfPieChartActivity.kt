@@ -65,7 +65,7 @@ class HalfPieChartActivity : DemoBase() {
 
         binding.chart1.animateY(1400, Easing.easeInOutQuad)
 
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.TOP
             horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
             orientation = Legend.LegendOrientation.HORIZONTAL

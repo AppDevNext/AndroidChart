@@ -65,7 +65,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         binding.seekBarX.progress = 10
         binding.seekBarY.progress = 100
 
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.TOP
             horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             orientation = Legend.LegendOrientation.VERTICAL

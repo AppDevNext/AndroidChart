@@ -59,66 +59,57 @@ open class HorizontalBarChart : BarChart {
         offsets.top = 0f
         offsets.bottom = 0f
 
-        legend?.let { legend ->
-            if (!legend.isEnabled || legend.isDrawInsideEnabled) {
-                return
-            }
-            when (legend.orientation) {
-                LegendOrientation.VERTICAL -> when (legend.horizontalAlignment) {
-                    LegendHorizontalAlignment.LEFT -> offsets.left += min(
-                        legend.neededWidth,
-                        viewPortHandler.chartWidth * legend.maxSizePercent
-                    ) + legend.xOffset
-
-                    LegendHorizontalAlignment.RIGHT -> offsets.right += min(
-                        legend.neededWidth,
-                        viewPortHandler.chartWidth * legend.maxSizePercent
-                    ) + legend.xOffset
-
-                    LegendHorizontalAlignment.CENTER -> when (legend.verticalAlignment) {
-                        LegendVerticalAlignment.TOP -> offsets.top += min(
-                            legend.neededHeight,
-                            viewPortHandler.chartHeight * legend.maxSizePercent
-                        ) + legend.yOffset
-
-                        LegendVerticalAlignment.BOTTOM -> offsets.bottom += min(
-                            legend.neededHeight,
-                            viewPortHandler.chartHeight * legend.maxSizePercent
-                        ) + legend.yOffset
-
-                        else -> {}
-                    }
-                }
-
-                LegendOrientation.HORIZONTAL -> when (legend.verticalAlignment) {
-                    LegendVerticalAlignment.TOP -> {
-                        offsets.top += min(
-                            legend.neededHeight,
-                            viewPortHandler.chartHeight * legend.maxSizePercent
-                        ) + legend.yOffset
-
-                        if (mAxisLeft.isEnabled && mAxisLeft.isDrawLabelsEnabled) {
-                            offsets.top += mAxisLeft.getRequiredHeightSpace(
-                                axisRendererLeft.paintAxisLabels
-                            )
-                        }
-                    }
-
-                    LegendVerticalAlignment.BOTTOM -> {
-                        offsets.bottom += min(
-                            legend.neededHeight,
-                            viewPortHandler.chartHeight * legend.maxSizePercent
-                        ) + legend.yOffset
-
-                        if (mAxisRight.isEnabled && mAxisRight.isDrawLabelsEnabled) {
-                            offsets.bottom += mAxisRight.getRequiredHeightSpace(
-                                axisRendererRight.paintAxisLabels
-                            )
-                        }
-                    }
-
+        if (!legend.isEnabled || legend.isDrawInsideEnabled) {
+            return
+        }
+        when (legend.orientation) {
+            LegendOrientation.VERTICAL -> when (legend.horizontalAlignment) {
+                LegendHorizontalAlignment.LEFT -> offsets.left += min(
+                    legend.neededWidth,
+                    viewPortHandler.chartWidth * legend.maxSizePercent
+                ) + legend.xOffset
+                LegendHorizontalAlignment.RIGHT -> offsets.right += min(
+                    legend.neededWidth,
+                    viewPortHandler.chartWidth * legend.maxSizePercent
+                ) + legend.xOffset
+                LegendHorizontalAlignment.CENTER -> when (legend.verticalAlignment) {
+                    LegendVerticalAlignment.TOP -> offsets.top += min(
+                        legend.neededHeight,
+                        viewPortHandler.chartHeight * legend.maxSizePercent
+                    ) + legend.yOffset
+                    LegendVerticalAlignment.BOTTOM -> offsets.bottom += min(
+                        legend.neededHeight,
+                        viewPortHandler.chartHeight * legend.maxSizePercent
+                    ) + legend.yOffset
                     else -> {}
                 }
+            }
+            LegendOrientation.HORIZONTAL -> when (legend.verticalAlignment) {
+                LegendVerticalAlignment.TOP -> {
+                    offsets.top += min(
+                        legend.neededHeight,
+                        viewPortHandler.chartHeight * legend.maxSizePercent
+                    ) + legend.yOffset
+
+                    if (mAxisLeft.isEnabled && mAxisLeft.isDrawLabelsEnabled) {
+                        offsets.top += mAxisLeft.getRequiredHeightSpace(
+                            axisRendererLeft.paintAxisLabels
+                        )
+                    }
+                }
+                LegendVerticalAlignment.BOTTOM -> {
+                    offsets.bottom += min(
+                        legend.neededHeight,
+                        viewPortHandler.chartHeight * legend.maxSizePercent
+                    ) + legend.yOffset
+
+                    if (mAxisRight.isEnabled && mAxisRight.isDrawLabelsEnabled) {
+                        offsets.bottom += mAxisRight.getRequiredHeightSpace(
+                            axisRendererRight.paintAxisLabels
+                        )
+                    }
+                }
+                else -> {}
             }
         }
     }

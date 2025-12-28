@@ -53,7 +53,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         binding.seekBarX.progress = 45
         binding.seekBarY.progress = 100
 
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.TOP
             horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             orientation = Legend.LegendOrientation.VERTICAL

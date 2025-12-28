@@ -76,7 +76,7 @@ class LineChartActivityColored : DemoBase() {
         chart.setData(data)
 
         // get the legend (only possible after setting data)
-        chart.legend?.apply {
+        chart.legend.apply {
             isEnabled = false
         }
 

@@ -34,7 +34,7 @@ class GradientActivity : DemoBase() {
 
         // Minimal chart setup
         chart.description?.isEnabled = false
-        chart.legend?.isEnabled = false
+        chart.legend.isEnabled = false
         chart.axisRight.isEnabled = false
         chart.setDrawGridBackground(false)
 

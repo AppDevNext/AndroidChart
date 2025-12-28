@@ -55,7 +55,7 @@ class CombinedChartActivity : DemoBase() {
             DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
         )
 
-        binding.chart1.legend?.apply {
+        binding.chart1.legend.apply {
             isWordWrapEnabled = true
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER

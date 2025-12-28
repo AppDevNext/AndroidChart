@@ -63,7 +63,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
         binding.seekBarX.progress = 40
         binding.seekBarY.progress = 100
 
-        binding.chart1.legend?.isEnabled = false
+        binding.chart1.legend.isEnabled = false
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

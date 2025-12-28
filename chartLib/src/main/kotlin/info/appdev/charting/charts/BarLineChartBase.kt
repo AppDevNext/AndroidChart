@@ -338,7 +338,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
             totalTime += drawtime
             drawCycles += 1
             val average = totalTime / drawCycles
-            Timber.i( "Drawtime: $drawtime ms, average: $average ms, cycles: $drawCycles")
+            Timber.i("Drawtime: $drawtime ms, average: $average ms, cycles: $drawCycles")
         }
     }
 
@@ -415,53 +415,43 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         offsets.top = 0f
         offsets.bottom = 0f
 
-        legend?.let { legend ->
-            if (!legend.isEnabled || legend.isDrawInsideEnabled) {
-                return
-            }
+        if (!legend.isEnabled || legend.isDrawInsideEnabled) {
+            return
+        }
 
-            when (legend.orientation) {
-                LegendOrientation.VERTICAL -> when (legend.horizontalAlignment) {
-                    LegendHorizontalAlignment.LEFT -> offsets.left += min(
-                        legend.neededWidth,
-                        viewPortHandler.chartWidth * legend.maxSizePercent
-                    ) + legend.xOffset
-
-                    LegendHorizontalAlignment.RIGHT -> offsets.right += min(
-                        legend.neededWidth,
-                        viewPortHandler.chartWidth * legend.maxSizePercent
-                    ) + legend.xOffset
-
-                    LegendHorizontalAlignment.CENTER -> when (legend.verticalAlignment) {
-                        LegendVerticalAlignment.TOP -> offsets.top += min(
-                            legend.neededHeight,
-                            viewPortHandler.chartHeight * legend.maxSizePercent
-                        ) + legend.yOffset
-
-                        LegendVerticalAlignment.BOTTOM -> offsets.bottom += min(
-                            legend.neededHeight,
-                            viewPortHandler.chartHeight * legend.maxSizePercent
-                        ) + legend.yOffset
-
-                        else -> {}
-                    }
-                }
-
-                LegendOrientation.HORIZONTAL -> when (legend.verticalAlignment) {
+        when (legend.orientation) {
+            LegendOrientation.VERTICAL -> when (legend.horizontalAlignment) {
+                LegendHorizontalAlignment.LEFT -> offsets.left += min(
+                    legend.neededWidth,
+                    viewPortHandler.chartWidth * legend.maxSizePercent
+                ) + legend.xOffset
+                LegendHorizontalAlignment.RIGHT -> offsets.right += min(
+                    legend.neededWidth,
+                    viewPortHandler.chartWidth * legend.maxSizePercent
+                ) + legend.xOffset
+                LegendHorizontalAlignment.CENTER -> when (legend.verticalAlignment) {
                     LegendVerticalAlignment.TOP -> offsets.top += min(
                         legend.neededHeight,
                         viewPortHandler.chartHeight * legend.maxSizePercent
                     ) + legend.yOffset
-
-
                     LegendVerticalAlignment.BOTTOM -> offsets.bottom += min(
                         legend.neededHeight,
                         viewPortHandler.chartHeight * legend.maxSizePercent
                     ) + legend.yOffset
-
-
                     else -> {}
                 }
+            }
+
+            LegendOrientation.HORIZONTAL -> when (legend.verticalAlignment) {
+                LegendVerticalAlignment.TOP -> offsets.top += min(
+                    legend.neededHeight,
+                    viewPortHandler.chartHeight * legend.maxSizePercent
+                ) + legend.yOffset
+                LegendVerticalAlignment.BOTTOM -> offsets.bottom += min(
+                    legend.neededHeight,
+                    viewPortHandler.chartHeight * legend.maxSizePercent
+                ) + legend.yOffset
+                else -> {}
             }
         }
     }
@@ -499,9 +489,11 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
                     XAxisPosition.BOTTOM -> {
                         offsetBottom += xLabelHeight
                     }
+
                     XAxisPosition.TOP -> {
                         offsetTop += xLabelHeight
                     }
+
                     XAxisPosition.BOTH_SIDED -> {
                         offsetBottom += xLabelHeight
                         offsetTop += xLabelHeight
@@ -509,7 +501,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
                     XAxisPosition.TOP_INSIDE -> TODO()
                     XAxisPosition.BOTTOM_INSIDE -> TODO()
-                    null -> Timber.e( "calculateOffsets(): Cannot calculate offset for XAxisPosition.TOP_INSIDE or BOTTOM_INSIDE")
+                    null -> Timber.e("calculateOffsets(): Cannot calculate offset for XAxisPosition.TOP_INSIDE or BOTTOM_INSIDE")
                 }
             }
 

@@ -37,7 +37,7 @@ class BarChartFrag : SimpleFragment(), OnChartGestureListener {
 
         chart!!.setData(generateBarData(1, 20000f))
 
-        chart!!.legend?.apply {
+        chart!!.legend.apply {
             typeface = tf
         }
 

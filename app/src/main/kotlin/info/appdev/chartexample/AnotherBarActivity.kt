@@ -55,7 +55,7 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
         // add a nice and smooth animation
         binding.chart1.animateY(1500)
 
-        binding.chart1.legend?.isEnabled = false
+        binding.chart1.legend.isEnabled = false
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

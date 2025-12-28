@@ -320,7 +320,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
         chart.setFitBars(true)
         chart.animateY(2500)
 
-        chart.legend?.apply {
+        chart.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
             orientation = Legend.LegendOrientation.HORIZONTAL
