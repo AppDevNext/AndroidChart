@@ -11,370 +11,273 @@ import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.github.mikephil.charting.utils.convertDpToPixel
+import kotlin.math.abs
 import kotlin.math.min
 
-/** @noinspection unused
- */
-class RoundedBarChartRenderer(chart: BarDataProvider, animator: ChartAnimator, viewPortHandler: ViewPortHandler) :
-    BarChartRenderer(chart, animator, viewPortHandler) {
-    private val mBarShadowRectBuffer = RectF()
-    private val mRadius = 20f
+@Suppress("unused")
+class RoundedBarChartRenderer(
+    var dataProvider: BarDataProvider,
+    animator: ChartAnimator,
+    viewPortHandler: ViewPortHandler
+) : BarChartRenderer(dataProvider, animator, viewPortHandler) {
+
+    private val shadowRect = RectF()
+    private val tmpPts = FloatArray(4)
+    private val ovalPath = Path()
+
+    private val defaultRadius = 20f
+
     private var roundedShadowRadius = 0f
-    private var roundedPositiveDataSetRadius = 0f
-    private var roundedNegativeDataSetRadius = 0f
-
-    fun setRoundedNegativeDataSetRadius(roundedNegativeDataSet: Float) {
-        roundedNegativeDataSetRadius = roundedNegativeDataSet
-    }
-
-    fun setRoundedShadowRadius(roundedShadow: Float) {
-        roundedShadowRadius = roundedShadow
-    }
-
-    fun setRoundedPositiveDataSetRadius(roundedPositiveDataSet: Float) {
-        roundedPositiveDataSetRadius = roundedPositiveDataSet
-    }
+    var roundedPositiveDataSetRadius = 0f
+    var roundedNegativeDataSetRadius = 0f
+    /** If true, corner radii = half the bar’s screen‐pixel width at draw‐time. */
+    var useAutoFullRadius = false
 
     override fun drawDataSet(canvas: Canvas, dataSet: IBarDataSet, index: Int) {
         initBuffers()
-        val trans = chart.getTransformer(dataSet.axisDependency)
-        barBorderPaint.color = dataSet.barBorderColor
-        barBorderPaint.strokeWidth = dataSet.barBorderWidth.convertDpToPixel()
-        shadowPaint.color = dataSet.barShadowColor
-        val drawBorder = dataSet.barBorderWidth > 0f
+        val trans = dataProvider.getTransformer(dataSet.axisDependency) ?: return
+        val handler = viewPortHandler
+
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
 
-        if (chart.isDrawBarShadowEnabled) {
+        dataProvider.barData.let { barData ->
+            // 1) auto‐radius?
+            if (useAutoFullRadius) {
+                val halfVal = barData.barWidth / 2f
+                tmpPts[0] = 0f; tmpPts[1] = 0f
+                tmpPts[2] = halfVal; tmpPts[3] = 0f
+                trans.pointValuesToPixel(tmpPts)
+                val pxHalf = abs(tmpPts[2] - tmpPts[0])
+                roundedShadowRadius = pxHalf
+                roundedPositiveDataSetRadius = pxHalf
+                roundedNegativeDataSetRadius = pxHalf
+            }
+
+            // 2) prep paints
+            barBorderPaint.color = dataSet.barBorderColor
+            barBorderPaint.strokeWidth = dataSet.barBorderWidth.convertDpToPixel()
             shadowPaint.color = dataSet.barShadowColor
-            val barData = chart.barData
-            val barWidth = barData.barWidth
-            val barWidthHalf = barWidth / 2.0f
-            var x: Float
-            var i = 0
-            val count = min((dataSet.entryCount.toFloat() * phaseX).toDouble().toInt().toDouble(), dataSet.entryCount.toDouble())
-            while (i < count) {
-                dataSet.getEntryForIndex(i)?.let { barEntry ->
-                    x = barEntry.x
-                    mBarShadowRectBuffer.left = x - barWidthHalf
-                    mBarShadowRectBuffer.right = x + barWidthHalf
-                }
-                trans!!.rectValueToPixel(mBarShadowRectBuffer)
-                if (!viewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right)) {
-                    i++
-                    continue
-                }
-                if (!viewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left)) {
-                    break
-                }
-                mBarShadowRectBuffer.top = viewPortHandler.contentTop()
-                mBarShadowRectBuffer.bottom = viewPortHandler.contentBottom()
 
+            // 3) draw shadows
+            if (dataProvider.isDrawBarShadowEnabled) {
+                val barWidth = barData.barWidth
+                val half = barWidth / 2f
+                val count = min((dataSet.entryCount * phaseX).toInt(), dataSet.entryCount)
+                for (i in 0 until count) {
+                    dataSet.getEntryForIndex(i)?.let { e ->
+                        val x = e.x
+                        shadowRect.left = x - half
+                        shadowRect.right = x + half
+                        trans.rectValueToPixel(shadowRect)
 
-                if (roundedShadowRadius > 0) {
-                    canvas.drawRoundRect(barRect, roundedShadowRadius, roundedShadowRadius, shadowPaint)
-                } else {
-                    canvas.drawRect(mBarShadowRectBuffer, shadowPaint)
-                }
-                i++
-            }
-        }
+                        if (!handler.isInBoundsLeft(shadowRect.right) ||
+                            !handler.isInBoundsRight(shadowRect.left)
+                        ) return@let
 
-        val buffer = barBuffers[index]!!
-        buffer.setPhases(phaseX, phaseY)
-        buffer.setDataSet(index)
-        buffer.setInverted(chart.isInverted(dataSet.axisDependency))
-        buffer.setBarWidth(chart.barData.barWidth)
-        buffer.feed(dataSet)
-        trans!!.pointValuesToPixel(buffer.buffer)
+                        shadowRect.top = handler.contentTop()
+                        shadowRect.bottom = handler.contentBottom()
 
-        // if multiple colors has been assigned to Bar Chart
-        dataSet.colors?.let {
-            if (it.size > 1) {
-                var j = 0
-                while (j < buffer.size()) {
-                    if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
-                        j += 4
-                        continue
-                    }
-
-                    if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
-                        break
-                    }
-
-                    if (chart.isDrawBarShadowEnabled) {
-                        if (roundedShadowRadius > 0) {
-                            canvas.drawRoundRect(
-                                RectF(
-                                    buffer.buffer[j], viewPortHandler.contentTop(),
-                                    buffer.buffer[j + 2],
-                                    viewPortHandler.contentBottom()
-                                ), roundedShadowRadius, roundedShadowRadius, shadowPaint
-                            )
+                        if (roundedShadowRadius > 0f) {
+                            canvas.drawRoundRect(shadowRect, roundedShadowRadius, roundedShadowRadius, shadowPaint)
                         } else {
-                            canvas.drawRect(
-                                buffer.buffer[j], viewPortHandler.contentTop(),
-                                buffer.buffer[j + 2],
-                                viewPortHandler.contentBottom(), shadowPaint
-                            )
+                            canvas.drawRect(shadowRect, shadowPaint)
                         }
                     }
+                }
+            }
 
-                    // Set the color for the currently drawn value. If the index
+            // 4) feed & transform
+            val buffer = barBuffers[index] ?: return
+            buffer.setPhases(phaseX, phaseY)
+            buffer.setDataSet(index)
+            buffer.setInverted(dataProvider.isInverted(dataSet.axisDependency))
+            buffer.setBarWidth(barData.barWidth)
+            buffer.feed(dataSet)
+            trans.pointValuesToPixel(buffer.buffer)
+
+            val singleColor = dataSet.colors.size == 1
+
+            // 5a) multi‐color bars
+            if (!singleColor) {
+                var j = 0
+                while (j < buffer.size()) {
+                    val left = buffer.buffer[j]
+                    val top = buffer.buffer[j + 1]
+                    val right = buffer.buffer[j + 2]
+                    val bottom = buffer.buffer[j + 3]
+
+                    if (!handler.isInBoundsLeft(right)) {
+                        j += 4; continue
+                    }
+                    // if bar is off‐right, we're past visible, so stop
+                    if (!handler.isInBoundsRight(left)) break
+
+                    // shadow
+                    if (dataProvider.isDrawBarShadowEnabled && roundedShadowRadius > 0f) {
+                        ovalPath.reset()
+                        ovalPath.addRoundRect(
+                            RectF(left, handler.contentTop(), right, handler.contentBottom()),
+                            roundedShadowRadius, roundedShadowRadius, Path.Direction.CW
+                        )
+                        canvas.drawPath(ovalPath, shadowPaint)
+                    }
+
                     paintRender.color = dataSet.getColorByIndex(j / 4)
-
-                    if (roundedPositiveDataSetRadius > 0) {
-                        canvas.drawRoundRect(
-                            RectF(
-                                buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                                buffer.buffer[j + 3]
-                            ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, paintRender
+                    if (roundedPositiveDataSetRadius > 0f) {
+                        ovalPath.reset()
+                        ovalPath.addRoundRect(
+                            RectF(left, top, right, bottom),
+                            roundedPositiveDataSetRadius,
+                            roundedPositiveDataSetRadius,
+                            Path.Direction.CW
                         )
+                        canvas.drawPath(ovalPath, paintRender)
                     } else {
-                        canvas.drawRect(
-                            buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3], paintRender
-                        )
+                        canvas.drawRect(left, top, right, bottom, paintRender)
                     }
                     j += 4
                 }
-            } else {
+            }
+            // 5b) single‐color bars
+            else {
                 paintRender.color = dataSet.color
-
                 var j = 0
                 while (j < buffer.size()) {
-                    if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
-                        j += 4
-                        continue
-                    }
+                    val left = buffer.buffer[j]
+                    val top = buffer.buffer[j + 1]
+                    val right = buffer.buffer[j + 2]
+                    val bottom = buffer.buffer[j + 3]
 
-                    if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
-                        break
+                    if (!handler.isInBoundsLeft(right)) {
+                        j += 4; continue
                     }
+                    if (!handler.isInBoundsRight(left)) break
 
-                    if (chart.isDrawBarShadowEnabled) {
-                        if (roundedShadowRadius > 0) {
-                            canvas.drawRoundRect(
-                                RectF(
-                                    buffer.buffer[j], viewPortHandler.contentTop(),
-                                    buffer.buffer[j + 2],
-                                    viewPortHandler.contentBottom()
-                                ), roundedShadowRadius, roundedShadowRadius, shadowPaint
-                            )
-                        } else {
-                            canvas.drawRect(
-                                buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                                buffer.buffer[j + 3], paintRender
-                            )
-                        }
-                    }
-
-                    if (roundedPositiveDataSetRadius > 0) {
-                        canvas.drawRoundRect(
-                            RectF(
-                                buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                                buffer.buffer[j + 3]
-                            ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, paintRender
+                    if (dataProvider.isDrawBarShadowEnabled && roundedShadowRadius > 0f) {
+                        ovalPath.reset()
+                        ovalPath.addRoundRect(
+                            RectF(left, handler.contentTop(), right, handler.contentBottom()),
+                            roundedShadowRadius, roundedShadowRadius, Path.Direction.CW
                         )
+                        canvas.drawPath(ovalPath, shadowPaint)
+                    }
+
+                    if (roundedPositiveDataSetRadius > 0f) {
+                        ovalPath.reset()
+                        ovalPath.addRoundRect(
+                            RectF(left, top, right, bottom),
+                            roundedPositiveDataSetRadius,
+                            roundedPositiveDataSetRadius,
+                            Path.Direction.CW
+                        )
+                        canvas.drawPath(ovalPath, paintRender)
                     } else {
-                        canvas.drawRect(
-                            buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3], paintRender
-                        )
+                        canvas.drawRect(left, top, right, bottom, paintRender)
                     }
                     j += 4
                 }
             }
-        }
 
+            // 6) gradient overlay
+            var j = 0
+            if (singleColor) paintRender.color = dataSet.getColorByIndex(index)
+            while (j < buffer.size()) {
+                val left = buffer.buffer[j]
+                val top = buffer.buffer[j + 1]
+                val right = buffer.buffer[j + 2]
+                val bottom = buffer.buffer[j + 3]
 
-        val isSingleColor = dataSet.colors.size == 1
-        if (isSingleColor) {
-            paintRender.color = dataSet.getColorByIndex(index)
-        }
-
-        var j = 0
-        while (j < buffer.size()) {
-            if (!viewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
-                j += 4
-                continue
-            }
-
-            if (!viewPortHandler.isInBoundsRight(buffer.buffer[j])) {
-                break
-            }
-
-            if (!isSingleColor) {
-                paintRender.color = dataSet.getColorByIndex(j / 4)
-            }
-
-            paintRender.setShader(
-                LinearGradient(
-                    buffer.buffer[j],
-                    buffer.buffer[j + 3],
-                    buffer.buffer[j],
-                    buffer.buffer[j + 1],
-                    dataSet.getColorByIndex(j / 4),
-                    dataSet.getColorByIndex(j / 4),
-                    Shader.TileMode.MIRROR
-                )
-            )
-
-            paintRender.setShader(
-                LinearGradient(
-                    buffer.buffer[j],
-                    buffer.buffer[j + 3],
-                    buffer.buffer[j],
-                    buffer.buffer[j + 1],
-                    dataSet.getColorByIndex(j / 4),
-                    dataSet.getColorByIndex(j / 4),
-                    Shader.TileMode.MIRROR
-                )
-            )
-
-            dataSet.getEntryForIndex(j / 4)?.let { barEntry ->
-
-                if ((barEntry.y < 0 && roundedNegativeDataSetRadius > 0)) {
-                    val path2 = roundRect(
-                        RectF(
-                            buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3]
-                        ), roundedNegativeDataSetRadius, roundedNegativeDataSetRadius, true, true, true, true
-                    )
-                    canvas.drawPath(path2, paintRender)
-                } else if ((barEntry.y > 0 && roundedPositiveDataSetRadius > 0)) {
-                    val path2 = roundRect(
-                        RectF(
-                            buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                            buffer.buffer[j + 3]
-                        ), roundedPositiveDataSetRadius, roundedPositiveDataSetRadius, true, true, true, true
-                    )
-                    canvas.drawPath(path2, paintRender)
-                } else {
-                    canvas.drawRect(
-                        buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], paintRender
-                    )
+                if (!handler.isInBoundsLeft(right)) {
+                    j += 4; continue
                 }
+                if (!handler.isInBoundsRight(left)) break
+
+                if (!singleColor) paintRender.color = dataSet.getColorByIndex(j / 4)
+                paintRender.shader = LinearGradient(
+                    left, bottom, left, top,
+                    paintRender.color, paintRender.color,
+                    Shader.TileMode.MIRROR
+                )
+
+                val entryY = dataSet.getEntryForIndex(j / 4)?.y ?: 0f
+                val radius = if (entryY < 0f) roundedNegativeDataSetRadius else roundedPositiveDataSetRadius
+                if (radius > 0f) {
+                    ovalPath.reset()
+                    ovalPath.addRoundRect(
+                        RectF(left, top, right, bottom),
+                        radius, radius, Path.Direction.CW
+                    )
+                    canvas.drawPath(ovalPath, paintRender)
+                } else {
+                    canvas.drawRect(left, top, right, bottom, paintRender)
+                }
+                j += 4
             }
-            j += 4
         }
+        paintRender.shader = null
     }
 
     override fun drawHighlighted(canvas: Canvas, indices: Array<Highlight>) {
-        val barData = chart.barData
+        // 1) early exits
+        val handler = viewPortHandler
+        val barData = dataProvider.barData
 
-        for (high in indices) {
-            val set = barData.getDataSetByIndex(high.dataSetIndex)
+        for (h in indices) {
+            // 2) only highlight enabled sets
+            val set = barData.getDataSetByIndex(h.dataSetIndex) ?: continue
+            if (!set.isHighlightEnabled) continue
 
-            if (set == null || !set.isHighlightEnabled) {
+            // 3) find the matching Entry
+            val e = set.getEntryForXValue(h.x, h.y) ?: continue
+            if (!isInBoundsX(e, set)) continue
+
+            // 4) compute the y‐range of the highlight (stack vs. normal)
+            val isStack = h.stackIndex >= 0 && e.isStacked
+            val (y1, y2) = if (isStack) {
+                if (dataProvider.isHighlightFullBarEnabled) {
+                    e.positiveSum to -e.negativeSum
+                } else {
+                    val range = e.ranges[h.stackIndex]!!
+                    range.from to range.to
+                }
+            } else {
+                e.y to 0f
+            }
+
+            // 5) transform values to pixel‐rect
+            val trans = dataProvider.getTransformer(set.axisDependency) ?: continue
+            prepareBarHighlight(
+                e.x,
+                y1,
+                y2,
+                barData.barWidth / 2f,
+                trans
+            )
+
+            // 5b) record the center/top into the Highlight object so markers can be drawn
+            setHighlightDrawPos(h, barRect)
+
+            // 6) clip any highlights that are fully off‐screen
+            if (!handler.isInBoundsLeft(barRect.right) ||
+                !handler.isInBoundsRight(barRect.left) ||
+                !handler.isInBoundsTop(barRect.bottom) ||
+                !handler.isInBoundsBottom(barRect.top)
+            ) {
                 continue
             }
 
-            set.getEntryForXValue(high.x, high.y)?.let { barEntry ->
-
-                if (!isInBoundsX(barEntry, set)) {
-                    continue
-                }
-
-                val trans = chart.getTransformer(set.axisDependency)
-
-                paintHighlight.color = set.highLightColor
-                paintHighlight.alpha = set.highLightAlpha
-
-                val isStack = high.stackIndex >= 0 && barEntry.isStacked
-
-                val y1: Float
-                val y2: Float
-
-                if (isStack) {
-                    if (chart.isHighlightFullBarEnabled) {
-                        y1 = barEntry.positiveSum
-                        y2 = -barEntry.negativeSum
-                    } else {
-                        val range = barEntry.ranges[high.stackIndex]
-
-                        y1 = range?.from ?: 0f
-                        y2 = range?.to ?: 0f
-                    }
-                } else {
-                    y1 = barEntry.y
-                    y2 = 0f
-                }
-
-                prepareBarHighlight(barEntry.x, y1, y2, barData.barWidth / 2f, trans!!)
-
-                setHighlightDrawPos(high, barRect)
-
-                val path2 = roundRect(
-                    RectF(
-                        barRect.left, barRect.top, barRect.right,
-                        barRect.bottom
-                    ), mRadius, mRadius, true, true, true, true
-                )
-
-                canvas.drawPath(path2, paintHighlight)
+            // 7) choose corner radius
+            val radius = if (useAutoFullRadius) {
+                abs((barRect.right - barRect.left) / 2f)
+            } else {
+                defaultRadius
             }
-        }
-    }
 
-    private fun roundRect(rect: RectF, rx: Float, ry: Float, tl: Boolean, tr: Boolean, br: Boolean, bl: Boolean): Path {
-        var rx = rx
-        var ry = ry
-        val top = rect.top
-        val left = rect.left
-        val right = rect.right
-        val bottom = rect.bottom
-        val path = Path()
-        if (rx < 0) {
-            rx = 0f
+            // 8) draw your rounded highlight
+            paintHighlight.color = set.highLightColor
+            paintHighlight.alpha = set.highLightAlpha
+            canvas.drawRoundRect(barRect, radius, radius, paintHighlight)
         }
-        if (ry < 0) {
-            ry = 0f
-        }
-        val width = right - left
-        val height = bottom - top
-        if (rx > width / 2) {
-            rx = width / 2
-        }
-        if (ry > height / 2) {
-            ry = height / 2
-        }
-        val widthMinusCorners = (width - (2 * rx))
-        val heightMinusCorners = (height - (2 * ry))
-
-        path.moveTo(right, top + ry)
-        if (tr) {
-            path.rQuadTo(0f, -ry, -rx, -ry) //top-right corner
-        } else {
-            path.rLineTo(0f, -ry)
-            path.rLineTo(-rx, 0f)
-        }
-        path.rLineTo(-widthMinusCorners, 0f)
-        if (tl) {
-            path.rQuadTo(-rx, 0f, -rx, ry) //top-left corner
-        } else {
-            path.rLineTo(-rx, 0f)
-            path.rLineTo(0f, ry)
-        }
-        path.rLineTo(0f, heightMinusCorners)
-
-        if (bl) {
-            path.rQuadTo(0f, ry, rx, ry) //bottom-left corner
-        } else {
-            path.rLineTo(0f, ry)
-            path.rLineTo(rx, 0f)
-        }
-
-        path.rLineTo(widthMinusCorners, 0f)
-        if (br) path.rQuadTo(rx, 0f, rx, -ry) //bottom-right corner
-        else {
-            path.rLineTo(rx, 0f)
-            path.rLineTo(0f, -ry)
-        }
-
-        path.rLineTo(0f, -heightMinusCorners)
-        path.close()
-        return path
     }
 }
