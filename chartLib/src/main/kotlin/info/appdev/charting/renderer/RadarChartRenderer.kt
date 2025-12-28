@@ -11,10 +11,10 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IRadarDataSet
 import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.PointF
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
 import info.appdev.charting.utils.getPosition
+import info.appdev.charting.utils.drawImage
 
 open class RadarChartRenderer(
     protected var chart: RadarChart,
@@ -180,8 +180,7 @@ open class RadarChartRenderer(
                             pIcon.y += iconsOffset.x
 
                             icon?.let {
-                                Utils.drawImage(
-                                    canvas,
+                                canvas.drawImage(
                                     it,
                                     pIcon.x.toInt(),
                                     pIcon.y.toInt()

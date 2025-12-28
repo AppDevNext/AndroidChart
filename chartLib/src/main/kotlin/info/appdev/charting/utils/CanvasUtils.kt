@@ -25,8 +25,8 @@ fun Canvas.drawImage(
     val width: Int = drawable.intrinsicWidth
     val height: Int = drawable.intrinsicHeight
     val drawOffset = PointF.getInstance(width.toFloat(), height.toFloat())
-    drawOffset.x = x - (width.toFloat() / 2)
-    drawOffset.y = y - (height.toFloat() / 2)
+    drawOffset.x = x - (width / 2).toFloat()
+    drawOffset.y = y - (height / 2).toFloat()
 
     drawable.copyBounds(mDrawableBoundsCache)
     drawable.setBounds(

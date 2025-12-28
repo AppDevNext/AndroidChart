@@ -8,10 +8,10 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.BubbleDataProvider
 import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 import info.appdev.charting.utils.PointF
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.drawImage
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -162,8 +162,7 @@ open class BubbleChartRenderer(
                                     val icon = bubbleEntry.icon
 
                                     icon?.let { ico ->
-                                        Utils.drawImage(
-                                            canvas,
+                                        canvas.drawImage(
                                             ico,
                                             (x + iconsOffset.x).toInt(),
                                             (y + iconsOffset.y).toInt()

@@ -8,9 +8,9 @@ import info.appdev.charting.interfaces.dataprovider.CandleDataProvider
 import info.appdev.charting.interfaces.datasets.ICandleDataSet
 import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.PointF
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.drawImage
 
 open class CandleStickChartRenderer(
     var dataProvider: CandleDataProvider,
@@ -269,8 +269,7 @@ open class CandleStickChartRenderer(
                                 val icon = entry.icon
 
                                 icon?.let { ico ->
-                                    Utils.drawImage(
-                                        canvas,
+                                    canvas.drawImage(
                                         ico,
                                         (x + iconsOffset.x).toInt(),
                                         (y + iconsOffset.y).toInt()
