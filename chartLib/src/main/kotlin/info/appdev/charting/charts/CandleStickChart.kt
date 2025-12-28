@@ -9,7 +9,7 @@ import info.appdev.charting.renderer.CandleStickChartRenderer
 /**
  * Financial chart type that draws candle-sticks (OHCL chart).
  */
-class CandleStickChart : BarLineChartBase<CandleData>, CandleDataProvider {
+open class CandleStickChart : BarLineChartBase<CandleData>, CandleDataProvider {
     constructor(context: Context?) : super(context)
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
