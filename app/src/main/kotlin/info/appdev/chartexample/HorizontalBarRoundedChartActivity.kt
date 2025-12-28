@@ -7,6 +7,6 @@ class HorizontalBarRoundedChartActivity : HorizontalBarChartActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.chart1.isOwnRoundedRendererUsed = false
+        binding.chart1.isOwnRoundedRendererUsed = true
     }
 }
