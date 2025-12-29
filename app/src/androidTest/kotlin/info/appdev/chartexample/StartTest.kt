@@ -68,7 +68,7 @@ class StartTest {
         // iterate samples - only items with classes (not section headers)
         MainActivity.menuItems.forEachIndexed { index, contentItem ->
             contentItem.clazz?.let {
-                Timber.d("Intended ${index}-${it.simpleName}: ${contentItem.name}")
+                Timber.d("Intended #${index} ${it.simpleName}: ${contentItem.name}")
 
                 try {
                     // Use description to uniquely identify items since names can be duplicated
