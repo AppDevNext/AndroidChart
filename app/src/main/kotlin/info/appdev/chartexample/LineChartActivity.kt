@@ -129,15 +129,13 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         // add data
         binding.seekBarX.progress = 45
         binding.seekBarY.progress = 180
-        Timber.d("count=45 range=180f")
         setData(this, binding.chart1, 45, 180f)
 
         // draw points over time
         binding.chart1.animateX(1500)
 
         // get the legend (only possible after setting data)
-        val legend = binding.chart1.legend
-        legend.form = LegendForm.LINE
+        binding.chart1.legend.form = LegendForm.LINE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

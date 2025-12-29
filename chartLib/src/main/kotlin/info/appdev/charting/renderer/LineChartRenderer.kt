@@ -491,10 +491,11 @@ open class LineChartRenderer(
 
                     val trans = dataProvider.getTransformer(dataSet.axisDependency)
 
-                    // make sure the values do not interfear with the circles
+                    // make sure the values do not interfere with the circles
                     var valOffset = (dataSet.circleRadius * 1.75f).toInt()
 
-                    if (!dataSet.isDrawCirclesEnabled) valOffset = valOffset / 2
+                    if (!dataSet.isDrawCirclesEnabled)
+                        valOffset /= 2
 
                     xBounds.set(dataProvider, dataSet)
 
@@ -534,7 +535,7 @@ open class LineChartRenderer(
 
                                 icon?.let {
                                     canvas.drawImage(
-                                        it,
+                                        icon,
                                         (x + iconsOffset.x).toInt(),
                                         (y + iconsOffset.y).toInt()
                                     )
