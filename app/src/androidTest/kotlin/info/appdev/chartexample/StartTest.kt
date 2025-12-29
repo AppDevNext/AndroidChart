@@ -68,7 +68,7 @@ class StartTest {
         // iterate samples - only items with classes (not section headers)
         MainActivity.menuItems.forEachIndexed { index, contentItem ->
             contentItem.clazz?.let {
-                Timber.d("Intended #${index} ${it.simpleName}: ${contentItem.name}")
+                Timber.d("Intended #${index} ${it.simpleName}: '${contentItem.name}'")
 
                 try {
                     // Use description to uniquely identify items since names can be duplicated
@@ -77,7 +77,7 @@ class StartTest {
                         contentItem.name
                     }
 
-                    Timber.d("Searching for index $index: $searchText")
+                    Timber.d("Searching for #$index: '$searchText'")
 
                     // Scroll to the item in the LazyColumn by index
                     // This ensures the item is composed and visible
@@ -213,7 +213,7 @@ class StartTest {
                     composeTestRule.waitForIdle()
                     Thread.sleep(200) // Small delay for back navigation
                 } catch (e: Exception) {
-                    Timber.e("Error at index $index: $optionMenu - ${e.message}", e)
+                    Timber.e("Error at #$index: '$optionMenu' - ${e.message}", e)
                     onView(ViewMatchers.isRoot())
                         .perform(captureToBitmap { bitmap: Bitmap ->
                             bitmap.writeToTestStorage(
