@@ -4,13 +4,13 @@ import info.appdev.charting.interfaces.datasets.IBarDataSet
 import kotlin.math.abs
 
 class HorizontalBarBuffer(size: Int, dataSetCount: Int, containsStacks: Boolean) : BarBuffer(size, dataSetCount, containsStacks) {
-    override fun feed(data: IBarDataSet?) {
-        val size = (data?.entryCount ?: 0) * phaseX
+    override fun feed(data: IBarDataSet) {
+        val size = data.entryCount * phaseX
         val barWidthHalf = barWidth / 2f
 
         var i = 0
         while (i < size) {
-            val e = data?.getEntryForIndex(i)
+            val e = data.getEntryForIndex(i)
 
             if (e == null) {
                 i++

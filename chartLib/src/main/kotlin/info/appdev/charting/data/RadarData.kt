@@ -2,7 +2,6 @@ package info.appdev.charting.data
 
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IRadarDataSet
-import java.util.Arrays
 
 /**
  * Data container for the RadarChart.
@@ -13,7 +12,7 @@ class RadarData : ChartData<IRadarDataSet> {
      *
      * @param labels
      */
-    var labels: MutableList<String?>? = null
+    var labels: MutableList<String>? = null
 
     constructor() : super()
 
@@ -23,11 +22,9 @@ class RadarData : ChartData<IRadarDataSet> {
 
     /**
      * Sets the labels that should be drawn around the RadarChart at the end of each web line.
-     *
-     * @param labels
      */
-    fun setLabels(vararg labels: String?) {
-        this.labels = Arrays.asList<String?>(*labels)
+    fun setLabels(vararg labels: String) {
+        this.labels = mutableListOf(*labels)
     }
 
     override fun getEntryForHighlight(highlight: Highlight): Entry? {

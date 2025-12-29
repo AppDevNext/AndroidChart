@@ -297,13 +297,13 @@ open class LegendRenderer(
                     else
                         entry.formSize.convertDpToPixel()
 
-                    if (i < calculatedLabelBreakPoints.size && calculatedLabelBreakPoints[i] == true) {
+                    if (i < calculatedLabelBreakPoints.size && calculatedLabelBreakPoints[i]) {
                         posX = originPosX
                         posY += labelLineHeight + labelLineSpacing
                     }
 
                     if (posX == originPosX && horizontalAlignment == LegendHorizontalAlignment.CENTER && lineIndex < calculatedLineSizes.size) {
-                        calculatedLineSizes[lineIndex]?.let { fSize ->
+                        calculatedLineSizes[lineIndex].let { fSize ->
                             posX += (if (direction == LegendDirection.RIGHT_TO_LEFT)
                                 fSize.width
                             else
@@ -326,12 +326,12 @@ open class LegendRenderer(
                         if (drawingForm) posX += if (direction == LegendDirection.RIGHT_TO_LEFT) -formToTextSpace else formToTextSpace
 
                         if (direction == LegendDirection.RIGHT_TO_LEFT)
-                            posX -= calculatedLabelSizes[i]?.width ?: 0f
+                            posX -= calculatedLabelSizes[i].width
 
                         drawLabel(canvas, posX, posY + labelLineHeight, entry.label)
 
                         if (direction == LegendDirection.LEFT_TO_RIGHT)
-                            posX += calculatedLabelSizes[i]?.width ?: 0f
+                            posX += calculatedLabelSizes[i].width
 
                         posX += if (direction == LegendDirection.RIGHT_TO_LEFT) -xEntrySpace else xEntrySpace
                     } else posX += if (direction == LegendDirection.RIGHT_TO_LEFT) -stackSpace else stackSpace

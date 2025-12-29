@@ -132,7 +132,7 @@ open class Entry : BaseEntry, Parcelable, Serializable {
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<Entry?> = object : Parcelable.Creator<Entry?> {
+        val CREATOR: Parcelable.Creator<Entry> = object : Parcelable.Creator<Entry> {
             override fun createFromParcel(source: Parcel): Entry {
                 return Entry(source)
             }

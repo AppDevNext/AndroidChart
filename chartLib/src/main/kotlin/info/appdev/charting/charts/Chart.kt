@@ -49,7 +49,7 @@ import kotlin.math.abs
 import kotlin.math.max
 
 @Suppress("unused")
-abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBaseProvider {
+abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseProvider {
     /**
      * Returns true if log-output is enabled for the chart, fals if not.
      */
@@ -1167,7 +1167,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     /**
      * tasks to be done after the view is setup
      */
-    var jobs: ArrayList<Runnable?> = ArrayList()
+    var jobs: ArrayList<Runnable> = ArrayList()
         protected set
 
     fun removeViewportJob(job: Runnable?) {
@@ -1182,7 +1182,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      * Either posts a job immediately if the chart has already setup it's
      * dimensions or adds the job to the execution queue.
      */
-    fun addViewportJob(job: Runnable?) {
+    fun addViewportJob(job: Runnable) {
         if (viewPortHandler.hasChartDimens()) {
             post(job)
         } else {
