@@ -11,21 +11,21 @@ import info.appdev.charting.data.BarData
 import info.appdev.charting.data.ChartData
 import info.appdev.chartexample.R
 
-class BarChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {
-    private val typeface: Typeface? = Typeface.createFromAsset(c.assets, "OpenSans-Regular.ttf")
+class BarChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chartData) {
+    private val typeface: Typeface? = Typeface.createFromAsset(context.assets, "OpenSans-Regular.ttf")
 
     override val itemType: Int
         get() = TYPE_BARCHART
 
     @SuppressLint("InflateParams")
-    override fun getView(position: Int, convertView: View?, c: Context?): View? {
+    override fun getView(position: Int, convertView: View?, context: Context?): View? {
         var convertView = convertView
         val holder: ViewHolder
 
         if (convertView == null) {
             holder = ViewHolder()
 
-            convertView = LayoutInflater.from(c).inflate(
+            convertView = LayoutInflater.from(context).inflate(
                 R.layout.list_item_barchart, null
             )
             holder.chart = convertView.findViewById(R.id.chart)

@@ -18,8 +18,8 @@ import info.appdev.charting.formatter.PercentFormatter
 import info.appdev.charting.utils.ColorTemplate
 import info.appdev.chartexample.R
 
-class PieChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {
-    private val typeface: Typeface? = Typeface.createFromAsset(c.assets, "OpenSans-Regular.ttf")
+class PieChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chartData) {
+    private val typeface: Typeface? = Typeface.createFromAsset(context.assets, "OpenSans-Regular.ttf")
     private val centerText: SpannableString
 
     init {
@@ -30,14 +30,14 @@ class PieChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {
         get() = TYPE_PIECHART
 
     @SuppressLint("InflateParams")
-    override fun getView(position: Int, convertView: View?, c: Context?): View {
+    override fun getView(position: Int, convertView: View?, context: Context?): View {
         var convertView = convertView
         val holder: ViewHolder
 
         if (convertView == null) {
             holder = ViewHolder()
 
-            convertView = LayoutInflater.from(c).inflate(
+            convertView = LayoutInflater.from(context).inflate(
                 R.layout.list_item_piechart, null
             )
             holder.chart = convertView.findViewById(R.id.chart)

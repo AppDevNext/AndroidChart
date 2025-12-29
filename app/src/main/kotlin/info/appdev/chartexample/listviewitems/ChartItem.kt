@@ -11,7 +11,7 @@ import info.appdev.charting.data.ChartData
 abstract class ChartItem internal constructor(var chartData: ChartData<*>) {
     abstract val itemType: Int
 
-    abstract fun getView(position: Int, convertView: View?, c: Context?): View?
+    abstract fun getView(position: Int, convertView: View?, context: Context?): View?
 
     companion object {
         const val TYPE_BARCHART: Int = 0

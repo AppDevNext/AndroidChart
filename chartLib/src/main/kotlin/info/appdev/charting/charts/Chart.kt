@@ -379,7 +379,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     /**
      * Draws the description text in the bottom right corner of the chart (per default)
      */
-    protected fun drawDescription(c: Canvas) {
+    protected fun drawDescription(canvas: Canvas) {
         // check if description should be drawn
 
         if (description.isEnabled) {
@@ -402,7 +402,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
                 y = position.y
             }
 
-            c.drawText(description.text!!, x, y, mDescPaint)
+            canvas.drawText(description.text!!, x, y, mDescPaint)
         }
     }
 

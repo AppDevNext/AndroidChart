@@ -527,15 +527,15 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
     /**
      * draws the grid background
      */
-    protected fun drawGridBackground(c: Canvas) {
+    protected fun drawGridBackground(canvas: Canvas) {
         if (mDrawGridBackground) {
             // draw the grid background
 
-            c.drawRect(viewPortHandler.contentRect, mGridBackgroundPaint!!)
+            canvas.drawRect(viewPortHandler.contentRect, mGridBackgroundPaint!!)
         }
 
         if (this.isDrawBordersEnabled) {
-            c.drawRect(viewPortHandler.contentRect, mBorderPaint!!)
+            canvas.drawRect(viewPortHandler.contentRect, mBorderPaint!!)
         }
     }
 
