@@ -77,7 +77,7 @@ open class Fill {
     }
 
     fun fillRect(
-        c: Canvas, paint: Paint,
+        canvas: Canvas, paint: Paint,
         left: Float, top: Float, right: Float, bottom: Float,
         gradientDirection: Direction?, mRoundedBarRadius: Float
     ) {
@@ -90,12 +90,12 @@ open class Fill {
                 }
 
                 if (this.isClipPathSupported) {
-                    val save = c.save()
+                    val save = canvas.save()
 
-                    c.clipRect(left, top, right, bottom)
-                    c.drawColor(mFinalColor!!)
+                    canvas.clipRect(left, top, right, bottom)
+                    canvas.drawColor(mFinalColor!!)
 
-                    c.restoreToCount(save)
+                    canvas.restoreToCount(save)
                 } else {
                     // save
                     val previous = paint.style
@@ -105,7 +105,7 @@ open class Fill {
                     paint.style = Paint.Style.FILL
                     paint.color = mFinalColor!!
 
-                    c.drawRoundRect(RectF(left, top, right, bottom), mRoundedBarRadius, mRoundedBarRadius, paint)
+                    canvas.drawRoundRect(RectF(left, top, right, bottom), mRoundedBarRadius, mRoundedBarRadius, paint)
 
                     // restore
                     paint.color = previousColor
@@ -142,7 +142,7 @@ open class Fill {
 
                 paint.shader = gradient
 
-                c.drawRoundRect(RectF(left, top, right, bottom), mRoundedBarRadius, mRoundedBarRadius, paint)
+                canvas.drawRoundRect(RectF(left, top, right, bottom), mRoundedBarRadius, mRoundedBarRadius, paint)
             }
 
             Type.DRAWABLE -> {
@@ -151,13 +151,15 @@ open class Fill {
                 }
 
                 drawable!!.setBounds(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
-                drawable!!.draw(c)
+                drawable!!.draw(canvas)
             }
         }
     }
 
     fun fillPath(
-        c: Canvas, path: Path, paint: Paint,
+        canvas: Canvas,
+        path: Path,
+        paint: Paint,
         clipRect: RectF?
     ) {
         when (this.type) {
@@ -169,12 +171,12 @@ open class Fill {
                 }
 
                 if (clipRect != null && this.isClipPathSupported) {
-                    val save = c.save()
+                    val save = canvas.save()
 
-                    c.clipPath(path)
-                    c.drawColor(mFinalColor!!)
+                    canvas.clipPath(path)
+                    canvas.drawColor(mFinalColor!!)
 
-                    c.restoreToCount(save)
+                    canvas.restoreToCount(save)
                 } else {
                     // save
                     val previous = paint.style
@@ -184,7 +186,7 @@ open class Fill {
                     paint.style = Paint.Style.FILL
                     paint.color = mFinalColor!!
 
-                    c.drawPath(path, paint)
+                    canvas.drawPath(path, paint)
 
                     // restore
                     paint.color = previousColor
@@ -196,8 +198,8 @@ open class Fill {
                 val gradient = LinearGradient(
                     0f,
                     0f,
-                    c.width.toFloat(),
-                    c.height.toFloat(),
+                    canvas.width.toFloat(),
+                    canvas.height.toFloat(),
                     this.gradientColors!!,
                     this.gradientPositions,
                     Shader.TileMode.MIRROR
@@ -205,7 +207,7 @@ open class Fill {
 
                 paint.shader = gradient
 
-                c.drawPath(path, paint)
+                canvas.drawPath(path, paint)
             }
 
             Type.DRAWABLE -> {
@@ -215,18 +217,18 @@ open class Fill {
 
                 ensureClipPathSupported()
 
-                val save = c.save()
-                c.clipPath(path)
+                val save = canvas.save()
+                canvas.clipPath(path)
 
                 drawable!!.setBounds(
                     if (clipRect == null) 0 else clipRect.left.toInt(),
                     if (clipRect == null) 0 else clipRect.top.toInt(),
-                    if (clipRect == null) c.width else clipRect.right.toInt(),
-                    if (clipRect == null) c.height else clipRect.bottom.toInt()
+                    if (clipRect == null) canvas.width else clipRect.right.toInt(),
+                    if (clipRect == null) canvas.height else clipRect.bottom.toInt()
                 )
-                drawable!!.draw(c)
+                drawable!!.draw(canvas)
 
-                c.restoreToCount(save)
+                canvas.restoreToCount(save)
             }
         }
     }
