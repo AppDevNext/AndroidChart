@@ -11,7 +11,7 @@ import info.appdev.charting.renderer.ScatterChartRenderer
  * Chart-View. CIRCLE and SCQUARE offer the best performance, TRIANGLE has the
  * worst performance.
  */
-class ScatterChart : BarLineChartBase<ScatterData>, ScatterDataProvider {
+open class ScatterChart : BarLineChartBase<ScatterData>, ScatterDataProvider {
     constructor(context: Context?) : super(context)
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)

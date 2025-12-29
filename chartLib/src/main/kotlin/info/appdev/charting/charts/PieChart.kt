@@ -27,7 +27,7 @@ import kotlin.math.sin
  * View that represents a pie chart. Draws cake like slices.
  */
 @Suppress("unused")
-class PieChart : PieRadarChartBase<PieData> {
+open class PieChart : PieRadarChartBase<PieData> {
     /**
      * rect object that represents the bounds of the piechart, needed for
      * drawing the circle
