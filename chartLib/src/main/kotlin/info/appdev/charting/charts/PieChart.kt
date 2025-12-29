@@ -29,7 +29,7 @@ import kotlin.math.sin
 @Suppress("unused")
 open class PieChart : PieRadarChartBase<PieData> {
     /**
-     * rect object that represents the bounds of the piechart, needed for
+     * rect object that represents the bounds of the PieChart, needed for
      * drawing the circle
      */
     val circleBox: RectF = RectF()
@@ -92,17 +92,17 @@ open class PieChart : PieRadarChartBase<PieData> {
     private val mCenterTextOffset = getInstance(0f, 0f)
 
     /**
-     * sets the radius of the hole in the center of the piechart in percent of
+     * sets the radius of the hole in the center of the PieChart in percent of
      * the maximum radius (max = the radius of the whole chart), default 50%
      *
-     * indicates the size of the hole in the center of the piechart,
+     * indicates the size of the hole in the center of the PieChart,
      * default: radius / 2
      */
     var holeRadius: Float = 50f
 
     /**
      * sets the radius of the transparent circle that is drawn next to the hole
-     * in the piechart in percent of the maximum radius (max = the radius of the
+     * in the PieChart in percent of the maximum radius (max = the radius of the
      * whole chart), default 55% -> means 5% larger than the center-hole by
      * default
      */
