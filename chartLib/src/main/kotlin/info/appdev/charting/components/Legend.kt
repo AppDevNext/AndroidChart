@@ -332,9 +332,9 @@ class Legend() : ComponentBase() {
      */
     var isWordWrapEnabled: Boolean = false
 
-    val calculatedLabelSizes: MutableList<FSize?> = ArrayList<FSize?>(16)
-    val calculatedLabelBreakPoints: MutableList<Boolean?> = ArrayList<Boolean?>(16)
-    val calculatedLineSizes: MutableList<FSize?> = ArrayList<FSize?>(16)
+    val calculatedLabelSizes: MutableList<FSize> = ArrayList(16)
+    val calculatedLabelBreakPoints: MutableList<Boolean> = ArrayList(16)
+    val calculatedLineSizes: MutableList<FSize> = ArrayList(16)
 
     init {
         this.mTextSize = 10f.convertDpToPixel()
@@ -454,7 +454,7 @@ class Legend() : ComponentBase() {
                     if (label != null) {
                         calculatedLabelSizes.add(labelpaint.calcTextSize(label))
                         requiredWidth += if (drawingForm) formToTextSpace + formSize else 0f
-                        requiredWidth += calculatedLabelSizes.get(i)!!.width
+                        requiredWidth += calculatedLabelSizes.get(i).width
                     } else {
                         calculatedLabelSizes.add(FSize.getInstance(0f, 0f))
                         requiredWidth += if (drawingForm) formSize else 0f

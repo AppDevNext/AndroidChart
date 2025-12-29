@@ -3,7 +3,7 @@ package info.appdev.charting.buffer
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import kotlin.math.abs
 
-open class BarBuffer(size: Int, dataSetCount: Int, containsStacks: Boolean) : AbstractBuffer<IBarDataSet?>(size) {
+open class BarBuffer(size: Int, dataSetCount: Int, containsStacks: Boolean) : AbstractBuffer<IBarDataSet>(size) {
     protected var dataSetIndex: Int = 0
     protected var dataSetCount: Int = 1
 
@@ -42,13 +42,13 @@ open class BarBuffer(size: Int, dataSetCount: Int, containsStacks: Boolean) : Ab
                 '}'
     }
 
-    override fun feed(data: IBarDataSet?) {
-        val size = (data?.entryCount ?: 0) * phaseX
+    override fun feed(data: IBarDataSet) {
+        val size = data.entryCount * phaseX
         val barWidthHalf = barWidth / 2f
 
         var i = 0
         while (i < size) {
-            val e = data?.getEntryForIndex(i)
+            val e = data.getEntryForIndex(i)
 
             if (e == null) {
                 i++
