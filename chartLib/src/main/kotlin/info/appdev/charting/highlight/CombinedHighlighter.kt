@@ -6,7 +6,7 @@ import info.appdev.charting.data.DataSet
 import info.appdev.charting.interfaces.dataprovider.BarDataProvider
 import info.appdev.charting.interfaces.dataprovider.CombinedDataProvider
 
-open class CombinedHighlighter(dataProvider: CombinedDataProvider, barChart: BarDataProvider) : ChartHighlighter<CombinedDataProvider>(dataProvider), IHighlighter {
+open class CombinedHighlighter(combinedDataProvider: CombinedDataProvider, barDataProvider: BarDataProvider) : ChartHighlighter<CombinedDataProvider>(combinedDataProvider), IHighlighter {
     /**
      * bar highlighter for supporting stacked highlighting
      */
@@ -14,8 +14,8 @@ open class CombinedHighlighter(dataProvider: CombinedDataProvider, barChart: Bar
 
     init {
         // if there is BarData, create a BarHighlighter
-        barChart.barData
-        barHighlighter = BarHighlighter(barChart)
+        barDataProvider.barData
+        barHighlighter = BarHighlighter(barDataProvider)
     }
 
     override fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight>? {
