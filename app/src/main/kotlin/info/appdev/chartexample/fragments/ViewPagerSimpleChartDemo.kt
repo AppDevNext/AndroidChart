@@ -13,21 +13,25 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.snackbar.Snackbar
 import info.appdev.chartexample.R
+import info.appdev.chartexample.databinding.ActivityAwesomedesignBinding
 import info.appdev.chartexample.notimportant.DemoBase
 
 /**
  * Demonstrates how to keep your charts straight forward, simple and beautiful with the AndroidChart library.
  */
 class ViewPagerSimpleChartDemo : DemoBase() {
+
+    private lateinit var binding: ActivityAwesomedesignBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_awesomedesign)
-        val pager = findViewById<ViewPager>(R.id.pager)
-        pager.offscreenPageLimit = 3
-        pager.adapter = PageAdapter(supportFragmentManager)
+        binding = ActivityAwesomedesignBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.pager.offscreenPageLimit = 3
+        binding.pager.adapter = PageAdapter(supportFragmentManager)
 
         showSnackbar("Swipe left and right for more awesome design examples!")
     }
