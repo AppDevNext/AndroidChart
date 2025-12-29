@@ -11,8 +11,8 @@ import info.appdev.charting.data.BarData
 import info.appdev.charting.data.ChartData
 import info.appdev.chartexample.R
 
-class BarChartItem(cd: ChartData<*>, c: Context) : ChartItem(cd) {
-    private val typeface: Typeface? = Typeface.createFromAsset(c.assets, "OpenSans-Regular.ttf")
+class BarChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chartData) {
+    private val typeface: Typeface? = Typeface.createFromAsset(context.assets, "OpenSans-Regular.ttf")
 
     override val itemType: Int
         get() = TYPE_BARCHART
