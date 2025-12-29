@@ -95,6 +95,7 @@ class LineChartActivityColored : DemoBase() {
         chart.animateX(2500)
     }
 
+    @Suppress("SameParameterValue")
     private fun getData(range: Float): LineData {
         val count = 36
         val values = ArrayList<Entry>()
