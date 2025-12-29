@@ -18,14 +18,14 @@ class BarChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chartD
         get() = TYPE_BARCHART
 
     @SuppressLint("InflateParams")
-    override fun getView(position: Int, convertView: View?, c: Context?): View? {
+    override fun getView(position: Int, convertView: View?, context: Context?): View? {
         var convertView = convertView
         val holder: ViewHolder
 
         if (convertView == null) {
             holder = ViewHolder()
 
-            convertView = LayoutInflater.from(c).inflate(
+            convertView = LayoutInflater.from(context).inflate(
                 R.layout.list_item_barchart, null
             )
             holder.chart = convertView.findViewById(R.id.chart)

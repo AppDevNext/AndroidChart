@@ -18,14 +18,14 @@ class LineChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chart
         get() = TYPE_LINECHART
 
     @SuppressLint("InflateParams")
-    override fun getView(position: Int, convertView: View?, c: Context?): View {
+    override fun getView(position: Int, convertView: View?, context: Context?): View {
         var convertView = convertView
         val holder: ViewHolder
 
         if (convertView == null) {
             holder = ViewHolder()
 
-            convertView = LayoutInflater.from(c).inflate(
+            convertView = LayoutInflater.from(context).inflate(
                 R.layout.list_item_linechart, null
             )
             holder.chart = convertView.findViewById(R.id.chart)
