@@ -12,7 +12,6 @@ class BubbleEntry : Entry {
     /**
      * Returns the size of this entry (the size of the bubble).
      */
-    /** size value  */
     var size: Float
 
     /**
@@ -47,19 +46,6 @@ class BubbleEntry : Entry {
      * @param icon Icon image
      */
     constructor(x: Float, y: Float, size: Float, icon: Drawable?) : super(x, y, icon) {
-        this.size = size
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param x The value on the x-axis.
-     * @param y The value on the y-axis.
-     * @param size The size of the bubble.
-     * @param icon Icon image
-     * @param data Spot for additional data this Entry represents.
-     */
-    constructor(x: Float, y: Float, size: Float, icon: Drawable?, data: Any?) : super(x, y, icon, data) {
         this.size = size
     }
 

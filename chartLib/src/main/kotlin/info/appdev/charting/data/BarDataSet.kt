@@ -177,7 +177,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
      * The width used for drawing borders around the bars.
      * If borderWidth == 0, no border will be drawn.
      */
-    override var barBorderWidth: kotlin.Float
+    override var barBorderWidth: Float
         get() = mBarBorderWidth
         set(value) {
             mBarBorderWidth = value

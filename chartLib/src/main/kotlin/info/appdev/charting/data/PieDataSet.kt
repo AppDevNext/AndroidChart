@@ -46,7 +46,7 @@ open class PieDataSet(yVals: MutableList<PieEntry>?, label: String) : DataSet<Pi
     }
 
     /**
-     * Sets the space that is left out between the piechart-slices in dp.
+     * Sets the space that is left out between the PieChart-slices in dp.
      * Default: 0 --> no space, maximum 20f
      */
     override var sliceSpace: Float
@@ -70,7 +70,7 @@ open class PieDataSet(yVals: MutableList<PieEntry>?, label: String) : DataSet<Pi
         }
 
     /**
-     * sets the distance the highlighted piechart-slice of this DataSet is
+     * sets the distance the highlighted PieChart-slice of this DataSet is
      * "shifted" away from the center of the chart, default 12f
      */
     override var selectionShift: Float
