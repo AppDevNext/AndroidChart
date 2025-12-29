@@ -6,25 +6,29 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityColoredLinesBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.charts.LineChart
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
 
 class LineChartActivityColored : DemoBase() {
-    private val charts = arrayOfNulls<LineChart>(4)
+    private val charts = mutableListOf<LineChart>()
+
+    private lateinit var binding: ActivityColoredLinesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_colored_lines)
+        binding = ActivityColoredLinesBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        charts[0] = findViewById<LineChart?>(R.id.chart1)
-        charts[1] = findViewById<LineChart?>(R.id.chart2)
-        charts[2] = findViewById<LineChart?>(R.id.chart3)
-        charts[3] = findViewById<LineChart?>(R.id.chart4)
+        charts.add(binding.chart1)
+        charts.add(binding.chart2)
+        charts.add(binding.chart3)
+        charts.add(binding.chart4)
 
         val mTf = Typeface.createFromAsset(assets, "OpenSans-Bold.ttf")
 
@@ -33,7 +37,7 @@ class LineChartActivityColored : DemoBase() {
             data.setValueTypeface(mTf)
 
             // add some transparency to the color with "& 0x90FFFFFF"
-            setupChart(charts[i]!!, data, colors[i % colors.size])
+            setupChart(charts[i], data, colors[i % colors.size])
         }
     }
 
