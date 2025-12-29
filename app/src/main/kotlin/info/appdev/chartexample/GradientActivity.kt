@@ -1,12 +1,11 @@
 package info.appdev.chartexample
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import info.appdev.chartexample.databinding.ActivityGradientBinding
 import info.appdev.chartexample.notimportant.DemoBase
-import info.appdev.charting.charts.LineChart
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -17,10 +16,12 @@ import info.appdev.charting.utils.Utils
 
 class GradientActivity : DemoBase() {
 
+    private lateinit var binding: ActivityGradientBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_gradient)
+        binding = ActivityGradientBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -30,13 +31,11 @@ class GradientActivity : DemoBase() {
 
         Utils.init(this)
 
-        val chart: LineChart = findViewById(R.id.chart)
-
         // Minimal chart setup
-        chart.description.isEnabled = false
-        chart.legend.isEnabled = false
-        chart.axisRight.isEnabled = false
-        chart.setDrawGridBackground(false)
+        binding.chart.description.isEnabled = false
+        binding.chart.legend.isEnabled = false
+        binding.chart.axisRight.isEnabled = false
+        binding.chart.setDrawGridBackground(false)
 
         // -----------------------------
         // Linear function
@@ -65,13 +64,13 @@ class GradientActivity : DemoBase() {
                 override fun getFillLinePosition(
                     dataSet: ILineDataSet?,
                     dataProvider: LineDataProvider
-                ): Float = chart.axisLeft.axisMinimum
+                ): Float = binding.chart.axisLeft.axisMinimum
             }
         }
 
-        chart.axisLeft.axisMinimum = 0f
-        chart.setData(LineData(dataSet))
-        chart.invalidate()
+        binding.chart.axisLeft.axisMinimum = 0f
+        binding.chart.setData(LineData(dataSet))
+        binding.chart.invalidate()
     }
 
     override fun saveToGallery() = Unit
