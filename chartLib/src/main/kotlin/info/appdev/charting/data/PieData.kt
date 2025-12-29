@@ -11,7 +11,6 @@ import timber.log.Timber
  * PieDataSet (multiple PieDataSets inside a single PieChart are not possible).
  */
 class PieData : ChartData<IPieDataSet> {
-    constructor() : super()
 
     constructor(dataSet: IPieDataSet) : super(dataSet)
 

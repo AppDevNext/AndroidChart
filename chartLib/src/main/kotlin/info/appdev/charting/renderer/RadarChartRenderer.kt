@@ -30,7 +30,6 @@ open class RadarChartRenderer(
     private val innerAreaPath = Path()
     private val tempPath = Path()
 
-
     override fun initBuffers() = Unit
 
     override fun drawData(canvas: Canvas) {

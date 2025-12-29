@@ -5,10 +5,7 @@ import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 class BubbleData : BarLineScatterCandleBubbleData<IBubbleDataSet> {
     constructor() : super()
 
-    constructor(vararg dataSets: IBubbleDataSet) : super(*dataSets)
-
     constructor(dataSets: MutableList<IBubbleDataSet>) : super(dataSets)
-
 
     /**
      * Sets the width of the circle that surrounds the bubble when highlighted

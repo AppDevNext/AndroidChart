@@ -12,25 +12,21 @@ class CandleEntry : Entry {
     /**
      * Returns the upper shadows highest value.
      */
-    /** shadow-high value  */
     var high: Float
 
     /**
      * Returns the lower shadows lowest value.
      */
-    /** shadow-low value  */
     var low: Float
 
     /**
      * Returns the bodies close value.
      */
-    /** close value  */
     var close: Float
 
     /**
      * Returns the bodies open value.
      */
-    /** open value  */
     var open: Float
 
     /**
@@ -105,8 +101,7 @@ class CandleEntry : Entry {
     }
 
     /**
-     * Returns the overall range (difference) between shadow-high and
-     * shadow-low.
+     * Returns the overall range (difference) between shadow-high and shadow-low.
      */
     val shadowRange: Float
         get() = abs(this.high - this.low)
