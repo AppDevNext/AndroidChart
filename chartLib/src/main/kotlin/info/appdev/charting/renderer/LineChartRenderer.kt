@@ -251,7 +251,7 @@ open class LineChartRenderer(
     /**
      * Draws a normal line.
      */
-    protected fun drawLinear(c: Canvas, dataSet: ILineDataSet) {
+    protected fun drawLinear(canvas: Canvas, dataSet: ILineDataSet) {
         val entryCount = dataSet.entryCount
 
         val pointsPerEntryPair = if (dataSet.isDrawSteppedEnabled) 4 else 2
@@ -266,14 +266,14 @@ open class LineChartRenderer(
         val canvas: Canvas? = if (dataSet.isDashedLineEnabled) {
             bitmapCanvas
         } else {
-            c
+            canvas
         }
 
         xBounds.set(dataProvider, dataSet)
 
         // if drawing filled is enabled
         if (dataSet.isDrawFilledEnabled && entryCount > 0) {
-            drawLinearFill(c, dataSet, trans!!, xBounds)
+            drawLinearFill(canvas!!, dataSet, trans!!, xBounds)
         }
 
         // more than 1 color
