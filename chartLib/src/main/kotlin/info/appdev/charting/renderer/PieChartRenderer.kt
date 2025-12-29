@@ -685,7 +685,6 @@ open class PieChartRenderer(
                 )
             }
 
-            //float layoutWidth = Utils.getStaticLayoutMaxWidth(mCenterTextLayout);
             val layoutHeight = centerTextLayout!!.height.toFloat()
 
             canvas.save()

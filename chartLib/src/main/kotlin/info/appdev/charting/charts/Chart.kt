@@ -53,13 +53,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     /**
      * Returns true if log-output is enabled for the chart, fals if not.
      */
-    /**
-     * Set this to true to enable logcat outputs for the chart. Beware that
-     * logcat output decreases rendering performance. Default: disabled.
-     */
-    /**
-     * flag that indicates if logging is enabled or not
-     */
     var isLogEnabled: Boolean = false
 
     /**
@@ -69,23 +62,11 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     protected var mData: T? = null
 
     /**
-     * Returns true if values can be highlighted via tap gesture, false if not.
-     */
-    /**
      * Set this to false to prevent values from being highlighted by tap gesture.
      * Values can still be highlighted via drag or programmatically. Default: true
      */
-    /**
-     * Flag that indicates if highlighting per tap (touch) is enabled
-     */
     var isHighlightPerTapEnabled: Boolean = true
 
-    /**
-     * If set to true, chart continues to scroll after touch up default: true
-     */
-    /**
-     * If set to true, chart continues to scroll after touch up. Default: true.
-     */
     /**
      * If set to true, chart continues to scroll after touch up
      */
@@ -130,21 +111,12 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
      * Returns the Description object of the chart that is responsible for holding all information related
      * to the description text that is displayed in the bottom right corner of the chart (by default).
      */
-    /**
-     * Sets a new Description object for the chart.
-     */
-    /**
-     * the object responsible for representing the description text
-     */
     var description = Description()
 
     /**
      * Returns the Legend object of the chart. This method can be used to get an
      * instance of the legend in order to customize the automatically generated
      * Legend.
-     */
-    /**
-     * the legend object containing all data associated with the legend
      */
     var legend: Legend = Legend()
         protected set
@@ -162,20 +134,13 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     private var mNoDataText = "No chart data available."
 
     /**
-     * Returns the custom gesture listener.
-     */
-    /**
      * Sets a gesture-listener for the chart for custom callbacks when executing
      * gestures on the chart surface.
-     */
-    /**
-     * Gesture listener for custom callbacks when making gestures on the chart.
      */
     var onChartGestureListener: OnChartGestureListener? = null
 
     /**
-     * Returns the renderer object responsible for rendering / drawing the
-     * Legend.
+     * Returns the renderer object responsible for rendering / drawing the Legend.
      */
     var legendRenderer: LegendRenderer? = null
         protected set
@@ -239,9 +204,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
         mXAxis = XAxis()
         setWillNotDraw(false)
 
-        // setLayerType(View.LAYER_TYPE_HARDWARE, null);
         mAnimator = ChartAnimator { animation: ValueAnimator? ->
-            // ViewCompat.postInvalidateOnAnimation(Chart.this);
             postInvalidate()
         }
 
@@ -444,10 +407,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
     }
 
     /**
-     * Returns the array of currently highlighted values. This might a null or
-     * empty array if nothing is highlighted.
-     */
-    /**
      * array of Highlight objects that reference the highlighted slices in the
      * chart
      */
@@ -502,7 +461,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>?> : ViewGroup, IBase
 
         setLastHighlighted(highs)
 
-        // redraw the chart
         invalidate()
     }
 
