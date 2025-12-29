@@ -150,11 +150,9 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
             mCubicIntensity = intensity
         }
 
-    @Suppress("OVERRIDE_DEPRECATION")
     override val isDrawCubicEnabled: Boolean
         get() = mLineDataSetMode == Mode.CUBIC_BEZIER
 
-    @Suppress("OVERRIDE_DEPRECATION")
     override val isDrawSteppedEnabled: Boolean
         get() = mLineDataSetMode == Mode.STEPPED
 

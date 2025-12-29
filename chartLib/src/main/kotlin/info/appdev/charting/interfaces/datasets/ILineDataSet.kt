@@ -17,10 +17,8 @@ interface ILineDataSet : ILineRadarDataSet<Entry> {
      */
     var cubicIntensity: Float
 
-    @get:Deprecated("Use lineMode == Mode.CUBIC_BEZIER")
     val isDrawCubicEnabled: Boolean
 
-    @get:Deprecated("Use lineMode == Mode.== Mode.STEPPED")
     val isDrawSteppedEnabled: Boolean
 
     /**
