@@ -423,10 +423,9 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Removes the given Entry object from the DataSet at the specified index.
      */
     @Suppress("UNCHECKED_CAST")
-    open fun removeEntry(entry: Entry?, dataSetIndex: Int): Boolean {
+    open fun removeEntry(entry: Entry, dataSetIndex: Int): Boolean {
         // entry null, out of bounds
-
-        if (entry == null || dataSetIndex >= dataSets!!.size) {
+        if (dataSetIndex >= dataSets!!.size) {
             return false
         }
 
@@ -464,11 +463,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Returns the DataSet that contains the provided Entry, or null, if no
      * DataSet contains this Entry.
      */
-    fun getDataSetForEntry(e: Entry?): T? {
-        if (e == null) {
-            return null
-        }
-
+    fun getDataSetForEntry(e: Entry): T? {
         for (i in dataSets!!.indices) {
             val set = dataSets!![i]
 
