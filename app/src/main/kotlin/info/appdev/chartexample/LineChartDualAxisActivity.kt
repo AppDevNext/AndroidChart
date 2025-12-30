@@ -11,6 +11,9 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityLinechartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.charts.LineChart
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.Legend.LegendForm
@@ -21,9 +24,6 @@ import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.databinding.ActivityLinechartBinding
-import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 /**
@@ -137,8 +137,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         val set2: LineDataSet
         val set3: LineDataSet
 
-        if (binding.chart1.lineData.dataSetCount > 0
-        ) {
+        if (binding.chart1.lineData.dataSetCount > 0) {
             set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
             set2 = binding.chart1.lineData.getDataSetByIndex(1) as LineDataSet
             set3 = binding.chart1.lineData.getDataSetByIndex(2) as LineDataSet

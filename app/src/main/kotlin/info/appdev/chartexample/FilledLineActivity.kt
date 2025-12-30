@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
@@ -13,9 +16,6 @@ import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IFillFormatter
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.ILineDataSet
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
-import info.appdev.chartexample.notimportant.DemoBase
 
 /**
  * This works by inverting the background and desired "fill" color. First, we draw the fill color
@@ -87,8 +87,7 @@ class FilledLineActivity : DemoBase() {
         val set1: LineDataSet
         val set2: LineDataSet
 
-        if (binding.chart1.lineData.dataSetCount > 0
-        ) {
+        if (binding.chart1.lineData.dataSetCount > 0) {
             set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
             set2 = binding.chart1.lineData.getDataSetByIndex(1) as LineDataSet
             set1.entries = valuesArray1

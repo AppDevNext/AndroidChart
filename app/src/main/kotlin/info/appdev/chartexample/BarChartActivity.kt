@@ -67,31 +67,34 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         // chart.setDrawYLabels(false);
         val xAxisFormatter: IAxisValueFormatter = DayAxisValueFormatter(binding.chart1)
 
-        val xAxis = binding.chart1.xAxis
-        xAxis.position = XAxisPosition.BOTTOM
-        xAxis.typeface = tfLight
-        xAxis.setDrawGridLines(false)
-        xAxis.granularity = 1f // only intervals of 1 day
-        xAxis.labelCount = 7
-        xAxis.valueFormatter = xAxisFormatter
+        binding.chart1.xAxis.apply {
+            position = XAxisPosition.BOTTOM
+            typeface = tfLight
+            setDrawGridLines(false)
+            granularity = 1f // only intervals of 1 day
+            labelCount = 7
+            valueFormatter = xAxisFormatter
+        }
 
         val custom: IAxisValueFormatter = MyAxisValueFormatter()
 
-        val leftAxis = binding.chart1.axisLeft
-        leftAxis.typeface = tfLight
-        leftAxis.setLabelCount(8, false)
-        leftAxis.valueFormatter = custom
-        leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART)
-        leftAxis.spaceTop = 15f
-        leftAxis.axisMinimum = 0f// this replaces setStartAtZero(true)
+        binding.chart1.axisLeft.apply {
+            typeface = tfLight
+            setLabelCount(8, false)
+            valueFormatter = custom
+            spaceTop = 15f
+            axisMinimum = 0f// this replaces setStartAtZero(true)
+            setPosition(YAxisLabelPosition.OUTSIDE_CHART)
+        }
 
-        val rightAxis = binding.chart1.axisRight
-        rightAxis.setDrawGridLines(false)
-        rightAxis.typeface = tfLight
-        rightAxis.setLabelCount(8, false)
-        rightAxis.valueFormatter = custom
-        rightAxis.spaceTop = 15f
-        rightAxis.axisMinimum = 0f// this replaces setStartAtZero(true)
+        binding.chart1.axisRight.apply {
+            setDrawGridLines(false)
+            typeface = tfLight
+            setLabelCount(8, false)
+            valueFormatter = custom
+            spaceTop = 15f
+            axisMinimum = 0f// this replaces setStartAtZero(true)
+        }
 
         binding.chart1.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM

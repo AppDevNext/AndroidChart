@@ -453,18 +453,18 @@ abstract class AxisBase : ComponentBase() {
         this.isDrawGridLinesBehindDataEnabled = enabled
     }
 
+    /**
+     * Returns the longest formatted label (in terms of characters), this axis contains.
+     */
     val longestLabel: String
-        /**
-         * Returns the longest formatted label (in terms of characters), this axis
-         * contains.
-         */
         get() {
             var longest: String? = ""
 
             for (i in entries.indices) {
                 val text = getFormattedLabel(i)
 
-                if (text != null && longest!!.length < text.length) longest = text
+                if (text != null && longest!!.length < text.length)
+                    longest = text
             }
 
             return longest!!

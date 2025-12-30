@@ -12,6 +12,9 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getMuchValues
+import info.appdev.chartexample.databinding.ActivityLinechartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
@@ -19,9 +22,6 @@ import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IFillFormatter
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.ILineDataSet
-import info.appdev.chartexample.DataTools.Companion.getMuchValues
-import info.appdev.chartexample.databinding.ActivityLinechartBinding
-import info.appdev.chartexample.notimportant.DemoBase
 
 class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
@@ -93,8 +93,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
         val set1: LineDataSet
 
-        if (binding.chart1.lineData.dataSetCount > 0
-        ) {
+        if (binding.chart1.lineData.dataSetCount > 0) {
             set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
             set1.entries = values
             binding.chart1.lineData.notifyDataChanged()
