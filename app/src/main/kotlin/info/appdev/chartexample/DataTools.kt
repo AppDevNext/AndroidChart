@@ -13,6 +13,8 @@ import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.utils.getSDKInt
 import timber.log.Timber
+import kotlin.math.PI
+import kotlin.math.sin
 
 class DataTools {
     companion object {
@@ -135,6 +137,19 @@ class DataTools {
 
         fun getValues(size: Int) = VAL_102.copyOf(size)
 
+        /**
+         * Generates points for n complete sine waves.
+         * @param cycles Number of complete sine graphs (n)
+         * @param pointsPerCycle Number of data points to generate for each cycle
+         */
+        fun generateSineWaves(cycles: Int, pointsPerCycle: Int): List<Double> {
+            val totalPoints = cycles * pointsPerCycle
+            val stepSize = (2 * PI * cycles) / totalPoints
+
+            return (0 until totalPoints).map { i ->
+                sin(i * stepSize)
+            }
+        }
         fun getMuchValues(size: Int): Array<Double?> {
             var result = VAL_102.copyOf(VAL_102.size)
             while (result.size < size)

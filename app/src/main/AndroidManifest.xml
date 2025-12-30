@@ -56,6 +56,7 @@
         <activity android:name="info.appdev.chartexample.GradientActivity" />
         <activity android:name="info.appdev.chartexample.HalfPieChartActivity" />
         <activity android:name="info.appdev.chartexample.SpecificPositionsLineChartActivity" />
+        <activity android:name="info.appdev.chartexample.TimeLineActivity" />
     </application>
 
 </manifest>
