@@ -6,41 +6,52 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import info.appdev.charting.charts.LineChart
-import info.appdev.chartexample.R
+import info.appdev.chartexample.databinding.FragSimpleLineBinding
 
 class SineCosineFragment : SimpleFragment() {
-    private var chart: LineChart? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val v = inflater.inflate(R.layout.frag_simple_line, container, false)
+    private var _binding: FragSimpleLineBinding? = null
 
-        chart = v.findViewById(R.id.lineChart1)
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
 
-        chart!!.description.isEnabled = false
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragSimpleLineBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        chart!!.setDrawGridBackground(false)
+        binding.lineChart1.description.isEnabled = false
 
-        chart!!.setData(generateLineData())
-        chart!!.animateX(3000)
+        binding.lineChart1.setDrawGridBackground(false)
+
+        binding.lineChart1.setData(generateLineData())
+        binding.lineChart1.animateX(3000)
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 
-        chart!!.legend.apply {
+        binding.lineChart1.legend.apply {
             typeface = tf
         }
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = binding.lineChart1.axisLeft
         leftAxis.typeface = tf
         leftAxis.axisMaximum = 1.2f
         leftAxis.axisMinimum = -1.2f
 
-        chart!!.axisRight.isEnabled = false
+        binding.lineChart1.axisRight.isEnabled = false
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.lineChart1.xAxis
         xAxis.isEnabled = false
 
-        return v
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
