@@ -87,12 +87,13 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             val set = data.getDataSetByIndex(0)
 
             if (set != null) {
-                val e = set.getEntryForXValue((set.entryCount - 1).toFloat(), Float.NaN)
+                set.getEntryForXValue((set.entryCount - 1).toFloat(), Float.NaN)?.let { entry ->
+                    data.removeEntry(entry, 0)
+                    // or remove by index
+                    // mData.removeEntryByXValue(xIndex, dataSetIndex);
+                    data.notifyDataChanged()
+                }
 
-                data.removeEntry(e, 0)
-                // or remove by index
-                // mData.removeEntryByXValue(xIndex, dataSetIndex);
-                data.notifyDataChanged()
                 binding.chart1.notifyDataSetChanged()
                 binding.chart1.invalidate()
             }

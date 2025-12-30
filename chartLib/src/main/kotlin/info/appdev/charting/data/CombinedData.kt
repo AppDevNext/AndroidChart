@@ -201,7 +201,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
     }
 
     @Deprecated("removeEntry(...) not supported for CombinedData")
-    override fun removeEntry(entry: Entry?, dataSetIndex: Int): Boolean {
+    override fun removeEntry(entry: Entry, dataSetIndex: Int): Boolean {
         Timber.e("removeEntry(...) not supported for CombinedData")
         return false
     }
