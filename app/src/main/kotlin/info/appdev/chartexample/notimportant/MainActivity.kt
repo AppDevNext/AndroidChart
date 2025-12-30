@@ -77,6 +77,7 @@ import info.appdev.chartexample.ScrollViewActivity
 import info.appdev.chartexample.SpecificPositionsLineChartActivity
 import info.appdev.chartexample.StackedBarActivity
 import info.appdev.chartexample.StackedBarActivityNegative
+import info.appdev.chartexample.TimeLineActivity
 import info.appdev.chartexample.compose.HorizontalBarComposeActivity
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
 
@@ -212,6 +213,7 @@ class MainActivity : ComponentActivity() {
 
             add(ContentItem("Demonstrate and fix issues"))
             add(ContentItem("Gradient", "Show a gradient edge case", GradientActivity::class.java))
+            add(ContentItem("Timeline", "Show a time line with Unix timestamp", TimeLineActivity::class.java))
         }
     }
 }
