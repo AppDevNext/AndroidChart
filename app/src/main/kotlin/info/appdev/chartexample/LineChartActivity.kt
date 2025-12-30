@@ -105,7 +105,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             labelPosition = LimitLabelPosition.RIGHT_TOP
             textSize = 10f
             typeface = tfRegular
-            lineColor = Color.RED
+            lineColor = Color.CYAN
             rangeColor = Color.argb(30, 255, 235, 0)
         }
 
