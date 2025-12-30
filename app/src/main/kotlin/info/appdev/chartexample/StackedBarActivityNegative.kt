@@ -74,6 +74,10 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
             override fun getFormattedValue(value: Float, axis: AxisBase?): String {
                 return format.format(value.toDouble()) + "-" + format.format((value + 10).toDouble())
             }
+
+            override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+                return format.format(value) + "-" + format.format((value + 10).toDouble())
+            }
         }
 
         binding.chart1.legend.apply {
@@ -217,6 +221,10 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         // YAxis
         override fun getFormattedValue(value: Float, axis: AxisBase?): String {
             return decimalFormat.format(abs(value).toDouble()) + "m"
+        }
+
+        override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+            return decimalFormat.format(abs(value)) + "m"
         }
     }
 }

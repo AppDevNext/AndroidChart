@@ -39,6 +39,10 @@ class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValue
         }
     }
 
+    override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+        return getFormattedValue(value.toFloat(), axis)
+    }
+
     private fun getDaysForMonth(month: Int, year: Int): Int {
         // month is 0-based
 

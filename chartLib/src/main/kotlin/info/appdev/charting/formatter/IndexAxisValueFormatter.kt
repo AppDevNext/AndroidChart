@@ -37,4 +37,11 @@ open class IndexAxisValueFormatter : IAxisValueFormatter {
             values[index]
     }
 
+    override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+        return if (value < 0 || value >= values.size)
+            ""
+        else
+            values[value.toInt()]
+    }
+
 }

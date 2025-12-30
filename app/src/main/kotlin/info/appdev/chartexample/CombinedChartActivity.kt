@@ -79,6 +79,10 @@ class CombinedChartActivity : DemoBase() {
             override fun getFormattedValue(value: Float, axis: AxisBase?): String {
                 return months[value.toInt() % months.size]
             }
+
+            override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+                return months[(value % months.size).toInt()]
+            }
         }
 
         val data = CombinedData()

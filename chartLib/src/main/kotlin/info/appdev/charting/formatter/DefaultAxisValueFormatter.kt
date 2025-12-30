@@ -35,4 +35,8 @@ open class DefaultAxisValueFormatter(digits: Int) : IAxisValueFormatter {
         // avoid memory allocations here (for performance)
         return decimalFormat.format(value.toDouble())
     }
+
+    override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+        return decimalFormat.format(value)
+    }
 }

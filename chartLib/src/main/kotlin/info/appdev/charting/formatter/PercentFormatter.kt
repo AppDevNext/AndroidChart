@@ -32,6 +32,8 @@ open class PercentFormatter : IValueFormatter, IAxisValueFormatter {
         return decimalFormat.format(value.toDouble()) + " %"
     }
 
-    val decimalDigits: Int
-        get() = 1
+    override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+        return decimalFormat.format(value) + " %"
+    }
+
 }

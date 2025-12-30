@@ -62,6 +62,10 @@ class RadarChartActivity : DemoBase() {
             override fun getFormattedValue(value: Float, axis: AxisBase?): String {
                 return mActivities[value.toInt() % mActivities.size]
             }
+
+            override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+                return mActivities[(value % mActivities.size).toInt()]
+            }
         }
         xAxis.textColor = Color.WHITE
 

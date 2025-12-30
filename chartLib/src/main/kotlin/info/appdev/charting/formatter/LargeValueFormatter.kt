@@ -41,6 +41,10 @@ open class LargeValueFormatter() : IValueFormatter, IAxisValueFormatter {
         return makePretty(value.toDouble()) + text
     }
 
+    override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+        return makePretty(value) + text
+    }
+
     /**
      * Set an appendix text to be added at the end of the formatted value.
      */
@@ -67,6 +71,18 @@ open class LargeValueFormatter() : IValueFormatter, IAxisValueFormatter {
      * (https://github.com/romangromov) for this piece of code.
      */
     private fun makePretty(number: Double): String {
+        var decimalFormat = decimalFormat.format(number)
+        val numericValue1 = Character.getNumericValue(decimalFormat[decimalFormat.length - 1])
+        val numericValue2 = Character.getNumericValue(decimalFormat[decimalFormat.length - 2])
+        val combined = Integer.valueOf(numericValue2.toString() + "" + numericValue1)
+        decimalFormat = decimalFormat.replace("E[0-9][0-9]".toRegex(), suffix[combined / 3])
+        while (decimalFormat.length > maxLength || decimalFormat.matches("[0-9]+\\.[a-z]".toRegex())) {
+            decimalFormat = decimalFormat.substring(0, decimalFormat.length - 2) + decimalFormat.substring(decimalFormat.length - 1)
+        }
+        return decimalFormat
+    }
+
+    private fun makePretty(number: Long): String {
         var decimalFormat = decimalFormat.format(number)
         val numericValue1 = Character.getNumericValue(decimalFormat[decimalFormat.length - 1])
         val numericValue2 = Character.getNumericValue(decimalFormat[decimalFormat.length - 2])

@@ -85,6 +85,10 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             override fun getFormattedValue(value: Float, axis: AxisBase?): String {
                 return value.toInt().toString()
             }
+
+            override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+                return value.toString()
+            }
         }
 
         val leftAxis = binding.chart1.axisLeft

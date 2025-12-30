@@ -83,6 +83,11 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
                 val millis = TimeUnit.HOURS.toMillis(value.toLong())
                 return mFormat.format(Date(millis))
             }
+
+            override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+                val millis = TimeUnit.HOURS.toMillis(value)
+                return mFormat.format(Date(millis))
+            }
         }
 
         val leftAxis = binding.chart1.axisLeft

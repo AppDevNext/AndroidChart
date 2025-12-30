@@ -81,6 +81,12 @@ class BarChartPositiveNegative : DemoBase() {
             override fun getFormattedValue(value: Float, axis: AxisBase?): String? {
                 return data[min(max(value.toInt(), 0), data.size - 1)].xAxisValue
             }
+
+            override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+                val ma = max(value, 0)
+                val mi = min(ma, (data.size - 1).toLong()).toInt()
+                return data[mi].xAxisValue!!
+            }
         }
 
         setData(data)

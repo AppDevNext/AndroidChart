@@ -10,4 +10,8 @@ class MyAxisValueFormatter : IAxisValueFormatter {
     override fun getFormattedValue(value: Float, axis: AxisBase?): String {
         return mFormat.format(value.toDouble()) + " $"
     }
+
+    override fun getFormattedValue(value: Long, axis: AxisBase?): String {
+        return mFormat.format(value) + " $"
+    }
 }
