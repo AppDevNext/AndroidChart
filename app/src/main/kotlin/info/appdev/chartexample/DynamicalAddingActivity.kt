@@ -9,6 +9,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
@@ -16,10 +20,6 @@ import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
-import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
 
 class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
     var sampleValues: Array<Double?> = getValues(102)
