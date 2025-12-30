@@ -10,13 +10,7 @@ open class CombinedHighlighter(combinedDataProvider: CombinedDataProvider, barDa
     /**
      * bar highlighter for supporting stacked highlighting
      */
-    protected var barHighlighter: BarHighlighter?
-
-    init {
-        // if there is BarData, create a BarHighlighter
-        barDataProvider.barData
-        barHighlighter = BarHighlighter(barDataProvider)
-    }
+    protected var barHighlighter: BarHighlighter? = BarHighlighter(barDataProvider)
 
     override fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight>? {
         highlightBuffer.clear()
