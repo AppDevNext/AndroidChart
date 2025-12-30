@@ -10,7 +10,7 @@ import info.appdev.charting.utils.PointD
 import kotlin.math.abs
 import kotlin.math.hypot
 
-open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protected var provider: T) : IHighlighter {
+open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(protected var provider: T) : IHighlighter {
     /**
      * buffer for storing previously highlighted values
      */

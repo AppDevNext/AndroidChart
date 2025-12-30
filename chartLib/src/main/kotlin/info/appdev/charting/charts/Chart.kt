@@ -49,7 +49,7 @@ import kotlin.math.abs
 import kotlin.math.max
 
 @Suppress("unused")
-abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseProvider {
+abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseProvider<T> {
     /**
      * Returns true if log-output is enabled for the chart, fals if not.
      */
@@ -235,35 +235,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     protected open fun init() {
         mMaxHighlightDistance = 500f.convertDpToPixel()
         this.legendRenderer = LegendRenderer(this.viewPortHandler, this.legend)
-    }
-
-    /**
-     * Sets a new data object for the chart. The data object contains all values
-     * and information needed for displaying.
-     */
-    open fun setData(data: T?) {
-        mData = data
-        mOffsetsCalculated = false
-
-        if (data == null) {
-            return
-        }
-
-        // calculate how many digits are needed
-        setupDefaultFormatter(data.yMin, data.yMax)
-
-        for (set in mData!!.dataSets!!) {
-            if (set.needsFormatter() || set.valueFormatter === mDefaultValueFormatter) {
-                set.valueFormatter = mDefaultValueFormatter
-            }
-        }
-
-        // let the chart know there is new data
-        notifyDataSetChanged()
-
-        if (this.isLogEnabled) {
-            Timber.i("Data is set.")
-        }
     }
 
     /**
@@ -1053,11 +1024,36 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     }
 
     /**
-     * Returns the ChartData object that has been set for the chart.
+     * Data object for the chart. The data object contains all values and information needed for displaying.
      */
-    override fun getData(): T? {
-        return mData
-    }
+    override var data: T?
+        get() = mData
+        set(value) {
+                mData = value
+
+                if (value == null) {
+                    mOffsetsCalculated = false
+                    return
+                }
+
+                mOffsetsCalculated = false
+
+                // calculate how many digits are needed
+                setupDefaultFormatter(value.yMin, value.yMax)
+
+                for (set in mData!!.dataSets!!) {
+                    if (set.needsFormatter() || set.valueFormatter === mDefaultValueFormatter) {
+                        set.valueFormatter = mDefaultValueFormatter
+                    }
+                }
+
+                // let the chart know there is new data
+                notifyDataSetChanged()
+
+                if (isLogEnabled) {
+                    Timber.i("Data is set.")
+                }
+        }
 
     var renderer: DataRenderer?
         /**

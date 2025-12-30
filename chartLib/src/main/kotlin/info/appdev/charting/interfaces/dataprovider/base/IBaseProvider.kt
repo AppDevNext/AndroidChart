@@ -9,7 +9,7 @@ import info.appdev.charting.utils.PointF
  * Interface that provides everything there is to know about the dimensions,
  * bounds, and range of the chart.
  */
-interface IBaseProvider {
+interface IBaseProvider<T : ChartData<*>> {
     /**
      * Returns the minimum x value of the chart, regardless of zoom or translation.
      */
@@ -45,7 +45,7 @@ interface IBaseProvider {
 
     val defaultValueFormatter: IValueFormatter?
 
-    fun getData(): ChartData<*>?
+    var data: T?
 
     val maxVisibleCount: Int
 }

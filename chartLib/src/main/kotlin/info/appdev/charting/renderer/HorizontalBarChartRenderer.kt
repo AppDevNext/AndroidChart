@@ -456,7 +456,7 @@ open class HorizontalBarChartRenderer(
         high.setDraw(bar.centerY(), bar.right)
     }
 
-    override fun isDrawingValuesAllowed(baseProvider: IBaseProvider): Boolean {
-        return baseProvider.getData()!!.entryCount < baseProvider.maxVisibleCount * viewPortHandler.scaleY
+    override fun isDrawingValuesAllowed(baseProvider: IBaseProvider<*>): Boolean {
+        return baseProvider.data!!.entryCount < baseProvider.maxVisibleCount * viewPortHandler.scaleY
     }
 }

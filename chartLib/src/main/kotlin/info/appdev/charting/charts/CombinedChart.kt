@@ -12,7 +12,12 @@ import info.appdev.charting.data.LineData
 import info.appdev.charting.data.ScatterData
 import info.appdev.charting.highlight.CombinedHighlighter
 import info.appdev.charting.highlight.Highlight
+import info.appdev.charting.interfaces.dataprovider.BarDataProvider
+import info.appdev.charting.interfaces.dataprovider.BubbleDataProvider
+import info.appdev.charting.interfaces.dataprovider.CandleDataProvider
 import info.appdev.charting.interfaces.dataprovider.CombinedDataProvider
+import info.appdev.charting.interfaces.dataprovider.LineDataProvider
+import info.appdev.charting.interfaces.dataprovider.ScatterDataProvider
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.renderer.CombinedChartRenderer
 import timber.log.Timber
@@ -25,21 +30,27 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
     /**
      * if set to true, all values are drawn above their bars, instead of below their top
      */
-    override var isDrawValueAboveBarEnabled: Boolean = true
+    var isDrawValueAboveBarEnabled: Boolean = true
 
 
     /**
      * Set this to true to make the highlight operation full-bar oriented,
      * false to make it highlight single values (relevant only for stacked).
      */
-    override var isHighlightFullBarEnabled: Boolean = false
+    var isHighlightFullBarEnabled: Boolean = false
 
     /**
      * if set to true, a grey area is drawn behind each bar that indicates the maximum value
      */
-    override var isDrawBarShadowEnabled: Boolean = false
+    var isDrawBarShadowEnabled: Boolean = false
 
     protected var drawOrders: MutableList<DrawOrder>? = null
+
+    lateinit var barDataProvider : BarDataProvider
+    lateinit var lineDataProvider : LineDataProvider
+    lateinit var bubbleDataProvider : BubbleDataProvider
+    lateinit var scatterDataProvider : ScatterDataProvider
+    lateinit var candleDataProvider : CandleDataProvider
 
     /**
      * enum that allows to specify the order in which the different data objects for the combined-chart are drawn
@@ -62,7 +73,291 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
             DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.LINE, DrawOrder.CANDLE, DrawOrder.SCATTER
         )
 
-        setHighlighter(CombinedHighlighter(this, this))
+        // Create BarDataProvider adapter for CombinedHighlighter
+        barDataProvider = object : BarDataProvider {
+            override val barData: BarData?
+                get() = this@CombinedChart.barData
+
+            override var isDrawBarShadowEnabled: Boolean
+                get() = this@CombinedChart.isDrawBarShadowEnabled
+                set(value) { this@CombinedChart.isDrawBarShadowEnabled = value }
+
+            override var isDrawValueAboveBarEnabled: Boolean
+                get() = this@CombinedChart.isDrawValueAboveBarEnabled
+                set(value) { this@CombinedChart.isDrawValueAboveBarEnabled = value }
+
+            override var isHighlightFullBarEnabled: Boolean
+                get() = this@CombinedChart.isHighlightFullBarEnabled
+                set(value) { this@CombinedChart.isHighlightFullBarEnabled = value }
+
+            override var data: BarData?
+                get() = this@CombinedChart.barData
+                set(_) {}
+
+            override fun getTransformer(axis: info.appdev.charting.components.YAxis.AxisDependency?) =
+                this@CombinedChart.getTransformer(axis)
+
+            override fun isInverted(axis: info.appdev.charting.components.YAxis.AxisDependency?) =
+                this@CombinedChart.isInverted(axis)
+
+            override val lowestVisibleX: Float
+                get() = this@CombinedChart.lowestVisibleX
+
+            override val highestVisibleX: Float
+                get() = this@CombinedChart.highestVisibleX
+
+            override val xChartMin: Float
+                get() = this@CombinedChart.xChartMin
+
+            override val xChartMax: Float
+                get() = this@CombinedChart.xChartMax
+
+            override val xRange: Float
+                get() = this@CombinedChart.xRange
+
+            override val yChartMin: Float
+                get() = this@CombinedChart.yChartMin
+
+            override val yChartMax: Float
+                get() = this@CombinedChart.yChartMax
+
+            override var maxHighlightDistance: Float
+                get() = this@CombinedChart.maxHighlightDistance
+                set(value) { this@CombinedChart.maxHighlightDistance = value }
+
+            override val centerOfView: info.appdev.charting.utils.PointF
+                get() = this@CombinedChart.centerOfView
+
+            override val centerOffsets: info.appdev.charting.utils.PointF
+                get() = this@CombinedChart.centerOffsets
+
+            override val contentRect: android.graphics.RectF
+                get() = this@CombinedChart.contentRect
+
+            override val defaultValueFormatter: info.appdev.charting.formatter.IValueFormatter
+                get() = this@CombinedChart.defaultValueFormatter
+
+            override val maxVisibleCount: Int
+                get() = this@CombinedChart.maxVisibleCount
+        }
+
+        lineDataProvider = object : LineDataProvider {
+            override fun getTransformer(axis: info.appdev.charting.components.YAxis.AxisDependency?) =
+                this@CombinedChart.getTransformer(axis)
+
+            override fun isInverted(axis: info.appdev.charting.components.YAxis.AxisDependency?) =
+                this@CombinedChart.isInverted(axis)
+
+            override val lowestVisibleX: Float
+                get() = this@CombinedChart.lowestVisibleX
+
+            override val highestVisibleX: Float
+                get() = this@CombinedChart.highestVisibleX
+
+            override val xChartMin: Float
+                get() = this@CombinedChart.xChartMin
+
+            override val xChartMax: Float
+                get() = this@CombinedChart.xChartMax
+
+            override val xRange: Float
+                get() = this@CombinedChart.xRange
+
+            override val yChartMin: Float
+                get() = this@CombinedChart.yChartMin
+
+            override val yChartMax: Float
+                get() = this@CombinedChart.yChartMax
+
+            override var maxHighlightDistance: Float
+                get() = this@CombinedChart.maxHighlightDistance
+                set(value) { this@CombinedChart.maxHighlightDistance = value }
+
+            override val centerOfView: info.appdev.charting.utils.PointF
+                get() = this@CombinedChart.centerOfView
+
+            override val centerOffsets: info.appdev.charting.utils.PointF
+                get() = this@CombinedChart.centerOffsets
+
+            override val contentRect: android.graphics.RectF
+                get() = this@CombinedChart.contentRect
+
+            override val defaultValueFormatter: info.appdev.charting.formatter.IValueFormatter
+                get() = this@CombinedChart.defaultValueFormatter
+
+            override var data: LineData?
+                get() = this@CombinedChart.lineData
+                set(value) {}
+
+            override val maxVisibleCount: Int
+                get() = this@CombinedChart.maxVisibleCount
+            override val lineData: LineData?
+                get() = this@CombinedChart.lineData
+        }
+
+        bubbleDataProvider = object : BubbleDataProvider {
+            override fun getTransformer(axis: info.appdev.charting.components.YAxis.AxisDependency?) =
+                this@CombinedChart.getTransformer(axis)
+
+            override fun isInverted(axis: info.appdev.charting.components.YAxis.AxisDependency?) =
+                this@CombinedChart.isInverted(axis)
+
+            override val lowestVisibleX: Float
+                get() = this@CombinedChart.lowestVisibleX
+
+            override val highestVisibleX: Float
+                get() = this@CombinedChart.highestVisibleX
+
+            override val xChartMin: Float
+                get() = this@CombinedChart.xChartMin
+
+            override val xChartMax: Float
+                get() = this@CombinedChart.xChartMax
+
+            override val xRange: Float
+                get() = this@CombinedChart.xRange
+
+            override val yChartMin: Float
+                get() = this@CombinedChart.yChartMin
+
+            override val yChartMax: Float
+                get() = this@CombinedChart.yChartMax
+
+            override var maxHighlightDistance: Float
+                get() = this@CombinedChart.maxHighlightDistance
+                set(value) { this@CombinedChart.maxHighlightDistance = value }
+
+            override val centerOfView: info.appdev.charting.utils.PointF
+                get() = this@CombinedChart.centerOfView
+
+            override val centerOffsets: info.appdev.charting.utils.PointF
+                get() = this@CombinedChart.centerOffsets
+
+            override val contentRect: android.graphics.RectF
+                get() = this@CombinedChart.contentRect
+
+            override val defaultValueFormatter: info.appdev.charting.formatter.IValueFormatter
+                get() = this@CombinedChart.defaultValueFormatter
+
+            override var data: BubbleData?
+                get() = this@CombinedChart.bubbleData
+                set(value) {}
+
+            override val maxVisibleCount: Int
+                get() = this@CombinedChart.maxVisibleCount
+            override val bubbleData: BubbleData?
+                get() = this@CombinedChart.bubbleData
+        }
+
+        scatterDataProvider = object : ScatterDataProvider {
+            override fun getTransformer(axis: info.appdev.charting.components.YAxis.AxisDependency?) =
+                this@CombinedChart.getTransformer(axis)
+
+            override fun isInverted(axis: info.appdev.charting.components.YAxis.AxisDependency?) =
+                this@CombinedChart.isInverted(axis)
+
+            override val lowestVisibleX: Float
+                get() = this@CombinedChart.lowestVisibleX
+
+            override val highestVisibleX: Float
+                get() = this@CombinedChart.highestVisibleX
+
+            override val xChartMin: Float
+                get() = this@CombinedChart.xChartMin
+
+            override val xChartMax: Float
+                get() = this@CombinedChart.xChartMax
+
+            override val xRange: Float
+                get() = this@CombinedChart.xRange
+
+            override val yChartMin: Float
+                get() = this@CombinedChart.yChartMin
+
+            override val yChartMax: Float
+                get() = this@CombinedChart.yChartMax
+
+            override var maxHighlightDistance: Float
+                get() = this@CombinedChart.maxHighlightDistance
+                set(value) { this@CombinedChart.maxHighlightDistance = value }
+
+            override val centerOfView: info.appdev.charting.utils.PointF
+                get() = this@CombinedChart.centerOfView
+
+            override val centerOffsets: info.appdev.charting.utils.PointF
+                get() = this@CombinedChart.centerOffsets
+
+            override val contentRect: android.graphics.RectF
+                get() = this@CombinedChart.contentRect
+
+            override val defaultValueFormatter: info.appdev.charting.formatter.IValueFormatter
+                get() = this@CombinedChart.defaultValueFormatter
+
+            override var data: ScatterData?
+                get() = this@CombinedChart.scatterData
+                set(value) {}
+
+            override val maxVisibleCount: Int
+                get() = this@CombinedChart.maxVisibleCount
+            override val scatterData: ScatterData?
+                get() = this@CombinedChart.scatterData
+        }
+
+        candleDataProvider = object : CandleDataProvider {
+            override fun getTransformer(axis: info.appdev.charting.components.YAxis.AxisDependency?) =
+                this@CombinedChart.getTransformer(axis)
+
+            override fun isInverted(axis: info.appdev.charting.components.YAxis.AxisDependency?) =
+                this@CombinedChart.isInverted(axis)
+
+            override val lowestVisibleX: Float
+                get() = this@CombinedChart.lowestVisibleX
+
+            override val highestVisibleX: Float
+                get() = this@CombinedChart.highestVisibleX
+
+            override val xChartMin: Float
+                get() = this@CombinedChart.xChartMin
+
+            override val xChartMax: Float
+                get() = this@CombinedChart.xChartMax
+
+            override val xRange: Float
+                get() = this@CombinedChart.xRange
+
+            override val yChartMin: Float
+                get() = this@CombinedChart.yChartMin
+
+            override val yChartMax: Float
+                get() = this@CombinedChart.yChartMax
+
+            override var maxHighlightDistance: Float
+                get() = this@CombinedChart.maxHighlightDistance
+                set(value) { this@CombinedChart.maxHighlightDistance = value }
+
+            override val centerOfView: info.appdev.charting.utils.PointF
+                get() = this@CombinedChart.centerOfView
+
+            override val centerOffsets: info.appdev.charting.utils.PointF
+                get() = this@CombinedChart.centerOffsets
+
+            override val contentRect: android.graphics.RectF
+                get() = this@CombinedChart.contentRect
+
+            override val defaultValueFormatter: info.appdev.charting.formatter.IValueFormatter
+                get() = this@CombinedChart.defaultValueFormatter
+
+            override var data: CandleData?
+                get() = this@CombinedChart.candleData
+                set(value) {}
+
+            override val maxVisibleCount: Int
+                get() = this@CombinedChart.maxVisibleCount
+            override val candleData: CandleData?
+                get() = this@CombinedChart.candleData
+        }
+
+        setHighlighter(CombinedHighlighter(this, barDataProvider))
 
         // Old default behaviour
         isHighlightFullBarEnabled = true
@@ -72,13 +367,6 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
     override val combinedData: CombinedData?
         get() = mData
-
-    override fun setData(data: CombinedData?) {
-        super.setData(data)
-        setHighlighter(CombinedHighlighter(this, this))
-        (dataRenderer as CombinedChartRenderer).createRenderers()
-        dataRenderer?.initBuffers()
-    }
 
     /**
      * Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch

@@ -8,10 +8,9 @@ import android.view.View
 import info.appdev.charting.charts.BarChart
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
-import info.appdev.charting.data.ChartData
 import info.appdev.chartexample.R
 
-class BarChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chartData) {
+class BarChartItem(chartData: BarData, context: Context) : ChartItem<BarData>(chartData) {
     private val typeface: Typeface? = Typeface.createFromAsset(context.assets, "OpenSans-Regular.ttf")
 
     override val itemType: Int

@@ -47,7 +47,7 @@ import kotlin.math.min
 @Suppress("unused")
 @SuppressLint("RtlHardcoded")
 abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out Entry>>> : Chart<T>,
-    BarLineScatterCandleBubbleDataProvider {
+    BarLineScatterCandleBubbleDataProvider<T> {
     /**
      * the maximum number of entries to which values will be drawn
      * (entry numbers greater than this value will cause value-labels to disappear)

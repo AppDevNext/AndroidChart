@@ -61,7 +61,7 @@ abstract class BarLineScatterCandleBubbleRenderer(
         /**
          * Calculates the minimum and maximum x values as well as the range between them.
          */
-        fun <T : Entry> set(chart: BarLineScatterCandleBubbleDataProvider, dataSet: IBarLineScatterCandleBubbleDataSet<T>) {
+        fun <T : Entry> set(chart: BarLineScatterCandleBubbleDataProvider<*>, dataSet: IBarLineScatterCandleBubbleDataSet<T>) {
             val phaseX = max(0f, min(1f, animator.phaseX))
 
             val low = chart.lowestVisibleX

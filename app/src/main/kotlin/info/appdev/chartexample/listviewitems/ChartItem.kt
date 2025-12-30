@@ -8,7 +8,7 @@ import info.appdev.charting.data.ChartData
  * Base class of the Chart ListView items
  */
 @Suppress("unused")
-abstract class ChartItem internal constructor(var chartData: ChartData<*>) {
+abstract class ChartItem<T : ChartData<*>> internal constructor(var chartData: T) {
     abstract val itemType: Int
 
     abstract fun getView(position: Int, convertView: View?, context: Context?): View?
