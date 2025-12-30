@@ -353,7 +353,7 @@ open class RadarChartRenderer(
 
         paint.style = Paint.Style.FILL
         paint.strokeWidth = 2f
-        paint.color = Color.RED
+        paint.color = Color.CYAN
 
         webPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         webPaint.style = Paint.Style.STROKE

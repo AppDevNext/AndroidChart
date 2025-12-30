@@ -110,7 +110,7 @@ class LineChartActivityColored : DemoBase() {
         val set1 = LineDataSet(values, "DataSet 1")
 
         // set1.setFillAlpha(110);
-        // set1.setFillColor(Color.RED);
+        // set1.setFillColor(Color.CYAN);
         set1.lineWidth = 1.75f
         set1.circleRadius = 5f
         set1.circleHoleRadius = 2.5f
