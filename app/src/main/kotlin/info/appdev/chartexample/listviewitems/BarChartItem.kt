@@ -61,7 +61,7 @@ class BarChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chartD
         chartData.setValueTypeface(typeface)
 
         // set data
-        holder.chart!!.setData(chartData as BarData?)
+        holder.chart!!.data = chartData
         holder.chart!!.setFitBars(true)
 
         // do not forget to refresh the chart

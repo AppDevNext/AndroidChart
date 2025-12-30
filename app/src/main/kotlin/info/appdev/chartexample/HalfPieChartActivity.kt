@@ -102,7 +102,7 @@ class HalfPieChartActivity : DemoBase() {
         data.setValueTextSize(11f)
         data.setValueTextColor(Color.WHITE)
         data.setValueTypeface(tfLight)
-        binding.chart1.setData(data)
+        binding.chart1.data = data
 
         binding.chart1.invalidate()
     }

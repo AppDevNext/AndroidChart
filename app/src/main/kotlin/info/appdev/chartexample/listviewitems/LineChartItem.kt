@@ -57,8 +57,7 @@ class LineChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chart
         rightAxis.setDrawGridLines(false)
         rightAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        // set data
-        holder.chart!!.setData(chartData as LineData?)
+        holder.chart!!.data = chartData
 
         // do not forget to refresh the chart
         // holder.chart.invalidate();

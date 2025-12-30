@@ -116,7 +116,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
         //set1.setHighlightLineWidth(1f);
         val data = CandleData(set1)
 
-        binding.chart1.setData(data)
+        binding.chart1.data = data
         binding.chart1.invalidate()
     }
 

@@ -69,7 +69,7 @@ class GradientActivity : DemoBase() {
         }
 
         binding.chart.axisLeft.axisMinimum = 0f
-        binding.chart.setData(LineData(dataSet))
+        binding.chart.data = LineData(dataSet)
         binding.chart.invalidate()
     }
 

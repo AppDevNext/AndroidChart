@@ -89,7 +89,7 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
             dataSets.add(set1)
 
             val data = BarData(dataSets)
-            binding.chart1.setData(data)
+            binding.chart1.data = data
             binding.chart1.setFitBars(true)
         }
 

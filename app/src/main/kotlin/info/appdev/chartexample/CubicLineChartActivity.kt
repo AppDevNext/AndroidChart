@@ -127,7 +127,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             data.setDrawValues(false)
 
             // set data
-            binding.chart1.setData(data)
+            binding.chart1.data = data
         }
     }
 

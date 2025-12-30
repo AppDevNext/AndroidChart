@@ -594,7 +594,7 @@ open class PieChart : PieRadarChartBase<PieData> {
 
     override val accessibilityDescription: String
         get() {
-            val pieData = getData()
+            val pieData = data
 
             var entryCount = 0
             if (pieData != null) entryCount = pieData.entryCount

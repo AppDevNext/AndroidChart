@@ -34,7 +34,7 @@ class ScatterChartFrag : SimpleFragment() {
         binding.scatterChart1.setMarker(markerView)
 
         binding.scatterChart1.setDrawGridBackground(false)
-        binding.scatterChart1.setData(generateScatterData(6, 10000f))
+        binding.scatterChart1.data = generateScatterData(6, 10000f)
 
         val xAxis = binding.scatterChart1.xAxis
         xAxis.isEnabled = true

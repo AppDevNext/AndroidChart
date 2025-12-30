@@ -186,5 +186,5 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider>(protecte
     }
 
     protected open val data: ChartData<*>?
-        get() = provider.getData()
+        get() = provider.data
 }

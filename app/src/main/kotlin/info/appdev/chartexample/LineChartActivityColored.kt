@@ -77,7 +77,7 @@ class LineChartActivityColored : DemoBase() {
         chart.setViewPortOffsets(10f, 0f, 10f, 0f)
 
         // add data
-        chart.setData(data)
+        chart.data = data
 
         // get the legend (only possible after setting data)
         chart.legend.apply {

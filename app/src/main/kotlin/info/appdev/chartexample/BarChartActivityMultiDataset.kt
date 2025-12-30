@@ -156,7 +156,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             data.setValueFormatter(LargeValueFormatter())
             data.setValueTypeface(tfLight)
 
-            binding.chart1.setData(data)
+            binding.chart1.data = data
         }
 
         // specify the width each bar should have

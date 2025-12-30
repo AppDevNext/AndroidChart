@@ -113,7 +113,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         data.setDrawValues(false)
         data.barWidth = 0.8f
 
-        binding.chart1.setData(data)
+        binding.chart1.data = data
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

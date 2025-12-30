@@ -54,7 +54,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         data.setValueTextColor(Color.WHITE)
 
         // add empty data
-        binding.chart1.setData(data)
+        binding.chart1.data = data
 
         // get the legend (only possible after setting data)
         binding.chart1.legend.apply {

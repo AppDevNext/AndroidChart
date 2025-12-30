@@ -90,7 +90,7 @@ class ListViewBarChartActivity : DemoBase() {
                 spaceTop = 15f
             }
 
-            holder.chart?.setData(data)
+            holder.chart?.data = data
             holder.chart?.setFitBars(true)
 
             // do not forget to refresh the chart

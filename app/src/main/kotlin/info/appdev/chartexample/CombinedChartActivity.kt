@@ -92,7 +92,7 @@ class CombinedChartActivity : DemoBase() {
 
         xAxis.axisMaximum = data.xMax + 0.25f
 
-        binding.chart1.setData(data)
+        binding.chart1.data = data
         binding.chart1.invalidate()
     }
 

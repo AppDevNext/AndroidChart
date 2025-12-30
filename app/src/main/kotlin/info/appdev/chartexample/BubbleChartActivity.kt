@@ -136,7 +136,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         data.setValueTextColor(Color.WHITE)
         data.setHighlightCircleWidth(1.5f)
 
-        binding.chart1.setData(data)
+        binding.chart1.data = data
         binding.chart1.invalidate()
     }
 

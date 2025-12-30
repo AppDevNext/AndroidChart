@@ -121,7 +121,7 @@ class TimeLineActivity : DemoBase() {
             val data = LineData(dataSets)
             data.setDrawValues(false)
 
-            binding.chart1.setData(data)
+            binding.chart1.data = data
         }
     }
 

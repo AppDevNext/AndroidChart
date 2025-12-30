@@ -62,7 +62,7 @@ class PieChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chartD
         chartData.setValueTextSize(11f)
         chartData.setValueTextColor(Color.WHITE)
         // set data
-        holder.chart?.setData(chartData as PieData?)
+        holder.chart?.data = chartData
 
         holder.chart?.legend?.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.TOP

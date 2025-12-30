@@ -198,7 +198,7 @@ class YAxisRendererRadarChart(
             val limitPath = renderLimitLinesPathBuffer
             limitPath.reset()
 
-            chart.getData()!!.maxEntryCountSet?.let { maxEntryCountSet ->
+            chart.data!!.maxEntryCountSet?.let { maxEntryCountSet ->
                 for (j in 0..<maxEntryCountSet.entryCount) {
                     pOut = center.getPosition(r, sliceAngle * j + chart.rotationAngle)
 

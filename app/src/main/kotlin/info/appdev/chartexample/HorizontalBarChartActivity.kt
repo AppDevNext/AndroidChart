@@ -135,7 +135,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
             data.setValueTextSize(10f)
             data.setValueTypeface(tfLight)
             data.barWidth = barWidth
-            binding.chart1.setData(data)
+            binding.chart1.data = data
         }
     }
 

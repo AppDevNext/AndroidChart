@@ -210,7 +210,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        if (getData() == null) {
+        if (data == null) {
             return
         }
 
@@ -384,7 +384,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         axisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum, mAxisRight.isInverted)
         xAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
 
-        legendRenderer?.computeLegend(getData()!!)
+        legendRenderer?.computeLegend(data!!)
 
         calculateOffsets()
     }
