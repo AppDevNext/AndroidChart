@@ -6,55 +6,68 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import info.appdev.chartexample.R
+import info.appdev.chartexample.custom.MyMarkerView
+import info.appdev.chartexample.databinding.FragSimpleBarBinding
 import info.appdev.charting.charts.BarChart
 import info.appdev.charting.listener.ChartTouchListener.ChartGesture
 import info.appdev.charting.listener.OnChartGestureListener
-import info.appdev.chartexample.R
-import info.appdev.chartexample.custom.MyMarkerView
 import timber.log.Timber
 
 class BarChartFrag : SimpleFragment(), OnChartGestureListener {
-    private var chart: BarChart? = null
+    private lateinit var chart: BarChart
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val v = inflater.inflate(R.layout.frag_simple_bar, container, false)
+    private var _binding: FragSimpleBarBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragSimpleBarBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         // create a new chart object
         chart = BarChart(requireActivity())
-        chart!!.description.isEnabled = false
-        chart!!.onChartGestureListener = this
+        chart.description.isEnabled = false
+        chart.onChartGestureListener = this
 
         val mv = MyMarkerView(activity, R.layout.custom_marker_view)
         mv.chartView = chart // For bounds control
-        chart!!.setMarker(mv)
+        chart.setMarker(mv)
 
-        chart!!.setDrawGridBackground(false)
-        chart!!.setDrawBarShadow(false)
+        chart.setDrawGridBackground(false)
+        chart.setDrawBarShadow(false)
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 
-        chart!!.setData(generateBarData(1, 20000f))
+        chart.setData(generateBarData(1, 20000f))
 
-        chart!!.legend.apply {
+        chart.legend.apply {
             typeface = tf
         }
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = chart.axisLeft
         leftAxis.typeface = tf
         leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        chart!!.axisRight.isEnabled = false
+        chart.axisRight.isEnabled = false
 
-        val xAxis = chart!!.xAxis
+        val xAxis = chart.xAxis
         xAxis.isEnabled = false
 
         // programmatically add the chart
-        val parent = v.findViewById<FrameLayout>(R.id.parentLayout)
-        parent.addView(chart)
+        binding.parentLayout.addView(chart)
 
-        return v
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
@@ -63,7 +76,7 @@ class BarChartFrag : SimpleFragment(), OnChartGestureListener {
 
     override fun onChartGestureEnd(me: MotionEvent, lastPerformedGesture: ChartGesture?) {
         Timber.i("END")
-        chart!!.highlightValues(null)
+        chart.highlightValues(null)
     }
 
     override fun onChartLongPressed(me: MotionEvent) {

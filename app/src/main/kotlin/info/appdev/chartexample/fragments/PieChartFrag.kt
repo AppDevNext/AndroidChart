@@ -10,40 +10,52 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import info.appdev.charting.charts.PieChart
+import info.appdev.chartexample.databinding.FragSimplePieBinding
 import info.appdev.charting.components.Legend
-import info.appdev.chartexample.R
 
 class PieChartFrag : SimpleFragment() {
-    private var chart: PieChart? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val v = inflater.inflate(R.layout.frag_simple_pie, container, false)
+    private var _binding: FragSimplePieBinding? = null
 
-        chart = v.findViewById(R.id.pieChart1)
-        chart!!.description.isEnabled = false
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragSimplePieBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        binding.pieChart1.description.isEnabled = false
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 
-        chart!!.setCenterTextTypeface(tf)
-        chart!!.centerText = generateCenterText()
-        chart!!.setCenterTextSize(10f)
-        chart!!.setCenterTextTypeface(tf)
+        binding.pieChart1.setCenterTextTypeface(tf)
+        binding.pieChart1.centerText = generateCenterText()
+        binding.pieChart1.setCenterTextSize(10f)
+        binding.pieChart1.setCenterTextTypeface(tf)
 
         // radius of the center hole in percent of maximum radius
-        chart!!.holeRadius = 45f
-        chart!!.transparentCircleRadius = 50f
+        binding.pieChart1.holeRadius = 45f
+        binding.pieChart1.transparentCircleRadius = 50f
 
-        chart!!.legend.apply {
+        binding.pieChart1.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.TOP
             horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             orientation = Legend.LegendOrientation.VERTICAL
             setDrawInside(false)
         }
 
-        chart!!.setData(generatePieData())
+        binding.pieChart1.setData(generatePieData())
 
-        return v
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun generateCenterText(): SpannableString {

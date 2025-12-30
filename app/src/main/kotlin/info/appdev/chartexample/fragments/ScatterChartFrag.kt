@@ -6,41 +6,48 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import info.appdev.charting.charts.ScatterChart
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.chartexample.R
 import info.appdev.chartexample.custom.MyMarkerView
+import info.appdev.chartexample.databinding.FragSimpleScatterBinding
 
 class ScatterChartFrag : SimpleFragment() {
-    private var chart: ScatterChart? = null
+    private var _binding: FragSimpleScatterBinding? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val v = inflater.inflate(R.layout.frag_simple_scatter, container, false)
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
 
-        chart = v.findViewById(R.id.scatterChart1)
-        chart!!.description.isEnabled = false
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragSimpleScatterBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        binding.scatterChart1.description.isEnabled = false
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 
-        val mv = MyMarkerView(activity, R.layout.custom_marker_view)
-        mv.chartView = chart // For bounds control
-        chart!!.setMarker(mv)
+        val markerView = MyMarkerView(activity, R.layout.custom_marker_view)
+        markerView.chartView = binding.scatterChart1 // For bounds control
+        binding.scatterChart1.setMarker(markerView)
 
-        chart!!.setDrawGridBackground(false)
-        chart!!.setData(generateScatterData(6, 10000f))
+        binding.scatterChart1.setDrawGridBackground(false)
+        binding.scatterChart1.setData(generateScatterData(6, 10000f))
 
-        val xAxis = chart!!.xAxis
+        val xAxis = binding.scatterChart1.xAxis
         xAxis.isEnabled = true
         xAxis.position = XAxisPosition.BOTTOM
 
-        val leftAxis = chart!!.axisLeft
+        val leftAxis = binding.scatterChart1.axisLeft
         leftAxis.typeface = tf
 
-        val rightAxis = chart!!.axisRight
+        val rightAxis = binding.scatterChart1.axisRight
         rightAxis.typeface = tf
         rightAxis.setDrawGridLines(false)
 
-        chart!!.legend.apply {
+        binding.scatterChart1.legend.apply {
             isWordWrapEnabled = true
             typeface = tf
             formSize = 14f
@@ -49,9 +56,14 @@ class ScatterChartFrag : SimpleFragment() {
             yOffset = 13f
         }
 
-        chart!!.extraBottomOffset = 16f
+        binding.scatterChart1.extraBottomOffset = 16f
 
-        return v
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
