@@ -114,7 +114,7 @@ class LineChartActivityColored : DemoBase() {
         set1.lineWidth = 1.75f
         set1.circleRadius = 5f
         set1.circleHoleRadius = 2.5f
-        set1.color = Color.WHITE
+        set1.color = Color.BLUE
         set1.setCircleColor(Color.WHITE)
         set1.highLightColor = Color.WHITE
         set1.isDrawValues = false
