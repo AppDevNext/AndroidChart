@@ -6,8 +6,7 @@ import info.appdev.charting.utils.ViewPortHandler
 import java.text.DecimalFormat
 
 /**
- * This IValueFormatter is just for convenience and simply puts a "%" sign after
- * each value. (Recommeded for PieChart)
+ * This IValueFormatter is just for convenience and simply puts a "%" sign after each value. (Recommended for PieChart)
  */
 open class PercentFormatter : IValueFormatter, IAxisValueFormatter {
     protected var decimalFormat: DecimalFormat
@@ -18,8 +17,6 @@ open class PercentFormatter : IValueFormatter, IAxisValueFormatter {
 
     /**
      * Allow a custom decimal format
-     *
-     * @param format
      */
     constructor(format: DecimalFormat) {
         decimalFormat = format

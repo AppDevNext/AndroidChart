@@ -15,9 +15,8 @@ open class IndexAxisValueFormatter : IAxisValueFormatter {
      *
      * @param values The values string array
      */
-    constructor(values: Array<String>?) {
-        if (values != null)
-            this.values = values
+    constructor(values: Array<String>) {
+        this.values = values
     }
 
     /**
