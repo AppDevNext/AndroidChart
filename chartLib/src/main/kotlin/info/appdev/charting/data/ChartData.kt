@@ -46,7 +46,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     protected var mRightAxisMin: Float = Float.MAX_VALUE
 
     /**
-     * array that holds all DataSets the ChartData object represents
+     * all DataSets the ChartData object represents
      */
     open var dataSets: MutableList<T>? = null
         protected set
@@ -153,10 +153,10 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         }
     }
 
+    /**
+     * The number of LineDataSets this object contains
+     */
     val dataSetCount: Int
-        /**
-         * returns the number of LineDataSets this object contains
-         */
         get() {
             if (this.dataSets == null) {
                 return 0
@@ -232,10 +232,10 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         return -1
     }
 
+    /**
+     * The labels of all DataSets this ChartData object contains.
+     */
     val dataSetLabels: Array<String?>
-        /**
-         * Returns the labels of all DataSets as a string array.
-         */
         get() {
             val types = arrayOfNulls<String>(dataSets!!.size)
 
@@ -433,7 +433,6 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         val set: T = dataSets!![dataSetIndex]
 
         // remove the entry from the dataset
-        // Cast needed because T is covariant (out) but removeEntry needs to consume T
         val dataSet = set as IDataSet<Entry>
         val removed: Boolean = dataSet.removeEntry(entry)
 
@@ -461,8 +460,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     }
 
     /**
-     * Returns the DataSet that contains the provided Entry, or null, if no
-     * DataSet contains this Entry.
+     * Returns the DataSet that contains the provided Entry, or null, if no DataSet contains this Entry.
      */
     fun getDataSetForEntry(e: Entry?): T? {
         if (e == null) {
@@ -482,35 +480,32 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         return null
     }
 
+    /**
+     * All colors used across all DataSet objects this object represents.
+     */
     val colors: IntArray?
-        /**
-         * Returns all colors used across all DataSet objects this object
-         * represents.
-         */
         get() {
-            if (this.dataSets == null) {
-                return null
-            }
+            val colorArray : IntArray? = null
+            dataSets?.let {
+                var clrCount = 0
 
-            var clrCount = 0
+                for (i in it.indices) {
+                    clrCount += it[i].colors.size
+                }
 
-            for (i in dataSets!!.indices) {
-                clrCount += dataSets!![i].colors.size
-            }
+                val colorArray = IntArray(clrCount)
+                var cnt = 0
 
-            val colors = IntArray(clrCount)
-            var cnt = 0
+                for (i in it.indices) {
+                    val clrs = it[i].colors
 
-            for (i in dataSets!!.indices) {
-                val clrs = dataSets!![i].colors
-
-                for (clr in clrs) {
-                    colors[cnt] = clr
-                    cnt++
+                    for (clr in clrs) {
+                        colorArray[cnt] = clr
+                        cnt++
+                    }
                 }
             }
-
-            return colors
+            return colorArray
         }
 
     /**
@@ -576,8 +571,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     }
 
     /**
-     * Sets the Typeface for all value-labels for all DataSets this data object
-     * contains.
+     * Sets the Typeface for all value-labels for all DataSets this data object contains.
      */
     fun setValueTypeface(tf: Typeface?) {
         for (set in this.dataSets!!) {
@@ -586,8 +580,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     }
 
     /**
-     * Sets the size (in dp) of the value-text for all DataSets this data object
-     * contains.
+     * Sets the size (in dp) of the value-text for all DataSets this data object contains.
      */
     fun setValueTextSize(size: Float) {
         for (set in this.dataSets!!) {
@@ -596,8 +589,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     }
 
     /**
-     * Enables / disables drawing values (value-text) for all DataSets this data
-     * object contains.
+     * Enables / disables drawing values (value-text) for all DataSets this data object contains.
      */
     fun setDrawValues(enabled: Boolean) {
         for (set in this.dataSets!!) {
@@ -605,10 +597,11 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         }
     }
 
+    /**
+     * Enables / disables highlighting values for all DataSets this data object
+     * contains. If set to true, this means that values can be highlighted programmatically or by touch gesture.
+    */
     var isHighlightEnabled: Boolean
-        /**
-         * Returns true if highlighting of all underlying values is enabled, false if not.
-         */
         get() {
             for (set in this.dataSets!!) {
                 if (!set.isHighlightEnabled) {
@@ -617,20 +610,15 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
             }
             return true
         }
-        /**
-         * Enables / disables highlighting values for all DataSets this data object
-         * contains. If set to true, this means that values can
-         * be highlighted programmatically or by touch gesture.
-         */
-        set(enabled) {
+        set(value) {
             for (set in this.dataSets!!) {
-                set.isHighlightEnabled = enabled
+                set.isHighlightEnabled = value
             }
         }
 
     /**
-     * Clears this data object from all DataSets and removes all Entries. Don't
-     * forget to invalidate the chart after this.
+     * Clears this data object from all DataSets and removes all Entries.
+     * Don't forget to invalidate the chart after this.
      */
     fun clearValues() {
         if (this.dataSets != null) {
@@ -653,10 +641,10 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         return false
     }
 
+    /**
+     * The total entry count across all DataSet objects this data object contains.
+     */
     val entryCount: Int
-        /**
-         * Returns the total entry count across all DataSet objects this data object contains.
-         */
         get() {
             var count = 0
 
@@ -667,10 +655,10 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
             return count
         }
 
+    /**
+     * The DataSet object with the maximum number of entries or null if there are no DataSets.
+     */
     val maxEntryCountSet: T?
-        /**
-         * Returns the DataSet object with the maximum number of entries or null if there are no DataSets.
-         */
         get() {
             if (this.dataSets == null || dataSets!!.isEmpty()) {
                 return null
