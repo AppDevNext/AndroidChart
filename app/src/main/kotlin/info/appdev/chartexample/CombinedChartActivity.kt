@@ -112,7 +112,7 @@ class CombinedChartActivity : DemoBase() {
         set.lineMode = LineDataSet.Mode.CUBIC_BEZIER
         set.isDrawValues = true
         set.valueTextSize = 10f
-        set.setSingleValueTextColor(Color.rgb(240, 238, 70))
+        set.setValueTextColor(Color.rgb(240, 238, 70))
 
         set.axisDependency = YAxis.AxisDependency.LEFT
         d.addDataSet(set)
@@ -133,14 +133,14 @@ class CombinedChartActivity : DemoBase() {
 
         val set1 = BarDataSet(entries1, "Bar 1")
         set1.color = Color.rgb(60, 220, 78)
-        set1.setSingleValueTextColor(Color.rgb(60, 220, 78))
+        set1.setValueTextColor(Color.rgb(60, 220, 78))
         set1.valueTextSize = 10f
         set1.axisDependency = YAxis.AxisDependency.LEFT
 
         val set2 = BarDataSet(entries2, "")
         set2.stackLabels = mutableListOf("Stack 1", "Stack 2")
         set2.setColors(Color.rgb(61, 165, 255), Color.rgb(23, 197, 255))
-        set2.setSingleValueTextColor(Color.rgb(61, 165, 255))
+        set2.setValueTextColor(Color.rgb(61, 165, 255))
         set2.valueTextSize = 10f
         set2.axisDependency = YAxis.AxisDependency.LEFT
 
@@ -215,7 +215,7 @@ class CombinedChartActivity : DemoBase() {
         val set = BubbleDataSet(entries, "Bubble DataSet")
         set.setColors(*ColorTemplate.VORDIPLOM_COLORS)
         set.valueTextSize = 10f
-        set.setSingleValueTextColor(Color.WHITE)
+        set.setValueTextColor(Color.WHITE)
         set.highlightCircleWidth = 1.5f
         set.isDrawValues = true
         bd.addDataSet(set)

@@ -127,7 +127,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             set.setCircleColor(color)
             set.highLightColor = color
             set.valueTextSize = 10f
-            set.setSingleValueTextColor(color)
+            set.setValueTextColor(color)
 
             data.addDataSet(set)
             data.notifyDataChanged()

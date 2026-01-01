@@ -266,19 +266,19 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
         return mValueFormatter == null
     }
 
-    override fun setSingleValueTextColor(value: Int) {
-            mValueColors.clear()
-            mValueColors.add(value)
-    }
-
     override var valueTextColors: MutableList<Int>
         get() = mValueColors
         set(value) {
             mValueColors = value
         }
 
-    override fun getValueTextColor(index: Int): Int {
-        return mValueColors[index % mValueColors.size]
+    override fun getValueTextColor(value: Int): Int {
+        return mValueColors[value % mValueColors.size]
+    }
+
+    override fun setValueTextColor(value: Int) {
+        mValueColors.clear()
+        mValueColors.add(value)
     }
 
     override var valueTypeface: Typeface?
