@@ -101,7 +101,7 @@ open class RadarChart : PieRadarChartBase<RadarData> {
         mWebLineWidth = 1.5f.convertDpToPixel()
         mInnerWebLineWidth = 0.75f.convertDpToPixel()
 
-        mRenderer = RadarChartRenderer(this, mAnimator, viewPortHandler)
+        dataRenderer = RadarChartRenderer(this, mAnimator, viewPortHandler)
         mYAxisRenderer = YAxisRendererRadarChart(viewPortHandler, mYAxis!!, this)
         mXAxisRenderer = XAxisRendererRadarChart(viewPortHandler, mXAxis, this)
 
@@ -143,20 +143,20 @@ open class RadarChart : PieRadarChartBase<RadarData> {
         mXAxisRenderer!!.renderAxisLabels(canvas)
 
         if (drawWeb)
-            mRenderer?.drawExtras(canvas)
+            dataRenderer?.drawExtras(canvas)
 
         if (mYAxis!!.isEnabled && mYAxis!!.isDrawLimitLinesBehindDataEnabled) mYAxisRenderer!!.renderLimitLines(canvas)
 
-        mRenderer?.drawData(canvas)
+        dataRenderer?.drawData(canvas)
 
         if (valuesToHighlight())
-            mRenderer?.drawHighlighted(canvas, highlighted!!)
+            dataRenderer?.drawHighlighted(canvas, highlighted!!)
 
         if (mYAxis!!.isEnabled && !mYAxis!!.isDrawLimitLinesBehindDataEnabled) mYAxisRenderer!!.renderLimitLines(canvas)
 
         mYAxisRenderer!!.renderAxisLabels(canvas)
 
-        mRenderer?.drawValues(canvas)
+        dataRenderer?.drawValues(canvas)
 
         legendRenderer?.renderLegend(canvas)
 

@@ -39,7 +39,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
      */
     override var isDrawBarShadowEnabled: Boolean = false
 
-    protected var mDrawOrder: MutableList<DrawOrder>? = null
+    protected var drawOrders: MutableList<DrawOrder>? = null
 
     /**
      * enum that allows to specify the order in which the different data objects for the combined-chart are drawn
@@ -58,7 +58,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
         super.init()
 
         // Default values are not ready here yet
-        mDrawOrder = mutableListOf<DrawOrder>(
+        drawOrders = mutableListOf<DrawOrder>(
             DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.LINE, DrawOrder.CANDLE, DrawOrder.SCATTER
         )
 
@@ -67,7 +67,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
         // Old default behaviour
         isHighlightFullBarEnabled = true
 
-        mRenderer = CombinedChartRenderer(this, mAnimator, viewPortHandler)
+        dataRenderer = CombinedChartRenderer(this, mAnimator, viewPortHandler)
     }
 
     override val combinedData: CombinedData?
@@ -76,8 +76,8 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
     override fun setData(data: CombinedData?) {
         super.setData(data)
         setHighlighter(CombinedHighlighter(this, this))
-        (mRenderer as CombinedChartRenderer).createRenderers()
-        mRenderer?.initBuffers()
+        (dataRenderer as CombinedChartRenderer).createRenderers()
+        dataRenderer?.initBuffers()
     }
 
     /**
@@ -167,7 +167,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
     }
 
     var drawOrder: MutableList<DrawOrder>?
-        get() = mDrawOrder
+        get() = drawOrders
         /**
          * Sets the order in which the provided data objects should be drawn. The
          * earlier you place them in the provided array, the further they will be in
@@ -178,7 +178,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
             if (order == null || order.isEmpty()) {
                 return
             }
-            mDrawOrder = order
+            drawOrders = order
         }
 
     /**

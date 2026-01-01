@@ -22,7 +22,7 @@ open class ScatterChart : BarLineChartBase<ScatterData>, ScatterDataProvider {
     override fun init() {
         super.init()
 
-        mRenderer = ScatterChartRenderer(this, mAnimator, viewPortHandler)
+        dataRenderer = ScatterChartRenderer(this, mAnimator, viewPortHandler)
 
         xAxis.spaceMin = 0.5f
         xAxis.spaceMax = 0.5f

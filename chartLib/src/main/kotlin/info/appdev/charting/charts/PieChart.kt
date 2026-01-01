@@ -143,7 +143,7 @@ open class PieChart : PieRadarChartBase<PieData> {
     override fun init() {
         super.init()
 
-        mRenderer = PieChartRenderer(this, mAnimator, viewPortHandler)
+        dataRenderer = PieChartRenderer(this, mAnimator, viewPortHandler)
         highlighter = PieHighlighter(this)
     }
 
@@ -153,14 +153,14 @@ open class PieChart : PieRadarChartBase<PieData> {
         if (mData == null)
             return
 
-        mRenderer?.drawData(canvas)
+        dataRenderer?.drawData(canvas)
 
         if (valuesToHighlight())
-            mRenderer?.drawHighlighted(canvas, highlighted!!)
+            dataRenderer?.drawHighlighted(canvas, highlighted!!)
 
-        mRenderer?.drawExtras(canvas)
+        dataRenderer?.drawExtras(canvas)
 
-        mRenderer?.drawValues(canvas)
+        dataRenderer?.drawValues(canvas)
 
         legendRenderer?.renderLegend(canvas)
 
@@ -375,7 +375,7 @@ open class PieChart : PieRadarChartBase<PieData> {
      * (if enabled).
      */
     fun setHoleColor(color: Int) {
-        (mRenderer as PieChartRenderer).paintHole.color = color
+        (dataRenderer as PieChartRenderer).paintHole.color = color
     }
 
     /**
@@ -425,21 +425,21 @@ open class PieChart : PieRadarChartBase<PieData> {
         get() = getInstance(circleBox.centerX(), circleBox.centerY())
 
     fun setCenterTextTypeface(t: Typeface?) {
-        (mRenderer as PieChartRenderer).paintCenterText.typeface = t
+        (dataRenderer as PieChartRenderer).paintCenterText.typeface = t
     }
 
     /**
      * Sets the size of the center text of the PieChart in dp.
      */
     fun setCenterTextSize(sizeDp: Float) {
-        (mRenderer as PieChartRenderer).paintCenterText.textSize = sizeDp.convertDpToPixel()
+        (dataRenderer as PieChartRenderer).paintCenterText.textSize = sizeDp.convertDpToPixel()
     }
 
     /**
      * Sets the size of the center text of the PieChart in pixels.
      */
     fun setCenterTextSizePixels(sizePixels: Float) {
-        (mRenderer as PieChartRenderer).paintCenterText.textSize = sizePixels
+        (dataRenderer as PieChartRenderer).paintCenterText.textSize = sizePixels
     }
 
     /**
@@ -460,14 +460,14 @@ open class PieChart : PieRadarChartBase<PieData> {
      * Sets the color of the center text of the PieChart.
      */
     fun setCenterTextColor(color: Int) {
-        (mRenderer as PieChartRenderer).paintCenterText.color = color
+        (dataRenderer as PieChartRenderer).paintCenterText.color = color
     }
 
     /**
      * Sets the color the transparent-circle should have.
      */
     fun setTransparentCircleColor(color: Int) {
-        val p = (mRenderer as PieChartRenderer).paintTransparentCircle
+        val p = (dataRenderer as PieChartRenderer).paintTransparentCircle
         val alpha = p.alpha
         p.color = color
         p.alpha = alpha
@@ -481,7 +481,7 @@ open class PieChart : PieRadarChartBase<PieData> {
      * @param alpha 0-255
      */
     fun setTransparentCircleAlpha(alpha: Int) {
-        (mRenderer as PieChartRenderer).paintTransparentCircle.alpha = alpha
+        (dataRenderer as PieChartRenderer).paintTransparentCircle.alpha = alpha
     }
 
     /**
@@ -506,7 +506,7 @@ open class PieChart : PieRadarChartBase<PieData> {
      *
      */
     fun setEntryLabelColor(color: Int) {
-        (mRenderer as PieChartRenderer).paintEntryLabels.color = color
+        (dataRenderer as PieChartRenderer).paintEntryLabels.color = color
     }
 
     /**
@@ -514,7 +514,7 @@ open class PieChart : PieRadarChartBase<PieData> {
      *
      */
     fun setEntryLabelTypeface(tf: Typeface?) {
-        (mRenderer as PieChartRenderer).paintEntryLabels.typeface = tf
+        (dataRenderer as PieChartRenderer).paintEntryLabels.typeface = tf
     }
 
     /**
@@ -522,7 +522,7 @@ open class PieChart : PieRadarChartBase<PieData> {
      *
      */
     fun setEntryLabelTextSize(size: Float) {
-        (mRenderer as PieChartRenderer).paintEntryLabels.textSize = size.convertDpToPixel()
+        (dataRenderer as PieChartRenderer).paintEntryLabels.textSize = size.convertDpToPixel()
     }
 
     /**
@@ -586,8 +586,8 @@ open class PieChart : PieRadarChartBase<PieData> {
 
     override fun onDetachedFromWindow() {
         // releases the bitmap in the renderer to avoid oom error
-        if (mRenderer != null && mRenderer is PieChartRenderer) {
-            (mRenderer as PieChartRenderer).releaseBitmap()
+        if (dataRenderer != null && dataRenderer is PieChartRenderer) {
+            (dataRenderer as PieChartRenderer).releaseBitmap()
         }
         super.onDetachedFromWindow()
     }

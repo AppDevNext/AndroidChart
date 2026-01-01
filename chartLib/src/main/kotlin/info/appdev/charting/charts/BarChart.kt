@@ -57,7 +57,7 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
     override fun init() {
         super.init()
 
-        mRenderer = BarChartRenderer(this, mAnimator, viewPortHandler, mDrawRoundedBars, mRoundedBarRadius)
+        dataRenderer = BarChartRenderer(this, mAnimator, viewPortHandler, mDrawRoundedBars, mRoundedBarRadius)
 
         setHighlighter(BarHighlighter(this))
 

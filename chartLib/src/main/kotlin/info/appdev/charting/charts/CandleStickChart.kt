@@ -19,7 +19,7 @@ open class CandleStickChart : BarLineChartBase<CandleData>, CandleDataProvider {
     override fun init() {
         super.init()
 
-        mRenderer = CandleStickChartRenderer(this, mAnimator, viewPortHandler)
+        dataRenderer = CandleStickChartRenderer(this, mAnimator, viewPortHandler)
 
         xAxis.spaceMin = 0.5f
         xAxis.spaceMax = 0.5f

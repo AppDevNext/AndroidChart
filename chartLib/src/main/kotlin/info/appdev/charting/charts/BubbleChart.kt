@@ -22,7 +22,7 @@ open class BubbleChart : BarLineChartBase<BubbleData>, BubbleDataProvider {
     override fun init() {
         super.init()
 
-        mRenderer = BubbleChartRenderer(this, mAnimator, viewPortHandler)
+        dataRenderer = BubbleChartRenderer(this, mAnimator, viewPortHandler)
     }
 
     override val bubbleData: BubbleData?

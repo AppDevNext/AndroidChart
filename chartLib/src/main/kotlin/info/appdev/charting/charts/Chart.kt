@@ -148,7 +148,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     /**
      * object responsible for rendering the data
      */
-    protected var mRenderer: DataRenderer? = null
+    protected var dataRenderer: DataRenderer? = null
 
     var highlighter: IHighlighter? = null
         protected set
@@ -1063,13 +1063,13 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         /**
          * Returns the Renderer object the chart uses for drawing data.
          */
-        get() = mRenderer
+        get() = dataRenderer
         /**
          * Sets a new DataRenderer object for the chart.
          */
         set(renderer) {
             if (renderer != null) {
-                mRenderer = renderer
+                dataRenderer = renderer
             }
         }
 

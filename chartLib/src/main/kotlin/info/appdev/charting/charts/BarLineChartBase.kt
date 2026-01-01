@@ -276,7 +276,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
             canvas.clipRect(viewPortHandler.contentRect)
         }
 
-        mRenderer!!.drawData(canvas)
+        dataRenderer!!.drawData(canvas)
 
         if (!mXAxis.isDrawGridLinesBehindDataEnabled) {
             xAxisRenderer.renderGridLines(canvas)
@@ -292,13 +292,13 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
         // if highlighting is enabled
         if (valuesToHighlight()) {
-            mRenderer!!.drawHighlighted(canvas, highlighted!!)
+            dataRenderer!!.drawHighlighted(canvas, highlighted!!)
         }
 
         // Removes clipping rectangle
         canvas.restoreToCount(clipRestoreCount)
 
-        mRenderer!!.drawExtras(canvas)
+        dataRenderer!!.drawExtras(canvas)
 
         if (mXAxis.isEnabled && !mXAxis.isDrawLimitLinesBehindDataEnabled) {
             xAxisRenderer.renderLimitLines(canvas)
@@ -320,11 +320,11 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
             clipRestoreCount = canvas.save()
             canvas.clipRect(viewPortHandler.contentRect)
 
-            mRenderer?.drawValues(canvas)
+            dataRenderer?.drawValues(canvas)
 
             canvas.restoreToCount(clipRestoreCount)
         } else {
-            mRenderer?.drawValues(canvas)
+            dataRenderer?.drawValues(canvas)
         }
 
         legendRenderer?.renderLegend(canvas)
@@ -376,7 +376,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
             }
         }
 
-        mRenderer?.initBuffers()
+        dataRenderer?.initBuffers()
 
         calcMinMax()
 

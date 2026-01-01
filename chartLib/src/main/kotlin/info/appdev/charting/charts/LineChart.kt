@@ -15,7 +15,7 @@ open class LineChart : BarLineChartBase<LineData>, LineDataProvider {
 
     override fun init() {
         super.init()
-        mRenderer = LineChartRenderer(this, mAnimator, viewPortHandler)
+        dataRenderer = LineChartRenderer(this, mAnimator, viewPortHandler)
     }
 
     override var lineData: LineData
@@ -31,8 +31,8 @@ open class LineChart : BarLineChartBase<LineData>, LineDataProvider {
 
     public override fun onDetachedFromWindow() {
         // releases the bitmap in the renderer to avoid oom error
-        if (mRenderer != null && mRenderer is LineChartRenderer) {
-            (mRenderer as LineChartRenderer).releaseBitmap()
+        if (dataRenderer != null && dataRenderer is LineChartRenderer) {
+            (dataRenderer as LineChartRenderer).releaseBitmap()
         }
         super.onDetachedFromWindow()
     }
