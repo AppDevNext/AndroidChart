@@ -108,7 +108,7 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             entries.add(
                 PieEntry(
                     (sampleValues[i]!!.toFloat() * range) + range / 5,
-                    parties[i % parties.size],
+                    entries[i % entries.size],
                     ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )
