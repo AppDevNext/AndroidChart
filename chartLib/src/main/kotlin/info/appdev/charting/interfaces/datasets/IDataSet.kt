@@ -225,11 +225,12 @@ interface IDataSet<T : Entry> {
      */
     fun needsFormatter(): Boolean
 
-    fun setSingleValueTextColor(value: Int)
     /**
      * Sets the color the value-labels of this DataSet should have.
      */
-    fun getValueTextColor(index: Int): Int
+    var valueTextColor: Int
+    // This getter is necessary because of the parameter value
+    fun getValueTextColor(value: Int): Int
 
     var valueTextColors: MutableList<Int>
 

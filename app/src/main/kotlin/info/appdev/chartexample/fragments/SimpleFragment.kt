@@ -101,7 +101,7 @@ abstract class SimpleFragment : Fragment() {
         val ds1 = PieDataSet(entries1, "Quarterly Revenues 2015")
         ds1.setColors(*ColorTemplate.VORDIPLOM_COLORS)
         ds1.sliceSpace = 2f
-        ds1.setSingleValueTextColor(Color.WHITE)
+        ds1.valueTextColor = Color.WHITE
         ds1.valueTextSize = 12f
 
         val d = PieData(ds1)

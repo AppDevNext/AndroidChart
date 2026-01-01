@@ -126,7 +126,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         val set1 = LineDataSet(values, "DataSet 1")
         set1.axisDependency = AxisDependency.LEFT
         set1.color = holoBlue
-        set1.setSingleValueTextColor(holoBlue)
+        set1.valueTextColor = holoBlue
         set1.lineWidth = 1.5f
         set1.isDrawCirclesEnabled = false
         set1.isDrawValues = false

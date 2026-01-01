@@ -551,7 +551,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      */
     fun setValueTextColor(color: Int) {
         for (set in this.dataSets!!) {
-            set.setSingleValueTextColor(color)
+            set.valueTextColor = color
         }
     }
 
