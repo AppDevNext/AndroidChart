@@ -169,7 +169,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
     /**
      * The order in which the provided data objects should be drawn. The
      * earlier you place them in the provided array, the further they will be in
-     * the background. e.g. if you provide new DrawOrer[] { DrawOrder.BAR,
+     * the background. e.g. if you provide DrawOrder { DrawOrder.BAR,
      * DrawOrder.LINE }, the bars will be drawn behind the lines.
      */
     var drawOrder: MutableList<DrawOrder>?

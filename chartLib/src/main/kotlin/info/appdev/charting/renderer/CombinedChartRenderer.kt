@@ -23,8 +23,8 @@ open class CombinedChartRenderer(
     /**
      * all renderers for the different kinds of data this combined-renderer can draw
      */
-    protected var dataRenderers: MutableList<DataRenderer> = ArrayList(5)
-    protected var highlightBuffer: MutableList<Highlight> = ArrayList()
+    protected var dataRenderers: MutableList<DataRenderer> = mutableListOf()
+    protected var highlightBuffer: MutableList<Highlight> = mutableListOf()
     protected var weakChart: WeakReference<Chart<*>> = WeakReference(chart)
 
     init {
