@@ -166,19 +166,19 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
         this.isDrawBarShadowEnabled = value
     }
 
+    /**
+     * The order in which the provided data objects should be drawn. The
+     * earlier you place them in the provided array, the further they will be in
+     * the background. e.g. if you provide new DrawOrer[] { DrawOrder.BAR,
+     * DrawOrder.LINE }, the bars will be drawn behind the lines.
+     */
     var drawOrder: MutableList<DrawOrder>?
         get() = drawOrders
-        /**
-         * Sets the order in which the provided data objects should be drawn. The
-         * earlier you place them in the provided array, the further they will be in
-         * the background. e.g. if you provide new DrawOrer[] { DrawOrder.BAR,
-         * DrawOrder.LINE }, the bars will be drawn behind the lines.
-         */
-        set(order) {
-            if (order == null || order.isEmpty()) {
+        set(value) {
+            if (value == null || value.isEmpty()) {
                 return
             }
-            drawOrders = order
+            drawOrders = value
         }
 
     /**
@@ -195,31 +195,29 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
                 val highlight = it[i]
                 val dataset = mData!!.getDataSetByHighlight(highlight)
 
-                val e = mData!!.getEntryForHighlight(highlight)
-                if (e == null || dataset == null) {
+                val entry = mData!!.getEntryForHighlight(highlight)
+                if (entry == null || dataset == null) {
                     continue
                 }
 
                 @Suppress("UNCHECKED_CAST")
                 val set = dataset as IDataSet<Entry>
-                val entryIndex = set.getEntryIndex(e)
+                val entryIndex = set.getEntryIndex(entry)
 
                 // make sure entry not null
-                if (entryIndex > set.entryCount * mAnimator.phaseX) {
+                if (entryIndex > set.entryCount * mAnimator.phaseX)
                     continue
-                }
 
                 val pos = getMarkerPosition(highlight)
 
                 // check bounds
-                if (!viewPortHandler.isInBounds(pos[0], pos[1])) {
+                if (!viewPortHandler.isInBounds(pos[0], pos[1]))
                     continue
-                }
 
                 // callbacks to update the content
                 if (!marker.isEmpty()) {
                     val markerItem = marker[i % marker.size]
-                    markerItem.refreshContent(e, highlight)
+                    markerItem.refreshContent(entry, highlight)
 
                     // draw the marker
                     markerItem.draw(canvas, pos[0], pos[1])
