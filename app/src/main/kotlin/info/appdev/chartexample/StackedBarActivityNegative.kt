@@ -111,7 +111,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
 
         val data = BarData(set)
         data.barWidth = 8.5f
-        binding.chart1.setData(data)
+        binding.chart1.data = data
         binding.chart1.invalidate()
     }
 

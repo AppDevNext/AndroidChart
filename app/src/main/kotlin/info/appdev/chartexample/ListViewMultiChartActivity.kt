@@ -41,7 +41,7 @@ class ListViewMultiChartActivity : DemoBase() {
         binding = ActivityListviewChartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val list = ArrayList<ChartItem>()
+        val list = ArrayList<ChartItem<*>>()
 
         // 30 items
         for (i in 0..29) {
@@ -59,7 +59,7 @@ class ListViewMultiChartActivity : DemoBase() {
     }
 
     /** adapter that supports 3 different item types  */
-    private class ChartDataAdapter(context: Context, objects: MutableList<ChartItem>) : ArrayAdapter<ChartItem>(context, 0, objects) {
+    private class ChartDataAdapter(context: Context, objects: MutableList<ChartItem<*>>) : ArrayAdapter<ChartItem<*>>(context, 0, objects) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             return getItem(position)!!.getView(position, convertView, context)!!
         }

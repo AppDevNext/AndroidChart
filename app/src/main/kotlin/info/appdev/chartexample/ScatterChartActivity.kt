@@ -123,7 +123,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         val data = ScatterData(dataSets)
         data.setValueTypeface(tfLight)
 
-        binding.chart1.setData(data)
+        binding.chart1.data = data
         binding.chart1.invalidate()
     }
 

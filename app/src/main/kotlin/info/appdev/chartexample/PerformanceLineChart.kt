@@ -75,7 +75,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         val data = LineData(set1)
 
         // set data
-        binding.chart1.setData(data)
+        binding.chart1.data = data
 
         // get the legend (only possible after setting data)
         binding.chart1.legend.apply {

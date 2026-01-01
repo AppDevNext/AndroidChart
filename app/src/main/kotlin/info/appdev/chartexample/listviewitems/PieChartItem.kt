@@ -12,13 +12,12 @@ import android.view.LayoutInflater
 import android.view.View
 import info.appdev.charting.charts.PieChart
 import info.appdev.charting.components.Legend
-import info.appdev.charting.data.ChartData
 import info.appdev.charting.data.PieData
 import info.appdev.charting.formatter.PercentFormatter
 import info.appdev.charting.utils.ColorTemplate
 import info.appdev.chartexample.R
 
-class PieChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chartData) {
+class PieChartItem(pieData: PieData, context: Context) : ChartItem<PieData>(pieData) {
     private val typeface: Typeface? = Typeface.createFromAsset(context.assets, "OpenSans-Regular.ttf")
     private val centerText: SpannableString
 
@@ -62,7 +61,7 @@ class PieChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chartD
         chartData.setValueTextSize(11f)
         chartData.setValueTextColor(Color.WHITE)
         // set data
-        holder.chart?.setData(chartData as PieData?)
+        holder.chart?.data = chartData
 
         holder.chart?.legend?.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.TOP

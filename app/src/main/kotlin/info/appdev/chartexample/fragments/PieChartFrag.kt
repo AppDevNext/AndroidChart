@@ -48,7 +48,7 @@ class PieChartFrag : SimpleFragment() {
             setDrawInside(false)
         }
 
-        binding.pieChart1.setData(generatePieData())
+        binding.pieChart1.data = generatePieData()
 
         return view
     }

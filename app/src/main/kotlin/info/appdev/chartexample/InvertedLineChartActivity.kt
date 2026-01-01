@@ -114,7 +114,7 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         val data = LineData(set1)
 
         // set data
-        binding.chart1.setData(data)
+        binding.chart1.data = data
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -139,21 +139,21 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             }
 
             R.id.actionToggleHighlight -> {
-                binding.chart1.getData()?.let {
+                binding.chart1.data?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.getData()?.dataSets?.forEach { set ->
+                binding.chart1.data?.dataSets?.forEach { set ->
                     set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                binding.chart1.getData()?.dataSets?.forEach { set ->
+                binding.chart1.data?.dataSets?.forEach { set ->
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
                 binding.chart1.invalidate()

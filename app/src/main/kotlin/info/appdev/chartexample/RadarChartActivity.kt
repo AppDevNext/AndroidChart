@@ -132,7 +132,7 @@ class RadarChartActivity : DemoBase() {
         data.setDrawValues(false)
         data.setValueTextColor(Color.WHITE)
 
-        binding.chart1.setData(data)
+        binding.chart1.data = data
         val colorList: MutableList<Int> = ArrayList()
         colorList.add(Color.rgb(222, 166, 111))
         colorList.add(Color.rgb(220, 206, 138))
@@ -157,14 +157,14 @@ class RadarChartActivity : DemoBase() {
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.getData()?.dataSets?.forEach {
+                binding.chart1.data?.dataSets?.forEach {
                     it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlight -> {
-                binding.chart1.getData()?.let {
+                binding.chart1.data?.let {
                     it.isHighlightEnabled = !it.isHighlightEnabled
                 }
                 binding.chart1.invalidate()
@@ -176,14 +176,14 @@ class RadarChartActivity : DemoBase() {
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.getData()?.dataSets?.forEach { set ->
+                binding.chart1.data?.dataSets?.forEach { set ->
                     set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlightCircle -> {
-                binding.chart1.getData()?.dataSets?.forEach { set ->
+                binding.chart1.data?.dataSets?.forEach { set ->
                     set.isDrawHighlightCircleEnabled = !set.isDrawHighlightCircleEnabled
                 }
                 binding.chart1.invalidate()

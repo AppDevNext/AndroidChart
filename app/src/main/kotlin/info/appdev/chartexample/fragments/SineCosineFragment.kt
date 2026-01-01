@@ -27,7 +27,7 @@ class SineCosineFragment : SimpleFragment() {
 
         binding.lineChart1.setDrawGridBackground(false)
 
-        binding.lineChart1.setData(generateLineData())
+        binding.lineChart1.data = generateLineData()
         binding.lineChart1.animateX(3000)
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")

@@ -494,7 +494,7 @@ class BarLineChartTouchListener(
         onChartGestureListener?.onChartDoubleTapped(e)
 
         // check if double-tap zooming is enabled
-        if (chart.isDoubleTapToZoomEnabled && chart.getData()!!.entryCount > 0) {
+        if (chart.isDoubleTapToZoomEnabled && chart.data!!.entryCount > 0) {
             val trans = getTrans(e.x, e.y)
 
             val scaleX = if (chart.isScaleXEnabled) 1.4f else 1f

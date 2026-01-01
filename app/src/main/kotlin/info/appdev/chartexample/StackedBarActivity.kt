@@ -129,7 +129,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             data.setValueFormatter(MyValueFormatter())
             data.setValueTextColor(Color.WHITE)
 
-            binding.chart1.setData(data)
+            binding.chart1.data = data
         }
 
         binding.chart1.setFitBars(true)

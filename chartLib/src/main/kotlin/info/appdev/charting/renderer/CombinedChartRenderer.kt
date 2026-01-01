@@ -14,7 +14,7 @@ import java.lang.ref.WeakReference
 /**
  * Renderer class that is responsible for rendering multiple different data-types.
  */
-@Suppress("MemberVisibilityCanBePrivate")
+@Suppress("MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
 open class CombinedChartRenderer(
     chart: CombinedChart,
     animator: ChartAnimator,
@@ -38,16 +38,16 @@ open class CombinedChartRenderer(
     fun createRenderers() {
         dataRenderers.clear()
 
-        val chart = weakChart.get() as CombinedChart? ?: return
+        val combinedChart = weakChart.get() as CombinedChart? ?: return
 
-        chart.drawOrder?.let {
+        combinedChart.drawOrder?.let {
             for (order in it) {
                 when (order) {
-                    DrawOrder.BAR -> dataRenderers.add(BarChartRenderer(chart, animator, viewPortHandler))
-                    DrawOrder.BUBBLE -> if (chart.bubbleData != null) dataRenderers.add(BubbleChartRenderer(chart, animator, viewPortHandler))
-                    DrawOrder.LINE -> dataRenderers.add(LineChartRenderer(chart, animator, viewPortHandler))
-                    DrawOrder.CANDLE -> if (chart.candleData != null) dataRenderers.add(CandleStickChartRenderer(chart, animator, viewPortHandler))
-                    DrawOrder.SCATTER -> if (chart.scatterData != null) dataRenderers.add(ScatterChartRenderer(chart, animator, viewPortHandler))
+                    DrawOrder.BAR -> dataRenderers.add(BarChartRenderer(combinedChart.barDataProvider, animator, viewPortHandler))
+                    DrawOrder.BUBBLE -> dataRenderers.add(BubbleChartRenderer(combinedChart.bubbleDataProvider, animator, viewPortHandler))
+                    DrawOrder.LINE -> dataRenderers.add(LineChartRenderer(combinedChart.lineDataProvider, animator, viewPortHandler))
+                    DrawOrder.CANDLE -> dataRenderers.add(CandleStickChartRenderer(combinedChart.candleDataProvider, animator, viewPortHandler))
+                    DrawOrder.SCATTER -> dataRenderers.add(ScatterChartRenderer(combinedChart.scatterDataProvider, animator, viewPortHandler))
                 }
             }
         }
@@ -94,7 +94,7 @@ open class CombinedChartRenderer(
             val dataIndex = if (data == null)
                 -1
             else
-                (chart.getData() as CombinedData).allData.indexOf(data)
+                (chart.data as CombinedData).allData.indexOf(data)
 
             highlightBuffer.clear()
 

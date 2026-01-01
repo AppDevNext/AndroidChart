@@ -43,8 +43,8 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
         val factor = chartPieRadar.factor
 
         val pOut = PointF.getInstance(0f, 0f)
-        for (i in 0..<chartPieRadar.getData()!!.dataSetCount) {
-            val dataSet = chartPieRadar.getData()!!.getDataSetByIndex(i)
+        for (i in 0..<chartPieRadar.data!!.dataSetCount) {
+            val dataSet = chartPieRadar.data!!.getDataSetByIndex(i)
 
             val entry: Entry? = dataSet?.getEntryForIndex(index)
 

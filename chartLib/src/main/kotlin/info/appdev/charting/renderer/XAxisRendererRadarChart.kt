@@ -31,7 +31,7 @@ class XAxisRendererRadarChart(
 
         val center = chart.centerOffsets
         var pOut = PointF.getInstance(0f, 0f)
-        chart.getData()!!.maxEntryCountSet?.let { maxEntryCountSet ->
+        chart.data!!.maxEntryCountSet?.let { maxEntryCountSet ->
             for (i in 0..<maxEntryCountSet.entryCount) {
                 val label = xAxis.valueFormatter?.getFormattedValue(i.toFloat(), xAxis)
 

@@ -27,7 +27,7 @@ class ComplexityFragment : SimpleFragment() {
 
         binding.lineChart1.setDrawGridBackground(false)
 
-        binding.lineChart1.setData(complexity)
+        binding.lineChart1.data = complexity
         binding.lineChart1.animateX(3000)
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")

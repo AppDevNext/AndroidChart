@@ -123,7 +123,7 @@ class BarChartPositiveNegative : DemoBase() {
             data.setValueFormatter(ValueFormatter())
             data.barWidth = 0.8f
 
-            binding.chart1.setData(data)
+            binding.chart1.data = data
             binding.chart1.invalidate()
         }
     }

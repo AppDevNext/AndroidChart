@@ -7,11 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import info.appdev.charting.charts.LineChart
 import info.appdev.charting.components.XAxis.XAxisPosition
-import info.appdev.charting.data.ChartData
 import info.appdev.charting.data.LineData
 import info.appdev.chartexample.R
 
-class LineChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chartData) {
+class LineChartItem(lineData: LineData, context: Context) : ChartItem<LineData>(lineData) {
     private val typeface: Typeface? = Typeface.createFromAsset(context.assets, "OpenSans-Regular.ttf")
 
     override val itemType: Int
@@ -57,8 +56,7 @@ class LineChartItem(chartData: ChartData<*>, context: Context) : ChartItem(chart
         rightAxis.setDrawGridLines(false)
         rightAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        // set data
-        holder.chart!!.setData(chartData as LineData?)
+        holder.chart!!.data = chartData
 
         // do not forget to refresh the chart
         // holder.chart.invalidate();

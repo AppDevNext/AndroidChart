@@ -58,7 +58,7 @@ class ScrollViewActivity : DemoBase() {
 
         val data = BarData(set)
 
-        binding.chart1.setData(data)
+        binding.chart1.data = data
         binding.chart1.invalidate()
         binding.chart1.animateY(800)
     }

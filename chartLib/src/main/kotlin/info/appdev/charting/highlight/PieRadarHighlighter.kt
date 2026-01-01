@@ -23,7 +23,7 @@ abstract class PieRadarHighlighter<T : PieRadarChartBase<*>>(protected var chart
 
             val index = chartPieRadar.getIndexForAngle(angle)
 
-            val localData = chartPieRadar.getData()
+            val localData = chartPieRadar.data
             val maxCount = localData?.maxEntryCountSet?.entryCount ?: 0
             return if (index !in 0..<maxCount) {
                 null

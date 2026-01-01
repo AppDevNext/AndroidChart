@@ -368,7 +368,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
             data.setValueTextSize(10f)
             data.setValueTypeface(tfLight)
             data.barWidth = barWidth
-            localChart.setData(data)
+            localChart.data = data
         }
 
         localChart.setFitBars(true)

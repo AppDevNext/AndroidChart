@@ -44,7 +44,7 @@ class BarChartFrag : SimpleFragment(), OnChartGestureListener {
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 
-        chart.setData(generateBarData(1, 20000f))
+        chart.data = generateBarData(1, 20000f)
 
         chart.legend.apply {
             typeface = tf

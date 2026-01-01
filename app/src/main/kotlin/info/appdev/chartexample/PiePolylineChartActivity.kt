@@ -139,7 +139,7 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
         data.setValueTextSize(11f)
         data.setValueTextColor(Color.BLACK)
         data.setValueTypeface(tf)
-        binding.chart1.setData(data)
+        binding.chart1.data = data
 
         // undo all highlights
         binding.chart1.highlightValues(null)
@@ -161,7 +161,7 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.getData()?.dataSets?.forEach {
+                binding.chart1.data?.dataSets?.forEach {
                     it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()

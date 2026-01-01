@@ -47,7 +47,7 @@ import kotlin.math.min
 @Suppress("unused")
 @SuppressLint("RtlHardcoded")
 abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out Entry>>> : Chart<T>,
-    BarLineScatterCandleBubbleDataProvider {
+    BarLineScatterCandleBubbleDataProvider<T> {
     /**
      * the maximum number of entries to which values will be drawn
      * (entry numbers greater than this value will cause value-labels to disappear)
@@ -210,7 +210,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        if (getData() == null) {
+        if (data == null) {
             return
         }
 
@@ -384,7 +384,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         axisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum, mAxisRight.isInverted)
         xAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
 
-        legendRenderer?.computeLegend(getData()!!)
+        legendRenderer?.computeLegend(data!!)
 
         calculateOffsets()
     }

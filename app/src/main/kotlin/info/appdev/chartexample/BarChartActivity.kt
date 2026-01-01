@@ -178,7 +178,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             data.setValueTypeface(tfLight)
             data.barWidth = 0.9f
 
-            binding.chart1.setData(data)
+            binding.chart1.data = data
         }
     }
 
