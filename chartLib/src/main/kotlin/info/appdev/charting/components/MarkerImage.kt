@@ -10,6 +10,7 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.utils.FSize
 import info.appdev.charting.utils.PointF
 import java.lang.ref.WeakReference
+import androidx.core.graphics.withTranslation
 
 /**
  * View that can be displayed when selecting values in the chart. Extend this class to provide custom layouts for your markers.
@@ -119,11 +120,10 @@ class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMar
             mDrawableBoundsCache.top + height.toInt()
         )
 
-        val saveId = canvas.save()
-        // translate to the correct position and draw
-        canvas.translate(posX + offset.x, posY + offset.y)
-        drawable!!.draw(canvas)
-        canvas.restoreToCount(saveId)
+        canvas.withTranslation(posX + offset.x, posY + offset.y) {
+            // translate to the correct position and draw
+            drawable!!.draw(canvas)
+        }
 
         drawable!!.bounds = mDrawableBoundsCache
     }

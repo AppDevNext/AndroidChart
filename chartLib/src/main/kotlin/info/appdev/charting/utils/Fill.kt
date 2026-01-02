@@ -8,6 +8,7 @@ import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.drawable.Drawable
 import kotlin.math.floor
+import androidx.core.graphics.withClip
 
 open class Fill {
     enum class Type {
@@ -90,12 +91,11 @@ open class Fill {
                 }
 
                 if (this.isClipPathSupported) {
-                    val save = canvas.save()
+                    canvas.withClip(left, top, right, bottom) {
 
-                    canvas.clipRect(left, top, right, bottom)
-                    canvas.drawColor(mFinalColor!!)
+                        canvas.drawColor(mFinalColor!!)
 
-                    canvas.restoreToCount(save)
+                    }
                 } else {
                     // save
                     val previous = paint.style
@@ -171,12 +171,11 @@ open class Fill {
                 }
 
                 if (clipRect != null && this.isClipPathSupported) {
-                    val save = canvas.save()
+                    canvas.withClip(path) {
 
-                    canvas.clipPath(path)
-                    canvas.drawColor(mFinalColor!!)
+                        canvas.drawColor(mFinalColor!!)
 
-                    canvas.restoreToCount(save)
+                    }
                 } else {
                     // save
                     val previous = paint.style
