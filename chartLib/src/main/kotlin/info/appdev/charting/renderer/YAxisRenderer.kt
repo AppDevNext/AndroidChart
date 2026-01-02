@@ -228,28 +228,28 @@ open class YAxisRenderer(
      * Draws the zero line.
      */
     protected open fun drawZeroLine(canvas: Canvas) {
-        val clipRestoreCount = canvas.save()
-        zeroLineClippingRect.set(viewPortHandler.contentRect)
-        zeroLineClippingRect.inset(0f, -yAxis.zeroLineWidth)
-        canvas.clipRect(zeroLineClippingRect)
+        canvas.withSave {
+            zeroLineClippingRect.set(viewPortHandler.contentRect)
+            zeroLineClippingRect.inset(0f, -yAxis.zeroLineWidth)
+            canvas.clipRect(zeroLineClippingRect)
 
-        // draw zero line
-        val pos = transformer?.getPixelForValues(0f, 0f)
-        pos?.let {
-            zeroLinePaint.color = yAxis.zeroLineColor
-            zeroLinePaint.strokeWidth = yAxis.zeroLineWidth
+            // draw zero line
+            val pos = transformer?.getPixelForValues(0f, 0f)
+            pos?.let {
+                zeroLinePaint.color = yAxis.zeroLineColor
+                zeroLinePaint.strokeWidth = yAxis.zeroLineWidth
 
-            val zeroLinePath = drawZeroLinePath
-            zeroLinePath.reset()
+                val zeroLinePath = drawZeroLinePath
+                zeroLinePath.reset()
 
-            zeroLinePath.moveTo(viewPortHandler.contentLeft(), it.y.toFloat())
-            zeroLinePath.lineTo(viewPortHandler.contentRight(), it.y.toFloat())
+                zeroLinePath.moveTo(viewPortHandler.contentLeft(), it.y.toFloat())
+                zeroLinePath.lineTo(viewPortHandler.contentRight(), it.y.toFloat())
 
-            // draw a path because lines don't support dashing on lower android versions
-            canvas.drawPath(zeroLinePath, zeroLinePaint)
+                // draw a path because lines don't support dashing on lower android versions
+                canvas.drawPath(zeroLinePath, zeroLinePaint)
+            }
+
         }
-
-        canvas.restoreToCount(clipRestoreCount)
     }
 
     protected var renderLimitRanges: Path = Path()
@@ -384,105 +384,105 @@ open class YAxisRenderer(
                 if (!limitRange.isEnabled)
                     continue
 
-                val clipRestoreCount = canvas.save()
-                limitLineClippingRect.set(viewPortHandler.contentRect)
-                limitLineClippingRect.inset(0f, -limitRange.lineWidth)
-                canvas.clipRect(limitLineClippingRect)
+                canvas.withSave {
+                    limitLineClippingRect.set(viewPortHandler.contentRect)
+                    limitLineClippingRect.inset(0f, -limitRange.lineWidth)
+                    canvas.clipRect(limitLineClippingRect)
 
-                limitRangePaint.style = Paint.Style.STROKE
-                limitRangePaint.color = limitRange.lineColor
-                limitRangePaint.strokeWidth = limitRange.lineWidth
-                limitRangePaint.pathEffect = limitRange.dashPathEffect
+                    limitRangePaint.style = Paint.Style.STROKE
+                    limitRangePaint.color = limitRange.lineColor
+                    limitRangePaint.strokeWidth = limitRange.lineWidth
+                    limitRangePaint.pathEffect = limitRange.dashPathEffect
 
-                limitRangePaintFill.style = Paint.Style.FILL
-                limitRangePaintFill.color = limitRange.rangeColor
+                    limitRangePaintFill.style = Paint.Style.FILL
+                    limitRangePaintFill.color = limitRange.rangeColor
 
-                ptsr[1] = limitRange.limit.high
-                ptsr2[1] = limitRange.limit.low
+                    ptsr[1] = limitRange.limit.high
+                    ptsr2[1] = limitRange.limit.low
 
-                transformer?.pointValuesToPixel(ptsr)
-                transformer?.pointValuesToPixel(ptsr2)
+                    transformer?.pointValuesToPixel(ptsr)
+                    transformer?.pointValuesToPixel(ptsr2)
 
-                limitRangePathFill.moveTo(viewPortHandler.contentLeft(), ptsr[1])
-                limitRangePathFill.addRect(
-                    viewPortHandler.contentLeft(),
-                    ptsr[1],
-                    viewPortHandler.contentRight(),
-                    ptsr2[1],
-                    Path.Direction.CW
-                )
-                canvas.drawPath(limitRangePathFill, limitRangePaintFill)
-                limitRangePathFill.reset()
+                    limitRangePathFill.moveTo(viewPortHandler.contentLeft(), ptsr[1])
+                    limitRangePathFill.addRect(
+                        viewPortHandler.contentLeft(),
+                        ptsr[1],
+                        viewPortHandler.contentRight(),
+                        ptsr2[1],
+                        Path.Direction.CW
+                    )
+                    canvas.drawPath(limitRangePathFill, limitRangePaintFill)
+                    limitRangePathFill.reset()
 
-                if (limitRange.lineWidth > 0) {
-                    limitRangePath.moveTo(viewPortHandler.contentLeft(), ptsr[1])
-                    limitRangePath.lineTo(viewPortHandler.contentRight(), ptsr[1])
-                    canvas.drawPath(limitRangePath, limitRangePaint)
+                    if (limitRange.lineWidth > 0) {
+                        limitRangePath.moveTo(viewPortHandler.contentLeft(), ptsr[1])
+                        limitRangePath.lineTo(viewPortHandler.contentRight(), ptsr[1])
+                        canvas.drawPath(limitRangePath, limitRangePaint)
 
-                    limitRangePath.moveTo(viewPortHandler.contentLeft(), ptsr2[1])
-                    limitRangePath.lineTo(viewPortHandler.contentRight(), ptsr2[1])
-                    canvas.drawPath(limitRangePath, limitRangePaint)
-                }
+                        limitRangePath.moveTo(viewPortHandler.contentLeft(), ptsr2[1])
+                        limitRangePath.lineTo(viewPortHandler.contentRight(), ptsr2[1])
+                        canvas.drawPath(limitRangePath, limitRangePaint)
+                    }
 
-                limitRangePath.reset()
+                    limitRangePath.reset()
 
-                val label = limitRange.label
+                    val label = limitRange.label
 
-                // if drawing the limit-value label is enabled
-                if (label != null && label != "") {
-                    limitRangePaint.style = limitRange.textStyle
-                    limitRangePaint.pathEffect = null
-                    limitRangePaint.color = limitRange.textColor
-                    limitRangePaint.typeface = limitRange.typeface
-                    limitRangePaint.strokeWidth = 0.5f
-                    limitRangePaint.textSize = limitRange.textSize
+                    // if drawing the limit-value label is enabled
+                    if (label != null && label != "") {
+                        limitRangePaint.style = limitRange.textStyle
+                        limitRangePaint.pathEffect = null
+                        limitRangePaint.color = limitRange.textColor
+                        limitRangePaint.typeface = limitRange.typeface
+                        limitRangePaint.strokeWidth = 0.5f
+                        limitRangePaint.textSize = limitRange.textSize
 
-                    val labelLineHeight = limitRangePaint.calcTextHeight(label).toFloat()
-                    val xOffset = 4f.convertDpToPixel() + limitRange.xOffset
-                    val yOffset = limitRange.lineWidth + labelLineHeight + limitRange.yOffset
+                        val labelLineHeight = limitRangePaint.calcTextHeight(label).toFloat()
+                        val xOffset = 4f.convertDpToPixel() + limitRange.xOffset
+                        val yOffset = limitRange.lineWidth + labelLineHeight + limitRange.yOffset
 
-                    val position = limitRange.labelPosition
+                        val position = limitRange.labelPosition
 
-                    when (position) {
-                        LimitLabelPosition.RIGHT_TOP -> {
-                            limitRangePaint.textAlign = Align.RIGHT
-                            canvas.drawText(
-                                label,
-                                viewPortHandler.contentRight() - xOffset,
-                                ptsr[1] - yOffset + labelLineHeight, limitRangePaint
-                            )
-                        }
+                        when (position) {
+                            LimitLabelPosition.RIGHT_TOP -> {
+                                limitRangePaint.textAlign = Align.RIGHT
+                                canvas.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    ptsr[1] - yOffset + labelLineHeight, limitRangePaint
+                                )
+                            }
 
-                        LimitLabelPosition.RIGHT_BOTTOM -> {
-                            limitRangePaint.textAlign = Align.RIGHT
-                            canvas.drawText(
-                                label,
-                                viewPortHandler.contentRight() - xOffset,
-                                ptsr[1] + yOffset, limitRangePaint
-                            )
-                        }
+                            LimitLabelPosition.RIGHT_BOTTOM -> {
+                                limitRangePaint.textAlign = Align.RIGHT
+                                canvas.drawText(
+                                    label,
+                                    viewPortHandler.contentRight() - xOffset,
+                                    ptsr[1] + yOffset, limitRangePaint
+                                )
+                            }
 
-                        LimitLabelPosition.LEFT_TOP -> {
-                            limitRangePaint.textAlign = Align.LEFT
-                            canvas.drawText(
-                                label,
-                                viewPortHandler.contentLeft() + xOffset,
-                                ptsr[1] - yOffset + labelLineHeight, limitRangePaint
-                            )
-                        }
+                            LimitLabelPosition.LEFT_TOP -> {
+                                limitRangePaint.textAlign = Align.LEFT
+                                canvas.drawText(
+                                    label,
+                                    viewPortHandler.contentLeft() + xOffset,
+                                    ptsr[1] - yOffset + labelLineHeight, limitRangePaint
+                                )
+                            }
 
-                        else -> {
-                            limitRangePaint.textAlign = Align.LEFT
-                            canvas.drawText(
-                                label,
-                                viewPortHandler.offsetLeft() + xOffset,
-                                ptsr[1] + yOffset, limitRangePaint
-                            )
+                            else -> {
+                                limitRangePaint.textAlign = Align.LEFT
+                                canvas.drawText(
+                                    label,
+                                    viewPortHandler.offsetLeft() + xOffset,
+                                    ptsr[1] + yOffset, limitRangePaint
+                                )
+                            }
                         }
                     }
-                }
 
-                canvas.restoreToCount(clipRestoreCount)
+                }
             }
         }
     }
