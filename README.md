@@ -3,6 +3,10 @@
 
 :zap: A powerful & easy to use chart library for Android :zap:
 
+### Packagename changed ! 🛑 
+
+During the full Kotlin conversion, the package name changed to `info.appdev.charting`, but there are still the old main chart classes included, but they will be removed in the future
+
 ### Project status: maintenance mode
 Issues are ignored, but pull requests are not. If you need to get something done, submit a PR!
 
