@@ -3,6 +3,7 @@ package info.appdev.charting.data
 import android.content.Context
 import android.graphics.Color
 import android.graphics.DashPathEffect
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import info.appdev.charting.formatter.DefaultFillFormatter
 import info.appdev.charting.formatter.IFillFormatter
@@ -30,11 +31,13 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
     /**
      * List representing all colors that are used for the circles
      */
+    @ColorInt
     var circleColors: MutableList<Int> = mutableListOf()
 
     /**
      * the color of the inner circles
      */
+    @ColorInt
     private var mCircleHoleColor = Color.WHITE
 
     /**
@@ -247,7 +250,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
      * this method. Internally, the colors are resolved using
      * getResources().getColor(...)
      */
-    fun setCircleColors(colors: IntArray, context: Context) {
+    fun setCircleColors(@ColorInt colors: IntArray, context: Context) {
         val clrs = this.circleColors
         clrs.clear()
 

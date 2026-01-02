@@ -2,6 +2,7 @@ package info.appdev.charting.components
 
 import android.graphics.Color
 import android.graphics.Paint
+import androidx.annotation.ColorInt
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.calcTextWidth
 import info.appdev.charting.utils.convertDpToPixel
@@ -43,6 +44,7 @@ open class YAxis : AxisBase {
     /**
      * Color of the zero line
      */
+    @ColorInt
     var zeroLineColor: Int = Color.GRAY
 
     /**

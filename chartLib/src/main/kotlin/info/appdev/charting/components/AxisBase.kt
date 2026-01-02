@@ -3,6 +3,7 @@ package info.appdev.charting.components
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.graphics.Paint
+import androidx.annotation.ColorInt
 import info.appdev.charting.formatter.DefaultAxisValueFormatter
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.utils.convertDpToPixel
@@ -22,6 +23,7 @@ abstract class AxisBase : ComponentBase() {
      * The color of the grid lines for this axis (the horizontal lines
      * coming from each label).
      */
+    @ColorInt
     var gridColor: Int = Color.GRAY
 
     private var mGridLineWidth = 1f
@@ -29,9 +31,7 @@ abstract class AxisBase : ComponentBase() {
     /**
      * Returns the color of the axis line (line alongside the axis).
      */
-    /**
-     * Sets the color of the border surrounding the chart.
-     */
+    @ColorInt
     var axisLineColor: Int = Color.GRAY
 
     private var mAxisLineWidth = 1f

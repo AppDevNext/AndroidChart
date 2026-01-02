@@ -3,6 +3,7 @@ package info.appdev.charting.components
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.graphics.Paint
+import androidx.annotation.ColorInt
 import info.appdev.charting.utils.convertDpToPixel
 
 /**
@@ -18,6 +19,7 @@ class LimitLine : ComponentBase {
     private var mLineWidth = 2f
 
     /** the color of the limit line  */
+    @ColorInt
     var lineColor: Int = Color.rgb(237, 91, 91)
 
     /** the style of the label text  */

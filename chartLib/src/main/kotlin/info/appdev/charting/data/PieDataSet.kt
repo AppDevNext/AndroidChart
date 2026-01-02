@@ -1,5 +1,6 @@
 package info.appdev.charting.data
 
+import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.IPieDataSet
 import info.appdev.charting.utils.convertDpToPixel
 
@@ -24,6 +25,7 @@ open class PieDataSet(yVals: MutableList<PieEntry>?, label: String) : DataSet<Pi
     private var mValueLinePart1Length = 0.3f
     private var mValueLinePart2Length = 0.4f
     private var mIsValueLineVariableLength = true
+    @ColorInt
     private var mHighlightColor: Int? = null
 
     override fun copy(): DataSet<PieEntry> {

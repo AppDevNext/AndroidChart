@@ -2,6 +2,7 @@ package info.appdev.charting.data
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.ILineRadarDataSet
 import info.appdev.charting.utils.convertDpToPixel
 
@@ -13,6 +14,7 @@ abstract class LineRadarDataSet<T : Entry>(yVals: MutableList<T>?, label: String
     /**
      * the color that is used for filling the line surface
      */
+    @ColorInt
     private var mFillColor = Color.rgb(140, 234, 255)
 
     /**

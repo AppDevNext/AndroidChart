@@ -1,5 +1,7 @@
 package info.appdev.charting.utils
 
+import android.R.attr.endColor
+import android.R.attr.startColor
 import android.graphics.Canvas
 import android.graphics.LinearGradient
 import android.graphics.Paint
@@ -7,6 +9,7 @@ import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.drawable.Drawable
+import androidx.annotation.ColorInt
 import kotlin.math.floor
 
 open class Fill {
@@ -26,8 +29,10 @@ open class Fill {
     /**
      * the color that is used for filling
      */
+    @ColorInt
     private var mColor: Int? = null
 
+    @ColorInt
     private var mFinalColor: Int? = null
 
     /**
@@ -44,7 +49,7 @@ open class Fill {
      */
     private var mAlpha = 255
 
-    constructor(startColor: Int, endColor: Int) {
+    constructor(@ColorInt startColor: Int, @ColorInt endColor: Int) {
         this.type = Type.LINEAR_GRADIENT
         this.gradientColors = intArrayOf(startColor, endColor)
     }
@@ -56,7 +61,7 @@ open class Fill {
             calculateFinalColor()
         }
 
-    fun setGradientColors(startColor: Int, endColor: Int) {
+    fun setGradientColors(@ColorInt startColor: Int, @ColorInt endColor: Int) {
         this.gradientColors = intArrayOf(startColor, endColor)
     }
 

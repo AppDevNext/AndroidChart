@@ -1,5 +1,6 @@
 package info.appdev.charting.interfaces.datasets
 
+import androidx.annotation.ColorInt
 import info.appdev.charting.data.BarEntry
 import info.appdev.charting.utils.Fill
 
