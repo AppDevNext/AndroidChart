@@ -68,22 +68,27 @@ open class HorizontalBarChart : BarChart {
                     legend.neededWidth,
                     viewPortHandler.chartWidth * legend.maxSizePercent
                 ) + legend.xOffset
+
                 LegendHorizontalAlignment.RIGHT -> offsets.right += min(
                     legend.neededWidth,
                     viewPortHandler.chartWidth * legend.maxSizePercent
                 ) + legend.xOffset
+
                 LegendHorizontalAlignment.CENTER -> when (legend.verticalAlignment) {
                     LegendVerticalAlignment.TOP -> offsets.top += min(
                         legend.neededHeight,
                         viewPortHandler.chartHeight * legend.maxSizePercent
                     ) + legend.yOffset
+
                     LegendVerticalAlignment.BOTTOM -> offsets.bottom += min(
                         legend.neededHeight,
                         viewPortHandler.chartHeight * legend.maxSizePercent
                     ) + legend.yOffset
+
                     else -> {}
                 }
             }
+
             LegendOrientation.HORIZONTAL -> when (legend.verticalAlignment) {
                 LegendVerticalAlignment.TOP -> {
                     offsets.top += min(
@@ -97,6 +102,7 @@ open class HorizontalBarChart : BarChart {
                         )
                     }
                 }
+
                 LegendVerticalAlignment.BOTTOM -> {
                     offsets.bottom += min(
                         legend.neededHeight,
@@ -109,6 +115,7 @@ open class HorizontalBarChart : BarChart {
                         )
                     }
                 }
+
                 else -> {}
             }
         }

@@ -11,14 +11,14 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.databinding.ActivityBarchartSinusBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
 import info.appdev.charting.utils.loadBarEntriesFromAssets
-import info.appdev.chartexample.databinding.ActivityBarchartSinusBinding
-import info.appdev.chartexample.notimportant.DemoBase
 
 class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
 
@@ -65,7 +65,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         rightAxis.setDrawGridLines(false)
         rightAxis.typeface = tfLight
         rightAxis.setLabelCount(6, false)
-        rightAxis.axisMinimum  = -2.5f
+        rightAxis.axisMinimum = -2.5f
         rightAxis.axisMaximum = 2.5f
         rightAxis.granularity = 0.1f
 

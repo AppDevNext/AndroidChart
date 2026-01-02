@@ -9,6 +9,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityListviewChartBinding
+import info.appdev.chartexample.listviewitems.BarChartItem
+import info.appdev.chartexample.listviewitems.ChartItem
+import info.appdev.chartexample.listviewitems.LineChartItem
+import info.appdev.chartexample.listviewitems.PieChartItem
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
@@ -20,14 +28,6 @@ import info.appdev.charting.data.PieDataSet
 import info.appdev.charting.data.PieEntry
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.listviewitems.BarChartItem
-import info.appdev.chartexample.listviewitems.ChartItem
-import info.appdev.chartexample.listviewitems.LineChartItem
-import info.appdev.chartexample.listviewitems.PieChartItem
-import info.appdev.chartexample.notimportant.DemoBase
-import androidx.core.net.toUri
-import info.appdev.chartexample.databinding.ActivityListviewChartBinding
 
 /**
  * Demonstrates the use of charts inside a ListView. IMPORTANT: provide a

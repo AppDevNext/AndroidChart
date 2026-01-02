@@ -1,61 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/viewGithub"
-        android:title="@string/viewGithub">
-    </item>
+        android:title="@string/viewGithub" />
     <item
         android:id="@+id/actionToggleValues"
-        android:title="@string/actionToggleYValues">
-    </item>
+        android:title="@string/actionToggleYValues" />
     <item
         android:id="@+id/actionToggleXValues"
-        android:title="@string/actionToggleXValues">
-    </item>
+        android:title="@string/actionToggleXValues" />
     <item
         android:id="@+id/actionToggleIcons"
-        android:title="@string/actionToggleIcons">
-    </item>
+        android:title="@string/actionToggleIcons" />
     <item
         android:id="@+id/actionTogglePercent"
-        android:title="@string/actionTogglePercent">
-    </item>
+        android:title="@string/actionTogglePercent" />
     <item
         android:id="@+id/actionToggleMinAngles"
-        android:title="@string/actionToggleMinAngles">
-    </item>
+        android:title="@string/actionToggleMinAngles" />
     <item
         android:id="@+id/actionToggleHole"
-        android:title="@string/actionToggleHole">
-    </item>
+        android:title="@string/actionToggleHole" />
     <item
         android:id="@+id/actionToggleCurvedSlices"
-        android:title="@string/actionToggleCurvedSlices">
-    </item>
+        android:title="@string/actionToggleCurvedSlices" />
     <item
         android:id="@+id/actionDrawCenter"
-        android:title="@string/actionDrawCenterText">
-    </item>
+        android:title="@string/actionDrawCenterText" />
     <item
         android:id="@+id/actionToggleSpin"
-        android:title="@string/actionToggleSpin">
-    </item>
+        android:title="@string/actionToggleSpin" />
     <item
         android:id="@+id/animateX"
-        android:title="@string/animateX">
-    </item>
+        android:title="@string/animateX" />
     <item
         android:id="@+id/animateY"
-        android:title="@string/animateY">
-    </item>
-        <item
+        android:title="@string/animateY" />
+    <item
         android:id="@+id/animateXY"
-        android:title="@string/animateXY">
-    </item>
+        android:title="@string/animateXY" />
     <item
         android:id="@+id/actionSave"
-        android:title="@string/actionSave">
-    </item>
+        android:title="@string/actionSave" />
 
 </menu>

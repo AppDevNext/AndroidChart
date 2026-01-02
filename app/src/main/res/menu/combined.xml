@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/viewGithub"
-        android:title="@string/viewGithub">
-    </item>
+        android:title="@string/viewGithub" />
     <item
         android:id="@+id/actionToggleLineValues"
-        android:title="@string/actionToggleLineValues">
-    </item>
+        android:title="@string/actionToggleLineValues" />
     <item
         android:id="@+id/actionToggleBarValues"
-        android:title="@string/actionToggleBarValues">
-    </item>
+        android:title="@string/actionToggleBarValues" />
     <item
         android:id="@+id/actionRemoveDataSet"
-        android:title="@string/actionRemoveDataSet">
-    </item>
+        android:title="@string/actionRemoveDataSet" />
 
 </menu>

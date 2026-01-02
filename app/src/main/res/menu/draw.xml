@@ -1,32 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/actionToggleValues"
-        android:title="@string/actionToggleValues">
-    </item>
+        android:title="@string/actionToggleValues" />
     <item
         android:id="@+id/actionToggleFilled"
-        android:title="@string/actionToggleFilled">
-    </item>
+        android:title="@string/actionToggleFilled" />
     <item
         android:id="@+id/actionToggleCircles"
-        android:title="@string/actionToggleCircles">
-    </item>
+        android:title="@string/actionToggleCircles" />
     <item
         android:id="@+id/actionToggleHighlight"
-        android:title="@string/actionToggleHighlight">
-    </item>
-	<item
+        android:title="@string/actionToggleHighlight" />
+    <item
         android:id="@+id/actionTogglePinch"
-        android:title="@string/actionTogglePinch">
-    </item>
+        android:title="@string/actionTogglePinch" />
     <item
         android:id="@+id/actionToggleAutoScaleMinMax"
-        android:title="@string/actionToggleAutoScale">
-    </item>
+        android:title="@string/actionToggleAutoScale" />
     <item
         android:id="@+id/actionSave"
-        android:title="@string/actionSave">
-    </item>
+        android:title="@string/actionSave" />
 </menu>

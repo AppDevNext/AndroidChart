@@ -1,7 +1,6 @@
 package info.appdev.charting.utils
 
 import android.content.res.AssetManager
-import android.webkit.ConsoleMessage
 import info.appdev.charting.data.BarEntry
 import info.appdev.charting.data.Entry
 import timber.log.Timber

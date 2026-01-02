@@ -33,7 +33,8 @@ open class DemoBaseCompose : ComponentActivity() {
 
     protected fun <T : Chart<*>> saveToGallery(chart: T) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            == PackageManager.PERMISSION_GRANTED) {
+            == PackageManager.PERMISSION_GRANTED
+        ) {
             if (chart.saveToGallery("HorizontalBarChartActivity_" + System.currentTimeMillis(), 70)) {
                 Toast.makeText(this, "Saving SUCCESSFUL!", Toast.LENGTH_SHORT).show()
             } else {

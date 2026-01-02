@@ -1,10 +1,6 @@
 package info.appdev.charting.utils
 
 import info.appdev.charting.utils.ObjectPool.Poolable
-import kotlin.Any
-import kotlin.Boolean
-import kotlin.Int
-import kotlin.String
 
 /**
  * Class for describing width and height dimensions in some arbitrary

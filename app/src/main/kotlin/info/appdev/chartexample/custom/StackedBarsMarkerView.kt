@@ -3,13 +3,13 @@ package info.appdev.chartexample.custom
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.TextView
+import info.appdev.chartexample.R
 import info.appdev.charting.components.MarkerView
 import info.appdev.charting.data.BarEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.formatNumber
-import info.appdev.chartexample.R
 
 /**
  * Custom implementation of the MarkerView.

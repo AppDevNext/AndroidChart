@@ -478,7 +478,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     fun highlightValue(x: Float, dataSetIndex: Int, callListener: Boolean) {
         highlightValue(x, Float.NaN, dataSetIndex, -1, callListener)
     }
-    
+
     /**
      * Highlights the value at the given x-value and y-value in the given DataSet.
      * Provide -1 as the dataSetIndex to undo all highlighting.
@@ -1029,30 +1029,30 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     override var data: T?
         get() = mData
         set(value) {
-                mData = value
+            mData = value
 
-                if (value == null) {
-                    mOffsetsCalculated = false
-                    return
-                }
-
+            if (value == null) {
                 mOffsetsCalculated = false
+                return
+            }
 
-                // calculate how many digits are needed
-                setupDefaultFormatter(value.yMin, value.yMax)
+            mOffsetsCalculated = false
 
-                for (set in mData!!.dataSets!!) {
-                    if (set.needsFormatter() || set.valueFormatter === mDefaultValueFormatter) {
-                        set.valueFormatter = mDefaultValueFormatter
-                    }
+            // calculate how many digits are needed
+            setupDefaultFormatter(value.yMin, value.yMax)
+
+            for (set in mData!!.dataSets!!) {
+                if (set.needsFormatter() || set.valueFormatter === mDefaultValueFormatter) {
+                    set.valueFormatter = mDefaultValueFormatter
                 }
+            }
 
-                // let the chart know there is new data
-                notifyDataSetChanged()
+            // let the chart know there is new data
+            notifyDataSetChanged()
 
-                if (isLogEnabled) {
-                    Timber.i("Data is set.")
-                }
+            if (isLogEnabled) {
+                Timber.i("Data is set.")
+            }
         }
 
     var renderer: DataRenderer?

@@ -16,6 +16,9 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityPiechartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.animation.Easing
 import info.appdev.charting.components.Legend
 import info.appdev.charting.data.Entry
@@ -26,9 +29,6 @@ import info.appdev.charting.formatter.PercentFormatter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.databinding.ActivityPiechartBinding
-import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
@@ -174,7 +174,7 @@ class PiePolylineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVal
 
             R.id.actionToggleMinAngles -> {
                 if (binding.chart1.minAngleForSlices == 0f)
-                    binding.chart1.minAngleForSlices =36f
+                    binding.chart1.minAngleForSlices = 36f
                 else
                     binding.chart1.minAngleForSlices = 0f
                 binding.chart1.notifyDataSetChanged()

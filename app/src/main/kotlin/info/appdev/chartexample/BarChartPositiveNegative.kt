@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.net.toUri
+import info.appdev.chartexample.databinding.ActivityBarchartNoseekbarBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.AxisBase
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
@@ -15,8 +17,6 @@ import info.appdev.charting.data.Entry
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.utils.ViewPortHandler
-import info.appdev.chartexample.databinding.ActivityBarchartNoseekbarBinding
-import info.appdev.chartexample.notimportant.DemoBase
 import java.text.DecimalFormat
 import kotlin.math.max
 import kotlin.math.min
@@ -109,7 +109,7 @@ class BarChartPositiveNegative : DemoBase() {
             binding.chart1.barData!!.dataSetCount > 0
         ) {
             set = binding.chart1.barData!!.getDataSetByIndex(0) as BarDataSet
-            set.entries  = values
+            set.entries = values
             binding.chart1.barData?.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {

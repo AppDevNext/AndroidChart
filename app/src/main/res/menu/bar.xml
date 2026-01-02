@@ -1,50 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/viewGithub"
-        android:title="@string/viewGithub">
-    </item>
+        android:title="@string/viewGithub" />
     <item
         android:id="@+id/actionToggleBarBorders"
-        android:title="@string/actionToggleBarBorders">
-    </item>
+        android:title="@string/actionToggleBarBorders" />
     <item
         android:id="@+id/actionToggleValues"
-        android:title="@string/actionToggleValues">
-    </item>
+        android:title="@string/actionToggleValues" />
     <item
         android:id="@+id/actionToggleIcons"
-        android:title="@string/actionToggleIcons">
-    </item>
+        android:title="@string/actionToggleIcons" />
     <item
         android:id="@+id/actionToggleHighlight"
-        android:title="@string/actionToggleHighlight">
-    </item>
+        android:title="@string/actionToggleHighlight" />
     <item
         android:id="@+id/actionTogglePinch"
-        android:title="@string/actionTogglePinch">
-    </item>
+        android:title="@string/actionTogglePinch" />
     <item
         android:id="@+id/actionToggleAutoScaleMinMax"
-        android:title="@string/actionToggleAutoScale">
-    </item>
+        android:title="@string/actionToggleAutoScale" />
     <item
         android:id="@+id/animateX"
-        android:title="@string/animateX">
-    </item>
+        android:title="@string/animateX" />
     <item
         android:id="@+id/animateY"
-        android:title="@string/animateY">
-    </item>
+        android:title="@string/animateY" />
     <item
         android:id="@+id/animateXY"
-        android:title="@string/animateXY">
-    </item>
+        android:title="@string/animateXY" />
     <item
         android:id="@+id/actionSave"
-        android:title="@string/actionSave">
-    </item>
+        android:title="@string/actionSave" />
     <item
         android:id="@+id/actionRotateXAxisLabelsBy45Deg"
         android:title="@string/rotate_x_axis_labels">

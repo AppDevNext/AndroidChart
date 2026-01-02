@@ -10,15 +10,15 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityBarchartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.databinding.ActivityBarchartBinding
-import info.appdev.chartexample.notimportant.DemoBase
 
 class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
 

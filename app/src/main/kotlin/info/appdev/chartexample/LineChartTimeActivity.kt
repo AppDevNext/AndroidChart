@@ -11,6 +11,9 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityLinechartTimeBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.AxisBase
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.components.YAxis
@@ -20,9 +23,6 @@ import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.utils.ColorTemplate.holoBlue
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.databinding.ActivityLinechartTimeBinding
-import info.appdev.chartexample.notimportant.DemoBase
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

@@ -140,6 +140,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
                         }
                     }
                 }
+
                 LegendOrientation.HORIZONTAL -> {
                     when (legend.verticalAlignment) {
                         LegendVerticalAlignment.TOP -> legendTop = fullLegendHeight
@@ -214,14 +215,17 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
                                 legend.neededHeight,
                                 viewPortHandler.chartHeight * legend.maxSizePercent
                             )
+
                             LegendVerticalAlignment.BOTTOM -> legendBottom = min(
                                 legend.neededHeight,
                                 viewPortHandler.chartHeight * legend.maxSizePercent
                             )
+
                             LegendVerticalAlignment.CENTER -> Timber.e("LegendCenter/VerticalCenter not supported for PieRadarChart")
                         }
                     }
                 }
+
                 LegendOrientation.HORIZONTAL -> {
                     val yLegendOffset: Float
 

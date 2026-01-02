@@ -480,7 +480,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      */
     val colors: IntArray?
         get() {
-            val colorArray : IntArray? = null
+            val colorArray: IntArray? = null
             dataSets?.let {
                 var clrCount = 0
 
@@ -595,7 +595,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     /**
      * Enables / disables highlighting values for all DataSets this data object
      * contains. If set to true, this means that values can be highlighted programmatically or by touch gesture.
-    */
+     */
     var isHighlightEnabled: Boolean
         get() {
             for (set in this.dataSets!!) {

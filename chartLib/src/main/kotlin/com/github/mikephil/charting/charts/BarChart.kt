@@ -7,8 +7,10 @@ import android.util.Log
 open class BarChart : info.appdev.charting.charts.BarChart {
     @Deprecated("Use same class from package info.appdev.charting.charts instead")
     constructor(context: Context?) : super(context)
+
     @Deprecated("Use same class from package info.appdev.charting.charts instead")
     constructor(context: Context?, attrs: android.util.AttributeSet?) : super(context, attrs)
+
     @Deprecated("Use same class from package info.appdev.charting.charts instead")
     constructor(context: Context?, attrs: android.util.AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 

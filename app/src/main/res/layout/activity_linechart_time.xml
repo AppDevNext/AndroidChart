@@ -18,7 +18,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_toLeftOf="@+id/tvXMax"/>
+        android:layout_toLeftOf="@+id/tvXMax" />
 
     <TextView
         android:id="@+id/tvXMax"

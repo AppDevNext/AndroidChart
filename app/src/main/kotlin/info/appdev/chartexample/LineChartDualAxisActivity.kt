@@ -28,9 +28,6 @@ import timber.log.Timber
 
 /**
  * Example of a dual axis [LineChart] with multiple data sets.
- *
- * @since 1.7.4
- * @version 3.1.0
  */
 class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
 

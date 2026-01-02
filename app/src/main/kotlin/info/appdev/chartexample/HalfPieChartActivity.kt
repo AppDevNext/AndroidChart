@@ -13,6 +13,9 @@ import android.view.MenuItem
 import android.widget.RelativeLayout
 import androidx.core.net.toUri
 import androidx.window.layout.WindowMetricsCalculator
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityPiechartHalfBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.animation.Easing
 import info.appdev.charting.components.Legend
 import info.appdev.charting.data.PieData
@@ -20,9 +23,6 @@ import info.appdev.charting.data.PieDataSet
 import info.appdev.charting.data.PieEntry
 import info.appdev.charting.formatter.PercentFormatter
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.databinding.ActivityPiechartHalfBinding
-import info.appdev.chartexample.notimportant.DemoBase
 
 class HalfPieChartActivity : DemoBase() {
 

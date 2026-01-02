@@ -46,11 +46,11 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
     protected var drawOrders: MutableList<DrawOrder>? = null
 
-    lateinit var barDataProvider : BarDataProvider
-    lateinit var lineDataProvider : LineDataProvider
-    lateinit var bubbleDataProvider : BubbleDataProvider
-    lateinit var scatterDataProvider : ScatterDataProvider
-    lateinit var candleDataProvider : CandleDataProvider
+    lateinit var barDataProvider: BarDataProvider
+    lateinit var lineDataProvider: LineDataProvider
+    lateinit var bubbleDataProvider: BubbleDataProvider
+    lateinit var scatterDataProvider: ScatterDataProvider
+    lateinit var candleDataProvider: CandleDataProvider
 
     /**
      * enum that allows to specify the order in which the different data objects for the combined-chart are drawn
@@ -80,15 +80,21 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
             override var isDrawBarShadowEnabled: Boolean
                 get() = this@CombinedChart.isDrawBarShadowEnabled
-                set(value) { this@CombinedChart.isDrawBarShadowEnabled = value }
+                set(value) {
+                    this@CombinedChart.isDrawBarShadowEnabled = value
+                }
 
             override var isDrawValueAboveBarEnabled: Boolean
                 get() = this@CombinedChart.isDrawValueAboveBarEnabled
-                set(value) { this@CombinedChart.isDrawValueAboveBarEnabled = value }
+                set(value) {
+                    this@CombinedChart.isDrawValueAboveBarEnabled = value
+                }
 
             override var isHighlightFullBarEnabled: Boolean
                 get() = this@CombinedChart.isHighlightFullBarEnabled
-                set(value) { this@CombinedChart.isHighlightFullBarEnabled = value }
+                set(value) {
+                    this@CombinedChart.isHighlightFullBarEnabled = value
+                }
 
             override var data: BarData?
                 get() = this@CombinedChart.barData
@@ -123,7 +129,9 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
             override var maxHighlightDistance: Float
                 get() = this@CombinedChart.maxHighlightDistance
-                set(value) { this@CombinedChart.maxHighlightDistance = value }
+                set(value) {
+                    this@CombinedChart.maxHighlightDistance = value
+                }
 
             override val centerOfView: info.appdev.charting.utils.PointF
                 get() = this@CombinedChart.centerOfView
@@ -171,7 +179,9 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
             override var maxHighlightDistance: Float
                 get() = this@CombinedChart.maxHighlightDistance
-                set(value) { this@CombinedChart.maxHighlightDistance = value }
+                set(value) {
+                    this@CombinedChart.maxHighlightDistance = value
+                }
 
             override val centerOfView: info.appdev.charting.utils.PointF
                 get() = this@CombinedChart.centerOfView
@@ -225,7 +235,9 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
             override var maxHighlightDistance: Float
                 get() = this@CombinedChart.maxHighlightDistance
-                set(value) { this@CombinedChart.maxHighlightDistance = value }
+                set(value) {
+                    this@CombinedChart.maxHighlightDistance = value
+                }
 
             override val centerOfView: info.appdev.charting.utils.PointF
                 get() = this@CombinedChart.centerOfView
@@ -279,7 +291,9 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
             override var maxHighlightDistance: Float
                 get() = this@CombinedChart.maxHighlightDistance
-                set(value) { this@CombinedChart.maxHighlightDistance = value }
+                set(value) {
+                    this@CombinedChart.maxHighlightDistance = value
+                }
 
             override val centerOfView: info.appdev.charting.utils.PointF
                 get() = this@CombinedChart.centerOfView
@@ -333,7 +347,9 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
             override var maxHighlightDistance: Float
                 get() = this@CombinedChart.maxHighlightDistance
-                set(value) { this@CombinedChart.maxHighlightDistance = value }
+                set(value) {
+                    this@CombinedChart.maxHighlightDistance = value
+                }
 
             override val centerOfView: info.appdev.charting.utils.PointF
                 get() = this@CombinedChart.centerOfView
