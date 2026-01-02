@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.graphics.Typeface
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.YAxis.AxisDependency
@@ -22,11 +23,13 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     /**
      * List representing all colors that are used for this DataSet
      */
+    @ColorInt
     protected var mColors: MutableList<Int>
 
     /**
      * List representing all colors that are used for drawing the actual values for this DataSet
      */
+    @ColorInt
     protected var mValueColors: MutableList<Int>
 
     /**

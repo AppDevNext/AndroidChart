@@ -3,6 +3,7 @@ package info.appdev.charting.components
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.graphics.Paint
+import androidx.annotation.ColorInt
 import info.appdev.charting.components.LimitLine.LimitLabelPosition
 import info.appdev.charting.utils.convertDpToPixel
 
@@ -40,11 +41,13 @@ class LimitRange : ComponentBase {
     /**
      * the color of the limit line
      */
+    @ColorInt
     var lineColor: Int = Color.rgb(237, 91, 91)
 
     /**
      * the color of the Range
      */
+    @ColorInt
     var rangeColor: Int = Color.rgb(128, 128, 128)
 
     /**

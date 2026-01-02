@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.drawable.Drawable
+import androidx.annotation.ColorInt
 import androidx.core.graphics.withClip
 import info.appdev.charting.animation.ChartAnimator
 import info.appdev.charting.utils.ViewPortHandler
@@ -45,7 +46,7 @@ abstract class LineRadarRenderer(
      * @param fillColor
      * @param fillAlpha
      */
-    protected fun drawFilledPath(canvas: Canvas, filledPath: Path, fillColor: Int, fillAlpha: Int) {
+    protected fun drawFilledPath(canvas: Canvas, filledPath: Path, @ColorInt fillColor: Int, fillAlpha: Int) {
         val color = (fillAlpha shl 24) or (fillColor and 0xffffff)
 
         if (clipPathSupported()) {

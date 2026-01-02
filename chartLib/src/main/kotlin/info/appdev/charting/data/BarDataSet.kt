@@ -1,6 +1,7 @@
 package info.appdev.charting.data
 
 import android.graphics.Color
+import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.Fill
 
@@ -14,10 +15,12 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
     /**
      * the color used for drawing the bar shadows
      */
+    @ColorInt
     private var mBarShadowColor = Color.rgb(215, 215, 215)
 
     private var mBarBorderWidth = 0.0f
 
+    @ColorInt
     private var mBarBorderColor = Color.BLACK
 
     /**
@@ -89,7 +92,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
     /**
      * Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
      */
-    fun setGradientColor(startColor: Int, endColor: Int) {
+    fun setGradientColor(@ColorInt startColor: Int, @ColorInt endColor: Int) {
         gradients.clear()
         gradients.add(Fill(startColor, endColor))
     }

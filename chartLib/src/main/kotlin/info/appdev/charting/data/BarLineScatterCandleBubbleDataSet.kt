@@ -1,6 +1,7 @@
 package info.appdev.charting.data
 
 import android.graphics.Color
+import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 
 /**
@@ -11,6 +12,7 @@ abstract class BarLineScatterCandleBubbleDataSet<T : Entry>(yVals: MutableList<T
     /**
      * Sets the color that is used for drawing the highlight indicators.
      */
+    @ColorInt
     override var highLightColor: Int = Color.rgb(255, 187, 115)
 
     protected fun copy(barLineScatterCandleBubbleDataSet: BarLineScatterCandleBubbleDataSet<*>) {

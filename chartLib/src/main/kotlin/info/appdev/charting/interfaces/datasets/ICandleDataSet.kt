@@ -1,6 +1,7 @@
 package info.appdev.charting.interfaces.datasets
 
 import android.graphics.Paint
+import androidx.annotation.ColorInt
 import info.appdev.charting.data.CandleEntry
 
 interface ICandleDataSet : ILineScatterCandleRadarDataSet<CandleEntry> {

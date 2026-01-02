@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import androidx.annotation.ColorInt
 import androidx.core.graphics.withSave
 import info.appdev.charting.animation.ChartAnimator
 import info.appdev.charting.charts.RadarChart
@@ -366,8 +367,8 @@ open class RadarChartRenderer(
         point: PointF,
         innerRadius: Float,
         outerRadius: Float,
-        fillColor: Int,
-        strokeColor: Int,
+        @ColorInt fillColor: Int,
+        @ColorInt strokeColor: Int,
         strokeWidth: Float
     ) {
         var innerRadiusLocal = innerRadius

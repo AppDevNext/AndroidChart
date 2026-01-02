@@ -2,6 +2,7 @@ package info.appdev.charting.components
 
 import android.graphics.Color
 import android.graphics.Typeface
+import androidx.annotation.ColorInt
 import info.appdev.charting.utils.convertDpToPixel
 
 /**
@@ -37,6 +38,7 @@ abstract class ComponentBase {
     /**
      * the text color to use for the labels
      */
+    @ColorInt
     open var textColor: Int = Color.BLACK
 
     /**

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.util.AttributeSet
+import androidx.annotation.ColorInt
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.data.RadarData
@@ -39,6 +40,7 @@ open class RadarChart : PieRadarChartBase<RadarData> {
     /**
      * color for the main web lines
      */
+    @ColorInt
     var webColor: Int = Color.rgb(122, 122, 122)
 
     /**

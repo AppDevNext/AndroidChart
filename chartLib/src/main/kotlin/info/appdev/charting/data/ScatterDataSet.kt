@@ -1,5 +1,6 @@
 package info.appdev.charting.data
 
+import androidx.annotation.ColorInt
 import info.appdev.charting.charts.ScatterChart.ScatterShape
 import info.appdev.charting.interfaces.datasets.IScatterDataSet
 import info.appdev.charting.renderer.scatter.ChevronDownShapeRenderer
@@ -34,6 +35,7 @@ open class ScatterDataSet(yVals: MutableList<Entry>?, label: String = "") : Line
      * Setting to `ColorTemplate.COLOR_NONE` will behave as transparent.
      * - default: ColorTemplate.COLOR_NONE
      */
+    @ColorInt
     private var mScatterShapeHoleColor = ColorTemplate.COLOR_NONE
 
     override fun copy(): DataSet<Entry> {

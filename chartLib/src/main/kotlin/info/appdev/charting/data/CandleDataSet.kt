@@ -1,6 +1,7 @@
 package info.appdev.charting.data
 
 import android.graphics.Paint
+import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.ICandleDataSet
 import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.convertDpToPixel
@@ -48,21 +49,25 @@ open class CandleDataSet(yVals: MutableList<CandleEntry>?, label: String = "") :
     /**
      * color for open == close
      */
+    @ColorInt
     protected var mNeutralColor: Int = ColorTemplate.COLOR_SKIP
 
     /**
      * color for open < close
      */
+    @ColorInt
     protected var mIncreasingColor: Int = ColorTemplate.COLOR_SKIP
 
     /**
      * color for open > close
      */
+    @ColorInt
     protected var mDecreasingColor: Int = ColorTemplate.COLOR_SKIP
 
     /**
      * shadow line color, set -1 for backward compatibility and uses default color
      */
+    @ColorInt
     protected var mShadowColor: Int = ColorTemplate.COLOR_SKIP
 
     override fun copy(): DataSet<CandleEntry> {
