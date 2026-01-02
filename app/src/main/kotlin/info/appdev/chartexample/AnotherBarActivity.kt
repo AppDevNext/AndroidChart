@@ -139,8 +139,8 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleBarBorders -> {
-                binding.chart1.barData?.dataSets?.forEach { set ->
-                    (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f)
+                binding.chart1.barData?.dataSets?.map { it as BarDataSet }?.forEach { set ->
+                    set.barBorderWidth = if (set.barBorderWidth == 1f)
                         0f
                     else
                         1f

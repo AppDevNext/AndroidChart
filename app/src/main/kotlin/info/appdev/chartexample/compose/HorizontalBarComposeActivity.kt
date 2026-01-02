@@ -411,8 +411,8 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
     }
 
     private fun toggleBarBorders() {
-        for (set in chart?.barData?.dataSets ?: return) {
-            (set as BarDataSet).barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
+        for (set in chart?.barData?.dataSets?.map { it as BarDataSet } ?: return) {
+            set.barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
         }
         chart?.invalidate()
     }
