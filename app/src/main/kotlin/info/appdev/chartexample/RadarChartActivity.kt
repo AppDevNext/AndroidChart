@@ -9,6 +9,10 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.custom.RadarMarkerView
+import info.appdev.chartexample.databinding.ActivityRadarchartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.animation.Easing
 import info.appdev.charting.components.AxisBase
 import info.appdev.charting.components.Legend
@@ -18,10 +22,6 @@ import info.appdev.charting.data.RadarDataSet
 import info.appdev.charting.data.RadarEntry
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.interfaces.datasets.IRadarDataSet
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.custom.RadarMarkerView
-import info.appdev.chartexample.databinding.ActivityRadarchartBinding
-import info.appdev.chartexample.notimportant.DemoBase
 
 class RadarChartActivity : DemoBase() {
 

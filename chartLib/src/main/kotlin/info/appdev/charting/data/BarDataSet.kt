@@ -3,11 +3,6 @@ package info.appdev.charting.data
 import android.graphics.Color
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.Fill
-import kotlin.Boolean
-import kotlin.Deprecated
-import kotlin.Int
-import kotlin.String
-import kotlin.let
 
 open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScatterCandleBubbleDataSet<BarEntry>(yVals, label), IBarDataSet {
     /**

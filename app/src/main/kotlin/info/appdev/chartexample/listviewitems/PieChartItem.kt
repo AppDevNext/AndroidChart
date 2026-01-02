@@ -10,12 +10,12 @@ import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
+import info.appdev.chartexample.R
 import info.appdev.charting.charts.PieChart
 import info.appdev.charting.components.Legend
 import info.appdev.charting.data.PieData
 import info.appdev.charting.formatter.PercentFormatter
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.chartexample.R
 
 class PieChartItem(pieData: PieData, context: Context) : ChartItem<PieData>(pieData) {
     private val typeface: Typeface? = Typeface.createFromAsset(context.assets, "OpenSans-Regular.ttf")

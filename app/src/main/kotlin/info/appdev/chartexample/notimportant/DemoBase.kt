@@ -16,9 +16,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.get
 import androidx.core.view.size
-import info.appdev.charting.charts.Chart
 import com.google.android.material.snackbar.Snackbar
 import info.appdev.chartexample.R
+import info.appdev.charting.charts.Chart
 import java.text.DateFormatSymbols
 
 abstract class DemoBase : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {

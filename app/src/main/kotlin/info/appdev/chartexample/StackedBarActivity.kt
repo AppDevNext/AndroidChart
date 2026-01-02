@@ -12,6 +12,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityBarchartBinding
+import info.appdev.chartexample.formatter.MyAxisValueFormatter
+import info.appdev.chartexample.formatter.MyValueFormatter
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
@@ -22,11 +27,6 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.databinding.ActivityBarchartBinding
-import info.appdev.chartexample.formatter.MyAxisValueFormatter
-import info.appdev.chartexample.formatter.MyValueFormatter
-import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
@@ -111,9 +111,10 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         val set1: BarDataSet
 
         if (binding.chart1.barData != null &&
-            binding.chart1.barData!!.dataSetCount > 0) {
+            binding.chart1.barData!!.dataSetCount > 0
+        ) {
             set1 = binding.chart1.barData!!.getDataSetByIndex(0) as BarDataSet
-            set1.entries  = values
+            set1.entries = values
             binding.chart1.barData?.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {

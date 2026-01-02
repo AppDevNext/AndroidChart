@@ -229,6 +229,7 @@ interface IDataSet<T : Entry> {
      * Sets the color the value-labels of this DataSet should have.
      */
     var valueTextColor: Int
+
     // This getter is necessary because of the parameter value
     fun getValueTextColor(value: Int): Int
 

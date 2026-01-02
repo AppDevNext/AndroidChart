@@ -36,7 +36,7 @@ class PieTest {
         for (x in 10..50 step 10) {
             onView(withId(R.id.seekBarX)).perform(setProgress(x))
             onView(ViewMatchers.isRoot())
-                .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}1-${x}")})
+                .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}1-${x}") })
         }
 
         for (x in 50..200 step 50) {

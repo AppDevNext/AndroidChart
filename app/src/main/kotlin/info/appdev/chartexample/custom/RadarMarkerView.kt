@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.widget.TextView
+import info.appdev.chartexample.R
 import info.appdev.charting.components.MarkerView
 import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.utils.PointF
-import info.appdev.chartexample.R
 import java.text.DecimalFormat
 
 /**

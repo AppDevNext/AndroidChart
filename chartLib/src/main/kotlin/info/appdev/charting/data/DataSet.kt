@@ -2,10 +2,6 @@ package info.appdev.charting.data
 
 import timber.log.Timber
 import java.io.Serializable
-import kotlin.Boolean
-import kotlin.Deprecated
-import kotlin.Int
-import kotlin.String
 import kotlin.math.abs
 
 /**

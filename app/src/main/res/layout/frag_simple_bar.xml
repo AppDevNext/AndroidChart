@@ -3,8 +3,8 @@
     android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-      <!-- We add the chart programmatically here. See BarChartFrag.java -->
+    <!-- We add the chart programmatically here. See BarChartFrag.java -->
 
 </FrameLayout>

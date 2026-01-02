@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.ViewConfiguration
-import kotlin.Float
 
 var metrics: DisplayMetrics? = null
 var minimumFlingVelocity = 0

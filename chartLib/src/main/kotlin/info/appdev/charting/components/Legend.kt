@@ -6,19 +6,11 @@ import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.FSize
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
+import info.appdev.charting.utils.calcTextSize
 import info.appdev.charting.utils.calcTextWidth
 import info.appdev.charting.utils.convertDpToPixel
-import info.appdev.charting.utils.calcTextSize
 import info.appdev.charting.utils.getLineHeight
 import info.appdev.charting.utils.getLineSpacing
-import kotlin.Array
-import kotlin.Boolean
-import kotlin.IntArray
-import kotlin.String
-import kotlin.arrayOf
-import kotlin.collections.ArrayList
-import kotlin.collections.MutableList
-import kotlin.collections.toTypedArray
 import kotlin.math.max
 import kotlin.math.min
 
@@ -100,10 +92,12 @@ class Legend() : ComponentBase() {
      * sets the horizontal alignment of the legend
      */
     var horizontalAlignment: LegendHorizontalAlignment = LegendHorizontalAlignment.LEFT
+
     /**
      * sets the vertical alignment of the legend
      */
     var verticalAlignment: LegendVerticalAlignment = LegendVerticalAlignment.BOTTOM
+
     /**
      * sets the orientation of the legend
      */

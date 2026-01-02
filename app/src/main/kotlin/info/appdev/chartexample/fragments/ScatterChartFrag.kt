@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.chartexample.R
 import info.appdev.chartexample.custom.MyMarkerView
 import info.appdev.chartexample.databinding.FragSimpleScatterBinding
+import info.appdev.charting.components.XAxis.XAxisPosition
 
 class ScatterChartFrag : SimpleFragment() {
     private var _binding: FragSimpleScatterBinding? = null

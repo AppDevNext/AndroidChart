@@ -81,7 +81,7 @@ abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>?, 
          * Returns true if the dashed-line effect is enabled for highlight lines, false if not.
          * Default: disabled
          */
-        get() = if (this.dashPathEffectHighlight == null) false else true
+        get() = this.dashPathEffectHighlight != null
 
     protected fun copy(lineScatterCandleRadarDataSet: LineScatterCandleRadarDataSet<*>) {
         super.copy((lineScatterCandleRadarDataSet as BaseDataSet<*>?)!!)

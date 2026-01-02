@@ -13,14 +13,14 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityCandlechartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.data.CandleData
 import info.appdev.charting.data.CandleDataSet
 import info.appdev.charting.data.CandleEntry
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.databinding.ActivityCandlechartBinding
-import info.appdev.chartexample.notimportant.DemoBase
 
 class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
 

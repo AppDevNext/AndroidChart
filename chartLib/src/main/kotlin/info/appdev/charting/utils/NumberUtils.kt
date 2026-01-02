@@ -1,14 +1,6 @@
 package info.appdev.charting.utils
 
 import timber.log.Timber
-import kotlin.Boolean
-import kotlin.Char
-import kotlin.CharArray
-import kotlin.Float
-import kotlin.Int
-import kotlin.String
-import kotlin.code
-import kotlin.isInfinite
 import kotlin.math.ceil
 import kotlin.math.log10
 import kotlin.math.pow

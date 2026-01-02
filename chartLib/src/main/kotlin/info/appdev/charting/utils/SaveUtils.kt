@@ -52,7 +52,15 @@ object SaveUtils {
      * @param quality         e.g. 50, min = 0, max = 100
      * @return returns true if saving was successful, false if not
      */
-    fun saveToGallery(fileName: String, subFolderPath: String?, fileDescription: String?, format: CompressFormat, quality: Int, chartBitmap: Bitmap, context: Context): Boolean {
+    fun saveToGallery(
+        fileName: String,
+        subFolderPath: String?,
+        fileDescription: String?,
+        format: CompressFormat,
+        quality: Int,
+        chartBitmap: Bitmap,
+        context: Context
+    ): Boolean {
         // restrain quality
         var fileName = fileName
         var quality = quality

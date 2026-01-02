@@ -7,10 +7,6 @@ import android.view.VelocityTracker
 import android.view.ViewConfiguration
 import info.appdev.charting.formatter.DefaultValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
-import kotlin.Int
-import kotlin.IntArray
-import kotlin.Suppress
-import kotlin.intArrayOf
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin

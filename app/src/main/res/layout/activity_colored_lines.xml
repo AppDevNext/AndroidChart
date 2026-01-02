@@ -8,20 +8,23 @@
         android:id="@+id/chart1"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
     <info.appdev.charting.charts.LineChart
         android:id="@+id/chart2"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
     <info.appdev.charting.charts.LineChart
         android:id="@+id/chart3"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
     <info.appdev.charting.charts.LineChart
         android:id="@+id/chart4"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>

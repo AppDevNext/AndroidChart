@@ -9,9 +9,6 @@ import info.appdev.charting.interfaces.datasets.ICandleDataSet
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.interfaces.datasets.IScatterDataSet
 import info.appdev.charting.utils.PointD.Companion.getInstance
-import kotlin.Boolean
-import kotlin.FloatArray
-import kotlin.Int
 
 /**
  * Transformer class that contains all matrices and is responsible for

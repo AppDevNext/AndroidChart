@@ -41,8 +41,6 @@ import androidx.core.net.toUri
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import info.appdev.charting.utils.Utils
-import info.appdev.charting.utils.initUtils
 import info.appdev.chartexample.AnotherBarActivity
 import info.appdev.chartexample.BarChartActivity
 import info.appdev.chartexample.BarChartActivityMultiDataset
@@ -80,6 +78,8 @@ import info.appdev.chartexample.StackedBarActivityNegative
 import info.appdev.chartexample.TimeLineActivity
 import info.appdev.chartexample.compose.HorizontalBarComposeActivity
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
+import info.appdev.charting.utils.Utils
+import info.appdev.charting.utils.initUtils
 
 class MainActivity : ComponentActivity() {
 

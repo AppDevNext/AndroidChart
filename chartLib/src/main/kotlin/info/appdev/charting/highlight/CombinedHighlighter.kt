@@ -6,7 +6,8 @@ import info.appdev.charting.data.DataSet
 import info.appdev.charting.interfaces.dataprovider.BarDataProvider
 import info.appdev.charting.interfaces.dataprovider.CombinedDataProvider
 
-open class CombinedHighlighter(combinedDataProvider: CombinedDataProvider, barDataProvider: BarDataProvider) : ChartHighlighter<CombinedDataProvider>(combinedDataProvider), IHighlighter {
+open class CombinedHighlighter(combinedDataProvider: CombinedDataProvider, barDataProvider: BarDataProvider) :
+    ChartHighlighter<CombinedDataProvider>(combinedDataProvider), IHighlighter {
     /**
      * bar highlighter for supporting stacked highlighting
      */

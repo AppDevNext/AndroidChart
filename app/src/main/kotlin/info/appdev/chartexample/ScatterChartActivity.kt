@@ -10,6 +10,10 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.custom.CustomScatterShapeRenderer
+import info.appdev.chartexample.databinding.ActivityScatterchartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.charts.ScatterChart
 import info.appdev.charting.components.Legend
 import info.appdev.charting.data.Entry
@@ -19,10 +23,6 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IScatterDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.custom.CustomScatterShapeRenderer
-import info.appdev.chartexample.databinding.ActivityScatterchartBinding
-import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {

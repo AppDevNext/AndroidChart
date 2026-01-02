@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
+import info.appdev.chartexample.databinding.ActivityDrawChartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.data.DataSet
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
@@ -14,8 +16,6 @@ import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.listener.OnDrawListener
-import info.appdev.chartexample.databinding.ActivityDrawChartBinding
-import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 /**

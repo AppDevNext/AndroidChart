@@ -12,6 +12,12 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.custom.XYMarkerView
+import info.appdev.chartexample.databinding.ActivityBarchartBinding
+import info.appdev.chartexample.formatter.DayAxisValueFormatter
+import info.appdev.chartexample.formatter.MyAxisValueFormatter
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.XAxis.XAxisPosition
@@ -27,12 +33,6 @@ import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.Fill
 import info.appdev.charting.utils.PointF
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.custom.XYMarkerView
-import info.appdev.chartexample.databinding.ActivityBarchartBinding
-import info.appdev.chartexample.formatter.DayAxisValueFormatter
-import info.appdev.chartexample.formatter.MyAxisValueFormatter
-import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
@@ -142,7 +142,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             binding.chart1.barData!!.dataSetCount > 0
         ) {
             set1 = binding.chart1.barData!!.getDataSetByIndex(0) as BarDataSet
-            set1.entries  = values
+            set1.entries = values
             binding.chart1.barData?.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {

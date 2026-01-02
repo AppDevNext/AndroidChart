@@ -150,6 +150,7 @@ class DataTools {
                 sin(i * stepSize)
             }
         }
+
         fun getMuchValues(size: Int): Array<Double?> {
             var result = VAL_102.copyOf(VAL_102.size)
             while (result.size < size)

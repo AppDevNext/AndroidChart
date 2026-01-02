@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityCombinedBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.charts.CombinedChart.DrawOrder
 import info.appdev.charting.components.AxisBase
 import info.appdev.charting.components.Legend
@@ -28,9 +31,6 @@ import info.appdev.charting.data.ScatterData
 import info.appdev.charting.data.ScatterDataSet
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.utils.ColorTemplate
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.databinding.ActivityCombinedBinding
-import info.appdev.chartexample.notimportant.DemoBase
 import kotlin.math.roundToInt
 
 class CombinedChartActivity : DemoBase() {

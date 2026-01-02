@@ -5,10 +5,10 @@ import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
+import info.appdev.chartexample.R
 import info.appdev.charting.charts.LineChart
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.LineData
-import info.appdev.chartexample.R
 
 class LineChartItem(lineData: LineData, context: Context) : ChartItem<LineData>(lineData) {
     private val typeface: Typeface? = Typeface.createFromAsset(context.assets, "OpenSans-Regular.ttf")

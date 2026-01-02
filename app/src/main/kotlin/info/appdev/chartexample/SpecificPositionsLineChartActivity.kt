@@ -12,6 +12,10 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.custom.MyMarkerView
+import info.appdev.chartexample.databinding.ActivityLinechartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.animation.Easing
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.LimitLine
@@ -25,10 +29,6 @@ import info.appdev.charting.listener.ChartTouchListener.ChartGesture
 import info.appdev.charting.listener.OnChartGestureListener
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.getSDKInt
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.custom.MyMarkerView
-import info.appdev.chartexample.databinding.ActivityLinechartBinding
-import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestureListener, OnChartValueSelectedListener {

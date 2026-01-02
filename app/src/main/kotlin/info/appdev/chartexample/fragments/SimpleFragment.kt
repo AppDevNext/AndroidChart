@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.charting.charts.ScatterChart.ScatterShape
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
@@ -24,7 +25,6 @@ import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.interfaces.datasets.IScatterDataSet
 import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.loadEntriesFromAssets
-import info.appdev.chartexample.DataTools.Companion.getValues
 
 abstract class SimpleFragment : Fragment() {
     private var tf: Typeface? = null
@@ -113,7 +113,7 @@ abstract class SimpleFragment : Fragment() {
     protected fun generateLineData(): LineData {
         val sets = ArrayList<ILineDataSet>()
         val ds1 = LineDataSet(requireContext().assets.loadEntriesFromAssets("sine.txt"), "Sine function")
-        val ds2 = LineDataSet(requireContext().assets.loadEntriesFromAssets( "cosine.txt"), "Cosine function")
+        val ds2 = LineDataSet(requireContext().assets.loadEntriesFromAssets("cosine.txt"), "Cosine function")
 
         ds1.lineWidth = 2f
         ds2.lineWidth = 2f

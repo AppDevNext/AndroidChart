@@ -11,6 +11,10 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.custom.MyMarkerView
+import info.appdev.chartexample.databinding.ActivityBarchartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.AxisBase
 import info.appdev.charting.components.Legend
 import info.appdev.charting.data.BarData
@@ -21,10 +25,6 @@ import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.formatter.LargeValueFormatter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.custom.MyMarkerView
-import info.appdev.chartexample.databinding.ActivityBarchartBinding
-import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 import java.util.Locale
 

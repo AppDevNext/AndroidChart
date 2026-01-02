@@ -4,9 +4,6 @@ import info.appdev.charting.components.YAxis
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import timber.log.Timber
-import kotlin.Boolean
-import kotlin.Deprecated
-import kotlin.Int
 
 /**
  * Data object that allows the combination of Line-, Bar-, Scatter-, Bubble- and

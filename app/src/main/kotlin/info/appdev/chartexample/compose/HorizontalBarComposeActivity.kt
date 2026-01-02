@@ -36,6 +36,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.R
+import info.appdev.chartexample.notimportant.DemoBaseCompose
 import info.appdev.charting.charts.HorizontalBarChart
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis.XAxisPosition
@@ -47,9 +50,6 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.PointF
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.R
-import info.appdev.chartexample.notimportant.DemoBaseCompose
 import timber.log.Timber
 
 class HorizontalBarComposeActivity : DemoBaseCompose() {

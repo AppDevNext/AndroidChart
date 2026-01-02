@@ -1,8 +1,6 @@
 package info.appdev.charting.utils
 
 import info.appdev.charting.data.Entry
-import kotlin.Comparator
-import kotlin.Int
 
 /**
  * Comparator for comparing Entry-objects by their x-value.

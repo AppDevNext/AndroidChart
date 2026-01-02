@@ -12,6 +12,9 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.getValues
+import info.appdev.chartexample.databinding.ActivityHorizontalbarchartBinding
+import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
@@ -22,9 +25,6 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.PointF
-import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.databinding.ActivityHorizontalbarchartBinding
-import info.appdev.chartexample.notimportant.DemoBase
 import timber.log.Timber
 
 class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
