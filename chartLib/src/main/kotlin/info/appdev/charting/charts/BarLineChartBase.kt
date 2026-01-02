@@ -352,7 +352,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
     protected open fun prepareValuePxMatrix() {
         if (isLogEnabled) {
-            Timber.i("Preparing Value-Px Matrix, xMin: " + mXAxis.mAxisMinimum + ", xMax: " + mXAxis.mAxisMaximum + ", xDelta: " + mXAxis.mAxisRange)
+            Timber.i("Preparing Value-Px Matrix, xMin: ${mXAxis.mAxisMinimum}, xMax: ${mXAxis.mAxisMaximum}, xDelta: ${mXAxis.mAxisRange}")
         }
 
         mRightAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum, mXAxis.mAxisRange, mAxisRight.mAxisRange, this.mAxisRight.mAxisMinimum)
@@ -522,7 +522,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
             if (isLogEnabled) {
                 Timber.i("offsetLeft: $offsetLeft, offsetTop: $offsetTop, offsetRight: $offsetRight, offsetBottom: $offsetBottom")
-                Timber.i("Content: " + viewPortHandler.contentRect)
+                Timber.i("Content: ${viewPortHandler.contentRect}")
             }
         }
 

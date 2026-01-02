@@ -1,7 +1,6 @@
 package info.appdev.charting.animation
 
 import android.animation.TimeInterpolator
-import androidx.annotation.RequiresApi
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.pow
@@ -11,7 +10,6 @@ import kotlin.math.sqrt
 /**
  * Easing options.
  */
-@RequiresApi(11)
 object Easing {
     private const val DOUBLE_PI = 2f * Math.PI.toFloat()
 

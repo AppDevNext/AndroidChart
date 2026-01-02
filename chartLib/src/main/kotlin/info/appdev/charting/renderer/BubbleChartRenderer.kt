@@ -40,7 +40,13 @@ open class BubbleChartRenderer(
     private val pointBuffer = FloatArray(2)
 
     protected fun getShapeSize(entrySize: Float, maxSize: Float, reference: Float, normalizeSize: Boolean): Float {
-        val factor = if (normalizeSize) (if (maxSize == 0f) 1f else sqrt((entrySize / maxSize).toDouble()).toFloat()) else entrySize
+        val factor = if (normalizeSize)
+            (if (maxSize == 0f)
+                1f
+            else
+                sqrt((entrySize / maxSize).toDouble()).toFloat())
+        else
+            entrySize
         val shapeSize = reference * factor
         return shapeSize
     }

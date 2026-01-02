@@ -268,7 +268,7 @@ open class PieChart : PieRadarChartBase<PieData> {
             var diff = 0f
 
             for (i in 0..<data.dataSetCount) {
-                val set = dataSets!!.get(i)
+                val set = dataSets!![i]
 
                 for (j in 0..<set.entryCount) {
                     val drawAngle = calcAngle(abs(set.getEntryForIndex(j)!!.y), yValueSum)
@@ -554,12 +554,14 @@ open class PieChart : PieRadarChartBase<PieData> {
          * @param maxAngle min 90, max 360
          */
         set(value) {
-            var maxangle = value
-            if (maxangle > 360) maxangle = 360f
+            var maxAngle = value
+            if (maxAngle > 360)
+                maxAngle = 360f
 
-            if (maxangle < 90) maxangle = 90f
+            if (maxAngle < 90)
+                maxAngle = 90f
 
-            this.mMaxAngle = maxangle
+            this.mMaxAngle = maxAngle
         }
 
     var minAngleForSlices: Float
@@ -574,7 +576,7 @@ open class PieChart : PieRadarChartBase<PieData> {
          * and [.invalidate] when changing this, only works if there is enough room for all
          * slices to have the minimum angle.
          *
-         * @param minAngle minimum 0, maximum is half of [.setMaxAngle]
+         * minimum 0, maximum is half of [.setMaxAngle]
          */
         set(minAngle) {
             var minAngle = minAngle
