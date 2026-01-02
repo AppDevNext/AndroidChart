@@ -33,7 +33,7 @@ fun Canvas.drawImage(
         drawableBoundsCache.left,
         drawableBoundsCache.top,
         drawableBoundsCache.left + width,
-        drawableBoundsCache.top + width
+        drawableBoundsCache.top + height
     )
 
     val saveId = this.save()
