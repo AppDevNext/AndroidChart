@@ -17,9 +17,6 @@ import kotlin.math.min
  */
 open class YAxis : AxisBase {
     /**
-     * returns true if drawing the bottom y-axis label entry is enabled
-     */
-    /**
      * indicates if the bottom y-label entry is drawn or not
      */
     val isDrawBottomYLabelEntryEnabled: Boolean = true

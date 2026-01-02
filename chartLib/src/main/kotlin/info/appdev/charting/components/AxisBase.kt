@@ -19,11 +19,7 @@ abstract class AxisBase : ComponentBase() {
     protected var mAxisValueFormatter: IAxisValueFormatter? = null
 
     /**
-     * Returns the color of the grid lines for this axis (the horizontal lines
-     * coming from each label).
-     */
-    /**
-     * Sets the color of the grid lines for this axis (the horizontal lines
+     * The color of the grid lines for this axis (the horizontal lines
      * coming from each label).
      */
     var gridColor: Int = Color.GRAY
@@ -86,17 +82,11 @@ abstract class AxisBase : ComponentBase() {
     var isGranularityEnabled: Boolean = false
 
     /**
-     * Returns true if focing the y-label count is enabled. Default: false
-     */
-    /**
      * if true, the set number of y-labels will be forced
      */
     var isForceLabelsEnabled: Boolean = false
         protected set
 
-    /**
-     * Returns true if drawing grid lines is enabled for this axis.
-     */
     /**
      * flag indicating if the grid lines for this axis should be drawn
      */
@@ -104,17 +94,11 @@ abstract class AxisBase : ComponentBase() {
         protected set
 
     /**
-     * Returns true if the line alongside the axis should be drawn.
-     */
-    /**
      * flag that indicates if the line alongside the axis is drawn or not
      */
     var isDrawAxisLineEnabled: Boolean = true
         protected set
 
-    /**
-     * Returns true if drawing the labels is enabled for this axis.
-     */
     /**
      * flag that indicates of the labels of this axis should be drawn or not
      */
@@ -124,17 +108,11 @@ abstract class AxisBase : ComponentBase() {
     protected var mCenterAxisLabels: Boolean = false
 
     /**
-     * returns the DashPathEffect that is set for axis line
-     */
-    /**
      * the path effect of the axis line that makes dashed lines possible
      */
     var axisLineDashPathEffect: DashPathEffect? = null
         private set
 
-    /**
-     * returns the DashPathEffect that is set for grid line
-     */
     /**
      * the path effect of the grid lines that makes dashed lines possible
      */
@@ -142,17 +120,11 @@ abstract class AxisBase : ComponentBase() {
         private set
 
     /**
-     * Returns the LimitLines of this axis.
-     */
-    /**
-     * array of limit lines that can be set for the axis
+     * limit lines that can be set for the axis
      */
     var limitLines: MutableList<LimitLine>
         protected set
 
-    /**
-     * Returns the LimitRanges of this axis.
-     */
     /**
      * array of limit ranges that can be set for the axis
      */
@@ -172,39 +144,21 @@ abstract class AxisBase : ComponentBase() {
         protected set
 
     /**
-     * Gets extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
-     */
-    /**
-     * Sets extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
-     */
-    /**
      * Extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
      */
     var spaceMin: Float = 0f
 
-    /**
-     * Gets extra spacing for `axisMaximum` to be added to automatically calculated `axisMaximum`
-     */
-    /**
-     * Sets extra spacing for `axisMaximum` to be added to automatically calculated `axisMaximum`
-     */
     /**
      * Extra spacing for `axisMaximum` to be added to automatically calculated `axisMaximum`
      */
     var spaceMax: Float = 0f
 
     /**
-     * Returns true if the axis min value has been customized (and is not calculated automatically)
-     */
-    /**
      * flag indicating that the axis-min value has been customized
      */
     var isAxisMinCustom: Boolean = false
         protected set
 
-    /**
-     * Returns true if the axis max value has been customized (and is not calculated automatically)
-     */
     /**
      * flag indicating that the axis-max value has been customized
      */
@@ -229,16 +183,14 @@ abstract class AxisBase : ComponentBase() {
     private var mAxisMinLabels = 2
     private var mAxisMaxLabels = 25
 
+    /**
+     * The minumum number of labels on the axis
+     */
     var axisMinLabels: Int
-        /**
-         * The minumum number of labels on the axis
-         */
         get() = mAxisMinLabels
-        /**
-         * The minumum number of labels on the axis
-         */
-        set(labels) {
-            if (labels > 0) mAxisMinLabels = labels
+        set(values) {
+            if (values > 0)
+                mAxisMinLabels = values
         }
 
     var axisMaxLabels: Int

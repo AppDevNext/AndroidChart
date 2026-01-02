@@ -28,9 +28,6 @@ class LimitRange : ComponentBase {
     }
 
     /**
-     * Returns the limit that is set for this line.
-     */
-    /**
      * limit / maximum (the y-value or xIndex)
      */
     val limit: Range
@@ -41,56 +38,27 @@ class LimitRange : ComponentBase {
     private var mLineWidth = 0f
 
     /**
-     * Returns the color that is used for this LimitLine
-     */
-    /**
-     * Sets the linecolor for this LimitLine. Make sure to use
-     * getResources().getColor(...)
-     */
-    /**
      * the color of the limit line
      */
     var lineColor: Int = Color.rgb(237, 91, 91)
 
-    /**
-     * Returns the color that is used for this LimitRange
-     */
-    /**
-     * Sets the range color for this LimitRange. Make sure to use
-     * getResources().getColor(...)
-     */
     /**
      * the color of the Range
      */
     var rangeColor: Int = Color.rgb(128, 128, 128)
 
     /**
-     * Returns the color of the value-text that is drawn next to the LimitLine.
-     */
-    /**
      * Sets the color of the value-text that is drawn next to the LimitLine.
      * Default: Paint.Style.FILL_AND_STROKE
-     */
-    /**
-     * the style of the label text
      */
     var textStyle: Paint.Style? = Paint.Style.FILL
 
     /**
-     * Returns the label that is drawn next to the limit line.
-     */
-    /**
      * Sets the label that is drawn next to the limit line. Provide "" if no
      * label is required.
      */
-    /**
-     * label string that is drawn next to the limit line
-     */
     var label: String? = ""
 
-    /**
-     * returns the DashPathEffect that is set for this LimitLine
-     */
     /**
      * the path effect of this LimitLine that makes dashed lines possible
      */
@@ -98,14 +66,8 @@ class LimitRange : ComponentBase {
         private set
 
     /**
-     * Returns the position of the LimitLine label (value).
-     */
-    /**
      * Sets the position of the LimitLine value label (either on the right or on
      * the left edge of the chart). Not supported for RadarChart.
-     */
-    /**
-     * indicates the position of the LimitLine label
      */
     var labelPosition: LimitLabelPosition? = LimitLabelPosition.RIGHT_TOP
 
@@ -135,17 +97,14 @@ class LimitRange : ComponentBase {
         this.label = label
     }
 
+    /**
+     * set the line width of the chart (min = 0.2f, max = 12f); default 2f NOTE:
+     * thinner line == better performance, thicker line == worse performance
+     */
     var lineWidth: Float
-        /**
-         * returns the width of limit line
-         */
         get() = mLineWidth
-        /**
-         * set the line width of the chart (min = 0.2f, max = 12f); default 2f NOTE:
-         * thinner line == better performance, thicker line == worse performance
-         */
-        set(width) {
-            var width = width
+        set(value) {
+            var width = value
             if (width > 12.0f) {
                 width = 12.0f
             }
@@ -174,10 +133,10 @@ class LimitRange : ComponentBase {
         this.dashPathEffect = null
     }
 
+    /**
+     * Returns true if the dashed-line effect is enabled, false if not. Default:
+     * disabled
+     */
     val isDashedLineEnabled: Boolean
-        /**
-         * Returns true if the dashed-line effect is enabled, false if not. Default:
-         * disabled
-         */
         get() = this.dashPathEffect != null
 }

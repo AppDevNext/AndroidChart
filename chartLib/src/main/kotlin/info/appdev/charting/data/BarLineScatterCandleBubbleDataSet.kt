@@ -9,9 +9,7 @@ import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataS
 abstract class BarLineScatterCandleBubbleDataSet<T : Entry>(yVals: MutableList<T>?, label: String) :
     DataSet<T>(yVals, label), IBarLineScatterCandleBubbleDataSet<T> {
     /**
-     * Sets the color that is used for drawing the highlight indicators. Dont
-     * forget to resolve the color using getResources().getColor(...) or
-     * Color.rgb(...).
+     * Sets the color that is used for drawing the highlight indicators.
      */
     override var highLightColor: Int = Color.rgb(255, 187, 115)
 

@@ -30,7 +30,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
     /**
      * List representing all colors that are used for the circles
      */
-    var circleColors: MutableList<Int>? = null
+    var circleColors: MutableList<Int> = mutableListOf()
 
     /**
      * the color of the inner circles
@@ -71,17 +71,10 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
 
 
     init {
-        // mCircleRadius = UtilsKtKt.convertDpToPixel(4f);
-        // mLineWidth = UtilsKtKt.convertDpToPixel(1f);
-        if (this.circleColors == null) {
-            this.circleColors = ArrayList<Int>()
-        }
-        circleColors!!.clear()
-
         // default colors
         // mColors.add(Color.rgb(192, 255, 140));
         // mColors.add(Color.rgb(255, 247, 140));
-        circleColors!!.add(Color.rgb(140, 234, 255))
+        circleColors.add(Color.rgb(140, 234, 255))
     }
 
     override fun copy(): DataSet<Entry> {
@@ -185,11 +178,11 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
         }
 
     override fun getCircleColor(index: Int): Int {
-        return circleColors!![index]
+        return circleColors[index]
     }
 
     override val circleColorCount: Int
-        get() = circleColors!!.size
+        get() = circleColors.size
 
     override var isDrawCirclesEnabled: Boolean
         get() = mDrawCircles
@@ -217,7 +210,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
      */
     override var isDashedLineEnabled: Boolean
         get() = mDashPathEffect != null
-        set(value) {
+        set(_) {
             mDashPathEffect = null
         }
 
@@ -255,10 +248,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
      * getResources().getColor(...)
      */
     fun setCircleColors(colors: IntArray, context: Context) {
-        var clrs = this.circleColors
-        if (clrs == null) {
-            clrs = ArrayList()
-        }
+        val clrs = this.circleColors
         clrs.clear()
 
         for (color in colors) {
@@ -274,17 +264,14 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
      */
     fun setCircleColor(color: Int) {
         resetCircleColors()
-        circleColors!!.add(color)
+        circleColors.add(color)
     }
 
     /**
      * resets the circle-colors array and creates a new one
      */
     fun resetCircleColors() {
-        if (this.circleColors == null) {
-            this.circleColors = ArrayList()
-        }
-        circleColors!!.clear()
+        circleColors.clear()
     }
 
     enum class Mode {
