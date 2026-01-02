@@ -10,7 +10,7 @@ import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
-private val mDrawableBoundsCache = Rect()
+private val drawableBoundsCache = Rect()
 
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
@@ -28,12 +28,12 @@ fun Canvas.drawImage(
     drawOffset.x = x - (width / 2).toFloat()
     drawOffset.y = y - (height / 2).toFloat()
 
-    drawable.copyBounds(mDrawableBoundsCache)
+    drawable.copyBounds(drawableBoundsCache)
     drawable.setBounds(
-        mDrawableBoundsCache.left,
-        mDrawableBoundsCache.top,
-        mDrawableBoundsCache.left + width,
-        mDrawableBoundsCache.top + width
+        drawableBoundsCache.left,
+        drawableBoundsCache.top,
+        drawableBoundsCache.left + width,
+        drawableBoundsCache.top + width
     )
 
     val saveId = this.save()
