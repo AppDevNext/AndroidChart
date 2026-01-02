@@ -5,7 +5,10 @@
 
 ### Packagename changed ! 🛑 
 
-During the full Kotlin conversion, the package name changed to `info.appdev.charting`, but there are still the old main chart classes included, but they will be removed in the future
+During the full Kotlin conversion, 
+* 🛑 package name changed to `info.appdev.charting`, but there are still the old main chart classes included, but they will be removed in the future
+* 🛑 `MPPointF` in renamed to `PointF`
+* 🛑 `MPPointD` in renamed to `PointD`
 
 ### Project status: maintenance mode
 Issues are ignored, but pull requests are not. If you need to get something done, submit a PR!
