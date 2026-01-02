@@ -90,8 +90,8 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             val sampleValues = getValues(100)
 
             for (i in 0..<progress) {
-                val valuesY = ((sampleValues[i]!!.toFloat() * binding.seekBarY.progress) + 3).toDouble()
-                values.add(Entry(i.toFloat(), valuesY.toFloat()))
+                val valuesY = (sampleValues[i]!!.toFloat() * binding.seekBarY.progress) + 3
+                values.add(Entry(i.toFloat(), valuesY))
             }
 
             val lineDataSet = LineDataSet(values, "DataSet " + (datasetNumber + 1))

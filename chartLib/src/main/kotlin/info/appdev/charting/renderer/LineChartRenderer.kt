@@ -341,10 +341,10 @@ open class LineChartRenderer(
                 canvas!!.drawLines(lineBuffer, 0, pointsPerEntryPair * 2, paintRender)
             }
         } else { // only one color per dataset
-
-            if (lineBuffer.size < max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2) lineBuffer = FloatArray(
-                (max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 4).toInt()
-            )
+            if (lineBuffer.size < max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 2)
+                lineBuffer = FloatArray(
+                    (max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 4).toInt()
+                )
 
             var e1: Entry?
             var e2: Entry?
