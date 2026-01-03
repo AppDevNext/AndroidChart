@@ -8,7 +8,6 @@ import android.view.MenuItem
 import androidx.core.net.toUri
 import info.appdev.chartexample.DataTools.Companion.generateSineWaves
 import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
-import info.appdev.chartexample.formatter.UnixTimeAxisValueFormatter
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.Description
 import info.appdev.charting.components.Legend.LegendForm
@@ -50,7 +49,6 @@ class TimeLineActivity : DemoBase() {
             setDrawGridLines(false)
 //            granularity = 1f // only intervals of 1 day
             labelCount = 7
-            valueFormatter = UnixTimeAxisValueFormatter("yyyy-MM-dd HH:mm:ss")
         }
 
         // if disabled, scaling can be done on x- and y-axis separately
@@ -79,10 +77,10 @@ class TimeLineActivity : DemoBase() {
     @Suppress("SameParameterValue")
     private fun setData(range: Float, timeOffset: Long) {
 
-        val sampleEntries = generateSineWaves(3, 30)
+        val sampleEntries = generateSineWaves(3, 3000)
             .mapIndexed { index, data ->
                 val valueY = (data.toFloat() * range) + 50
-                Entry(timeOffset + index.toFloat() * 1000, valueY)
+                Entry(timeOffset + index.toFloat(), valueY)
             }.toMutableList()
 
         val set1: LineDataSet
@@ -146,6 +144,6 @@ class TimeLineActivity : DemoBase() {
     public override fun saveToGallery() = Unit // Intentionally left empty
 
     companion object {
-        const val TIME_OFFSET = 1767105583L
+        const val TIME_OFFSET = 0L //1767105583L
     }
 }
