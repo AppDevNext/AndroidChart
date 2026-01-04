@@ -70,7 +70,7 @@ class BarChartPositiveNegative : DemoBase() {
         binding.chart1.legend.isEnabled = false
 
         // THIS IS THE ORIGINAL DATA YOU WANT TO PLOT
-        val data: MutableList<Data> = ArrayList()
+        val data: MutableList<Data> = mutableListOf()
         data.add(Data(0f, -224.1f, "12-29"))
         data.add(Data(1f, 238.5f, "12-30"))
         data.add(Data(2f, 1280.1f, "12-31"))
@@ -78,8 +78,8 @@ class BarChartPositiveNegative : DemoBase() {
         data.add(Data(4f, -2280.1f, "01-02"))
 
         xAxis.valueFormatter = object : IAxisValueFormatter {
-            override fun getFormattedValue(value: Float, axis: AxisBase?): String? {
-                return data[min(max(value.toInt(), 0), data.size - 1)].xAxisValue
+            override fun getFormattedValue(value: Float, axis: AxisBase?): String {
+                return data[min(max(value.toInt(), 0), data.size - 1)].xAxisValue.toString()
             }
         }
 

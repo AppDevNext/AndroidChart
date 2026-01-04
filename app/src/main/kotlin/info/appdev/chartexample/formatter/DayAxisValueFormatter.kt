@@ -23,7 +23,6 @@ class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValue
             return "$monthName $yearName"
         } else {
             val dayOfMonth = determineDayOfMonth(days, month + 12 * (year - 2016))
-
             var appendix = "th"
 
             when (dayOfMonth) {
@@ -51,8 +50,10 @@ class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValue
             return if (is29Feb) 29 else 28
         }
 
-        return if (month == 3 || month == 5 || month == 8 || month == 10) 30
-        else 31
+        return if (month == 3 || month == 5 || month == 8 || month == 10)
+            30
+        else
+            31
     }
 
     private fun determineMonth(dayOfYear: Int): Int {

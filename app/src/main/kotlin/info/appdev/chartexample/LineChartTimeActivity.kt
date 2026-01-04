@@ -77,11 +77,11 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         xAxis.setCenterAxisLabels(true)
         xAxis.granularity = 1f // one hour
         xAxis.valueFormatter = object : IAxisValueFormatter {
-            private val mFormat = SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH)
+            private val simpleDateFormat = SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH)
 
-            override fun getFormattedValue(value: Float, axis: AxisBase?): String? {
+            override fun getFormattedValue(value: Float, axis: AxisBase?): String {
                 val millis = TimeUnit.HOURS.toMillis(value.toLong())
-                return mFormat.format(Date(millis))
+                return simpleDateFormat.format(Date(millis))
             }
         }
 
