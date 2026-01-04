@@ -27,9 +27,9 @@ import info.appdev.charting.listener.OnChartValueSelectedListener
 import info.appdev.charting.utils.PointF
 import timber.log.Timber
 
-class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
+open class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
 
-    private lateinit var binding: ActivityHorizontalbarchartBinding
+    lateinit var binding: ActivityHorizontalbarchartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

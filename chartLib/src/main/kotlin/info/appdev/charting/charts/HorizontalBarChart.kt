@@ -13,6 +13,7 @@ import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.highlight.HorizontalBarHighlighter
 import info.appdev.charting.renderer.HorizontalBarChartRenderer
+import info.appdev.charting.renderer.RoundedHorizontalBarChartRenderer
 import info.appdev.charting.renderer.XAxisRendererHorizontalBarChart
 import info.appdev.charting.renderer.YAxisRendererHorizontalBarChart
 import info.appdev.charting.utils.HorizontalViewPortHandler
@@ -35,6 +36,13 @@ open class HorizontalBarChart : BarChart {
 
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
+    override fun setRenderer() {
+        mRenderer = if (isOwnRoundedRendererUsed)
+            RoundedHorizontalBarChartRenderer(this, mAnimator, viewPortHandler)
+        else
+            HorizontalBarChartRenderer(this, mAnimator, viewPortHandler)
+    }
+
     init {
         viewPortHandler = HorizontalViewPortHandler()
 
@@ -43,7 +51,6 @@ open class HorizontalBarChart : BarChart {
         mLeftAxisTransformer = TransformerHorizontalBarChart(viewPortHandler)
         mRightAxisTransformer = TransformerHorizontalBarChart(viewPortHandler)
 
-        dataRenderer = HorizontalBarChartRenderer(this, mAnimator, viewPortHandler)
         setHighlighter(HorizontalBarHighlighter(this))
 
         axisRendererLeft = YAxisRendererHorizontalBarChart(viewPortHandler, mAxisLeft, mLeftAxisTransformer)

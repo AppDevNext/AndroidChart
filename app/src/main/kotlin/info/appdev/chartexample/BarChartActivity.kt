@@ -35,9 +35,9 @@ import info.appdev.charting.utils.Fill
 import info.appdev.charting.utils.PointF
 import timber.log.Timber
 
-class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
+open class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelectedListener {
 
-    private lateinit var binding: ActivityBarchartBinding
+    lateinit var binding: ActivityBarchartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

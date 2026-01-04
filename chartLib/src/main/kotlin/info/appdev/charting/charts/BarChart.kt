@@ -10,6 +10,7 @@ import info.appdev.charting.highlight.BarHighlighter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.BarDataProvider
 import info.appdev.charting.renderer.BarChartRenderer
+import info.appdev.charting.renderer.RoundedBarChartRenderer
 import timber.log.Timber
 import java.util.Locale
 
@@ -25,6 +26,12 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
      * Default: false
      */
     override var isHighlightFullBarEnabled: Boolean = false
+
+    override var isOwnRoundedRendererUsed: Boolean = false
+        set(value) {
+            field = value
+            init()
+        }
 
     /**
      * if set to true, all values are drawn above their bars, instead of below their top
@@ -54,10 +61,17 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
 
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
+    protected open fun setRenderer() {
+        mRenderer = if (isOwnRoundedRendererUsed)
+            RoundedBarChartRenderer(this, mAnimator, viewPortHandler)
+        else
+            BarChartRenderer(this, mAnimator, viewPortHandler, mDrawRoundedBars, mRoundedBarRadius)
+    }
+
     override fun init() {
         super.init()
 
-        dataRenderer = BarChartRenderer(this, mAnimator, viewPortHandler, mDrawRoundedBars, mRoundedBarRadius)
+        setRenderer()
 
         setHighlighter(BarHighlighter(this))
 
