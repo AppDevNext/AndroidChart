@@ -14,5 +14,5 @@ interface IAxisValueFormatter {
      * @param value the value to be formatted
      * @param axis  the axis the value belongs to
      */
-    fun getFormattedValue(value: Float, axis: AxisBase?): String?
+    fun getFormattedValue(value: Float, axis: AxisBase?): String
 }
