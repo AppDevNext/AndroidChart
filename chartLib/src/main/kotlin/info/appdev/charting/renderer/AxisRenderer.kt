@@ -203,9 +203,9 @@ abstract class AxisRenderer(
 
         // set decimals
         if (interval < 1) {
-            axis.mDecimals = ceil(-log10(interval)).toInt()
+            axis.decimals = ceil(-log10(interval)).toInt()
         } else {
-            axis.mDecimals = 0
+            axis.decimals = 0
         }
 
         if (axis.isCenterAxisLabelsEnabled) {

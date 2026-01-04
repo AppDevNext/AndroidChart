@@ -54,7 +54,7 @@ abstract class AxisBase : ComponentBase() {
     /**
      * the number of decimal digits to use
      */
-    var mDecimals: Int = 0
+    var decimals: Int = 0
 
     /**
      * the number of label entries the axis should have, default 6
@@ -66,13 +66,6 @@ abstract class AxisBase : ComponentBase() {
      */
     protected var mGranularity: Float = 1.0f
 
-    /**
-     * @return true if granularity is enabled
-     */
-    /**
-     * Enabled/disable granularity control on axis value intervals. If enabled, the axis
-     * interval is not allowed to go below a certain granularity. Default: false
-     */
     /**
      * When true, axis labels are controlled by the `granularity` property.
      * When false, axis values could possibly be repeated.
@@ -193,21 +186,15 @@ abstract class AxisBase : ComponentBase() {
                 mAxisMinLabels = values
         }
 
+    /**
+     * The maximum number of labels on the axis
+     */
     var axisMaxLabels: Int
-        /**
-         * The maximum number of labels on the axis
-         */
         get() = mAxisMaxLabels
-        /**
-         * The maximum number of labels on the axis
-         */
         set(labels) {
             if (labels > 0) mAxisMaxLabels = labels
         }
 
-    /**
-     * if set to true, labels and lines will be displayed at the specific positions passed in via setSpecificPositions
-     */
     /**
      * if true, then labels and lines are displayed using specificPositions instead of computed ones
      */
@@ -218,9 +205,6 @@ abstract class AxisBase : ComponentBase() {
      */
     var specificPositions: FloatArray = floatArrayOf()
 
-    /**
-     * default constructor
-     */
     init {
         this.mTextSize = 10f.convertDpToPixel()
         this.mXOffset = 5f.convertDpToPixel()
@@ -254,28 +238,20 @@ abstract class AxisBase : ComponentBase() {
     val isCenterAxisLabelsEnabled: Boolean
         get() = mCenterAxisLabels && entryCount > 0
 
+    /**
+     * The width of the border surrounding the chart in dp.
+     */
     var axisLineWidth: Float
-        /**
-         * Returns the width of the axis line (line alongside the axis).
-         */
         get() = mAxisLineWidth
-        /**
-         * Sets the width of the border surrounding the chart in dp.
-         */
         set(width) {
             mAxisLineWidth = width.convertDpToPixel()
         }
 
+    /**
+     * The width of the grid lines that are drawn away from each axis label.
+     */
     var gridLineWidth: Float
-        /**
-         * Returns the width of the grid lines that are drawn away from each axis
-         * label.
-         */
         get() = mGridLineWidth
-        /**
-         * Sets the width of the grid lines that are drawn away from each axis
-         * label.
-         */
         set(width) {
             mGridLineWidth = width.convertDpToPixel()
         }
@@ -304,19 +280,14 @@ abstract class AxisBase : ComponentBase() {
         this.isForceLabelsEnabled = force
     }
 
+    /**
+     * The number of label entries for the y-axis max = 25, min = 2, default: 6, be aware
+     * that this number is not fixed.
+     */
     var labelCount: Int
-        /**
-         * Returns the number of label entries the y-axis should have
-         */
         get() = mLabelCount
-        /**
-         * Sets the number of label entries for the y-axis max = 25, min = 2, default: 6, be aware
-         * that this number is not fixed.
-         *
-         * @param count the number of y-axis labels that should be displayed
-         */
-        set(count) {
-            var count = count
+        set(value) {
+            var count = value
             if (count > this.axisMaxLabels) count = this.axisMaxLabels
             if (count < this.axisMinLabels) count = this.axisMinLabels
 
@@ -324,15 +295,12 @@ abstract class AxisBase : ComponentBase() {
             this.isForceLabelsEnabled = false
         }
 
+    /**
+     * Set a minimum interval for the axis when zooming in. The axis is not allowed to go below
+     * that limit. This can be used to avoid label duplicating when zooming in.
+     */
     var granularity: Float
-        /**
-         * @return the minimum interval between axis values
-         */
         get() = mGranularity
-        /**
-         * Set a minimum interval for the axis when zooming in. The axis is not allowed to go below
-         * that limit. This can be used to avoid label duplicating when zooming in.
-         */
         set(granularity) {
             mGranularity = granularity
             // set this to true if it was disabled, as it makes no sense to call this method with granularity disabled
@@ -454,27 +422,23 @@ abstract class AxisBase : ComponentBase() {
             this.valueFormatter!!.getFormattedValue(entries[index], this)
     }
 
+    /**
+     * The formatter to be used for formatting the axis labels. If no formatter is set, the chart will
+     * automatically determine a reasonable formatting (concerning decimals) for all the values
+     * that are drawn inside the chart. U
+     * se chart.getDefaultValueFormatter() to use the formatter calculated by the chart.
+     */
     var valueFormatter: IAxisValueFormatter?
-        /**
-         * Returns the formatter used for formatting the axis labels.
-         */
         get() {
-            if (mAxisValueFormatter == null ||
-                (mAxisValueFormatter is DefaultAxisValueFormatter &&
-                        (mAxisValueFormatter as DefaultAxisValueFormatter).decimalDigits != mDecimals)
-            ) mAxisValueFormatter = DefaultAxisValueFormatter(mDecimals)
+            if (mAxisValueFormatter == null || (mAxisValueFormatter is DefaultAxisValueFormatter &&
+                        (mAxisValueFormatter as DefaultAxisValueFormatter).decimalDigits != decimals)
+            )
+                mAxisValueFormatter = DefaultAxisValueFormatter(decimals)
 
             return mAxisValueFormatter
         }
-        /**
-         * Sets the formatter to be used for formatting the axis labels. If no formatter is set, the
-         * chart will
-         * automatically determine a reasonable formatting (concerning decimals) for all the values
-         * that are drawn inside
-         * the chart. Use chart.getDefaultValueFormatter() to use the formatter calculated by the chart.
-         */
         set(f) {
-            if (f == null) mAxisValueFormatter = DefaultAxisValueFormatter(mDecimals)
+            if (f == null) mAxisValueFormatter = DefaultAxisValueFormatter(decimals)
             else mAxisValueFormatter = f
         }
 
