@@ -165,23 +165,17 @@ abstract class DataSet<T : Entry>(
     }
 
     override fun addEntry(entry: T): Boolean {
-        val values = this.entries
-
         calcMinMax(entry)
 
-        // add the entry
-        return values.add(entry)
+        return entries.add(entry)
     }
 
     override fun removeEntry(entry: T): Boolean {
-
-        // remove the entry
         val removed = mEntries.remove(entry)
 
         if (removed) {
             calcMinMax()
         }
-
         return removed
     }
 
