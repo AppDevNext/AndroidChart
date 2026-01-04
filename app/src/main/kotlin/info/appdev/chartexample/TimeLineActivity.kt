@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import info.appdev.chartexample.DataTools.Companion.generateSineWaves
 import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
 import info.appdev.chartexample.formatter.UnixTimeAxisValueFormatter
@@ -20,8 +21,13 @@ import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IFillFormatter
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.ILineDataSet
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TimeLineActivity : DemoBase() {
+    private var menuItemMove: MenuItem? = null
     private lateinit var binding: ActivityLinechartNoseekbarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +56,7 @@ class TimeLineActivity : DemoBase() {
             setDrawGridLines(false)
 //            granularity = 1f // only intervals of 1 day
             labelCount = 7
-            valueFormatter = UnixTimeAxisValueFormatter("yyyy-MM-dd HH:mm:ss")
+            valueFormatter = UnixTimeAxisValueFormatter("HH:mm:ss")
         }
 
         // if disabled, scaling can be done on x- and y-axis separately
@@ -127,7 +133,43 @@ class TimeLineActivity : DemoBase() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.only_github, menu)
+        menuItemMove = menu?.add("Move chart")?.apply {
+            setOnMenuItemClickListener { menuItem ->
+                menuItem.isChecked = !menuItem.isChecked
+                lifecycleScope.launch {
+                    moveChart()
+                }
+                true
+            }.isCheckable = true
+        }
         return true
+    }
+
+    fun <T> MutableList<T>.moveFirstToLast() {
+        val first = this[0]
+        val second = this[1] // needed to get time diff
+        val last = this[size - 1]
+        val timeDiff = (second as Entry).x - (first as Entry).x
+        removeAt(0)
+        first.x = (last as Entry).x + timeDiff
+        add(first)
+    }
+
+    private suspend fun moveChart() {
+        withContext(Dispatchers.Default) {
+            while (menuItemMove!!.isChecked) {
+                withContext(Dispatchers.Main) {
+                    binding.chart1.lineData.dataSets?.get(0)?.let { set ->
+                        (set as LineDataSet).entries.moveFirstToLast()
+                        set.notifyDataChanged()
+                        binding.chart1.lineData.notifyDataChanged()
+                        binding.chart1.notifyDataSetChanged()
+                        binding.chart1.invalidate()
+                    }
+                }
+                delay(100)
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
