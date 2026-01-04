@@ -107,7 +107,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     /**
      * Use this method to tell the data set that the underlying data has changed.
      */
-    fun notifyDataSetChanged() {
+    override fun notifyDataChanged() {
         calcMinMax()
     }
 
