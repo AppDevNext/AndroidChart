@@ -19,7 +19,6 @@ open class CandleDataSet(yVals: MutableList<CandleEntry>, label: String = "") : 
      * should the candle bars show?
      * when false, only "ticks" will show
      *
-     *
      * - default: true
      */
     private var mShowCandleBar = true

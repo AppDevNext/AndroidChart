@@ -55,10 +55,8 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
 
     override fun copy(): DataSet<BarEntry>? {
         val entries: MutableList<BarEntry> = mutableListOf()
-        mEntries?.let {
-            for (i in it.indices) {
-                entries.add(it[i].copy())
-            }
+        for (i in mEntries.indices) {
+            entries.add(mEntries[i].copy())
         }
         val copied = BarDataSet(entries, label)
         copy(copied)
