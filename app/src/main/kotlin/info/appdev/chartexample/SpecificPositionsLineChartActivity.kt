@@ -108,7 +108,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         leftAxis.specificPositions = floatArrayOf(0f, 10f, 20f, 50f, 100f, 300f)
 
         // limit lines are drawn behind data (and not on top)
-        leftAxis.setDrawLimitLinesBehindData(true)
+        leftAxis.isDrawLimitLinesBehindData = true
         binding.chart1.axisRight.isEnabled = false
         setData(45, 100f)
         binding.chart1.animateX(2500)

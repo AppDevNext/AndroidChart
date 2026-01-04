@@ -147,14 +147,14 @@ open class RadarChart : PieRadarChartBase<RadarData> {
         if (drawWeb)
             dataRenderer?.drawExtras(canvas)
 
-        if (mYAxis!!.isEnabled && mYAxis!!.isDrawLimitLinesBehindDataEnabled) mYAxisRenderer!!.renderLimitLines(canvas)
+        if (mYAxis!!.isEnabled && mYAxis!!.isDrawLimitLinesBehindData) mYAxisRenderer!!.renderLimitLines(canvas)
 
         dataRenderer?.drawData(canvas)
 
         if (valuesToHighlight())
             dataRenderer?.drawHighlighted(canvas, highlighted!!)
 
-        if (mYAxis!!.isEnabled && !mYAxis!!.isDrawLimitLinesBehindDataEnabled) mYAxisRenderer!!.renderLimitLines(canvas)
+        if (mYAxis!!.isEnabled && !mYAxis!!.isDrawLimitLinesBehindData) mYAxisRenderer!!.renderLimitLines(canvas)
 
         mYAxisRenderer!!.renderAxisLabels(canvas)
 

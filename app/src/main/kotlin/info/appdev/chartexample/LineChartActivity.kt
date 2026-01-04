@@ -114,8 +114,8 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         }
 
         // draw limit lines behind data instead of on top
-        binding.chart1.axisLeft.setDrawLimitLinesBehindData(true)
-        binding.chart1.xAxis.setDrawLimitLinesBehindData(true)
+        binding.chart1.axisLeft.isDrawLimitLinesBehindData = true
+        binding.chart1.xAxis.isDrawLimitLinesBehindData = true
 
         // add limit lines
         binding.chart1.axisLeft.addLimitLine(limitLineUpper)
