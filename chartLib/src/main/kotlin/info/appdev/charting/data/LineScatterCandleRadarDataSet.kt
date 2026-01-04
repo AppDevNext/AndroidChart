@@ -4,7 +4,7 @@ import android.graphics.DashPathEffect
 import info.appdev.charting.interfaces.datasets.ILineScatterCandleRadarDataSet
 import info.appdev.charting.utils.convertDpToPixel
 
-abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>, label: String) : BarLineScatterCandleBubbleDataSet<T>(yVals, label),
+abstract class LineScatterCandleRadarDataSet<T : BaseEntry<Float>>(yVals: MutableList<T>, label: String) : BarLineScatterCandleBubbleDataSet<T>(yVals, label),
     ILineScatterCandleRadarDataSet<T> {
     override var isVerticalHighlightIndicator: Boolean = true
     override var isHorizontalHighlightIndicator: Boolean = true
