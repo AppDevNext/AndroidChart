@@ -135,7 +135,7 @@ class TimeLineActivity : DemoBase() {
             R.id.viewGithub -> {
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data =
-                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/FilledLineActivity.kt".toUri()
+                    "https://github.com/AppDevNext/AndroidChart/blob/master/app/src/main/java/info/appdev/chartexample/TimeLineActivity.kt".toUri()
                 startActivity(i)
             }
         }
