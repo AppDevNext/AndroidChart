@@ -12,60 +12,25 @@ import kotlin.math.abs
  * Class representing one entry in the chart. Might contain multiple values.
  * Might only contain a single value depending on the used constructor.
  */
-open class Entry : BaseEntry, Parcelable, Serializable {
+open class Entry : BaseEntry<Float>, Parcelable, Serializable {
 
-    private var _x: Float = 0f
-    open var x: Float
-        get() = _x
-        set(value) {
-            _x = value
-        }
+    constructor() : super()
 
-    constructor()
+    constructor(y: Float) : super(y)
 
-    /**
-     * A Entry represents one single entry in the chart.
-     *
-     * @param x the x value
-     * @param y the y value (the actual value of the entry)
-     */
-    constructor(x: Float, y: Float) : super(y) {
-        this._x = x
-    }
+    constructor(y: Float, data: Any?) : super(y, data)
 
-    /**
-     * A Entry represents one single entry in the chart.
-     *
-     * @param x    the x value
-     * @param y    the y value (the actual value of the entry)
-     * @param data Spot for additional data this Entry represents.
-     */
-    constructor(x: Float, y: Float, data: Any?) : super(y, data) {
-        this._x = x
-    }
+    constructor(y: Float, icon: Drawable?) : super(y, icon)
 
-    /**
-     * A Entry represents one single entry in the chart.
-     *
-     * @param x the x value
-     * @param y the y value (the actual value of the entry)
-     * @param icon icon image
-     */
-    constructor(x: Float, y: Float, icon: Drawable?) : super(y, icon) {
-        this._x = x
-    }
+    constructor(y: Float, icon: Drawable?, data: Any?) : super(y, icon, data)
 
-    /**
-     * A Entry represents one single entry in the chart.
-     *
-     * @param x the x value
-     * @param y the y value (the actual value of the entry)
-     * @param icon icon image
-     * @param data Spot for additional data this Entry represents.
-     */
-    constructor(x: Float, y: Float, icon: Drawable?, data: Any?) : super(y, icon, data) {
-        this._x = x
-    }
+    constructor(x: Float, y: Float) : super(x, y)
+
+    constructor(x: Float, y: Float, data: Any?) : super(x, y, data)
+
+    constructor(x: Float, y: Float, icon: Drawable?) : super(x, y, icon)
+
+    constructor(x: Float, y: Float, icon: Drawable?, data: Any?) : super(x, y, icon, data)
 
     /**
      * returns an exact copy of the entry
@@ -123,7 +88,7 @@ open class Entry : BaseEntry, Parcelable, Serializable {
     }
 
     protected constructor(`in`: Parcel) {
-        this._x = `in`.readFloat()
+        this.xBase = `in`.readFloat()
         this.yBase = `in`.readFloat()
         if (`in`.readInt() == 1) {
             this.data = `in`.readParcelable(Any::class.java.classLoader)

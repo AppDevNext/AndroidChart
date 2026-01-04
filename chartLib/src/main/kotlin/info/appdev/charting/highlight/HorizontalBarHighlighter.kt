@@ -1,7 +1,6 @@
 package info.appdev.charting.highlight
 
 import info.appdev.charting.data.DataSet
-import info.appdev.charting.data.Entry
 import info.appdev.charting.interfaces.dataprovider.BarDataProvider
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.utils.PointD
@@ -38,7 +37,7 @@ class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(d
         var entries = set.getEntriesForXValue(xVal)
         if (entries != null && entries.isEmpty()) {
             // Try to find closest x-value and take all entries for that x-value
-            val closestEntry: Entry? = set.getEntryForXValue(xVal, Float.NaN, rounding)
+            val closestEntry = set.getEntryForXValue(xVal, Float.NaN, rounding)
             closestEntry?.let { closestE ->
                 entries = set.getEntriesForXValue(closestE.x)
             }
