@@ -28,7 +28,7 @@ open class PercentFormatter : IValueFormatter, IAxisValueFormatter {
     }
 
     // IAxisValueFormatter
-    override fun getFormattedValue(value: Float, axis: AxisBase?): String? {
+    override fun getFormattedValue(value: Float, axis: AxisBase?): String {
         return decimalFormat.format(value.toDouble()) + " %"
     }
 

@@ -5,9 +5,9 @@ import info.appdev.charting.formatter.IAxisValueFormatter
 import java.text.DecimalFormat
 
 class MyAxisValueFormatter : IAxisValueFormatter {
-    private val mFormat = DecimalFormat("###,###,###,##0.0")
+    private val decimalFormat = DecimalFormat("###,###,###,##0.0")
 
     override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-        return mFormat.format(value.toDouble()) + " $"
+        return decimalFormat.format(value.toDouble()) + " $"
     }
 }

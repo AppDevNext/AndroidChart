@@ -18,8 +18,7 @@ import info.appdev.charting.utils.formatNumber
 class MyMarkerView(context: Context?, layoutResource: Int) : MarkerView(context, layoutResource) {
     private val tvContent: TextView = findViewById(R.id.tvContent)
 
-    // runs every time the MarkerView is redrawn, can be used to update the
-    // content (user-interface)
+    // runs every time the MarkerView is redrawn, can be used to update the content (user-interface)
 
     override fun refreshContent(entry: Entry, highlight: Highlight) {
         if (entry is CandleEntry) {

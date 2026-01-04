@@ -25,7 +25,7 @@ open class DefaultAxisValueFormatter(digits: Int) : IAxisValueFormatter {
         decimalFormat = DecimalFormat("###,###,###,##0$stringBuffer")
     }
 
-    override fun getFormattedValue(value: Float, axis: AxisBase?): String? {
+    override fun getFormattedValue(value: Float, axis: AxisBase?): String {
         // avoid memory allocations here (for performance)
         return decimalFormat.format(value.toDouble())
     }

@@ -12,8 +12,12 @@ import info.appdev.charting.utils.convertDpToPixel
  */
 class CustomScatterShapeRenderer : IShapeRenderer {
     override fun renderShape(
-        canvas: Canvas, dataSet: IScatterDataSet, viewPortHandler: ViewPortHandler?,
-        posX: Float, posY: Float, renderPaint: Paint
+        canvas: Canvas,
+        dataSet: IScatterDataSet,
+        viewPortHandler: ViewPortHandler?,
+        posX: Float,
+        posY: Float,
+        renderPaint: Paint
     ) {
         val shapeHalf = dataSet.scatterShapeSize.convertDpToPixel() / 2f
 
