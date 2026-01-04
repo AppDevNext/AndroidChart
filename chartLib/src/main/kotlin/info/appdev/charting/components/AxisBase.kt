@@ -158,15 +158,9 @@ abstract class AxisBase : ComponentBase() {
     var isAxisMaxCustom: Boolean = false
         protected set
 
-    /**
-     * don't touch this direclty, use setter
-     */
-    var mAxisMaximum: Float = 0f
+    private var mAxisMaximum: Float = 0f
 
-    /**
-     * don't touch this directly, use setter
-     */
-    var mAxisMinimum: Float = 0f
+    private var mAxisMinimum: Float = 0f
 
     /**
      * the total range of values this axis covers

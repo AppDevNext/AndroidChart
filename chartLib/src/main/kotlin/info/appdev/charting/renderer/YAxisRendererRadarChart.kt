@@ -135,9 +135,9 @@ class YAxisRendererRadarChart(
             }
         }
 
-        axis.mAxisMinimum = axis.entries[0]
-        axis.mAxisMaximum = axis.entries[n - 1]
-        axis.axisRange = abs((axis.mAxisMaximum - axis.mAxisMinimum).toDouble()).toFloat()
+        axis.axisMinimum = axis.entries[0]
+        axis.axisMaximum = axis.entries[n - 1]
+        axis.axisRange = abs((axis.axisMaximum - axis.axisMinimum).toDouble()).toFloat()
     }
 
     override fun renderAxisLabels(canvas: Canvas) {
@@ -161,7 +161,7 @@ class YAxisRendererRadarChart(
         val xOffset = yAxis.labelXOffset
 
         for (j in from..<to) {
-            val r = (yAxis.entries[j] - yAxis.mAxisMinimum) * factor
+            val r = (yAxis.entries[j] - yAxis.axisMinimum) * factor
 
             pOut = center.getPosition(r, chart.rotationAngle)
 
