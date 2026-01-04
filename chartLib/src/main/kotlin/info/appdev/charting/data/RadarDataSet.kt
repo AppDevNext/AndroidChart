@@ -5,7 +5,7 @@ import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.IRadarDataSet
 import info.appdev.charting.utils.ColorTemplate
 
-open class RadarDataSet(yVals: MutableList<RadarEntry>?, label: String = "") : LineRadarDataSet<RadarEntry>(yVals, label), IRadarDataSet {
+open class RadarDataSet(yVals: MutableList<RadarEntry>, label: String = "") : LineRadarDataSet<RadarEntry>(yVals, label), IRadarDataSet {
     /** flag indicating whether highlight circle should be drawn or not */
     protected var mDrawHighlightCircleEnabled: Boolean = false
 
@@ -60,10 +60,8 @@ open class RadarDataSet(yVals: MutableList<RadarEntry>?, label: String = "") : L
 
     override fun copy(): DataSet<RadarEntry> {
         val entries: MutableList<RadarEntry> = mutableListOf()
-        mEntries?.let {
-            for (i in it.indices) {
-                entries.add(it[i].copy())
-            }
+        for (i in mEntries.indices) {
+            entries.add(mEntries[i].copy())
         }
         val copied = RadarDataSet(entries, label)
         copy(copied)

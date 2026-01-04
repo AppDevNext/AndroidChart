@@ -12,24 +12,18 @@ import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.convertDpToPixel
 import timber.log.Timber
 
-open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRadarDataSet<Entry>(yVals, label), ILineDataSet {
+open class LineDataSet(yVals: MutableList<Entry> = mutableListOf(), label: String = "") : LineRadarDataSet<Entry>(yVals, label), ILineDataSet {
     /**
      * Drawing mode for this line dataset
      */
     private var mLineDataSetMode: Mode = Mode.LINEAR
 
     /**
-     * returns all colors specified for the circles
-     */
-    /**
      * Sets the colors that should be used for the circles of this DataSet.
      * Colors are reused as soon as the number of Entries the DataSet represents
      * is higher than the size of the colors array. Make sure that the colors
      * are already prepared (by calling getResources().getColor(...)) before
      * adding them to the DataSet.
-     */
-    /**
-     * List representing all colors that are used for the circles
      */
     @ColorInt
     var circleColors: MutableList<Int> = mutableListOf()
@@ -72,7 +66,6 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
 
     private var mDrawCircleHole = true
 
-
     init {
         // default colors
         // mColors.add(Color.rgb(192, 255, 140));
@@ -82,10 +75,8 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
 
     override fun copy(): DataSet<Entry> {
         val entries: MutableList<Entry> = mutableListOf()
-        mEntries?.let {
-            for (i in it.indices) {
-                entries.add(it[i].copy())
-            }
+        for (i in mEntries.indices) {
+            entries.add(mEntries[i].copy())
         }
         val copied = LineDataSet(entries, label)
         copy(copied)
@@ -128,13 +119,14 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
         set(value) {
             mLineDataSetMode = value
         }
+
+    /**
+     * Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic,
+     * Min = 0.05f = low cubic effect, Default: 0.2f
+     */
     override var cubicIntensity: Float
         get() = mCubicIntensity
         set(value) {
-            /**
-             * Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic,
-             * Min = 0.05f = low cubic effect, Default: 0.2f
-             */
             var intensity = value
             if (intensity > 1f) {
                 intensity = 1f
@@ -152,13 +144,13 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
     override val isDrawSteppedEnabled: Boolean
         get() = mLineDataSetMode == Mode.STEPPED
 
+    /**
+     * Sets the radius of the drawn circles.
+     * Default radius = 4f, Min = 1f
+     */
     override var circleRadius: Float
         get() = mCircleRadius
         set(value) {
-            /**
-             * Sets the radius of the drawn circles.
-             * Default radius = 4f, Min = 1f
-             */
             if (value >= 1f) {
                 mCircleRadius = value.convertDpToPixel()
             } else {
@@ -166,13 +158,13 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
             }
         }
 
+    /**
+     * Sets the hole radius of the drawn circles.
+     * Default radius = 2f, Min = 0.5f
+     */
     override var circleHoleRadius: Float
         get() = mCircleHoleRadius
         set(value) {
-            /**
-             * Sets the hole radius of the drawn circles.
-             * Default radius = 2f, Min = 0.5f
-             */
             if (value >= 0.5f) {
                 mCircleHoleRadius = value.convertDpToPixel()
             } else {
@@ -224,11 +216,7 @@ open class LineDataSet(yVals: MutableList<Entry>?, label: String = "") : LineRad
     override var fillFormatter: IFillFormatter?
         get() = mFillFormatter
         set(value) {
-            if (value == null) {
-                mFillFormatter = DefaultFillFormatter()
-            } else {
-                mFillFormatter = value
-            }
+            mFillFormatter = value ?: DefaultFillFormatter()
         }
 
     /**
