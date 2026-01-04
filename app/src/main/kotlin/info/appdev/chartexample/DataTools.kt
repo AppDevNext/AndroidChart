@@ -175,7 +175,7 @@ class DataTools {
                 if (it.dataSetCount > 0) {
                     val lineDataSet0 = it.getDataSetByIndex(0) as LineDataSet
                     lineDataSet0.entries = values
-                    lineDataSet0.notifyDataSetChanged()
+                    lineDataSet0.notifyDataChanged()
                     it.notifyDataChanged()
                     lineChart.notifyDataSetChanged()
                 } else

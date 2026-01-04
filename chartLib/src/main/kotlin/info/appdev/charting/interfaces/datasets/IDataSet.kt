@@ -295,4 +295,6 @@ interface IDataSet<T : Entry> {
      * be drawn to the chart upon refreshing it.
      */
     var isVisible: Boolean
+
+    fun notifyDataChanged()
 }

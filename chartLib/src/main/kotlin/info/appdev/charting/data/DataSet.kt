@@ -122,7 +122,7 @@ abstract class DataSet<T : Entry>(
         get() = mEntries
         set(entries) {
             mEntries = entries
-            notifyDataSetChanged()
+            notifyDataChanged()
         }
 
     /**
@@ -161,7 +161,7 @@ abstract class DataSet<T : Entry>(
 
     override fun clear() {
         mEntries.clear()
-        notifyDataSetChanged()
+        notifyDataChanged()
     }
 
     override fun addEntry(entry: T): Boolean {
