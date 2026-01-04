@@ -4,7 +4,7 @@ import android.graphics.DashPathEffect
 import info.appdev.charting.interfaces.datasets.ILineScatterCandleRadarDataSet
 import info.appdev.charting.utils.convertDpToPixel
 
-abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>?, label: String) : BarLineScatterCandleBubbleDataSet<T>(yVals, label),
+abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>, label: String) : BarLineScatterCandleBubbleDataSet<T>(yVals, label),
     ILineScatterCandleRadarDataSet<T> {
     override var isVerticalHighlightIndicatorEnabled: Boolean = true
         protected set
@@ -76,11 +76,11 @@ abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>?, 
         this.dashPathEffectHighlight = null
     }
 
+    /**
+     * Returns true if the dashed-line effect is enabled for highlight lines, false if not.
+     * Default: disabled
+     */
     val isDashedHighlightLineEnabled: Boolean
-        /**
-         * Returns true if the dashed-line effect is enabled for highlight lines, false if not.
-         * Default: disabled
-         */
         get() = this.dashPathEffectHighlight != null
 
     protected fun copy(lineScatterCandleRadarDataSet: LineScatterCandleRadarDataSet<*>) {

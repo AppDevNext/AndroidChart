@@ -11,7 +11,7 @@ import kotlin.math.abs
  * LineChart, or the values of a specific group of bars in the BarChart).
  */
 abstract class DataSet<T : Entry>(
-    protected var mEntries: MutableList<T>?,
+    protected var mEntries: MutableList<T>,
     label: String = ""
 ) : BaseDataSet<T>(label), Serializable {
     /**
@@ -38,17 +38,12 @@ abstract class DataSet<T : Entry>(
     override var xMin: Float = Float.MAX_VALUE
         protected set
 
-
     /**
      * Creates a new DataSet object with the given values (entries) it represents. Also, a
      * label that describes the DataSet can be specified. The label can also be
      * used to retrieve the DataSet from a ChartData object.
      */
     init {
-        if (mEntries == null) {
-            mEntries = ArrayList<T>()
-        }
-
         calcMinMax()
     }
 
@@ -58,7 +53,7 @@ abstract class DataSet<T : Entry>(
         this.xMax = -Float.MAX_VALUE
         this.xMin = Float.MAX_VALUE
 
-        if (mEntries == null || mEntries!!.isEmpty()) {
+        if (mEntries.isEmpty()) {
             return
         }
 
@@ -71,7 +66,7 @@ abstract class DataSet<T : Entry>(
         this.yMax = -Float.MAX_VALUE
         this.yMin = Float.MAX_VALUE
 
-        if (mEntries == null || mEntries!!.isEmpty()) {
+        if (mEntries.isEmpty()) {
             return
         }
 
@@ -85,7 +80,7 @@ abstract class DataSet<T : Entry>(
         for (i in indexFrom..indexTo) {
             // only recalculate y
 
-            calcMinMaxY(mEntries!![i])
+            calcMinMaxY(mEntries[i])
         }
     }
 
@@ -118,32 +113,13 @@ abstract class DataSet<T : Entry>(
     }
 
     override val entryCount: Int
-        get() = mEntries!!.size
+        get() = mEntries.size
 
-    @get:Deprecated("")
-    @set:Deprecated("")
-    var values: MutableList<T>?
-        /**
-         * This method is deprecated.
-         * Use getEntries() instead.
-         */
+    /**
+     * Returns the array of entries that this DataSet represents.
+     */
+    var entries: MutableList<T>
         get() = mEntries
-        /**
-         * This method is deprecated.
-         * Use setEntries(...) instead.
-         */
-        set(values) {
-            this.entries = values
-        }
-
-    var entries: MutableList<T>?
-        /**
-         * Returns the array of entries that this DataSet represents.
-         */
-        get() = mEntries
-        /**
-         * Sets the array of entries that this DataSet represents, and calls notifyDataSetChanged()
-         */
         set(entries) {
             mEntries = entries
             notifyDataSetChanged()
@@ -161,8 +137,8 @@ abstract class DataSet<T : Entry>(
     override fun toString(): String {
         val buffer = StringBuilder()
         buffer.append(toSimpleString())
-        for (i in mEntries!!.indices) {
-            buffer.append(mEntries!![i].toString()).append(" ")
+        for (i in mEntries.indices) {
+            buffer.append(mEntries[i].toString()).append(" ")
         }
         return buffer.toString()
     }
@@ -170,33 +146,26 @@ abstract class DataSet<T : Entry>(
     /**
      * Returns a simple string representation of the DataSet with the type and the number of Entries.
      */
-    fun toSimpleString() = "DataSet, label: $label, entries: ${mEntries!!.size}"
+    fun toSimpleString() = "DataSet, label: $label, entries: ${mEntries.size}"
 
     override fun addEntryOrdered(entry: T) {
-        if (mEntries == null) {
-            mEntries = ArrayList()
-        }
-
         calcMinMax(entry)
 
-        if (!mEntries!!.isEmpty() && mEntries!![mEntries!!.size - 1].x > entry.x) {
+        if (!mEntries.isEmpty() && mEntries[mEntries.size - 1].x > entry.x) {
             val closestIndex = getEntryIndex(entry.x, entry.y, Rounding.UP)
-            mEntries!!.add(closestIndex, entry)
+            mEntries.add(closestIndex, entry)
         } else {
-            mEntries!!.add(entry)
+            mEntries.add(entry)
         }
     }
 
     override fun clear() {
-        mEntries!!.clear()
+        mEntries.clear()
         notifyDataSetChanged()
     }
 
     override fun addEntry(entry: T): Boolean {
-        var values = this.entries
-        if (values == null) {
-            values = ArrayList()
-        }
+        val values = this.entries
 
         calcMinMax(entry)
 
@@ -205,11 +174,9 @@ abstract class DataSet<T : Entry>(
     }
 
     override fun removeEntry(entry: T): Boolean {
-        if (mEntries == null)
-            return false
 
         // remove the entry
-        val removed = mEntries!!.remove(entry)
+        val removed = mEntries.remove(entry)
 
         if (removed) {
             calcMinMax()
@@ -220,14 +187,14 @@ abstract class DataSet<T : Entry>(
 
     override fun getEntryIndex(entry: T): Int {
 //        return getEntryIndex(entry)
-        return mEntries!!.indexOf(entry)
+        return mEntries.indexOf(entry)
     }
 
 
     override fun getEntryForXValue(xValue: Float, closestToY: Float, rounding: Rounding?): T? {
         val index = getEntryIndex(xValue, closestToY, rounding)
         if (index > -1) {
-            return mEntries!![index]
+            return mEntries[index]
         }
         return null
     }
@@ -240,28 +207,28 @@ abstract class DataSet<T : Entry>(
         if (index < 0) {
             Timber.e("index $index is < 0 for getEntryForIndex")
             return null
-        } else if (index >= mEntries!!.size) {
-            Timber.e("index " + index + "/" + mEntries!!.size + " is out of range for getEntryForIndex")
+        } else if (index >= mEntries.size) {
+            Timber.e("index $index / ${mEntries.size} is out of range for getEntryForIndex")
             return null
         }
-        return mEntries!![index]
+        return mEntries[index]
     }
 
     override fun getEntryIndex(xValue: Float, closestToY: Float, rounding: Rounding?): Int {
-        if (mEntries == null || mEntries!!.isEmpty()) {
+        if (mEntries.isEmpty()) {
             return -1
         }
 
         var low = 0
-        var high = mEntries!!.size - 1
+        var high = mEntries.size - 1
         var closest = high
 
         while (low < high) {
             val m = low + (high - low) / 2
 
-            val currentEntry: Entry = mEntries!![m]
+            val currentEntry: Entry = mEntries[m]
 
-            val nextEntry: Entry = mEntries!![m + 1]
+            val nextEntry: Entry = mEntries[m + 1]
 
             val d1 = currentEntry.x - xValue
             val d2 = nextEntry.x - xValue
@@ -291,11 +258,11 @@ abstract class DataSet<T : Entry>(
             closest = high
         }
 
-        val closestEntry: Entry = mEntries!![closest]
+        val closestEntry: Entry = mEntries[closest]
         val closestXValue = closestEntry.x
         if (rounding == Rounding.UP) {
             // If rounding up, and found x-value is lower than specified x, and we can go upper...
-            if (closestXValue < xValue && closest < mEntries!!.size - 1) {
+            if (closestXValue < xValue && closest < mEntries.size - 1) {
                 ++closest
             }
         } else if (rounding == Rounding.DOWN) {
@@ -307,7 +274,7 @@ abstract class DataSet<T : Entry>(
 
         // Search by closest to y-value
         if (!closestToY.isNaN()) {
-            while (closest > 0 && mEntries!![closest - 1].x == closestXValue) {
+            while (closest > 0 && mEntries[closest - 1].x == closestXValue) {
                 closest -= 1
             }
 
@@ -316,11 +283,11 @@ abstract class DataSet<T : Entry>(
 
             while (true) {
                 closest += 1
-                if (closest >= mEntries!!.size) {
+                if (closest >= mEntries.size) {
                     break
                 }
 
-                val value: T = mEntries!![closest]
+                val value: T = mEntries[closest]
 
                 if (value.x != closestXValue) {
                     break
@@ -341,23 +308,23 @@ abstract class DataSet<T : Entry>(
         val entries: MutableList<T> = mutableListOf()
 
         var low = 0
-        var high = mEntries!!.size - 1
+        var high = mEntries.size - 1
 
         while (low <= high) {
             var m = (high + low) / 2
-            var entry = mEntries!![m]
+            var entry = mEntries[m]
 
             // if we have a match
             if (xValue == entry.x) {
-                while (m > 0 && mEntries!![m - 1].x == xValue) {
+                while (m > 0 && mEntries[m - 1].x == xValue) {
                     m--
                 }
 
-                high = mEntries!!.size
+                high = mEntries.size
 
                 // loop over all "equal" entries
                 while (m < high) {
-                    entry = mEntries!![m]
+                    entry = mEntries[m]
                     if (entry.x == xValue) {
                         entries.add(entry)
                     } else {

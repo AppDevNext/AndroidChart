@@ -3,7 +3,7 @@ package info.appdev.charting.data
 import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 import info.appdev.charting.utils.convertDpToPixel
 
-open class BubbleDataSet(yVals: MutableList<BubbleEntry>?, label: String) : BarLineScatterCandleBubbleDataSet<BubbleEntry>(yVals, label), IBubbleDataSet {
+open class BubbleDataSet(yVals: MutableList<BubbleEntry>, label: String) : BarLineScatterCandleBubbleDataSet<BubbleEntry>(yVals, label), IBubbleDataSet {
     protected var mMaxSize: Float = 0f
     protected var mNormalizeSize: Boolean = true
 
@@ -21,8 +21,8 @@ open class BubbleDataSet(yVals: MutableList<BubbleEntry>?, label: String) : BarL
 
     override fun copy(): DataSet<BubbleEntry> {
         val entries: MutableList<BubbleEntry> = ArrayList()
-        for (i in mEntries!!.indices) {
-            entries.add(mEntries!![i].copy())
+        for (i in mEntries.indices) {
+            entries.add(mEntries[i].copy())
         }
         val copied = BubbleDataSet(entries, label)
         copy(copied)

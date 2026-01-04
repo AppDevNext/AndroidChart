@@ -354,7 +354,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
         if (chartData != null && chartData.dataSetCount > 0) {
             set1 = chartData.getDataSetByIndex(0) as BarDataSet
             @Suppress("DEPRECATION")
-            set1.values = values
+            set1.entries = values
             chartData.notifyDataChanged()
             localChart.notifyDataSetChanged()
         } else {

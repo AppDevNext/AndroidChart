@@ -148,7 +148,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
     }
 
     private fun createSet(): LineDataSet {
-        val set = LineDataSet(null, "DataSet 1")
+        val set = LineDataSet(label = "DataSet 1")
         set.lineWidth = 2.5f
         set.circleRadius = 4.5f
         set.color = Color.rgb(240, 99, 99)

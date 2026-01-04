@@ -13,7 +13,7 @@ import info.appdev.charting.renderer.scatter.TriangleShapeRenderer
 import info.appdev.charting.renderer.scatter.XShapeRenderer
 import info.appdev.charting.utils.ColorTemplate
 
-open class ScatterDataSet(yVals: MutableList<Entry>?, label: String = "") : LineScatterCandleRadarDataSet<Entry>(yVals, label), IScatterDataSet {
+open class ScatterDataSet(yVals: MutableList<Entry>, label: String = "") : LineScatterCandleRadarDataSet<Entry>(yVals, label), IScatterDataSet {
     /**
      * the size the scatterShape will have, in density pixels
      */
@@ -40,10 +40,8 @@ open class ScatterDataSet(yVals: MutableList<Entry>?, label: String = "") : Line
 
     override fun copy(): DataSet<Entry> {
         val entries: MutableList<Entry> = mutableListOf()
-        mEntries?.let {
-            for (i in it.indices) {
-                entries.add(it[i].copy())
-            }
+        for (i in mEntries.indices) {
+            entries.add(mEntries[i].copy())
         }
         val copied = ScatterDataSet(entries, label)
         copy(copied)
