@@ -181,9 +181,9 @@ abstract class AxisBase : ComponentBase() {
      */
     var axisMinLabels: Int
         get() = mAxisMinLabels
-        set(values) {
-            if (values > 0)
-                mAxisMinLabels = values
+        set(value) {
+            if (value > 0)
+                mAxisMinLabels = value
         }
 
     /**
@@ -191,8 +191,9 @@ abstract class AxisBase : ComponentBase() {
      */
     var axisMaxLabels: Int
         get() = mAxisMaxLabels
-        set(labels) {
-            if (labels > 0) mAxisMaxLabels = labels
+        set(value) {
+            if (value > 0)
+                mAxisMaxLabels = value
         }
 
     /**
@@ -288,8 +289,10 @@ abstract class AxisBase : ComponentBase() {
         get() = mLabelCount
         set(value) {
             var count = value
-            if (count > this.axisMaxLabels) count = this.axisMaxLabels
-            if (count < this.axisMinLabels) count = this.axisMinLabels
+            if (count > this.axisMaxLabels)
+                count = this.axisMaxLabels
+            if (count < this.axisMinLabels)
+                count = this.axisMinLabels
 
             mLabelCount = count
             this.isForceLabelsEnabled = false
@@ -346,8 +349,8 @@ abstract class AxisBase : ComponentBase() {
     /**
      * Removes the specified LimitRange from the axis.
      */
-    fun removeLimitRange(l: LimitRange) {
-        limitRanges.remove(l)
+    fun removeLimitRange(limitRange: LimitRange) {
+        limitRanges.remove(limitRange)
     }
 
     /**
@@ -477,12 +480,11 @@ abstract class AxisBase : ComponentBase() {
         this.gridDashPathEffect = null
     }
 
+    /**
+     * Returns true if the grid dashed-line effect is enabled, false if not.
+     */
     val isGridDashedLineEnabled: Boolean
-        /**
-         * Returns true if the grid dashed-line effect is enabled, false if not.
-         */
         get() = this.gridDashPathEffect != null
-
 
     /**
      * Enables the axis line to be drawn in dashed mode, e.g. like this
@@ -494,11 +496,7 @@ abstract class AxisBase : ComponentBase() {
      * @param phase       offset, in degrees (normally, use 0)
      */
     fun enableAxisLineDashedLine(lineLength: Float, spaceLength: Float, phase: Float) {
-        this.axisLineDashPathEffect = DashPathEffect(
-            floatArrayOf(
-                lineLength, spaceLength
-            ), phase
-        )
+        this.axisLineDashPathEffect = DashPathEffect(floatArrayOf(lineLength, spaceLength), phase)
     }
 
     /**
@@ -519,37 +517,31 @@ abstract class AxisBase : ComponentBase() {
         this.axisLineDashPathEffect = null
     }
 
+    /**
+     * Returns true if the axis dashed-line effect is enabled
+     */
     val isAxisLineDashedLineEnabled: Boolean
-        /**
-         * Returns true if the axis dashed-line effect is enabled, false if not.
-         */
         get() = this.axisLineDashPathEffect != null
 
+    /**
+     * Set a custom maximum value for this axis. If set, this value will not be calculated
+     * automatically depending on the provided data. Use resetAxisMaxValue() to undo this.
+     */
     var axisMaximum: Float
-        /**
-         * ###### BELOW CODE RELATED TO CUSTOM AXIS VALUES ######
-         */
         get() = mAxisMaximum
-        /**
-         * Set a custom maximum value for this axis. If set, this value will not be calculated
-         * automatically depending on
-         * the provided data. Use resetAxisMaxValue() to undo this.
-         */
         set(max) {
             this.isAxisMaxCustom = true
             mAxisMaximum = max
             this.mAxisRange = abs(max - mAxisMinimum)
         }
 
+    /**
+     * Set a custom minimum value for this axis. If set, this value will not be calculated
+     * automatically depending on the provided data. Use resetAxisMinValue() to undo this. Do not forget to call
+     * setStartAtZero(false) if you use this method. Otherwise, the axis-minimum value will still be forced to 0.
+     */
     var axisMinimum: Float
         get() = mAxisMinimum
-        /**
-         * Set a custom minimum value for this axis. If set, this value will not be calculated
-         * automatically depending on
-         * the provided data. Use resetAxisMinValue() to undo this. Do not forget to call
-         * setStartAtZero(false) if you use
-         * this method. Otherwise, the axis-minimum value will still be forced to 0.
-         */
         set(min) {
             this.isAxisMinCustom = true
             mAxisMinimum = min
@@ -574,9 +566,6 @@ abstract class AxisBase : ComponentBase() {
         this.isAxisMinCustom = false
     }
 
-    /**
-     * Use setAxisMinimum(...) instead.
-     */
     @Deprecated("Use setAxisMinimum(...) instead.")
     fun setAxisMinValue(min: Float) {
         this.axisMinimum = min
@@ -605,8 +594,8 @@ abstract class AxisBase : ComponentBase() {
 
         // in case all values are equal
         if (range == 0f) {
-            max = max + 1f
-            min = min - 1f
+            max += 1f
+            min -= 1f
         }
 
         this.mAxisMinimum = min
