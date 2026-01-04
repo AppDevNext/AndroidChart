@@ -10,7 +10,7 @@ import kotlin.math.abs
  * groups of values inside the Chart (e.g. the values for a specific line in the
  * LineChart, or the values of a specific group of bars in the BarChart).
  */
-abstract class DataSet<T : Entry>(
+abstract class DataSet<T : BaseEntry<Float>>(
     protected var mEntries: MutableList<T>,
     label: String = ""
 ) : BaseDataSet<T>(label), Serializable {
@@ -219,9 +219,9 @@ abstract class DataSet<T : Entry>(
         while (low < high) {
             val m = low + (high - low) / 2
 
-            val currentEntry: Entry = mEntries[m]
+            val currentEntry: T = mEntries[m]
 
-            val nextEntry: Entry = mEntries[m + 1]
+            val nextEntry: T = mEntries[m + 1]
 
             val d1 = currentEntry.x - xValue
             val d2 = nextEntry.x - xValue
@@ -251,7 +251,7 @@ abstract class DataSet<T : Entry>(
             closest = high
         }
 
-        val closestEntry: Entry = mEntries[closest]
+        val closestEntry: T = mEntries[closest]
         val closestXValue = closestEntry.x
         if (rounding == Rounding.UP) {
             // If rounding up, and found x-value is lower than specified x, and we can go upper...

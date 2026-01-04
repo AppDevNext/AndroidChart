@@ -1,8 +1,8 @@
 package info.appdev.charting.interfaces.datasets
 
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 
-interface IBarLineScatterCandleBubbleDataSet<T : Entry> : IDataSet<T> {
+interface IBarLineScatterCandleBubbleDataSet<T : BaseEntry<Float>> : IDataSet<T> {
 
     val highLightColor: Int
 }
