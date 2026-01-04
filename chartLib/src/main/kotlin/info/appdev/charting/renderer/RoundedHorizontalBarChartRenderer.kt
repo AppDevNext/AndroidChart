@@ -27,7 +27,7 @@ class RoundedHorizontalBarChartRenderer(
 
     override fun drawDataSet(canvas: Canvas, dataSet: IBarDataSet, index: Int) {
         initBuffers()
-        val trans = dataProvider.getTransformer(dataSet.axisDependency)
+        val transformer = dataProvider.getTransformer(dataSet.axisDependency)
         barBorderPaint.color = dataSet.barBorderColor
         barBorderPaint.strokeWidth = dataSet.barBorderWidth.convertDpToPixel()
         shadowPaint.color = dataSet.barShadowColor
@@ -48,7 +48,7 @@ class RoundedHorizontalBarChartRenderer(
                         mBarShadowRectBuffer.top = x - barWidthHalf
                         mBarShadowRectBuffer.bottom = x + barWidthHalf
                     }
-                    trans!!.rectValueToPixel(mBarShadowRectBuffer)
+                    transformer!!.rectValueToPixel(mBarShadowRectBuffer)
                     if (!viewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
                         i++
                         continue
@@ -74,7 +74,7 @@ class RoundedHorizontalBarChartRenderer(
             buffer.inverted = dataProvider.isInverted(dataSet.axisDependency)
             dataProvider.barData?.let { buffer.barWidth = it.barWidth }
             buffer.feed(dataSet)
-            trans!!.pointValuesToPixel(buffer.buffer)
+            transformer!!.pointValuesToPixel(buffer.buffer)
 
             // if multiple colors has been assigned to Bar Chart
             if (dataSet.colors.size > 1) {
