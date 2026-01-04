@@ -193,11 +193,11 @@ open class HorizontalBarChart : BarChart {
 
     override fun prepareValuePxMatrix() {
         mRightAxisTransformer.prepareMatrixValuePx(
-            mAxisRight.mAxisMinimum, mAxisRight.mAxisRange, mXAxis.mAxisRange,
+            mAxisRight.mAxisMinimum, mAxisRight.axisRange, mXAxis.axisRange,
             mXAxis.mAxisMinimum
         )
         mLeftAxisTransformer.prepareMatrixValuePx(
-            mAxisLeft.mAxisMinimum, mAxisLeft.mAxisRange, mXAxis.mAxisRange,
+            mAxisLeft.mAxisMinimum, mAxisLeft.axisRange, mXAxis.axisRange,
             mXAxis.mAxisMinimum
         )
     }
@@ -282,18 +282,18 @@ open class HorizontalBarChart : BarChart {
      * ###### VIEWPORT METHODS BELOW THIS ######
      */
     override fun setVisibleXRangeMaximum(maxXRange: Float) {
-        val xScale = mXAxis.mAxisRange / (maxXRange)
+        val xScale = mXAxis.axisRange / (maxXRange)
         viewPortHandler.setMinimumScaleY(xScale)
     }
 
     override fun setVisibleXRangeMinimum(minXRange: Float) {
-        val xScale = mXAxis.mAxisRange / (minXRange)
+        val xScale = mXAxis.axisRange / (minXRange)
         viewPortHandler.setMaximumScaleY(xScale)
     }
 
     override fun setVisibleXRange(minXRange: Float, maxXRange: Float) {
-        val minScale = mXAxis.mAxisRange / minXRange
-        val maxScale = mXAxis.mAxisRange / maxXRange
+        val minScale = mXAxis.axisRange / minXRange
+        val maxScale = mXAxis.axisRange / maxXRange
         viewPortHandler.setMinMaxScaleY(minScale, maxScale)
     }
 

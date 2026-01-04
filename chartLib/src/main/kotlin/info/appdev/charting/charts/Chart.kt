@@ -821,7 +821,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         get() = mXAxis.mAxisMinimum
 
     override val xRange: Float
-        get() = mXAxis.mAxisRange
+        get() = mXAxis.axisRange
 
     val center: PointF
         /**

@@ -212,6 +212,6 @@ open class YAxis : AxisBase {
         this.mAxisMinimum = if (isAxisMinCustom) this.mAxisMinimum else min - (range / 100f) * this.spaceBottom
         this.mAxisMaximum = if (isAxisMaxCustom) this.mAxisMaximum else max + (range / 100f) * this.spaceTop
 
-        this.mAxisRange = abs(this.mAxisMinimum - this.mAxisMaximum)
+        this.axisRange = abs(this.mAxisMinimum - this.mAxisMaximum)
     }
 }

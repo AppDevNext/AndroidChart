@@ -171,7 +171,7 @@ abstract class AxisBase : ComponentBase() {
     /**
      * the total range of values this axis covers
      */
-    var mAxisRange: Float = 0f
+    var axisRange: Float = 0f
 
     private var mAxisMinLabels = 2
     private var mAxisMaxLabels = 25
@@ -532,7 +532,7 @@ abstract class AxisBase : ComponentBase() {
         set(max) {
             this.isAxisMaxCustom = true
             mAxisMaximum = max
-            this.mAxisRange = abs(max - mAxisMinimum)
+            this.axisRange = abs(max - mAxisMinimum)
         }
 
     /**
@@ -545,7 +545,7 @@ abstract class AxisBase : ComponentBase() {
         set(min) {
             this.isAxisMinCustom = true
             mAxisMinimum = min
-            this.mAxisRange = abs(mAxisMaximum - min)
+            this.axisRange = abs(mAxisMaximum - min)
         }
 
     /**
@@ -602,7 +602,7 @@ abstract class AxisBase : ComponentBase() {
         this.mAxisMaximum = max
 
         // actual range
-        this.mAxisRange = abs(max - min)
+        this.axisRange = abs(max - min)
     }
 
     /**

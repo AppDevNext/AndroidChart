@@ -352,11 +352,11 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
     protected open fun prepareValuePxMatrix() {
         if (isLogEnabled) {
-            Timber.i("Preparing Value-Px Matrix, xMin: ${mXAxis.mAxisMinimum}, xMax: ${mXAxis.mAxisMaximum}, xDelta: ${mXAxis.mAxisRange}")
+            Timber.i("Preparing Value-Px Matrix, xMin: ${mXAxis.mAxisMinimum}, xMax: ${mXAxis.mAxisMaximum}, xDelta: ${mXAxis.axisRange}")
         }
 
-        mRightAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum, mXAxis.mAxisRange, mAxisRight.mAxisRange, this.mAxisRight.mAxisMinimum)
-        mLeftAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum, mXAxis.mAxisRange, mAxisLeft.mAxisRange, mAxisLeft.mAxisMinimum)
+        mRightAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum, mXAxis.axisRange, mAxisRight.axisRange, this.mAxisRight.mAxisMinimum)
+        mLeftAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum, mXAxis.axisRange, mAxisLeft.axisRange, mAxisLeft.mAxisMinimum)
     }
 
     protected fun prepareOffsetMatrix() {
@@ -686,7 +686,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
             this,
             getTransformer(axis),
             getAxis(axis),
-            mXAxis.mAxisRange,
+            mXAxis.axisRange,
             scaleX,
             scaleY,
             viewPortHandler.scaleX,
@@ -735,7 +735,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
      * @param maxXRange The maximum visible range of x-values.
      */
     open fun setVisibleXRangeMaximum(maxXRange: Float) {
-        val xScale = mXAxis.mAxisRange / (maxXRange)
+        val xScale = mXAxis.axisRange / (maxXRange)
         viewPortHandler.setMinimumScaleX(xScale)
     }
 
@@ -748,7 +748,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
      * @param minXRange The minimum visible range of x-values.
      */
     open fun setVisibleXRangeMinimum(minXRange: Float) {
-        val xScale = mXAxis.mAxisRange / (minXRange)
+        val xScale = mXAxis.axisRange / (minXRange)
         viewPortHandler.setMaximumScaleX(xScale)
     }
 
@@ -758,8 +758,8 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
      * scrolling
      */
     open fun setVisibleXRange(minXRange: Float, maxXRange: Float) {
-        val minScale = mXAxis.mAxisRange / minXRange
-        val maxScale = mXAxis.mAxisRange / maxXRange
+        val minScale = mXAxis.axisRange / minXRange
+        val maxScale = mXAxis.axisRange / maxXRange
         viewPortHandler.setMinMaxScaleX(minScale, maxScale)
     }
 
@@ -863,7 +863,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
      */
     fun centerViewTo(xValue: Float, yValue: Float, axis: AxisDependency?) {
         val yInView = getAxisRange(axis) / viewPortHandler.scaleY
-        val xInView = xAxis.mAxisRange / viewPortHandler.scaleX
+        val xInView = xAxis.axisRange / viewPortHandler.scaleX
 
         val job: Runnable = getInstance(viewPortHandler, xValue - xInView / 2f, yValue + yInView / 2f, getTransformer(axis), this)
 
@@ -880,7 +880,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         val bounds = getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentTop(), axis)
 
         val yInView = getAxisRange(axis) / viewPortHandler.scaleY
-        val xInView = xAxis.mAxisRange / viewPortHandler.scaleX
+        val xInView = xAxis.axisRange / viewPortHandler.scaleX
 
         val job: Runnable = getInstance(
             viewPortHandler,
@@ -933,9 +933,9 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
      */
     protected fun getAxisRange(axis: AxisDependency?): Float {
         return if (axis == AxisDependency.LEFT) {
-            mAxisLeft.mAxisRange
+            mAxisLeft.axisRange
         } else {
-            mAxisRight.mAxisRange
+            mAxisRight.axisRange
         }
     }
 

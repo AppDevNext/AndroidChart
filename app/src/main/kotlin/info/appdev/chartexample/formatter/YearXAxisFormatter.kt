@@ -10,7 +10,7 @@ class YearXAxisFormatter : IAxisValueFormatter {
     )
 
     override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-        val percent = value / axis!!.mAxisRange
+        val percent = value / axis!!.axisRange
         return months[(months.size * percent).toInt()]
     }
 }

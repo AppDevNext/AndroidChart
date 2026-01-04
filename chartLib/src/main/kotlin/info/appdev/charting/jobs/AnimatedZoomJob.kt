@@ -48,7 +48,7 @@ open class AnimatedZoomJob @SuppressLint("NewApi") constructor(
         mViewPortHandler.setZoom(scaleX, scaleY, save)
         mViewPortHandler.refresh(save, view, false)
 
-        val valsInView = yAxis.mAxisRange / mViewPortHandler.scaleY
+        val valsInView = yAxis.axisRange / mViewPortHandler.scaleY
         val xsInView = xAxisRange / mViewPortHandler.scaleX
 
         pts[0] = zoomOriginX + ((zoomCenterX - xsInView / 2f) - zoomOriginX) * phase

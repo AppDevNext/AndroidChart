@@ -20,8 +20,8 @@ open class ZoomJob(
         mViewPortHandler.refresh(save, view, false)
 
         (view as? BarLineChartBase<*>)?.let { view ->
-            val yValsInView = view.getAxis(axisDependency).mAxisRange / mViewPortHandler.scaleY
-            val xValsInView = view.xAxis.mAxisRange / mViewPortHandler.scaleX
+            val yValsInView = view.getAxis(axisDependency).axisRange / mViewPortHandler.scaleY
+            val xValsInView = view.xAxis.axisRange / mViewPortHandler.scaleX
 
             pts[0] = xValue - xValsInView / 2f
             pts[1] = yValue + yValsInView / 2f

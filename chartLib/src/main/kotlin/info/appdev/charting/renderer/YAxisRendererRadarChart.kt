@@ -137,7 +137,7 @@ class YAxisRendererRadarChart(
 
         axis.mAxisMinimum = axis.entries[0]
         axis.mAxisMaximum = axis.entries[n - 1]
-        axis.mAxisRange = abs((axis.mAxisMaximum - axis.mAxisMinimum).toDouble()).toFloat()
+        axis.axisRange = abs((axis.mAxisMaximum - axis.mAxisMinimum).toDouble()).toFloat()
     }
 
     override fun renderAxisLabels(canvas: Canvas) {

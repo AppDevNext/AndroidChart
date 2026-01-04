@@ -174,7 +174,7 @@ open class RadarChart : PieRadarChartBase<RadarData> {
          */
         get() {
             val content = viewPortHandler.contentRect
-            return min(content.width() / 2f, content.height() / 2f) / mYAxis!!.mAxisRange
+            return min(content.width() / 2f, content.height() / 2f) / mYAxis!!.axisRange
         }
 
     val sliceAngle: Float
@@ -301,5 +301,5 @@ open class RadarChart : PieRadarChartBase<RadarData> {
      * Range of y-values this chart can display.
      */
     val yRange: Float
-        get() = mYAxis!!.mAxisRange
+        get() = mYAxis!!.axisRange
 }
