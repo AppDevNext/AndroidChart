@@ -128,8 +128,7 @@ abstract class AxisBase : ComponentBase() {
      * flag indicating the limit lines layer depth
      * If this is set to true, the LimitLines are drawn behind the actual data,
      */
-    var isDrawLimitLinesBehindDataEnabled: Boolean = false
-        protected set
+    var isDrawLimitLinesBehindData: Boolean = false
 
     /**
      * flag indicating the grid lines layer depth
@@ -359,22 +358,6 @@ abstract class AxisBase : ComponentBase() {
      */
     fun removeAllLimitRanges() {
         limitRanges.clear()
-    }
-
-    /**
-     * If this is set to true, the LimitLines are drawn behind the actual data,
-     * otherwise on top. Default: false
-     */
-    fun setDrawLimitLinesBehindData(enabled: Boolean) {
-        this.isDrawLimitLinesBehindDataEnabled = enabled
-    }
-
-    /**
-     * If this is set to false, the grid lines are draw on top of the actual data,
-     * otherwise behind. Default: true
-     */
-    fun setDrawGridLinesBehindData(enabled: Boolean) {
-        this.isDrawGridLinesBehindDataEnabled = enabled
     }
 
     /**

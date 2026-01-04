@@ -257,15 +257,15 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
             axisRendererRight.renderGridLines(canvas)
         }
 
-        if (mXAxis.isEnabled && mXAxis.isDrawLimitLinesBehindDataEnabled) {
+        if (mXAxis.isEnabled && mXAxis.isDrawLimitLinesBehindData) {
             xAxisRenderer.renderLimitLines(canvas)
         }
 
-        if (mAxisLeft.isEnabled && mAxisLeft.isDrawLimitLinesBehindDataEnabled) {
+        if (mAxisLeft.isEnabled && mAxisLeft.isDrawLimitLinesBehindData) {
             axisRendererLeft.renderLimitLines(canvas)
         }
 
-        if (mAxisRight.isEnabled && mAxisRight.isDrawLimitLinesBehindDataEnabled) {
+        if (mAxisRight.isEnabled && mAxisRight.isDrawLimitLinesBehindData) {
             axisRendererRight.renderLimitLines(canvas)
         }
 
@@ -300,15 +300,15 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
         dataRenderer!!.drawExtras(canvas)
 
-        if (mXAxis.isEnabled && !mXAxis.isDrawLimitLinesBehindDataEnabled) {
+        if (mXAxis.isEnabled && !mXAxis.isDrawLimitLinesBehindData) {
             xAxisRenderer.renderLimitLines(canvas)
         }
 
-        if (mAxisLeft.isEnabled && !mAxisLeft.isDrawLimitLinesBehindDataEnabled) {
+        if (mAxisLeft.isEnabled && !mAxisLeft.isDrawLimitLinesBehindData) {
             axisRendererLeft.renderLimitLines(canvas)
         }
 
-        if (mAxisRight.isEnabled && !mAxisRight.isDrawLimitLinesBehindDataEnabled) {
+        if (mAxisRight.isEnabled && !mAxisRight.isDrawLimitLinesBehindData) {
             axisRendererRight.renderLimitLines(canvas)
         }
 
