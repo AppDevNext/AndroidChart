@@ -122,8 +122,8 @@ open class RadarChart : PieRadarChartBase<RadarData> {
         mData?.let { data ->
             calcMinMax()
 
-            mYAxisRenderer!!.computeAxis(mYAxis!!.mAxisMinimum, mYAxis!!.mAxisMaximum, mYAxis!!.isInverted)
-            mXAxisRenderer!!.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
+            mYAxisRenderer!!.computeAxis(mYAxis!!.axisMinimum, mYAxis!!.axisMaximum, mYAxis!!.isInverted)
+            mXAxisRenderer!!.computeAxis(mXAxis.axisMinimum, mXAxis.axisMaximum, false)
 
             if (!legend.isLegendCustom)
                 legendRenderer?.computeLegend(data)
@@ -140,7 +140,7 @@ open class RadarChart : PieRadarChartBase<RadarData> {
 
         //        if (mYAxis.isEnabled())
 //            mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
-        if (mXAxis.isEnabled) mXAxisRenderer!!.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
+        if (mXAxis.isEnabled) mXAxisRenderer!!.computeAxis(mXAxis.axisMinimum, mXAxis.axisMaximum, false)
 
         mXAxisRenderer!!.renderAxisLabels(canvas)
 
@@ -286,7 +286,7 @@ open class RadarChart : PieRadarChartBase<RadarData> {
      * Returns the maximum value this chart can display on it's y-axis.
      */
     override val yChartMax: Float
-        get() = mYAxis!!.mAxisMaximum
+        get() = mYAxis!!.axisMaximum
 
     override val accessibilityDescription: String
         get() = "This is a Radar chart"
@@ -295,7 +295,7 @@ open class RadarChart : PieRadarChartBase<RadarData> {
      * Returns the minimum value this chart can display on it's y-axis.
      */
     override val yChartMin: Float
-        get() = mYAxis!!.mAxisMinimum
+        get() = mYAxis!!.axisMinimum
 
     /**
      * Range of y-values this chart can display.

@@ -193,12 +193,12 @@ open class HorizontalBarChart : BarChart {
 
     override fun prepareValuePxMatrix() {
         mRightAxisTransformer.prepareMatrixValuePx(
-            mAxisRight.mAxisMinimum, mAxisRight.axisRange, mXAxis.axisRange,
-            mXAxis.mAxisMinimum
+            mAxisRight.axisMinimum, mAxisRight.axisRange, mXAxis.axisRange,
+            mXAxis.axisMinimum
         )
         mLeftAxisTransformer.prepareMatrixValuePx(
-            mAxisLeft.mAxisMinimum, mAxisLeft.axisRange, mXAxis.axisRange,
-            mXAxis.mAxisMinimum
+            mAxisLeft.axisMinimum, mAxisLeft.axisRange, mXAxis.axisRange,
+            mXAxis.axisMinimum
         )
     }
 
@@ -266,7 +266,7 @@ open class HorizontalBarChart : BarChart {
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentBottom(), posForGetLowestVisibleX
             )
-            return max(mXAxis.mAxisMinimum.toDouble(), posForGetLowestVisibleX.y).toFloat()
+            return max(mXAxis.axisMinimum.toDouble(), posForGetLowestVisibleX.y).toFloat()
         }
 
     override val highestVisibleX: Float
@@ -275,7 +275,7 @@ open class HorizontalBarChart : BarChart {
                 viewPortHandler.contentLeft(),
                 viewPortHandler.contentTop(), posForGetHighestVisibleX
             )
-            return min(mXAxis.mAxisMaximum.toDouble(), posForGetHighestVisibleX.y).toFloat()
+            return min(mXAxis.axisMaximum.toDouble(), posForGetHighestVisibleX.y).toFloat()
         }
 
     /**

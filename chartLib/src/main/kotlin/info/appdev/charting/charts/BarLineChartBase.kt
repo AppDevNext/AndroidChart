@@ -224,15 +224,15 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         }
 
         if (mAxisLeft.isEnabled) {
-            axisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum, mAxisLeft.isInverted)
+            axisRendererLeft.computeAxis(mAxisLeft.axisMinimum, mAxisLeft.axisMaximum, mAxisLeft.isInverted)
         }
 
         if (mAxisRight.isEnabled) {
-            axisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum, mAxisRight.isInverted)
+            axisRendererRight.computeAxis(mAxisRight.axisMinimum, mAxisRight.axisMaximum, mAxisRight.isInverted)
         }
 
         if (mXAxis.isEnabled) {
-            xAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
+            xAxisRenderer.computeAxis(mXAxis.axisMinimum, mXAxis.axisMaximum, false)
         }
 
         // Y-axis labels could have changed in size affecting the offsets
@@ -352,11 +352,11 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
     protected open fun prepareValuePxMatrix() {
         if (isLogEnabled) {
-            Timber.i("Preparing Value-Px Matrix, xMin: ${mXAxis.mAxisMinimum}, xMax: ${mXAxis.mAxisMaximum}, xDelta: ${mXAxis.axisRange}")
+            Timber.i("Preparing Value-Px Matrix, xMin: ${mXAxis.axisMinimum}, xMax: ${mXAxis.axisMaximum}, xDelta: ${mXAxis.axisRange}")
         }
 
-        mRightAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum, mXAxis.axisRange, mAxisRight.axisRange, this.mAxisRight.mAxisMinimum)
-        mLeftAxisTransformer.prepareMatrixValuePx(mXAxis.mAxisMinimum, mXAxis.axisRange, mAxisLeft.axisRange, mAxisLeft.mAxisMinimum)
+        mRightAxisTransformer.prepareMatrixValuePx(mXAxis.axisMinimum, mXAxis.axisRange, mAxisRight.axisRange, this.mAxisRight.axisMinimum)
+        mLeftAxisTransformer.prepareMatrixValuePx(mXAxis.axisMinimum, mXAxis.axisRange, mAxisLeft.axisRange, mAxisLeft.axisMinimum)
     }
 
     protected fun prepareOffsetMatrix() {
@@ -380,9 +380,9 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
         calcMinMax()
 
-        axisRendererLeft.computeAxis(mAxisLeft.mAxisMinimum, mAxisLeft.mAxisMaximum, mAxisLeft.isInverted)
-        axisRendererRight.computeAxis(mAxisRight.mAxisMinimum, mAxisRight.mAxisMaximum, mAxisRight.isInverted)
-        xAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false)
+        axisRendererLeft.computeAxis(mAxisLeft.axisMinimum, mAxisLeft.axisMaximum, mAxisLeft.isInverted)
+        axisRendererRight.computeAxis(mAxisRight.axisMinimum, mAxisRight.axisMaximum, mAxisRight.isInverted)
+        xAxisRenderer.computeAxis(mXAxis.axisMinimum, mXAxis.axisMaximum, false)
 
         legendRenderer?.computeLegend(data!!)
 
@@ -1110,7 +1110,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
          */
         get() {
             getTransformer(AxisDependency.LEFT).getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentBottom(), posForGetLowestVisibleX)
-            return max(mXAxis.mAxisMinimum.toDouble(), posForGetLowestVisibleX.x).toFloat()
+            return max(mXAxis.axisMinimum.toDouble(), posForGetLowestVisibleX.x).toFloat()
         }
 
     /**
@@ -1129,7 +1129,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
                 viewPortHandler.contentBottom(),
                 posForGetHighestVisibleX
             )
-            return min(mXAxis.mAxisMaximum.toDouble(), posForGetHighestVisibleX.x).toFloat()
+            return min(mXAxis.axisMaximum.toDouble(), posForGetHighestVisibleX.x).toFloat()
         }
 
     val visibleXRange: Float
@@ -1241,10 +1241,10 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         }
 
     override val yChartMax: Float
-        get() = max(mAxisLeft.mAxisMaximum, mAxisRight.mAxisMaximum)
+        get() = max(mAxisLeft.axisMaximum, mAxisRight.axisMaximum)
 
     override val yChartMin: Float
-        get() = min(mAxisLeft.mAxisMinimum, mAxisRight.mAxisMinimum)
+        get() = min(mAxisLeft.axisMinimum, mAxisRight.axisMinimum)
 
     val isAnyAxisInverted: Boolean
         /**

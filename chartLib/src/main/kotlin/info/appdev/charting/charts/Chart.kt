@@ -815,10 +815,10 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         get() = mData!!.yMax
 
     override val xChartMax: Float
-        get() = mXAxis.mAxisMaximum
+        get() = mXAxis.axisMaximum
 
     override val xChartMin: Float
-        get() = mXAxis.mAxisMinimum
+        get() = mXAxis.axisMinimum
 
     override val xRange: Float
         get() = mXAxis.axisRange

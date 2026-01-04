@@ -158,15 +158,9 @@ abstract class AxisBase : ComponentBase() {
     var isAxisMaxCustom: Boolean = false
         protected set
 
-    /**
-     * don't touch this direclty, use setter
-     */
-    var mAxisMaximum: Float = 0f
+    private var mAxisMaximum: Float = 0f
 
-    /**
-     * don't touch this directly, use setter
-     */
-    var mAxisMinimum: Float = 0f
+    private var mAxisMinimum: Float = 0f
 
     /**
      * the total range of values this axis covers
@@ -586,8 +580,8 @@ abstract class AxisBase : ComponentBase() {
     open fun calculate(dataMin: Float, dataMax: Float) {
         // if custom, use value as is, else use data value
 
-        var min = if (this.isAxisMinCustom) mAxisMinimum else (dataMin - this.spaceMin)
-        var max = if (this.isAxisMaxCustom) mAxisMaximum else (dataMax + this.spaceMax)
+        var min = if (this.isAxisMinCustom) axisMinimum else (dataMin - this.spaceMin)
+        var max = if (this.isAxisMaxCustom) axisMaximum else (dataMax + this.spaceMax)
 
         // temporary range (before calculations)
         val range = abs(max - min)
@@ -598,8 +592,8 @@ abstract class AxisBase : ComponentBase() {
             min -= 1f
         }
 
-        this.mAxisMinimum = min
-        this.mAxisMaximum = max
+        this.axisMinimum = min
+        this.axisMaximum = max
 
         // actual range
         this.axisRange = abs(max - min)

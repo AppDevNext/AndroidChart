@@ -209,9 +209,9 @@ open class YAxis : AxisBase {
         range = abs(max - min)
 
         // calc extra spacing
-        this.mAxisMinimum = if (isAxisMinCustom) this.mAxisMinimum else min - (range / 100f) * this.spaceBottom
-        this.mAxisMaximum = if (isAxisMaxCustom) this.mAxisMaximum else max + (range / 100f) * this.spaceTop
+        this.axisMinimum = if (isAxisMinCustom) this.axisMinimum else min - (range / 100f) * this.spaceBottom
+        this.axisMaximum = if (isAxisMaxCustom) this.axisMaximum else max + (range / 100f) * this.spaceTop
 
-        this.axisRange = abs(this.mAxisMinimum - this.mAxisMaximum)
+        this.axisRange = abs(this.axisMinimum - this.axisMaximum)
     }
 }
