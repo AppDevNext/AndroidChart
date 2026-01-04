@@ -126,6 +126,7 @@ abstract class AxisBase : ComponentBase() {
 
     /**
      * flag indicating the limit lines layer depth
+     * If this is set to true, the LimitLines are drawn behind the actual data,
      */
     var isDrawLimitLinesBehindDataEnabled: Boolean = false
         protected set
@@ -313,8 +314,8 @@ abstract class AxisBase : ComponentBase() {
     /**
      * Adds a new LimitLine to this axis.
      */
-    fun addLimitLine(l: LimitLine) {
-        limitLines.add(l)
+    fun addLimitLine(limitLine: LimitLine) {
+        limitLines.add(limitLine)
 
         if (limitLines.size > 6) {
             Timber.e("Warning! You have more than 6 LimitLines on your axis, do you really want that?")
@@ -335,8 +336,8 @@ abstract class AxisBase : ComponentBase() {
     /**
      * Removes the specified LimitLine from the axis.
      */
-    fun removeLimitLine(l: LimitLine) {
-        limitLines.remove(l)
+    fun removeLimitLine(limitLine: LimitLine) {
+        limitLines.remove(limitLine)
     }
 
     /**
