@@ -688,31 +688,41 @@ open class PieChartRenderer(
                 val width = centerTextLastBounds.width()
 
                 // If width is 0, it will crash. Always have a minimum of 1
-                centerTextLayout = StaticLayout(
+//                centerTextLayout = StaticLayout(
+//                    centerText,
+//                    0,
+//                    centerText.length,
+//                    paintCenterText,
+//                    max(ceil(width.toDouble()), 1.0).toInt(),
+//                    Layout.Alignment.ALIGN_CENTER,
+//                    1f,
+//                    0f,
+//                    false
+//                )
+                centerTextLayout = StaticLayout.Builder.obtain(
                     centerText,
                     0,
                     centerText.length,
                     paintCenterText,
-                    max(ceil(width.toDouble()), 1.0).toInt(),
-                    Layout.Alignment.ALIGN_CENTER,
-                    1f,
-                    0f,
-                    false
-                )
+                    max(ceil(width.toDouble()), 1.0).toInt()
+                ).setAlignment(Layout.Alignment.ALIGN_CENTER)
+                    .setLineSpacing(0f, 1f)
+                    .setIncludePad(false)
+                    .build()
+
+                val layoutHeight = centerTextLayout!!.height.toFloat()
+
+                canvas.withSave {
+                    mDrawCenterTextPathBuffer.reset()
+                    mDrawCenterTextPathBuffer.addOval(holeRect, Path.Direction.CW)
+                    clipPath(mDrawCenterTextPathBuffer)
+
+                    translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2f)
+                    centerTextLayout!!.draw(this)
+
+                }
+
             }
-
-            val layoutHeight = centerTextLayout!!.height.toFloat()
-
-            canvas.withSave {
-                mDrawCenterTextPathBuffer.reset()
-                mDrawCenterTextPathBuffer.addOval(holeRect, Path.Direction.CW)
-                clipPath(mDrawCenterTextPathBuffer)
-
-                translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2f)
-                centerTextLayout!!.draw(this)
-
-            }
-
             PointF.recycleInstance(center)
             PointF.recycleInstance(offset)
         }
