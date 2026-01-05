@@ -113,8 +113,6 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
 
     /**
      * Sets a color with a specific alpha value.
-     *
-     * @param color
      * @param alpha from 0-255
      */
     fun setColor(color: Int, alpha: Int) {
@@ -199,8 +197,6 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
      * "new int[] { R.color.red, R.color.green, ... }" to provide colors for
      * this method. Internally, the colors are resolved using
      * ContextCompat.getColor(context,...)
-     *
-     * @param colors
      */
     fun setColors(colors: IntArray, context: Context) {
         mColors.clear()
@@ -212,8 +208,6 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
 
     /**
      * Adds a new color to the colors array of the DataSet.
-     *
-     * @param color
      */
     fun addColor(color: Int) {
         mColors.add(color)
@@ -221,9 +215,6 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
 
     /**
      * Sets colors with a specific alpha value.
-     *
-     * @param colors
-     * @param alpha
      */
     fun setColors(colors: IntArray, alpha: Int) {
         resetColors()

@@ -29,9 +29,6 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
     private var mHighLightAlpha = 120
 
     /**
-     * returns the overall entry count, including counting each stack-value individually
-     */
-    /**
      * the overall entry count, including counting each stack-value individually
      */
     var entryCountStacks: Int = 0
@@ -116,8 +113,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
     }
 
     /**
-     * calculates the maximum stackSize that occurs in the Entries array of this
-     * DataSet
+     * calculates the maximum stackSize that occurs in the Entries array of this DataSet
      */
     private fun calcStackSize(yVals: MutableList<BarEntry>) {
         for (i in yVals.indices) {
