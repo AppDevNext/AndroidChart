@@ -153,7 +153,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.lineData.dataSets?.forEach { set ->
+                binding.chart1.lineData.dataSets.forEach { set ->
                     set.isDrawValues = !set.isDrawValues
                 }
                 binding.chart1.invalidate()

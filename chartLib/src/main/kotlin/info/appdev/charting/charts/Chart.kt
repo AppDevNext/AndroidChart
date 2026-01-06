@@ -1042,7 +1042,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
             // calculate how many digits are needed
             setupDefaultFormatter(value.yMin, value.yMax)
 
-            for (set in mData!!.dataSets!!) {
+            for (set in mData!!.dataSets) {
                 if (set.needsFormatter() || set.valueFormatter === mDefaultValueFormatter) {
                     set.valueFormatter = mDefaultValueFormatter
                 }

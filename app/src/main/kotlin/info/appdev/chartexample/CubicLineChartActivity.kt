@@ -145,7 +145,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.lineData.dataSets?.forEach {
+                binding.chart1.lineData.dataSets.forEach {
                     it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
@@ -159,7 +159,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.lineData.dataSets?.forEach {
+                binding.chart1.lineData.dataSets.forEach {
                     val set = it as LineDataSet
                     set.isDrawFilledEnabled = !set.isDrawFilledEnabled
                 }
@@ -167,7 +167,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleCircles -> {
-                binding.chart1.lineData.dataSets?.forEach {
+                binding.chart1.lineData.dataSets.forEach {
                     val set = it as LineDataSet
                     set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
                 }
@@ -175,7 +175,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleCubic -> {
-                binding.chart1.lineData.dataSets?.forEach {
+                binding.chart1.lineData.dataSets.forEach {
                     val set = it as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
                         LineDataSet.Mode.LINEAR
@@ -186,7 +186,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleStepped -> {
-                binding.chart1.lineData.dataSets?.forEach {
+                binding.chart1.lineData.dataSets.forEach {
                     val set = it as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED)
                         LineDataSet.Mode.LINEAR
@@ -197,7 +197,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                binding.chart1.lineData.dataSets?.forEach {
+                binding.chart1.lineData.dataSets.forEach {
                     val set = it as LineDataSet
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER)
                         LineDataSet.Mode.LINEAR

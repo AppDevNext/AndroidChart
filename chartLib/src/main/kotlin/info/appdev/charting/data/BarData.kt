@@ -33,7 +33,7 @@ class BarData : BarLineScatterCandleBubbleData<IBarDataSet> {
      */
     fun groupBars(fromX: Float, groupSpace: Float, barSpace: Float) {
         var fromX = fromX
-        val setCount = dataSets?.size ?: 0
+        val setCount = dataSets.size
         if (setCount <= 1) {
             throw RuntimeException("BarData needs to hold at least 2 BarDataSets to allow grouping.")
         }
@@ -50,22 +50,20 @@ class BarData : BarLineScatterCandleBubbleData<IBarDataSet> {
             val start = fromX
             fromX += groupSpaceWidthHalf
 
-            dataSets?.let {
-                for (set in dataSets) {
-                    fromX += barSpaceHalf
-                    fromX += barWidthHalf
+            for (set in dataSets) {
+                fromX += barSpaceHalf
+                fromX += barWidthHalf
 
-                    if (i < set.entryCount) {
-                        val entry = set.getEntryForIndex(i)
+                if (i < set.entryCount) {
+                    val entry = set.getEntryForIndex(i)
 
-                        if (entry != null) {
-                            entry.x = fromX
-                        }
+                    if (entry != null) {
+                        entry.x = fromX
                     }
-
-                    fromX += barWidthHalf
-                    fromX += barSpaceHalf
                 }
+
+                fromX += barWidthHalf
+                fromX += barSpaceHalf
             }
             fromX += groupSpaceWidthHalf
             val end = fromX
@@ -85,9 +83,6 @@ class BarData : BarLineScatterCandleBubbleData<IBarDataSet> {
      * In case of grouped bars, this method returns the space an individual group of bar needs on the x-axis.
      */
     fun getGroupWidth(groupSpace: Float, barSpace: Float): Float {
-        return if (dataSets == null)
-            0f
-        else
-            dataSets!!.size * (this.barWidth + barSpace) + groupSpace
+        return dataSets.size * (this.barWidth + barSpace) + groupSpace
     }
 }

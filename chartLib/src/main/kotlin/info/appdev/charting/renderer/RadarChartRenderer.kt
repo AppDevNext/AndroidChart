@@ -38,7 +38,7 @@ open class RadarChartRenderer(
 
             val mostEntries = radarData.maxEntryCountSet?.entryCount ?: 0
 
-            radarData.dataSets?.forEach { set ->
+            radarData.dataSets.forEach { set ->
                 if (set.isVisible) {
                     drawDataSet(canvas, set, mostEntries)
                 }

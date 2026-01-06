@@ -107,80 +107,78 @@ open class BubbleChartRenderer(
 
             val lineHeight = paintValues.calcTextHeight("1").toFloat()
 
-            dataSets?.let {
-                for (i in it.indices) {
-                    val dataSet = it[i]
-                    if (dataSet.entryCount == 0) {
-                        continue
-                    }
-                    if (!shouldDrawValues(dataSet) || dataSet.entryCount < 1) {
-                        continue
-                    }
+            for (i in dataSets.indices) {
+                val dataSet = dataSets[i]
+                if (dataSet.entryCount == 0) {
+                    continue
+                }
+                if (!shouldDrawValues(dataSet) || dataSet.entryCount < 1) {
+                    continue
+                }
 
-                    // apply the text-styling defined by the DataSet
-                    applyValueTextStyle(dataSet)
+                // apply the text-styling defined by the DataSet
+                applyValueTextStyle(dataSet)
 
-                    val phaseX = max(0.0, min(1.0, animator.phaseX.toDouble())).toFloat()
-                    val phaseY = animator.phaseY
+                val phaseX = max(0.0, min(1.0, animator.phaseX.toDouble())).toFloat()
+                val phaseY = animator.phaseY
 
-                    xBounds.set(dataProvider, dataSet)
+                xBounds.set(dataProvider, dataSet)
 
-                    dataProvider.getTransformer(dataSet.axisDependency)?.let { transformer ->
-                        val positions = transformer.generateTransformedValuesBubble(dataSet, phaseY, xBounds.min, xBounds.max)
+                dataProvider.getTransformer(dataSet.axisDependency)?.let { transformer ->
+                    val positions = transformer.generateTransformedValuesBubble(dataSet, phaseY, xBounds.min, xBounds.max)
 
-                        val alpha = if (phaseX == 1f)
-                            phaseY
-                        else
-                            phaseX
+                    val alpha = if (phaseX == 1f)
+                        phaseY
+                    else
+                        phaseX
 
-                        val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
-                        iconsOffset.x = iconsOffset.x.convertDpToPixel()
-                        iconsOffset.y = iconsOffset.y.convertDpToPixel()
+                    val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
+                    iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                    iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
-                        var j = 0
-                        while (j < positions.size) {
-                            var valueTextColor = dataSet.getValueTextColor(j / 2 + xBounds.min)
-                            valueTextColor = Color.argb(
-                                (255f * alpha).roundToInt(), Color.red(valueTextColor),
-                                Color.green(valueTextColor), Color.blue(valueTextColor)
-                            )
+                    var j = 0
+                    while (j < positions.size) {
+                        var valueTextColor = dataSet.getValueTextColor(j / 2 + xBounds.min)
+                        valueTextColor = Color.argb(
+                            (255f * alpha).roundToInt(), Color.red(valueTextColor),
+                            Color.green(valueTextColor), Color.blue(valueTextColor)
+                        )
 
-                            val x = positions[j]
-                            val y = positions[j + 1]
+                        val x = positions[j]
+                        val y = positions[j + 1]
 
-                            if (!viewPortHandler.isInBoundsRight(x)) break
+                        if (!viewPortHandler.isInBoundsRight(x)) break
 
-                            if ((!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y))) {
-                                j += 2
-                                continue
-                            }
-
-                            val bubbleEntry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
-                            bubbleEntry?.let {
-                                if (dataSet.isDrawValues) {
-                                    drawValue(
-                                        canvas, dataSet.valueFormatter, bubbleEntry.size, bubbleEntry, i, x,
-                                        y + (0.5f * lineHeight), valueTextColor
-                                    )
-                                }
-
-                                if (bubbleEntry.icon != null && dataSet.isDrawIcons) {
-                                    val icon = bubbleEntry.icon
-
-                                    icon?.let { ico ->
-                                        canvas.drawImage(
-                                            ico,
-                                            (x + iconsOffset.x).toInt(),
-                                            (y + iconsOffset.y).toInt()
-                                        )
-                                    }
-                                }
-                            }
+                        if ((!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y))) {
                             j += 2
+                            continue
                         }
 
-                        PointF.recycleInstance(iconsOffset)
+                        val bubbleEntry = dataSet.getEntryForIndex(j / 2 + xBounds.min)
+                        bubbleEntry?.let {
+                            if (dataSet.isDrawValues) {
+                                drawValue(
+                                    canvas, dataSet.valueFormatter, bubbleEntry.size, bubbleEntry, i, x,
+                                    y + (0.5f * lineHeight), valueTextColor
+                                )
+                            }
+
+                            if (bubbleEntry.icon != null && dataSet.isDrawIcons) {
+                                val icon = bubbleEntry.icon
+
+                                icon?.let { ico ->
+                                    canvas.drawImage(
+                                        ico,
+                                        (x + iconsOffset.x).toInt(),
+                                        (y + iconsOffset.y).toInt()
+                                    )
+                                }
+                            }
+                        }
+                        j += 2
                     }
+
+                    PointF.recycleInstance(iconsOffset)
                 }
             }
         }

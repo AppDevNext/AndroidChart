@@ -159,7 +159,7 @@ class TimeLineActivity : DemoBase() {
         withContext(Dispatchers.Default) {
             while (menuItemMove!!.isChecked) {
                 withContext(Dispatchers.Main) {
-                    binding.chart1.lineData.dataSets?.get(0)?.let { set ->
+                    binding.chart1.lineData.dataSets.get(0)?.let { set ->
                         (set as LineDataSet).entries.moveFirstToLast()
                         set.notifyDataChanged()
                         binding.chart1.lineData.notifyDataChanged()
