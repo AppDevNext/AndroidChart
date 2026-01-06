@@ -233,7 +233,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
             R.id.actionToggleCircles -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
+                    set.isDrawCircles = !set.isDrawCircles
                 }
                 binding.chart1.invalidate()
             }

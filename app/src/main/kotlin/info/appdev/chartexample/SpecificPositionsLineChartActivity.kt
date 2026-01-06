@@ -152,7 +152,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleCircles -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
+                    set.isDrawCircles = !set.isDrawCircles
                 }
                 binding.chart1.invalidate()
             }

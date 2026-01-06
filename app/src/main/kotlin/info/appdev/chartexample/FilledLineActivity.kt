@@ -100,7 +100,7 @@ class FilledLineActivity : DemoBase() {
 
             set1.axisDependency = YAxis.AxisDependency.LEFT
             set1.color = Color.rgb(255, 241, 46)
-            set1.isDrawCirclesEnabled = false
+            set1.isDrawCircles = false
             set1.lineWidth = 2f
             set1.circleRadius = 3f
             set1.fillAlpha = 255
@@ -120,7 +120,7 @@ class FilledLineActivity : DemoBase() {
             set2 = LineDataSet(valuesArray2, "DataSet 2")
             set2.axisDependency = YAxis.AxisDependency.LEFT
             set2.color = Color.rgb(255, 241, 46)
-            set2.isDrawCirclesEnabled = false
+            set2.isDrawCircles = false
             set2.lineWidth = 2f
             set2.circleRadius = 3f
             set2.fillAlpha = 255

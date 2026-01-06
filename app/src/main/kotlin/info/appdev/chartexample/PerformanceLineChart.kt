@@ -67,7 +67,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         set1.color = Color.BLACK
         set1.lineWidth = 0.5f
         set1.isDrawValues = false
-        set1.isDrawCirclesEnabled = false
+        set1.isDrawCircles = false
         set1.lineMode = LineDataSet.Mode.LINEAR
         set1.isDrawFilledEnabled = false
 

@@ -179,7 +179,7 @@ open class LineDataSet(yVals: MutableList<Entry> = mutableListOf(), label: Strin
     override val circleColorCount: Int
         get() = circleColors.size
 
-    override var isDrawCirclesEnabled: Boolean
+    override var isDrawCircles: Boolean
         get() = mDrawCircles
         set(value) {
             mDrawCircles = value
