@@ -104,7 +104,7 @@ class TimeLineActivity : DemoBase() {
 
             set1.axisDependency = YAxis.AxisDependency.LEFT
             set1.color = Color.rgb(255, 241, 46)
-            set1.isDrawCirclesEnabled = false
+            set1.isDrawCircles = false
             set1.lineWidth = 2f
             set1.circleRadius = 3f
             set1.fillAlpha = 255

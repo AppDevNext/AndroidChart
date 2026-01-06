@@ -105,7 +105,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             set1.lineMode = LineDataSet.Mode.CUBIC_BEZIER
             set1.cubicIntensity = 0.2f
             set1.isDrawFilledEnabled = true
-            set1.isDrawCirclesEnabled = false
+            set1.isDrawCircles = false
             set1.lineWidth = 1.8f
             set1.circleRadius = 4f
             set1.setCircleColor(Color.WHITE)
@@ -169,7 +169,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             R.id.actionToggleCircles -> {
                 binding.chart1.lineData.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
+                    set.isDrawCircles = !set.isDrawCircles
                 }
                 binding.chart1.invalidate()
             }

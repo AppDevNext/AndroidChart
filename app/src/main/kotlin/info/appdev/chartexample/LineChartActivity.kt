@@ -182,7 +182,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
             R.id.actionToggleCircles -> {
                 binding.chart1.data?.dataSets?.map { it as LineDataSet }?.forEach { set ->
-                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
+                    set.isDrawCircles = !set.isDrawCircles
                 }
                 binding.chart1.invalidate()
             }

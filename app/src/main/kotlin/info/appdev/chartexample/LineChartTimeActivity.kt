@@ -128,7 +128,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         set1.color = holoBlue
         set1.valueTextColor = holoBlue
         set1.lineWidth = 1.5f
-        set1.isDrawCirclesEnabled = false
+        set1.isDrawCircles = false
         set1.isDrawValues = false
         set1.fillAlpha = 65
         set1.fillColor = holoBlue
@@ -181,7 +181,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleCircles -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
+                    set.isDrawCircles = !set.isDrawCircles
                 }
                 binding.chart1.invalidate()
             }

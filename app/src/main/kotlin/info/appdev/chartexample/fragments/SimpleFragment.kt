@@ -118,8 +118,8 @@ abstract class SimpleFragment : Fragment() {
         ds1.lineWidth = 2f
         ds2.lineWidth = 2f
 
-        ds1.isDrawCirclesEnabled = false
-        ds2.isDrawCirclesEnabled = false
+        ds1.isDrawCircles = false
+        ds2.isDrawCircles = false
 
         ds1.color = ColorTemplate.VORDIPLOM_COLORS[0]
         ds2.color = ColorTemplate.VORDIPLOM_COLORS[1]

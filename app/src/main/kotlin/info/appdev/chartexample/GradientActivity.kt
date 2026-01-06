@@ -50,7 +50,7 @@ class GradientActivity : DemoBase() {
 
         val dataSet = LineDataSet(entries, "Linear").apply {
             isDrawValues = false
-            isDrawCirclesEnabled = false
+            isDrawCircles = false
             lineWidth = 2f
 
             isDrawFilledEnabled = true

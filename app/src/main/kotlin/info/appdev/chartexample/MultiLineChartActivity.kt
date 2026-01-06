@@ -165,7 +165,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             R.id.actionToggleCircles -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
                     if (set is LineDataSet) {
-                        set.isDrawCirclesEnabled = !set.isDrawCirclesEnabled
+                        set.isDrawCircles = !set.isDrawCircles
                     }
                 }
                 binding.chart1.invalidate()

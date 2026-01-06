@@ -494,7 +494,7 @@ open class LineChartRenderer(
                     // make sure the values do not interfere with the circles
                     var valOffset = (dataSet.circleRadius * 1.75f).toInt()
 
-                    if (!dataSet.isDrawCirclesEnabled)
+                    if (!dataSet.isDrawCircles)
                         valOffset /= 2
 
                     xBounds.set(dataProvider, dataSet)
@@ -583,7 +583,7 @@ open class LineChartRenderer(
         dataSets?.let {
             for (i in it.indices) {
                 val dataSet = dataSets[i]
-                if (!dataSet.isVisible || !dataSet.isDrawCirclesEnabled || dataSet.entryCount == 0) continue
+                if (!dataSet.isVisible || !dataSet.isDrawCircles || dataSet.entryCount == 0) continue
 
                 circlePaintInner.color = dataSet.circleHoleColor
 

@@ -45,7 +45,7 @@ interface ILineDataSet : ILineRadarDataSet<Entry> {
     /**
      * Returns true if drawing circles for this DataSet is enabled, false if not
      */
-    var isDrawCirclesEnabled: Boolean
+    var isDrawCircles: Boolean
 
     /**
      * Returns the color of the inner circle (the circle-hole).
