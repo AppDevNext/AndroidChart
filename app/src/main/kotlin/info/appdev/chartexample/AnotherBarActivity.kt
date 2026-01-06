@@ -37,16 +37,16 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
-        binding.chart1.setDrawBarShadow(false)
+        binding.chart1.isDrawBarShadow = false
         binding.chart1.setDrawGridBackground(false)
 
         val xAxis = binding.chart1.xAxis
         xAxis.position = XAxisPosition.BOTTOM
-        xAxis.setDrawGridLines(false)
+        xAxis.isDrawGridLines = false
 
-        binding.chart1.axisLeft.setDrawGridLines(false)
+        binding.chart1.axisLeft.isDrawGridLines = false
 
         // setting data
         binding.seekBarX.progress = DEFAULT_VALUE
@@ -119,22 +119,18 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.barData?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                if (binding.chart1.isPinchZoomEnabled)
-                    binding.chart1.setPinchZoom(false)
-                else
-                    binding.chart1.setPinchZoom(true)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

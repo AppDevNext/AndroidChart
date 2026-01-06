@@ -33,7 +33,7 @@ abstract class LineScatterCandleRadarRenderer(
         paintHighlight.pathEffect = set.dashPathEffectHighlight
 
         // draw vertical highlight lines
-        if (set.isVerticalHighlightIndicatorEnabled) {
+        if (set.isVerticalHighlightIndicator) {
             // create vertical path
 
             highlightLinePath.reset()
@@ -44,7 +44,7 @@ abstract class LineScatterCandleRadarRenderer(
         }
 
         // draw horizontal highlight lines
-        if (set.isHorizontalHighlightIndicatorEnabled) {
+        if (set.isHorizontalHighlightIndicator) {
             // create horizontal path
 
             highlightLinePath.reset()

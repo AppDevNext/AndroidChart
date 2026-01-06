@@ -288,32 +288,32 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
             override fun onNothingSelected() = Unit
         })
 
-        chart.setDrawBarShadow(false)
-        chart.setDrawValueAboveBar(true)
+        chart.isDrawBarShadow = false
+        chart.isDrawValueAboveBar = true
         chart.description.isEnabled = false
         chart.setMaxVisibleValueCount(60)
-        chart.setPinchZoom(false)
+        chart.isPinchZoom = false
         chart.setDrawGridBackground(false)
 
         val xl = chart.xAxis
         xl.position = XAxisPosition.BOTTOM
         xl.typeface = tfLight
-        xl.setDrawAxisLine(true)
-        xl.setDrawGridLines(false)
+        xl.isDrawAxisLine = true
+        xl.isDrawGridLines = false
         xl.granularity = 10f
 
         chart.axisLeft.apply {
             typeface = tfLight
-            setDrawAxisLine(true)
-            setDrawGridLines(true)
+            isDrawAxisLine = true
+            isDrawGridLines = true
             axisMinimum = 0f
 
         }
 
         chart.axisRight.apply {
             typeface = tfLight
-            setDrawAxisLine(true)
-            setDrawGridLines(false)
+            isDrawAxisLine = true
+            isDrawGridLines = false
             axisMinimum = 0f
         }
 
@@ -395,18 +395,18 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
     private fun toggleHighlight() {
         val chartData = chart?.barData
         if (chartData != null) {
-            chartData.isHighlightEnabled = !chartData.isHighlightEnabled
+            chartData.isHighlight = !chartData.isHighlight
             chart?.invalidate()
         }
     }
 
     private fun togglePinchZoom() {
-        chart?.isPinchZoomEnabled?.let { chart?.setPinchZoom(!it) }
+        chart?.isPinchZoom?.let { chart?.isPinchZoom = !it }
         chart?.invalidate()
     }
 
     private fun toggleAutoScaleMinMax() {
-        chart?.isAutoScaleMinMaxEnabled?.let { chart?.isAutoScaleMinMaxEnabled = !it }
+        chart?.isAutoScaleMinMax?.let { chart?.isAutoScaleMinMax = !it }
         chart?.notifyDataSetChanged()
     }
 

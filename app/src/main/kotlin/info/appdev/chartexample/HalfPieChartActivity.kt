@@ -37,13 +37,13 @@ class HalfPieChartActivity : DemoBase() {
 
         moveOffScreen()
 
-        binding.chart1.setUsePercentValues(true)
+        binding.chart1.isUsePercentValues = true
         binding.chart1.description.isEnabled = false
 
         binding.chart1.setCenterTextTypeface(tfLight)
         binding.chart1.centerText = generateCenterSpannableText()
 
-        binding.chart1.isDrawHoleEnabled = true
+        binding.chart1.isDrawHole = true
         binding.chart1.setHoleColor(Color.WHITE)
 
         binding.chart1.setTransparentCircleColor(Color.WHITE)
@@ -52,7 +52,7 @@ class HalfPieChartActivity : DemoBase() {
         binding.chart1.holeRadius = 58f
         binding.chart1.transparentCircleRadius = 61f
 
-        binding.chart1.setDrawCenterText(true)
+        binding.chart1.isDrawCenterText = true
 
         binding.chart1.isRotationEnabled = false
         binding.chart1.isHighlightPerTapEnabled = true

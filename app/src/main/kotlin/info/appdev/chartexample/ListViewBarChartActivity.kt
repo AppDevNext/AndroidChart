@@ -75,7 +75,7 @@ class ListViewBarChartActivity : DemoBase() {
             holder.chart?.xAxis?.apply {
                 this.position = XAxisPosition.BOTTOM
                 typeface = tfLight
-                setDrawGridLines(false)
+                isDrawGridLines = false
             }
 
             holder.chart?.axisLeft?.apply {

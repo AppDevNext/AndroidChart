@@ -69,7 +69,7 @@ class LineChartActivityColored : DemoBase() {
         chart.setScaleEnabled(true)
 
         // if disabled, scaling can be done on x- and y-axis separately
-        chart.setPinchZoom(false)
+        chart.isPinchZoom = false
 
         chart.setBackgroundColor(color)
 

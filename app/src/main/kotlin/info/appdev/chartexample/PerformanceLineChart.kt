@@ -39,12 +39,12 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setScaleEnabled(true)
 
         // if disabled, scaling can be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
-        binding.chart1.axisLeft.setDrawGridLines(false)
+        binding.chart1.axisLeft.isDrawGridLines = false
         binding.chart1.axisRight.isEnabled = false
-        binding.chart1.xAxis.setDrawGridLines(true)
-        binding.chart1.xAxis.setDrawAxisLine(false)
+        binding.chart1.xAxis.isDrawGridLines = true
+        binding.chart1.xAxis.isDrawAxisLine = false
 
         binding.seekbarValues.progress = 9000
 
@@ -69,7 +69,7 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
         set1.isDrawValues = false
         set1.isDrawCircles = false
         set1.lineMode = LineDataSet.Mode.LINEAR
-        set1.isDrawFilledEnabled = false
+        set1.isDrawFilled = false
 
         // create a data object with the data sets
         val data = LineData(set1)

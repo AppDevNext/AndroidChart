@@ -50,13 +50,13 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         binding.chart1.setMaxVisibleValueCount(40)
 
         // scaling can now only be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
         binding.chart1.setDrawGridBackground(false)
-        binding.chart1.setDrawBarShadow(false)
+        binding.chart1.isDrawBarShadow = false
 
-        binding.chart1.setDrawValueAboveBar(false)
-        binding.chart1.isHighlightFullBarEnabled = false
+        binding.chart1.isDrawValueAboveBar = false
+        binding.chart1.isHighlightFullBar = false
 
         // change the position of the y-labels
         val leftAxis = binding.chart1.axisLeft
@@ -166,19 +166,18 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.barData?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

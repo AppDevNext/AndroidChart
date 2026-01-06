@@ -6,10 +6,8 @@ import info.appdev.charting.utils.convertDpToPixel
 
 abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>, label: String) : BarLineScatterCandleBubbleDataSet<T>(yVals, label),
     ILineScatterCandleRadarDataSet<T> {
-    override var isVerticalHighlightIndicatorEnabled: Boolean = true
-        protected set
-    override var isHorizontalHighlightIndicatorEnabled: Boolean = true
-        protected set
+    override var isVerticalHighlightIndicator: Boolean = true
+    override var isHorizontalHighlightIndicator: Boolean = true
 
     /** the width of the highlight indicator lines  */
     protected var mHighlightLineWidth: Float
@@ -18,7 +16,6 @@ abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>, l
     override var dashPathEffectHighlight: DashPathEffect? = null
         protected set
 
-
     init {
         mHighlightLineWidth = 0.5f.convertDpToPixel()
     }
@@ -26,30 +23,29 @@ abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>, l
     /**
      * Enables / disables the horizontal highlight-indicator. If disabled, the indicator is not drawn.
      */
+    @Deprecated("Use property isHorizontalHighlightIndicator instead")
     fun setDrawHorizontalHighlightIndicator(enabled: Boolean) {
-        this.isHorizontalHighlightIndicatorEnabled = enabled
+        this.isHorizontalHighlightIndicator = enabled
     }
 
     /**
      * Enables / disables the vertical highlight-indicator. If disabled, the indicator is not drawn.
      */
+    @Deprecated("Use property isVerticalHighlightIndicator instead")
     fun setDrawVerticalHighlightIndicator(enabled: Boolean) {
-        this.isVerticalHighlightIndicatorEnabled = enabled
+        this.isVerticalHighlightIndicator = enabled
     }
 
     /**
      * Enables / disables both vertical and horizontal highlight-indicators.
      */
     fun setDrawHighlightIndicators(enabled: Boolean) {
-        setDrawVerticalHighlightIndicator(enabled)
-        setDrawHorizontalHighlightIndicator(enabled)
+        this.isHorizontalHighlightIndicator = enabled
+        this.isVerticalHighlightIndicator = enabled
     }
 
     override var highlightLineWidth: Float
         get() = mHighlightLineWidth
-        /**
-         * Sets the width of the highlight line in dp.
-         */
         set(width) {
             mHighlightLineWidth = width.convertDpToPixel()
         }
@@ -63,9 +59,8 @@ abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>, l
      */
     fun enableDashedHighlightLine(lineLength: Float, spaceLength: Float, phase: Float) {
         this.dashPathEffectHighlight = DashPathEffect(
-            floatArrayOf(
-                lineLength, spaceLength
-            ), phase
+            floatArrayOf(lineLength, spaceLength),
+            phase
         )
     }
 
@@ -85,8 +80,8 @@ abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>, l
 
     protected fun copy(lineScatterCandleRadarDataSet: LineScatterCandleRadarDataSet<*>) {
         super.copy((lineScatterCandleRadarDataSet as BaseDataSet<*>?)!!)
-        lineScatterCandleRadarDataSet.isHorizontalHighlightIndicatorEnabled = this.isHorizontalHighlightIndicatorEnabled
-        lineScatterCandleRadarDataSet.isVerticalHighlightIndicatorEnabled = this.isVerticalHighlightIndicatorEnabled
+        lineScatterCandleRadarDataSet.isHorizontalHighlightIndicator = this.isHorizontalHighlightIndicator
+        lineScatterCandleRadarDataSet.isVerticalHighlightIndicator = this.isVerticalHighlightIndicator
         lineScatterCandleRadarDataSet.mHighlightLineWidth = mHighlightLineWidth
         lineScatterCandleRadarDataSet.dashPathEffectHighlight = this.dashPathEffectHighlight
     }

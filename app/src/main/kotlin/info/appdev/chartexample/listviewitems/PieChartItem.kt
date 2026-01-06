@@ -53,7 +53,7 @@ class PieChartItem(pieData: PieData, context: Context) : ChartItem<PieData>(pieD
         holder.chart!!.centerText = centerText
         holder.chart!!.setCenterTextTypeface(typeface)
         holder.chart!!.setCenterTextSize(9f)
-        holder.chart!!.setUsePercentValues(true)
+        holder.chart!!.isUsePercentValues = true
         holder.chart!!.setExtraOffsets(5f, 10f, 50f, 10f)
 
         chartData.setValueFormatter(PercentFormatter())

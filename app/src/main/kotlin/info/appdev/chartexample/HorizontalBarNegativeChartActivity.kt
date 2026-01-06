@@ -42,8 +42,8 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
         binding.chart1.setOnChartValueSelectedListener(this)
 
         // chart.setHighlightEnabled(false);
-        binding.chart1.setDrawBarShadow(false)
-        binding.chart1.setDrawValueAboveBar(true)
+        binding.chart1.isDrawBarShadow = false
+        binding.chart1.isDrawValueAboveBar = true
 
         binding.chart1.description.isEnabled = false
 
@@ -52,7 +52,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
         binding.chart1.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
         // draw shadows for each bar that show the maximum value
         // chart.setDrawBarShadow(true);
@@ -61,20 +61,20 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
         val xl = binding.chart1.xAxis
         xl.position = XAxisPosition.BOTTOM
         xl.typeface = tfLight
-        xl.setDrawAxisLine(true)
-        xl.setDrawGridLines(false)
+        xl.isDrawAxisLine = true
+        xl.isDrawGridLines = false
         xl.granularity = 10f
 
         val yl = binding.chart1.axisLeft
         yl.typeface = tfLight
-        yl.setDrawAxisLine(true)
-        yl.setDrawGridLines(true)
+        yl.isDrawAxisLine = true
+        yl.isDrawGridLines = true
 
         //        yl.setInverted(true);
         val yr = binding.chart1.axisRight
         yr.typeface = tfLight
-        yr.setDrawAxisLine(true)
-        yr.setDrawGridLines(false)
+        yr.isDrawAxisLine = true
+        yr.isDrawGridLines = false
 
         //        yr.setInverted(true);
         binding.chart1.setFitBars(true)
@@ -165,19 +165,18 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.barData?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

@@ -97,7 +97,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
 
                 // don't include DataSets that cannot be highlighted
                 dataSet?.let {
-                    if (!it.isHighlightEnabled) {
+                    if (!it.isHighlight) {
                         i++
                         continue
                     }

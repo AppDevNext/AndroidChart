@@ -53,7 +53,7 @@ class GradientActivity : DemoBase() {
             isDrawCircles = false
             lineWidth = 2f
 
-            isDrawFilledEnabled = true
+            isDrawFilled = true
             fillAlpha = 255
             fillDrawable = ContextCompat.getDrawable(
                 this@GradientActivity,

@@ -209,7 +209,7 @@ interface IDataSet<T : Entry> {
      * If set to true, value highlighting is enabled which means that values can
      * be highlighted programmatically or by touch gesture.
      */
-    var isHighlightEnabled: Boolean
+    var isHighlight: Boolean
 
     /**
      * Sets the formatter to be used for drawing the values inside the chart. If

@@ -50,8 +50,8 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         binding.chart1.setOnChartValueSelectedListener(this)
         binding.chart1.setRoundedBarRadius(50f)
 
-        binding.chart1.setDrawBarShadow(false)
-        binding.chart1.setDrawValueAboveBar(true)
+        binding.chart1.isDrawBarShadow = false
+        binding.chart1.isDrawValueAboveBar = true
 
         binding.chart1.description.isEnabled = false
 
@@ -60,7 +60,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         binding.chart1.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
         binding.chart1.setDrawGridBackground(false)
 
@@ -70,7 +70,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         binding.chart1.xAxis.apply {
             position = XAxisPosition.BOTTOM
             typeface = tfLight
-            setDrawGridLines(false)
+            isDrawGridLines = false
             granularity = 1f // only intervals of 1 day
             labelCount = 7
             valueFormatter = xAxisFormatter
@@ -88,7 +88,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         }
 
         binding.chart1.axisRight.apply {
-            setDrawGridLines(false)
+            isDrawGridLines = false
             typeface = tfLight
             setLabelCount(8, false)
             valueFormatter = custom
@@ -211,20 +211,18 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.barData?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
-                else binding.chart1.setPinchZoom(true)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

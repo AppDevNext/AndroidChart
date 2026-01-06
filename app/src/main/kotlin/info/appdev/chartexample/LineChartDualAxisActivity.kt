@@ -58,7 +58,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         binding.chart1.isHighlightPerDragEnabled = true
 
         // if disabled, scaling can be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(true)
+        binding.chart1.isPinchZoom = true
 
         // set an alternative background color
         binding.chart1.setBackgroundColor(Color.LTGRAY)
@@ -86,25 +86,25 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         xAxis.typeface = tfLight
         xAxis.textSize = 11f
         xAxis.textColor = Color.WHITE
-        xAxis.setDrawGridLines(false)
-        xAxis.setDrawAxisLine(false)
+        xAxis.isDrawGridLines = false
+        xAxis.isDrawAxisLine = false
 
         val leftAxis = binding.chart1.axisLeft
         leftAxis.typeface = tfLight
         leftAxis.textColor = ColorTemplate.holoBlue
         leftAxis.axisMaximum = 200f
         leftAxis.axisMinimum = 0f
-        leftAxis.setDrawGridLines(true)
-        leftAxis.isGranularityEnabled = true
+        leftAxis.isDrawGridLines = true
+        leftAxis.isGranularity = true
 
         val rightAxis = binding.chart1.axisRight
         rightAxis.typeface = tfLight
         rightAxis.textColor = Color.MAGENTA
         rightAxis.axisMaximum = 900f
         rightAxis.axisMinimum = -200f
-        rightAxis.setDrawGridLines(false)
-        rightAxis.setDrawZeroLine(false)
-        rightAxis.isGranularityEnabled = false
+        rightAxis.isDrawGridLines = false
+        rightAxis.isDrawZeroLine = false
+        rightAxis.isGranularity = false
     }
 
     private fun setData(count: Int, range: Float) {
@@ -219,14 +219,14 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.data?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
+                    set.isDrawFilled = !set.isDrawFilled
                 }
                 binding.chart1.invalidate()
             }
@@ -269,13 +269,12 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             }
 
             R.id.actionTogglePinch -> {
-                binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

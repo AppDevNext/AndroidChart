@@ -41,7 +41,7 @@ class BarChartFrag : SimpleFragment(), OnChartGestureListener {
         chart.setMarker(mv)
 
         chart.setDrawGridBackground(false)
-        chart.setDrawBarShadow(false)
+        chart.isDrawBarShadow = false
 
         val tf = Typeface.createFromAsset(requireContext().assets, "OpenSans-Light.ttf")
 

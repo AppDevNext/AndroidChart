@@ -32,8 +32,8 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         setContentView(binding.root)
 
         dataSinus = assets.loadBarEntriesFromAssets("sinus_values.txt")
-        binding.chart1.setDrawBarShadow(false)
-        binding.chart1.setDrawValueAboveBar(true)
+        binding.chart1.isDrawBarShadow = false
+        binding.chart1.isDrawValueAboveBar = true
 
         binding.chart1.description.isEnabled = false
 
@@ -41,7 +41,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
         // draw shadows for each bar that show the maximum value
         // chart.setDrawBarShadow(true);
@@ -58,11 +58,11 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
         leftAxis.setLabelCount(6, false)
         leftAxis.axisMinimum = -2.5f
         leftAxis.axisMaximum = 2.5f
-        leftAxis.isGranularityEnabled = true
+        leftAxis.isGranularity = true
         leftAxis.granularity = 0.1f
 
         val rightAxis = binding.chart1.axisRight
-        rightAxis.setDrawGridLines(false)
+        rightAxis.isDrawGridLines = false
         rightAxis.typeface = tfLight
         rightAxis.setLabelCount(6, false)
         rightAxis.axisMinimum = -2.5f
@@ -138,21 +138,18 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.barData?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                if (binding.chart1.isPinchZoomEnabled)
-                    binding.chart1.setPinchZoom(false)
-                else binding.chart1.setPinchZoom(true)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

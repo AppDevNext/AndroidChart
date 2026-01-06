@@ -5,7 +5,7 @@ import info.appdev.charting.interfaces.dataprovider.base.BarLineScatterCandleBub
 
 interface BarDataProvider : BarLineScatterCandleBubbleDataProvider<BarData> {
     val barData: BarData?
-    var isDrawBarShadowEnabled: Boolean
-    var isDrawValueAboveBarEnabled: Boolean
-    var isHighlightFullBarEnabled: Boolean
+    var isDrawBarShadow: Boolean
+    var isDrawValueAboveBar: Boolean
+    var isHighlightFullBar: Boolean
 }

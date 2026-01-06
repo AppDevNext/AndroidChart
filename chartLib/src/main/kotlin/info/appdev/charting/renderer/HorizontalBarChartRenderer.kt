@@ -59,7 +59,7 @@ open class HorizontalBarChartRenderer(
         val phaseY = animator.phaseY
 
         // draw the bar shadow before the values
-        if (dataProvider.isDrawBarShadowEnabled) {
+        if (dataProvider.isDrawBarShadow) {
             shadowPaint.color = dataSet.barShadowColor
 
             dataProvider.barData?.let { barData ->
@@ -172,7 +172,7 @@ open class HorizontalBarChartRenderer(
             val valueOffsetPlus = 5f.convertDpToPixel()
             var posOffset: Float
             var negOffset: Float
-            val drawValueAboveBar = dataProvider.isDrawValueAboveBarEnabled
+            val drawValueAboveBar = dataProvider.isDrawValueAboveBar
 
             dataProvider.barData?.let { barData ->
                 for (i in 0..<barData.dataSetCount) {

@@ -28,6 +28,6 @@ interface ILineRadarDataSet<T : Entry> : ILineScatterCandleRadarDataSet<T> {
     /**
      * Returns true if filled drawing is enabled, false if not
      */
-    var isDrawFilledEnabled: Boolean
+    var isDrawFilled: Boolean
 
 }

@@ -34,7 +34,7 @@ class RoundedHorizontalBarChartRenderer(
         val phaseX = animator.phaseX
         val phaseY = animator.phaseY
 
-        if (dataProvider.isDrawBarShadowEnabled) {
+        if (dataProvider.isDrawBarShadow) {
             shadowPaint.color = dataSet.barShadowColor
             dataProvider.barData?.let { barData ->
                 val barWidth = barData.barWidth
@@ -89,7 +89,7 @@ class RoundedHorizontalBarChartRenderer(
                         break
                     }
 
-                    if (dataProvider.isDrawBarShadowEnabled) {
+                    if (dataProvider.isDrawBarShadow) {
                         if (roundedShadowRadius > 0) {
                             canvas.drawRoundRect(
                                 RectF(
@@ -139,7 +139,7 @@ class RoundedHorizontalBarChartRenderer(
                         break
                     }
 
-                    if (dataProvider.isDrawBarShadowEnabled) {
+                    if (dataProvider.isDrawBarShadow) {
                         if (roundedShadowRadius > 0) {
                             canvas.drawRoundRect(
                                 RectF(

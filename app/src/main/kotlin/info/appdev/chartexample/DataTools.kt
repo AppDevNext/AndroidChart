@@ -220,7 +220,7 @@ class DataTools {
             lineDataSet01.enableDashedHighlightLine(10f, 5f, 0f)
 
             // set the filled area
-            lineDataSet01.isDrawFilledEnabled = true
+            lineDataSet01.isDrawFilled = true
             lineDataSet01.fillFormatter = object : IFillFormatter {
                 override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
                     return lineChart.axisLeft.axisMinimum

@@ -44,7 +44,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
 
         val xl = binding.chart1.xAxis
         xl.typeface = tfRegular
-        xl.setAvoidFirstLastClipping(true)
+        xl.isAvoidFirstLastClipping = true
 
         val yl = binding.chart1.axisLeft
         yl.typeface = tfRegular
@@ -86,20 +86,18 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.data?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
-                else binding.chart1.setPinchZoom(true)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

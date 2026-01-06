@@ -77,7 +77,7 @@ open class YAxisRenderer(
     }
 
     override fun renderAxisLine(canvas: Canvas) {
-        if (!yAxis.isEnabled || !yAxis.isDrawAxisLineEnabled)
+        if (!yAxis.isEnabled || !yAxis.isDrawAxisLine)
             return
 
         paintAxisLine.color = yAxis.axisLineColor
@@ -141,7 +141,7 @@ open class YAxisRenderer(
         if (!yAxis.isEnabled)
             return
 
-        if (yAxis.isDrawGridLinesEnabled) {
+        if (yAxis.isDrawGridLines) {
             canvas.withClip(gridClippingRect!!) {
                 val positions = transformedPositions
 
@@ -163,7 +163,7 @@ open class YAxisRenderer(
             }
         }
 
-        if (yAxis.isDrawZeroLineEnabled) {
+        if (yAxis.isDrawZeroLine) {
             drawZeroLine(canvas)
         }
     }

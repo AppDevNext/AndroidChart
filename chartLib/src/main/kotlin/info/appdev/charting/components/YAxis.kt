@@ -38,8 +38,7 @@ open class YAxis : AxisBase {
     /**
      * flag that indicates if the zero-line should be drawn regardless of other grid lines
      */
-    var isDrawZeroLineEnabled: Boolean = false
-        protected set
+    var isDrawZeroLine: Boolean = false
 
     /**
      * Color of the zero line
@@ -125,14 +124,6 @@ open class YAxis : AxisBase {
     fun setStartAtZero(startAtZero: Boolean) {
         if (startAtZero) axisMinimum = 0f
         else resetAxisMinimum()
-    }
-
-    /**
-     * Set this to true to draw the zero-line regardless of weather other
-     * grid-lines are enabled or not. Default: false
-     */
-    fun setDrawZeroLine(mDrawZeroLine: Boolean) {
-        this.isDrawZeroLineEnabled = mDrawZeroLine
     }
 
     var zeroLineWidth: Float

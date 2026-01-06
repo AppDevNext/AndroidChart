@@ -46,7 +46,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setScaleEnabled(true)
 
         // if disabled, scaling can be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
         binding.chart1.setDrawGridBackground(false)
         binding.chart1.maxHighlightDistance = 300f
@@ -59,7 +59,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
         y.setLabelCount(6, false)
         y.textColor = Color.WHITE
         y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-        y.setDrawGridLines(false)
+        y.isDrawGridLines = false
         y.axisLineColor = Color.WHITE
 
         binding.chart1.axisRight.isEnabled = false
@@ -104,7 +104,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
             set1.lineMode = LineDataSet.Mode.CUBIC_BEZIER
             set1.cubicIntensity = 0.2f
-            set1.isDrawFilledEnabled = true
+            set1.isDrawFilled = true
             set1.isDrawCircles = false
             set1.lineWidth = 1.8f
             set1.circleRadius = 4f
@@ -113,7 +113,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             set1.color = Color.WHITE
             set1.fillColor = Color.WHITE
             set1.fillAlpha = 100
-            set1.setDrawHorizontalHighlightIndicator(false)
+            set1.isHorizontalHighlightIndicator = false
             set1.fillFormatter = object : IFillFormatter {
                 override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
                     return binding.chart1.axisLeft.axisMinimum
@@ -153,7 +153,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.lineData.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
@@ -161,7 +161,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             R.id.actionToggleFilled -> {
                 binding.chart1.lineData.dataSets.forEach {
                     val set = it as LineDataSet
-                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
+                    set.isDrawFilled = !set.isDrawFilled
                 }
                 binding.chart1.invalidate()
             }
@@ -208,15 +208,12 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionTogglePinch -> {
-                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
-                else
-                    binding.chart1.setPinchZoom(true)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

@@ -24,7 +24,7 @@ abstract class AxisBase : ComponentBase() {
      * coming from each label).
      */
     @ColorInt
-    var gridColor: Int = Color.GRAY
+    var gridColor = Color.GRAY
 
     private var mGridLineWidth = 1f
 
@@ -32,7 +32,7 @@ abstract class AxisBase : ComponentBase() {
      * Returns the color of the axis line (line alongside the axis).
      */
     @ColorInt
-    var axisLineColor: Int = Color.GRAY
+    var axisLineColor = Color.GRAY
 
     private var mAxisLineWidth = 1f
 
@@ -49,12 +49,12 @@ abstract class AxisBase : ComponentBase() {
     /**
      * the number of entries the legend contains
      */
-    var entryCount: Int = 0
+    var entryCount = 0
 
     /**
      * the number of decimal digits to use
      */
-    var decimals: Int = 0
+    var decimals = 0
 
     /**
      * the number of label entries the axis should have, default 6
@@ -64,7 +64,7 @@ abstract class AxisBase : ComponentBase() {
     /**
      * the minimum interval between axis values
      */
-    protected var mGranularity: Float = 1.0f
+    protected var mGranularity = 1.0f
 
     /**
      * When true, axis labels are controlled by the `granularity` property.
@@ -72,30 +72,28 @@ abstract class AxisBase : ComponentBase() {
      * This could happen if two adjacent axis values are rounded to same value.
      * If using granularity this could be avoided by having fewer axis values visible.
      */
-    var isGranularityEnabled: Boolean = false
+    var isGranularity = false
 
     /**
      * if true, the set number of y-labels will be forced
      */
-    var isForceLabelsEnabled: Boolean = false
+    var isForceLabels = false
         protected set
 
     /**
      * flag indicating if the grid lines for this axis should be drawn
      */
-    var isDrawGridLinesEnabled: Boolean = true
-        protected set
+    var isDrawGridLines = true
 
     /**
      * flag that indicates if the line alongside the axis is drawn or not
      */
-    var isDrawAxisLineEnabled: Boolean = true
-        protected set
+    var isDrawAxisLine = true
 
     /**
      * flag that indicates of the labels of this axis should be drawn or not
      */
-    var isDrawLabelsEnabled: Boolean = true
+    var isDrawLabelsEnabled = true
         protected set
 
     protected var mCenterAxisLabels: Boolean = false
@@ -215,20 +213,6 @@ abstract class AxisBase : ComponentBase() {
     }
 
     /**
-     * Set this to true to enable drawing the grid lines for this axis.
-     */
-    fun setDrawGridLines(enabled: Boolean) {
-        this.isDrawGridLinesEnabled = enabled
-    }
-
-    /**
-     * Set this to true if the line alongside the axis should be drawn or not.
-     */
-    fun setDrawAxisLine(enabled: Boolean) {
-        this.isDrawAxisLineEnabled = enabled
-    }
-
-    /**
      * Centers the axis labels instead of drawing them at their original position.
      * This is useful especially for grouped BarChart.
      */
@@ -278,7 +262,7 @@ abstract class AxisBase : ComponentBase() {
      */
     fun setLabelCount(count: Int, force: Boolean) {
         this.labelCount = count
-        this.isForceLabelsEnabled = force
+        this.isForceLabels = force
     }
 
     /**
@@ -295,7 +279,7 @@ abstract class AxisBase : ComponentBase() {
                 count = this.axisMinLabels
 
             mLabelCount = count
-            this.isForceLabelsEnabled = false
+            this.isForceLabels = false
         }
 
     /**
@@ -307,7 +291,7 @@ abstract class AxisBase : ComponentBase() {
         set(granularity) {
             mGranularity = granularity
             // set this to true if it was disabled, as it makes no sense to call this method with granularity disabled
-            this.isGranularityEnabled = true
+            this.isGranularity = true
         }
 
     /**

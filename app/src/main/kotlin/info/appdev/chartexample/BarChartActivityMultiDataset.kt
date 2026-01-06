@@ -50,9 +50,9 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         //        chart.setDrawBorders(true);
 
         // scaling can now only be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
-        binding.chart1.setDrawBarShadow(false)
+        binding.chart1.isDrawBarShadow = false
 
         binding.chart1.setDrawGridBackground(false)
 
@@ -90,7 +90,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         val leftAxis = binding.chart1.axisLeft
         leftAxis.typeface = tfLight
         leftAxis.valueFormatter = LargeValueFormatter()
-        leftAxis.setDrawGridLines(false)
+        leftAxis.isDrawGridLines = false
         leftAxis.spaceTop = 35f
         leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
@@ -193,14 +193,12 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             }
 
             R.id.actionTogglePinch -> {
-                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
-                else binding.chart1.setPinchZoom(true)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 
@@ -213,7 +211,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.barData?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }

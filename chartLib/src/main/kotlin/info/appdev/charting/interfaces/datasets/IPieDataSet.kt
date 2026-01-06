@@ -34,7 +34,7 @@ interface IPieDataSet : IDataSet<PieEntry> {
     /**
      * When valuePosition is OutsideSlice and enabled, line will have the same color as the slice
      */
-    val isUseValueColorForLineEnabled: Boolean
+    val isUseValueColorForLine: Boolean
 
     /**
      * When valuePosition is OutsideSlice, indicates line width

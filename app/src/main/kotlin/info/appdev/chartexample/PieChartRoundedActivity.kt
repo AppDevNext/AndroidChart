@@ -45,7 +45,7 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
 
         binding.seekBarX.setOnSeekBarChangeListener(this)
         binding.seekBarY.setOnSeekBarChangeListener(this)
-        binding.chart1.setUsePercentValues(true)
+        binding.chart1.isUsePercentValues = true
         binding.chart1.description.isEnabled = false
         binding.chart1.setExtraOffsets(5f, 10f, 5f, 5f)
 
@@ -54,7 +54,7 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
         binding.chart1.setCenterTextTypeface(tfLight)
         binding.chart1.centerText = generateCenterSpannableText()
 
-        binding.chart1.isDrawHoleEnabled = true
+        binding.chart1.isDrawHole = true
         binding.chart1.setHoleColor(Color.TRANSPARENT)
 
         binding.chart1.setTransparentCircleColor(Color.TRANSPARENT)
@@ -64,7 +64,7 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
 
         binding.chart1.transparentCircleRadius = 0f
 
-        binding.chart1.setDrawCenterText(true)
+        binding.chart1.isDrawCenterText = true
 
         binding.chart1.rotationAngle = 0f
         // enable rotation of the chart by touch
@@ -186,7 +186,7 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
             }
 
             R.id.actionToggleHole -> {
-                binding.chart1.isDrawHoleEnabled = !binding.chart1.isDrawHoleEnabled
+                binding.chart1.isDrawHole = !binding.chart1.isDrawHole
                 binding.chart1.invalidate()
             }
 
@@ -200,29 +200,29 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
             }
 
             R.id.actionToggleCurvedSlices -> {
-                val toSet = !binding.chart1.isDrawRoundedSlicesEnabled || !binding.chart1.isDrawHoleEnabled
-                binding.chart1.setDrawRoundedSlices(toSet)
-                if (toSet && !binding.chart1.isDrawHoleEnabled) {
-                    binding.chart1.isDrawHoleEnabled = true
+                val toSet = !binding.chart1.isDrawRoundedSlices || !binding.chart1.isDrawHole
+                binding.chart1.isDrawRoundedSlices = toSet
+                if (toSet && !binding.chart1.isDrawHole) {
+                    binding.chart1.isDrawHole = true
                 }
-                if (toSet && binding.chart1.isDrawSlicesUnderHoleEnabled) {
-                    binding.chart1.setDrawSlicesUnderHole(false)
+                if (toSet && binding.chart1.isDrawSlicesUnderHole) {
+                    binding.chart1.isDrawSlicesUnderHole = false
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionDrawCenter -> {
-                binding.chart1.setDrawCenterText(!binding.chart1.isDrawCenterTextEnabled)
+                binding.chart1.isDrawCenterText = !binding.chart1.isDrawCenterText
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleXValues -> {
-                binding.chart1.setDrawEntryLabels(!binding.chart1.isDrawEntryLabelsEnabled)
+                binding.chart1.isDrawEntryLabels = !binding.chart1.isDrawEntryLabels
                 binding.chart1.invalidate()
             }
 
             R.id.actionTogglePercent -> {
-                binding.chart1.setUsePercentValues(!binding.chart1.isUsePercentValuesEnabled)
+                binding.chart1.isUsePercentValues = !binding.chart1.isUsePercentValues
                 binding.chart1.invalidate()
             }
 

@@ -138,7 +138,7 @@ open class XAxisRenderer(
     }
 
     override fun renderAxisLine(canvas: Canvas) {
-        if (!xAxis.isDrawAxisLineEnabled || !xAxis.isEnabled)
+        if (!xAxis.isDrawAxisLine || !xAxis.isEnabled)
             return
 
         paintAxisLine.color = xAxis.axisLineColor
@@ -206,7 +206,7 @@ open class XAxisRenderer(
                 else
                     xAxis.valueFormatter?.getFormattedValue(xAxis.entries[i / 2], xAxis)
 
-                if (xAxis.isAvoidFirstLastClippingEnabled) {
+                if (xAxis.isAvoidFirstLastClipping) {
                     // avoid clipping of the last
 
                     if (i / 2 == xAxis.entryCount - 1 && xAxis.entryCount > 1) {
@@ -236,7 +236,7 @@ open class XAxisRenderer(
     protected open var renderGridLinesPath: Path = Path()
     protected open var renderGridLinesBuffer: FloatArray = FloatArray(2)
     override fun renderGridLines(canvas: Canvas) {
-        if (!xAxis.isDrawGridLinesEnabled || !xAxis.isEnabled)
+        if (!xAxis.isDrawGridLines || !xAxis.isEnabled)
             return
 
         canvas.withClip(gridClippingRect!!) {

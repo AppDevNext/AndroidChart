@@ -95,7 +95,7 @@ open class RadarChartRenderer(
 
         surface.close()
 
-        if (dataSet.isDrawFilledEnabled) {
+        if (dataSet.isDrawFilled) {
             val drawable = dataSet.fillDrawable
             if (drawable != null) {
                 drawFilledPath(canvas, surface, drawable)
@@ -108,7 +108,7 @@ open class RadarChartRenderer(
         paintRender.style = Paint.Style.STROKE
 
         // draw the line (only if filled is disabled or alpha is below 255)
-        if (!dataSet.isDrawFilledEnabled || dataSet.fillAlpha < 255) canvas.drawPath(surface, paintRender)
+        if (!dataSet.isDrawFilled || dataSet.fillAlpha < 255) canvas.drawPath(surface, paintRender)
 
         PointF.recycleInstance(center)
         PointF.recycleInstance(pOut)
@@ -296,7 +296,7 @@ open class RadarChartRenderer(
         for (high in indices) {
             val set = radarData!!.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled)
+            if (set == null || !set.isHighlight)
                 continue
 
             set.getEntryForIndex(high.x.toInt())?.let { radarEntry ->
@@ -316,7 +316,7 @@ open class RadarChartRenderer(
             // draw the lines
             drawHighlightLines(canvas, pOut.x, pOut.y, set)
 
-            if (set.isDrawHighlightCircleEnabled) {
+            if (set.isDrawHighlightCircle) {
                 if (!pOut.x.isNaN() && !pOut.y.isNaN()) {
                     var strokeColor = set.highlightCircleStrokeColor
                     if (strokeColor == ColorTemplate.COLOR_NONE) {

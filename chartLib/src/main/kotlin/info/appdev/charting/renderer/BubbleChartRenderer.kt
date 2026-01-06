@@ -204,7 +204,7 @@ open class BubbleChartRenderer(
         for (high in indices) {
             val set = bubbleData?.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled)
+            if (set == null || !set.isHighlight)
                 continue
 
             val bubbleEntry = set.getEntryForXValue(high.x, high.y)!!

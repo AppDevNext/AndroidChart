@@ -30,8 +30,7 @@ class XAxis : AxisBase() {
      * if set to true, the chart will avoid that the first and last label entry
      * in the chart "clip" off the edge of the chart
      */
-    var isAvoidFirstLastClippingEnabled: Boolean = false
-        private set
+    var isAvoidFirstLastClipping = false
 
     /**
      * the position of the x-labels relative to the chart
@@ -49,11 +48,4 @@ class XAxis : AxisBase() {
         mYOffset = 4f.convertDpToPixel() // -3
     }
 
-    /**
-     * if set to true, the chart will avoid that the first and last label entry
-     * in the chart "clip" off the edge of the chart or the screen
-     */
-    fun setAvoidFirstLastClipping(enabled: Boolean) {
-        this.isAvoidFirstLastClippingEnabled = enabled
-    }
 }

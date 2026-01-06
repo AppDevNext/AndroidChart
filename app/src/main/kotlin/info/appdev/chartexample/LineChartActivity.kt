@@ -67,7 +67,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         binding.chart1.setScaleEnabled(true)
 
         // force pinch zoom along both axis
-        binding.chart1.setPinchZoom(true)
+        binding.chart1.isPinchZoom = true
 
         // vertical grid lines
         binding.chart1.xAxis.enableGridDashedLine(10f, 10f, 0f)
@@ -168,14 +168,14 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.data?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                     binding.chart1.invalidate()
                 }
             }
 
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
+                    set.isDrawFilled = !set.isDrawFilled
                     binding.chart1.invalidate()
                 }
             }
@@ -218,12 +218,12 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             }
 
             R.id.actionTogglePinch -> {
-                binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled)
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

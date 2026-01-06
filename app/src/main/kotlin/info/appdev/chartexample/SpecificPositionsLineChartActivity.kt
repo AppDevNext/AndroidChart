@@ -61,7 +61,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         // mChart.setScaleYEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(true)
+        binding.chart1.isPinchZoom = true
 
         // set an alternative background color
         // mChart.setBackgroundColor(Color.GRAY);
@@ -103,7 +103,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         leftAxis.axisMinimum = -50f
         //leftAxis.setYOffset(20f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f)
-        leftAxis.setDrawZeroLine(false)
+        leftAxis.isDrawZeroLine = false
         leftAxis.isShowSpecificPositions = true
         leftAxis.specificPositions = floatArrayOf(0f, 10f, 20f, 50f, 100f, 300f)
 
@@ -136,7 +136,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.data?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
@@ -144,7 +144,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach {
                     val set = it as LineDataSet
-                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
+                    set.isDrawFilled = !set.isDrawFilled
                 }
                 binding.chart1.invalidate()
             }
@@ -182,12 +182,12 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
             }
 
             R.id.actionTogglePinch -> {
-                binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled)
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 
@@ -258,7 +258,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         set11.circleRadius = 3f
         set11.isDrawCircleHoleEnabled = false
         set11.valueTextSize = 9f
-        set11.isDrawFilledEnabled = true
+        set11.isDrawFilled = true
         set11.formLineWidth = 1f
         set11.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
         set11.formSize = 15f

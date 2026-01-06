@@ -142,7 +142,7 @@ class BarLineChartTouchListener(
                 savedDist = spacing(event)
 
                 if (savedDist > 10f) {
-                    touchMode = if (chart.isPinchZoomEnabled) {
+                    touchMode = if (chart.isPinchZoom) {
                         PINCH_ZOOM
                     } else {
                         if (chart.isScaleXEnabled != chart.isScaleYEnabled) {
