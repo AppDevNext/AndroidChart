@@ -688,10 +688,9 @@ open class PieChartRenderer(
             val layoutHeight = centerTextLayout!!.height.toFloat()
 
             canvas.withSave {
-                val path = mDrawCenterTextPathBuffer
-                path.reset()
-                path.addOval(holeRect, Path.Direction.CW)
-                clipPath(path)
+                mDrawCenterTextPathBuffer.reset()
+                mDrawCenterTextPathBuffer.addOval(holeRect, Path.Direction.CW)
+                clipPath(mDrawCenterTextPathBuffer)
 
                 translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2f)
                 centerTextLayout!!.draw(this)
