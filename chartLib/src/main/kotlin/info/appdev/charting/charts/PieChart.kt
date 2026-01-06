@@ -339,7 +339,7 @@ open class PieChart : PieRadarChartBase<PieData> {
     /**
      * This will throw an exception, PieChart has no XAxis object.
      */
-    @Deprecated("")
+    @Deprecated("PieChart has no XAxis")
     override val xAxis: XAxis
         get() = throw RuntimeException("PieChart has no XAxis")
 

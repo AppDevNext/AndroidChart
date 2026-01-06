@@ -945,7 +945,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         setMarkers(mutableListOf(marker))
     }
 
-    @Deprecated("")
+    @Deprecated("Use 'setMarker()' instead")
     fun setMarkerView(iMarker: IMarker) {
         setMarker(iMarker)
     }
