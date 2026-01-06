@@ -68,7 +68,7 @@ class PieChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         binding.chart1.rotationAngle = 0f
         // enable rotation of the chart by touch
         binding.chart1.isRotationEnabled = true
-        binding.chart1.isHighlightPerTapEnabled = true
+        binding.chart1.isHighlightPerTap = true
 
         // chart.setUnit(" €");
         // chart.setDrawUnitsInChart(true);

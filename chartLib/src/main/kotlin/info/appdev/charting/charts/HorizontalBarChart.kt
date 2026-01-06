@@ -182,7 +182,7 @@ open class HorizontalBarChart : BarChart {
             max(minOffset, offsetBottom)
         )
 
-        if (isLogEnabled) {
+        if (isLogging) {
             Timber.i("offsetLeft: $offsetLeft, offsetTop: $offsetTop, offsetRight: $offsetRight, offsetBottom: $offsetBottom")
             Timber.i("Content: ${viewPortHandler.contentRect}")
         }
@@ -251,7 +251,7 @@ open class HorizontalBarChart : BarChart {
      */
     override fun getHighlightByTouchPoint(x: Float, y: Float): Highlight? {
         if (mData == null) {
-            if (isLogEnabled) {
+            if (isLogging) {
                 Timber.e("Can't select by touch. No data set.")
             }
             return null

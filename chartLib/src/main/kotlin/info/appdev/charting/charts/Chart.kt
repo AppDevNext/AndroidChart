@@ -53,7 +53,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     /**
      * Returns true if log-output is enabled for the chart, fals if not.
      */
-    var isLogEnabled: Boolean = false
+    var isLogging = false
 
     /**
      * object that holds all data that was originally set for the chart, before
@@ -65,12 +65,12 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
      * Set this to false to prevent values from being highlighted by tap gesture.
      * Values can still be highlighted via drag or programmatically. Default: true
      */
-    var isHighlightPerTapEnabled: Boolean = true
+    var isHighlightPerTap = true
 
     /**
      * If set to true, chart continues to scroll after touch up
      */
-    var isDragDecelerationEnabled: Boolean = true
+    var isDragDeceleration = true
 
     /**
      * Deceleration friction coefficient in [0 ; 1] interval, higher values
@@ -221,7 +221,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         mInfoPaint.textAlign = Align.CENTER
         mInfoPaint.textSize = 12f.convertDpToPixel()
 
-        if (this.isLogEnabled) {
+        if (this.isLogging) {
             Timber.i("Chart.init()")
 
             // enable being detected by ScreenReader
@@ -535,7 +535,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         if (high == null) {
             this.highlighted = null
         } else {
-            if (this.isLogEnabled) {
+            if (this.isLogging) {
                 Timber.i("Highlighted: $high")
             }
 
@@ -1051,7 +1051,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
             // let the chart know there is new data
             notifyDataSetChanged()
 
-            if (isLogEnabled) {
+            if (isLogging) {
                 Timber.i("Data is set.")
             }
         }
@@ -1203,17 +1203,17 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        if (this.isLogEnabled) {
+        if (this.isLogging) {
             Timber.i("OnSizeChanged()")
         }
 
         if (w > 0 && h > 0 && w < 10000 && h < 10000) {
-            if (this.isLogEnabled) {
+            if (this.isLogging) {
                 Timber.i("Setting chart dimens, width: $w, height: $h")
             }
             viewPortHandler.setChartDimens(w.toFloat(), h.toFloat())
         } else {
-            if (this.isLogEnabled) {
+            if (this.isLogging) {
                 Timber.w("*Avoiding* setting chart dimens! width: $w, height: $h")
             }
         }

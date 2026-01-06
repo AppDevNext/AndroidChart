@@ -55,7 +55,7 @@ class HalfPieChartActivity : DemoBase() {
         binding.chart1.isDrawCenterText = true
 
         binding.chart1.isRotationEnabled = false
-        binding.chart1.isHighlightPerTapEnabled = true
+        binding.chart1.isHighlightPerTap = true
 
         binding.chart1.maxAngle = 180f // HALF CHART
         binding.chart1.rotationAngle = 180f

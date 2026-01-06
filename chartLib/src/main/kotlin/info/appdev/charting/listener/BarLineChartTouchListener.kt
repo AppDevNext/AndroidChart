@@ -211,7 +211,7 @@ class BarLineChartTouchListener(
                     if (abs(velocityX.toDouble()) > Utils.minimumFlingVelocity ||
                         abs(velocityY.toDouble()) > Utils.minimumFlingVelocity
                     ) {
-                        if (touchMode == DRAG && chart.isDragDecelerationEnabled) {
+                        if (touchMode == DRAG && chart.isDragDeceleration) {
                             stopDeceleration()
 
                             decelerationLastTime = AnimationUtils.currentAnimationTimeMillis()
@@ -502,7 +502,7 @@ class BarLineChartTouchListener(
 
             chart.zoom(scaleX, scaleY, trans.x, trans.y)
 
-            if (chart.isLogEnabled)
+            if (chart.isLogging)
                 Timber.i("Double-Tap, Zooming In, x: ${trans.x} y: ${trans.y}")
 
             onChartGestureListener?.onChartScale(e, scaleX, scaleY)
@@ -528,7 +528,7 @@ class BarLineChartTouchListener(
 
         l?.onChartSingleTapped(e)
 
-        if (!chart.isHighlightPerTapEnabled) {
+        if (!chart.isHighlightPerTap) {
             return false
         }
 
