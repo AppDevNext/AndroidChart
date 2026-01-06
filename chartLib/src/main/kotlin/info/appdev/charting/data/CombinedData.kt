@@ -47,10 +47,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
     }
 
     override fun calcMinMax() {
-        if (dataSets == null) {
-            dataSets = ArrayList<IBarLineScatterCandleBubbleDataSet<out Entry>>()
-        }
-        dataSets!!.clear()
+        dataSets.clear()
 
         yMax = -Float.MAX_VALUE
         yMin = Float.MAX_VALUE
@@ -68,7 +65,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
             data.calcMinMax()
 
             val sets = data.dataSets
-            dataSets!!.addAll(sets!!)
+            dataSets.addAll(sets)
 
             if (data.yMax > yMax) yMax = data.yMax
 
@@ -168,7 +165,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
         if (highlight.dataSetIndex >= data.dataSetCount)
             return null
 
-        return data.dataSets!![highlight.dataSetIndex] as IBarLineScatterCandleBubbleDataSet<out Entry>?
+        return data.dataSets[highlight.dataSetIndex] as IBarLineScatterCandleBubbleDataSet<out Entry>?
     }
 
     fun getDataIndex(data: ChartData<*>?): Int {

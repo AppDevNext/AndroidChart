@@ -77,7 +77,7 @@ open class LineChartRenderer(
         drawBitmapLocal.eraseColor(Color.TRANSPARENT)
 
         dataProvider.lineData?.let { lineData ->
-            lineData.dataSets?.forEach { set ->
+            lineData.dataSets.forEach { set ->
                 if (set.isVisible)
                     drawDataSet(canvas, set)
             }

@@ -268,7 +268,7 @@ open class PieChart : PieRadarChartBase<PieData> {
             var diff = 0f
 
             for (i in 0..<data.dataSetCount) {
-                val set = dataSets!![i]
+                val set = dataSets[i]
 
                 for (j in 0..<set.entryCount) {
                     val drawAngle = calcAngle(abs(set.getEntryForIndex(j)!!.y), yValueSum)

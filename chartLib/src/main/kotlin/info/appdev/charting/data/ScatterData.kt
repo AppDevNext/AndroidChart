@@ -9,19 +9,17 @@ class ScatterData : BarLineScatterCandleBubbleData<IScatterDataSet> {
 
     constructor(vararg dataSets: IScatterDataSet) : super(*dataSets)
 
+    /**
+     * Returns the maximum shape-size across all DataSets.
+     */
     val greatestShapeSize: Float
-        /**
-         * Returns the maximum shape-size across all DataSets.
-         */
         get() {
             var max = 0f
 
-            if (dataSets != null) {
-                for (set in dataSets) {
-                    val size = set.scatterShapeSize
+            for (set in dataSets) {
+                val size = set.scatterShapeSize
 
-                    if (size > max) max = size
-                }
+                if (size > max) max = size
             }
 
             return max

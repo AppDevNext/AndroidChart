@@ -210,77 +210,74 @@ open class CandleStickChartRenderer(
         // if values are drawn
         if (isDrawingValuesAllowed(dataProvider)) {
             dataProvider.candleData?.let {
+                for (i in it.dataSets.indices) {
+                    val dataSet = it.dataSets[i]
+                    if (dataSet.entryCount == 0) {
+                        continue
+                    }
+                    if (!shouldDrawValues(dataSet) || dataSet.entryCount < 1) {
+                        continue
+                    }
 
-                it.dataSets?.let { it1 ->
-                    for (i in it1.indices) {
-                        val dataSet = it.dataSets!![i]
-                        if (dataSet.entryCount == 0) {
+                    // apply the text-styling defined by the DataSet
+                    applyValueTextStyle(dataSet)
+
+                    val trans = dataProvider.getTransformer(dataSet.axisDependency)
+
+                    xBounds.set(dataProvider, dataSet)
+
+                    val positions = trans!!.generateTransformedValuesCandle(
+                        dataSet, animator.phaseX, animator.phaseY, xBounds.min, xBounds.max
+                    )
+
+                    val yOffset = 5f.convertDpToPixel()
+
+                    val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
+                    iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                    iconsOffset.y = iconsOffset.y.convertDpToPixel()
+
+                    var j = 0
+                    while (j < positions.size) {
+                        val x = positions[j]
+                        val y = positions[j + 1]
+
+                        if (!viewPortHandler.isInBoundsRight(x)) break
+
+                        if (!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y)) {
+                            j += 2
                             continue
                         }
-                        if (!shouldDrawValues(dataSet) || dataSet.entryCount < 1) {
-                            continue
+
+                        val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)!!
+
+                        if (dataSet.isDrawValues) {
+                            drawValue(
+                                canvas,
+                                dataSet.valueFormatter,
+                                entry.high,
+                                entry,
+                                i,
+                                x,
+                                y - yOffset,
+                                dataSet.getValueTextColor(j / 2)
+                            )
                         }
 
-                        // apply the text-styling defined by the DataSet
-                        applyValueTextStyle(dataSet)
+                        if (entry.icon != null && dataSet.isDrawIcons) {
+                            val icon = entry.icon
 
-                        val trans = dataProvider.getTransformer(dataSet.axisDependency)
-
-                        xBounds.set(dataProvider, dataSet)
-
-                        val positions = trans!!.generateTransformedValuesCandle(
-                            dataSet, animator.phaseX, animator.phaseY, xBounds.min, xBounds.max
-                        )
-
-                        val yOffset = 5f.convertDpToPixel()
-
-                        val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
-                        iconsOffset.x = iconsOffset.x.convertDpToPixel()
-                        iconsOffset.y = iconsOffset.y.convertDpToPixel()
-
-                        var j = 0
-                        while (j < positions.size) {
-                            val x = positions[j]
-                            val y = positions[j + 1]
-
-                            if (!viewPortHandler.isInBoundsRight(x)) break
-
-                            if (!viewPortHandler.isInBoundsLeft(x) || !viewPortHandler.isInBoundsY(y)) {
-                                j += 2
-                                continue
-                            }
-
-                            val entry = dataSet.getEntryForIndex(j / 2 + xBounds.min)!!
-
-                            if (dataSet.isDrawValues) {
-                                drawValue(
-                                    canvas,
-                                    dataSet.valueFormatter,
-                                    entry.high,
-                                    entry,
-                                    i,
-                                    x,
-                                    y - yOffset,
-                                    dataSet.getValueTextColor(j / 2)
+                            icon?.let { ico ->
+                                canvas.drawImage(
+                                    ico,
+                                    (x + iconsOffset.x).toInt(),
+                                    (y + iconsOffset.y).toInt()
                                 )
                             }
-
-                            if (entry.icon != null && dataSet.isDrawIcons) {
-                                val icon = entry.icon
-
-                                icon?.let { ico ->
-                                    canvas.drawImage(
-                                        ico,
-                                        (x + iconsOffset.x).toInt(),
-                                        (y + iconsOffset.y).toInt()
-                                    )
-                                }
-                            }
-                            j += 2
                         }
-
-                        PointF.recycleInstance(iconsOffset)
+                        j += 2
                     }
+
+                    PointF.recycleInstance(iconsOffset)
                 }
             }
         }

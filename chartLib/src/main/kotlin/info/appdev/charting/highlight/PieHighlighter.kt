@@ -5,7 +5,7 @@ import info.appdev.charting.data.Entry
 
 open class PieHighlighter(chart: PieChart) : PieRadarHighlighter<PieChart>(chart) {
     override fun getClosestHighlight(index: Int, x: Float, y: Float): Highlight? {
-        val pieDataSet = chartPieRadar.data!!.dataSets!![0]
+        val pieDataSet = chartPieRadar.data!!.dataSets[0]
 
         val entry: Entry? = pieDataSet.getEntryForIndex(index)
 

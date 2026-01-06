@@ -14,24 +14,20 @@ class PieData : ChartData<IPieDataSet> {
 
     constructor(dataSet: IPieDataSet) : super(dataSet)
 
+    /**
+     * Returns the DataSet this PieData object represents. A PieData object can only contain one DataSet.
+     */
     var dataSet: IPieDataSet
-        /**
-         * Returns the DataSet this PieData object represents. A PieData object can
-         * only contain one DataSet.
-         */
-        get() = dataSets!![0]
-        /**
-         * Sets the PieDataSet this data object should represent.
-         */
+        get() = dataSets[0]
         set(dataSet) {
-            dataSets?.clear()
-            dataSets?.add(dataSet)
+            dataSets.clear()
+            dataSets.add(dataSet)
             notifyDataChanged()
         }
 
-    override var dataSets: MutableList<IPieDataSet>?
+    override var dataSets: MutableList<IPieDataSet>
         get() {
-            super.dataSets?.let {
+            super.dataSets.let {
                 if (it.isEmpty()) {
                     Timber.e("Found multiple data sets while pie chart only allows one")
                 }
@@ -53,11 +49,11 @@ class PieData : ChartData<IPieDataSet> {
     }
 
     override fun getDataSetByLabel(label: String, ignoreCase: Boolean): IPieDataSet? {
-        return if (ignoreCase) if (label.equals(dataSets!![0].label, ignoreCase = true))
-            dataSets!![0]
+        return if (ignoreCase) if (label.equals(dataSets[0].label, ignoreCase = true))
+            dataSets[0]
         else
-            null else if (label == dataSets!![0].label)
-            dataSets!![0]
+            null else if (label == dataSets[0].label)
+            dataSets[0]
         else
             null
     }

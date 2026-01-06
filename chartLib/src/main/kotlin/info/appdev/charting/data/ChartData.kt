@@ -48,7 +48,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     /**
      * all DataSets the ChartData object represents
      */
-    open var dataSets: MutableList<T>? = null
+    open var dataSets: MutableList<T> = mutableListOf()
         protected set
 
     constructor() {
@@ -82,7 +82,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * @param toX   the x-value to which the calculation should be performed
      */
     fun calcMinMaxY(fromX: Float, toX: Float) {
-        for (set in this.dataSets!!) {
+        for (set in this.dataSets) {
             set.calcMinMaxY(fromX, toX)
         }
 
@@ -94,10 +94,6 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Calc minimum and maximum values (both x and y) over all DataSets.
      */
     open fun calcMinMax() {
-        if (this.dataSets == null) {
-            return
-        }
-
         this.yMax = -Float.MAX_VALUE
         this.yMin = Float.MAX_VALUE
         this.xMax = -Float.MAX_VALUE
@@ -113,7 +109,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         mRightAxisMin = Float.MAX_VALUE
 
         // left axis
-        val firstLeft = getFirstLeft(this.dataSets!!)
+        val firstLeft = getFirstLeft(this.dataSets)
 
         if (firstLeft != null) {
             mLeftAxisMax = firstLeft.yMax
@@ -133,7 +129,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         }
 
         // right axis
-        val firstRight = getFirstRight(this.dataSets!!)
+        val firstRight = getFirstRight(this.dataSets)
 
         if (firstRight != null) {
             mRightAxisMax = firstRight.yMax
@@ -158,10 +154,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      */
     val dataSetCount: Int
         get() {
-            if (this.dataSets == null) {
-                return 0
-            }
-            return dataSets!!.size
+            return dataSets.size
         }
 
     /**
@@ -237,10 +230,10 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      */
     val dataSetLabels: Array<String?>
         get() {
-            val types = arrayOfNulls<String>(dataSets!!.size)
+            val types = arrayOfNulls<String>(dataSets.size)
 
-            for (i in dataSets!!.indices) {
-                types[i] = dataSets!![i].label
+            for (i in dataSets.indices) {
+                types[i] = dataSets[i].label
             }
 
             return types
@@ -251,10 +244,10 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * @return the entry that is highlighted
      */
     open fun getEntryForHighlight(highlight: Highlight): Entry? {
-        return if (highlight.dataSetIndex >= dataSets!!.size) {
+        return if (highlight.dataSetIndex >= dataSets.size) {
             null
         } else {
-            dataSets!![highlight.dataSetIndex].getEntryForXValue(highlight.x, highlight.y)
+            dataSets[highlight.dataSetIndex].getEntryForXValue(highlight.x, highlight.y)
         }
     }
 
@@ -264,21 +257,21 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Use with care in performance critical situations.
      */
     open fun getDataSetByLabel(label: String, ignoreCase: Boolean): T? {
-        val index = getDataSetIndexByLabel(this.dataSets!!, label, ignoreCase)
+        val index = getDataSetIndexByLabel(this.dataSets, label, ignoreCase)
 
-        return if (index < 0 || index >= dataSets!!.size) {
+        return if (index < 0 || index >= dataSets.size) {
             null
         } else {
-            dataSets!![index]
+            dataSets[index]
         }
     }
 
     open fun getDataSetByIndex(index: Int): T? {
-        if (this.dataSets == null || index < 0 || index >= dataSets!!.size) {
+        if (index < 0 || index >= dataSets.size) {
             return null
         }
 
-        return dataSets!![index]
+        return dataSets[index]
     }
 
     /**
@@ -291,7 +284,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
 
         calcMinMax(d)
 
-        dataSets!!.add(d)
+        dataSets.add(d)
     }
 
     /**
@@ -304,7 +297,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
             return false
         }
 
-        val removed = dataSets!!.remove(d)
+        val removed = dataSets.remove(d)
 
         // if a DataSet was removed
         if (removed) {
@@ -320,11 +313,11 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * a DataSet was removed, false if no DataSet could be removed.
      */
     open fun removeDataSet(index: Int): Boolean {
-        if (index >= dataSets!!.size || index < 0) {
+        if (index >= dataSets.size || index < 0) {
             return false
         }
 
-        val set = dataSets!![index]
+        val set = dataSets[index]
         return removeDataSet(set)
     }
 
@@ -334,8 +327,8 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      */
     @Suppress("UNCHECKED_CAST")
     fun addEntry(entry: Entry, dataSetIndex: Int) {
-        if (dataSets!!.size > dataSetIndex && dataSetIndex >= 0) {
-            val set: T = dataSets!![dataSetIndex]
+        if (dataSets.size > dataSetIndex && dataSetIndex >= 0) {
+            val set: T = dataSets[dataSetIndex]
             // add the entry to the dataset
             // We need to cast here because T is covariant (out) but addEntry needs to consume T
             val dataSet = set as IDataSet<Entry>
@@ -425,11 +418,11 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     @Suppress("UNCHECKED_CAST")
     open fun removeEntry(entry: Entry, dataSetIndex: Int): Boolean {
         // entry null, out of bounds
-        if (dataSetIndex >= dataSets!!.size) {
+        if (dataSetIndex >= dataSets.size) {
             return false
         }
 
-        val set: T = dataSets!![dataSetIndex]
+        val set: T = dataSets[dataSetIndex]
 
         // remove the entry from the dataset
         val dataSet = set as IDataSet<Entry>
@@ -448,11 +441,11 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * was found that meets the specified requirements.
      */
     open fun removeEntry(xValue: Float, dataSetIndex: Int): Boolean {
-        if (dataSetIndex >= dataSets!!.size) {
+        if (dataSetIndex >= dataSets.size) {
             return false
         }
 
-        val dataSet: IDataSet<*> = dataSets!![dataSetIndex]
+        val dataSet: IDataSet<*> = dataSets[dataSetIndex]
         val entry: Entry = dataSet.getEntryForXValue(xValue, Float.NaN) ?: return false
 
         return removeEntry(entry, dataSetIndex)
@@ -462,8 +455,8 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Returns the DataSet that contains the provided Entry, or null, if no DataSet contains this Entry.
      */
     fun getDataSetForEntry(e: Entry): T? {
-        for (i in dataSets!!.indices) {
-            val set = dataSets!![i]
+        for (i in dataSets.indices) {
+            val set = dataSets[i]
 
             for (j in 0..<set.entryCount) {
                 if (e.equalTo(set.getEntryForXValue(e.x, e.y))) {
@@ -478,26 +471,23 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     /**
      * All colors used across all DataSet objects this object represents.
      */
-    val colors: IntArray?
+    val colors: IntArray
         get() {
-            val colorArray: IntArray? = null
-            dataSets?.let {
-                var clrCount = 0
+            var clrCount = 0
 
-                for (i in it.indices) {
-                    clrCount += it[i].colors.size
-                }
+            for (i in dataSets.indices) {
+                clrCount += dataSets[i].colors.size
+            }
 
-                val colorArray = IntArray(clrCount)
-                var cnt = 0
+            val colorArray = IntArray(clrCount)
+            var cnt = 0
 
-                for (i in it.indices) {
-                    val clrs = it[i].colors
+            for (i in dataSets.indices) {
+                val clrs = dataSets[i].colors
 
-                    for (clr in clrs) {
-                        colorArray[cnt] = clr
-                        cnt++
-                    }
+                for (clr in clrs) {
+                    colorArray[cnt] = clr
+                    cnt++
                 }
             }
             return colorArray
@@ -507,7 +497,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Returns the index of the provided DataSet in the DataSet array of this data object, or -1 if it does not exist.
      */
     fun getIndexOfDataSet(dataSet: @UnsafeVariance T?): Int {
-        return dataSets!!.indexOf(dataSet)
+        return dataSets.indexOf(dataSet)
     }
 
     /**
@@ -540,7 +530,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Sets a custom IValueFormatter for all DataSets this data object contains.
      */
     fun setValueFormatter(f: IValueFormatter) {
-        for (set in this.dataSets!!) {
+        for (set in this.dataSets) {
             set.valueFormatter = f
         }
     }
@@ -550,7 +540,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * drawn) for all DataSets this data object contains.
      */
     fun setValueTextColor(color: Int) {
-        for (set in this.dataSets!!) {
+        for (set in this.dataSets) {
             set.valueTextColor = color
         }
     }
@@ -560,7 +550,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * data object contains.
      */
     fun setValueTextColors(colors: MutableList<Int>) {
-        for (set in this.dataSets!!) {
+        for (set in this.dataSets) {
             set.valueTextColors = colors
         }
     }
@@ -569,7 +559,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Sets the Typeface for all value-labels for all DataSets this data object contains.
      */
     fun setValueTypeface(tf: Typeface?) {
-        for (set in this.dataSets!!) {
+        for (set in this.dataSets) {
             set.valueTypeface = tf
         }
     }
@@ -578,7 +568,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Sets the size (in dp) of the value-text for all DataSets this data object contains.
      */
     fun setValueTextSize(size: Float) {
-        for (set in this.dataSets!!) {
+        for (set in this.dataSets) {
             set.valueTextSize = size
         }
     }
@@ -587,7 +577,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Enables / disables drawing values (value-text) for all DataSets this data object contains.
      */
     fun setDrawValues(enabled: Boolean) {
-        for (set in this.dataSets!!) {
+        for (set in this.dataSets) {
             set.isDrawValues = enabled
         }
     }
@@ -598,7 +588,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      */
     var isHighlightEnabled: Boolean
         get() {
-            for (set in this.dataSets!!) {
+            for (set in this.dataSets) {
                 if (!set.isHighlightEnabled) {
                     return false
                 }
@@ -606,7 +596,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
             return true
         }
         set(value) {
-            for (set in this.dataSets!!) {
+            for (set in this.dataSets) {
                 set.isHighlightEnabled = value
             }
         }
@@ -616,9 +606,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Don't forget to invalidate the chart after this.
      */
     fun clearValues() {
-        if (this.dataSets != null) {
-            dataSets!!.clear()
-        }
+        dataSets.clear()
         notifyDataChanged()
     }
 
@@ -627,7 +615,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * if so, false if not.
      */
     fun contains(dataSet: @UnsafeVariance T?): Boolean {
-        for (set in this.dataSets!!) {
+        for (set in this.dataSets) {
             if (set == dataSet) {
                 return true
             }
@@ -643,7 +631,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         get() {
             var count = 0
 
-            for (set in this.dataSets!!) {
+            for (set in this.dataSets) {
                 count += set.entryCount
             }
 
@@ -655,11 +643,11 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      */
     val maxEntryCountSet: T?
         get() {
-            if (this.dataSets == null || dataSets!!.isEmpty()) {
+            if (dataSets.isEmpty()) {
                 return null
             }
 
-            var max = dataSets!![0]
+            var max = dataSets[0]
 
             for (set in this.dataSets) {
                 if (set.entryCount > max.entryCount) {
