@@ -946,19 +946,19 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     }
 
     @Deprecated("")
-    fun setMarkerView(v: IMarker) {
-        setMarker(v)
+    fun setMarkerView(iMarker: IMarker) {
+        setMarker(iMarker)
     }
 
-    @get:Deprecated("")
+    @get:Deprecated("Use 'marker' directly")
     val markerView: MutableList<IMarker>
         get() = this.marker
 
+    /**
+     * Returns the rectangle that defines the borders of the chart-value surface
+     * (into which the actual values are drawn).
+     */
     override val contentRect: RectF
-        /**
-         * Returns the rectangle that defines the borders of the chart-value surface
-         * (into which the actual values are drawn).
-         */
         get() = viewPortHandler.contentRect
 
     /**
@@ -1005,22 +1005,23 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         }
     }
 
-    @get:Deprecated("")
+    @get:Deprecated("Use 'isDrawMarkersEnabled' directly")
     val isDrawMarkerViewsEnabled: Boolean
         get() = this.isDrawMarkersEnabled
 
-    @Deprecated("")
-    fun setDrawMarkerViews(enabled: Boolean) {
-        setDrawMarkers(enabled)
+    @Deprecated("Use 'isDrawMarkersEnabled' directly")
+    fun setDrawMarkerViews(value: Boolean) {
+        this.isDrawMarkersEnabled = value
     }
 
     /**
      * Set this to true to draw a user specified marker when tapping on
-     * chart values (use the setMarker(IMarker marker) method to specify a
-     * marker). Default: true
+     * chart values (use the setMarker(IMarker marker) method to specify a marker).
+     * Default: true
      */
-    fun setDrawMarkers(enabled: Boolean) {
-        this.isDrawMarkersEnabled = enabled
+    @Deprecated("Use 'isDrawMarkersEnabled' directly")
+    fun setDrawMarkers(value: Boolean) {
+        this.isDrawMarkersEnabled = value
     }
 
     /**
