@@ -37,14 +37,12 @@ open class PieChart : PieRadarChartBase<PieData> {
     /**
      * flag indicating if entry labels should be drawn or not
      */
-    var isDrawEntryLabelsEnabled: Boolean = true
-        private set
+    var isDrawEntryLabels = true
 
     /**
      * returns an integer array of all the different angles the chart slices
      * have the angles in the returned array determine how much space (of 360°)
      * each slice takes
-     *
      */
     var drawAngles: FloatArray = FloatArray(1)
         private set
@@ -60,7 +58,7 @@ open class PieChart : PieRadarChartBase<PieData> {
      * returns true if the hole in the center of the pie-chart is set to be
      * visible, false if not
      */
-    var isDrawHoleEnabled: Boolean = true
+    var isDrawHole = true
 
     /**
      * Returns true if the inner tips of the slices are visible behind the hole,
@@ -68,21 +66,22 @@ open class PieChart : PieRadarChartBase<PieData> {
      *
      * @return true if slices are visible behind the hole.
      */
-    var isDrawSlicesUnderHoleEnabled: Boolean = false
-        private set
+    var isDrawSlicesUnderHole = false
 
     /**
-     * Returns true if using percentage values is enabled for the chart.
+     * If this is enabled, values inside the PieChart are drawn in percent and
+     * not with their original value. Values provided for the IValueFormatter to
+     * format are then provided in percent.
      */
-    var isUsePercentValuesEnabled: Boolean = false
-        private set
+    var isUsePercentValues = false
 
     /**
      * Returns true if the chart is set to draw each end of a pie-slice
      * "rounded".
+     * Sets whether to draw slices in a curved fashion, only works if drawing the hole is enabled
+     * and if the slices are not drawn under the hole.
      */
-    var isDrawRoundedSlicesEnabled: Boolean = false
-        private set
+    var isDrawRoundedSlices: Boolean = false
 
     /**
      * variable for the text that is drawn in the center of the pie-chart
@@ -106,27 +105,22 @@ open class PieChart : PieRadarChartBase<PieData> {
      * whole chart), default 55% -> means 5% larger than the center-hole by
      * default
      */
-    var transparentCircleRadius: Float = 55f
+    var transparentCircleRadius = 55f
 
     /**
      * returns true if drawing the center text is enabled
      */
-    var isDrawCenterTextEnabled: Boolean = true
-        private set
+    var isDrawCenterText = true
+
 
     /**
      * the rectangular radius of the bounding box for the center text, as a percentage of the pie
      * hole
      * default 1.f (100%)
      */
-    /**
-     * the rectangular radius of the bounding box for the center text, as a percentage of the pie
-     * hole
-     * default 1.f (100%)
-     */
-    var centerTextRadiusPercent: Float = 100f
+    var centerTextRadiusPercent = 100f
 
-    protected var mMaxAngle: Float = 360f
+    protected var mMaxAngle = 360f
 
     /**
      * Minimum angle to draw slices, this only works if there is enough room for all slices to have
@@ -201,7 +195,7 @@ open class PieChart : PieRadarChartBase<PieData> {
 
         var off = r / 10f * 3.6f
 
-        if (this.isDrawHoleEnabled) {
+        if (this.isDrawHole) {
             off = (r - (r / 100f * this.holeRadius)) / 2f
         }
 
@@ -378,13 +372,6 @@ open class PieChart : PieRadarChartBase<PieData> {
         (dataRenderer as PieChartRenderer).paintHole.color = color
     }
 
-    /**
-     * Enable or disable the visibility of the inner tips of the slices behind the hole
-     */
-    fun setDrawSlicesUnderHole(enable: Boolean) {
-        this.isDrawSlicesUnderHoleEnabled = enable
-    }
-
     var centerText: CharSequence?
         /**
          * returns the text that is drawn in the center of the pie-chart
@@ -396,14 +383,6 @@ open class PieChart : PieRadarChartBase<PieData> {
         set(text) {
             mCenterText = Objects.requireNonNullElse<CharSequence>(text, "")
         }
-
-    /**
-     * set this to true to draw the text that is displayed in the center of the
-     * pie chart
-     */
-    fun setDrawCenterText(enabled: Boolean) {
-        this.isDrawCenterTextEnabled = enabled
-    }
 
     override val requiredLegendOffset: Float
         get() {
@@ -485,23 +464,6 @@ open class PieChart : PieRadarChartBase<PieData> {
     }
 
     /**
-     * Set this to true to draw the entry labels into the pie slices (Provided by the getLabel() method of the PieEntry class).
-     * Deprecated -> use setDrawEntryLabels(...) instead.
-     */
-    @Deprecated("use setDrawEntryLabels(...) instead.")
-    fun setDrawSliceText(enabled: Boolean) {
-        this.isDrawEntryLabelsEnabled = enabled
-    }
-
-    /**
-     * Set this to true to draw the entry labels into the pie slices (Provided by the getLabel() method of the PieEntry class).
-     *
-     */
-    fun setDrawEntryLabels(enabled: Boolean) {
-        this.isDrawEntryLabelsEnabled = enabled
-    }
-
-    /**
      * Sets the color the entry labels are drawn with.
      *
      */
@@ -523,26 +485,6 @@ open class PieChart : PieRadarChartBase<PieData> {
      */
     fun setEntryLabelTextSize(size: Float) {
         (dataRenderer as PieChartRenderer).paintEntryLabels.textSize = size.convertDpToPixel()
-    }
-
-    /**
-     * Sets whether to draw slices in a curved fashion, only works if drawing the hole is enabled
-     * and if the slices are not drawn under the hole.
-     *
-     * @param enabled draw curved ends of slices
-     */
-    fun setDrawRoundedSlices(enabled: Boolean) {
-        this.isDrawRoundedSlicesEnabled = enabled
-    }
-
-    /**
-     * If this is enabled, values inside the PieChart are drawn in percent and
-     * not with their original value. Values provided for the IValueFormatter to
-     * format are then provided in percent.
-     *
-     */
-    fun setUsePercentValues(enabled: Boolean) {
-        this.isUsePercentValuesEnabled = enabled
     }
 
     var maxAngle: Float

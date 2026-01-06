@@ -100,7 +100,7 @@ open class YAxisRendererHorizontalBarChart(
     }
 
     override fun renderAxisLine(canvas: Canvas) {
-        if (!yAxis.isEnabled || !yAxis.isDrawAxisLineEnabled)
+        if (!yAxis.isEnabled || !yAxis.isDrawAxisLine)
             return
 
         paintAxisLine.color = yAxis.axisLineColor

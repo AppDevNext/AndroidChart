@@ -71,8 +71,8 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         xAxis.typeface = tfLight
         xAxis.textSize = 10f
         xAxis.textColor = Color.WHITE
-        xAxis.setDrawAxisLine(false)
-        xAxis.setDrawGridLines(true)
+        xAxis.isDrawAxisLine = false
+        xAxis.isDrawGridLines = true
         xAxis.textColor = Color.rgb(255, 192, 56)
         xAxis.setCenterAxisLabels(true)
         xAxis.granularity = 1f // one hour
@@ -89,8 +89,8 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
         leftAxis.typeface = tfLight
         leftAxis.textColor = holoBlue
-        leftAxis.setDrawGridLines(true)
-        leftAxis.isGranularityEnabled = true
+        leftAxis.isDrawGridLines = true
+        leftAxis.isGranularity = true
         leftAxis.axisMinimum = 0f
         leftAxis.axisMaximum = 170f
         leftAxis.yOffset = -9f
@@ -167,14 +167,14 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.data?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
+                    set.isDrawFilled = !set.isDrawFilled
                 }
                 binding.chart1.invalidate()
             }
@@ -207,14 +207,12 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionTogglePinch -> {
-                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
-                else binding.chart1.setPinchZoom(true)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

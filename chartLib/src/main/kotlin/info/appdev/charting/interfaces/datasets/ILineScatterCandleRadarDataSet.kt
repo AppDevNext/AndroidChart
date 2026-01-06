@@ -7,12 +7,12 @@ interface ILineScatterCandleRadarDataSet<T : Entry> : IBarLineScatterCandleBubbl
     /**
      * Returns true if vertical highlight indicator lines are enabled (drawn)
      */
-    val isVerticalHighlightIndicatorEnabled: Boolean
+    val isVerticalHighlightIndicator: Boolean
 
     /**
      * Returns true if vertical highlight indicator lines are enabled (drawn)
      */
-    val isHorizontalHighlightIndicatorEnabled: Boolean
+    val isHorizontalHighlightIndicator: Boolean
 
     /**
      * Returns the line-width in which highlight lines are to be drawn.

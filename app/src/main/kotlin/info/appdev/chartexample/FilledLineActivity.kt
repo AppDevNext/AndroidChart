@@ -44,7 +44,7 @@ class FilledLineActivity : DemoBase() {
         binding.chart1.description.isEnabled = false
 
         // if disabled, scaling can be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
         binding.chart1.legend.apply {
             isEnabled = false
@@ -56,9 +56,9 @@ class FilledLineActivity : DemoBase() {
         val leftAxis = binding.chart1.axisLeft
         leftAxis.axisMaximum = 900f
         leftAxis.axisMinimum = -250f
-        leftAxis.setDrawAxisLine(false)
-        leftAxis.setDrawZeroLine(false)
-        leftAxis.setDrawGridLines(false)
+        leftAxis.isDrawAxisLine = false
+        leftAxis.isDrawZeroLine = false
+        leftAxis.isDrawGridLines = false
 
         binding.chart1.axisRight.isEnabled = false
 
@@ -104,7 +104,7 @@ class FilledLineActivity : DemoBase() {
             set1.lineWidth = 2f
             set1.circleRadius = 3f
             set1.fillAlpha = 255
-            set1.isDrawFilledEnabled = true
+            set1.isDrawFilled = true
             set1.fillColor = Color.WHITE
             set1.highLightColor = Color.rgb(244, 117, 117)
             set1.isDrawCircleHoleEnabled = false
@@ -124,7 +124,7 @@ class FilledLineActivity : DemoBase() {
             set2.lineWidth = 2f
             set2.circleRadius = 3f
             set2.fillAlpha = 255
-            set2.isDrawFilledEnabled = true
+            set2.isDrawFilled = true
             set2.fillColor = Color.WHITE
             set2.isDrawCircleHoleEnabled = false
             set2.highLightColor = Color.rgb(244, 117, 117)

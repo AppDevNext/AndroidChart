@@ -42,8 +42,8 @@ class LineChartItem(lineData: LineData, context: Context) : ChartItem<LineData>(
         val xAxis = holder.chart!!.xAxis
         xAxis.position = XAxisPosition.BOTTOM
         xAxis.typeface = typeface
-        xAxis.setDrawGridLines(false)
-        xAxis.setDrawAxisLine(true)
+        xAxis.isDrawGridLines = false
+        xAxis.isDrawAxisLine = true
 
         val leftAxis = holder.chart!!.axisLeft
         leftAxis.typeface = typeface
@@ -53,7 +53,7 @@ class LineChartItem(lineData: LineData, context: Context) : ChartItem<LineData>(
         val rightAxis = holder.chart!!.axisRight
         rightAxis.typeface = typeface
         rightAxis.setLabelCount(5, false)
-        rightAxis.setDrawGridLines(false)
+        rightAxis.isDrawGridLines = false
         rightAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         holder.chart!!.data = chartData

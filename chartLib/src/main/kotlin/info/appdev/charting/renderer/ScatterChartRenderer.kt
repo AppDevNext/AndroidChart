@@ -164,7 +164,7 @@ open class ScatterChartRenderer(
         for (high in indices) {
             val set = scatterData?.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled)
+            if (set == null || !set.isHighlight)
                 continue
 
             set.getEntryForXValue(high.x, high.y)?.let { entry ->

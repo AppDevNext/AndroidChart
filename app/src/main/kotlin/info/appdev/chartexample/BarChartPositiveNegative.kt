@@ -36,21 +36,21 @@ class BarChartPositiveNegative : DemoBase() {
         binding.chart1.extraLeftOffset = 70f
         binding.chart1.extraRightOffset = 70f
 
-        binding.chart1.setDrawBarShadow(false)
-        binding.chart1.setDrawValueAboveBar(true)
+        binding.chart1.isDrawBarShadow = false
+        binding.chart1.isDrawValueAboveBar = true
 
         binding.chart1.description.isEnabled = false
 
         // scaling can now only be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
         binding.chart1.setDrawGridBackground(false)
 
         val xAxis = binding.chart1.xAxis
         xAxis.position = XAxisPosition.BOTTOM
         xAxis.typeface = tfRegular
-        xAxis.setDrawGridLines(false)
-        xAxis.setDrawAxisLine(false)
+        xAxis.isDrawGridLines = false
+        xAxis.isDrawAxisLine = false
         xAxis.textColor = Color.LTGRAY
         xAxis.textSize = 13f
         xAxis.labelCount = 5
@@ -61,9 +61,9 @@ class BarChartPositiveNegative : DemoBase() {
         left.setDrawLabels(false)
         left.spaceTop = 25f
         left.spaceBottom = 25f
-        left.setDrawAxisLine(false)
-        left.setDrawGridLines(false)
-        left.setDrawZeroLine(true) // draw a zero line
+        left.isDrawAxisLine = false
+        left.isDrawGridLines = false
+        left.isDrawZeroLine = true // draw a zero line
         left.zeroLineColor = Color.GRAY
         left.zeroLineWidth = 0.7f
         binding.chart1.axisRight.isEnabled = false

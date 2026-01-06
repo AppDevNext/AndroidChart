@@ -125,7 +125,7 @@ abstract class AxisRenderer(
 
         // If granularity is enabled, then do not allow the interval to go below specified granularity.
         // This is used to avoid repeated values when rounding values for display.
-        if (axis.isGranularityEnabled) interval = if (interval < axis.granularity) axis.granularity.toDouble() else interval
+        if (axis.isGranularity) interval = if (interval < axis.granularity) axis.granularity.toDouble() else interval
 
         // Normalize interval
         val intervalMagnitude = 10.0.pow(log10(interval).toInt().toDouble()).roundToNextSignificant().toDouble()
@@ -141,11 +141,11 @@ abstract class AxisRenderer(
         var n = if (axis.isCenterAxisLabelsEnabled) 1 else 0
 
         // force label count
-        if (axis.isForceLabelsEnabled) {
+        if (axis.isForceLabels) {
             interval = (range.toFloat() / (labelCount - 1).toFloat()).toDouble()
             // When force label is enabled
             // If granularity is enabled, then do not allow the interval to go below specified granularity.
-            if (axis.isGranularityEnabled) interval = if (interval < axis.granularity) axis.granularity.toDouble() else interval
+            if (axis.isGranularity) interval = if (interval < axis.granularity) axis.granularity.toDouble() else interval
 
             axis.entryCount = labelCount
 

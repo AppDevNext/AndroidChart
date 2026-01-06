@@ -134,7 +134,7 @@ open class LineChartRenderer(
         }
 
         // if filled is enabled, close the path
-        if (dataSet.isDrawFilledEnabled) {
+        if (dataSet.isDrawFilled) {
             cubicFillPath.reset()
             cubicFillPath.addPath(cubicPath)
             // create a new path, this is bad for performance
@@ -209,7 +209,7 @@ open class LineChartRenderer(
         }
 
         // if filled is enabled, close the path
-        if (dataSet.isDrawFilledEnabled) {
+        if (dataSet.isDrawFilled) {
             cubicFillPath.reset()
             cubicFillPath.addPath(cubicPath)
 
@@ -272,7 +272,7 @@ open class LineChartRenderer(
         xBounds.set(dataProvider, dataSet)
 
         // if drawing filled is enabled
-        if (dataSet.isDrawFilledEnabled && entryCount > 0) {
+        if (dataSet.isDrawFilled && entryCount > 0) {
             drawLinearFill(c, dataSet, trans!!, xBounds)
         }
 
@@ -645,7 +645,7 @@ open class LineChartRenderer(
         for (high in indices) {
             val set = lineData?.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled)
+            if (set == null || !set.isHighlight)
                 continue
 
             set.getEntryForXValue(high.x, high.y)?.let { entry ->

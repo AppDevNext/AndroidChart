@@ -45,7 +45,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         binding.chart1.setDrawGridBackground(false)
 
         // if disabled, scaling can be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(true)
+        binding.chart1.isPinchZoom = true
 
         // set an alternative background color
         binding.chart1.setBackgroundColor(Color.LTGRAY)
@@ -66,8 +66,8 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         val xl = binding.chart1.xAxis
         xl.typeface = tfLight
         xl.textColor = Color.WHITE
-        xl.setDrawGridLines(false)
-        xl.setAvoidFirstLastClipping(true)
+        xl.isDrawGridLines = false
+        xl.isAvoidFirstLastClipping = true
         xl.isEnabled = true
 
         val leftAxis = binding.chart1.axisLeft
@@ -75,7 +75,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         leftAxis.textColor = Color.WHITE
         leftAxis.axisMaximum = 100f
         leftAxis.axisMinimum = 0f
-        leftAxis.setDrawGridLines(true)
+        leftAxis.isDrawGridLines = true
 
         val rightAxis = binding.chart1.axisRight
         rightAxis.isEnabled = false

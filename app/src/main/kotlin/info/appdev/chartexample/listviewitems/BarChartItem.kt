@@ -37,13 +37,13 @@ class BarChartItem(chartData: BarData, context: Context) : ChartItem<BarData>(ch
         // apply styling
         holder.chart!!.description.isEnabled = false
         holder.chart!!.setDrawGridBackground(false)
-        holder.chart!!.setDrawBarShadow(false)
+        holder.chart!!.isDrawBarShadow = false
 
         val xAxis = holder.chart!!.xAxis
         xAxis.position = XAxisPosition.BOTTOM
         xAxis.typeface = typeface
-        xAxis.setDrawGridLines(false)
-        xAxis.setDrawAxisLine(true)
+        xAxis.isDrawGridLines = false
+        xAxis.isDrawAxisLine = true
 
         val leftAxis = holder.chart!!.axisLeft
         leftAxis.typeface = typeface

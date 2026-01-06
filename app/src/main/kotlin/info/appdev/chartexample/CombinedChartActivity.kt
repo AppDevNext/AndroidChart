@@ -47,8 +47,8 @@ class CombinedChartActivity : DemoBase() {
         binding.chart1.description.isEnabled = false
         binding.chart1.setBackgroundColor(Color.WHITE)
         binding.chart1.setDrawGridBackground(false)
-        binding.chart1.setDrawBarShadow(false)
-        binding.chart1.isHighlightFullBarEnabled = false
+        binding.chart1.isDrawBarShadow = false
+        binding.chart1.isHighlightFullBar = false
 
         // draw bars behind lines
         binding.chart1.drawOrder = mutableListOf(
@@ -64,11 +64,11 @@ class CombinedChartActivity : DemoBase() {
         }
 
         val rightAxis = binding.chart1.axisRight
-        rightAxis.setDrawGridLines(false)
+        rightAxis.isDrawGridLines = false
         rightAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         val leftAxis = binding.chart1.axisLeft
-        leftAxis.setDrawGridLines(false)
+        leftAxis.isDrawGridLines = false
         leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         val xAxis = binding.chart1.xAxis

@@ -291,7 +291,7 @@ open class CandleStickChartRenderer(
         for (high in indices) {
             val set = candleData?.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled)
+            if (set == null || !set.isHighlight)
                 continue
 
             val candleEntry = set.getEntryForXValue(high.x, high.y)

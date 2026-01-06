@@ -48,7 +48,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         binding.chart1.setScaleEnabled(true)
 
         binding.chart1.setMaxVisibleValueCount(200)
-        binding.chart1.setPinchZoom(true)
+        binding.chart1.isPinchZoom = true
 
         binding.seekBarX.progress = 45
         binding.seekBarY.progress = 100
@@ -70,7 +70,7 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
 
         val xl = binding.chart1.xAxis
         xl.typeface = tfLight
-        xl.setDrawGridLines(false)
+        xl.isDrawGridLines = false
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -149,19 +149,18 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.scatterData?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                binding.chart1.setPinchZoom(!binding.chart1.isPinchZoomEnabled)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

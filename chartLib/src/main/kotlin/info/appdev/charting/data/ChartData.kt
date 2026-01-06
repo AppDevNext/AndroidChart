@@ -586,10 +586,10 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Enables / disables highlighting values for all DataSets this data object
      * contains. If set to true, this means that values can be highlighted programmatically or by touch gesture.
      */
-    var isHighlightEnabled: Boolean
+    var isHighlight: Boolean
         get() {
             for (set in this.dataSets) {
-                if (!set.isHighlightEnabled) {
+                if (!set.isHighlight) {
                     return false
                 }
             }
@@ -597,7 +597,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         }
         set(value) {
             for (set in this.dataSets) {
-                set.isHighlightEnabled = value
+                set.isHighlight = value
             }
         }
 

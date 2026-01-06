@@ -182,14 +182,14 @@ open class PieChartRenderer(
         val drawAngles = chart.drawAngles
         val center = chart.centerCircleBox
         val radius = chart.radius
-        val drawInnerArc = chart.isDrawHoleEnabled && !chart.isDrawSlicesUnderHoleEnabled
+        val drawInnerArc = chart.isDrawHole && !chart.isDrawSlicesUnderHole
         val userInnerRadius = if (drawInnerArc)
             radius * (chart.holeRadius / 100f)
         else
             0f
         val roundedRadius = (radius - (radius * chart.holeRadius / 100f)) / 2f
         val roundedCircleBox = RectF()
-        val drawRoundedSlices = drawInnerArc && chart.isDrawRoundedSlicesEnabled
+        val drawRoundedSlices = drawInnerArc && chart.isDrawRoundedSlices
 
         var visibleAngleCount = 0
         for (j in 0..<entryCount) {
@@ -219,7 +219,7 @@ open class PieChartRenderer(
                 }
             }
             // Don't draw if it's highlighted, unless the chart uses rounded slices
-            if (dataSet.isHighlightEnabled && chart.needsHighlight(j) && !drawRoundedSlices) {
+            if (dataSet.isHighlight && chart.needsHighlight(j) && !drawRoundedSlices) {
                 angle += sliceAngle * phaseX
                 continue
             }
@@ -366,10 +366,10 @@ open class PieChartRenderer(
         val holeRadiusPercent = chart.holeRadius / 100f
         var labelRadiusOffset = radius / 10f * 3.6f
 
-        if (chart.isDrawHoleEnabled) {
+        if (chart.isDrawHole) {
             labelRadiusOffset = (radius - (radius * holeRadiusPercent)) / 2f
 
-            if (!chart.isDrawSlicesUnderHoleEnabled && chart.isDrawRoundedSlicesEnabled) {
+            if (!chart.isDrawSlicesUnderHole && chart.isDrawRoundedSlices) {
                 // Add curved circle slice and spacing to rotation angle, so that it sits nicely inside
                 rotationAngle += (roundedRadius * 360 / (Math.PI * 2 * radius)).toFloat()
             }
@@ -382,7 +382,7 @@ open class PieChartRenderer(
 
         val yValueSum = data.yValueSum
 
-        val drawEntryLabels = chart.isDrawEntryLabelsEnabled
+        val drawEntryLabels = chart.isDrawEntryLabels
 
         var angle: Float
         var xIndex = 0
@@ -413,7 +413,7 @@ open class PieChartRenderer(
 
                 val entryCount = dataSet.entryCount
 
-                val isUseValueColorForLineEnabled = dataSet.isUseValueColorForLineEnabled
+                val isUseValueColorForLineEnabled = dataSet.isUseValueColorForLine
                 val valueLineColor = dataSet.valueLineColor
 
                 valueLinePaint.strokeWidth = dataSet.valueLineWidth.convertDpToPixel()
@@ -440,7 +440,7 @@ open class PieChartRenderer(
 
                         val transformedAngle = rotationAngle + angle * phaseY
 
-                        val value = if (chart.isUsePercentValuesEnabled) (entry.y / yValueSum * 100f) else entry.y
+                        val value = if (chart.isUsePercentValues) (entry.y / yValueSum * 100f) else entry.y
                         val entryLabel = entry.label
 
                         val sliceXBase = cos((transformedAngle * Utils.FDEG2RAD).toDouble()).toFloat()
@@ -462,7 +462,7 @@ open class PieChartRenderer(
                             val labelPty: Float
 
                             val line1Radius =
-                                if (chart.isDrawHoleEnabled) ((radius - (radius * holeRadiusPercent)) * valueLinePart1OffsetPercentage + (radius * holeRadiusPercent))
+                                if (chart.isDrawHole) ((radius - (radius * holeRadiusPercent)) * valueLinePart1OffsetPercentage + (radius * holeRadiusPercent))
                                 else radius * valueLinePart1OffsetPercentage
 
                             val polyline2Width = if (dataSet.isValueLineVariableLength) labelRadius * valueLineLength2 * abs(
@@ -605,7 +605,7 @@ open class PieChartRenderer(
      * draws the hole in the center of the chart and the transparent circle / hole
      */
     protected fun drawHole() {
-        if (chart.isDrawHoleEnabled && bitmapCanvas != null) {
+        if (chart.isDrawHole && bitmapCanvas != null) {
             val radius = chart.radius
             val holeRadius = radius * (chart.holeRadius / 100)
             val center = chart.centerCircleBox
@@ -644,14 +644,14 @@ open class PieChartRenderer(
     protected fun drawCenterText(canvas: Canvas) {
         val centerText = chart.centerText
 
-        if (chart.isDrawCenterTextEnabled && centerText != null) {
+        if (chart.isDrawCenterText && centerText != null) {
             val center = chart.centerCircleBox
             val offset = chart.centerTextOffset
 
             val x = center.x + offset.x
             val y = center.y + offset.y
 
-            val innerRadius = if (chart.isDrawHoleEnabled && !chart.isDrawSlicesUnderHoleEnabled) chart.radius * (chart.holeRadius / 100f)
+            val innerRadius = if (chart.isDrawHole && !chart.isDrawSlicesUnderHole) chart.radius * (chart.holeRadius / 100f)
             else chart.radius
 
             val holeRect = rectBuffer[0]
@@ -737,8 +737,8 @@ open class PieChartRenderer(
                 * TODO: add support for changing slice color with highlighting rather than only shifting the slice
                 */
 
-        val drawInnerArc = chart.isDrawHoleEnabled && !chart.isDrawSlicesUnderHoleEnabled
-        if (drawInnerArc && chart.isDrawRoundedSlicesEnabled)
+        val drawInnerArc = chart.isDrawHole && !chart.isDrawSlicesUnderHole
+        if (drawInnerArc && chart.isDrawRoundedSlices)
             return
 
         val phaseX = animator.phaseX
@@ -768,7 +768,7 @@ open class PieChartRenderer(
 
             val set = chart.data?.getDataSetByIndex(indices[i].dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled)
+            if (set == null || !set.isHighlight)
                 continue
 
             val entryCount = set.entryCount
@@ -904,7 +904,7 @@ open class PieChartRenderer(
      * This gives all pie-slices a rounded edge.
      */
     protected fun drawRoundedSlices() {
-        if (!chart.isDrawRoundedSlicesEnabled)
+        if (!chart.isDrawRoundedSlices)
             return
 
         val dataSet = chart.data!!.dataSet

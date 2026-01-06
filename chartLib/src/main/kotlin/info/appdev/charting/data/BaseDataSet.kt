@@ -45,7 +45,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
     /**
      * if true, value highlighting is enabled
      */
-    protected var mHighlightEnabled: Boolean = true
+    protected var mIsHighlight: Boolean = true
 
     /**
      * custom formatter that is used instead of the auto-formatter if set
@@ -241,10 +241,10 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
             mAxisDependency = value
         }
 
-    override var isHighlightEnabled: Boolean
-        get() = mHighlightEnabled
+    override var isHighlight: Boolean
+        get() = mIsHighlight
         set(value) {
-            mHighlightEnabled = value
+            mIsHighlight = value
         }
 
     override var valueFormatter: IValueFormatter
@@ -360,7 +360,7 @@ abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
         baseDataSet.mFormLineDashEffect = mFormLineDashEffect
         baseDataSet.formLineWidth = formLineWidth
         baseDataSet.mFormSize = mFormSize
-        baseDataSet.mHighlightEnabled = mHighlightEnabled
+        baseDataSet.mIsHighlight = mIsHighlight
         baseDataSet.mIconsOffset = mIconsOffset
         baseDataSet.mValueColors = mValueColors
         baseDataSet.mValueFormatter = mValueFormatter

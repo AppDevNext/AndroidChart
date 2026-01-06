@@ -59,14 +59,16 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
      * Flag that indicates if auto scaling on the y axis is enabled. This is
      * especially interesting for charts displaying financial data.
      */
-    var isAutoScaleMinMaxEnabled: Boolean = false
+    var isAutoScaleMinMax: Boolean = false
 
     /**
      * flag that indicates if pinch-zoom is enabled. if true, both x and y axis
      * can be scaled with 2 fingers, if false, x and y axis can be scaled separately
+     *
+     * If set to true, both x and y axis can be scaled simultaneously with 2 fingers, if false,
+     * x and y axis can be scaled separately. default: false
      */
-    var isPinchZoomEnabled: Boolean = false
-        protected set
+    var isPinchZoom: Boolean = false
 
     /**
      * flag that indicates if double tap zoom is enabled or not
@@ -219,7 +221,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         // execute all drawing commands
         drawGridBackground(canvas)
 
-        if (this.isAutoScaleMinMaxEnabled) {
+        if (this.isAutoScaleMinMax) {
             autoScale()
         }
 
@@ -236,7 +238,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         }
 
         // Y-axis labels could have changed in size affecting the offsets
-        if (this.isAutoScaleMinMaxEnabled) {
+        if (this.isAutoScaleMinMax) {
             calculateOffsets()
             viewPortHandler.refresh(viewPortHandler.matrixTouch, this, false)
         }
@@ -1186,14 +1188,6 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
     override fun isInverted(axis: AxisDependency?): Boolean {
         return getAxis(axis).isInverted
-    }
-
-    /**
-     * If set to true, both x and y axis can be scaled simultaneously with 2 fingers, if false,
-     * x and y axis can be scaled separately. default: false
-     */
-    fun setPinchZoom(enabled: Boolean) {
-        this.isPinchZoomEnabled = enabled
     }
 
     /**

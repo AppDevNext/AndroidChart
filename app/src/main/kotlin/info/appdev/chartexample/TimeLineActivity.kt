@@ -53,14 +53,14 @@ class TimeLineActivity : DemoBase() {
             position = XAxisPosition.BOTTOM
             typeface = tfLight
             labelRotationAngle = 45f
-            setDrawGridLines(false)
+            isDrawGridLines = false
 //            granularity = 1f // only intervals of 1 day
             labelCount = 7
             valueFormatter = UnixTimeAxisValueFormatter("HH:mm:ss")
         }
 
         // if disabled, scaling can be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
         binding.chart1.legend.apply {
             isEnabled = false
@@ -70,9 +70,9 @@ class TimeLineActivity : DemoBase() {
         binding.chart1.axisLeft.apply {
             axisMaximum = 150f
             axisMinimum = -50f
-            setDrawAxisLine(true)
-            setDrawZeroLine(true)
-            setDrawGridLines(true)
+            isDrawAxisLine = true
+            isDrawZeroLine = true
+            isDrawGridLines = true
         }
 
         binding.chart1.axisRight.isEnabled = false
@@ -108,7 +108,7 @@ class TimeLineActivity : DemoBase() {
             set1.lineWidth = 2f
             set1.circleRadius = 3f
             set1.fillAlpha = 255
-            set1.isDrawFilledEnabled = true
+            set1.isDrawFilled = true
             set1.fillColor = Color.WHITE
             set1.highLightColor = Color.rgb(244, 117, 117)
             set1.isDrawCircleHoleEnabled = false

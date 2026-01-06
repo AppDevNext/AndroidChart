@@ -94,7 +94,7 @@ open class PieDataSet(yVals: MutableList<PieEntry>, label: String) : DataSet<Pie
         set(value) {
             mValueLineColor = value
         }
-    override var isUseValueColorForLineEnabled: Boolean
+    override var isUseValueColorForLine: Boolean
         get() = mIsUseValueColorForLine
         set(value) {
             mIsUseValueColorForLine = value

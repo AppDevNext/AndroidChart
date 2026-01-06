@@ -113,7 +113,7 @@ open class BarChartRenderer(
         val phaseY = animator.phaseY
 
         // draw the bar shadow before the values
-        if (dataProvider.isDrawBarShadowEnabled) {
+        if (dataProvider.isDrawBarShadow) {
             shadowPaint.color = dataSet.barShadowColor
 
             dataProvider.barData?.let { barData ->
@@ -256,7 +256,7 @@ open class BarChartRenderer(
             val valueOffsetPlus = 4.5f.convertDpToPixel()
             var posOffset: Float
             var negOffset: Float
-            val drawValueAboveBar = dataProvider.isDrawValueAboveBarEnabled
+            val drawValueAboveBar = dataProvider.isDrawValueAboveBar
 
             dataProvider.barData?.let { barData ->
                 for (i in 0..<barData.dataSetCount) {
@@ -498,7 +498,7 @@ open class BarChartRenderer(
         for (high in indices) {
             val set = barData?.getDataSetByIndex(high.dataSetIndex)
 
-            if (set == null || !set.isHighlightEnabled)
+            if (set == null || !set.isHighlight)
                 continue
 
             val barEntry = set.getEntryForXValue(high.x, high.y)!!
@@ -518,7 +518,7 @@ open class BarChartRenderer(
             val y2: Float
 
             if (isStack) {
-                if (dataProvider.isHighlightFullBarEnabled) {
+                if (dataProvider.isHighlightFullBar) {
                     y1 = barEntry.positiveSum
                     y2 = -barEntry.negativeSum
                 } else {

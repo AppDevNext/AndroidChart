@@ -5,7 +5,7 @@ import info.appdev.charting.data.RadarEntry
 interface IRadarDataSet : ILineRadarDataSet<RadarEntry> {
     /** flag indicating whether highlight circle should be drawn or not */
     /** Sets whether highlight circle should be drawn or not */
-    var isDrawHighlightCircleEnabled: Boolean
+    var isDrawHighlightCircle: Boolean
 
     val highlightCircleFillColor: Int
 

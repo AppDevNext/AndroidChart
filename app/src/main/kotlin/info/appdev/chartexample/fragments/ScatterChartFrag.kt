@@ -45,7 +45,7 @@ class ScatterChartFrag : SimpleFragment() {
 
         val rightAxis = binding.scatterChart1.axisRight
         rightAxis.typeface = tf
-        rightAxis.setDrawGridLines(false)
+        rightAxis.isDrawGridLines = false
 
         binding.scatterChart1.legend.apply {
             isWordWrapEnabled = true

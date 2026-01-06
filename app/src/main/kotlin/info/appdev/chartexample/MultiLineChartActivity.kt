@@ -43,10 +43,10 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         binding.chart1.setDrawBorders(false)
 
         binding.chart1.axisLeft.isEnabled = false
-        binding.chart1.axisRight.setDrawAxisLine(false)
-        binding.chart1.axisRight.setDrawGridLines(false)
-        binding.chart1.xAxis.setDrawAxisLine(false)
-        binding.chart1.xAxis.setDrawGridLines(false)
+        binding.chart1.axisRight.isDrawAxisLine = false
+        binding.chart1.axisRight.isDrawGridLines = false
+        binding.chart1.xAxis.isDrawAxisLine = false
+        binding.chart1.xAxis.isDrawGridLines = false
 
         // enable touch gestures
         binding.chart1.setTouchEnabled(true)
@@ -56,7 +56,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         binding.chart1.setScaleEnabled(true)
 
         // if disabled, scaling can be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
         binding.seekBarX.progress = 20
         binding.seekBarY.progress = 100
@@ -137,27 +137,25 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             }
 
             R.id.actionTogglePinch -> {
-                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
-                else binding.chart1.setPinchZoom(true)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.data?.let { data ->
-                    data.isHighlightEnabled = !data.isHighlightEnabled
+                    data.isHighlight = !data.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawFilledEnabled = !set.isDrawFilledEnabled
+                    set.isDrawFilled = !set.isDrawFilled
                 }
                 binding.chart1.invalidate()
             }

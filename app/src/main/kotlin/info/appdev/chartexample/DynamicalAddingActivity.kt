@@ -37,7 +37,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         binding.chart1.setNoDataText("No chart data available. Use the menu to add entries and data sets!")
 
         //        chart.getXAxis().setDrawLabels(false);
-//        chart.getXAxis().setDrawGridLines(false);
+//        chart.getXAxis().isDrawGridLines = false;
         binding.chart1.invalidate()
     }
 

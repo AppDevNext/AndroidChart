@@ -40,19 +40,19 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
         binding.chart1.setDrawGridBackground(false)
 
         val xAxis = binding.chart1.xAxis
         xAxis.position = XAxisPosition.BOTTOM
-        xAxis.setDrawGridLines(false)
+        xAxis.isDrawGridLines = false
 
         val leftAxis = binding.chart1.axisLeft
         //        leftAxis.setEnabled(false);
         leftAxis.setLabelCount(7, false)
-        leftAxis.setDrawGridLines(false)
-        leftAxis.setDrawAxisLine(false)
+        leftAxis.isDrawGridLines = false
+        leftAxis.isDrawAxisLine = false
 
         val rightAxis = binding.chart1.axisRight
         rightAxis.isEnabled = false
@@ -150,20 +150,18 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.candleData?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
-                else binding.chart1.setPinchZoom(true)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

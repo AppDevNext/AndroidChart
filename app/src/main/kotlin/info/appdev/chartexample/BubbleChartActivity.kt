@@ -49,7 +49,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         binding.chart1.setScaleEnabled(true)
 
         binding.chart1.setMaxVisibleValueCount(200)
-        binding.chart1.setPinchZoom(true)
+        binding.chart1.isPinchZoom = true
 
         binding.seekBarX.progress = 10
         binding.seekBarY.progress = 50
@@ -66,7 +66,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         yl.typeface = tfLight
         yl.spaceTop = 30f
         yl.spaceBottom = 30f
-        yl.setDrawZeroLine(false)
+        yl.isDrawZeroLine = false
 
         binding.chart1.axisRight.isEnabled = false
 
@@ -169,20 +169,18 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
 
             R.id.actionToggleHighlight -> {
                 binding.chart1.bubbleData?.let {
-                    it.isHighlightEnabled = !it.isHighlightEnabled
+                    it.isHighlight = !it.isHighlight
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionTogglePinch -> {
-                if (binding.chart1.isPinchZoomEnabled) binding.chart1.setPinchZoom(false)
-                else binding.chart1.setPinchZoom(true)
-
+                binding.chart1.isPinchZoom = !binding.chart1.isPinchZoom
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleAutoScaleMinMax -> {
-                binding.chart1.isAutoScaleMinMaxEnabled = !binding.chart1.isAutoScaleMinMaxEnabled
+                binding.chart1.isAutoScaleMinMax = !binding.chart1.isAutoScaleMinMax
                 binding.chart1.notifyDataSetChanged()
             }
 

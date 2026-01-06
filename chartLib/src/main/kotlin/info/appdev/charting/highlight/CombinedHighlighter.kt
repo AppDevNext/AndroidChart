@@ -37,7 +37,7 @@ open class CombinedHighlighter(combinedDataProvider: CombinedDataProvider, barDa
 
                     dataSet?.let {
                         // don't include datasets that cannot be highlighted
-                        if (!it.isHighlightEnabled) {
+                        if (!it.isHighlight) {
                             j++
                             continue
                         }

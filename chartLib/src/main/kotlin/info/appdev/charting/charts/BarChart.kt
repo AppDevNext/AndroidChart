@@ -24,17 +24,17 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
      * was tapped.
      * Default: false
      */
-    override var isHighlightFullBarEnabled: Boolean = false
+    override var isHighlightFullBar = false
 
     /**
      * if set to true, all values are drawn above their bars, instead of below their top
      */
-    override var isDrawValueAboveBarEnabled: Boolean = true
+    override var isDrawValueAboveBar = true
 
     /**
      * if set to true, a grey area is drawn behind each bar that indicates the maximum value
      */
-    override var isDrawBarShadowEnabled: Boolean = false
+    override var isDrawBarShadow = false
 
     /**
      * if set to true, the bar chart's bars would be round on all corners instead of rectangular
@@ -96,7 +96,7 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
         } else {
             highlighter?.let {
                 val h = it.getHighlight(x, y)
-                if (h == null || !isHighlightFullBarEnabled)
+                if (h == null || !isHighlightFullBar)
                     return h
 
                 // For isHighlightFullBarEnabled, remove stackIndex
@@ -176,21 +176,6 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
 
             getTransformer(set.axisDependency).rectValueToPixel(outputRect)
         }
-    }
-
-    /**
-     * If set to true, all values are drawn above their bars, instead of below their top.
-     */
-    fun setDrawValueAboveBar(enabled: Boolean) {
-        this.isDrawValueAboveBarEnabled = enabled
-    }
-
-    /**
-     * If set to true, a grey area is drawn behind each bar that indicates the maximum value. Enabling his will reduce
-     * performance by about 50%.
-     */
-    fun setDrawBarShadow(enabled: Boolean) {
-        this.isDrawBarShadowEnabled = enabled
     }
 
     /**

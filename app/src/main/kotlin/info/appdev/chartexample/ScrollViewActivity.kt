@@ -26,16 +26,16 @@ class ScrollViewActivity : DemoBase() {
         binding.chart1.description.isEnabled = false
 
         // scaling can now only be done on x- and y-axis separately
-        binding.chart1.setPinchZoom(false)
+        binding.chart1.isPinchZoom = false
 
-        binding.chart1.setDrawBarShadow(false)
+        binding.chart1.isDrawBarShadow = false
         binding.chart1.setDrawGridBackground(false)
 
         val xAxis = binding.chart1.xAxis
         xAxis.position = XAxisPosition.BOTTOM
-        xAxis.setDrawGridLines(false)
+        xAxis.isDrawGridLines = false
 
-        binding.chart1.axisLeft.setDrawGridLines(false)
+        binding.chart1.axisLeft.isDrawGridLines = false
 
         binding.chart1.legend.isEnabled = false
 

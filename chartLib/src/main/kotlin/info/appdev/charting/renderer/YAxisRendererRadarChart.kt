@@ -41,7 +41,7 @@ class YAxisRendererRadarChart(
 
         // If granularity is enabled, then do not allow the interval to go below specified granularity.
         // This is used to avoid repeated values when rounding values for display.
-        if (axis.isGranularityEnabled) interval = if (interval < axis.granularity) axis.granularity.toDouble() else interval
+        if (axis.isGranularity) interval = if (interval < axis.granularity) axis.granularity.toDouble() else interval
 
         // Normalize interval
         val intervalMagnitude = 10.0.pow(log10(interval).toInt().toDouble()).roundToNextSignificant().toDouble()
@@ -58,7 +58,7 @@ class YAxisRendererRadarChart(
         var n = if (centeringEnabled) 1 else 0
 
         // force label count
-        if (axis.isForceLabelsEnabled) {
+        if (axis.isForceLabels) {
             val step = range.toFloat() / (labelCount - 1).toFloat()
             axis.entryCount = labelCount
 

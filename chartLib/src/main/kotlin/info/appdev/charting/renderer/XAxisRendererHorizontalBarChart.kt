@@ -178,7 +178,7 @@ open class XAxisRendererHorizontalBarChart(
     }
 
     override fun renderAxisLine(canvas: Canvas) {
-        if (!xAxis.isDrawAxisLineEnabled || !xAxis.isEnabled)
+        if (!xAxis.isDrawAxisLine || !xAxis.isEnabled)
             return
 
         paintAxisLine.color = xAxis.axisLineColor

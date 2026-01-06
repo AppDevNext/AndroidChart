@@ -30,21 +30,20 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
     /**
      * if set to true, all values are drawn above their bars, instead of below their top
      */
-    var isDrawValueAboveBarEnabled: Boolean = true
-
+    var isDrawValueAboveBar = true
 
     /**
      * Set this to true to make the highlight operation full-bar oriented,
      * false to make it highlight single values (relevant only for stacked).
      */
-    var isHighlightFullBarEnabled: Boolean = false
+    var isHighlightFullBar = false
 
     /**
      * if set to true, a grey area is drawn behind each bar that indicates the maximum value
      */
-    var isDrawBarShadowEnabled: Boolean = false
+    var isDrawBarShadow = false
 
-    protected var drawOrders: MutableList<DrawOrder>? = null
+    protected var mDrawOrders: MutableList<DrawOrder>? = null
 
     lateinit var barDataProvider: BarDataProvider
     lateinit var lineDataProvider: LineDataProvider
@@ -69,7 +68,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
         super.init()
 
         // Default values are not ready here yet
-        drawOrders = mutableListOf<DrawOrder>(
+        mDrawOrders = mutableListOf<DrawOrder>(
             DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.LINE, DrawOrder.CANDLE, DrawOrder.SCATTER
         )
 
@@ -78,22 +77,22 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
             override val barData: BarData?
                 get() = this@CombinedChart.barData
 
-            override var isDrawBarShadowEnabled: Boolean
-                get() = this@CombinedChart.isDrawBarShadowEnabled
+            override var isDrawBarShadow: Boolean
+                get() = this@CombinedChart.isDrawBarShadow
                 set(value) {
-                    this@CombinedChart.isDrawBarShadowEnabled = value
+                    this@CombinedChart.isDrawBarShadow = value
                 }
 
-            override var isDrawValueAboveBarEnabled: Boolean
-                get() = this@CombinedChart.isDrawValueAboveBarEnabled
+            override var isDrawValueAboveBar: Boolean
+                get() = this@CombinedChart.isDrawValueAboveBar
                 set(value) {
-                    this@CombinedChart.isDrawValueAboveBarEnabled = value
+                    this@CombinedChart.isDrawValueAboveBar = value
                 }
 
-            override var isHighlightFullBarEnabled: Boolean
-                get() = this@CombinedChart.isHighlightFullBarEnabled
+            override var isHighlightFullBar: Boolean
+                get() = this@CombinedChart.isHighlightFullBar
                 set(value) {
-                    this@CombinedChart.isHighlightFullBarEnabled = value
+                    this@CombinedChart.isHighlightFullBar = value
                 }
 
             override var data: BarData?
@@ -376,7 +375,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
         setHighlighter(CombinedHighlighter(this, barDataProvider))
 
         // Old default behaviour
-        isHighlightFullBarEnabled = true
+        this@CombinedChart.isHighlightFullBar = true
 
         dataRenderer = CombinedChartRenderer(this, mAnimator, viewPortHandler)
     }
@@ -395,7 +394,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
         } else {
             highlighter?.let {
                 val highlight = it.getHighlight(x, y)
-                if (highlight == null || !isHighlightFullBarEnabled) {
+                if (highlight == null || !isHighlightFullBar) {
                     return highlight
                 }
 
@@ -455,34 +454,18 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
         }
 
     /**
-     * If set to true, all values are drawn above their bars, instead of below their top.
-     */
-    fun setDrawValueAboveBar(enabled: Boolean) {
-        this.isDrawValueAboveBarEnabled = enabled
-    }
-
-
-    /**
-     * If set to true, a grey area is drawn behind each bar that indicates the
-     * maximum value. Enabling his will reduce performance by about 50%.
-     */
-    fun setDrawBarShadow(value: Boolean) {
-        this.isDrawBarShadowEnabled = value
-    }
-
-    /**
      * The order in which the provided data objects should be drawn. The
      * earlier you place them in the provided array, the further they will be in
      * the background. e.g. if you provide DrawOrder { DrawOrder.BAR,
      * DrawOrder.LINE }, the bars will be drawn behind the lines.
      */
     var drawOrder: MutableList<DrawOrder>?
-        get() = drawOrders
+        get() = mDrawOrders
         set(value) {
             if (value == null || value.isEmpty()) {
                 return
             }
-            drawOrders = value
+            mDrawOrders = value
         }
 
     /**
