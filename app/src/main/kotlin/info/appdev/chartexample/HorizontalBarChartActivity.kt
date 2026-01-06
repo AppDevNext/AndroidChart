@@ -40,7 +40,7 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         binding.seekBarX.setOnSeekBarChangeListener(this)
 
         binding.chart1.setOnChartValueSelectedListener(this)
-        binding.chart1.isLogEnabled = true
+        binding.chart1.isLogging = true
 
         // chart.setHighlightEnabled(false);
         binding.chart1.isDrawBarShadow = false

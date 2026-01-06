@@ -279,7 +279,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
 
         viewPortHandler.restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom)
 
-        if (isLogEnabled)
+        if (isLogging)
             Timber.i("offsetLeft: $offsetLeft, offsetTop: $offsetTop, offsetRight: $offsetRight, offsetBottom: $offsetBottom")
     }
 

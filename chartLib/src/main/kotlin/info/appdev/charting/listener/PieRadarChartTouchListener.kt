@@ -42,7 +42,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>) : ChartTouchListen
 
                     resetVelocity()
 
-                    if (chart.isDragDecelerationEnabled) {
+                    if (chart.isDragDeceleration) {
                         sampleVelocity(x, y)
                     }
 
@@ -52,7 +52,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>) : ChartTouchListen
                 }
 
                 MotionEvent.ACTION_MOVE -> {
-                    if (chart.isDragDecelerationEnabled) {
+                    if (chart.isDragDeceleration) {
                         sampleVelocity(x, y)
                     }
 
@@ -72,7 +72,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>) : ChartTouchListen
                 }
 
                 MotionEvent.ACTION_UP -> {
-                    if (chart.isDragDecelerationEnabled) {
+                    if (chart.isDragDeceleration) {
                         stopDeceleration()
 
                         sampleVelocity(x, y)
@@ -114,7 +114,7 @@ class PieRadarChartTouchListener(chart: PieRadarChartBase<*>) : ChartTouchListen
 
         onChartGestureListener?.onChartSingleTapped(e)
 
-        if (!chart.isHighlightPerTapEnabled) {
+        if (!chart.isHighlightPerTap) {
             return false
         }
 

@@ -335,7 +335,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
         drawMarkers(canvas)
 
-        if (isLogEnabled) {
+        if (isLogging) {
             val drawtime = (System.currentTimeMillis() - startTime)
             totalTime += drawtime
             drawCycles += 1
@@ -353,7 +353,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
     }
 
     protected open fun prepareValuePxMatrix() {
-        if (isLogEnabled) {
+        if (isLogging) {
             Timber.i("Preparing Value-Px Matrix, xMin: ${mXAxis.mAxisMinimum}, xMax: ${mXAxis.mAxisMaximum}, xDelta: ${mXAxis.axisRange}")
         }
 
@@ -368,12 +368,12 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
     override fun notifyDataSetChanged() {
         if (mData == null) {
-            if (isLogEnabled) {
+            if (isLogging) {
                 Timber.i("Preparing... DATA NOT SET.")
             }
             return
         } else {
-            if (isLogEnabled) {
+            if (isLogging) {
                 Timber.i("Preparing...")
             }
         }
@@ -522,7 +522,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
             viewPortHandler.restrainViewPort(max(minOffset, offsetLeft), max(minOffset, offsetTop), max(minOffset, offsetRight), max(minOffset, offsetBottom))
 
-            if (isLogEnabled) {
+            if (isLogging) {
                 Timber.i("offsetLeft: $offsetLeft, offsetTop: $offsetTop, offsetRight: $offsetRight, offsetBottom: $offsetBottom")
                 Timber.i("Content: ${viewPortHandler.contentRect}")
             }
