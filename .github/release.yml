@@ -5,13 +5,13 @@ changelog:
     authors:
       - someuser
   categories:
-    - title: Breaking Changes 🛠
+    - title: Breaking Changes 🛑
       labels:
         - breaking-change
     - title: Exciting New Features 🎉
       labels:
         - enhancement
-    - title: Dependencies
+    - title: Dependencies 🛠
       labels:
         - dependencies
     - title: Espresso test
