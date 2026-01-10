@@ -193,8 +193,4 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
         set(value) {
             mStackLabels = value
         }
-
-    override fun getEntryIndex(entry: BarEntry): Int {
-        return this.getEntryIndex(entry)
-    }
 }
