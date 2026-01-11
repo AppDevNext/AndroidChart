@@ -180,7 +180,6 @@ abstract class DataSet<T : Entry>(
     }
 
     override fun getEntryIndex(entry: T): Int {
-//        return getEntryIndex(entry)
         return mEntries.indexOf(entry)
     }
 
