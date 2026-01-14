@@ -494,22 +494,23 @@ class BarLineChartTouchListener(
         onChartGestureListener?.onChartDoubleTapped(e)
 
         // check if double-tap zooming is enabled
-        if (chart.isDoubleTapToZoomEnabled && chart.data!!.entryCount > 0) {
-            val trans = getTrans(e.x, e.y)
+        chart.data?.let { data ->
+            if (chart.isDoubleTapToZoomEnabled && data.entryCount > 0) {
+                val trans = getTrans(e.x, e.y)
 
-            val scaleX = if (chart.isScaleXEnabled) 1.4f else 1f
-            val scaleY = if (chart.isScaleYEnabled) 1.4f else 1f
+                val scaleX = if (chart.isScaleXEnabled) 1.4f else 1f
+                val scaleY = if (chart.isScaleYEnabled) 1.4f else 1f
 
-            chart.zoom(scaleX, scaleY, trans.x, trans.y)
+                chart.zoom(scaleX, scaleY, trans.x, trans.y)
 
-            if (chart.isLogging)
-                Timber.i("Double-Tap, Zooming In, x: ${trans.x} y: ${trans.y}")
+                if (chart.isLogging)
+                    Timber.i("Double-Tap, Zooming In, x: ${trans.x} y: ${trans.y}")
 
-            onChartGestureListener?.onChartScale(e, scaleX, scaleY)
+                onChartGestureListener?.onChartScale(e, scaleX, scaleY)
 
-            PointF.recycleInstance(trans)
+                PointF.recycleInstance(trans)
+            }
         }
-
         return super.onDoubleTap(e)
     }
 
