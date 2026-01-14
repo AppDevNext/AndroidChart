@@ -594,7 +594,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
      * (use the setMarker(IMarker marker) method to specify a marker)
      */
     var isDrawMarkersEnabled: Boolean = true
-        protected set
 
     /**
      * the view that represents the marker
@@ -984,7 +983,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     val isDrawMarkerViewsEnabled: Boolean
         get() = this.isDrawMarkersEnabled
 
-    @Deprecated("Use 'isDrawMarkersEnabled' directly")
+    @Deprecated("Use 'isDrawMarkersEnabled' directly", ReplaceWith("isDrawMarkersEnabled = value"))
     fun setDrawMarkerViews(value: Boolean) {
         this.isDrawMarkersEnabled = value
     }
