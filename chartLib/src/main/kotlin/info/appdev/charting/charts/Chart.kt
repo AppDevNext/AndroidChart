@@ -579,15 +579,12 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         }
     }
 
+    /**
+     * Set a new (e.g. custom) ChartTouchListener NOTE: make sure to
+     * setTouchEnabled(true); if you need touch gestures on the chart
+     */
     var onTouchListener: ChartTouchListener<*>
-        /**
-         * Returns an instance of the currently active touch listener.
-         */
         get() = chartTouchListener!!
-        /**
-         * Set a new (e.g. custom) ChartTouchListener NOTE: make sure to
-         * setTouchEnabled(true); if you need touch gestures on the chart
-         */
         set(touchListener) {
             this.chartTouchListener = touchListener
         }
@@ -596,15 +593,9 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
      * returns true if drawing the marker is enabled when tapping on values
      * (use the setMarker(IMarker marker) method to specify a marker)
      */
-    /**
-     * if set to true, the marker view is drawn when a value is clicked
-     */
     var isDrawMarkersEnabled: Boolean = true
         protected set
 
-    /**
-     * returns the marker that is set as a marker view for the chart
-     */
     /**
      * the view that represents the marker
      */
@@ -671,23 +662,20 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         return floatArrayOf(high.drawX, high.drawY)
     }
 
+    /**
+     * Returns the animator responsible for animating chart values.
+     */
     val animator: ChartAnimator
-        /**
-         * Returns the animator responsible for animating chart values.
-         */
         get() = mAnimator
 
+    /**
+     * Deceleration friction coefficient in [0 ; 1] interval, higher values
+     * indicate that speed will decrease slowly, for example if it set to 0, it
+     * will stop immediately. 1 is an invalid value, and will be converted to
+     * 0.999f automatically.
+     */
     var dragDecelerationFrictionCoef: Float
-        /**
-         * Returns drag deceleration friction coefficient
-         */
         get() = mDragDecelerationFrictionCoef
-        /**
-         * Deceleration friction coefficient in [0 ; 1] interval, higher values
-         * indicate that speed will decrease slowly, for example if it set to 0, it
-         * will stop immediately. 1 is an invalid value, and will be converted to
-         * 0.999f automatically.
-         */
         set(newValue) {
             var newValue = newValue
             if (newValue < 0f) {
@@ -773,7 +761,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         mAnimator.animateXY(durationMillisX, durationMillisY)
     }
 
-
     open val xAxis: XAxis
         /**
          * Returns the object representing all x-labels, this method can be used to
@@ -782,11 +769,11 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
          */
         get() = mXAxis
 
+    /**
+     * Returns the default IValueFormatter that has been determined by the chart
+     * considering the provided minimum and maximum values.
+     */
     override val defaultValueFormatter: IValueFormatter
-        /**
-         * Returns the default IValueFormatter that has been determined by the chart
-         * considering the provided minimum and maximum values.
-         */
         get() = mDefaultValueFormatter
 
     /**
@@ -796,16 +783,16 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         this.mSelectionListener = l
     }
 
+    /**
+     * returns the current y-max value across all DataSets
+     */
     val yMax: Float
-        /**
-         * returns the current y-max value across all DataSets
-         */
         get() = mData!!.yMax
 
+    /**
+     * returns the current y-min value across all DataSets
+     */
     val yMin: Float
-        /**
-         * returns the current y-min value across all DataSets
-         */
         get() = mData!!.yMin
 
     override val yChartMin: Float
@@ -823,19 +810,19 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     override val xRange: Float
         get() = mXAxis.axisRange
 
+    /**
+     * Returns a recyclable PointF instance.
+     * Returns the center point of the chart (the whole View) in pixels.
+     */
     val center: PointF
-        /**
-         * Returns a recyclable PointF instance.
-         * Returns the center point of the chart (the whole View) in pixels.
-         */
         get() = getInstance(width / 2f, height / 2f)
 
+    /**
+     * Returns a recyclable PointF instance.
+     * Returns the center of the chart taking offsets under consideration.
+     * (returns the center of the content rectangle)
+     */
     override val centerOffsets: PointF
-        /**
-         * Returns a recyclable PointF instance.
-         * Returns the center of the chart taking offsets under consideration.
-         * (returns the center of the content rectangle)
-         */
         get() = viewPortHandler.contentCenter
 
     /**
@@ -849,50 +836,38 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         this.extraBottomOffset = bottom
     }
 
+    /**
+     * Set an extra offset to be appended to the viewport's top
+     */
     var extraTopOffset: Float
-        /**
-         * @return the extra offset to be appended to the viewport's top
-         */
         get() = mExtraTopOffset
-        /**
-         * Set an extra offset to be appended to the viewport's top
-         */
         set(offset) {
             mExtraTopOffset = offset.convertDpToPixel()
         }
 
+    /**
+     * Set an extra offset to be appended to the viewport's right
+     */
     var extraRightOffset: Float
-        /**
-         * @return the extra offset to be appended to the viewport's right
-         */
         get() = mExtraRightOffset
-        /**
-         * Set an extra offset to be appended to the viewport's right
-         */
         set(offset) {
             mExtraRightOffset = offset.convertDpToPixel()
         }
 
+    /**
+     * Set an extra offset to be appended to the viewport's bottom
+     */
     var extraBottomOffset: Float
-        /**
-         * @return the extra offset to be appended to the viewport's bottom
-         */
         get() = mExtraBottomOffset
-        /**
-         * Set an extra offset to be appended to the viewport's bottom
-         */
         set(offset) {
             mExtraBottomOffset = offset.convertDpToPixel()
         }
 
+    /**
+     * Set an extra offset to be appended to the viewport's left
+     */
     var extraLeftOffset: Float
-        /**
-         * @return the extra offset to be appended to the viewport's left
-         */
         get() = mExtraLeftOffset
-        /**
-         * Set an extra offset to be appended to the viewport's left
-         */
         set(offset) {
             mExtraLeftOffset = offset.convertDpToPixel()
         }
