@@ -161,12 +161,15 @@ open class PieChartRenderer(
         if (!dataSet.isAutomaticallyDisableSliceSpacingEnabled)
             return dataSet.sliceSpace
 
-        val spaceSizeRatio = dataSet.sliceSpace / viewPortHandler.smallestContentExtension
-        val minValueRatio = dataSet.yMin / chart.data!!.yValueSum * 2
+        chart.data?.let { data ->
+            val spaceSizeRatio = dataSet.sliceSpace / viewPortHandler.smallestContentExtension
+            val minValueRatio = dataSet.yMin / data.yValueSum * 2
 
-        val sliceSpace = if (spaceSizeRatio > minValueRatio) 0f else dataSet.sliceSpace
+            val sliceSpace = if (spaceSizeRatio > minValueRatio) 0f else dataSet.sliceSpace
 
-        return sliceSpace
+            return sliceSpace
+        }
+        return dataSet.sliceSpace
     }
 
     protected fun drawDataSet(dataSet: IPieDataSet) {
@@ -904,46 +907,48 @@ open class PieChartRenderer(
      * This gives all pie-slices a rounded edge.
      */
     protected fun drawRoundedSlices() {
-        if (!chart.isDrawRoundedSlices)
+        if (!chart.isDrawRoundedSlices || chart.data == null)
             return
 
-        val dataSet = chart.data!!.dataSet
+        chart.data?.let { data ->
+            val dataSet = data.dataSet
 
-        if (!dataSet.isVisible)
-            return
+            if (!dataSet.isVisible)
+                return
 
-        val phaseX = animator.phaseX
-        val phaseY = animator.phaseY
+            val phaseX = animator.phaseX
+            val phaseY = animator.phaseY
 
-        val center = chart.centerCircleBox
-        val r = chart.radius
+            val center = chart.centerCircleBox
+            val r = chart.radius
 
-        // calculate the radius of the "slice-circle"
-        val circleRadius = (r - (r * chart.holeRadius / 100f)) / 2f
+            // calculate the radius of the "slice-circle"
+            val circleRadius = (r - (r * chart.holeRadius / 100f)) / 2f
 
-        val drawAngles = chart.drawAngles
-        var angle = chart.rotationAngle
+            val drawAngles = chart.drawAngles
+            var angle = chart.rotationAngle
 
-        for (j in 0..<dataSet.entryCount) {
-            val sliceAngle = drawAngles[j]
+            for (j in 0..<dataSet.entryCount) {
+                val sliceAngle = drawAngles[j]
 
-            dataSet.getEntryForIndex(j)?.let { entry ->
+                dataSet.getEntryForIndex(j)?.let { entry ->
 
-                // draw only if the value is greater than zero
-                if ((abs(entry.y.toDouble()) > Utils.FLOAT_EPSILON)) {
-                    val v = Math.toRadians(
-                        ((angle + sliceAngle) * phaseY).toDouble()
-                    )
-                    val x = ((r - circleRadius) * cos(v) + center.x).toFloat()
-                    val y = ((r - circleRadius) * sin(v) + center.y).toFloat()
+                    // draw only if the value is greater than zero
+                    if ((abs(entry.y.toDouble()) > Utils.FLOAT_EPSILON)) {
+                        val v = Math.toRadians(
+                            ((angle + sliceAngle) * phaseY).toDouble()
+                        )
+                        val x = ((r - circleRadius) * cos(v) + center.x).toFloat()
+                        val y = ((r - circleRadius) * sin(v) + center.y).toFloat()
 
-                    paintRender.color = dataSet.getColorByIndex(j)
-                    bitmapCanvas!!.drawCircle(x, y, circleRadius, paintRender)
+                        paintRender.color = dataSet.getColorByIndex(j)
+                        bitmapCanvas!!.drawCircle(x, y, circleRadius, paintRender)
+                    }
                 }
+                angle += sliceAngle * phaseX
             }
-            angle += sliceAngle * phaseX
+            PointF.recycleInstance(center)
         }
-        PointF.recycleInstance(center)
     }
 
     /**

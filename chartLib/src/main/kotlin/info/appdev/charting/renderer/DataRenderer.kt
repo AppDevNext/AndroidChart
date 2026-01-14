@@ -61,7 +61,9 @@ abstract class DataRenderer(
     }
 
     protected open fun isDrawingValuesAllowed(baseProvider: IBaseProvider<*>): Boolean {
-        return baseProvider.data!!.entryCount < baseProvider.maxVisibleCount * viewPortHandler.scaleX
+        return baseProvider.data?.let { data ->
+            data.entryCount < baseProvider.maxVisibleCount * viewPortHandler.scaleX
+        } ?: run { false }
     }
 
     /**

@@ -43,21 +43,22 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
         val factor = chartPieRadar.factor
 
         val pOut = PointF.getInstance(0f, 0f)
-        for (i in 0..<chartPieRadar.data!!.dataSetCount) {
-            val dataSet = chartPieRadar.data!!.getDataSetByIndex(i)
+        chartPieRadar.data?.let { data ->
+            for (i in 0..<data.dataSetCount) {
+                val dataSet = data.getDataSetByIndex(i)
 
-            val entry: Entry? = dataSet?.getEntryForIndex(index)
+                val entry: Entry? = dataSet?.getEntryForIndex(index)
 
-            val y = (entry!!.y - chartPieRadar.yChartMin)
+                val y = (entry!!.y - chartPieRadar.yChartMin)
 
-            chartPieRadar.centerOffsets.changePosition(
-                y * factor * phaseY,
-                sliceAngle * index * phaseX + chartPieRadar.rotationAngle, pOut
-            )
+                chartPieRadar.centerOffsets.changePosition(
+                    y * factor * phaseY,
+                    sliceAngle * index * phaseX + chartPieRadar.rotationAngle, pOut
+                )
 
-            mHighlightBuffer.add(Highlight(index.toFloat(), entry.y, pOut.x, pOut.y, i, dataSet.axisDependency))
+                mHighlightBuffer.add(Highlight(index.toFloat(), entry.y, pOut.x, pOut.y, i, dataSet.axisDependency))
+            }
         }
-
         return mHighlightBuffer
     }
 }

@@ -130,67 +130,69 @@ open class RadarChartRenderer(
 
         val yOffset = 5f.convertDpToPixel()
 
-        for (i in 0..<chart.data!!.dataSetCount) {
-            chart.data!!.getDataSetByIndex(i)?.let { dataSet ->
+        chart.data?.let { data ->
+            for (i in 0..<data.dataSetCount) {
+                data.getDataSetByIndex(i)?.let { dataSet ->
 
-                chart.data!!.getDataSetByIndex(i)
-                if (dataSet.entryCount == 0) {
-                    continue
-                }
-                if (!shouldDrawValues(dataSet)) {
-                    continue
-                }
+                    data.getDataSetByIndex(i)
+                    if (dataSet.entryCount == 0) {
+                        continue
+                    }
+                    if (!shouldDrawValues(dataSet)) {
+                        continue
+                    }
 
-                // apply the text-styling defined by the DataSet
-                applyValueTextStyle(dataSet)
+                    // apply the text-styling defined by the DataSet
+                    applyValueTextStyle(dataSet)
 
-                val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
-                iconsOffset.x = iconsOffset.x.convertDpToPixel()
-                iconsOffset.y = iconsOffset.y.convertDpToPixel()
+                    val iconsOffset = PointF.getInstance(dataSet.iconsOffset)
+                    iconsOffset.x = iconsOffset.x.convertDpToPixel()
+                    iconsOffset.y = iconsOffset.y.convertDpToPixel()
 
-                for (j in 0..<dataSet.entryCount) {
-                    dataSet.getEntryForIndex(j)?.let { entry ->
+                    for (j in 0..<dataSet.entryCount) {
+                        dataSet.getEntryForIndex(j)?.let { entry ->
 
-                        pOut = center.getPosition(
-                            (entry.y - chart.yChartMin) * factor * phaseY,
-                            sliceAngle * j * phaseX + chart.rotationAngle
-                        )
-
-                        if (dataSet.isDrawValues) {
-                            drawValue(
-                                canvas,
-                                dataSet.valueFormatter,
-                                entry.y,
-                                entry,
-                                i,
-                                pOut.x,
-                                pOut.y - yOffset,
-                                dataSet.getValueTextColor(j)
-                            )
-                        }
-
-                        if (entry.icon != null && dataSet.isDrawIcons) {
-                            val icon = entry.icon
-
-                            pIcon = center.getPosition(
-                                (entry.y) * factor * phaseY + iconsOffset.y,
+                            pOut = center.getPosition(
+                                (entry.y - chart.yChartMin) * factor * phaseY,
                                 sliceAngle * j * phaseX + chart.rotationAngle
                             )
 
-                            pIcon.y += iconsOffset.x
-
-                            icon?.let {
-                                canvas.drawImage(
-                                    it,
-                                    pIcon.x.toInt(),
-                                    pIcon.y.toInt()
+                            if (dataSet.isDrawValues) {
+                                drawValue(
+                                    canvas,
+                                    dataSet.valueFormatter,
+                                    entry.y,
+                                    entry,
+                                    i,
+                                    pOut.x,
+                                    pOut.y - yOffset,
+                                    dataSet.getValueTextColor(j)
                                 )
+                            }
+
+                            if (entry.icon != null && dataSet.isDrawIcons) {
+                                val icon = entry.icon
+
+                                pIcon = center.getPosition(
+                                    (entry.y) * factor * phaseY + iconsOffset.y,
+                                    sliceAngle * j * phaseX + chart.rotationAngle
+                                )
+
+                                pIcon.y += iconsOffset.x
+
+                                icon?.let {
+                                    canvas.drawImage(
+                                        it,
+                                        pIcon.x.toInt(),
+                                        pIcon.y.toInt()
+                                    )
+                                }
                             }
                         }
                     }
-                }
 
-                PointF.recycleInstance(iconsOffset)
+                    PointF.recycleInstance(iconsOffset)
+                }
             }
         }
 
@@ -218,22 +220,23 @@ open class RadarChartRenderer(
         webPaint.color = chart.webColor
         webPaint.alpha = chart.webAlpha
 
-        val xIncrements = 1 + chart.skipWebLineCount
-        val maxEntryCount = chart.data!!.maxEntryCountSet?.entryCount ?: 0
+        chart.data?.let { data ->
+            val xIncrements = 1 + chart.skipWebLineCount
+            val maxEntryCount = data.maxEntryCountSet?.entryCount ?: 0
 
-        var p = PointF.getInstance(0f, 0f)
-        var i = 0
-        while (i < maxEntryCount) {
-            p = center.getPosition(
-                chart.yRange * factor,
-                sliceAngle * i + rotationAngle
-            )
+            var p = PointF.getInstance(0f, 0f)
+            var i = 0
+            while (i < maxEntryCount) {
+                p = center.getPosition(
+                    chart.yRange * factor,
+                    sliceAngle * i + rotationAngle
+                )
 
-            canvas.drawLine(center.x, center.y, p.x, p.y, webPaint)
-            i += xIncrements
+                canvas.drawLine(center.x, center.y, p.x, p.y, webPaint)
+                i += xIncrements
+            }
+            PointF.recycleInstance(p)
         }
-        PointF.recycleInstance(p)
-
         // draw the inner-web
         webPaint.strokeWidth = chart.webLineWidthInner
         webPaint.color = chart.webColorInner
@@ -248,21 +251,23 @@ open class RadarChartRenderer(
                 innerAreaPath.rewind()
                 paint.color = chart.layerColorList[j]
             }
-            for (i in 0..<chart.data!!.entryCount) {
-                val r = (chart.yAxis.entries[j] - chart.yChartMin) * factor
+            chart.data?.let { data ->
+                for (i in 0..<data.entryCount) {
+                    val r = (chart.yAxis.entries[j] - chart.yChartMin) * factor
 
-                p1out = center.getPosition(r, sliceAngle * i + rotationAngle)
-                p2out = center.getPosition(r, sliceAngle * (i + 1) + rotationAngle)
+                    p1out = center.getPosition(r, sliceAngle * i + rotationAngle)
+                    p2out = center.getPosition(r, sliceAngle * (i + 1) + rotationAngle)
 
-                canvas.drawLine(p1out.x, p1out.y, p2out.x, p2out.y, webPaint)
-                if (chart.isCustomLayerColorEnable) {
-                    if (p1out.x != p2out.x) {
-                        if (i == 0) {
-                            innerAreaPath.moveTo(p1out.x, p1out.y)
-                        } else {
-                            innerAreaPath.lineTo(p1out.x, p1out.y)
+                    canvas.drawLine(p1out.x, p1out.y, p2out.x, p2out.y, webPaint)
+                    if (chart.isCustomLayerColorEnable) {
+                        if (p1out.x != p2out.x) {
+                            if (i == 0) {
+                                innerAreaPath.moveTo(p1out.x, p1out.y)
+                            } else {
+                                innerAreaPath.lineTo(p1out.x, p1out.y)
+                            }
+                            innerAreaPath.lineTo(p2out.x, p2out.y)
                         }
-                        innerAreaPath.lineTo(p2out.x, p2out.y)
                     }
                 }
             }
