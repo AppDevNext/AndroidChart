@@ -113,7 +113,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
         }
 
     fun getDataByIndex(index: Int): BarLineScatterCandleBubbleData<*> {
-        return this.allData.get(index)
+        return this.allData[index]
     }
 
     override fun notifyDataChanged() {
@@ -131,7 +131,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
      * @return the entry that is highlighted
      */
     override fun getEntryForHighlight(highlight: Highlight): Entry? {
-        if (highlight.dataIndex >= this.allData.size)
+        if (highlight.dataIndex >= this.allData.size || highlight.dataIndex < 0)
             return null
 
         val data: ChartData<*> = getDataByIndex(highlight.dataIndex)
