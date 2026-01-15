@@ -15,6 +15,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -205,6 +206,15 @@ class StartTest {
                     } else {
                         Timber.d("Unknown activity type: ${contentClass.simpleName}")
                     }
+
+                    onView(withId(R.id.chart1)).perform(click())
+                    onView(ViewMatchers.isRoot())
+                        .perform(captureToBitmap { bitmap: Bitmap ->
+                            bitmap.writeToTestStorage(
+                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click"
+                                    .replace(" ", "")
+                            )
+                        })
 
                     //Thread.sleep(100)
                     Espresso.pressBack()

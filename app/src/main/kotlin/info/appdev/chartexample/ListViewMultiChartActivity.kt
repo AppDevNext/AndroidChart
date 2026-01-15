@@ -60,7 +60,14 @@ class ListViewMultiChartActivity : DemoBase() {
     /** adapter that supports 3 different item types  */
     private class ChartDataAdapter(context: Context, chartItems: MutableList<ChartItem?>) : ArrayAdapter<ChartItem>(context, 0, chartItems) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            return getItem(position)!!.getView(position, convertView, context)!!
+            return getItem(position)!!.getView(position, convertView, context)!!.apply {
+                // to find chart in Espresso test
+                when (position) {
+                    0 -> id = R.id.chart1
+                    1 -> id = R.id.chart2
+                    2 -> id = R.id.chart3
+                }
+            }
         }
 
         override fun getItemViewType(position: Int): Int {
