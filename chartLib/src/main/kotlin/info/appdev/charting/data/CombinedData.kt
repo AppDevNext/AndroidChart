@@ -140,7 +140,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
             return null
 
         // The value of the highlighted entry could be NaN -
-        //   if we are not interested in highlighting a specific value.
+        // if we are not interested in highlighting a specific value.
         val entries = data.getDataSetByIndex(highlight.dataSetIndex)!!
             .getEntriesForXValue(highlight.x)
         for (entry in entries!!) if (entry.y == highlight.y ||
