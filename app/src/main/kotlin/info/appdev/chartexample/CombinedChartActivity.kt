@@ -49,6 +49,7 @@ class CombinedChartActivity : DemoBase() {
         binding.chart1.setDrawGridBackground(false)
         binding.chart1.isDrawBarShadow = false
         binding.chart1.isHighlightFullBar = false
+        binding.chart1.isLogging = true
 
         // draw bars behind lines
         binding.chart1.drawOrder = mutableListOf(
