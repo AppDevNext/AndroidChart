@@ -144,6 +144,6 @@ class Highlight : Serializable {
     }
 
     override fun toString(): String {
-        return "Highlight, x:$x y:$y dataSetIndex:$dataSetIndex stackIndex (only stacked bar entry): $stackIndex"
+        return "Highlight, x:$x y:$y dataSetIndex:$dataSetIndex stackIndex:$stackIndex (only stacked bar entry)"
     }
 }

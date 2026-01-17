@@ -15,6 +15,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.view.accessibility.AccessibilityEvent
+import androidx.core.graphics.createBitmap
 import info.appdev.charting.animation.ChartAnimator
 import info.appdev.charting.animation.Easing.EasingFunction
 import info.appdev.charting.components.Description
@@ -1058,23 +1059,20 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
          */
         get() = this.center
 
+    /**
+     * Returns the bitmap that represents the chart.
+     */
     val chartBitmap: Bitmap
-        /**
-         * Returns the bitmap that represents the chart.
-         */
         get() {
             // Define a bitmap with the same size as the view
-            val returnedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            val returnedBitmap = createBitmap(width, height, Bitmap.Config.RGB_565)
             // Bind a canvas to it
             val canvas = Canvas(returnedBitmap)
             // Get the view's background
             val bgDrawable = background
-            if (bgDrawable != null)  // has background drawable, then draw it on the canvas
-            {
+            if (bgDrawable != null) { // has background drawable, then draw it on the canvas
                 bgDrawable.draw(canvas)
-            } else  // does not have background drawable, then draw white background on
-            // the canvas
-            {
+            } else { // does not have background drawable, then draw white background on the canvas
                 canvas.drawColor(Color.WHITE)
             }
             // draw the view on the canvas
@@ -1132,11 +1130,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     }
 
     /**
-     * Returns all jobs that are scheduled to be executed after
-     * onSizeChanged(...).
-     */
-    /**
-     * tasks to be done after the view is setup
+     * Returns all jobs that are scheduled to be executed after onSizeChanged(...).
      */
     var jobs: ArrayList<Runnable> = ArrayList()
         protected set
@@ -1259,7 +1253,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
 
     // region accessibility
     /**
-     *
      * @return accessibility description must be created for each chart
      */
     abstract val accessibilityDescription: String?
@@ -1285,8 +1278,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         const val PAINT_GRID_BACKGROUND: Int = 4
 
         /**
-         * paint for the info text that is displayed when there are no values in the
-         * chart
+         * paint for the info text that is displayed when there are no values in the 3chart
          */
         const val PAINT_INFO: Int = 7
 
