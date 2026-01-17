@@ -6,7 +6,7 @@ abstract class PieRadarHighlighter<T : PieRadarChartBase<*>>(protected var chart
     /**
      * buffer for storing previously highlighted values
      */
-    protected var mHighlightBuffer: MutableList<Highlight> = ArrayList()
+    protected var highlightBuffer: MutableList<Highlight> = ArrayList()
 
     override fun getHighlight(x: Float, y: Float): Highlight? {
         val touchDistanceToCenter = chartPieRadar.distanceToCenter(x, y)

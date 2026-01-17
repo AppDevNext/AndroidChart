@@ -259,11 +259,10 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         invalidate()
     }
 
+    /**
+     * Returns true if the chart is empty (meaning it's data object is either null or contains no entries).
+     */
     val isEmpty: Boolean
-        /**
-         * Returns true if the chart is empty (meaning it's data object is either
-         * null or contains no entries).
-         */
         get() {
             return if (mData == null) {
                 true
@@ -353,7 +352,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
      */
     protected fun drawDescription(canvas: Canvas) {
         // check if description should be drawn
-
         if (description.isEnabled) {
             val position = description.position
 
@@ -761,12 +759,12 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         mAnimator.animateXY(durationMillisX, durationMillisY)
     }
 
+    /**
+     * Returns the object representing all x-labels, this method can be used to
+     * acquire the XAxis object and modify it (e.g. change the position of the
+     * labels, styling, etc.)
+     */
     open val xAxis: XAxis
-        /**
-         * Returns the object representing all x-labels, this method can be used to
-         * acquire the XAxis object and modify it (e.g. change the position of the
-         * labels, styling, etc.)
-         */
         get() = mXAxis
 
     /**
@@ -1046,17 +1044,13 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         }
 
     /**
-     * Sets a custom highlighter object for the chart that handles / processes
-     * all highlight touch events performed on the chart-view.
+     * Returns a recyclable PointF instance.
      */
     fun setHighlighter(highlighter: ChartHighlighter<*>?) {
         this.highlighter = highlighter
     }
 
     override val centerOfView: PointF
-        /**
-         * Returns a recyclable PointF instance.
-         */
         get() = this.center
 
     /**
@@ -1186,8 +1180,8 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
             }
         }
 
-        // This may cause the chart view to mutate properties affecting the view port --
-        //   lets do this before we try to run any pending jobs on the view port itself
+        // This may cause the chart view to mutate properties affecting the view port.
+        // lets do this before we try to run any pending jobs on the view port itself
         notifyDataSetChanged()
 
         for (r in this.jobs) {
@@ -1214,7 +1208,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        //Timber.i("Detaching...");
         if (mUnbind) {
             unbindDrawables(this)
         }
@@ -1251,7 +1244,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         this.mUnbind = enabled
     }
 
-    // region accessibility
     /**
      * @return accessibility description must be created for each chart
      */

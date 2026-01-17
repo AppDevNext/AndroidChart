@@ -400,13 +400,13 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
 
                 // For isHighlightFullBarEnabled, remove stackIndex
                 return Highlight(
-                    highlight.x,
-                    highlight.y,
-                    highlight.xPx,
-                    highlight.yPx,
-                    highlight.dataSetIndex,
-                    -1,
-                    highlight.axis
+                    x = highlight.x,
+                    y = highlight.y,
+                    xPx = highlight.xPx,
+                    yPx = highlight.yPx,
+                    dataSetIndex = highlight.dataSetIndex,
+                    stackIndex = -1,
+                    axis = highlight.axis
                 )
             }
         }

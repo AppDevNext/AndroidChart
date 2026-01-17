@@ -95,15 +95,19 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
             return null
         } else {
             highlighter?.let {
-                val h = it.getHighlight(x, y)
-                if (h == null || !isHighlightFullBar)
-                    return h
+                val highlight = it.getHighlight(x, y)
+                if (highlight == null || !isHighlightFullBar)
+                    return highlight
 
                 // For isHighlightFullBarEnabled, remove stackIndex
                 return Highlight(
-                    h.x, h.y,
-                    h.xPx, h.yPx,
-                    h.dataSetIndex, -1, h.axis
+                    x = highlight.x,
+                    y = highlight.y,
+                    xPx = highlight.xPx,
+                    yPx = highlight.yPx,
+                    dataSetIndex = highlight.dataSetIndex,
+                    stackIndex = -1,
+                    axis = highlight.axis
                 )
             }
         }

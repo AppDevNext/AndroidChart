@@ -49,13 +49,13 @@ open class BarHighlighter(barDataProvider: BarDataProvider) : ChartHighlighter<B
                     val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(high.x, ranges[stackIndex].to)
 
                     val stackedHigh = Highlight(
-                        entry.x,
-                        entry.y,
-                        pixels.x.toFloat(),
-                        pixels.y.toFloat(),
-                        high.dataSetIndex,
-                        stackIndex,
-                        high.axis
+                        x = entry.x,
+                        y = entry.y,
+                        xPx = pixels.x.toFloat(),
+                        yPx = pixels.y.toFloat(),
+                        dataSetIndex = high.dataSetIndex,
+                        stackIndex = stackIndex,
+                        axis = high.axis
                     )
 
                     PointD.recycleInstance(pixels)

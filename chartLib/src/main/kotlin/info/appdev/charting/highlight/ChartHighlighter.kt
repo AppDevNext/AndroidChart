@@ -114,7 +114,12 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
      * An array of `Highlight` objects corresponding to the selected xValue and dataSetIndex.
      */
     @Suppress("SameParameterValue")
-    protected open fun buildHighlights(set: IDataSet<*>, dataSetIndex: Int, xVal: Float, rounding: DataSet.Rounding?): MutableList<Highlight> {
+    protected open fun buildHighlights(
+        set: IDataSet<*>,
+        dataSetIndex: Int,
+        xVal: Float,
+        rounding: DataSet.Rounding?
+    ): MutableList<Highlight> {
         val highlights = ArrayList<Highlight>()
 
         var entries = set.getEntriesForXValue(xVal)
@@ -135,9 +140,12 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
 
                 highlights.add(
                     Highlight(
-                        e.x, e.y,
-                        pixels.x.toFloat(), pixels.y.toFloat(),
-                        dataSetIndex, set.axisDependency
+                        x = e.x,
+                        y = e.y,
+                        xPx = pixels.x.toFloat(),
+                        yPx = pixels.y.toFloat(),
+                        dataSetIndex = dataSetIndex,
+                        axis = set.axisDependency
                     )
                 )
             }

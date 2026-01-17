@@ -35,7 +35,7 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
      * runtime. Do not over-use in performance critical situations.
      */
     protected fun getHighlightsAtIndex(index: Int): MutableList<Highlight> {
-        mHighlightBuffer.clear()
+        highlightBuffer.clear()
 
         val phaseX = chartPieRadar.animator.phaseX
         val phaseY = chartPieRadar.animator.phaseY
@@ -56,9 +56,9 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
                     sliceAngle * index * phaseX + chartPieRadar.rotationAngle, pOut
                 )
 
-                mHighlightBuffer.add(Highlight(index.toFloat(), entry.y, pOut.x, pOut.y, i, dataSet.axisDependency))
+                highlightBuffer.add(Highlight(index.toFloat(), entry.y, pOut.x, pOut.y, i, dataSet.axisDependency))
             }
         }
-        return mHighlightBuffer
+        return highlightBuffer
     }
 }
