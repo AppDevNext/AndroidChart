@@ -108,12 +108,12 @@ class Highlight : Serializable {
      * selected
      */
     constructor(x: Float, y: Float, xPx: Float, yPx: Float, dataSetIndex: Int, stackIndex: Int, axis: AxisDependency?) : this(
-        x,
-        y,
-        xPx,
-        yPx,
-        dataSetIndex,
-        axis
+        x = x,
+        y = y,
+        xPx = xPx,
+        yPx = yPx,
+        dataSetIndex = dataSetIndex,
+        axis = axis
     ) {
         this.stackIndex = stackIndex
     }
@@ -144,6 +144,6 @@ class Highlight : Serializable {
     }
 
     override fun toString(): String {
-        return "Highlight, x:$x y:$y dataSetIndex:$dataSetIndex stackIndex (only stacked bar entry): $stackIndex"
+        return "Highlight, x:$x y:$y dataSetIndex:$dataSetIndex stackIndex:$stackIndex dataIndex:$dataIndex (only stacked bar entry)"
     }
 }

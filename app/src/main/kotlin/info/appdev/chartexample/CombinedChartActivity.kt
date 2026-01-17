@@ -48,6 +48,7 @@ class CombinedChartActivity : DemoBase() {
         chart!!.setDrawGridBackground(false)
         chart!!.setDrawBarShadow(false)
         chart!!.isHighlightFullBarEnabled = false
+        chart!!.isLogEnabled = true
 
         // draw bars behind lines
         chart!!.setDrawOrder(
