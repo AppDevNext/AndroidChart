@@ -67,8 +67,8 @@ class StartTest {
         var optionMenu = ""
         // iterate samples - only items with classes (not section headers)
         MainActivity.menuItems.forEachIndexed { index, contentItem ->
-            contentItem.clazz?.let {
-                Timber.d("Intended #${index} ${it.simpleName}: '${contentItem.name}'")
+            contentItem.clazz?.let { contentClass ->
+                Timber.d("Intended #${index} ${contentClass.simpleName}: '${contentItem.name}'")
 
                 try {
                     // Use description to uniquely identify items since names can be duplicated
@@ -100,17 +100,17 @@ class StartTest {
                     composeTestRule.waitForIdle()
                     Thread.sleep(300) // Increased delay for activity transition
 
-                    Intents.intended(hasComponent(it.name))
+                    Intents.intended(hasComponent(contentClass.name))
                     onView(ViewMatchers.isRoot())
                         .perform(captureToBitmap { bitmap: Bitmap ->
                             bitmap.writeToTestStorage(
-                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-1SampleClick"
+                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-1SampleClick"
                                     .replace(" ", "")
                             )
                         })
 
                     // Test option menus based on activity type
-                    if (DemoBase::class.java.isAssignableFrom(it)) {
+                    if (DemoBase::class.java.isAssignableFrom(contentClass)) {
                         // Test traditional ActionBar menu for DemoBase activities
                         optionMenu = ""
                         optionMenus.filter { plain -> plain.isNotEmpty() && Character.isDigit(plain.first()) }.forEach { filteredTitle ->
@@ -119,13 +119,13 @@ class StartTest {
                             openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
                             Timber.d("screenshot optionMenu=$optionMenu")
                             screenshotOfOptionMenu(
-                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}",
+                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}",
                                 filteredTitle
                             )
                         }
-                    } else if (DemoBaseCompose::class.java.isAssignableFrom(it)) {
+                    } else if (DemoBaseCompose::class.java.isAssignableFrom(contentClass)) {
                         // Test Compose dropdown menu for DemoBaseCompose activities
-                        Timber.d("Testing Compose menu for: ${it.simpleName}")
+                        Timber.d("Testing Compose menu for: ${contentClass.simpleName}")
                         optionMenu = ""
 
                         try {
@@ -165,7 +165,7 @@ class StartTest {
                                     onView(ViewMatchers.isRoot())
                                         .perform(captureToBitmap { bitmap: Bitmap ->
                                             bitmap.writeToTestStorage(
-                                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-${contentItem.name}-${menuTitle}"
+                                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-${menuTitle}"
                                                     .replace(" ", "")
                                             )
                                         })
@@ -203,7 +203,7 @@ class StartTest {
                             Timber.e("Error testing Compose menu: ${e.message}", e)
                         }
                     } else {
-                        Timber.d("Unknown activity type: ${it.simpleName}")
+                        Timber.d("Unknown activity type: ${contentClass.simpleName}")
                     }
 
                     //Thread.sleep(100)
@@ -213,11 +213,11 @@ class StartTest {
                     composeTestRule.waitForIdle()
                     Thread.sleep(200) // Small delay for back navigation
                 } catch (e: Exception) {
-                    Timber.e("#$index/'${it.simpleName}': '$optionMenu' ${e.message}", e)
+                    Timber.e("#$index/'${contentClass.simpleName}': '$optionMenu' ${e.message}", e)
                     onView(ViewMatchers.isRoot())
                         .perform(captureToBitmap { bitmap: Bitmap ->
                             bitmap.writeToTestStorage(
-                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${it.simpleName}-Error"
+                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-Error"
                                     .replace(" ", "")
                             )
                         })
