@@ -32,10 +32,10 @@ class GradientActivity : DemoBase() {
         Utils.init(this)
 
         // Minimal chart setup
-        binding.chart.description.isEnabled = false
-        binding.chart.legend.isEnabled = false
-        binding.chart.axisRight.isEnabled = false
-        binding.chart.setDrawGridBackground(false)
+        binding.chart1.description.isEnabled = false
+        binding.chart1.legend.isEnabled = false
+        binding.chart1.axisRight.isEnabled = false
+        binding.chart1.setDrawGridBackground(false)
 
         // -----------------------------
         // Linear function
@@ -64,13 +64,13 @@ class GradientActivity : DemoBase() {
                 override fun getFillLinePosition(
                     dataSet: ILineDataSet?,
                     dataProvider: LineDataProvider
-                ): Float = binding.chart.axisLeft.axisMinimum
+                ): Float = binding.chart1.axisLeft.axisMinimum
             }
         }
 
-        binding.chart.axisLeft.axisMinimum = 0f
-        binding.chart.data = LineData(dataSet)
-        binding.chart.invalidate()
+        binding.chart1.axisLeft.axisMinimum = 0f
+        binding.chart1.data = LineData(dataSet)
+        binding.chart1.invalidate()
     }
 
     override fun saveToGallery() = Unit
