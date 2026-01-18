@@ -26,7 +26,6 @@ import info.appdev.charting.data.ChartData
 import info.appdev.charting.data.Entry
 import info.appdev.charting.formatter.DefaultValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
-import info.appdev.charting.highlight.ChartHighlighter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.highlight.IHighlighter
 import info.appdev.charting.interfaces.dataprovider.base.IBaseProvider
@@ -152,7 +151,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     protected var dataRenderer: DataRenderer? = null
 
     var highlighter: IHighlighter? = null
-        protected set
 
     /**
      * Returns the ViewPortHandler of the chart that is responsible for the
@@ -1046,10 +1044,6 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     /**
      * Returns a recyclable PointF instance.
      */
-    fun setHighlighter(highlighter: ChartHighlighter<*>?) {
-        this.highlighter = highlighter
-    }
-
     override val centerOfView: PointF
         get() = this.center
 

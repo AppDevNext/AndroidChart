@@ -187,7 +187,8 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
         xAxisRenderer = XAxisRenderer(viewPortHandler, mXAxis, mLeftAxisTransformer)
 
-        setHighlighter(ChartHighlighter(this))
+        if (highlighter == null) // otherwise it overwrites highlighter from successors
+            highlighter = ChartHighlighter(this)
 
         chartTouchListener = BarLineChartTouchListener(this, viewPortHandler.matrixTouch, 3f)
 

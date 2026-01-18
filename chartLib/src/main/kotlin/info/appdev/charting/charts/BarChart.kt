@@ -59,7 +59,7 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
 
         dataRenderer = BarChartRenderer(this, mAnimator, viewPortHandler, mDrawRoundedBars, mRoundedBarRadius)
 
-        setHighlighter(BarHighlighter(this))
+        highlighter = BarHighlighter(this)
 
         xAxis.spaceMin = 0.5f
         xAxis.spaceMax = 0.5f
