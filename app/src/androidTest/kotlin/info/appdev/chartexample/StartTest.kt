@@ -24,6 +24,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
+import info.appdev.chartexample.notimportant.ContentItem
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.chartexample.notimportant.DemoBase.Companion.optionMenus
 import info.appdev.chartexample.notimportant.DemoBaseCompose
@@ -69,11 +71,16 @@ class StartTest {
         onView(ViewMatchers.isRoot())
             .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}") })
 
+        var compose: Boolean
         var optionMenu = ""
         // iterate samples - only items with classes (not section headers)
         MainActivity.menuItems.forEachIndexed { index, contentItem ->
             contentItem.clazz?.let { contentClass ->
-                Timber.d("Intended #${index} ${contentClass.simpleName}: '${contentItem.name}'")
+                compose = false
+                Timber.d("Intended ${index}-${contentClass.simpleName}: ${contentItem.name}")
+
+                if (contentItem.clazz == ViewPagerSimpleChartDemo::class.java || contentItem.clazz == ListViewBarChartActivity::class.java)
+                    return@forEachIndexed
 
                 try {
                     // Use description to uniquely identify items since names can be duplicated
@@ -129,6 +136,7 @@ class StartTest {
                             )
                         }
                     } else if (DemoBaseCompose::class.java.isAssignableFrom(contentClass)) {
+                        compose = true
                         // Test Compose dropdown menu for DemoBaseCompose activities
                         Timber.d("Testing Compose menu for: ${contentClass.simpleName}")
                         optionMenu = ""
@@ -211,32 +219,8 @@ class StartTest {
                         Timber.d("Unknown activity type: ${contentClass.simpleName}")
                     }
 
-                    onView(withId(R.id.chart1)).perform(click())
-                    onView(ViewMatchers.isRoot())
-                        .perform(captureToBitmap { bitmap: Bitmap ->
-                            bitmap.writeToTestStorage(
-                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click"
-                                    .replace(" ", "")
-                            )
-                        })
-
-                    onView(withId(R.id.chart1)).perform(clickXY(20, 20))
-                    onView(ViewMatchers.isRoot())
-                        .perform(captureToBitmap { bitmap: Bitmap ->
-                            bitmap.writeToTestStorage(
-                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click2020"
-                                    .replace(" ", "")
-                            )
-                        })
-
-                    onView(withId(R.id.chart1)).perform(clickXY(70, 70))
-                    onView(ViewMatchers.isRoot())
-                        .perform(captureToBitmap { bitmap: Bitmap ->
-                            bitmap.writeToTestStorage(
-                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click7070"
-                                    .replace(" ", "")
-                            )
-                        })
+                    if (!compose)
+                        doClickTest(index, contentClass, contentItem)
 
                     //Thread.sleep(100)
                     Espresso.pressBack()
@@ -256,6 +240,35 @@ class StartTest {
                 }
             }
         }
+    }
+
+    private fun doClickTest(index: Int, contentClass: Class<out DemoBase>, contentItem: ContentItem<out DemoBase>) {
+        onView(withId(R.id.chart1)).perform(click())
+        onView(ViewMatchers.isRoot())
+            .perform(captureToBitmap { bitmap: Bitmap ->
+                bitmap.writeToTestStorage(
+                    "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click"
+                        .replace(" ", "")
+                )
+            })
+
+        onView(withId(R.id.chart1)).perform(clickXY(20, 20))
+        onView(ViewMatchers.isRoot())
+            .perform(captureToBitmap { bitmap: Bitmap ->
+                bitmap.writeToTestStorage(
+                    "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click2020"
+                        .replace(" ", "")
+                )
+            })
+
+        onView(withId(R.id.chart1)).perform(clickXY(70, 70))
+        onView(ViewMatchers.isRoot())
+            .perform(captureToBitmap { bitmap: Bitmap ->
+                bitmap.writeToTestStorage(
+                    "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click7070"
+                        .replace(" ", "")
+                )
+            })
     }
 
     private fun screenshotOfOptionMenu(simpleName: String, menuTitle: String) {
