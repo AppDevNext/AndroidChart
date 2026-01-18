@@ -43,6 +43,7 @@ class ScrollViewActivity : DemoBase() {
         binding.chart1.setFitBars(true)
     }
 
+    @Suppress("SameParameterValue")
     private fun setData(count: Int) {
         val sampleValues = getValues(count)
         val values = ArrayList<BarEntry>()
@@ -80,6 +81,5 @@ class ScrollViewActivity : DemoBase() {
         return true
     }
 
-    public override fun saveToGallery() { /* Intentionally left empty */
-    }
+    public override fun saveToGallery() = Unit /* Intentionally left empty */
 }
