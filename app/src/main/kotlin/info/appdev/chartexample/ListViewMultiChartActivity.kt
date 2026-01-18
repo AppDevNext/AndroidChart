@@ -48,7 +48,7 @@ class ListViewMultiChartActivity : DemoBase() {
                 list.add(LineChartItem(generateDataLine(i + 1), applicationContext))
             } else if (i % 3 == 1) {
                 list.add(BarChartItem(generateDataBar(i + 1), applicationContext))
-            } else if (i % 3 == 2) {
+            } else {
                 list.add(PieChartItem(generateDataPie(), applicationContext))
             }
         }
@@ -58,7 +58,7 @@ class ListViewMultiChartActivity : DemoBase() {
     }
 
     /** adapter that supports 3 different item types  */
-    private class ChartDataAdapter(context: Context, objects: MutableList<ChartItem?>) : ArrayAdapter<ChartItem>(context, 0, objects) {
+    private class ChartDataAdapter(context: Context, chartItems: MutableList<ChartItem?>) : ArrayAdapter<ChartItem>(context, 0, chartItems) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             return getItem(position)!!.getView(position, convertView, context)!!
         }
@@ -66,7 +66,7 @@ class ListViewMultiChartActivity : DemoBase() {
         override fun getItemViewType(position: Int): Int {
             // return the views type
             val ci = getItem(position)
-            return if (ci != null) ci.itemType else 0
+            return ci?.itemType ?: 0
         }
 
         override fun getViewTypeCount(): Int {
@@ -97,7 +97,7 @@ class ListViewMultiChartActivity : DemoBase() {
         val values2 = ArrayList<Entry?>()
 
         for (i in 0..<count) {
-            values2.add(Entry(i.toFloat(), values1.get(i)!!.y - 30))
+            values2.add(Entry(i.toFloat(), values1[i]!!.y - 30))
         }
 
         val d2 = LineDataSet(values2, "New DataSet $cnt, (2)")
@@ -129,7 +129,7 @@ class ListViewMultiChartActivity : DemoBase() {
             entries.add(BarEntry(i.toFloat(), ((sampleValues[i]!!.toFloat() * 70).toInt() + 30).toFloat()))
         }
 
-        val d = BarDataSet(entries, "New DataSet " + cnt)
+        val d = BarDataSet(entries, "New DataSet $cnt")
         d.setColors(*ColorTemplate.VORDIPLOM_COLORS)
         d.highLightAlpha = 255
 
