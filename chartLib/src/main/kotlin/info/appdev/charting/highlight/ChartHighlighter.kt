@@ -86,7 +86,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
      * @param x    touch position
      * @param y    touch position
      */
-    protected open fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight>? {
+    override fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight>? {
         highlightBuffer.clear()
 
         data?.let { myData ->

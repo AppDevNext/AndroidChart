@@ -372,7 +372,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
                 get() = this@CombinedChart.candleData
         }
 
-        setHighlighter(CombinedHighlighter(this, barDataProvider))
+        highlighter = CombinedHighlighter(this, barDataProvider)
 
         // Old default behaviour
         this@CombinedChart.isHighlightFullBar = true
