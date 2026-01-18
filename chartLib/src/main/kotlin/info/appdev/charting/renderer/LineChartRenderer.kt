@@ -7,10 +7,11 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import info.appdev.charting.animation.ChartAnimator
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
+import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.utils.ColorTemplate
@@ -85,7 +86,7 @@ open class LineChartRenderer(
         canvas.drawBitmap(drawBitmapLocal, 0f, 0f, null)
     }
 
-    protected fun drawDataSet(canvas: Canvas, dataSet: ILineDataSet) {
+    protected fun drawDataSet(canvas: Canvas, dataSet: ILineDataSet<out BaseEntry<Float>, Float>) {
         if (dataSet.entryCount < 1)
             return
 
@@ -102,7 +103,7 @@ open class LineChartRenderer(
         paintRender.pathEffect = null
     }
 
-    protected fun drawHorizontalBezier(dataSet: ILineDataSet) {
+    protected fun drawHorizontalBezier(dataSet: ILineDataSet<out BaseEntry<Float>, Float>) {
         val phaseY = animator.phaseY
 
         val trans = dataProvider.getTransformer(dataSet.axisDependency)
@@ -152,7 +153,7 @@ open class LineChartRenderer(
         paintRender.pathEffect = null
     }
 
-    protected fun drawCubicBezier(dataSet: ILineDataSet) {
+    protected fun drawCubicBezier(dataSet: ILineDataSet<out BaseEntry<Float>, Float>) {
         val phaseY = animator.phaseY
 
         val trans = dataProvider.getTransformer(dataSet.axisDependency)
@@ -175,7 +176,7 @@ open class LineChartRenderer(
             // And in the `lastIndex`, add +1
             val firstIndex = xBounds.min + 1
 
-            var prevPrev: Entry?
+            var prevPrev: BaseEntry<Float>?
             var prev = dataSet.getEntryForIndex(max((firstIndex - 2).toDouble(), 0.0).toInt())
             var cur = dataSet.getEntryForIndex(max((firstIndex - 1).toDouble(), 0.0).toInt())
             var next = cur
@@ -227,7 +228,7 @@ open class LineChartRenderer(
         paintRender.pathEffect = null
     }
 
-    protected fun drawCubicFill(canvas: Canvas, dataSet: ILineDataSet, spline: Path, trans: Transformer, bounds: XBounds) {
+    protected fun drawCubicFill(canvas: Canvas, dataSet: ILineDataSet<out BaseEntry<Float>, Float>, spline: Path, trans: Transformer, bounds: XBounds) {
         val fillMin = dataSet.fillFormatter!!.getFillLinePosition(dataSet, dataProvider)
 
         dataSet.getEntryForIndex(bounds.min + bounds.range)?.let {
@@ -251,7 +252,7 @@ open class LineChartRenderer(
     /**
      * Draws a normal line.
      */
-    protected fun drawLinear(c: Canvas, dataSet: ILineDataSet) {
+    protected fun drawLinear(c: Canvas, dataSet: ILineDataSet<out BaseEntry<Float>, Float>) {
         val entryCount = dataSet.entryCount
 
         val pointsPerEntryPair = if (dataSet.isDrawSteppedEnabled) 4 else 2
@@ -286,7 +287,7 @@ open class LineChartRenderer(
             val max = xBounds.min + xBounds.range
 
             for (j in xBounds.min..<max) {
-                var entry: Entry = dataSet.getEntryForIndex(j) ?: continue
+                var entry: BaseEntry<Float> = dataSet.getEntryForIndex(j) ?: continue
 
                 lineBuffer[0] = entry.x
                 lineBuffer[1] = entry.y * phaseY
@@ -346,8 +347,8 @@ open class LineChartRenderer(
                     (max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 4).toInt()
                 )
 
-            var e1: Entry?
-            var e2: Entry?
+            var e1: BaseEntry<Float>?
+            var e2: BaseEntry<Float>?
 
             e1 = dataSet.getEntryForIndex(xBounds.min)
 
@@ -393,7 +394,7 @@ open class LineChartRenderer(
     /**
      * Draws a filled linear path on the canvas.
      */
-    protected fun drawLinearFill(canvas: Canvas, dataSet: ILineDataSet, trans: Transformer, bounds: XBounds) {
+    protected fun drawLinearFill(canvas: Canvas, dataSet: ILineDataSet<out BaseEntry<Float>, Float>, trans: Transformer, bounds: XBounds) {
         val filled = mGenerateFilledPathBuffer
 
         val startingIndex = bounds.min
@@ -435,7 +436,7 @@ open class LineChartRenderer(
      * @param endIndex   The index from which to stop reading the dataset
      * @param outputPath The path object that will be assigned the chart data.
      */
-    private fun generateFilledPath(dataSet: ILineDataSet, startIndex: Int, endIndex: Int, outputPath: Path) {
+    private fun generateFilledPath(dataSet: ILineDataSet<out BaseEntry<Float>, Float>, startIndex: Int, endIndex: Int, outputPath: Path) {
         val fillMin = dataSet.fillFormatter!!.getFillLinePosition(dataSet, dataProvider)
         val phaseY = animator.phaseY
         val isDrawSteppedEnabled = dataSet.lineMode == LineDataSet.Mode.STEPPED
@@ -448,7 +449,7 @@ open class LineChartRenderer(
             outputPath.lineTo(entry.x, entry.y * phaseY)
 
             // create a new path
-            var currentEntry: Entry? = null
+            var currentEntry: BaseEntry<Float>? = null
             var previousEntry = entry
             for (x in startIndex + 1..endIndex) {
                 currentEntry = dataSet.getEntryForIndex(x)
@@ -558,7 +559,7 @@ open class LineChartRenderer(
     /**
      * cache for the circle bitmaps of all datasets
      */
-    private val mImageCaches = HashMap<IDataSet<*>, DataSetImageCache>()
+    private val mImageCaches = HashMap<IDataSet<*, *>, DataSetImageCache>()
 
     /**
      * buffer for drawing the circles
@@ -650,7 +651,8 @@ open class LineChartRenderer(
 
             set.getEntryForXValue(high.x, high.y)?.let { entry ->
 
-                if (!isInBoundsX(entry, set))
+                @Suppress("UNCHECKED_CAST")
+                if (!isInBoundsX(entry, set as IBarLineScatterCandleBubbleDataSet<BaseEntry<Float>, Float>))
                     continue
 
                 val pix = dataProvider.getTransformer(set.axisDependency)!!.getPixelForValues(
@@ -686,7 +688,7 @@ open class LineChartRenderer(
         /**
          * Sets up the cache, returns true if a change of cache was required.
          */
-        fun init(set: ILineDataSet): Boolean {
+        fun init(set: ILineDataSet<out BaseEntry<Float>, Float>): Boolean {
             val size = set.circleColorCount
             var changeRequired = false
 
@@ -708,7 +710,7 @@ open class LineChartRenderer(
          * @param drawCircleHole
          * @param drawTransparentCircleHole
          */
-        fun fill(set: ILineDataSet, drawCircleHole: Boolean, drawTransparentCircleHole: Boolean) {
+        fun fill(set: ILineDataSet<out BaseEntry<Float>, Float>, drawCircleHole: Boolean, drawTransparentCircleHole: Boolean) {
             val colorCount = set.circleColorCount
             val circleRadius = set.circleRadius
             val circleHoleRadius = set.circleHoleRadius

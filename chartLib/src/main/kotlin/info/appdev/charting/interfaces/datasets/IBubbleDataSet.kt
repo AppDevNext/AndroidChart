@@ -2,7 +2,7 @@ package info.appdev.charting.interfaces.datasets
 
 import info.appdev.charting.data.BubbleEntry
 
-interface IBubbleDataSet : IBarLineScatterCandleBubbleDataSet<BubbleEntry> {
+interface IBubbleDataSet : IBarLineScatterCandleBubbleDataSet<BubbleEntry, Float> {
     val maxSize: Float
 
     val isNormalizeSizeEnabled: Boolean

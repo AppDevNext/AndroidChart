@@ -1,5 +1,6 @@
 package info.appdev.charting.formatter
 
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 
@@ -8,7 +9,7 @@ import info.appdev.charting.interfaces.datasets.ILineDataSet
  */
 open class DefaultFillFormatter : IFillFormatter {
 
-    override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+    override fun getFillLinePosition(dataSet: ILineDataSet<out BaseEntry<Float>, Float>?, dataProvider: LineDataProvider): Float {
         val fillMin: Float
         val chartMaxY = dataProvider.yChartMax
         val chartMinY = dataProvider.yChartMin
