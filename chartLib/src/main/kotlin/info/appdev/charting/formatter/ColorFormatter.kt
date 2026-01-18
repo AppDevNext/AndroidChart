@@ -14,5 +14,5 @@ interface ColorFormatter {
      * @param entry the entry to color
      * @param set   the DataSet the entry belongs to
      */
-    fun getColor(index: Int, entry: Entry?, set: IDataSet<*>?): Int
+    fun getColor(index: Int, entry: Entry?, set: IDataSet<*, *>?): Int
 }

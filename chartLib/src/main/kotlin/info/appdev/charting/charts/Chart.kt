@@ -22,6 +22,7 @@ import info.appdev.charting.components.Description
 import info.appdev.charting.components.IMarker
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.ChartData
 import info.appdev.charting.data.Entry
 import info.appdev.charting.formatter.DefaultValueFormatter
@@ -49,7 +50,7 @@ import kotlin.math.abs
 import kotlin.math.max
 
 @Suppress("unused")
-abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseProvider<T> {
+abstract class Chart<T : ChartData<out IDataSet<out BaseEntry<Float>, Float>>> : ViewGroup, IBaseProvider<T> {
     /**
      * Returns true if log-output is enabled for the chart, fals if not.
      */
@@ -527,7 +528,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
      */
     fun highlightValue(high: Highlight?, callListener: Boolean) {
         var high = high
-        var entry: Entry? = null
+        var entry: BaseEntry<Float>? = null
 
         if (high == null) {
             this.highlighted = null
@@ -554,7 +555,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
                 mSelectionListener!!.onNothingSelected()
             } else {
                 // notify the listener
-                mSelectionListener!!.onValueSelected(entry!!, high!!)
+                mSelectionListener!!.onValueSelected(entry!! as Entry, high!!)
             }
         }
 
@@ -613,7 +614,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
 
             // When changing data sets and calling animation functions, sometimes an erroneous highlight is generated
             // on the dataset that is removed. Null check to prevent crash
-            val dataset: IDataSet<*>? = mData!!.getDataSetByIndex(highlight.dataSetIndex)
+            val dataset: IDataSet<*, *>? = mData!!.getDataSetByIndex(highlight.dataSetIndex)
             if (dataset == null || !dataset.isVisible) {
                 continue
             }
@@ -624,7 +625,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
 
             // Cast to non-star-projected type to allow calling getEntryIndex
             @Suppress("UNCHECKED_CAST")
-            val set = dataset as IDataSet<Entry>
+            val set = dataset as IDataSet<BaseEntry<Float>, Float>
             val entryIndex = set.getEntryIndex(e)
 
             if (entryIndex > set.entryCount * mAnimator.phaseX) {
@@ -642,7 +643,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
             if (!marker.isEmpty()) {
                 val markerIndex = i % marker.size
                 val markerItem = marker[markerIndex]
-                markerItem.refreshContent(e, highlight)
+                markerItem.refreshContent(e as Entry, highlight)
 
                 // draw the marker
                 markerItem.draw(canvas, pos[0], pos[1])

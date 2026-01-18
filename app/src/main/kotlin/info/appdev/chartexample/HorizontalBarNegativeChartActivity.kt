@@ -20,7 +20,7 @@ import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -229,7 +229,7 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
     private val mOnValueSelectedRectF = RectF()
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         val bounds = mOnValueSelectedRectF
         binding.chart1.getBarBounds(entry as BarEntry, bounds)
 

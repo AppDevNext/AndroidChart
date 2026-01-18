@@ -3,6 +3,7 @@ package info.appdev.charting.utils
 import android.graphics.Matrix
 import android.graphics.Path
 import android.graphics.RectF
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 import info.appdev.charting.interfaces.datasets.ICandleDataSet
@@ -142,7 +143,7 @@ open class Transformer(protected var viewPortHandler: ViewPortHandler) {
      * y values transformed with all matrices for the LINECHART.
      */
     fun generateTransformedValuesLine(
-        data: ILineDataSet,
+        data: ILineDataSet<out BaseEntry<Float>, Float>,
         phaseX: Float, phaseY: Float,
         min: Int, max: Int
     ): FloatArray {

@@ -22,7 +22,7 @@ import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -219,7 +219,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
     override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         val barEntry = entry as BarEntry
 
         if (barEntry.yVals != null)

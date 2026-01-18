@@ -9,8 +9,8 @@ import info.appdev.charting.animation.Easing.EasingFunction
 import info.appdev.charting.components.Legend.LegendHorizontalAlignment
 import info.appdev.charting.components.Legend.LegendOrientation
 import info.appdev.charting.components.Legend.LegendVerticalAlignment
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.ChartData
-import info.appdev.charting.data.Entry
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.listener.PieRadarChartTouchListener
 import info.appdev.charting.utils.PointF
@@ -30,7 +30,7 @@ import kotlin.math.sqrt
 /**
  * Baseclass of PieChart and RadarChart.
  */
-abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
+abstract class PieRadarChartBase<T : ChartData<out IDataSet<out BaseEntry<Float>, Float>>>
     : Chart<T> {
     /**
      * holds the normalized version of the current rotation angle of the chart

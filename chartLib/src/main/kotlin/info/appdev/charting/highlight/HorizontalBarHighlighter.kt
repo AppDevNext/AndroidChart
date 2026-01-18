@@ -31,7 +31,7 @@ class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(d
         return null
     }
 
-    override fun buildHighlights(set: IDataSet<*>, dataSetIndex: Int, xVal: Float, rounding: DataSet.Rounding?): MutableList<Highlight> {
+    override fun buildHighlights(set: IDataSet<*, *>, dataSetIndex: Int, xVal: Float, rounding: DataSet.Rounding?): MutableList<Highlight> {
         val highlights = ArrayList<Highlight>()
 
         var entries = set.getEntriesForXValue(xVal)
@@ -39,7 +39,7 @@ class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(d
             // Try to find closest x-value and take all entries for that x-value
             val closestEntry = set.getEntryForXValue(xVal, Float.NaN, rounding)
             closestEntry?.let { closestE ->
-                entries = set.getEntriesForXValue(closestE.x)
+                entries = set.getEntriesForXValue(closestE.x.toFloat())
             }
         }
 
@@ -48,11 +48,11 @@ class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(d
 
         if (entries != null)
             for (entry in entries) {
-                val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(entry.y, entry.x)
+                val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(entry.y.toFloat(), entry.x.toFloat())
 
                 highlights.add(
                     Highlight(
-                        entry.x, entry.y,
+                        entry.x.toFloat(), entry.y.toFloat(),
                         pixels.x.toFloat(), pixels.y.toFloat(),
                         dataSetIndex, set.axisDependency
                     )

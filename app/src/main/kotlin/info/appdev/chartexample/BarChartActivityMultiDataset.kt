@@ -20,7 +20,7 @@ import info.appdev.charting.components.Legend
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.formatter.LargeValueFormatter
 import info.appdev.charting.highlight.Highlight
@@ -247,7 +247,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
 
     override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         Timber.i("Selected: $entry, dataSet: ${highlight.dataSetIndex}")
     }
 

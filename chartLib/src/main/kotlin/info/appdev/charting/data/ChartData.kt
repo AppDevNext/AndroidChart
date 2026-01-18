@@ -12,7 +12,7 @@ import java.io.Serializable
  * Class that holds all relevant data that represents the chart. That involves at least one (or more) DataSets, and an array of x-values.
  */
 @Suppress("unused")
-abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
+abstract class ChartData<T> : Serializable where T : IDataSet<out BaseEntry<Float>, Float> {
     /**
      * maximum y-value in the value array across all axes
      */
@@ -243,7 +243,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Get the Entry for a corresponding highlight object
      * @return the entry that is highlighted
      */
-    open fun getEntryForHighlight(highlight: Highlight): Entry? {
+    open fun getEntryForHighlight(highlight: Highlight): BaseEntry<Float>? {
         return if (highlight.dataSetIndex >= dataSets.size) {
             null
         } else {
@@ -331,7 +331,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
             val set: T = dataSets[dataSetIndex]
             // add the entry to the dataset
             // We need to cast here because T is covariant (out) but addEntry needs to consume T
-            val dataSet = set as IDataSet<Entry>
+            val dataSet = set as IDataSet<Entry, Float>
             if (!dataSet.addEntry(entry)) {
                 return
             }
@@ -416,7 +416,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Removes the given Entry object from the DataSet at the specified index.
      */
     @Suppress("UNCHECKED_CAST")
-    open fun removeEntry(entry: Entry, dataSetIndex: Int): Boolean {
+    open fun removeEntry(entry: BaseEntry<Float>, dataSetIndex: Int): Boolean {
         // entry null, out of bounds
         if (dataSetIndex >= dataSets.size) {
             return false
@@ -425,7 +425,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         val set: T = dataSets[dataSetIndex]
 
         // remove the entry from the dataset
-        val dataSet = set as IDataSet<Entry>
+        val dataSet = set as IDataSet<BaseEntry<Float>, Float>
         val removed: Boolean = dataSet.removeEntry(entry)
 
         if (removed) {
@@ -445,7 +445,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
             return false
         }
 
-        val dataSet: IDataSet<*> = dataSets[dataSetIndex]
+        val dataSet: IDataSet<*, *> = dataSets[dataSetIndex]
         val entry = dataSet.getEntryForXValue(xValue, Float.NaN) as? Entry ?: return false
 
         return removeEntry(entry, dataSetIndex)
@@ -459,7 +459,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
             val set = dataSets[i]
 
             for (j in 0..<set.entryCount) {
-                if (e.equalTo(set.getEntryForXValue(e.x, e.y))) {
+                if (e.equalTo(set.getEntryForXValue(e.x, e.y) as? Entry)) {
                     return set
                 }
             }

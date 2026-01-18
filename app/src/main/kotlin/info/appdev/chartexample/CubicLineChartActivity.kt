@@ -16,6 +16,7 @@ import info.appdev.chartexample.DataTools.Companion.getMuchValues
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.YAxis
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -91,10 +92,10 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             values.add(Entry(i.toFloat(), `val`))
         }
 
-        val set1: LineDataSet
+        val set1: LineDataSet<Entry, Float>
 
         if (binding.chart1.lineData.dataSetCount > 0) {
-            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
+            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet<Entry, Float>
             set1.entries = values
             binding.chart1.lineData.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
@@ -115,7 +116,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             set1.fillAlpha = 100
             set1.isHorizontalHighlightIndicator = false
             set1.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet<out BaseEntry<Float>, Float>?, dataProvider: LineDataProvider): Float {
                     return binding.chart1.axisLeft.axisMinimum
                 }
             }
@@ -160,7 +161,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleFilled -> {
                 binding.chart1.lineData.dataSets.forEach {
-                    val set = it as LineDataSet
+                    val set = it as LineDataSet<*, *>
                     set.isDrawFilled = !set.isDrawFilled
                 }
                 binding.chart1.invalidate()
@@ -168,7 +169,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleCircles -> {
                 binding.chart1.lineData.dataSets.forEach {
-                    val set = it as LineDataSet
+                    val set = it as LineDataSet<*, *>
                     set.isDrawCircles = !set.isDrawCircles
                 }
                 binding.chart1.invalidate()
@@ -176,7 +177,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleCubic -> {
                 binding.chart1.lineData.dataSets.forEach {
-                    val set = it as LineDataSet
+                    val set = it as LineDataSet<*, *>
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
@@ -187,7 +188,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleStepped -> {
                 binding.chart1.lineData.dataSets.forEach {
-                    val set = it as LineDataSet
+                    val set = it as LineDataSet<*, *>
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED)
                         LineDataSet.Mode.LINEAR
                     else
@@ -198,7 +199,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleHorizontalCubic -> {
                 binding.chart1.lineData.dataSets.forEach {
-                    val set = it as LineDataSet
+                    val set = it as LineDataSet<*, *>
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else

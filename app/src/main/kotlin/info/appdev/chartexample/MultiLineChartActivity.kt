@@ -15,6 +15,7 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.Legend
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -83,7 +84,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         binding.tvXMax.text = binding.seekBarX.progress.toString()
         binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        val dataSets = ArrayList<ILineDataSet>()
+        val dataSets = ArrayList<ILineDataSet<out BaseEntry<Float>, Float>>()
 
         for (datasetNumber in 0..2) {
             val values = ArrayList<Entry>()
@@ -105,9 +106,12 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         }
 
         // make the first DataSet dashed
-        (dataSets[0] as LineDataSet).enableDashedLine(10f, 10f, 0f)
-        (dataSets[0] as LineDataSet).setColors(*ColorTemplate.VORDIPLOM_COLORS)
-        (dataSets[0] as LineDataSet).setCircleColors(*ColorTemplate.VORDIPLOM_COLORS)
+        @Suppress("UNCHECKED_CAST")
+        (dataSets[0] as LineDataSet<Entry, Float>).enableDashedLine(10f, 10f, 0f)
+        @Suppress("UNCHECKED_CAST")
+        (dataSets[0] as LineDataSet<Entry, Float>).setColors(*ColorTemplate.VORDIPLOM_COLORS)
+        @Suppress("UNCHECKED_CAST")
+        (dataSets[0] as LineDataSet<Entry, Float>).setCircleColors(*ColorTemplate.VORDIPLOM_COLORS)
 
         val data = LineData(dataSets)
         binding.chart1.data = data
@@ -264,7 +268,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         Timber.i("dX: $dX, dY: $dY")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         Timber.i("Value: ${entry.y}, xIndex: ${entry.x}, DataSet index: ${highlight.dataSetIndex}")
     }
 

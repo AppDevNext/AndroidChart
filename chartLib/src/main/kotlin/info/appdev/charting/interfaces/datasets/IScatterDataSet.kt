@@ -3,7 +3,7 @@ package info.appdev.charting.interfaces.datasets
 import info.appdev.charting.data.Entry
 import info.appdev.charting.renderer.scatter.IShapeRenderer
 
-interface IScatterDataSet : ILineScatterCandleRadarDataSet<Entry> {
+interface IScatterDataSet : ILineScatterCandleRadarDataSet<Entry, Float> {
     /**
      * the currently set scatter shape size
      */

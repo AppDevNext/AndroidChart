@@ -20,6 +20,7 @@ import info.appdev.charting.animation.Easing
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.LimitLine
 import info.appdev.charting.components.LimitLine.LimitLabelPosition
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -143,7 +144,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                    @Suppress("UNCHECKED_CAST")
+                    val set = it as LineDataSet<Entry, Float>
                     set.isDrawFilled = !set.isDrawFilled
                 }
                 binding.chart1.invalidate()
@@ -151,7 +153,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
             R.id.actionToggleCircles -> {
                 binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                    @Suppress("UNCHECKED_CAST")
+                    val set = it as LineDataSet<Entry, Float>
                     set.isDrawCircles = !set.isDrawCircles
                 }
                 binding.chart1.invalidate()
@@ -159,7 +162,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
             R.id.actionToggleCubic -> {
                 binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                    @Suppress("UNCHECKED_CAST")
+                    val set = it as LineDataSet<Entry, Float>
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.CUBIC_BEZIER
                 }
                 binding.chart1.invalidate()
@@ -167,7 +171,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
             R.id.actionToggleStepped -> {
                 binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                    @Suppress("UNCHECKED_CAST")
+                    val set = it as LineDataSet<Entry, Float>
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED) LineDataSet.Mode.LINEAR else LineDataSet.Mode.STEPPED
                 }
                 binding.chart1.invalidate()
@@ -175,7 +180,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
             R.id.actionToggleHorizontalCubic -> {
                 binding.chart1.data?.dataSets?.forEach {
-                    val set = it as LineDataSet
+                    @Suppress("UNCHECKED_CAST")
+                    val set = it as LineDataSet<Entry, Float>
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER) LineDataSet.Mode.LINEAR else LineDataSet.Mode.HORIZONTAL_BEZIER
                 }
                 binding.chart1.invalidate()
@@ -234,7 +240,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         }
         binding.chart1.data?.let {
             if (it.dataSetCount > 0) {
-                val set1 = it.getDataSetByIndex(0) as LineDataSet
+                @Suppress("UNCHECKED_CAST")
+                val set1 = it.getDataSetByIndex(0) as LineDataSet<Entry, Float>
                 set1.entries = values
                 it.notifyDataChanged()
                 binding.chart1.notifyDataSetChanged()
@@ -269,7 +276,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         } else {
             set11.fillColor = Color.BLACK
         }
-        val dataSets = ArrayList<ILineDataSet>()
+        val dataSets = ArrayList<ILineDataSet<out BaseEntry<Float>, Float>>()
         dataSets.add(set11) // add the datasets
 
         // create a data object with the datasets
@@ -316,7 +323,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         Timber.i("dX: $dX, dY: $dY")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         Timber.i(entry.toString())
         Timber.i("LOWHIGH low: ${binding.chart1.lowestVisibleX}, high: ${binding.chart1.highestVisibleX}")
         Timber.i("MIN MAX xmin: ${binding.chart1.xChartMin}, xmax: ${binding.chart1.xChartMax}, ymin: ${binding.chart1.yChartMin}, ymax: ${binding.chart1.yChartMax}")

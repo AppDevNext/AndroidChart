@@ -9,7 +9,7 @@ import timber.log.Timber
  * Data object that allows the combination of Line-, Bar-, Scatter-, Bubble- and
  * CandleData. Used in the CombinedChart class.
  */
-class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out Entry>>() {
+class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>>() {
     var lineData: LineData? = null
         private set
     var barData: BarData? = null
@@ -145,7 +145,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
             .getEntriesForXValue(highlight.x)
         for (entry in entries!!) if (entry.y == highlight.y ||
             highlight.y.isNaN()
-        ) return entry
+        ) return entry as Entry
 
         return null
     }
@@ -156,7 +156,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
      * @param highlight current highlight
      * @return dataset related to highlight
      */
-    fun getDataSetByHighlight(highlight: Highlight): IBarLineScatterCandleBubbleDataSet<out Entry>? {
+    fun getDataSetByHighlight(highlight: Highlight): IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>? {
         if (highlight.dataIndex >= this.allData.size)
             return null
 
@@ -165,14 +165,14 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
         if (highlight.dataSetIndex >= data.dataSetCount)
             return null
 
-        return data.dataSets[highlight.dataSetIndex] as IBarLineScatterCandleBubbleDataSet<out Entry>?
+        return data.dataSets[highlight.dataSetIndex] as IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>?
     }
 
     fun getDataIndex(data: ChartData<*>?): Int {
         return this.allData.indexOf(data)
     }
 
-    override fun removeDataSet(d: IBarLineScatterCandleBubbleDataSet<out Entry>?): Boolean {
+    override fun removeDataSet(d: IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>?): Boolean {
         val datas = this.allData
 
         var success = false
@@ -195,7 +195,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
     }
 
     @Deprecated("removeEntry(...) not supported for CombinedData")
-    override fun removeEntry(entry: Entry, dataSetIndex: Int): Boolean {
+    override fun removeEntry(entry: BaseEntry<Float>, dataSetIndex: Int): Boolean {
         Timber.e("removeEntry(...) not supported for CombinedData")
         return false
     }

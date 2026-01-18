@@ -1,6 +1,6 @@
 package info.appdev.charting.formatter
 
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.utils.ViewPortHandler
 
 /**
@@ -21,5 +21,5 @@ interface IValueFormatter {
      * @param viewPortHandler provides information about the current chart state (scale, translation, ...)
      * @return the formatted label ready for being drawn
      */
-    fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String?
+    fun getFormattedValue(value: Float, entry: BaseEntry<Float>?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String?
 }

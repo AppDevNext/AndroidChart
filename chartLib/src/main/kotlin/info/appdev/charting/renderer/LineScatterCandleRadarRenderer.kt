@@ -23,7 +23,7 @@ abstract class LineScatterCandleRadarRenderer(
      * @param y y-position of the highlight line intersection
      * @param set the currently drawn dataset
      */
-    protected fun drawHighlightLines(canvas: Canvas, x: Float, y: Float, set: ILineScatterCandleRadarDataSet<*>) {
+    protected fun drawHighlightLines(canvas: Canvas, x: Float, y: Float, set: ILineScatterCandleRadarDataSet<*, *>) {
         // set color and stroke-width
 
         paintHighlight.color = set.highLightColor

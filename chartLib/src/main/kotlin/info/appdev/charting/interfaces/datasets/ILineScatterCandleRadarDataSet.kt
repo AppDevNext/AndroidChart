@@ -3,7 +3,7 @@ package info.appdev.charting.interfaces.datasets
 import android.graphics.DashPathEffect
 import info.appdev.charting.data.BaseEntry
 
-interface ILineScatterCandleRadarDataSet<T : BaseEntry<Float>> : IBarLineScatterCandleBubbleDataSet<T> {
+interface ILineScatterCandleRadarDataSet<T, N> : IBarLineScatterCandleBubbleDataSet<T, N> where T : BaseEntry<N>, N : Number, N : Comparable<N> {
     /**
      * Returns true if vertical highlight indicator lines are enabled (drawn)
      */

@@ -4,10 +4,10 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import info.appdev.charting.data.BarData
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.BubbleData
 import info.appdev.charting.data.CandleData
 import info.appdev.charting.data.CombinedData
-import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.ScatterData
 import info.appdev.charting.highlight.CombinedHighlighter
@@ -488,7 +488,7 @@ open class CombinedChart : BarLineChartBase<CombinedData>, CombinedDataProvider 
                 }
 
                 @Suppress("UNCHECKED_CAST")
-                val set = dataset as IDataSet<Entry>
+                val set = dataset as IDataSet<BaseEntry<Float>, Float>
                 val entryIndex = set.getEntryIndex(entry)
 
                 // make sure entry not null

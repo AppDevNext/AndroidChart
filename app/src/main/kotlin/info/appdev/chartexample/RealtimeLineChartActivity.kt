@@ -15,6 +15,7 @@ import info.appdev.chartexample.databinding.ActivityRealtimeLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.YAxis.AxisDependency
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -112,8 +113,8 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         // AxisDependency.LEFT);
     }
 
-    private fun createSet(): LineDataSet {
-        val set = LineDataSet(label = "Dynamic Data")
+    private fun createSet(): LineDataSet<BaseEntry<Float>, Float> {
+        val set = LineDataSet<BaseEntry<Float>, Float>(label = "Dynamic Data")
         set.axisDependency = AxisDependency.LEFT
         set.color = ColorTemplate.holoBlue
         set.setCircleColor(Color.WHITE)
@@ -194,7 +195,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         saveToGallery(binding.chart1, "RealtimeLineChartActivity")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         Timber.i(entry.toString())
     }
 

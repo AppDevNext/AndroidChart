@@ -1,11 +1,11 @@
 package info.appdev.charting.interfaces.datasets
 
 import android.graphics.DashPathEffect
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IFillFormatter
 
-interface ILineDataSet : ILineRadarDataSet<Entry> {
+interface ILineDataSet<T, N> : ILineRadarDataSet<T, N> where T : BaseEntry<N>, N : Number, N : Comparable<N> {
     /**
      * Returns the drawing mode for this line dataset
      */

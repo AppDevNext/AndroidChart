@@ -20,7 +20,7 @@ import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.LimitLine
 import info.appdev.charting.components.LimitLine.LimitLabelPosition
 import info.appdev.charting.components.LimitRange
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -181,14 +181,14 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             }
 
             R.id.actionToggleCircles -> {
-                binding.chart1.data?.dataSets?.map { it as LineDataSet }?.forEach { set ->
+                binding.chart1.data?.dataSets?.map { it as LineDataSet<*, *> }?.forEach { set ->
                     set.isDrawCircles = !set.isDrawCircles
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                binding.chart1.data?.dataSets?.map { it as LineDataSet }?.forEach { set ->
+                binding.chart1.data?.dataSets?.map { it as LineDataSet<*, *> }?.forEach { set ->
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
@@ -198,7 +198,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             }
 
             R.id.actionToggleStepped -> {
-                binding.chart1.data?.dataSets?.map { it as LineDataSet }?.forEach { set ->
+                binding.chart1.data?.dataSets?.map { it as LineDataSet<*, *> }?.forEach { set ->
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED)
                         LineDataSet.Mode.LINEAR
                     else
@@ -208,7 +208,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                binding.chart1.data?.dataSets?.map { it as LineDataSet }?.forEach { set ->
+                binding.chart1.data?.dataSets?.map { it as LineDataSet<*, *> }?.forEach { set ->
                     set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER)
                         LineDataSet.Mode.LINEAR
                     else
@@ -256,7 +256,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
     override fun onStartTrackingTouch(seekBar: SeekBar) {}
     override fun onStopTrackingTouch(seekBar: SeekBar) {}
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         Timber.i(entry.toString())
         Timber.i("LOW HIGH low:${binding.chart1.lowestVisibleX}, high:${binding.chart1.highestVisibleX}")
         Timber.i("MIN MAX xMin:${binding.chart1.xChartMin}, xMax:${binding.chart1.xChartMax}, yMin:${binding.chart1.yChartMin}, yMax:${binding.chart1.yChartMax}")

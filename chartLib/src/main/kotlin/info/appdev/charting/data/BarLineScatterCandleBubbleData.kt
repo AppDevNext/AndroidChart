@@ -7,8 +7,8 @@ import info.appdev.charting.interfaces.datasets.IDataSet
  * Baseclass for all Line, Bar, Scatter, Candle and Bubble data.
  */
 abstract class BarLineScatterCandleBubbleData<out T> : ChartData<@UnsafeVariance T>
-        where T : IDataSet<out Entry>,
-              T : IBarLineScatterCandleBubbleDataSet<out Entry> {
+        where T : IDataSet<out BaseEntry<Float>, Float>,
+              T : IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float> {
 
     constructor() : super()
 
