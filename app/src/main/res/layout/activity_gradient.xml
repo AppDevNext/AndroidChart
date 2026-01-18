@@ -7,9 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".GradientActivity">
 
-
     <info.appdev.charting.charts.LineChart
-        android:id="@+id/chart"
+        android:id="@+id/chart1"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
