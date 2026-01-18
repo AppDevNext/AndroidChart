@@ -45,7 +45,7 @@ import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -268,7 +268,7 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
 
     private fun setupChart(chart: HorizontalBarChart) {
         chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-            override fun onValueSelected(entry: Entry, highlight: Highlight) {
+            override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
                 val bounds = RectF()
                 chart.getBarBounds(entry as BarEntry, bounds)
 

@@ -5,7 +5,7 @@ import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.Fill
 
-open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScatterCandleBubbleDataSet<BarEntry>(yVals, label), IBarDataSet {
+open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScatterCandleBubbleDataSet<BarEntry, Float>(yVals, label), IBarDataSet {
     /**
      * the maximum number of bars that are stacked upon each other, this value
      * is calculated from the Entries that are added to the DataSet
@@ -50,7 +50,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
         calcEntryCountIncludingStacks(yVals)
     }
 
-    override fun copy(): DataSet<BarEntry>? {
+    override fun copy(): DataSet<BarEntry, Float>? {
         val entries: MutableList<BarEntry> = mutableListOf()
         for (i in mEntries.indices) {
             entries.add(mEntries[i].copy())
@@ -61,7 +61,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
     }
 
     protected fun copy(barDataSet: BarDataSet) {
-        super.copy((barDataSet as BaseDataSet<*>?)!!)
+        super.copy((barDataSet as BaseDataSet<*, *>?)!!)
         barDataSet.mStackSize = mStackSize
         barDataSet.mBarShadowColor = mBarShadowColor
         barDataSet.mBarBorderWidth = mBarBorderWidth

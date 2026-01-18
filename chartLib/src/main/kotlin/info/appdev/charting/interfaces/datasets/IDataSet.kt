@@ -6,11 +6,10 @@ import info.appdev.charting.components.Legend
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.DataSet
-import info.appdev.charting.data.Entry
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.utils.PointF
 
-interface IDataSet<T : BaseEntry<Float>> {
+interface IDataSet<T, N> where T : BaseEntry<N>, N : Number, N : Comparable<N> {
     /**
      * returns the minimum y-value this DataSet holds
      */

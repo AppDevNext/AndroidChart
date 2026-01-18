@@ -114,7 +114,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
      */
     @Suppress("SameParameterValue")
     protected open fun buildHighlights(
-        set: IDataSet<*>,
+        set: IDataSet<*, *>,
         dataSetIndex: Int,
         xVal: Float,
         rounding: DataSet.Rounding?
@@ -126,7 +126,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
             // Try to find closest x-value and take all entries for that x-value
             val closest = set.getEntryForXValue(xVal, Float.NaN, rounding)
             if (closest != null) {
-                entries = set.getEntriesForXValue(closest.x)
+                entries = set.getEntriesForXValue(closest.x.toFloat())
             }
         }
 
@@ -135,12 +135,12 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
 
         if (entries != null)
             for (e in entries) {
-                val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(e.x, e.y)
+                val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(e.x.toFloat(), e.y.toFloat())
 
                 highlights.add(
                     Highlight(
-                        x = e.x,
-                        y = e.y,
+                        x = e.x.toFloat(),
+                        y = e.y.toFloat(),
                         xPx = pixels.x.toFloat(),
                         yPx = pixels.y.toFloat(),
                         dataSetIndex = dataSetIndex,

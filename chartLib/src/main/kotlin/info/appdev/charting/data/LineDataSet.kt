@@ -12,7 +12,8 @@ import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.convertDpToPixel
 import timber.log.Timber
 
-open class LineDataSet(yVals: MutableList<Entry> = mutableListOf(), label: String = "") : LineRadarDataSet<Entry>(yVals, label), ILineDataSet {
+open class LineDataSet<T, N>(yVals: MutableList<T> = mutableListOf(), label: String = "") : LineRadarDataSet<T, N>(yVals, label), ILineDataSet<T, N>
+    where T : BaseEntry<N>, N : Number, N : Comparable<N> {
     /**
      * Drawing mode for this line dataset
      */
@@ -73,28 +74,26 @@ open class LineDataSet(yVals: MutableList<Entry> = mutableListOf(), label: Strin
         circleColors.add(Color.rgb(140, 234, 255))
     }
 
-    override fun copy(): DataSet<Entry> {
-        val entries: MutableList<Entry> = mutableListOf()
-        for (i in mEntries.indices) {
-            entries.add(mEntries[i].copy())
-        }
+    override fun copy(): DataSet<T, N>? {
+        val entries: MutableList<T> = mutableListOf()
+        entries.addAll(mEntries)
         val copied = LineDataSet(entries, label)
         copy(copied)
         return copied
     }
 
-    protected fun copy(lineDataSet: LineDataSet) {
-        super.copy((lineDataSet as BaseDataSet<*>?)!!)
+    protected fun copy(lineDataSet: LineDataSet<T, N>) {
+        super.copy(lineDataSet)
         lineDataSet.circleColors = this.circleColors
-        lineDataSet.mCircleHoleColor = mCircleHoleColor
-        lineDataSet.mCircleHoleRadius = mCircleHoleRadius
-        lineDataSet.mCircleRadius = mCircleRadius
-        lineDataSet.mCubicIntensity = mCubicIntensity
-        lineDataSet.mDashPathEffect = mDashPathEffect
-        lineDataSet.mDrawCircleHole = mDrawCircleHole
-        lineDataSet.mDrawCircles = mDrawCircleHole
-        lineDataSet.mFillFormatter = mFillFormatter
-        lineDataSet.mLineDataSetMode = mLineDataSetMode
+        lineDataSet.mCircleHoleColor = this.mCircleHoleColor
+        lineDataSet.mCircleHoleRadius = this.mCircleHoleRadius
+        lineDataSet.mCircleRadius = this.mCircleRadius
+        lineDataSet.mCubicIntensity = this.mCubicIntensity
+        lineDataSet.mDashPathEffect = this.mDashPathEffect
+        lineDataSet.mDrawCircleHole = this.mDrawCircleHole
+        lineDataSet.mDrawCircles = this.mDrawCircleHole
+        lineDataSet.mFillFormatter = this.mFillFormatter
+        lineDataSet.mLineDataSetMode = this.mLineDataSetMode
     }
 
     /**

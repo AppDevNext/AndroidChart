@@ -1,10 +1,9 @@
 package info.appdev.charting.interfaces.datasets
 
 import android.graphics.Paint
-import androidx.annotation.ColorInt
 import info.appdev.charting.data.CandleEntry
 
-interface ICandleDataSet : ILineScatterCandleRadarDataSet<CandleEntry> {
+interface ICandleDataSet : ILineScatterCandleRadarDataSet<CandleEntry, Float> {
     /**
      * Returns the space that is left out on the left and right side of each candle.
      */

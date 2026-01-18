@@ -12,7 +12,7 @@ android {
     namespace = "info.appdev.chartexample"
     defaultConfig {
         applicationId = "info.appdev.chartexample"
-        minSdk = 23
+        minSdk = 24
         compileSdk = 36
         targetSdk = 36
         versionCode = getGitCommitCount()
