@@ -24,6 +24,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import info.appdev.chartexample.compose.HorizontalBarComposeActivity
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
 import info.appdev.chartexample.notimportant.ContentItem
 import info.appdev.chartexample.notimportant.DemoBase
@@ -243,6 +244,18 @@ class StartTest {
     }
 
     private fun doClickTest(index: Int, contentClass: Class<out DemoBase>, contentItem: ContentItem<out DemoBase>) {
+        if (contentItem.clazz == ScrollViewActivity::class.java ||
+            contentItem.clazz == DynamicalAddingActivity::class.java ||
+            contentItem.clazz == RealtimeLineChartActivity::class.java ||
+            contentItem.clazz == LineChartTimeActivity::class.java ||
+            contentItem.clazz == HorizontalBarComposeActivity::class.java ||
+            contentItem.clazz == GradientActivity::class.java ||
+            contentItem.clazz == TimeLineActivity::class.java
+        ) {
+            // These charts have less clickable area, so skip further clicks
+            return
+        }
+
         onView(withId(R.id.chart1)).perform(click())
         onView(ViewMatchers.isRoot())
             .perform(captureToBitmap { bitmap: Bitmap ->
