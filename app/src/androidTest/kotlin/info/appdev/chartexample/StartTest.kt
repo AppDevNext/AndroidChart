@@ -10,6 +10,10 @@ import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.GeneralClickAction
+import androidx.test.espresso.action.Press
+import androidx.test.espresso.action.Tap
 import androidx.test.espresso.action.ViewActions.captureToBitmap
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
@@ -216,6 +220,24 @@ class StartTest {
                             )
                         })
 
+                    onView(withId(R.id.chart1)).perform(clickXY(20, 20))
+                    onView(ViewMatchers.isRoot())
+                        .perform(captureToBitmap { bitmap: Bitmap ->
+                            bitmap.writeToTestStorage(
+                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click2020"
+                                    .replace(" ", "")
+                            )
+                        })
+
+                    onView(withId(R.id.chart1)).perform(clickXY(70, 70))
+                    onView(ViewMatchers.isRoot())
+                        .perform(captureToBitmap { bitmap: Bitmap ->
+                            bitmap.writeToTestStorage(
+                                "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click7070"
+                                    .replace(" ", "")
+                            )
+                        })
+
                     //Thread.sleep(100)
                     Espresso.pressBack()
 
@@ -244,6 +266,22 @@ class StartTest {
                 bitmap.writeToTestStorage("${simpleName}-2menu-click-${menuTitle}".replace(" ", ""))
             }
             )
+    }
+
+    fun clickXY(x: Int, y: Int): ViewAction {
+        return GeneralClickAction(
+            Tap.SINGLE,
+            { view ->
+                val location = IntArray(2)
+                view!!.getLocationOnScreen(location)
+                val screenX = (location[0] + x).toFloat()
+                val screenY = (location[1] + y).toFloat()
+                floatArrayOf(screenX, screenY)
+            },
+            Press.FINGER,
+            0, // inputDevice
+            0  // deviceState
+        )
     }
 
 }
