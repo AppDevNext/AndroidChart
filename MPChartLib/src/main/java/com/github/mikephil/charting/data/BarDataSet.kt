@@ -233,6 +233,6 @@ open class BarDataSet(yVals: MutableList<BarEntry?>, label: String = "") : BarLi
     }
 
     override fun getEntryIndex(entry: BarEntry): Int {
-        return this.getEntryIndex(entry)
+        return super.getEntryIndex(entry)
     }
 }
