@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import info.appdev.chartexample.databinding.ActivityDrawChartBinding
 import info.appdev.chartexample.notimportant.DemoBase
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.DataSet
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
@@ -116,7 +117,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         saveToGallery(binding.chart1, "DrawChartActivity")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         Timber.i(("Value: ${entry.y}, xIndex: ${entry.x}, DataSet index:${highlight.dataSetIndex}"))
     }
 
@@ -128,7 +129,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
     }
 
     /** callback when a DataSet has been drawn (when lifting the finger)  */
-    override fun onDrawFinished(dataSet: DataSet<*>) {
+    override fun onDrawFinished(dataSet: DataSet<out BaseEntry<Float>, Float>) {
         Timber.i("DataSet drawn. ${dataSet.toSimpleString()}")
 
         // prepare the legend again

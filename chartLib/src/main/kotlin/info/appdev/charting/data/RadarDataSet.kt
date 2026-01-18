@@ -5,7 +5,7 @@ import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.IRadarDataSet
 import info.appdev.charting.utils.ColorTemplate
 
-open class RadarDataSet(yVals: MutableList<RadarEntry>, label: String = "") : LineRadarDataSet<RadarEntry>(yVals, label), IRadarDataSet {
+open class RadarDataSet(yVals: MutableList<RadarEntry>, label: String = "") : LineRadarDataSet<RadarEntry, Float>(yVals, label), IRadarDataSet {
     /** flag indicating whether highlight circle should be drawn or not */
     protected var mIsDrawHighlightCircle: Boolean = false
 
@@ -58,7 +58,7 @@ open class RadarDataSet(yVals: MutableList<RadarEntry>, label: String = "") : Li
             mHighlightCircleStrokeWidth = value
         }
 
-    override fun copy(): DataSet<RadarEntry> {
+    override fun copy(): DataSet<RadarEntry, Float> {
         val entries: MutableList<RadarEntry> = mutableListOf()
         for (i in mEntries.indices) {
             entries.add(mEntries[i].copy())
@@ -69,7 +69,7 @@ open class RadarDataSet(yVals: MutableList<RadarEntry>, label: String = "") : Li
     }
 
     protected fun copy(radarDataSet: RadarDataSet) {
-        super.copy((radarDataSet as BaseDataSet<*>?)!!)
+        super.copy((radarDataSet as BaseDataSet<*, *>?)!!)
         radarDataSet.mIsDrawHighlightCircle = mIsDrawHighlightCircle
         radarDataSet.mHighlightCircleFillColor = mHighlightCircleFillColor
         radarDataSet.mHighlightCircleInnerRadius = mHighlightCircleInnerRadius

@@ -22,14 +22,14 @@ abstract class BarLineScatterCandleBubbleRenderer(
     /**
      * Returns true if the DataSet values should be drawn, false if not.
      */
-    protected fun shouldDrawValues(set: IDataSet<*>): Boolean {
+    protected fun shouldDrawValues(set: IDataSet<*, *>): Boolean {
         return set.isVisible && (set.isDrawValues || set.isDrawIcons)
     }
 
     /**
      * Checks if the provided entry object is in bounds for drawing considering the current animation phase.
      */
-    protected fun <T : BaseEntry<Float>> isInBoundsX(entry: T, set: IBarLineScatterCandleBubbleDataSet<T>): Boolean {
+    protected fun <T, N> isInBoundsX(entry: T, set: IBarLineScatterCandleBubbleDataSet<T, N>): Boolean where T : BaseEntry<N>, N : Number, N : Comparable<N> {
         val entryIndex = set.getEntryIndex(entry).toFloat()
 
         return if (entryIndex >= set.entryCount * animator.phaseX) {
@@ -61,7 +61,7 @@ abstract class BarLineScatterCandleBubbleRenderer(
         /**
          * Calculates the minimum and maximum x values as well as the range between them.
          */
-        fun <T : BaseEntry<Float>> set(chart: BarLineScatterCandleBubbleDataProvider<*>, dataSet: IBarLineScatterCandleBubbleDataSet<T>) {
+        fun <T, N> set(chart: BarLineScatterCandleBubbleDataProvider<*>, dataSet: IBarLineScatterCandleBubbleDataSet<T, N>) where T : BaseEntry<N>, N : Number, N : Comparable<N> {
             val phaseX = max(0f, min(1f, animator.phaseX))
 
             val low = chart.lowestVisibleX

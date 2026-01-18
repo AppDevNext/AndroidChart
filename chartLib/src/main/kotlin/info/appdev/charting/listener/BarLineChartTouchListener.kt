@@ -9,7 +9,7 @@ import android.view.animation.AnimationUtils
 import info.appdev.charting.charts.BarLineChartBase
 import info.appdev.charting.charts.HorizontalBarChart
 import info.appdev.charting.data.BarLineScatterCandleBubbleData
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.utils.PointF
@@ -25,11 +25,11 @@ import kotlin.math.sqrt
  */
 @Suppress("MemberVisibilityCanBePrivate")
 class BarLineChartTouchListener(
-    chart: BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out Entry>>>,
+    chart: BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>>>,
     touchMatrix: Matrix,
     dragTriggerDistance: Float
 ) :
-    ChartTouchListener<BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out Entry>>>>(chart) {
+    ChartTouchListener<BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>>>>(chart) {
     /**
      * the original touch-matrix from the chart
      */
@@ -55,7 +55,7 @@ class BarLineChartTouchListener(
     private var savedYDist = 1f
     private var savedDist = 1f
 
-    private var closestDataSetToTouch: IDataSet<*>? = null
+    private var closestDataSetToTouch: IDataSet<*, *>? = null
 
     /**
      * used for tracking velocity of dragging
@@ -471,8 +471,9 @@ class BarLineChartTouchListener(
      * Returns true if the current touch situation should be interpreted as inverted, false if not.
      */
     private fun inverted(): Boolean {
-        return (closestDataSetToTouch == null && chart.isAnyAxisInverted) || (closestDataSetToTouch != null
-                && chart.isInverted(closestDataSetToTouch!!.axisDependency))
+        val dataSet = closestDataSetToTouch
+        return (dataSet == null && chart.isAnyAxisInverted) || (dataSet != null
+                && chart.isInverted(dataSet.axisDependency))
     }
 
     /**

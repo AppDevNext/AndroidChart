@@ -3,7 +3,7 @@ package info.appdev.charting.interfaces.datasets
 import android.graphics.drawable.Drawable
 import info.appdev.charting.data.BaseEntry
 
-interface ILineRadarDataSet<T : BaseEntry<Float>> : ILineScatterCandleRadarDataSet<T> {
+interface ILineRadarDataSet<T, N> : ILineScatterCandleRadarDataSet<T, N> where T : BaseEntry<N>, N : Number, N : Comparable<N> {
     /**
      * Returns the color that is used for filling the line surface area.
      */

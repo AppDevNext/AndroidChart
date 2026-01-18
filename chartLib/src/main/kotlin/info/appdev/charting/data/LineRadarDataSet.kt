@@ -9,8 +9,7 @@ import info.appdev.charting.utils.convertDpToPixel
 /**
  * Base dataset for line and radar DataSets.
  */
-abstract class LineRadarDataSet<T : BaseEntry<Float>>(yVals: MutableList<T>, label: String) : LineScatterCandleRadarDataSet<T>(yVals, label),
-    ILineRadarDataSet<T> {
+abstract class LineRadarDataSet<T, N>(yVals: MutableList<T>, label: String) : LineScatterCandleRadarDataSet<T, N>(yVals, label), ILineRadarDataSet<T, N> where T : BaseEntry<N>, N : Number, N : Comparable<N> {
     // TODO: Move to using `Fill` class
     /**
      * the color that is used for filling the line surface
@@ -69,8 +68,8 @@ abstract class LineRadarDataSet<T : BaseEntry<Float>>(yVals: MutableList<T>, lab
             mLineWidth = width.convertDpToPixel()
         }
 
-    protected fun copy(lineRadarDataSet: LineRadarDataSet<*>) {
-        super.copy((lineRadarDataSet as BaseDataSet<*>?)!!)
+    protected fun copy(lineRadarDataSet: LineRadarDataSet<*, *>) {
+        super.copy((lineRadarDataSet as BaseDataSet<*, *>?)!!)
         lineRadarDataSet.isDrawFilled = this.isDrawFilled
         lineRadarDataSet.fillAlpha = this.fillAlpha
         lineRadarDataSet.mFillColor = mFillColor

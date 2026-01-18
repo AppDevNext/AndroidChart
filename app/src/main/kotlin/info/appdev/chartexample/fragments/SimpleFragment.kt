@@ -12,6 +12,7 @@ import info.appdev.charting.charts.ScatterChart.ScatterShape
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -21,7 +22,6 @@ import info.appdev.charting.data.PieEntry
 import info.appdev.charting.data.ScatterData
 import info.appdev.charting.data.ScatterDataSet
 import info.appdev.charting.interfaces.datasets.IBarDataSet
-import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.interfaces.datasets.IScatterDataSet
 import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.loadEntriesFromAssets
@@ -111,7 +111,7 @@ abstract class SimpleFragment : Fragment() {
     }
 
     protected fun generateLineData(): LineData {
-        val sets = ArrayList<ILineDataSet>()
+        val sets = ArrayList<LineDataSet<BaseEntry<Float>, Float>>()
         val ds1 = LineDataSet(requireContext().assets.loadEntriesFromAssets("sine.txt"), "Sine function")
         val ds2 = LineDataSet(requireContext().assets.loadEntriesFromAssets("cosine.txt"), "Cosine function")
 
@@ -128,14 +128,14 @@ abstract class SimpleFragment : Fragment() {
         sets.add(ds1)
         sets.add(ds2)
 
-        val d = LineData(sets)
+        val d = LineData(sets.toMutableList())
         d.setValueTypeface(tf)
         return d
     }
 
     protected val complexity: LineData
         get() {
-            val sets = ArrayList<ILineDataSet>()
+            val sets = ArrayList<LineDataSet<BaseEntry<Float>, Float>>()
 
             val ds1 = LineDataSet(requireContext().assets.loadEntriesFromAssets("n.txt"), "O(n)")
             val ds2 = LineDataSet(requireContext().assets.loadEntriesFromAssets("nlogn.txt"), "O(nlogn)")
@@ -168,7 +168,7 @@ abstract class SimpleFragment : Fragment() {
             sets.add(ds3)
             sets.add(ds4)
 
-            val d = LineData(sets)
+            val d = LineData(sets.toMutableList())
             d.setValueTypeface(tf)
             return d
         }

@@ -13,7 +13,7 @@ import info.appdev.charting.renderer.scatter.TriangleShapeRenderer
 import info.appdev.charting.renderer.scatter.XShapeRenderer
 import info.appdev.charting.utils.ColorTemplate
 
-open class ScatterDataSet(yVals: MutableList<Entry>, label: String = "") : LineScatterCandleRadarDataSet<Entry>(yVals, label), IScatterDataSet {
+open class ScatterDataSet(yVals: MutableList<Entry>, label: String = "") : LineScatterCandleRadarDataSet<Entry, Float>(yVals, label), IScatterDataSet {
     /**
      * the size the scatterShape will have, in density pixels
      */
@@ -38,7 +38,7 @@ open class ScatterDataSet(yVals: MutableList<Entry>, label: String = "") : LineS
     @ColorInt
     private var mScatterShapeHoleColor = ColorTemplate.COLOR_NONE
 
-    override fun copy(): DataSet<Entry> {
+    override fun copy(): DataSet<Entry, Float> {
         val entries: MutableList<Entry> = mutableListOf()
         for (i in mEntries.indices) {
             entries.add(mEntries[i].copy())
@@ -49,7 +49,7 @@ open class ScatterDataSet(yVals: MutableList<Entry>, label: String = "") : LineS
     }
 
     protected fun copy(scatterDataSet: ScatterDataSet) {
-        super.copy((scatterDataSet as BaseDataSet<*>?)!!)
+        super.copy((scatterDataSet as BaseDataSet<*, *>?)!!)
         scatterDataSet.shapeSize = shapeSize
         scatterDataSet.mShapeRenderer = mShapeRenderer
         scatterDataSet.mScatterShapeHoleRadius = mScatterShapeHoleRadius

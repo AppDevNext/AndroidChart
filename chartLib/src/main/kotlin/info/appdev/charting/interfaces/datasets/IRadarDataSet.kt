@@ -2,7 +2,7 @@ package info.appdev.charting.interfaces.datasets
 
 import info.appdev.charting.data.RadarEntry
 
-interface IRadarDataSet : ILineRadarDataSet<RadarEntry> {
+interface IRadarDataSet : ILineRadarDataSet<RadarEntry, Float> {
     /** flag indicating whether highlight circle should be drawn or not */
     /** Sets whether highlight circle should be drawn or not */
     var isDrawHighlightCircle: Boolean
