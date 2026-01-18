@@ -213,7 +213,7 @@ class StartTest {
                     composeTestRule.waitForIdle()
                     Thread.sleep(200) // Small delay for back navigation
                 } catch (e: Exception) {
-                    Timber.e("Error at index $index: $optionMenu - ${e.message}", e)
+                    Timber.e("#$index/'${contentClass.simpleName}': '$optionMenu' ${e.message}", e)
                     onView(ViewMatchers.isRoot())
                         .perform(captureToBitmap { bitmap: Bitmap ->
                             bitmap.writeToTestStorage(
