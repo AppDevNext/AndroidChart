@@ -5,8 +5,7 @@ import info.appdev.charting.data.PieEntry
 
 interface IPieDataSet : IDataSet<PieEntry> {
     /**
-     * Returns the space that is set to be between the piechart-slices of this
-     * DataSet, in pixels.
+     * Returns the space that is set to be between the PieChart-slices of this DataSet, in pixels.
      */
     val sliceSpace: Float
 
@@ -17,8 +16,7 @@ interface IPieDataSet : IDataSet<PieEntry> {
     val isAutomaticallyDisableSliceSpacingEnabled: Boolean
 
     /**
-     * Returns the distance a highlighted piechart slice is "shifted" away from
-     * the chart-center in dp.
+     * Returns the distance a highlighted PieChart slice is "shifted" away from the chart-center in dp.
      */
     val selectionShift: Float
 
