@@ -24,8 +24,7 @@ jobs:
         emulatorApi: [ 9 ]
         java_version: [ 17 ]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: true
@@ -103,10 +102,10 @@ jobs:
         os: [ ubuntu-latest ]
         java_version: [ 17 ]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          submodules: true
       - name: Install JDK ${{ matrix.java_version }}
         uses: actions/setup-java@v5
         with:
