@@ -1,8 +1,8 @@
 package info.appdev.charting.renderer
 
 import info.appdev.charting.animation.ChartAnimator
-import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.DataSet
+import info.appdev.charting.data.Entry
 import info.appdev.charting.interfaces.dataprovider.base.BarLineScatterCandleBubbleDataProvider
 import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import info.appdev.charting.interfaces.datasets.IDataSet
@@ -29,7 +29,7 @@ abstract class BarLineScatterCandleBubbleRenderer(
     /**
      * Checks if the provided entry object is in bounds for drawing considering the current animation phase.
      */
-    protected fun <T : BaseEntry<Float>> isInBoundsX(entry: T, set: IBarLineScatterCandleBubbleDataSet<T>): Boolean {
+    protected fun <T : Entry> isInBoundsX(entry: T, set: IBarLineScatterCandleBubbleDataSet<T>): Boolean {
         val entryIndex = set.getEntryIndex(entry).toFloat()
 
         return if (entryIndex >= set.entryCount * animator.phaseX) {
@@ -61,7 +61,7 @@ abstract class BarLineScatterCandleBubbleRenderer(
         /**
          * Calculates the minimum and maximum x values as well as the range between them.
          */
-        fun <T : BaseEntry<Float>> set(chart: BarLineScatterCandleBubbleDataProvider<*>, dataSet: IBarLineScatterCandleBubbleDataSet<T>) {
+        fun <T : Entry> set(chart: BarLineScatterCandleBubbleDataProvider<*>, dataSet: IBarLineScatterCandleBubbleDataSet<T>) {
             val phaseX = max(0f, min(1f, animator.phaseX))
 
             val low = chart.lowestVisibleX

@@ -3,6 +3,7 @@ package info.appdev.charting.highlight
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.data.ChartData
 import info.appdev.charting.data.DataSet
+import info.appdev.charting.data.Entry
 import info.appdev.charting.interfaces.dataprovider.base.BarLineScatterCandleBubbleDataProvider
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.utils.PointD
@@ -124,7 +125,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
         var entries = set.getEntriesForXValue(xVal)
         if (entries != null && entries.isEmpty()) {
             // Try to find closest x-value and take all entries for that x-value
-            val closest = set.getEntryForXValue(xVal, Float.NaN, rounding)
+            val closest: Entry? = set.getEntryForXValue(xVal, Float.NaN, rounding)
             if (closest != null) {
                 entries = set.getEntriesForXValue(closest.x)
             }
