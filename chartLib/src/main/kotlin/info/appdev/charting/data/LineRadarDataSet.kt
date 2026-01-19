@@ -9,7 +9,7 @@ import info.appdev.charting.utils.convertDpToPixel
 /**
  * Base dataset for line and radar DataSets.
  */
-abstract class LineRadarDataSet<T, N>(yVals: MutableList<T>, label: String) : LineScatterCandleRadarDataSet<T, N>(yVals, label), ILineRadarDataSet<T, N> where T : BaseEntry<N>, N : Number, N : Comparable<N> {
+abstract class LineRadarDataSet<T, N_XAxis>(yVals: MutableList<T>, label: String) : LineScatterCandleRadarDataSet<T, N_XAxis>(yVals, label), ILineRadarDataSet<T, N_XAxis> where T : BaseEntry<N_XAxis>, N_XAxis : Number, N_XAxis : Comparable<N_XAxis> {
     // TODO: Move to using `Fill` class
     /**
      * the color that is used for filling the line surface
