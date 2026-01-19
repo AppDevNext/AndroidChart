@@ -10,6 +10,7 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.YAxis
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -69,7 +70,7 @@ class FilledLineActivity : DemoBase() {
 
     private fun setData(@Suppress("SameParameterValue") range: Float) {
         val count = 100
-        val valuesArray1 = ArrayList<Entry>()
+        val valuesArray1 = ArrayList<BaseEntry<Float>>()
         val sampleValues = getValues(count + 2)
 
         for (i in 0..<count) {
@@ -77,19 +78,19 @@ class FilledLineActivity : DemoBase() {
             valuesArray1.add(Entry(i.toFloat(), valueY))
         }
 
-        val valuesArray2 = ArrayList<Entry>()
+        val valuesArray2 = ArrayList<BaseEntry<Float>>()
 
         for (i in 0..<count) {
             val valueY = (sampleValues[i + 1]!!.toFloat() * range) + 450
             valuesArray2.add(Entry(i.toFloat(), valueY))
         }
 
-        val set1: LineDataSet
-        val set2: LineDataSet
+        val set1: LineDataSet<BaseEntry<Float>, Float>
+        val set2: LineDataSet<BaseEntry<Float>, Float>
 
         if (binding.chart1.lineData.dataSetCount > 0) {
-            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
-            set2 = binding.chart1.lineData.getDataSetByIndex(1) as LineDataSet
+            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet<BaseEntry<Float>, Float>
+            set2 = binding.chart1.lineData.getDataSetByIndex(1) as LineDataSet<BaseEntry<Float>, Float>
             set1.entries = valuesArray1
             set2.entries = valuesArray2
             binding.chart1.lineData.notifyDataChanged()
@@ -109,7 +110,7 @@ class FilledLineActivity : DemoBase() {
             set1.highLightColor = Color.rgb(244, 117, 117)
             set1.isDrawCircleHoleEnabled = false
             set1.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet<out BaseEntry<Float>, Float>?, dataProvider: LineDataProvider): Float {
                     // change the return value here to better understand the effect
                     // return 0;
                     return binding.chart1.axisLeft.axisMinimum
@@ -129,19 +130,19 @@ class FilledLineActivity : DemoBase() {
             set2.isDrawCircleHoleEnabled = false
             set2.highLightColor = Color.rgb(244, 117, 117)
             set2.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet<out BaseEntry<Float>, Float>?, dataProvider: LineDataProvider): Float {
                     // change the return value here to better understand the effect
                     // return 600;
                     return binding.chart1.axisLeft.axisMaximum
                 }
             }
 
-            val dataSets = ArrayList<ILineDataSet>()
+            val dataSets = ArrayList<LineDataSet<BaseEntry<Float>, Float>>()
             dataSets.add(set1) // add the data sets
             dataSets.add(set2)
 
             // create a data object with the data sets
-            val data = LineData(dataSets)
+            val data = LineData(dataSets.toMutableList())
             data.setDrawValues(false)
 
             binding.chart1.data = data

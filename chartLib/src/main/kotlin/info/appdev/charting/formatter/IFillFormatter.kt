@@ -1,5 +1,6 @@
 package info.appdev.charting.formatter
 
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 
@@ -14,5 +15,5 @@ interface IFillFormatter {
      * @param dataSet the ILineDataSet that is currently drawn
      * @param dataProvider
      */
-    fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float
+    fun getFillLinePosition(dataSet: ILineDataSet<out BaseEntry<Float>, Float>?, dataProvider: LineDataProvider): Float
 }

@@ -2,6 +2,7 @@ package info.appdev.charting.utils
 
 import android.content.res.AssetManager
 import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import timber.log.Timber
 import java.io.BufferedReader
@@ -18,8 +19,8 @@ import java.nio.charset.StandardCharsets
  *
  * @param path the name of the file in the assets folder (+ path if needed)
  */
-fun AssetManager.loadEntriesFromAssets(path: String): MutableList<Entry> {
-    val entries: MutableList<Entry> = ArrayList()
+fun AssetManager.loadEntriesFromAssets(path: String): MutableList<BaseEntry<Float>> {
+    val entries: MutableList<BaseEntry<Float>> = ArrayList()
 
     try {
         BufferedReader(

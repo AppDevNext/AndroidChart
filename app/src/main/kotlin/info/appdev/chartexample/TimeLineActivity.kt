@@ -15,6 +15,7 @@ import info.appdev.charting.components.Description
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -87,14 +88,15 @@ class TimeLineActivity : DemoBase() {
 
         val sampleEntries = generateSineWaves(3, 30)
             .mapIndexed { index, data ->
-                val valueY = (data.toFloat() * range) + 50
-                Entry(timeOffset + index.toFloat() * 1000, valueY)
+                val valueY = (data * range) + 50
+                Entry((timeOffset + index * 1000.0).toFloat(), valueY.toFloat())
             }.toMutableList()
 
-        val set1: LineDataSet
+        var set1: LineDataSet<Entry, Float>
 
         if (binding.chart1.lineData.dataSetCount > 0) {
-            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
+            @Suppress("UNCHECKED_CAST")
+            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet<Entry, Float>
             set1.entries = sampleEntries
             binding.chart1.lineData.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
@@ -113,14 +115,14 @@ class TimeLineActivity : DemoBase() {
             set1.highLightColor = Color.rgb(244, 117, 117)
             set1.isDrawCircleHoleEnabled = false
             set1.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet<out BaseEntry<Float>, Float>?, dataProvider: LineDataProvider): Float {
                     // change the return value here to better understand the effect
                     // return 0;
                     return binding.chart1.axisLeft.axisMinimum
                 }
             }
 
-            val dataSets = ArrayList<ILineDataSet>()
+            val dataSets = ArrayList<ILineDataSet<out BaseEntry<Float>, Float>>()
             dataSets.add(set1) // add the data sets
 
             // create a data object with the data sets
@@ -159,8 +161,9 @@ class TimeLineActivity : DemoBase() {
         withContext(Dispatchers.Default) {
             while (menuItemMove!!.isChecked) {
                 withContext(Dispatchers.Main) {
-                    binding.chart1.lineData.dataSets.get(0)?.let { set ->
-                        (set as LineDataSet).entries.moveFirstToLast()
+                    binding.chart1.lineData.dataSets[0].let { set ->
+                        @Suppress("UNCHECKED_CAST")
+                        (set as LineDataSet<Entry, Float>).entries.moveFirstToLast()
                         set.notifyDataChanged()
                         binding.chart1.lineData.notifyDataChanged()
                         binding.chart1.notifyDataSetChanged()
