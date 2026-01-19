@@ -446,7 +446,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         }
 
         val dataSet: IDataSet<*> = dataSets[dataSetIndex]
-        val entry: Entry = dataSet.getEntryForXValue(xValue, Float.NaN) ?: return false
+        val entry = dataSet.getEntryForXValue(xValue, Float.NaN) as? Entry ?: return false
 
         return removeEntry(entry, dataSetIndex)
     }
