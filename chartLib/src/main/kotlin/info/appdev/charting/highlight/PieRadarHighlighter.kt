@@ -37,10 +37,4 @@ abstract class PieRadarHighlighter<T : PieRadarChartBase<*>>(protected var chart
      * Returns the closest Highlight object of the given objects based on the touch position inside the chart.
      */
     protected abstract fun getClosestHighlight(index: Int, x: Float, y: Float): Highlight?
-
-    override fun getHighlightsAtXValue(
-        xVal: Float,
-        x: Float,
-        y: Float
-    ): MutableList<Highlight>? = null
 }
