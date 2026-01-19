@@ -44,7 +44,7 @@ open class HorizontalBarChart : BarChart {
         mRightAxisTransformer = TransformerHorizontalBarChart(viewPortHandler)
 
         dataRenderer = HorizontalBarChartRenderer(this, mAnimator, viewPortHandler)
-        setHighlighter(HorizontalBarHighlighter(this))
+        highlighter = HorizontalBarHighlighter(this)
 
         axisRendererLeft = YAxisRendererHorizontalBarChart(viewPortHandler, mAxisLeft, mLeftAxisTransformer)
         axisRendererRight = YAxisRendererHorizontalBarChart(viewPortHandler, mAxisRight, mRightAxisTransformer)
