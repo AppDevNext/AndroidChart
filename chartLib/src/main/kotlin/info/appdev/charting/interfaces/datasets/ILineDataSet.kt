@@ -5,7 +5,7 @@ import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IFillFormatter
 
-interface ILineDataSet<T, N> : ILineRadarDataSet<T, N> where T : BaseEntry<N>, N : Number, N : Comparable<N> {
+interface ILineDataSet<T, N_XAxis> : ILineRadarDataSet<T, N_XAxis> where T : BaseEntry<N_XAxis>, N_XAxis : Number, N_XAxis : Comparable<N_XAxis> {
     /**
      * Returns the drawing mode for this line dataset
      */
