@@ -26,12 +26,12 @@ dependencies {
 }
 ```
 
-### Gradle Setup with Sonartype [snapshot]
+### Gradle Setup with Maven Central [snapshot]
 
-Currently only from Sonartype snapshot staging is provided
+Currently only from Maven Central snapshot staging is provided
 ```gradle
 repositories {
-    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://central.sonatype.com/api/v1/publisher/deployments/download/' }
 }
 
 dependencies {
