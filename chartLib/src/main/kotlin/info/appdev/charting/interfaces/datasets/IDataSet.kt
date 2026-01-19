@@ -9,7 +9,7 @@ import info.appdev.charting.data.DataSet
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.utils.PointF
 
-interface IDataSet<T, N> where T : BaseEntry<N>, N : Number, N : Comparable<N> {
+interface IDataSet<T, N_XAxis> where T : BaseEntry<N_XAxis>, N_XAxis : Number, N_XAxis : Comparable<N_XAxis> {
     /**
      * returns the minimum y-value this DataSet holds
      */

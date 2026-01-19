@@ -10,10 +10,10 @@ import kotlin.math.abs
  * groups of values inside the Chart (e.g. the values for a specific line in the
  * LineChart, or the values of a specific group of bars in the BarChart).
  */
-abstract class DataSet<T, N>(
+abstract class DataSet<T, N_XAxis>(
     protected var mEntries: MutableList<T>,
     label: String = ""
-) : BaseDataSet<T, N>(label), Serializable where T : BaseEntry<N>, N : Number, N : Comparable<N> {
+) : BaseDataSet<T, N_XAxis>(label), Serializable where T : BaseEntry<N_XAxis>, N_XAxis : Number, N_XAxis : Comparable<N_XAxis> {
     /**
      * maximum y-value in the value array
      */
@@ -130,7 +130,7 @@ abstract class DataSet<T, N>(
     /**
      * Provides an exact copy of the DataSet this method is used on.
      */
-    abstract fun copy(): DataSet<T, N>?
+    abstract fun copy(): DataSet<T, N_XAxis>?
 
     protected fun copy(dataSet: DataSet<*, *>) {
         super.copy(dataSet)
