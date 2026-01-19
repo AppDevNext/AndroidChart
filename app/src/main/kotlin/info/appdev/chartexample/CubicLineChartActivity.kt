@@ -84,7 +84,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
     }
 
     private fun setData(count: Int, range: Float) {
-        val values = ArrayList<Entry>()
+        val values = ArrayList<BaseEntry<Float>>()
         val sampleValues = getMuchValues(count)
 
         for (i in 0 until count) {
@@ -92,11 +92,11 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             values.add(Entry(i.toFloat(), `val`))
         }
 
-        val set1: LineDataSet<Entry, Float>
+        val set1: LineDataSet<BaseEntry<Float>, Float>
 
         if (binding.chart1.lineData.dataSetCount > 0) {
-            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet<Entry, Float>
-            set1.entries = values
+            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet<BaseEntry<Float>, Float>
+            set1.entries = values.toMutableList()
             binding.chart1.lineData.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {
