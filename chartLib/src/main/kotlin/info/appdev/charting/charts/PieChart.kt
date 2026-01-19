@@ -339,7 +339,6 @@ open class PieChart : PieRadarChartBase<PieData> {
 
     override fun getIndexForAngle(angle: Float): Int {
         // take the current angle of the chart into consideration
-
         val a = (angle - rotationAngle).getNormalizedAngle()
 
         for (i in absoluteAngles.indices) {

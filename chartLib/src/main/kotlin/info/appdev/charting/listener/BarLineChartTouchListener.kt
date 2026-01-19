@@ -323,9 +323,8 @@ class BarLineChartTouchListener(
 
             if (totalDist > minScalePointerDistance) {
                 // get the translation
-
-                val t = getTrans(touchPointCenter.x, touchPointCenter.y)
-                val h = chart.viewPortHandler
+                val pointF = getTrans(touchPointCenter.x, touchPointCenter.y)
+                val viewPortHandler = chart.viewPortHandler
 
                 // take actions depending on the activated touch mode
                 if (touchMode == PINCH_ZOOM) {
@@ -335,16 +334,16 @@ class BarLineChartTouchListener(
 
                     val isZoomingOut = (scale < 1)
 
-                    val canZoomMoreX = if (isZoomingOut) h.canZoomOutMoreX() else h.canZoomInMoreX()
+                    val canZoomMoreX = if (isZoomingOut) viewPortHandler.canZoomOutMoreX() else viewPortHandler.canZoomInMoreX()
 
-                    val canZoomMoreY = if (isZoomingOut) h.canZoomOutMoreY() else h.canZoomInMoreY()
+                    val canZoomMoreY = if (isZoomingOut) viewPortHandler.canZoomOutMoreY() else viewPortHandler.canZoomInMoreY()
 
                     val scaleX = if (chart.isScaleXEnabled) scale else 1f
                     val scaleY = if (chart.isScaleYEnabled) scale else 1f
 
                     if (canZoomMoreY || canZoomMoreX) {
                         matrix.set(savedMatrix)
-                        matrix.postScale(getLimitedScaleX(scaleX, t), getLimitedScaleY(scaleY, t), t.x, t.y)
+                        matrix.postScale(getLimitedScaleX(scaleX, pointF), getLimitedScaleY(scaleY, pointF), pointF.x, pointF.y)
 
                         l?.onChartScale(event, scaleX, scaleY)
                     }
@@ -355,11 +354,11 @@ class BarLineChartTouchListener(
                     val scaleX = xDist / savedXDist // x-axis scale
 
                     val isZoomingOut = (scaleX < 1)
-                    val canZoomMoreX = if (isZoomingOut) h.canZoomOutMoreX() else h.canZoomInMoreX()
+                    val canZoomMoreX = if (isZoomingOut) viewPortHandler.canZoomOutMoreX() else viewPortHandler.canZoomInMoreX()
 
                     if (canZoomMoreX) {
                         matrix.set(savedMatrix)
-                        matrix.postScale(getLimitedScaleX(scaleX, t), 1f, t.x, t.y)
+                        matrix.postScale(getLimitedScaleX(scaleX, pointF), 1f, pointF.x, pointF.y)
 
                         l?.onChartScale(event, scaleX, 1f)
                     }
@@ -370,17 +369,17 @@ class BarLineChartTouchListener(
                     val scaleY = yDist / savedYDist // y-axis scale
 
                     val isZoomingOut = (scaleY < 1)
-                    val canZoomMoreY = if (isZoomingOut) h.canZoomOutMoreY() else h.canZoomInMoreY()
+                    val canZoomMoreY = if (isZoomingOut) viewPortHandler.canZoomOutMoreY() else viewPortHandler.canZoomInMoreY()
 
                     if (canZoomMoreY) {
                         matrix.set(savedMatrix)
-                        matrix.postScale(1f, getLimitedScaleY(scaleY, t), t.x, t.y)
+                        matrix.postScale(1f, getLimitedScaleY(scaleY, pointF), pointF.x, pointF.y)
 
                         l?.onChartScale(event, 1f, scaleY)
                     }
                 }
 
-                PointF.recycleInstance(t)
+                PointF.recycleInstance(pointF)
             }
         }
     }
@@ -389,7 +388,7 @@ class BarLineChartTouchListener(
      * limit scaleX range
      */
     private fun getLimitedScaleX(scaleX: Float, t: PointF): Float {
-        val h = chart.viewPortHandler
+        val viewPortHandler = chart.viewPortHandler
         tempMatrix.set(savedMatrix)
         tempMatrix.postScale(scaleX, 1f, t.x, t.y)
 
@@ -401,10 +400,10 @@ class BarLineChartTouchListener(
 
         var resultScaleX = scaleX
 
-        if (calScaleX < h.minScaleX) {
-            resultScaleX = h.minScaleX / lastScaleX
-        } else if (calScaleX > h.maxScaleX) {
-            resultScaleX = h.maxScaleX / lastScaleX
+        if (calScaleX < viewPortHandler.minScaleX) {
+            resultScaleX = viewPortHandler.minScaleX / lastScaleX
+        } else if (calScaleX > viewPortHandler.maxScaleX) {
+            resultScaleX = viewPortHandler.maxScaleX / lastScaleX
         }
         return resultScaleX
     }
@@ -413,7 +412,7 @@ class BarLineChartTouchListener(
      * limit scaleY range
      */
     private fun getLimitedScaleY(scaleY: Float, t: PointF): Float {
-        val h = chart.viewPortHandler
+        val viewPortHandler = chart.viewPortHandler
         tempMatrix.set(savedMatrix)
         tempMatrix.postScale(1f, scaleY, t.x, t.y)
 
@@ -425,10 +424,10 @@ class BarLineChartTouchListener(
 
         var resultScaleY = scaleY
 
-        if (calScaleY < h.minScaleY) {
-            resultScaleY = h.minScaleY / lastScaleY
-        } else if (calScaleY > h.maxScaleY) {
-            resultScaleY = h.maxScaleY / lastScaleY
+        if (calScaleY < viewPortHandler.minScaleY) {
+            resultScaleY = viewPortHandler.minScaleY / lastScaleY
+        } else if (calScaleY > viewPortHandler.maxScaleY) {
+            resultScaleY = viewPortHandler.maxScaleY / lastScaleY
         }
         return resultScaleY
     }

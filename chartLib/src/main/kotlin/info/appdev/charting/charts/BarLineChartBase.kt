@@ -1084,9 +1084,9 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
      * returns the Entry object displayed at the touched position of the chart
      */
     fun getEntryByTouchPoint(x: Float, y: Float): Entry? {
-        val h = getHighlightByTouchPoint(x, y)
-        if (h != null) {
-            return mData!!.getEntryForHighlight(h)
+        val highlight = getHighlightByTouchPoint(x, y)
+        if (highlight != null) {
+            return mData!!.getEntryForHighlight(highlight)
         }
         return null
     }
@@ -1095,9 +1095,9 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
      * returns the DataSet object displayed at the touched position of the chart
      */
     fun getDataSetByTouchPoint(x: Float, y: Float): IBarLineScatterCandleBubbleDataSet<*>? {
-        val h = getHighlightByTouchPoint(x, y)
-        if (h != null) {
-            return mData!!.getDataSetByIndex(h.dataSetIndex)
+        val highlight = getHighlightByTouchPoint(x, y)
+        if (highlight != null) {
+            return mData!!.getDataSetByIndex(highlight.dataSetIndex)
         }
         return null
     }
