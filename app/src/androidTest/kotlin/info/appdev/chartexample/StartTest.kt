@@ -10,15 +10,23 @@ import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.GeneralClickAction
+import androidx.test.espresso.action.Press
+import androidx.test.espresso.action.Tap
 import androidx.test.espresso.action.ViewActions.captureToBitmap
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import info.appdev.chartexample.compose.HorizontalBarComposeActivity
+import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
+import info.appdev.chartexample.notimportant.ContentItem
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.chartexample.notimportant.DemoBase.Companion.optionMenus
 import info.appdev.chartexample.notimportant.DemoBaseCompose
@@ -64,11 +72,16 @@ class StartTest {
         onView(ViewMatchers.isRoot())
             .perform(captureToBitmap { bitmap: Bitmap -> bitmap.writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}") })
 
+        var compose: Boolean
         var optionMenu = ""
         // iterate samples - only items with classes (not section headers)
         MainActivity.menuItems.forEachIndexed { index, contentItem ->
             contentItem.clazz?.let { contentClass ->
-                Timber.d("Intended #${index} ${contentClass.simpleName}: '${contentItem.name}'")
+                compose = false
+                Timber.d("Intended ${index}-${contentClass.simpleName}: ${contentItem.name}")
+
+                if (contentItem.clazz == ViewPagerSimpleChartDemo::class.java || contentItem.clazz == ListViewBarChartActivity::class.java)
+                    return@forEachIndexed
 
                 try {
                     // Use description to uniquely identify items since names can be duplicated
@@ -124,6 +137,7 @@ class StartTest {
                             )
                         }
                     } else if (DemoBaseCompose::class.java.isAssignableFrom(contentClass)) {
+                        compose = true
                         // Test Compose dropdown menu for DemoBaseCompose activities
                         Timber.d("Testing Compose menu for: ${contentClass.simpleName}")
                         optionMenu = ""
@@ -206,6 +220,9 @@ class StartTest {
                         Timber.d("Unknown activity type: ${contentClass.simpleName}")
                     }
 
+                    if (!compose)
+                        doClickTest(index, contentClass, contentItem)
+
                     //Thread.sleep(100)
                     Espresso.pressBack()
 
@@ -226,6 +243,47 @@ class StartTest {
         }
     }
 
+    private fun doClickTest(index: Int, contentClass: Class<out DemoBase>, contentItem: ContentItem<out DemoBase>) {
+        if (contentItem.clazz == ScrollViewActivity::class.java ||
+            contentItem.clazz == DynamicalAddingActivity::class.java ||
+            contentItem.clazz == RealtimeLineChartActivity::class.java ||
+            contentItem.clazz == LineChartTimeActivity::class.java ||
+            contentItem.clazz == HorizontalBarComposeActivity::class.java ||
+            contentItem.clazz == GradientActivity::class.java ||
+            contentItem.clazz == TimeLineActivity::class.java
+        ) {
+            // These charts have less clickable area, so skip further clicks
+            return
+        }
+
+        onView(withId(R.id.chart1)).perform(click())
+        onView(ViewMatchers.isRoot())
+            .perform(captureToBitmap { bitmap: Bitmap ->
+                bitmap.writeToTestStorage(
+                    "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click"
+                        .replace(" ", "")
+                )
+            })
+
+        onView(withId(R.id.chart1)).perform(clickXY(20, 20))
+        onView(ViewMatchers.isRoot())
+            .perform(captureToBitmap { bitmap: Bitmap ->
+                bitmap.writeToTestStorage(
+                    "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click2020"
+                        .replace(" ", "")
+                )
+            })
+
+        onView(withId(R.id.chart1)).perform(clickXY(70, 70))
+        onView(ViewMatchers.isRoot())
+            .perform(captureToBitmap { bitmap: Bitmap ->
+                bitmap.writeToTestStorage(
+                    "${javaClass.simpleName}_${nameRule.methodName}-${index}-${contentClass.simpleName}-${contentItem.name}-click7070"
+                        .replace(" ", "")
+                )
+            })
+    }
+
     private fun screenshotOfOptionMenu(simpleName: String, menuTitle: String) {
         onView(withText(menuTitle)).perform(click())
         Timber.d("screenshotOfOptionMenu ${menuTitle}-${simpleName}")
@@ -234,6 +292,22 @@ class StartTest {
                 bitmap.writeToTestStorage("${simpleName}-2menu-click-${menuTitle}".replace(" ", ""))
             }
             )
+    }
+
+    fun clickXY(x: Int, y: Int): ViewAction {
+        return GeneralClickAction(
+            Tap.SINGLE,
+            { view ->
+                val location = IntArray(2)
+                view!!.getLocationOnScreen(location)
+                val screenX = (location[0] + x).toFloat()
+                val screenY = (location[1] + y).toFloat()
+                floatArrayOf(screenX, screenY)
+            },
+            Press.FINGER,
+            0, // inputDevice
+            0  // deviceState
+        )
     }
 
 }
