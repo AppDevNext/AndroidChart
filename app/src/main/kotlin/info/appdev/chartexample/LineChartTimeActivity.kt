@@ -19,7 +19,9 @@ import info.appdev.charting.components.XAxis
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryDouble
 import info.appdev.charting.data.LineData
+import info.appdev.charting.data.LineDataDouble
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.utils.ColorTemplate.holoBlue
@@ -105,20 +107,20 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
         val now: Long = 0 //470044; //TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis());
 
-        val values = ArrayList<Entry>()
+        val values = ArrayList<EntryDouble>()
 
         // count = hours
-        val to = (now + count).toFloat()
+        val to = (now + count).toDouble()
 
         val valuesData = getValues(to.roundToInt())
         // increment by 1 hour
-        var x = now.toFloat()
+        var x = now.toDouble()
         while (x < to) {
-            val y: Float = if (count == 100)  // initial
-                (valuesData[x.roundToInt()])!!.toFloat() * 50 + 50
-            else (Math.random() * 50 + 50).toFloat() // manually triggered
+            val y: Double = if (count == 100)  // initial
+                (valuesData[x.roundToInt()])!! * 50 + 50
+            else (Math.random() * 50 + 50) // manually triggered
 
-            values.add(Entry(x, y)) // add one entry per hour
+            values.add(EntryDouble(x, y)) // add one entry per hour
             x++
         }
 
@@ -136,7 +138,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         set1.isDrawCircleHoleEnabled = false
 
         // create a data object with the data sets
-        val data = LineData(set1)
+        val data = LineDataDouble(set1)
         data.setValueTextColor(Color.WHITE)
         data.setValueTextSize(9f)
 
