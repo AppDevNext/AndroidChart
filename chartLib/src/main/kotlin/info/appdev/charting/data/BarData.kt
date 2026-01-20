@@ -5,7 +5,7 @@ import info.appdev.charting.interfaces.datasets.IBarDataSet
 /**
  * Data object that represents all data for the BarChart.
  */
-class BarData : BarLineScatterCandleBubbleData<IBarDataSet> {
+class BarData : BarLineScatterCandleBubbleData<IBarDataSet, Float> {
     /**
      * Sets the width each bar should have on the x-axis (in values, not pixels).
      * Default 0.85f

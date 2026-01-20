@@ -50,7 +50,7 @@ import kotlin.math.abs
 import kotlin.math.max
 
 @Suppress("unused")
-abstract class Chart<T : ChartData<out IDataSet<out BaseEntry<Float>, Float>>> : ViewGroup, IBaseProvider<T> {
+abstract class Chart<T : ChartData<*, *>> : ViewGroup, IBaseProvider<T> {
     /**
      * Returns true if log-output is enabled for the chart, fals if not.
      */

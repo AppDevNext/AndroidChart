@@ -45,7 +45,7 @@ open class LegendRenderer(
     /**
      * Prepares the legend and calculates all needed forms, labels and colors.
      */
-    fun computeLegend(data: ChartData<*>) {
+    fun computeLegend(data: ChartData<*, *>) {
         if (!legend.isLegendCustom) {
             computedEntries.clear()
 

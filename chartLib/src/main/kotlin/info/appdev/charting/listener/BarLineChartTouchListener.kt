@@ -25,11 +25,11 @@ import kotlin.math.sqrt
  */
 @Suppress("MemberVisibilityCanBePrivate")
 class BarLineChartTouchListener(
-    chart: BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>>>,
+    chart: BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>, Float>>,
     touchMatrix: Matrix,
     dragTriggerDistance: Float
 ) :
-    ChartTouchListener<BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>>>>(chart) {
+    ChartTouchListener<BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>, Float>>>(chart) {
     /**
      * the original touch-matrix from the chart
      */

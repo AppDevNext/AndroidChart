@@ -18,12 +18,11 @@ import info.appdev.charting.components.AxisBase
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.components.YAxis.AxisDependency
-import info.appdev.charting.data.Entry
 import info.appdev.charting.data.EntryDouble
-import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataDouble
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IAxisValueFormatter
+import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.utils.ColorTemplate.holoBlue
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -161,7 +160,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.lineData.dataSets.forEach {
+                binding.chart1.data?.dataSets?.forEach {
                     it.isDrawValues = !it.isDrawValues
                 }
                 binding.chart1.invalidate()
@@ -176,34 +175,40 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
             R.id.actionToggleFilled -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawFilled = !set.isDrawFilled
+                    @Suppress("UNCHECKED_CAST")
+                    (set as ILineDataSet<*, *>).isDrawFilled = !set.isDrawFilled
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawCircles = !set.isDrawCircles
+                    @Suppress("UNCHECKED_CAST")
+                    (set as ILineDataSet<*, *>).isDrawCircles = !set.isDrawCircles
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
-                        set.lineMode = LineDataSet.Mode.LINEAR
+                    @Suppress("UNCHECKED_CAST")
+                    val lineSet = set as ILineDataSet<*, *>
+                    if (lineSet.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
+                        lineSet.lineMode = LineDataSet.Mode.LINEAR
                     else
-                        set.lineMode = LineDataSet.Mode.CUBIC_BEZIER
+                        lineSet.lineMode = LineDataSet.Mode.CUBIC_BEZIER
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleStepped -> {
                 binding.chart1.data?.dataSets?.forEach { set ->
-                    if (set.lineMode == LineDataSet.Mode.STEPPED)
-                        set.lineMode = LineDataSet.Mode.LINEAR
+                    @Suppress("UNCHECKED_CAST")
+                    val lineSet = set as ILineDataSet<*, *>
+                    if (lineSet.lineMode == LineDataSet.Mode.STEPPED)
+                        lineSet.lineMode = LineDataSet.Mode.LINEAR
                     else
-                        set.lineMode = LineDataSet.Mode.STEPPED
+                        lineSet.lineMode = LineDataSet.Mode.STEPPED
                 }
                 binding.chart1.invalidate()
             }
