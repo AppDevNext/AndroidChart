@@ -4,9 +4,9 @@ import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataS
 import info.appdev.charting.interfaces.datasets.IDataSet
 
 /**
- * Baseclass for all Line, Bar, Scatter, Candle and Bubble data.
+ * Baseclass for all Line, Bar, Scatter, Candle and Bubble data with Double precision.
  */
-abstract class BarLineScatterCandleBubbleDataDouble<out T> : ChartData<@UnsafeVariance T>
+abstract class BarLineScatterCandleBubbleDataDouble<out T> : ChartData<@UnsafeVariance T, Double>
         where T : IDataSet<out BaseEntry<Double>, Double>,
               T : IBarLineScatterCandleBubbleDataSet<out BaseEntry<Double>, Double> {
 

@@ -9,7 +9,7 @@ import timber.log.Timber
  * Data object that allows the combination of Line-, Bar-, Scatter-, Bubble- and
  * CandleData. Used in the CombinedChart class.
  */
-class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>>() {
+class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>, Float>() {
     var lineData: LineData? = null
         private set
     var barData: BarData? = null
@@ -65,7 +65,8 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
             data.calcMinMax()
 
             val sets = data.dataSets
-            dataSets.addAll(sets)
+            @Suppress("UNCHECKED_CAST")
+            dataSets.addAll(sets as Collection<IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>>)
 
             if (data.yMax > yMax) yMax = data.yMax
 
@@ -97,12 +98,12 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
         }
     }
 
-    val allData: MutableList<BarLineScatterCandleBubbleData<*>>
+    val allData: MutableList<BarLineScatterCandleBubbleData<*, *>>
         /**
          * Returns all data objects in row: line-bar-scatter-candle-bubble if not null.
          */
         get() {
-            val data: MutableList<BarLineScatterCandleBubbleData<*>> = ArrayList<BarLineScatterCandleBubbleData<*>>()
+            val data: MutableList<BarLineScatterCandleBubbleData<*, *>> = ArrayList<BarLineScatterCandleBubbleData<*, *>>()
             if (this.lineData != null) data.add(this.lineData!!)
             if (this.barData != null) data.add(this.barData!!)
             if (this.scatterData != null) data.add(this.scatterData!!)
@@ -112,7 +113,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
             return data
         }
 
-    fun getDataByIndex(index: Int): BarLineScatterCandleBubbleData<*> {
+    fun getDataByIndex(index: Int): BarLineScatterCandleBubbleData<*, *> {
         return this.allData[index]
     }
 
@@ -134,7 +135,7 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
         if (highlight.dataIndex >= this.allData.size || highlight.dataIndex < 0)
             return null
 
-        val data: ChartData<*> = getDataByIndex(highlight.dataIndex)
+        val data: ChartData<*, *> = getDataByIndex(highlight.dataIndex)
 
         if (highlight.dataSetIndex >= data.dataSetCount)
             return null
@@ -165,10 +166,11 @@ class CombinedData : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleD
         if (highlight.dataSetIndex >= data.dataSetCount)
             return null
 
+        @Suppress("UNCHECKED_CAST")
         return data.dataSets[highlight.dataSetIndex] as IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>?
     }
 
-    fun getDataIndex(data: ChartData<*>?): Int {
+    fun getDataIndex(data: ChartData<*, *>?): Int {
         return this.allData.indexOf(data)
     }
 

@@ -2,7 +2,7 @@ package info.appdev.charting.data
 
 import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 
-class BubbleData : BarLineScatterCandleBubbleData<IBubbleDataSet> {
+class BubbleData : BarLineScatterCandleBubbleData<IBubbleDataSet, Float> {
     constructor() : super()
 
     constructor(dataSets: MutableList<IBubbleDataSet>) : super(dataSets)

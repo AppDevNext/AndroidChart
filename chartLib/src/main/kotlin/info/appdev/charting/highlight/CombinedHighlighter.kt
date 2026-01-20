@@ -19,7 +19,7 @@ open class CombinedHighlighter(combinedDataProvider: CombinedDataProvider, barDa
         val dataObjects = provider.combinedData!!.allData
 
         for (i in dataObjects.indices) {
-            val dataObject: ChartData<*> = dataObjects[i]
+            val dataObject: ChartData<*, *> = dataObjects[i]
 
             // in case of BarData, let the BarHighlighter take over
             if (barHighlighter != null && dataObject is BarData) {
