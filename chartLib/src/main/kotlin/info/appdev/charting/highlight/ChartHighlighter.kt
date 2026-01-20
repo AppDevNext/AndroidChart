@@ -192,6 +192,6 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
         return hypot((x1 - x2).toDouble(), (y1 - y2).toDouble()).toFloat()
     }
 
-    protected open val data: ChartData<*>?
-        get() = provider.data
+    protected open val data: ChartData<*, *>?
+        get() = provider.data as ChartData<*, *>?
 }

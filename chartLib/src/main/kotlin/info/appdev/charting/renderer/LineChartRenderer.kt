@@ -14,6 +14,7 @@ import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.interfaces.datasets.ILineDataSet
+import info.appdev.charting.interfaces.datasets.ILineScatterCandleRadarDataSet
 import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Transformer
@@ -79,8 +80,10 @@ open class LineChartRenderer(
 
         dataProvider.lineData?.let { lineData ->
             lineData.dataSets.forEach { set ->
-                if (set.isVisible)
-                    drawDataSet(canvas, set)
+                if (set.isVisible) {
+                    @Suppress("UNCHECKED_CAST")
+                    drawDataSet(canvas, set as ILineDataSet<out BaseEntry<Float>, Float>)
+                }
             }
         }
         canvas.drawBitmap(drawBitmapLocal, 0f, 0f, null)
@@ -479,7 +482,8 @@ open class LineChartRenderer(
 
             dataSets?.let {
                 for (i in it.indices) {
-                    val dataSet = dataSets[i]
+                    @Suppress("UNCHECKED_CAST")
+                    val dataSet = dataSets[i] as ILineDataSet<out BaseEntry<Float>, Float>
                     if (dataSet.entryCount == 0) {
                         continue
                     }
@@ -583,7 +587,8 @@ open class LineChartRenderer(
 
         dataSets?.let {
             for (i in it.indices) {
-                val dataSet = dataSets[i]
+                @Suppress("UNCHECKED_CAST")
+                val dataSet = dataSets[i] as ILineDataSet<out BaseEntry<Float>, Float>
                 if (!dataSet.isVisible || !dataSet.isDrawCircles || dataSet.entryCount == 0) continue
 
                 circlePaintInner.color = dataSet.circleHoleColor
@@ -652,7 +657,7 @@ open class LineChartRenderer(
             set.getEntryForXValue(high.x, high.y)?.let { entry ->
 
                 @Suppress("UNCHECKED_CAST")
-                if (!isInBoundsX(entry, set as IBarLineScatterCandleBubbleDataSet<BaseEntry<Float>, Float>))
+                if (!isInBoundsX(entry as BaseEntry<Float>, set as IBarLineScatterCandleBubbleDataSet<BaseEntry<Float>, Float>))
                     continue
 
                 val pix = dataProvider.getTransformer(set.axisDependency)!!.getPixelForValues(
@@ -661,7 +666,8 @@ open class LineChartRenderer(
 
                 high.setDraw(pix.x.toFloat(), pix.y.toFloat())
                 // draw the lines
-                drawHighlightLines(canvas, pix.x.toFloat(), pix.y.toFloat(), set)
+                @Suppress("UNCHECKED_CAST")
+                drawHighlightLines(canvas, pix.x.toFloat(), pix.y.toFloat(), set as ILineScatterCandleRadarDataSet<*, *>)
             }
         }
     }

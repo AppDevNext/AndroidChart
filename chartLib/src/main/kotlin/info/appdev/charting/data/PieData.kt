@@ -10,7 +10,7 @@ import timber.log.Timber
  * from the DataSet labels. Each PieData object can only represent one
  * PieDataSet (multiple PieDataSets inside a single PieChart are not possible).
  */
-class PieData : ChartData<IPieDataSet> {
+class PieData : ChartData<IPieDataSet, Float> {
 
     constructor(dataSet: IPieDataSet) : super(dataSet)
 

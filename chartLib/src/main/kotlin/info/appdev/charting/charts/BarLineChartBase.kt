@@ -47,7 +47,7 @@ import kotlin.math.min
  */
 @Suppress("unused")
 @SuppressLint("RtlHardcoded")
-abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out BaseEntry<Float>, Float>>> : Chart<T>,
+abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<*, *>> : Chart<T>,
     BarLineScatterCandleBubbleDataProvider<T> {
     /**
      * the maximum number of entries to which values will be drawn
