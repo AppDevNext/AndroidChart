@@ -24,10 +24,6 @@ jobs:
         emulatorApi: [ 9 ]
         java_version: [ 17 ]
     steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          submodules: true
       - name: kvm support
         run: |
           egrep -c '(vmx|svm)' /proc/cpuinfo
@@ -39,6 +35,10 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y exiftool imagemagick xdg-utils libimage-exiftool-perl zsh jq xorg
       #          brew install exiftool imagemagick
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
       - name: Install JDK ${{ matrix.java_version }}
         uses: actions/setup-java@v5
         with:
@@ -78,7 +78,7 @@ jobs:
           SCREENSHOT_USER: ${{ secrets.SCREENSHOT_USER }}
           SCREENSHOT_PASSWORD: ${{ secrets.SCREENSHOT_PASSWORD }}
         run: |
-          ls -ls app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
+          ls -la app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected
           cp app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554\ -\ ${{ matrix.emulatorApi }}/* screenshotsToCompare${{ matrix.emulatorApi }}
           ./screenShotScript/screenShotCompare.sh
       - name: Archive screenshots diffs
