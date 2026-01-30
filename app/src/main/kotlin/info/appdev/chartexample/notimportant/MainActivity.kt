@@ -209,7 +209,7 @@ class MainActivity : ComponentActivity() {
             //add(new ContentItem("Realm.io Examples", "See more examples that use Realm.io mobile database."));
 
             add(ContentItem("Compose Horizontal"))
-            add(ComposeItem("Horizontal", "Render bar chart horizontally.", HorizontalBarComposeActivity::class.java).toDemoBase())
+            add(ComposeItem("HorizontalCompose", "Render bar chart horizontally compose", HorizontalBarComposeActivity::class.java).toDemoBase())
 
             add(ContentItem("Demonstrate and fix issues"))
             add(ContentItem("Gradient", "Show a gradient edge case", GradientActivity::class.java))
