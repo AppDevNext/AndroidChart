@@ -20,6 +20,7 @@ import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -116,7 +117,7 @@ class ListViewMultiChartActivity : DemoBase() {
         d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0])
         d2.isDrawValues = false
 
-        val sets = ArrayList<ILineDataSet>()
+        val sets = ArrayList<ILineDataSet<out BaseEntry<Float>, Float>>()
         sets.add(d1)
         sets.add(d2)
 

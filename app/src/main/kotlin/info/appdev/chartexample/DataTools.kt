@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.DashPathEffect
 import androidx.core.content.ContextCompat
 import info.appdev.charting.charts.LineChart
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -13,6 +14,7 @@ import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.utils.getSDKInt
 import timber.log.Timber
+import kotlin.Float
 import kotlin.math.PI
 import kotlin.math.sin
 
@@ -160,7 +162,7 @@ class DataTools {
 
         fun setData(context: Context, lineChart: LineChart, count: Int = VAL_COUNT, range: Float = VAL_RANGE) {
             Timber.d("count=$count range=$range")
-            val values = ArrayList<Entry>()
+            val values = ArrayList<BaseEntry<Float>>()
             if (count == VAL_COUNT) {
                 VAL_FIX.forEachIndexed { index, d ->
                     values.add(Entry(index.toFloat(), d.toFloat(), ContextCompat.getDrawable(context, R.drawable.star)))
@@ -173,7 +175,7 @@ class DataTools {
             }
             lineChart.data?.let {
                 if (it.dataSetCount > 0) {
-                    val lineDataSet0 = it.getDataSetByIndex(0) as LineDataSet
+                    val lineDataSet0 = it.getDataSetByIndex(0) as LineDataSet<BaseEntry<Float>, Float>
                     lineDataSet0.entries = values
                     lineDataSet0.notifyDataChanged()
                     it.notifyDataChanged()
@@ -186,7 +188,7 @@ class DataTools {
         }
 
         private fun createDataset(
-            values: ArrayList<Entry>,
+            values: ArrayList<BaseEntry<Float>>,
             lineChart: LineChart,
             context: Context
         ) {
@@ -222,7 +224,7 @@ class DataTools {
             // set the filled area
             lineDataSet01.isDrawFilled = true
             lineDataSet01.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet<out BaseEntry<Float>, Float>?, dataProvider: LineDataProvider): Float {
                     return lineChart.axisLeft.axisMinimum
                 }
             }
@@ -235,11 +237,11 @@ class DataTools {
             } else {
                 lineDataSet01.fillColor = Color.BLACK
             }
-            val dataSets = ArrayList<ILineDataSet>()
+            val dataSets = ArrayList<LineDataSet<BaseEntry<Float>, Float>>()
             dataSets.add(lineDataSet01) // add the data sets
 
             // create a data object with the data sets
-            val data = LineData(dataSets)
+            val data = LineData(dataSets.toMutableList())
 
             lineChart.data = data
         }

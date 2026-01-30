@@ -16,6 +16,7 @@ import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.data.BarLineScatterCandleBubbleData
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.ChartHighlighter
 import info.appdev.charting.interfaces.dataprovider.base.BarLineScatterCandleBubbleDataProvider
@@ -46,7 +47,7 @@ import kotlin.math.min
  */
 @Suppress("unused")
 @SuppressLint("RtlHardcoded")
-abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out Entry>>> : Chart<T>,
+abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<*, *>> : Chart<T>,
     BarLineScatterCandleBubbleDataProvider<T> {
     /**
      * the maximum number of entries to which values will be drawn
@@ -1083,7 +1084,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
     /**
      * returns the Entry object displayed at the touched position of the chart
      */
-    fun getEntryByTouchPoint(x: Float, y: Float): Entry? {
+    fun getEntryByTouchPoint(x: Float, y: Float): BaseEntry<Float>? {
         val highlight = getHighlightByTouchPoint(x, y)
         if (highlight != null) {
             return mData!!.getEntryForHighlight(highlight)
@@ -1094,7 +1095,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
     /**
      * returns the DataSet object displayed at the touched position of the chart
      */
-    fun getDataSetByTouchPoint(x: Float, y: Float): IBarLineScatterCandleBubbleDataSet<*>? {
+    fun getDataSetByTouchPoint(x: Float, y: Float): IBarLineScatterCandleBubbleDataSet<*, *>? {
         val highlight = getHighlightByTouchPoint(x, y)
         if (highlight != null) {
             return mData!!.getDataSetByIndex(highlight.dataSetIndex)

@@ -81,7 +81,7 @@ open class CombinedChartRenderer(
         val chart = weakChart.get() ?: return
 
         dataRenderers.forEach { renderer ->
-            var data: ChartData<*>? = null
+            var data: ChartData<*, *>? = null
 
             when (renderer) {
                 is BarChartRenderer -> data = renderer.dataProvider.barData

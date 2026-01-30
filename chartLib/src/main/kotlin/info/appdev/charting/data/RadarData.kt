@@ -6,7 +6,7 @@ import info.appdev.charting.interfaces.datasets.IRadarDataSet
 /**
  * Data container for the RadarChart.
  */
-class RadarData : ChartData<IRadarDataSet> {
+class RadarData : ChartData<IRadarDataSet, Float> {
     /**
      * Sets the labels that should be drawn around the RadarChart at the end of each web line.
      */

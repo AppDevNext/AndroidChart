@@ -3,7 +3,7 @@ package info.appdev.charting.interfaces.datasets
 import info.appdev.charting.data.PieDataSet.ValuePosition
 import info.appdev.charting.data.PieEntry
 
-interface IPieDataSet : IDataSet<PieEntry> {
+interface IPieDataSet : IDataSet<PieEntry, Float> {
     /**
      * Returns the space that is set to be between the PieChart-slices of this DataSet, in pixels.
      */

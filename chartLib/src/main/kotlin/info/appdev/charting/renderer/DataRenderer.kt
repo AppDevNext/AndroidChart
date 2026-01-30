@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.Align
 import info.appdev.charting.animation.ChartAnimator
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.base.IBaseProvider
@@ -70,7 +70,7 @@ abstract class DataRenderer(
      * Applies the required styling (provided by the DataSet) to the value-paint
      * object.
      */
-    protected fun applyValueTextStyle(set: IDataSet<*>) {
+    protected fun applyValueTextStyle(set: IDataSet<*, *>) {
         paintValues.typeface = set.valueTypeface
         paintValues.textSize = set.valueTextSize
     }
@@ -103,7 +103,7 @@ abstract class DataRenderer(
      * @param x            position
      * @param y            position
      */
-    fun drawValue(canvas: Canvas, formatter: IValueFormatter, value: Float, entry: Entry?, dataSetIndex: Int, x: Float, y: Float, color: Int) {
+    fun drawValue(canvas: Canvas, formatter: IValueFormatter, value: Float, entry: BaseEntry<Float>?, dataSetIndex: Int, x: Float, y: Float, color: Int) {
         paintValues.color = color
         canvas.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, viewPortHandler)!!, x, y, paintValues)
     }

@@ -1,7 +1,7 @@
 package info.appdev.charting.formatter
 
 import info.appdev.charting.components.AxisBase
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.utils.ViewPortHandler
 import java.text.DecimalFormat
 
@@ -23,7 +23,7 @@ open class PercentFormatter : IValueFormatter, IAxisValueFormatter {
     }
 
     // IValueFormatter
-    override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String? {
+    override fun getFormattedValue(value: Float, entry: BaseEntry<Float>?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String? {
         return decimalFormat.format(value.toDouble()) + " %"
     }
 

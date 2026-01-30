@@ -6,6 +6,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import info.appdev.chartexample.databinding.ActivityGradientBinding
 import info.appdev.chartexample.notimportant.DemoBase
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -62,7 +63,7 @@ class GradientActivity : DemoBase() {
 
             fillFormatter = object : IFillFormatter {
                 override fun getFillLinePosition(
-                    dataSet: ILineDataSet?,
+                    dataSet: ILineDataSet<out BaseEntry<Float>, Float>?,
                     dataProvider: LineDataProvider
                 ): Float = binding.chart1.axisLeft.axisMinimum
             }

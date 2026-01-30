@@ -26,7 +26,7 @@ import info.appdev.charting.components.YAxis.YAxisLabelPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
@@ -281,7 +281,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
     private val onValueSelectedRectF = RectF()
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         val bounds = onValueSelectedRectF
         binding.chart1.getBarBounds(entry as BarEntry, bounds)
         val position = binding.chart1.getPosition(entry, AxisDependency.LEFT)

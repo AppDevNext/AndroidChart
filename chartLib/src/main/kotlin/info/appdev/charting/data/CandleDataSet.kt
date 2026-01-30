@@ -9,7 +9,7 @@ import info.appdev.charting.utils.convertDpToPixel
 /**
  * DataSet for the CandleStickChart.
  */
-open class CandleDataSet(yVals: MutableList<CandleEntry>, label: String = "") : LineScatterCandleRadarDataSet<CandleEntry>(yVals, label), ICandleDataSet {
+open class CandleDataSet(yVals: MutableList<CandleEntry>, label: String = "") : LineScatterCandleRadarDataSet<CandleEntry, Float>(yVals, label), ICandleDataSet {
     /**
      * the width of the shadow of the candle
      */
@@ -69,7 +69,7 @@ open class CandleDataSet(yVals: MutableList<CandleEntry>, label: String = "") : 
     @ColorInt
     protected var mShadowColor: Int = ColorTemplate.COLOR_SKIP
 
-    override fun copy(): DataSet<CandleEntry> {
+    override fun copy(): DataSet<CandleEntry, Float> {
         val entries: MutableList<CandleEntry> = mutableListOf()
         for (i in mEntries.indices) {
             entries.add(mEntries[i].copy())
@@ -81,7 +81,7 @@ open class CandleDataSet(yVals: MutableList<CandleEntry>, label: String = "") : 
     }
 
     protected fun copy(candleDataSet: CandleDataSet) {
-        super.copy((candleDataSet as BaseDataSet<*>?)!!)
+        super.copy((candleDataSet as BaseDataSet<*, *>?)!!)
         candleDataSet.mShadowWidth = mShadowWidth
         candleDataSet.mShowCandleBar = mShowCandleBar
         candleDataSet.mBarSpace = mBarSpace

@@ -17,10 +17,10 @@ import info.appdev.chartexample.databinding.ActivityBubblechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.BubbleData
 import info.appdev.charting.data.BubbleDataSet
 import info.appdev.charting.data.BubbleEntry
-import info.appdev.charting.data.Entry
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -211,7 +211,7 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         saveToGallery(binding.chart1, "BubbleChartActivity")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         Timber.i("Value: ${entry.y}, xIndex: ${entry.x}, DataSet index: ${highlight.dataSetIndex}")
     }
 

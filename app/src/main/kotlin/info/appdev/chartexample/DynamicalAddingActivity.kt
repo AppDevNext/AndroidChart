@@ -14,6 +14,7 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.YAxis.AxisDependency
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -147,8 +148,8 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         }
     }
 
-    private fun createSet(): LineDataSet {
-        val set = LineDataSet(label = "DataSet 1")
+    private fun createSet(): LineDataSet<BaseEntry<Float>, Float> {
+        val set = LineDataSet<BaseEntry<Float>, Float>(label = "DataSet 1")
         set.lineWidth = 2.5f
         set.circleRadius = 4.5f
         set.color = Color.rgb(240, 99, 99)
@@ -160,7 +161,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         return set
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         Toast.makeText(this, entry.toString(), Toast.LENGTH_SHORT).show()
     }
 
