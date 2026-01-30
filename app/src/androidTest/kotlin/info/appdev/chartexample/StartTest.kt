@@ -25,6 +25,7 @@ import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import info.appdev.chartexample.compose.HorizontalBarComposeActivity
+import info.appdev.chartexample.compose.HorizontalBarFullComposeActivity
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
 import info.appdev.chartexample.notimportant.ContentItem
 import info.appdev.chartexample.notimportant.DemoBase
@@ -249,6 +250,7 @@ class StartTest {
             contentItem.clazz == RealtimeLineChartActivity::class.java ||
             contentItem.clazz == LineChartTimeActivity::class.java ||
             contentItem.clazz == HorizontalBarComposeActivity::class.java ||
+            contentItem.clazz == HorizontalBarFullComposeActivity::class.java ||
             contentItem.clazz == GradientActivity::class.java ||
             contentItem.clazz == TimeLineActivity::class.java
         ) {
