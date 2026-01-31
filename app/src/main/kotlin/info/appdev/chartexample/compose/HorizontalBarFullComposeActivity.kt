@@ -1,6 +1,5 @@
 package info.appdev.chartexample.compose
 
-import android.graphics.RectF
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -34,26 +33,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.R
 import info.appdev.chartexample.notimportant.DemoBaseCompose
-import info.appdev.charting.charts.HorizontalBarChart
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis.XAxisPosition
+import info.appdev.charting.compose.HorizontalBarChart
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
-import info.appdev.charting.highlight.Highlight
-import info.appdev.charting.interfaces.datasets.IBarDataSet
-import info.appdev.charting.listener.OnChartValueSelectedListener
-import info.appdev.charting.utils.PointF
 import timber.log.Timber
 
 class HorizontalBarFullComposeActivity : DemoBaseCompose() {
-    private var chart: HorizontalBarChart? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +53,7 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
         setContent {
             MaterialTheme {
                 HorizontalBarChartScreen(
-                    onSaveToGallery = { saveToGallery(chart!!) },
+                    onSaveToGallery = { /* saveToGallery functionality needs chart bitmap */ },
                     onViewGithub = { viewGithub() }
                 )
             }
@@ -203,18 +195,51 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
                     .padding(paddingValues)
                     .background(Color.White)
             ) {
-                // Chart
-                AndroidView(
-                    factory = { context ->
-                        HorizontalBarChart(context).apply {
-                            chart = this
-                            setupChart(this)
-                            setData(seekBarXValue.toInt(), seekBarYValue)
-                        }
-                    },
+                // Chart - Using Compose HorizontalBarChart
+                val barData = remember(seekBarXValue, seekBarYValue) {
+                    createBarData(seekBarXValue.toInt(), seekBarYValue)
+                }
+
+                HorizontalBarChart(
+                    data = barData,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f)
+                        .weight(1f),
+                    drawValueAboveBar = true,
+                    drawBarShadow = false,
+                    animationDuration = 2500,
+                    onValueSelected = { entry, highlight ->
+                        entry?.let {
+                            Timber.d("Selected: x=${it.x}, y=${it.y}")
+                        }
+                    },
+                    xAxisConfig = { xAxis ->
+                        xAxis.position = XAxisPosition.BOTTOM
+                        xAxis.typeface = tfLight
+                        xAxis.isDrawAxisLine = true
+                        xAxis.isDrawGridLines = false
+                        xAxis.granularity = 10f
+                    },
+                    leftAxisConfig = { leftAxis ->
+                        leftAxis.typeface = tfLight
+                        leftAxis.isDrawAxisLine = true
+                        leftAxis.isDrawGridLines = true
+                        leftAxis.axisMinimum = 0f
+                    },
+                    rightAxisConfig = { rightAxis ->
+                        rightAxis.typeface = tfLight
+                        rightAxis.isDrawAxisLine = true
+                        rightAxis.isDrawGridLines = false
+                        rightAxis.axisMinimum = 0f
+                    },
+                    legend = { legend ->
+                        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+                        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+                        legend.orientation = Legend.LegendOrientation.HORIZONTAL
+                        legend.setDrawInside(false)
+                        legend.formSize = 8f
+                        legend.xEntrySpace = 4f
+                    }
                 )
 
                 // SeekBar X with label
@@ -228,7 +253,6 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
                         value = seekBarXValue,
                         onValueChange = { newValue ->
                             seekBarXValue = newValue
-                            setData(newValue.toInt(), seekBarYValue)
                         },
                         valueRange = 0f..100f,
                         modifier = Modifier.weight(1f)
@@ -251,7 +275,6 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
                         value = seekBarYValue,
                         onValueChange = { newValue ->
                             seekBarYValue = newValue
-                            setData(seekBarXValue.toInt(), newValue)
                         },
                         valueRange = 0f..100f,
                         modifier = Modifier.weight(1f)
@@ -266,73 +289,7 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
         }
     }
 
-    private fun setupChart(chart: HorizontalBarChart) {
-        chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-            override fun onValueSelected(entry: Entry, highlight: Highlight) {
-                val bounds = RectF()
-                chart.getBarBounds(entry as BarEntry, bounds)
-
-                val data = chart.barData
-                if (data != null) {
-                    val position = chart.getPosition(
-                        entry, data.getDataSetByIndex(highlight.dataSetIndex)?.axisDependency
-                    )
-
-                    Timber.tag("bounds $bounds")
-                    Timber.tag("position $position")
-
-                    PointF.recycleInstance(position)
-                }
-            }
-
-            override fun onNothingSelected() = Unit
-        })
-
-        chart.isDrawBarShadow = false
-        chart.isDrawValueAboveBar = true
-        chart.description.isEnabled = false
-        chart.setMaxVisibleValueCount(60)
-        chart.isPinchZoom = false
-        chart.setDrawGridBackground(false)
-
-        val xl = chart.xAxis
-        xl.position = XAxisPosition.BOTTOM
-        xl.typeface = tfLight
-        xl.isDrawAxisLine = true
-        xl.isDrawGridLines = false
-        xl.granularity = 10f
-
-        chart.axisLeft.apply {
-            typeface = tfLight
-            isDrawAxisLine = true
-            isDrawGridLines = true
-            axisMinimum = 0f
-
-        }
-
-        chart.axisRight.apply {
-            typeface = tfLight
-            isDrawAxisLine = true
-            isDrawGridLines = false
-            axisMinimum = 0f
-        }
-
-        chart.setFitBars(true)
-        chart.animateY(2500)
-
-        chart.legend.apply {
-            verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-            horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-            orientation = Legend.LegendOrientation.HORIZONTAL
-            setDrawInside(false)
-            formSize = 8f
-            xEntrySpace = 4f
-        }
-    }
-
-    private fun setData(count: Int, range: Float) {
-        val localChart = chart ?: return
-
+    private fun createBarData(count: Int, range: Float): BarData {
         val barWidth = 9f
         val spaceForBar = 10f
         val values = ArrayList<BarEntry>()
@@ -348,85 +305,52 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
             values.add(barEntry)
         }
 
-        val set1: BarDataSet
-        val chartData = localChart.barData
+        val set1 = BarDataSet(values, "DataSet 1")
+        set1.isDrawIcons = false
 
-        if (chartData != null && chartData.dataSetCount > 0) {
-            set1 = chartData.getDataSetByIndex(0) as BarDataSet
-            @Suppress("DEPRECATION")
-            set1.entries = values
-            chartData.notifyDataChanged()
-            localChart.notifyDataSetChanged()
-        } else {
-            set1 = BarDataSet(values, "DataSet 1")
-            set1.isDrawIcons = false
-
-            val dataSets = ArrayList<IBarDataSet>()
-            dataSets.add(set1)
-
-            val data = BarData(dataSets)
-            data.setValueTextSize(10f)
-            data.setValueTypeface(tfLight)
-            data.barWidth = barWidth
-            localChart.data = data
-        }
-
-        localChart.setFitBars(true)
-        localChart.invalidate()
+        val data = BarData(set1)
+        data.setValueTextSize(10f)
+        data.setValueTypeface(tfLight)
+        data.barWidth = barWidth
+        return data
     }
 
+    // Note: The following methods are not functional with the Compose wrapper
+    // They would need to be implemented differently using state management
     private fun toggleValues() {
-        chart?.let {
-            it.barData?.dataSets?.forEach {
-                it.isDrawValues = !it.isDrawValues
-            }
-            it.invalidate()
-        }
+        Timber.d("toggleValues not yet implemented for Compose wrapper")
     }
 
     private fun toggleIcons() {
-        val sets = chart?.barData?.dataSets ?: return
-        for (iSet in sets) {
-            iSet.isDrawIcons = !iSet.isDrawIcons
-        }
-        chart?.invalidate()
+        Timber.d("toggleIcons not yet implemented for Compose wrapper")
     }
 
     private fun toggleHighlight() {
-        val chartData = chart?.barData
-        if (chartData != null) {
-            chartData.isHighlight = !chartData.isHighlight
-            chart?.invalidate()
-        }
+        Timber.d("toggleHighlight not yet implemented for Compose wrapper")
     }
 
     private fun togglePinchZoom() {
-        chart?.isPinchZoom?.let { chart?.isPinchZoom = !it }
-        chart?.invalidate()
+        Timber.d("togglePinchZoom not yet implemented for Compose wrapper")
     }
 
     private fun toggleAutoScaleMinMax() {
-        chart?.isAutoScaleMinMax?.let { chart?.isAutoScaleMinMax = !it }
-        chart?.notifyDataSetChanged()
+        Timber.d("toggleAutoScaleMinMax not yet implemented for Compose wrapper")
     }
 
     private fun toggleBarBorders() {
-        for (set in chart?.barData?.dataSets?.map { it as BarDataSet } ?: return) {
-            set.barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
-        }
-        chart?.invalidate()
+        Timber.d("toggleBarBorders not yet implemented for Compose wrapper")
     }
 
     private fun animateX() {
-        chart?.animateX(2000)
+        Timber.d("animateX not yet implemented for Compose wrapper")
     }
 
     private fun animateY() {
-        chart?.animateY(2000)
+        Timber.d("animateY not yet implemented for Compose wrapper")
     }
 
     private fun animateXY() {
-        chart?.animateXY(2000, 2000)
+        Timber.d("animateXY not yet implemented for Compose wrapper")
     }
 
 }
