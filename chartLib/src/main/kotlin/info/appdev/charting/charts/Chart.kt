@@ -549,15 +549,14 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
 
         setLastHighlighted(this.highlighted)
 
-        if (callListener && mSelectionListener != null) {
+        mSelectionListener?.let { listener ->
             if (!valuesToHighlight()) {
-                mSelectionListener!!.onNothingSelected()
+                listener.onNothingSelected()
             } else {
                 // notify the listener
-                mSelectionListener!!.onValueSelected(entry!!, high!!)
+                listener.onValueSelected(entry!!, high!!)
             }
         }
-
         // redraw the chart
         invalidate()
     }
