@@ -11,8 +11,7 @@ import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.snackbar.Snackbar
 import info.appdev.chartexample.R
 import info.appdev.chartexample.databinding.ActivityAwesomedesignBinding
@@ -31,25 +30,24 @@ class ViewPagerSimpleChartDemo : DemoBase() {
         setContentView(binding.root)
 
         binding.pager.offscreenPageLimit = 3
-        binding.pager.adapter = PageAdapter(supportFragmentManager)
+        binding.pager.adapter = PageAdapter(this)
 
         showSnackbar("Swipe left and right for more awesome design examples!")
     }
 
-    private class PageAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
-        override fun getItem(pos: Int): Fragment {
-            var f: Fragment? = null
-            when (pos) {
-                0 -> f = SineCosineFragment.newInstance()
-                1 -> f = ComplexityFragment.newInstance()
-                2 -> f = BarChartFrag.newInstance()
-                3 -> f = ScatterChartFrag.newInstance()
-                4 -> f = PieChartFrag.newInstance()
+    private class PageAdapter(activity: ViewPagerSimpleChartDemo) : FragmentStateAdapter(activity) {
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> SineCosineFragment.newInstance()
+                1 -> ComplexityFragment.newInstance()
+                2 -> BarChartFrag.newInstance()
+                3 -> ScatterChartFrag.newInstance()
+                4 -> PieChartFrag.newInstance()
+                else -> throw IllegalArgumentException("Invalid position: $position")
             }
-            return f!!
         }
 
-        override fun getCount(): Int {
+        override fun getItemCount(): Int {
             return 5
         }
     }

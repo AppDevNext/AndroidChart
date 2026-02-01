@@ -54,6 +54,7 @@ dependencies {
     implementation(project(":chartLib"))
     implementation(project(":chartLibCompose"))
     implementation("androidx.window:window:1.5.1")
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
 
     // Compose BOM
     val composeBom = platform("androidx.compose:compose-bom:2026.01.01")
