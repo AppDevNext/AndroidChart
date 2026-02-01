@@ -15,8 +15,7 @@ private val drawableBoundsCache = Rect()
 /**
  * Utilities class that has some helper methods. Needs to be initialized by
  * calling Utils.init(...) before usage. Inside the Chart.init() method, this is
- * done, if the Utils are used before that, Utils.init(...) needs to be called
- * manually.
+ * done, if the Utils are used before that, Utils.init(...) needs to be called manually.
  */
 fun Canvas.drawImage(
     drawable: Drawable,
@@ -81,9 +80,9 @@ fun Canvas.drawXAxisValue(
         // Move the "outer" rect relative to the anchor, assuming its centered
         if (anchor.x != 0.5f || anchor.y != 0.5f) {
             val rotatedSize = getSizeOfRotatedRectangleByDegrees(
-                mDrawTextRectBuffer.width().toFloat(),
-                lineHeight,
-                angleDegrees
+                rectangleWidth = mDrawTextRectBuffer.width().toFloat(),
+                rectangleHeight = lineHeight,
+                degrees = angleDegrees
             )
 
             translateX -= rotatedSize.width * (anchor.x - 0.5f)

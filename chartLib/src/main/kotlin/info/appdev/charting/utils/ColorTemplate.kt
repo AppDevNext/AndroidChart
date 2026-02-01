@@ -3,9 +3,8 @@ package info.appdev.charting.utils
 import android.graphics.Color
 
 /**
- * Class that holds predefined color integer arrays (e.g.
- * ColorTemplate.VORDIPLOM_COLORS) and convenience methods for loading colors
- * from resources.
+ * Class that holds predefined color integer arrays (e.g. ColorTemplate.VORDIPLOM_COLORS)
+ * and convenience methods for loading colors from resources.
  */
 object ColorTemplate {
     /**
@@ -24,27 +23,45 @@ object ColorTemplate {
      * FREE TO CREATE YOUR OWN WITH AS MANY DIFFERENT COLORS AS YOU WANT
      */
     val LIBERTY_COLORS: IntArray = intArrayOf(
-        Color.rgb(207, 248, 246), Color.rgb(148, 212, 212), Color.rgb(136, 180, 187),
-        Color.rgb(118, 174, 175), Color.rgb(42, 109, 130)
+        Color.rgb(207, 248, 246),
+        Color.rgb(148, 212, 212),
+        Color.rgb(136, 180, 187),
+        Color.rgb(118, 174, 175),
+        Color.rgb(42, 109, 130)
     )
     val JOYFUL_COLORS: IntArray = intArrayOf(
-        Color.rgb(217, 80, 138), Color.rgb(254, 149, 7), Color.rgb(254, 247, 120),
-        Color.rgb(106, 167, 134), Color.rgb(53, 194, 209)
+        Color.rgb(217, 80, 138),
+        Color.rgb(254, 149, 7),
+        Color.rgb(254, 247, 120),
+        Color.rgb(106, 167, 134),
+        Color.rgb(53, 194, 209)
     )
     val PASTEL_COLORS: IntArray = intArrayOf(
-        Color.rgb(64, 89, 128), Color.rgb(149, 165, 124), Color.rgb(217, 184, 162),
-        Color.rgb(191, 134, 134), Color.rgb(179, 48, 80)
+        Color.rgb(64, 89, 128),
+        Color.rgb(149, 165, 124),
+        Color.rgb(217, 184, 162),
+        Color.rgb(191, 134, 134),
+        Color.rgb(179, 48, 80)
     )
     val COLORFUL_COLORS: IntArray = intArrayOf(
-        Color.rgb(193, 37, 82), Color.rgb(255, 102, 0), Color.rgb(245, 199, 0),
-        Color.rgb(106, 150, 31), Color.rgb(179, 100, 53)
+        Color.rgb(193, 37, 82),
+        Color.rgb(255, 102, 0),
+        Color.rgb(245, 199, 0),
+        Color.rgb(106, 150, 31),
+        Color.rgb(179, 100, 53)
     )
     val VORDIPLOM_COLORS: IntArray = intArrayOf(
-        Color.rgb(192, 255, 140), Color.rgb(255, 247, 140), Color.rgb(255, 208, 140),
-        Color.rgb(140, 234, 255), Color.rgb(255, 140, 157)
+        Color.rgb(192, 255, 140),
+        Color.rgb(255, 247, 140),
+        Color.rgb(255, 208, 140),
+        Color.rgb(140, 234, 255),
+        Color.rgb(255, 140, 157)
     )
     val MATERIAL_COLORS: IntArray = intArrayOf(
-        rgb("#2ecc71"), rgb("#f1c40f"), rgb("#e74c3c"), rgb("#3498db")
+        rgb("#2ecc71"),
+        rgb("#f1c40f"),
+        rgb("#e74c3c"),
+        rgb("#3498db")
     )
 
     /**
@@ -58,10 +75,10 @@ object ColorTemplate {
         return Color.rgb(r, g, b)
     }
 
+    /**
+     * Returns the Android ICS holo blue light color.
+     */
     val holoBlue: Int
-        /**
-         * Returns the Android ICS holo blue light color.
-         */
         get() = Color.rgb(51, 181, 229)
 
     /**
@@ -77,11 +94,9 @@ object ColorTemplate {
      */
     fun createColors(colors: IntArray): MutableList<Int> {
         val result: MutableList<Int> = ArrayList()
-
         for (i in colors) {
             result.add(i)
         }
-
         return result
     }
 }
