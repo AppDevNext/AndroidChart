@@ -76,10 +76,10 @@ println("Build version $versionVersion")
 
 mavenPublishing {
     pom {
-        name = "Android Chart"
+//        name = "Android Chart"
         description =
-            "A powerful Android chart view/graph view library, supporting line- bar- pie- radar- bubble- and candlestick charts as well as scaling, dragging and animations"
-        inceptionYear = "2022"
+            "A compose Android chart view/graph view library, supporting line- bar- pie- radar- bubble- and candlestick charts as well as scaling, dragging and animations"
+        inceptionYear = "2026"
         url = "https://github.com/AppDevNext/AndroidChart/"
         licenses {
             license {

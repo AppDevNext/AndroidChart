@@ -58,15 +58,15 @@ tasks.register<Jar>("androidSourcesJar") {
 }
 
 group = "info.mxtracks"
-var versionVersion = getVersionText()
-println("Build version $versionVersion")
+var versionText = getVersionText()
+println("Build version $versionText")
 
 mavenPublishing {
     pom {
         name = "Android Chart"
         description =
             "A powerful Android chart view/graph view library, supporting line- bar- pie- radar- bubble- and candlestick charts as well as scaling, dragging and animations"
-        inceptionYear = "2022"
+        inceptionYear = "2026"
         url = "https://github.com/AppDevNext/AndroidChart/"
         licenses {
             license {
@@ -92,7 +92,7 @@ mavenPublishing {
     // Github packages
     repositories {
         maven {
-            version = "$versionVersion-SNAPSHOT"
+            version = "$versionText-SNAPSHOT"
             name = "GitHubPackages"
             url = URI("https://maven.pkg.github.com/AppDevNext/AndroidChart")
             credentials {
