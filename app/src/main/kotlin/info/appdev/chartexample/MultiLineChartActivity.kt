@@ -11,6 +11,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import info.appdev.chartexample.DataTools.Companion.generateSineWaves
 import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
@@ -70,9 +71,9 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
     }
 
     private val colors = intArrayOf(
-        ColorTemplate.VORDIPLOM_COLORS[0],
-        ColorTemplate.VORDIPLOM_COLORS[1],
-        ColorTemplate.VORDIPLOM_COLORS[2]
+        ColorTemplate.VORDIPLOM_COLORS[2],
+        ColorTemplate.VORDIPLOM_COLORS[3],
+        ColorTemplate.VORDIPLOM_COLORS[0]
     )
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -87,27 +88,30 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
         for (datasetNumber in 0..2) {
             val values = ArrayList<Entry>()
-            val sampleValues = getValues(100)
+            val sampleValues = when (datasetNumber) {
+                1 -> getValues(100).reversedArray()
+                2 -> generateSineWaves(3, 30).toTypedArray()
+                else -> getValues(100)
+            }
 
             for (i in 0..<progress) {
                 val valuesY = (sampleValues[i]!!.toFloat() * binding.seekBarY.progress) + 3
                 values.add(Entry(i.toFloat(), valuesY))
             }
 
-            val lineDataSet = LineDataSet(values, "DataSet " + (datasetNumber + 1))
+            val lineDataSet = LineDataSet(values, "DataSet $datasetNumber")
             lineDataSet.lineWidth = 2.5f
             lineDataSet.circleRadius = 4f
 
-            val color = colors[datasetNumber % colors.size]
+            val color = colors[datasetNumber]
             lineDataSet.color = color
             lineDataSet.setCircleColor(color)
+            Timber.d("DataSet $datasetNumber color=${color.toHexString()}")
             dataSets.add(lineDataSet)
         }
 
         // make the first DataSet dashed
         (dataSets[0] as LineDataSet).enableDashedLine(10f, 10f, 0f)
-        (dataSets[0] as LineDataSet).setColors(*ColorTemplate.VORDIPLOM_COLORS)
-        (dataSets[0] as LineDataSet).setCircleColors(*ColorTemplate.VORDIPLOM_COLORS)
 
         val data = LineData(dataSets)
         binding.chart1.data = data
