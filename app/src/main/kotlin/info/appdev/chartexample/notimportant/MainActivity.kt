@@ -77,6 +77,7 @@ import info.appdev.chartexample.StackedBarActivity
 import info.appdev.chartexample.StackedBarActivityNegative
 import info.appdev.chartexample.TimeLineActivity
 import info.appdev.chartexample.compose.HorizontalBarComposeActivity
+import info.appdev.chartexample.compose.HorizontalBarFullComposeActivity
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.initUtils
@@ -210,6 +211,7 @@ class MainActivity : ComponentActivity() {
 
             add(ContentItem("Compose Horizontal"))
             add(ComposeItem("HorizontalCompose", "Render bar chart horizontally compose", HorizontalBarComposeActivity::class.java).toDemoBase())
+            add(ComposeItem("HorizontalFullCompose", "Render bar chart horizontally full compose.", HorizontalBarFullComposeActivity::class.java).toDemoBase())
 
             add(ContentItem("Demonstrate and fix issues"))
             add(ContentItem("Gradient", "Show a gradient edge case", GradientActivity::class.java))
