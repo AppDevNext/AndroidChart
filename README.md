@@ -3,6 +3,8 @@
 
 :zap: A powerful & easy to use 100% Kotlin chart library for Android :zap:
 
+It comes with library view based `chartLib` and composeable `chartLibCompose`
+
 ### Packagename changed ! 🛑 
 
 During the full Kotlin conversion, 
