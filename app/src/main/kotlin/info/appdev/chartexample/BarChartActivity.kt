@@ -50,7 +50,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
         binding.chart1.setOnChartValueSelectedListener(this)
         binding.chart1.setRoundedBarRadius(50f)
 
-        binding.chart1.setDrawMarkerViews(true)
+        binding.chart1.isDrawMarkersEnabled = true
         binding.chart1.isDrawBarShadow = false
         binding.chart1.isDrawValueAboveBar = true
 
