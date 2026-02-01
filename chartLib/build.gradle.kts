@@ -1,4 +1,5 @@
 import info.git.versionHelper.getVersionText
+import org.gradle.plugins.signing.Sign
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.net.URI
 
@@ -61,7 +62,13 @@ group = "info.mxtracks"
 var versionText = getVersionText()
 println("Build version $versionText")
 
+// Configure signing to be optional
+tasks.withType<Sign>().configureEach {
+    isEnabled = project.hasProperty("signing.keyId")
+}
+
 mavenPublishing {
+    coordinates("info.mxtracks", "chart-android", versionText)
     pom {
         name = "Android Chart"
         description =
