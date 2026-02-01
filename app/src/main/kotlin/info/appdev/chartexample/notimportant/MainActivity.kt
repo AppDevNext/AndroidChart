@@ -209,7 +209,7 @@ class MainActivity : ComponentActivity() {
             add(ContentItem("Hourly", "Uses the current time to add a data point for each hour.", LineChartTimeActivity::class.java))
             //add(new ContentItem("Realm.io Examples", "See more examples that use Realm.io mobile database."));
 
-            add(ContentItem("Compose Horizontal"))
+            add(ContentItem("Compose"))
             add(ComposeItem("HorizontalCompose", "Render bar chart horizontally compose", HorizontalBarComposeActivity::class.java).toDemoBase())
             add(ComposeItem("HorizontalFullCompose", "Render bar chart horizontally full compose.", HorizontalBarFullComposeActivity::class.java).toDemoBase())
 
