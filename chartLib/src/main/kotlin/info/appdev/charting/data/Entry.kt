@@ -126,7 +126,12 @@ open class Entry : BaseEntry, Parcelable, Serializable {
         this._x = `in`.readFloat()
         this.yBase = `in`.readFloat()
         if (`in`.readInt() == 1) {
-            this.data = `in`.readParcelable(Any::class.java.classLoader)
+            this.data = if (android.os.Build.VERSION.SDK_INT >= 33) {
+                `in`.readParcelable(Any::class.java.classLoader, Any::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                `in`.readParcelable(Any::class.java.classLoader)
+            }
         }
     }
 
