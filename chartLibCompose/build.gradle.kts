@@ -5,8 +5,7 @@ import java.net.URI
 plugins {
     id("com.android.library")
     id("maven-publish")
-    id("kotlin-android")
-    id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.3.0"
     id("com.vanniktech.maven.publish") version "0.34.0"
 }
 
