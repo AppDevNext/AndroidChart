@@ -27,6 +27,7 @@
         <activity android:name="info.appdev.chartexample.HorizontalBarChartActivity" />
         <activity android:name="info.appdev.chartexample.compose.HorizontalBarComposeActivity" />
         <activity android:name="info.appdev.chartexample.compose.HorizontalBarFullComposeActivity" />
+        <activity android:name="info.appdev.chartexample.compose.MultiLineComposeActivity" />
         <activity android:name="info.appdev.chartexample.HorizontalBarNegativeChartActivity" />
         <activity android:name="info.appdev.chartexample.PieChartActivity" />
         <activity android:name="info.appdev.chartexample.PieChartRoundedActivity" />

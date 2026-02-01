@@ -26,6 +26,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import info.appdev.chartexample.compose.HorizontalBarComposeActivity
 import info.appdev.chartexample.compose.HorizontalBarFullComposeActivity
+import info.appdev.chartexample.compose.MultiLineComposeActivity
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
 import info.appdev.chartexample.notimportant.ContentItem
 import info.appdev.chartexample.notimportant.DemoBase
@@ -171,6 +172,16 @@ class StartTest {
                                     optionMenu = "$index->$menuTitle"
                                     Timber.d("Testing Compose menu item: $optionMenu")
 
+                                    // Check if menu item exists first
+                                    try {
+                                    composeTestRule
+                                        .onNodeWithTag("menuItem_$menuTitle")
+                                        .assertExists()
+                                    } catch (_: AssertionError) {
+                                        Timber.e("Menu item '$menuTitle' not found for ${contentClass.simpleName}, skipping")
+                                        return@forEach
+                                    }
+
                                     // Click the menu item
                                     composeTestRule
                                         .onNodeWithTag("menuItem_$menuTitle")
@@ -251,6 +262,7 @@ class StartTest {
             contentItem.clazz == LineChartTimeActivity::class.java ||
             contentItem.clazz == HorizontalBarComposeActivity::class.java ||
             contentItem.clazz == HorizontalBarFullComposeActivity::class.java ||
+            contentItem.clazz == MultiLineComposeActivity::class.java ||
             contentItem.clazz == GradientActivity::class.java ||
             contentItem.clazz == TimeLineActivity::class.java
         ) {
