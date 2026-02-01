@@ -709,19 +709,17 @@ open class PieChartRenderer(
                     .setLineSpacing(0f, 1f)
                     .setIncludePad(false)
                     .build()
+            }
 
-                val layoutHeight = centerTextLayout!!.height.toFloat()
+            val layoutHeight = centerTextLayout!!.height.toFloat()
 
-                canvas.withSave {
-                    mDrawCenterTextPathBuffer.reset()
-                    mDrawCenterTextPathBuffer.addOval(holeRect, Path.Direction.CW)
-                    clipPath(mDrawCenterTextPathBuffer)
+            canvas.withSave {
+                mDrawCenterTextPathBuffer.reset()
+                mDrawCenterTextPathBuffer.addOval(holeRect, Path.Direction.CW)
+                clipPath(mDrawCenterTextPathBuffer)
 
-                    translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2f)
-                    centerTextLayout!!.draw(this)
-
-                }
-
+                translate(boundingRect.left, boundingRect.top + (boundingRect.height() - layoutHeight) / 2f)
+                centerTextLayout!!.draw(this)
             }
             PointF.recycleInstance(center)
             PointF.recycleInstance(offset)
