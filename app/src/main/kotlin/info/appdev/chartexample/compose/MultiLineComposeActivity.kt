@@ -24,7 +24,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,26 +33,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import androidx.core.content.res.ResourcesCompat
+import info.appdev.chartexample.DataTools.Companion.generateSineWaves
 import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.chartexample.R
 import info.appdev.chartexample.notimportant.DemoBaseCompose
 import info.appdev.charting.components.Legend
-import info.appdev.charting.components.XAxis.XAxisPosition
-import info.appdev.charting.compose.HorizontalBarChart
-import info.appdev.charting.data.BarData
-import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
+import info.appdev.charting.compose.LineChart
+import info.appdev.charting.data.Entry
+import info.appdev.charting.data.LineData
+import info.appdev.charting.data.LineDataSet
+import info.appdev.charting.utils.ColorTemplate
 import timber.log.Timber
 
-class HorizontalBarFullComposeActivity : DemoBaseCompose() {
+class MultiLineComposeActivity : DemoBaseCompose() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             MaterialTheme {
-                HorizontalBarChartScreen(
+                MultiLineChartScreen(
                     onSaveToGallery = { /* saveToGallery functionality needs chart bitmap */ },
                     onViewGithub = { viewGithub() }
                 )
@@ -61,29 +59,34 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
         }
     }
 
+    private val colors = intArrayOf(
+        ColorTemplate.VORDIPLOM_COLORS[2],
+        ColorTemplate.VORDIPLOM_COLORS[3],
+        ColorTemplate.VORDIPLOM_COLORS[0]
+    )
+
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun HorizontalBarChartScreen(
+    fun MultiLineChartScreen(
         onSaveToGallery: () -> Unit,
         onViewGithub: () -> Unit
     ) {
-        // State management
-        var showValues by remember { mutableStateOf(true) }
-        var showIcons by remember { mutableStateOf(false) }
-        var highlightEnabled by remember { mutableStateOf(true) }
-        var pinchZoomEnabled by remember { mutableStateOf(true) }
-        var autoScaleMinMaxEnabled by remember { mutableStateOf(false) }
-        var barBordersEnabled by remember { mutableStateOf(false) }
-        var animationTrigger by remember { mutableStateOf(0) }
-
         var showMenu by remember { mutableStateOf(false) }
-        var seekBarXValue by remember { mutableFloatStateOf(12f) }
-        var seekBarYValue by remember { mutableFloatStateOf(50f) }
+        var seekBarXValue by remember { mutableFloatStateOf(20f) }
+        var seekBarYValue by remember { mutableFloatStateOf(100f) }
+
+        // State for toggles
+        var showValues by remember { mutableStateOf(false) }
+        var pinchZoom by remember { mutableStateOf(false) }
+        var autoScaleMinMax by remember { mutableStateOf(false) }
+        var showFilled by remember { mutableStateOf(false) }
+        var showCircles by remember { mutableStateOf(true) }
+        var lineMode by remember { mutableStateOf(LineDataSet.Mode.LINEAR) }
 
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("HorizontalBarFullCompose") },
+                    title = { Text("MultiLineChartCompose") },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         titleContentColor = MaterialTheme.colorScheme.onPrimary
@@ -122,26 +125,10 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
                                     modifier = Modifier.testTag("menuItem_Toggle Values")
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Toggle Icons") },
-                                    onClick = {
-                                        showMenu = false
-                                        showIcons = !showIcons
-                                    },
-                                    modifier = Modifier.testTag("menuItem_Toggle Icons")
-                                )
-                                DropdownMenuItem(
-                                    text = { Text("Toggle Highlight") },
-                                    onClick = {
-                                        showMenu = false
-                                        highlightEnabled = !highlightEnabled
-                                    },
-                                    modifier = Modifier.testTag("menuItem_Toggle Highlight")
-                                )
-                                DropdownMenuItem(
                                     text = { Text("Toggle Pinch Zoom") },
                                     onClick = {
                                         showMenu = false
-                                        pinchZoomEnabled = !pinchZoomEnabled
+                                        pinchZoom = !pinchZoom
                                     },
                                     modifier = Modifier.testTag("menuItem_Toggle Pinch Zoom")
                                 )
@@ -149,41 +136,58 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
                                     text = { Text("Toggle Auto Scale MinMax") },
                                     onClick = {
                                         showMenu = false
-                                        autoScaleMinMaxEnabled = !autoScaleMinMaxEnabled
+                                        autoScaleMinMax = !autoScaleMinMax
                                     },
                                     modifier = Modifier.testTag("menuItem_Toggle Auto Scale MinMax")
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Toggle Bar Borders") },
+                                    text = { Text("Toggle Filled") },
                                     onClick = {
                                         showMenu = false
-                                        barBordersEnabled = !barBordersEnabled
+                                        showFilled = !showFilled
                                     },
-                                    modifier = Modifier.testTag("menuItem_Toggle Bar Borders")
+                                    modifier = Modifier.testTag("menuItem_Toggle Filled")
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Animate X") },
+                                    text = { Text("Toggle Circles") },
                                     onClick = {
                                         showMenu = false
-                                        animationTrigger++
+                                        showCircles = !showCircles
                                     },
-                                    modifier = Modifier.testTag("menuItem_Animate X")
+                                    modifier = Modifier.testTag("menuItem_Toggle Circles")
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Animate Y") },
+                                    text = { Text("Toggle Cubic") },
                                     onClick = {
                                         showMenu = false
-                                        animationTrigger++
+                                        lineMode = when (lineMode) {
+                                            LineDataSet.Mode.CUBIC_BEZIER -> LineDataSet.Mode.LINEAR
+                                            else -> LineDataSet.Mode.CUBIC_BEZIER
+                                        }
                                     },
-                                    modifier = Modifier.testTag("menuItem_Animate Y")
+                                    modifier = Modifier.testTag("menuItem_Toggle Cubic")
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Animate XY") },
+                                    text = { Text("Toggle Stepped") },
                                     onClick = {
                                         showMenu = false
-                                        animationTrigger++
+                                        lineMode = when (lineMode) {
+                                            LineDataSet.Mode.STEPPED -> LineDataSet.Mode.LINEAR
+                                            else -> LineDataSet.Mode.STEPPED
+                                        }
                                     },
-                                    modifier = Modifier.testTag("menuItem_Animate XY")
+                                    modifier = Modifier.testTag("menuItem_Toggle Stepped")
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("Toggle Horizontal Cubic") },
+                                    onClick = {
+                                        showMenu = false
+                                        lineMode = when (lineMode) {
+                                            LineDataSet.Mode.HORIZONTAL_BEZIER -> LineDataSet.Mode.LINEAR
+                                            else -> LineDataSet.Mode.HORIZONTAL_BEZIER
+                                        }
+                                    },
+                                    modifier = Modifier.testTag("menuItem_Toggle Horizontal Cubic")
                                 )
                                 DropdownMenuItem(
                                     text = { Text("Save to Gallery") },
@@ -205,75 +209,57 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
                     .padding(paddingValues)
                     .background(Color.White)
             ) {
-                // Chart - Using Compose HorizontalBarChart
-                val barData = remember(
+                // Chart - Using Compose LineChart
+                val lineData = remember(
                     seekBarXValue,
                     seekBarYValue,
-                    showIcons,
-                    barBordersEnabled,
-                    showValues
+                    showValues,
+                    showFilled,
+                    showCircles,
+                    lineMode
                 ) {
-                    createBarData(
+                    createLineData(
                         seekBarXValue.toInt(),
                         seekBarYValue,
-                        showIcons,
-                        barBordersEnabled,
-                        showValues
+                        showValues,
+                        showFilled,
+                        showCircles,
+                        lineMode
                     )
                 }
 
-                key(showIcons) {
-                    HorizontalBarChart(
-                        data = barData,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                            .testTag("horizontalBarChart_$showIcons"),
-                        drawValueAboveBar = true,
-                        drawBarShadow = false,
-                        scaleEnabled = pinchZoomEnabled,
-                        touchEnabled = true,
-                        dragEnabled = true,
-                        highlightFullBarEnabled = highlightEnabled,
-                        animationDuration = if (animationTrigger > 0) 2500 else 0,
-                        onValueSelected = { entry, _ ->
-                            entry?.let {
-                                Timber.d("Selected: x=${it.x}, y=${it.y}")
-                            }
-                        },
-                        xAxisConfig = { xAxis ->
-                            xAxis.position = XAxisPosition.BOTTOM
-                            xAxis.typeface = tfLight
-                            xAxis.isDrawAxisLine = true
-                            xAxis.isDrawGridLines = false
-                            xAxis.granularity = 10f
-                        },
-                        leftAxisConfig = { leftAxis ->
-                            leftAxis.typeface = tfLight
-                            leftAxis.isDrawAxisLine = true
-                            leftAxis.isDrawGridLines = true
-                            if (!autoScaleMinMaxEnabled) {
-                                leftAxis.axisMinimum = 0f
-                            }
-                        },
-                        rightAxisConfig = { rightAxis ->
-                            rightAxis.typeface = tfLight
-                            rightAxis.isDrawAxisLine = true
-                            rightAxis.isDrawGridLines = false
-                            if (!autoScaleMinMaxEnabled) {
-                                rightAxis.axisMinimum = 0f
-                            }
-                        },
-                        legend = { legend ->
-                            legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-                            legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-                            legend.orientation = Legend.LegendOrientation.HORIZONTAL
-                            legend.setDrawInside(false)
-                            legend.formSize = 8f
-                            legend.xEntrySpace = 4f
+                LineChart(
+                    data = lineData,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    drawGridBackground = false,
+                    pinchZoomEnabled = pinchZoom,
+                    autoScaleMinMax = autoScaleMinMax,
+                    animationDuration = 1500,
+                    onValueSelected = { entry, highlight ->
+                        entry?.let {
+                            Timber.i("Value: ${it.y}, xIndex: ${it.x}, DataSet index: ${highlight?.dataSetIndex}")
                         }
-                    )
-                }
+                    },
+                    xAxisConfig = { xAxis ->
+                        xAxis.isDrawAxisLine = false
+                        xAxis.isDrawGridLines = false
+                    },
+                    leftAxisConfig = { leftAxis ->
+                        leftAxis.isEnabled = false
+                    },
+                    rightAxisConfig = { rightAxis ->
+                        rightAxis.isDrawAxisLine = false
+                        rightAxis.isDrawGridLines = false
+                    },
+                    legend = { legend ->
+                        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+                        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+                        legend.orientation = Legend.LegendOrientation.VERTICAL
+                        legend.setDrawInside(false)
+                    }
+                )
 
                 // SeekBar X with label
                 Row(
@@ -282,6 +268,11 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Text(
+                        text = "X:",
+                        modifier = Modifier.padding(end = 8.dp),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                     Slider(
                         value = seekBarXValue,
                         onValueChange = { newValue ->
@@ -304,12 +295,17 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Text(
+                        text = "Y:",
+                        modifier = Modifier.padding(end = 8.dp),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                     Slider(
                         value = seekBarYValue,
                         onValueChange = { newValue ->
                             seekBarYValue = newValue
                         },
-                        valueRange = 0f..100f,
+                        valueRange = 0f..200f,
                         modifier = Modifier.weight(1f)
                     )
                     Text(
@@ -322,40 +318,47 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
         }
     }
 
-    private fun createBarData(count: Int, range: Float, showIcons: Boolean, barBordersEnabled: Boolean, showValues: Boolean): BarData {
-        val barWidth = 9f
-        val spaceForBar = 10f
-        val values = ArrayList<BarEntry>()
-        val sampleValues = getValues(100)
+    private fun createLineData(
+        progress: Int,
+        range: Float,
+        showValues: Boolean,
+        showFilled: Boolean,
+        showCircles: Boolean,
+        lineMode: LineDataSet.Mode
+    ): LineData {
+        val dataSets = ArrayList<LineDataSet>()
 
-        for (i in 0..<count) {
-            val value = sampleValues[i]!!.toFloat() * range
-            val icon = if (showIcons) {
-                ResourcesCompat.getDrawable(resources, R.drawable.star, null)
-            } else null
+        for (datasetNumber in 0..2) {
+            val values = ArrayList<Entry>()
+            val sampleValues = when (datasetNumber) {
+                1 -> getValues(100).reversedArray()
+                2 -> generateSineWaves(3, 30).toTypedArray()
+                else -> getValues(100)
+            }
 
-            val barEntry = BarEntry(i * spaceForBar, value, icon)
-            Timber.d("x=${barEntry.x} y=${barEntry.y}")
-            values.add(barEntry)
+            for (i in 0..<progress) {
+                val valuesY = (sampleValues[i]!!.toFloat() * range) + 3
+                values.add(Entry(i.toFloat(), valuesY))
+            }
+
+            val lineDataSet = LineDataSet(values, "DataSet $datasetNumber")
+            lineDataSet.lineWidth = 2.5f
+            lineDataSet.circleRadius = 4f
+            lineDataSet.isDrawValues = showValues
+            lineDataSet.isDrawFilled = showFilled
+            lineDataSet.isDrawCircles = showCircles
+            lineDataSet.lineMode = lineMode
+
+            val color = colors[datasetNumber]
+            lineDataSet.color = color
+            lineDataSet.setCircleColor(color)
+            Timber.d("DataSet $datasetNumber color=${color.toHexString()}")
+            dataSets.add(lineDataSet)
         }
 
-        val set1 = BarDataSet(values, "DataSet 1")
-        set1.isDrawIcons = showIcons
-        set1.isDrawValues = showValues
+        // Make the first DataSet dashed
+        dataSets[0].enableDashedLine(10f, 10f, 0f)
 
-        if (barBordersEnabled) {
-            set1.barBorderWidth = 1f
-            set1.barBorderColor = android.graphics.Color.BLACK
-        } else {
-            set1.barBorderWidth = 0f
-        }
-
-        val data = BarData(set1)
-        data.setValueTextSize(10f)
-        data.setValueTypeface(tfLight)
-        data.barWidth = barWidth
-        return data
+        return LineData(ArrayList(dataSets.map { it as info.appdev.charting.interfaces.datasets.ILineDataSet }))
     }
-
-
 }
