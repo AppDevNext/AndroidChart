@@ -551,7 +551,14 @@ open class PieChartRenderer(
                             // draw everything, depending on settings
                             if (drawXInside && drawYInside) {
                                 drawValue(
-                                    this, formatter, value, entry, 0, x, y, dataSet.getValueTextColor(j)
+                                    canvas = this,
+                                    formatter = formatter,
+                                    value = value,
+                                    entry = entry,
+                                    dataSetIndex = 0,
+                                    x = x,
+                                    y = y,
+                                    color = dataSet.getValueTextColor(j)
                                 )
 
                                 if (j < data.entryCount && entryLabel != null) {
@@ -682,7 +689,15 @@ open class PieChartRenderer(
 
                 // If width is 0, it will crash. Always have a minimum of 1
                 centerTextLayout = StaticLayout(
-                    centerText, 0, centerText.length, paintCenterText, max(ceil(width.toDouble()), 1.0).toInt(), Layout.Alignment.ALIGN_CENTER, 1f, 0f, false
+                    centerText,
+                    0,
+                    centerText.length,
+                    paintCenterText,
+                    max(ceil(width.toDouble()), 1.0).toInt(),
+                    Layout.Alignment.ALIGN_CENTER,
+                    1f,
+                    0f,
+                    false
                 )
             }
 
