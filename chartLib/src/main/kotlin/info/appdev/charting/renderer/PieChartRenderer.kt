@@ -568,7 +568,7 @@ open class PieChartRenderer(
                                 if (j < data.entryCount && entryLabel != null) {
                                     drawEntryLabel(this, entryLabel, x, y + lineHeight / 2f)
                                 }
-                            } else if (drawYInside) {
+                            } else {
                                 drawValue(this, formatter, value, entry, 0, x, y + lineHeight / 2f, dataSet.getValueTextColor(j))
                             }
                         }
