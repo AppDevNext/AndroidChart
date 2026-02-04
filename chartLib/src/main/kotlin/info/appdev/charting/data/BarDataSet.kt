@@ -69,14 +69,13 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
         barDataSet.mHighLightAlpha = mHighLightAlpha
     }
 
-    override var fills: MutableList<Fill>
-        get() = this.gradients
+    override var fills: MutableList<Fill> = mutableListOf()
         set(value) {
             this.gradients = value
         }
 
     override fun getFill(index: Int): Fill? {
-        return gradients[index % gradients.size]
+        return fills[index % fills.size]
     }
 
     @Deprecated("Use getFill(...) instead")
@@ -88,8 +87,8 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
      * Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
      */
     fun setGradientColor(@ColorInt startColor: Int, @ColorInt endColor: Int) {
-        gradients.clear()
-        gradients.add(Fill(startColor, endColor))
+        fills.clear()
+        fills.add(Fill(startColor, endColor))
     }
 
     @Deprecated("Use setFills(...) instead")
