@@ -108,8 +108,9 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
             val yValue = sampleValues[i]!!.toFloat() * range
             values.add(
                 BarEntry(
-                    i * spaceForBar, yValue,
-                    ResourcesCompat.getDrawable(resources, R.drawable.star, null)
+                    x = i * spaceForBar,
+                    y = yValue,
+                    icon = ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )
         }
@@ -247,5 +248,5 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         PointF.recycleInstance(position)
     }
 
-    override fun onNothingSelected() {}
+    override fun onNothingSelected() = Unit
 }
