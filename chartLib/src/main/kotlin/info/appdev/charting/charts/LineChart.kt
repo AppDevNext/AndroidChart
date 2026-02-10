@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import info.appdev.charting.data.LineData
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.renderer.LineChartRenderer
-import java.util.Locale
 
 open class LineChart : BarLineChartBase<LineData>, LineDataProvider {
 
@@ -39,9 +38,6 @@ open class LineChart : BarLineChartBase<LineData>, LineDataProvider {
 
     override val accessibilityDescription: String
         get() {
-            val lineData = lineData
-            val numberOfPoints = lineData.entryCount
-
             // Min and max values...
             val yAxisValueFormatter = axisLeft.valueFormatter
             val minVal = yAxisValueFormatter?.getFormattedValue(lineData.yMin, null)
@@ -51,13 +47,10 @@ open class LineChart : BarLineChartBase<LineData>, LineDataProvider {
             val xAxisValueFormatter = xAxis.valueFormatter
             val minRange = xAxisValueFormatter?.getFormattedValue(lineData.xMin, null)
             val maxRange = xAxisValueFormatter?.getFormattedValue(lineData.xMax, null)
-            val entries = if (numberOfPoints == 1) "entry" else "entries"
-            return String.format(
-                Locale.getDefault(), "The line chart has %d %s. " +
-                        "The minimum value is %s and maximum value is %s." +
-                        "Data ranges from %s to %s.",
-                numberOfPoints, entries, minVal, maxVal, minRange, maxRange
-            )
+            val pluralOrSingular = if (lineData.entryCount == 1) "entry" else "entries"
+            return "The line chart has ${lineData.entryCount} $pluralOrSingular. " +
+                    "The minimum value is $minVal and maximum value is $maxVal." +
+                    "Data ranges from $minRange to $maxRange."
         }
 
 }
