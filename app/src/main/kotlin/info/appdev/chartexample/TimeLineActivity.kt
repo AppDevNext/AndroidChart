@@ -53,7 +53,7 @@ class TimeLineActivity : DemoBase() {
             position = XAxisPosition.BOTTOM
             typeface = tfLight
             labelRotationAngle = 45f
-            isDrawGridLines = false
+            isDrawGridLines = true
 //            granularity = 1f // only intervals of 1 day
             labelCount = 7
             valueFormatter = UnixTimeAxisValueFormatter("HH:mm:ss")
@@ -61,7 +61,7 @@ class TimeLineActivity : DemoBase() {
 
         // if disabled, scaling can be done on x- and y-axis separately
         binding.chart1.isPinchZoom = false
-
+        binding.chart1.setExtraOffsets(0f,0f,0f,24f)
         binding.chart1.legend.apply {
             isEnabled = false
             form = LegendForm.LINE
