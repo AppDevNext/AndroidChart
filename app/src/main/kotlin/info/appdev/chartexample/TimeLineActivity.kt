@@ -142,6 +142,15 @@ class TimeLineActivity : DemoBase() {
                 true
             }.isCheckable = true
         }
+        menuItemMove = menu?.add("Move X-Axis")?.apply {
+            setOnMenuItemClickListener { menuItem ->
+                menuItem.isChecked = !menuItem.isChecked
+                lifecycleScope.launch {
+                    moveXAxis()
+                }
+                true
+            }.isCheckable = true
+        }
         return true
     }
 
@@ -153,6 +162,22 @@ class TimeLineActivity : DemoBase() {
         removeAt(0)
         first.x = (last as Entry).x + timeDiff
         add(first)
+    }
+
+    private suspend fun moveXAxis() {
+        withContext(Dispatchers.Default) {
+            while (menuItemMove!!.isChecked) {
+                withContext(Dispatchers.Main) {
+                    binding.chart1.xAxis.apply {
+                        this.axisMinimum += 1000f
+                        this.axisMaximum += 1000f
+                        binding.chart1.notifyDataSetChanged()
+                        binding.chart1.invalidate()
+                    }
+                }
+                delay(100)
+            }
+        }
     }
 
     private suspend fun moveChart() {
