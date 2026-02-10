@@ -37,10 +37,10 @@ class XAxisRendererRadarChart(
 
                 val angle = (sliceAngle * i + chart.rotationAngle) % 360f
 
-                pOut = center.getPosition(chart.yRange * factor + xAxis.mLabelWidth / 2f, angle)
+                pOut = center.getPosition(chart.yRange * factor + xAxis.labelWidth / 2f, angle)
 
                 drawLabel(
-                    canvas, label, pOut.x, pOut.y - xAxis.mLabelHeight / 2f,
+                    canvas, label, pOut.x, pOut.y - xAxis.labelHeight / 2f,
                     drawLabelAnchor, labelRotationAngleDegrees
                 )
             }

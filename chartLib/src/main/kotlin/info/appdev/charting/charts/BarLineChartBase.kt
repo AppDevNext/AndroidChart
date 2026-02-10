@@ -491,7 +491,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
             }
 
             if (mXAxis.isEnabled && mXAxis.isDrawLabelsEnabled) {
-                val xLabelHeight = mXAxis.mLabelHeight + mXAxis.yOffset
+                val xLabelHeight = mXAxis.labelHeight + mXAxis.yOffset
 
                 // offsets for x-labels
                 when (mXAxis.position) {

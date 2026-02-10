@@ -274,7 +274,7 @@ open class RadarChart : PieRadarChartBase<RadarData> {
         }
 
     override val requiredBaseOffset: Float
-        get() = if (mXAxis.isEnabled && mXAxis.isDrawLabelsEnabled) mXAxis.mLabelWidth.toFloat() else 10f.convertDpToPixel()
+        get() = if (mXAxis.isEnabled && mXAxis.isDrawLabelsEnabled) mXAxis.labelWidth.toFloat() else 10f.convertDpToPixel()
 
     override val radius: Float
         get() {

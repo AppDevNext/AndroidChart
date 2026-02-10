@@ -54,7 +54,7 @@ class BarChartPositiveNegative : DemoBase() {
         xAxis.textColor = Color.LTGRAY
         xAxis.textSize = 13f
         xAxis.labelCount = 5
-        xAxis.setCenterAxisLabels(true)
+        xAxis.centerAxisLabels = true
         xAxis.granularity = 1f
 
         val left = binding.chart1.axisLeft
