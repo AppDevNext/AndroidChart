@@ -17,7 +17,7 @@ abstract class AxisBase : ComponentBase() {
     /**
      * custom formatter that is used instead of the auto-formatter if set
      */
-    protected var mAxisValueFormatter: IAxisValueFormatter? = null
+    protected var axisValueFormatter: IAxisValueFormatter? = null
 
     /**
      * The color of the grid lines for this axis (the horizontal lines
@@ -96,7 +96,11 @@ abstract class AxisBase : ComponentBase() {
     var isDrawLabelsEnabled = true
         protected set
 
-    protected var mCenterAxisLabels: Boolean = false
+    /**
+     * Centers the axis labels instead of drawing them at their original position.
+     * This is useful especially for grouped BarChart.
+     */
+    var centerAxisLabels: Boolean = false
 
     /**
      * the path effect of the axis line that makes dashed lines possible
@@ -212,16 +216,8 @@ abstract class AxisBase : ComponentBase() {
         this.limitRanges = ArrayList<LimitRange>()
     }
 
-    /**
-     * Centers the axis labels instead of drawing them at their original position.
-     * This is useful especially for grouped BarChart.
-     */
-    fun setCenterAxisLabels(enabled: Boolean) {
-        mCenterAxisLabels = enabled
-    }
-
     val isCenterAxisLabelsEnabled: Boolean
-        get() = mCenterAxisLabels && entryCount > 0
+        get() = centerAxisLabels && entryCount > 0
 
     /**
      * The width of the border surrounding the chart in dp.
@@ -401,16 +397,18 @@ abstract class AxisBase : ComponentBase() {
      */
     var valueFormatter: IAxisValueFormatter?
         get() {
-            if (mAxisValueFormatter == null || (mAxisValueFormatter is DefaultAxisValueFormatter &&
-                        (mAxisValueFormatter as DefaultAxisValueFormatter).decimalDigits != decimals)
+            if (axisValueFormatter == null ||
+                (axisValueFormatter is DefaultAxisValueFormatter && (axisValueFormatter as DefaultAxisValueFormatter).decimalDigits != decimals)
             )
-                mAxisValueFormatter = DefaultAxisValueFormatter(decimals)
+                axisValueFormatter = DefaultAxisValueFormatter(decimals)
 
-            return mAxisValueFormatter
+            return axisValueFormatter
         }
         set(f) {
-            if (f == null) mAxisValueFormatter = DefaultAxisValueFormatter(decimals)
-            else mAxisValueFormatter = f
+            if (f == null)
+                axisValueFormatter = DefaultAxisValueFormatter(decimals)
+            else
+                axisValueFormatter = f
         }
 
     /**
@@ -518,8 +516,7 @@ abstract class AxisBase : ComponentBase() {
 
     /**
      * By calling this method, any custom maximum value that has been previously set is reseted,
-     * and the calculation is
-     * done automatically.
+     * and the calculation is done automatically.
      */
     fun resetAxisMaximum() {
         this.isAxisMaxCustom = false
@@ -527,8 +524,7 @@ abstract class AxisBase : ComponentBase() {
 
     /**
      * By calling this method, any custom minimum value that has been previously set is reseted,
-     * and the calculation is
-     * done automatically.
+     * and the calculation is done automatically.
      */
     fun resetAxisMinimum() {
         this.isAxisMinCustom = false

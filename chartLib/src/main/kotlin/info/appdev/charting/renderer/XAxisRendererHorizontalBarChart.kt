@@ -71,8 +71,8 @@ open class XAxisRendererHorizontalBarChart(
             xAxis.labelRotationAngle
         )
 
-        xAxis.mLabelWidth = labelRotatedSize.width.roundToInt()
-        xAxis.mLabelHeight = labelRotatedSize.height.roundToInt()
+        xAxis.labelWidth = labelRotatedSize.width.roundToInt()
+        xAxis.labelHeight = labelRotatedSize.height.roundToInt()
 
         FSize.recycleInstance(labelRotatedSize)
     }

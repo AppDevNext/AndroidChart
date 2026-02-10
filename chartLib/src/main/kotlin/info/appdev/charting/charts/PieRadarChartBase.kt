@@ -263,7 +263,7 @@ abstract class PieRadarChartBase<T : ChartData<out IDataSet<out Entry>>>
             val x = this.xAxis
 
             if (x.isEnabled && x.isDrawLabelsEnabled) {
-                minOffset = max(minOffset, x.mLabelWidth.toFloat())
+                minOffset = max(minOffset, x.labelWidth.toFloat())
             }
         }
 

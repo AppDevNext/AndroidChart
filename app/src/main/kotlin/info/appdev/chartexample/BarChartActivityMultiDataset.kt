@@ -80,7 +80,7 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         val xAxis = binding.chart1.xAxis
         xAxis.typeface = tfLight
         xAxis.granularity = 1f
-        xAxis.setCenterAxisLabels(true)
+        xAxis.centerAxisLabels = true
         xAxis.valueFormatter = object : IAxisValueFormatter {
             override fun getFormattedValue(value: Float, axis: AxisBase?): String {
                 return value.toInt().toString()

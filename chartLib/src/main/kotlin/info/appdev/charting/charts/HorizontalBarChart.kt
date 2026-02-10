@@ -143,7 +143,7 @@ open class HorizontalBarChart : BarChart {
             offsetBottom += mAxisRight.getRequiredHeightSpace(axisRendererRight.paintAxisLabels)
         }
 
-        val xLabelWidth = mXAxis.mLabelWidth.toFloat()
+        val xLabelWidth = mXAxis.labelWidth.toFloat()
 
         if (mXAxis.isEnabled) {
             // offsets for x-labels

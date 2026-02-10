@@ -74,7 +74,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
         xAxis.isDrawAxisLine = false
         xAxis.isDrawGridLines = true
         xAxis.textColor = Color.rgb(255, 192, 56)
-        xAxis.setCenterAxisLabels(true)
+        xAxis.centerAxisLabels = true
         xAxis.granularity = 1f // one hour
         xAxis.valueFormatter = object : IAxisValueFormatter {
             private val simpleDateFormat = SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH)

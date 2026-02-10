@@ -12,19 +12,18 @@ class XAxis : AxisBase() {
      * width of the x-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
-    var mLabelWidth: Int = 1
+    var labelWidth: Int = 1
 
     /**
      * height of the x-axis labels in pixels - this is automatically
      * calculated by the computeSize() methods in the renderers
      */
-    var mLabelHeight: Int = 1
+    var labelHeight: Int = 1
 
     /**
      * This is the angle for drawing the X axis labels (in degrees)
      */
     var labelRotationAngle: Float = 0f
-
 
     /**
      * if set to true, the chart will avoid that the first and last label entry

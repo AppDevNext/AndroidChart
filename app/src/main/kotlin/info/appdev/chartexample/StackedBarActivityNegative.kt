@@ -65,7 +65,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         xAxis.textSize = 9f
         xAxis.axisMinimum = 0f
         xAxis.axisMaximum = 110f
-        xAxis.setCenterAxisLabels(true)
+        xAxis.centerAxisLabels = true
         xAxis.labelCount = 12
         xAxis.granularity = 10f
         xAxis.valueFormatter = object : IAxisValueFormatter {

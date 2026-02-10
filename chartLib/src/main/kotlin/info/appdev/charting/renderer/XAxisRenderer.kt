@@ -84,8 +84,8 @@ open class XAxisRenderer(
             xAxis.labelRotationAngle
         )
 
-        xAxis.mLabelWidth = labelRotatedSize.width.roundToInt()
-        xAxis.mLabelHeight = labelRotatedSize.height.roundToInt()
+        xAxis.labelWidth = labelRotatedSize.width.roundToInt()
+        xAxis.labelHeight = labelRotatedSize.height.roundToInt()
 
         FSize.recycleInstance(labelRotatedSize)
         FSize.recycleInstance(labelSize)
@@ -110,7 +110,7 @@ open class XAxisRenderer(
             XAxisPosition.TOP_INSIDE -> {
                 pointF.x = 0.5f
                 pointF.y = 1.0f
-                drawLabels(canvas, viewPortHandler.contentTop() + yOffset + xAxis.mLabelHeight, pointF)
+                drawLabels(canvas, viewPortHandler.contentTop() + yOffset + xAxis.labelHeight, pointF)
             }
 
             XAxisPosition.BOTTOM -> {
@@ -122,7 +122,7 @@ open class XAxisRenderer(
             XAxisPosition.BOTTOM_INSIDE -> {
                 pointF.x = 0.5f
                 pointF.y = 0.0f
-                drawLabels(canvas, viewPortHandler.contentBottom() - yOffset - xAxis.mLabelHeight, pointF)
+                drawLabels(canvas, viewPortHandler.contentBottom() - yOffset - xAxis.labelHeight, pointF)
             }
 
             else -> { // BOTH SIDED
