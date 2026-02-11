@@ -10,7 +10,7 @@ class UnixTimeAxisValueFormatter(val format: String = "yyyy-MM-dd'T'HH:mm:ss'Z'"
     val simpleDateFormat = SimpleDateFormat(format, Locale.getDefault())
 
     override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-        return simpleDateFormat.format(value * 1000L)
+        return simpleDateFormat.format(value.toLong())
     }
 
 }
