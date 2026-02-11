@@ -61,7 +61,7 @@ class TimeLineActivity : DemoBase() {
 
         // if disabled, scaling can be done on x- and y-axis separately
         binding.chart1.isPinchZoom = false
-        binding.chart1.setExtraOffsets(0f,0f,0f,24f)
+        binding.chart1.setExtraOffsets(0f, 0f, 0f, 24f)
         binding.chart1.legend.apply {
             isEnabled = false
             form = LegendForm.LINE

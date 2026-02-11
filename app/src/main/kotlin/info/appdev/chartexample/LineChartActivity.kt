@@ -56,11 +56,11 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         binding.chart1.setDrawGridBackground(false)
 
         // create marker to display box when values are selected
-        val mv = MyMarkerView(this, R.layout.custom_marker_view)
+        val markerView = MyMarkerView(this, R.layout.custom_marker_view)
 
         // Set the marker to the chart
-        mv.chartView = binding.chart1
-        binding.chart1.marker.add(mv)
+        markerView.chartView = binding.chart1
+        binding.chart1.marker.add(markerView)
 
         // enable scaling and dragging
         binding.chart1.isDragEnabled = true
@@ -254,8 +254,8 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
         saveToGallery(binding.chart1, "LineChartActivity1")
     }
 
-    override fun onStartTrackingTouch(seekBar: SeekBar) {}
-    override fun onStopTrackingTouch(seekBar: SeekBar) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+    override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
     override fun onValueSelected(entry: Entry, highlight: Highlight) {
         Timber.i(entry.toString())
         Timber.i("LOW HIGH low:${binding.chart1.lowestVisibleX}, high:${binding.chart1.highestVisibleX}")
