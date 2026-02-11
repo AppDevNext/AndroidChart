@@ -8,6 +8,8 @@ import android.view.MenuItem
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import info.appdev.chartexample.DataTools.Companion.generateSineWaves
+import info.appdev.chartexample.DataTools.Companion.getSawtoothValues
+import info.appdev.chartexample.custom.TimeMarkerView
 import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
 import info.appdev.chartexample.formatter.UnixTimeAxisValueFormatter
 import info.appdev.chartexample.notimportant.DemoBase
@@ -25,9 +27,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TimeLineActivity : DemoBase() {
-    private var menuItemMove: MenuItem? = null
+    private var menuItemsMove: MenuItem? = null
     private lateinit var binding: ActivityLinechartNoseekbarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,31 +82,66 @@ class TimeLineActivity : DemoBase() {
 
         binding.chart1.axisRight.isEnabled = false
 
-        setData(60f, TIME_OFFSET)
+        val timeMarkerView = TimeMarkerView(this, R.layout.custom_marker_view, "HH:mm:ss.sss")
+        timeMarkerView.chartView = binding.chart1
+        binding.chart1.marker.add(timeMarkerView)
+
+        setData(60f, TIME_OFFSET, true)
 
         binding.chart1.invalidate()
     }
 
     @Suppress("SameParameterValue")
-    private fun setData(range: Float, timeOffset: Long) {
+    private fun setData(range: Float, timeOffset: Long, sinus: Boolean) {
 
-        val sampleEntries = generateSineWaves(3, 30)
-            .mapIndexed { index, data ->
+        val sampleEntries = if (sinus)
+            generateSineWaves(3, 30).mapIndexed { index, data ->
                 val valueY = (data.toFloat() * range) + 50
                 Entry(timeOffset + index.toFloat() * 1000, valueY)
-            }.toMutableList()
+            }
+        else {
+            var previousEntry: Entry? = null
+            getSawtoothValues(14).mapIndexed { index, data ->
+                val valueY = data.toFloat() * 20
+                val entry = previousEntry?.let {
+                    // nay third value is 0, so we add here more than 1 second, otherwise we have a one-second entry
+                    if (index % 3 == 0) {
+                        Entry(it.x + 3000, valueY)
+                    } else
+                        Entry(it.x + 1000, valueY)
+                } ?: run {
+                    Entry(timeOffset + index.toFloat() * 1000, valueY)
+                }
+                previousEntry = entry
+                // Now you can use 'prev' which holds the previous Entry
+                entry
+            }
+        }
+
+        val simpleDateFormat = SimpleDateFormat("HH:mm:ss.sss", Locale.getDefault())
+        sampleEntries.forEach { entry ->
+            val entryText = "Entry: x=${simpleDateFormat.format(entry.x)} x=${entry.x}, y=${entry.y}"
+            Timber.d(entryText)
+        }
 
         val set1: LineDataSet
 
         if (binding.chart1.lineData.dataSetCount > 0) {
             set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
-            set1.entries = sampleEntries
+            set1.entries = sampleEntries.toMutableList()
+            if (sinus)
+                set1.lineMode = LineDataSet.Mode.LINEAR
+            else
+                set1.lineMode = LineDataSet.Mode.STEPPED
             binding.chart1.lineData.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {
             // create a dataset and give it a type
-            set1 = LineDataSet(sampleEntries, "DataSet 1")
-
+            set1 = LineDataSet(sampleEntries.toMutableList(), "DataSet 1")
+            if (sinus)
+                set1.lineMode = LineDataSet.Mode.LINEAR
+            else
+                set1.lineMode = LineDataSet.Mode.STEPPED
             set1.axisDependency = YAxis.AxisDependency.LEFT
             set1.color = Color.rgb(255, 241, 46)
             set1.isDrawCircles = false
@@ -133,20 +173,31 @@ class TimeLineActivity : DemoBase() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.only_github, menu)
-        menuItemMove = menu?.add("Move chart")?.apply {
+        menuItemsMove = menu?.add("Move chart")?.apply {
             setOnMenuItemClickListener { menuItem ->
-                menuItem.isChecked = !menuItem.isChecked
                 lifecycleScope.launch {
-                    moveChart()
+                    menuItem.isChecked = !menuItem.isChecked
+                    moveChart(menuItem)
                 }
                 true
             }.isCheckable = true
         }
-        menuItemMove = menu?.add("Move X-Axis")?.apply {
+        menuItemsMove = menu?.add("Move X-Axis")?.apply {
             setOnMenuItemClickListener { menuItem ->
                 menuItem.isChecked = !menuItem.isChecked
                 lifecycleScope.launch {
-                    moveXAxis()
+                    moveXAxis(menuItem)
+                }
+                true
+            }.isCheckable = true
+        }
+        menuItemsMove = menu?.add("Show sinus data")?.apply {
+            this.isChecked = true
+            setOnMenuItemClickListener { menuItem ->
+                menuItem.isChecked = !menuItem.isChecked
+                lifecycleScope.launch {
+                    setData(60f, TIME_OFFSET, menuItem.isChecked)
+                    binding.chart1.invalidate()
                 }
                 true
             }.isCheckable = true
@@ -164,9 +215,10 @@ class TimeLineActivity : DemoBase() {
         add(first)
     }
 
-    private suspend fun moveXAxis() {
+    private suspend fun moveXAxis(menuItem: MenuItem) {
+        Timber.d("${menuItem.isChecked}")
         withContext(Dispatchers.Default) {
-            while (menuItemMove!!.isChecked) {
+            while (menuItem.isChecked) {
                 withContext(Dispatchers.Main) {
                     binding.chart1.xAxis.apply {
                         this.axisMinimum += 1000f
@@ -174,15 +226,17 @@ class TimeLineActivity : DemoBase() {
                         binding.chart1.notifyDataSetChanged()
                         binding.chart1.invalidate()
                     }
+                    Timber.d("X min=${binding.chart1.xAxis.axisMinimum}, max=${binding.chart1.xAxis.axisMaximum}")
                 }
                 delay(100)
             }
         }
     }
 
-    private suspend fun moveChart() {
+    private suspend fun moveChart(menuItem: MenuItem) {
+        Timber.d("${menuItem.isChecked}")
         withContext(Dispatchers.Default) {
-            while (menuItemMove!!.isChecked) {
+            while (menuItem.isChecked) {
                 withContext(Dispatchers.Main) {
                     binding.chart1.lineData.dataSets[0].apply {
                         (this as LineDataSet).entries.moveFirstToLast()
