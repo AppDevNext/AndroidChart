@@ -617,14 +617,14 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
                 continue
             }
 
-            val e = mData!!.getEntryForHighlight(highlight) ?: continue
+            val entry = mData!!.getEntryForHighlight(highlight) ?: continue
 
             // make sure entry not null before using it
 
             // Cast to non-star-projected type to allow calling getEntryIndex
             @Suppress("UNCHECKED_CAST")
             val set = dataset as IDataSet<Entry>
-            val entryIndex = set.getEntryIndex(e)
+            val entryIndex = set.getEntryIndex(entry)
 
             if (entryIndex > set.entryCount * mAnimator.phaseX) {
                 continue
@@ -641,7 +641,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
             if (!marker.isEmpty()) {
                 val markerIndex = i % marker.size
                 val markerItem = marker[markerIndex]
-                markerItem.refreshContent(e, highlight)
+                markerItem.refreshContent(entry, highlight)
 
                 // draw the marker
                 markerItem.draw(canvas, pos[0], pos[1])
@@ -650,8 +650,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
     }
 
     /**
-     * Returns the actual position in pixels of the MarkerView for the given
-     * Highlight object.
+     * Returns the actual position in pixels of the MarkerView for the given Highlight object.
      */
     protected open fun getMarkerPosition(high: Highlight): FloatArray {
         return floatArrayOf(high.drawX, high.drawY)
@@ -806,14 +805,12 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         get() = mXAxis.axisRange
 
     /**
-     * Returns a recyclable PointF instance.
      * Returns the center point of the chart (the whole View) in pixels.
      */
     val center: PointF
         get() = getInstance(width / 2f, height / 2f)
 
     /**
-     * Returns a recyclable PointF instance.
      * Returns the center of the chart taking offsets under consideration.
      * (returns the center of the content rectangle)
      */
@@ -821,8 +818,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         get() = viewPortHandler.contentCenter
 
     /**
-     * Sets extra offsets (around the chart view) to be appended to the
-     * auto-calculated offsets.
+     * Sets extra offsets (around the chart view) to be appended to the auto-calculated offsets.
      */
     fun setExtraOffsets(left: Float, top: Float, right: Float, bottom: Float) {
         this.extraLeftOffset = left
@@ -868,8 +864,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
         }
 
     /**
-     * Sets the text that informs the user that there is no data available with
-     * which to draw the chart.
+     * Sets the text that informs the user that there is no data available with which to draw the chart.
      */
     fun setNoDataText(text: String) {
         mNoDataText = text

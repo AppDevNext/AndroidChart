@@ -19,12 +19,6 @@ open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(c
     private val mOffset2 = PointF()
     private var mWeakChart: WeakReference<Chart<*>?>? = null
 
-    /**
-     * Constructor. Sets up the MarkerView with a custom layout resource.
-     *
-     * @param context
-     * @param layoutResource the layout resource to use for the MarkerView
-     */
     init {
         setupLayoutResource(layoutResource)
     }
@@ -40,7 +34,6 @@ open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(c
         inflated.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         inflated.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED))
 
-        // measure(getWidth(), getHeight());
         inflated.layout(0, 0, inflated.measuredWidth, inflated.measuredHeight)
     }
 
