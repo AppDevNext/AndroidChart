@@ -52,7 +52,7 @@ dependencies {
     api(project(":chartLib"))
 
     // Compose dependencies
-    val composeBom = platform("androidx.compose:compose-bom:2026.01.01")
+    val composeBom = platform("androidx.compose:compose-bom:2026.02.00")
     implementation(composeBom)
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui")
