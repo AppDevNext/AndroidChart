@@ -1,5 +1,5 @@
 [![](https://jitpack.io/v/AppDevNext/AndroidChart.svg)](https://jitpack.io/#AppDevNext/AndroidChart)
-[![PullRequest](https://github.com/AppDevNext/AndroidChart/actions/workflows/Android-CI.yml/badge.svg)](https://github.com/AppDevNext/AndroidChart/actions/workflows/Android-CI.yml)
+[![PullRequest](https://github.com/AppDevNext/AndroidChart/actions/workflows/pullrequest.yml/badge.svg)](https://github.com/AppDevNext/AndroidChart/actions/workflows/pullrequest.yml)
 
 :zap: A powerful & easy to use 100% Kotlin chart library for Android :zap:
 
