@@ -16,22 +16,22 @@ fun Float.getDecimals(): Int {
         return 0
     }
 
-    return ceil(-log10(i.toDouble())).toInt() + 2
+    return ceil(-log10(i)).toInt() + 2
 }
 
 /**
  * rounds the given number to the next significant number
  */
-fun Double.roundToNextSignificant(): Float {
+fun Double.roundToNextSignificant(): Double {
     if (this.isInfinite() ||
         this.isNaN() || this == 0.0
     ) {
-        return 0f
+        return 0.0
     }
 
-    val d = ceil(log10(if (this < 0) -this else this).toFloat().toDouble()).toFloat()
+    val d = ceil(log10(if (this < 0) -this else this).toFloat().toDouble())
     val pw = 1 - d.toInt()
-    val magnitude = 10.0.pow(pw.toDouble()).toFloat()
+    val magnitude = 10.0.pow(pw.toDouble())
     val shifted = (this * magnitude).roundToInt()
     return shifted / magnitude
 }
