@@ -158,6 +158,10 @@ class DataTools {
             return result
         }
 
+        fun getSawtoothValues(size: Int): Array<Double> {
+            return Array(size) { i -> if (i % 2 == 0) -1.0 else 1.0 }
+        }
+
         fun setData(context: Context, lineChart: LineChart, count: Int = VAL_COUNT, range: Float = VAL_RANGE) {
             Timber.d("count=$count range=$range")
             val values = ArrayList<Entry>()
