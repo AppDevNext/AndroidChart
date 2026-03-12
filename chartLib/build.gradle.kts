@@ -44,7 +44,7 @@ android {
 
 dependencies {
     implementation("androidx.annotation:annotation:1.9.1")
-    implementation("androidx.core:core:1.17.0")
+    implementation("androidx.core:core:1.18.0")
     implementation("androidx.activity:activity-ktx:1.12.4")
     implementation("com.github.AppDevNext.Logcat:LogcatCoreLib:3.4")
     testImplementation("junit:junit:4.13.2")
