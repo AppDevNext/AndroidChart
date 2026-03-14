@@ -4,8 +4,8 @@ import android.graphics.DashPathEffect
 import info.appdev.charting.interfaces.datasets.ILineScatterCandleRadarDataSet
 import info.appdev.charting.utils.convertDpToPixel
 
-abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>, label: String) : BarLineScatterCandleBubbleDataSet<T>(yVals, label),
-    ILineScatterCandleRadarDataSet<T> {
+abstract class LineScatterCandleRadarDataSet<T, N_XAxis>(yVals: MutableList<T>, label: String) : BarLineScatterCandleBubbleDataSet<T, N_XAxis>(yVals, label),
+    ILineScatterCandleRadarDataSet<T, N_XAxis> where T : BaseEntry<N_XAxis>, N_XAxis : Number, N_XAxis : Comparable<N_XAxis> {
     override var isVerticalHighlightIndicator: Boolean = true
     override var isHorizontalHighlightIndicator: Boolean = true
 
@@ -78,8 +78,8 @@ abstract class LineScatterCandleRadarDataSet<T : Entry>(yVals: MutableList<T>, l
     val isDashedHighlightLineEnabled: Boolean
         get() = this.dashPathEffectHighlight != null
 
-    protected fun copy(lineScatterCandleRadarDataSet: LineScatterCandleRadarDataSet<*>) {
-        super.copy((lineScatterCandleRadarDataSet as BaseDataSet<*>?)!!)
+    protected fun copy(lineScatterCandleRadarDataSet: LineScatterCandleRadarDataSet<*, *>) {
+        super.copy((lineScatterCandleRadarDataSet as BaseDataSet<*, *>?)!!)
         lineScatterCandleRadarDataSet.isHorizontalHighlightIndicator = this.isHorizontalHighlightIndicator
         lineScatterCandleRadarDataSet.isVerticalHighlightIndicator = this.isVerticalHighlightIndicator
         lineScatterCandleRadarDataSet.mHighlightLineWidth = mHighlightLineWidth

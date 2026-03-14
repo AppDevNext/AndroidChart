@@ -10,10 +10,10 @@ import kotlin.math.abs
  * groups of values inside the Chart (e.g. the values for a specific line in the
  * LineChart, or the values of a specific group of bars in the BarChart).
  */
-abstract class DataSet<T : Entry>(
+abstract class DataSet<T, N_XAxis>(
     protected var mEntries: MutableList<T>,
     label: String = ""
-) : BaseDataSet<T>(label), Serializable {
+) : BaseDataSet<T, N_XAxis>(label), Serializable where T : BaseEntry<N_XAxis>, N_XAxis : Number, N_XAxis : Comparable<N_XAxis> {
     /**
      * maximum y-value in the value array
      */
@@ -93,22 +93,24 @@ abstract class DataSet<T : Entry>(
     }
 
     protected fun calcMinMaxX(entry: T) {
-        if (entry.x < this.xMin) {
-            this.xMin = entry.x
+        val entryX = entry.x.toFloat()
+        if (entryX < this.xMin) {
+            this.xMin = entryX
         }
 
-        if (entry.x > this.xMax) {
-            this.xMax = entry.x
+        if (entryX > this.xMax) {
+            this.xMax = entryX
         }
     }
 
     protected open fun calcMinMaxY(entry: T) {
-        if (entry.y < this.yMin) {
-            this.yMin = entry.y
+        val entryY = entry.y.toFloat()
+        if (entryY < this.yMin) {
+            this.yMin = entryY
         }
 
-        if (entry.y > this.yMax) {
-            this.yMax = entry.y
+        if (entryY > this.yMax) {
+            this.yMax = entryY
         }
     }
 
@@ -128,9 +130,9 @@ abstract class DataSet<T : Entry>(
     /**
      * Provides an exact copy of the DataSet this method is used on.
      */
-    abstract fun copy(): DataSet<T>?
+    abstract fun copy(): DataSet<T, N_XAxis>?
 
-    protected fun copy(dataSet: DataSet<*>) {
+    protected fun copy(dataSet: DataSet<*, *>) {
         super.copy(dataSet)
     }
 
@@ -151,8 +153,8 @@ abstract class DataSet<T : Entry>(
     override fun addEntryOrdered(entry: T) {
         calcMinMax(entry)
 
-        if (!mEntries.isEmpty() && mEntries[mEntries.size - 1].x > entry.x) {
-            val closestIndex = getEntryIndex(entry.x, entry.y, Rounding.UP)
+        if (!mEntries.isEmpty() && mEntries[mEntries.size - 1].x.toFloat() > entry.x.toFloat()) {
+            val closestIndex = getEntryIndex(entry.x.toFloat(), entry.y.toFloat(), Rounding.UP)
             mEntries.add(closestIndex, entry)
         } else {
             mEntries.add(entry)
@@ -219,12 +221,12 @@ abstract class DataSet<T : Entry>(
         while (low < high) {
             val m = low + (high - low) / 2
 
-            val currentEntry: Entry = mEntries[m]
+            val currentEntry: T = mEntries[m]
 
-            val nextEntry: Entry = mEntries[m + 1]
+            val nextEntry: T = mEntries[m + 1]
 
-            val d1 = currentEntry.x - xValue
-            val d2 = nextEntry.x - xValue
+            val d1 = currentEntry.x.toFloat() - xValue
+            val d2 = nextEntry.x.toFloat() - xValue
             val ad1 = abs(d1)
             val ad2 = abs(d2)
 
@@ -251,8 +253,8 @@ abstract class DataSet<T : Entry>(
             closest = high
         }
 
-        val closestEntry: Entry = mEntries[closest]
-        val closestXValue = closestEntry.x
+        val closestEntry: T = mEntries[closest]
+        val closestXValue = closestEntry.x.toFloat()
         if (rounding == Rounding.UP) {
             // If rounding up, and found x-value is lower than specified x, and we can go upper...
             if (closestXValue < xValue && closest < mEntries.size - 1) {
@@ -267,11 +269,11 @@ abstract class DataSet<T : Entry>(
 
         // Search by closest to y-value
         if (!closestToY.isNaN()) {
-            while (closest > 0 && mEntries[closest - 1].x == closestXValue) {
+            while (closest > 0 && mEntries[closest - 1].x.toFloat() == closestXValue) {
                 closest -= 1
             }
 
-            var closestYValue = closestEntry.y
+            var closestYValue = closestEntry.y.toFloat()
             var closestYIndex = closest
 
             while (true) {
@@ -282,11 +284,11 @@ abstract class DataSet<T : Entry>(
 
                 val value: T = mEntries[closest]
 
-                if (value.x != closestXValue) {
+                if (value.x.toFloat() != closestXValue) {
                     break
                 }
 
-                if (abs(value.y - closestToY) <= abs(closestYValue - closestToY)) {
+                if (abs(value.y.toFloat() - closestToY) <= abs(closestYValue - closestToY)) {
                     closestYValue = closestToY
                     closestYIndex = closest
                 }
@@ -308,8 +310,8 @@ abstract class DataSet<T : Entry>(
             var entry = mEntries[m]
 
             // if we have a match
-            if (xValue == entry.x) {
-                while (m > 0 && mEntries[m - 1].x == xValue) {
+            if (xValue == entry.x.toFloat()) {
+                while (m > 0 && mEntries[m - 1].x.toFloat() == xValue) {
                     m--
                 }
 
@@ -318,7 +320,7 @@ abstract class DataSet<T : Entry>(
                 // loop over all "equal" entries
                 while (m < high) {
                     entry = mEntries[m]
-                    if (entry.x == xValue) {
+                    if (entry.x.toFloat() == xValue) {
                         entries.add(entry)
                     } else {
                         break
@@ -328,7 +330,7 @@ abstract class DataSet<T : Entry>(
 
                 break
             } else {
-                if (xValue > entry.x) {
+                if (xValue > entry.x.toFloat()) {
                     low = m + 1
                 } else {
                     high = m - 1

@@ -3,7 +3,6 @@ package info.appdev.charting.highlight
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.data.ChartData
 import info.appdev.charting.data.DataSet
-import info.appdev.charting.data.Entry
 import info.appdev.charting.interfaces.dataprovider.base.BarLineScatterCandleBubbleDataProvider
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.utils.PointD
@@ -115,7 +114,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
      */
     @Suppress("SameParameterValue")
     protected open fun buildHighlights(
-        set: IDataSet<*>,
+        set: IDataSet<*, *>,
         dataSetIndex: Int,
         xVal: Float,
         rounding: DataSet.Rounding?
@@ -125,9 +124,9 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
         var entries = set.getEntriesForXValue(xVal)
         if (entries != null && entries.isEmpty()) {
             // Try to find closest x-value and take all entries for that x-value
-            val closest: Entry? = set.getEntryForXValue(xVal, Float.NaN, rounding)
+            val closest = set.getEntryForXValue(xVal, Float.NaN, rounding)
             if (closest != null) {
-                entries = set.getEntriesForXValue(closest.x)
+                entries = set.getEntriesForXValue(closest.x.toFloat())
             }
         }
 
@@ -136,12 +135,12 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
 
         if (entries != null)
             for (e in entries) {
-                val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(e.x, e.y)
+                val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(e.x.toFloat(), e.y.toFloat())
 
                 highlights.add(
                     Highlight(
-                        x = e.x,
-                        y = e.y,
+                        x = e.x.toFloat(),
+                        y = e.y.toFloat(),
                         xPx = pixels.x.toFloat(),
                         yPx = pixels.y.toFloat(),
                         dataSetIndex = dataSetIndex,
@@ -193,6 +192,6 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
         return hypot((x1 - x2).toDouble(), (y1 - y2).toDouble()).toFloat()
     }
 
-    protected open val data: ChartData<*>?
-        get() = provider.data
+    protected open val data: ChartData<*, *>?
+        get() = provider.data as ChartData<*, *>?
 }

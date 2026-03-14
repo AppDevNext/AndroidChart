@@ -1,9 +1,9 @@
 package info.appdev.charting.interfaces.datasets
 
 import android.graphics.drawable.Drawable
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 
-interface ILineRadarDataSet<T : Entry> : ILineScatterCandleRadarDataSet<T> {
+interface ILineRadarDataSet<T, N_XAxis> : ILineScatterCandleRadarDataSet<T, N_XAxis> where T : BaseEntry<N_XAxis>, N_XAxis : Number, N_XAxis : Comparable<N_XAxis> {
     /**
      * Returns the color that is used for filling the line surface area.
      */

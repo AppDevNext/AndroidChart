@@ -18,6 +18,7 @@ import info.appdev.charting.charts.LineChart
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.YAxis.AxisDependency
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.Entry
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
@@ -108,7 +109,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
     }
 
     private fun setData(count: Int, range: Float) {
-        val values1 = ArrayList<Entry>()
+        val values1 = ArrayList<BaseEntry<Float>>()
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {
@@ -116,28 +117,27 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             values1.add(Entry(i.toFloat(), `val`))
         }
 
-        val values2 = ArrayList<Entry>()
+        val values2 = ArrayList<BaseEntry<Float>>()
 
         for (i in 0..<count) {
             val `val` = (sampleValues[i]!!.toFloat() * range) + 450
             values2.add(Entry(i.toFloat(), `val`))
         }
 
-        val values3 = ArrayList<Entry>()
+        val values3 = ArrayList<BaseEntry<Float>>()
 
         for (i in 0..<count) {
             val `val` = (sampleValues[i]!!.toFloat() * range) + 500
             values3.add(Entry(i.toFloat(), `val`))
         }
 
-        val set1: LineDataSet
-        val set2: LineDataSet
-        val set3: LineDataSet
-
+        val set1: LineDataSet<BaseEntry<Float>, Float>
+        val set2: LineDataSet<BaseEntry<Float>, Float>
+        val set3: LineDataSet<BaseEntry<Float>, Float>
         if (binding.chart1.lineData.dataSetCount > 0) {
-            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
-            set2 = binding.chart1.lineData.getDataSetByIndex(1) as LineDataSet
-            set3 = binding.chart1.lineData.getDataSetByIndex(2) as LineDataSet
+            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet<BaseEntry<Float>, Float>
+            set2 = binding.chart1.lineData.getDataSetByIndex(1) as LineDataSet<BaseEntry<Float>, Float>
+            set3 = binding.chart1.lineData.getDataSetByIndex(2) as LineDataSet<BaseEntry<Float>, Float>
             set1.entries = values1
             set2.entries = values2
             set3.entries = values3
@@ -315,7 +315,7 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         saveToGallery(binding.chart1, "LineChartActivity2")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         Timber.i(entry.toString())
 
         binding.chart1.lineData.getDataSetByIndex(highlight.dataSetIndex)?.let {

@@ -1,6 +1,6 @@
 package info.appdev.charting.listener
 
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.highlight.Highlight
 
 /**
@@ -15,7 +15,7 @@ interface OnChartValueSelectedListener {
      * @param highlight The corresponding highlight object that contains information
      * about the highlighted position such as dataSetIndex, ...
      */
-    fun onValueSelected(entry: Entry, highlight: Highlight)
+    fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight)
 
     /**
      * Called when nothing has been selected or an "un-select" has been made.

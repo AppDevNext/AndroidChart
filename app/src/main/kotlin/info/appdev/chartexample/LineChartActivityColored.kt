@@ -49,7 +49,7 @@ class LineChartActivityColored : DemoBase() {
     )
 
     private fun setupChart(chart: LineChart, data: LineData, color: Int) {
-        (data.getDataSetByIndex(0) as LineDataSet).circleHoleColor = color
+        (data.getDataSetByIndex(0) as LineDataSet<*, *>).circleHoleColor = color
 
         // no description text
         chart.description.isEnabled = false

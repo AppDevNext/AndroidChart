@@ -19,7 +19,7 @@ import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.highlight.Highlight
@@ -194,7 +194,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         saveToGallery(binding.chart1, "StackedBarActivityNegative")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entry: BaseEntry<Float>, highlight: Highlight) {
         val barEntry = entry as BarEntry
         Timber.i("Value: ${abs(barEntry.yVals!![highlight.stackIndex])}")
     }
@@ -205,7 +205,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         private val decimalFormat: DecimalFormat = DecimalFormat("###")
 
         // data
-        override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
+        override fun getFormattedValue(value: Float, entry: BaseEntry<Float>?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
             return decimalFormat.format(abs(value).toDouble()) + "m"
         }
 

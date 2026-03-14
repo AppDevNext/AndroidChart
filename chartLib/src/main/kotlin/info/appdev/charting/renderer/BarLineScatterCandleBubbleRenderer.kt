@@ -1,8 +1,8 @@
 package info.appdev.charting.renderer
 
 import info.appdev.charting.animation.ChartAnimator
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.DataSet
-import info.appdev.charting.data.Entry
 import info.appdev.charting.interfaces.dataprovider.base.BarLineScatterCandleBubbleDataProvider
 import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import info.appdev.charting.interfaces.datasets.IDataSet
@@ -22,14 +22,14 @@ abstract class BarLineScatterCandleBubbleRenderer(
     /**
      * Returns true if the DataSet values should be drawn, false if not.
      */
-    protected fun shouldDrawValues(set: IDataSet<*>): Boolean {
+    protected fun shouldDrawValues(set: IDataSet<*, *>): Boolean {
         return set.isVisible && (set.isDrawValues || set.isDrawIcons)
     }
 
     /**
      * Checks if the provided entry object is in bounds for drawing considering the current animation phase.
      */
-    protected fun <T : Entry> isInBoundsX(entry: T, set: IBarLineScatterCandleBubbleDataSet<T>): Boolean {
+    protected fun <T, N_XAxis> isInBoundsX(entry: T, set: IBarLineScatterCandleBubbleDataSet<T, N_XAxis>): Boolean where T : BaseEntry<N_XAxis>, N_XAxis : Number, N_XAxis : Comparable<N_XAxis> {
         val entryIndex = set.getEntryIndex(entry).toFloat()
 
         return if (entryIndex >= set.entryCount * animator.phaseX) {
@@ -61,7 +61,7 @@ abstract class BarLineScatterCandleBubbleRenderer(
         /**
          * Calculates the minimum and maximum x values as well as the range between them.
          */
-        fun <T : Entry> set(chart: BarLineScatterCandleBubbleDataProvider<*>, dataSet: IBarLineScatterCandleBubbleDataSet<T>) {
+        fun <T, N_XAxis> set(chart: BarLineScatterCandleBubbleDataProvider<*>, dataSet: IBarLineScatterCandleBubbleDataSet<T, N_XAxis>) where T : BaseEntry<N_XAxis>, N_XAxis : Number, N_XAxis : Comparable<N_XAxis> {
             val phaseX = max(0f, min(1f, animator.phaseX))
 
             val low = chart.lowestVisibleX
