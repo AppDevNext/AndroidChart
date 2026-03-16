@@ -8,7 +8,7 @@ It comes with library view based `chartLib` and composeable `chartLibCompose`
 ### Packagename changed ! 🛑 
 
 During the full Kotlin conversion, 
-* 🛑 package name changed to `info.appdev.charting`, but there are still the old main chart classes included, but they will be removed in the future
+* 🛑 package name changed to `info.appdev.charting`
 * 🛑 `MPPointF` in renamed to `PointF`
 * 🛑 `MPPointD` in renamed to `PointD`
 * 🛑 methods like `setSomethingEnabled(true)` are now properties like `isSomething = true`
