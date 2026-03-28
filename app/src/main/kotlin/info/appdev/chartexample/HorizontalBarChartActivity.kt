@@ -41,16 +41,11 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
 
         binding.chart1.setOnChartValueSelectedListener(this)
         binding.chart1.isLogging = true
-
-        // chart.setHighlightEnabled(false);
         binding.chart1.isDrawBarShadow = false
-
         binding.chart1.isDrawValueAboveBar = true
-
         binding.chart1.description.isEnabled = false
 
-        // if more than 60 entries are displayed in the chart, no values will be
-        // drawn
+        // if more than 60 entries are displayed in the chart, no values will be drawn
         binding.chart1.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
@@ -73,14 +68,14 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         yl.isDrawGridLines = true
         yl.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        //        yl.setInverted(true);
+        // yl.setInverted(true);
         val yr = binding.chart1.axisRight
         yr.typeface = tfLight
         yr.isDrawAxisLine = true
         yr.isDrawGridLines = false
         yr.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        //        yr.setInverted(true);
+        // yr.setInverted(true);
         binding.chart1.setFitBars(true)
         binding.chart1.animateY(2500)
 
