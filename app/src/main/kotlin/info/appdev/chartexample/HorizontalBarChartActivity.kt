@@ -36,8 +36,8 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         binding = ActivityHorizontalbarchartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.seekBarY.setOnSeekBarChangeListener(this)
         binding.seekBarX.setOnSeekBarChangeListener(this)
+        binding.seekBarY.setOnSeekBarChangeListener(this)
 
         binding.chart1.setOnChartValueSelectedListener(this)
         binding.chart1.isLogging = true
@@ -55,33 +55,33 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
         // chart.setDrawBarShadow(true);
         binding.chart1.setDrawGridBackground(false)
 
-        val xl = binding.chart1.xAxis
-        xl.position = XAxisPosition.BOTTOM
-        xl.typeface = tfLight
-        xl.isDrawAxisLine = true
-        xl.isDrawGridLines = false
-        xl.granularity = 10f
+        val xAxis = binding.chart1.xAxis
+        xAxis.position = XAxisPosition.BOTTOM
+        xAxis.typeface = tfLight
+        xAxis.isDrawAxisLine = true
+        xAxis.isDrawGridLines = false
+        xAxis.granularity = 10f
 
-        val yl = binding.chart1.axisLeft
-        yl.typeface = tfLight
-        yl.isDrawAxisLine = true
-        yl.isDrawGridLines = true
-        yl.axisMinimum = 0f // this replaces setStartAtZero(true)
+        val yAxis = binding.chart1.axisLeft
+        yAxis.typeface = tfLight
+        yAxis.isDrawAxisLine = true
+        yAxis.isDrawGridLines = true
+        yAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        // yl.setInverted(true);
-        val yr = binding.chart1.axisRight
-        yr.typeface = tfLight
-        yr.isDrawAxisLine = true
-        yr.isDrawGridLines = false
-        yr.axisMinimum = 0f // this replaces setStartAtZero(true)
+        // yl.setInverted(true)
+        val axisRight = binding.chart1.axisRight
+        axisRight.typeface = tfLight
+        axisRight.isDrawAxisLine = true
+        axisRight.isDrawGridLines = false
+        axisRight.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        // yr.setInverted(true);
+        // yr.setInverted(true)
         binding.chart1.setFitBars(true)
         binding.chart1.animateY(2500)
 
         // setting data
-        binding.seekBarY.progress = 50
         binding.seekBarX.progress = 12
+        binding.seekBarY.progress = 50
 
         binding.chart1.legend.apply {
             verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM

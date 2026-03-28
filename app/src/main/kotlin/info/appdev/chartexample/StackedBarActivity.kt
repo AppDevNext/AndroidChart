@@ -67,8 +67,8 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         val xLabels = binding.chart1.xAxis
         xLabels.position = XAxisPosition.TOP
 
-        // chart.setDrawXLabels(false);
-        // chart.setDrawYLabels(false);
+        // chart.setDrawXLabels(false)
+        // chart.setDrawYLabels(false)
 
         // setting data
         binding.seekBarX.progress = 12
