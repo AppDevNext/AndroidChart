@@ -225,14 +225,7 @@ open class BarEntry : Entry {
          * Calculates the sum across all values of the given stack.
          */
         private fun calcSum(vals: FloatArray?): Float {
-            if (vals == null)
-                return 0f
-
-            var sum = 0f
-
-            for (f in vals) sum += f
-
-            return sum
+            return vals?.sum() ?: 0f
         }
     }
 }
