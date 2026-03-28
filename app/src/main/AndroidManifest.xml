@@ -60,6 +60,7 @@
         <activity android:name="info.appdev.chartexample.HalfPieChartActivity" />
         <activity android:name="info.appdev.chartexample.SpecificPositionsLineChartActivity" />
         <activity android:name="info.appdev.chartexample.TimeLineActivity" />
+        <activity android:name="info.appdev.chartexample.TimeIntervalBarChartActivity" />
     </application>
 
 </manifest>
