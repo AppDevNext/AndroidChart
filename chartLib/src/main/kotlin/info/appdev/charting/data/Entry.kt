@@ -1,6 +1,7 @@
 package info.appdev.charting.data
 
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Parcel
 import android.os.ParcelFormatException
 import android.os.Parcelable
@@ -100,7 +101,11 @@ open class Entry : BaseEntry, Parcelable, Serializable {
      * returns a string representation of the entry containing x-index and value
      */
     override fun toString(): String {
-        return "Entry x=$x y=$y"
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            "${this.javaClass.typeName.substringAfterLast(".")} x=$x y=$y"
+        } else {
+            "Entry x=$x y=$y"
+        }
     }
 
     override fun describeContents(): Int {

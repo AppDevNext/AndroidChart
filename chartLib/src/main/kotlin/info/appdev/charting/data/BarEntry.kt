@@ -216,6 +216,10 @@ open class BarEntry : Entry {
         }
     }
 
+    override fun toString(): String {
+        return super.toString() + " yVals=" + yVals.contentToString()
+    }
+
     companion object {
         /**
          * Calculates the sum across all values of the given stack.
