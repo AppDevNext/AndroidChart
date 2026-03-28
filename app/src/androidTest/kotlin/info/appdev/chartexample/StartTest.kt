@@ -75,7 +75,10 @@ class StartTest {
 
     @After
     fun cleanUp() {
-        Intents.release()
+        // release() may have already been called by the last loop iteration
+        try {
+            Intents.release()
+        } catch (_: IllegalStateException) { /* not initialised, nothing to do */ }
         // Clean up test timber tree
         Timber.uprootAll()
     }
@@ -249,12 +252,17 @@ class StartTest {
                     if (!compose)
                         doClickTest(index, contentClass, contentItem)
 
-                    //Thread.sleep(100)
                     Espresso.pressBack()
 
                     // Wait for MainActivity to be visible again
                     composeTestRule.waitForIdle()
                     Thread.sleep(200) // Small delay for back navigation
+
+                    // Reset intent recording for next iteration; otherwise intents accumulate
+                    // across the loop and Intents.intended() can no longer find a fresh
+                    // unverified match for the current activity.
+                    Intents.release()
+                    Intents.init()
                 } catch (e: Exception) {
                     Timber.e("#$index/'${contentClass.simpleName}'->'$optionMenu' ${e.message}", e)
                     onView(ViewMatchers.isRoot())
@@ -264,6 +272,16 @@ class StartTest {
                                     .replace(" ", "")
                             )
                         })
+                    // Navigate back so subsequent iterations start from MainActivity
+                    try {
+                        Espresso.pressBack()
+                        composeTestRule.waitForIdle()
+                    } catch (_: Exception) { /* already on MainActivity */ }
+                    // Reset intents so the next iteration starts clean
+                    try {
+                        Intents.release()
+                        Intents.init()
+                    } catch (_: Exception) { /* ignore if already released */ }
                 }
             }
         }
@@ -278,6 +296,7 @@ class StartTest {
             contentItem.clazz == HorizontalBarFullComposeActivity::class.java ||
             contentItem.clazz == MultiLineComposeActivity::class.java ||
             contentItem.clazz == GradientActivity::class.java ||
+//            contentItem.clazz == TimeIntervalChartActivity::class.java ||
             contentItem.clazz == TimeLineActivity::class.java
         ) {
             // These charts have less clickable area, so skip further clicks
