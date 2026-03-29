@@ -15,64 +15,53 @@ import kotlin.math.abs
  */
 open class EntryFloat : BaseEntry<Float>, Parcelable, Serializable {
 
-    private var _x: Float = 0f
-    open var x: Float
-        get() = _x
-        set(value) {
-            _x = value
-        }
-
     constructor()
 
     /**
-     * A EntryFloat represents one single entry in the chart.
+     * An EntryFloat represents one single entry in the chart.
      *
      * @param x the x value
      * @param y the y value (the actual value of the entry)
      */
-    constructor(x: Float, y: Float) : super(y) {
-        this._x = x
-    }
+    constructor(x: Float, y: Float) : super(x = x, y = y)
 
     /**
-     * A EntryFloat represents one single entry in the chart.
+     * An EntryFloat represents one single entry in the chart.
      *
      * @param x    the x value
      * @param y    the y value (the actual value of the entry)
      * @param data Spot for additional data this Entry represents.
      */
-    constructor(x: Float, y: Float, data: Any?) : super(y, data) {
-        this._x = x
-    }
+    constructor(x: Float, y: Float, data: Any?) : super(x = x, y = y, data = data)
 
     /**
-     * A EntryFloat represents one single entry in the chart.
+     * An EntryFloat represents one single entry in the chart.
      *
      * @param x the x value
      * @param y the y value (the actual value of the entry)
      * @param icon icon image
      */
-    constructor(x: Float, y: Float, icon: Drawable?) : super(y, icon) {
-        this._x = x
-    }
+    constructor(x: Float, y: Float, icon: Drawable?) : super(x = x, y = y, icon = icon)
 
     /**
-     * A EntryFloat represents one single entry in the chart.
+     * An EntryFloat represents one single entry in the chart.
      *
      * @param x the x value
      * @param y the y value (the actual value of the entry)
      * @param icon icon image
      * @param data Spot for additional data this EntryFloat represents.
      */
-    constructor(x: Float, y: Float, icon: Drawable?, data: Any?) : super(y, icon, data) {
-        this._x = x
-    }
+    constructor(x: Float, y: Float, icon: Drawable?, data: Any?) : super(x = x, y = y, icon = icon, data = data)
 
     /**
      * returns an exact copy of the entry
      */
     open fun copy(): EntryFloat {
-        val e = EntryFloat(x, y, data)
+        val e = EntryFloat(
+            x = x,
+            y = y,
+            data = data
+        )
         return e
     }
 
@@ -81,17 +70,17 @@ open class EntryFloat : BaseEntry<Float>, Parcelable, Serializable {
      * are equal in those points, false if not. Does not check by hash-code like
      * it's done by the "equals" method.
      */
-    fun equalTo(e: EntryFloat?): Boolean {
-        if (e == null)
+    fun equalTo(entryFloat: EntryFloat?): Boolean {
+        if (entryFloat == null)
             return false
 
-        if (e.data !== this.data)
+        if (entryFloat.data !== this.data)
             return false
 
-        if (abs((e.x - this.x).toDouble()) > Utils.FLOAT_EPSILON)
+        if (abs((entryFloat.x - this.x).toDouble()) > Utils.FLOAT_EPSILON)
             return false
 
-        if (abs((e.y - this.y).toDouble()) > Utils.FLOAT_EPSILON)
+        if (abs((entryFloat.y - this.y).toDouble()) > Utils.FLOAT_EPSILON)
             return false
 
         return true
@@ -128,7 +117,7 @@ open class EntryFloat : BaseEntry<Float>, Parcelable, Serializable {
     }
 
     protected constructor(`in`: Parcel) {
-        this._x = `in`.readFloat()
+        this.x = `in`.readFloat()
         this.yBase = `in`.readFloat()
         if (`in`.readInt() == 1) {
             this.data = if (Build.VERSION.SDK_INT >= 33) {

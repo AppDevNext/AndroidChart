@@ -11,64 +11,53 @@ import kotlin.math.abs
 
 open class EntryDouble : BaseEntry<Double>, Parcelable, Serializable {
 
-    private var _x: Double = 0.0
-    open var x: Double
-        get() = _x
-        set(value) {
-            _x = value
-        }
-
     constructor()
 
     /**
-     * A Entry represents one single entry in the chart.
+     * An Entry represents one single entry in the chart.
      *
      * @param x the x value
      * @param y the y value (the actual value of the entry)
      */
-    constructor(x: Double, y: Double) : super(y) {
-        this._x = x
-    }
+    constructor(x: Double, y: Double) : super(x = x, y = y)
 
     /**
-     * A Entry represents one single entry in the chart.
+     * An Entry represents one single entry in the chart.
      *
      * @param x    the x value
      * @param y    the y value (the actual value of the entry)
      * @param data Spot for additional data this Entry represents.
      */
-    constructor(x: Double, y: Double, data: Any?) : super(y, data) {
-        this._x = x
-    }
+    constructor(x: Double, y: Double, data: Any?) : super(x = x, y = y, data = data)
 
     /**
-     * A Entry represents one single entry in the chart.
+     * An Entry represents one single entry in the chart.
      *
      * @param x the x value
      * @param y the y value (the actual value of the entry)
      * @param icon icon image
      */
-    constructor(x: Double, y: Double, icon: Drawable?) : super(y, icon) {
-        this._x = x
-    }
+    constructor(x: Double, y: Double, icon: Drawable?) : super(x = x, y = y, icon = icon)
 
     /**
-     * A Entry represents one single entry in the chart.
+     * An Entry represents one single entry in the chart.
      *
      * @param x the x value
      * @param y the y value (the actual value of the entry)
      * @param icon icon image
      * @param data Spot for additional data this Entry represents.
      */
-    constructor(x: Double, y: Double, icon: Drawable?, data: Any?) : super(y, icon, data) {
-        this._x = x
-    }
+    constructor(x: Double, y: Double, icon: Drawable?, data: Any?) : super(x = x, y = y, icon = icon, data = data)
 
     /**
      * returns an exact copy of the entry
      */
     open fun copy(): EntryDouble {
-        val e = EntryDouble(x, y, data)
+        val e = EntryDouble(
+            x = x,
+            y = y,
+            data = data
+        )
         return e
     }
 
@@ -77,17 +66,17 @@ open class EntryDouble : BaseEntry<Double>, Parcelable, Serializable {
      * are equal in those points, false if not. Does not check by hash-code like
      * it's done by the "equals" method.
      */
-    fun equalTo(e: EntryDouble?): Boolean {
-        if (e == null)
+    fun equalTo(entryDouble: EntryDouble?): Boolean {
+        if (entryDouble == null)
             return false
 
-        if (e.data !== this.data)
+        if (entryDouble.data !== this.data)
             return false
 
-        if (abs((e.x - this.x)) > Utils.DOUBLE_EPSILON)
+        if (abs((entryDouble.x - this.x)) > Utils.DOUBLE_EPSILON)
             return false
 
-        if (abs((e.y - this.y)) > Utils.DOUBLE_EPSILON)
+        if (abs((entryDouble.y - this.y)) > Utils.DOUBLE_EPSILON)
             return false
 
         return true
@@ -124,7 +113,7 @@ open class EntryDouble : BaseEntry<Double>, Parcelable, Serializable {
     }
 
     protected constructor(`in`: Parcel) {
-        this._x = `in`.readDouble()
+        this.x = `in`.readDouble()
         this.yBase = `in`.readDouble()
         if (`in`.readInt() == 1) {
             this.data = if (Build.VERSION.SDK_INT >= 33) {
