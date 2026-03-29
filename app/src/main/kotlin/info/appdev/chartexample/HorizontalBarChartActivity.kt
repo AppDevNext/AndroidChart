@@ -19,6 +19,7 @@ import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
+import info.appdev.charting.data.BarEntryDouble
 import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
@@ -96,14 +97,14 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
     private fun setData(count: Int, range: Float) {
         val barWidth = 9f
         val spaceForBar = 10f
-        val values = ArrayList<BarEntryFloat>()
+        val values = ArrayList<BarEntryDouble>()
         val sampleValues = getValues(100)
 
         for (i in 0..<count) {
-            val yValue = sampleValues[i]!!.toFloat() * range
+            val yValue = sampleValues[i]!! * range
             values.add(
-                BarEntryFloat(
-                    x = i * spaceForBar,
+                BarEntryDouble(
+                    x = i * spaceForBar.toDouble(),
                     y = yValue,
                     icon = ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
@@ -112,15 +113,21 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
 
         val set1: BarDataSet
 
+        /*The @Suppress("UNCHECKED_CAST") cast is safe here because:
+        * JVM erases generics at runtime — both are just MutableList on the heap
+        * BarDataSet only reads entries from the list as BarEntryFloat, and BarEntryDouble IS a BarEntryFloat
+        * Nothing writes a plain BarEntryFloat back into the list through BarDataSet*/
         if (binding.chart1.barData != null &&
             binding.chart1.barData!!.dataSetCount > 0
         ) {
             set1 = binding.chart1.barData!!.getDataSetByIndex(0) as BarDataSet
-            set1.entries = values
+            @Suppress("UNCHECKED_CAST")
+            set1.entries = values as MutableList<BarEntryFloat>
             binding.chart1.barData?.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
         } else {
-            set1 = BarDataSet(values, "DataSet 1")
+            @Suppress("UNCHECKED_CAST")
+            set1 = BarDataSet(values as MutableList<BarEntryFloat>, "DataSet 1")
 
             set1.isDrawIcons = false
 
@@ -230,8 +237,9 @@ class HorizontalBarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartV
     private val mOnValueSelectedRectF = RectF()
 
     override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        val barEntry = entryFloat as BarEntryDouble
         val bounds = mOnValueSelectedRectF
-        binding.chart1.getBarBounds(entryFloat as BarEntryFloat, bounds)
+        binding.chart1.getBarBounds(barEntry, bounds)
 
         val position = binding.chart1.getPosition(
             entryFloat, binding.chart1.barData!!.getDataSetByIndex(highlight.dataSetIndex)?.axisDependency
