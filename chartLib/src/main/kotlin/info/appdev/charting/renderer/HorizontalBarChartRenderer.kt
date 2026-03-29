@@ -227,7 +227,7 @@ open class HorizontalBarChartRenderer(
                                 val formattedValue = formatter.getFormattedValue(valueY, barEntry, i, viewPortHandler)
                                 // calculate the correct offset depending on the draw position of the value
                                 val valueTextWidth = paintValues.calcTextWidth(formattedValue).toFloat()
-                                posOffset = (if (drawValueAboveBar) valueOffsetPlus else -(valueTextWidth + valueOffsetPlus))
+                                posOffset = if (drawValueAboveBar) valueOffsetPlus else -(valueTextWidth + valueOffsetPlus)
                                 negOffset = ((if (drawValueAboveBar) -(valueTextWidth + valueOffsetPlus) else valueOffsetPlus)
                                         - (buffer.buffer[j + 2] - buffer.buffer[j]))
 

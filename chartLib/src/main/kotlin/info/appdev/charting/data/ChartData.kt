@@ -529,9 +529,9 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     /**
      * Sets a custom IValueFormatter for all DataSets this data object contains.
      */
-    fun setValueFormatter(f: IValueFormatter) {
+    fun setValueFormatter(formatter: IValueFormatter) {
         for (set in this.dataSets) {
-            set.valueFormatter = f
+            set.valueFormatter = formatter
         }
     }
 
