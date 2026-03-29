@@ -13,7 +13,7 @@ import kotlin.math.abs
  * Class representing one entry in the chart. Might contain multiple values.
  * Might only contain a single value depending on the used constructor.
  */
-open class Entry : BaseEntry, Parcelable, Serializable {
+open class Entry : BaseEntry<Float>, Parcelable, Serializable {
 
     private var _x: Float = 0f
     open var x: Float
