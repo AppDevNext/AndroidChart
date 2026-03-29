@@ -2,139 +2,81 @@ package info.appdev.charting.data
 
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.os.Parcel
-import android.os.ParcelFormatException
-import android.os.Parcelable
-import info.appdev.charting.utils.Utils
 import java.io.Serializable
 import kotlin.math.abs
+import info.appdev.charting.utils.Utils
 
-open class EntryDouble : BaseEntry<Double>, Parcelable, Serializable {
+/**
+ * High-precision entry that stores x and y as Double, but extends EntryFloat
+ * so it works seamlessly in the existing chart rendering pipeline.
+ * Use [xDouble] and [yDouble] to access the full-precision values.
+ */
+open class EntryDouble : EntryFloat, Serializable {
 
-    constructor()
-
-    /**
-     * An Entry represents one single entry in the chart.
-     *
-     * @param x the x value
-     * @param y the y value (the actual value of the entry)
-     */
-    constructor(x: Double, y: Double) : super(x = x, y = y)
-
-    /**
-     * An Entry represents one single entry in the chart.
-     *
-     * @param x    the x value
-     * @param y    the y value (the actual value of the entry)
-     * @param data Spot for additional data this Entry represents.
-     */
-    constructor(x: Double, y: Double, data: Any?) : super(x = x, y = y, data = data)
+    var xDouble: Double = 0.0
+    var yDouble: Double = 0.0
 
     /**
-     * An Entry represents one single entry in the chart.
-     *
-     * @param x the x value
-     * @param y the y value (the actual value of the entry)
-     * @param icon icon image
+     * Override x to store/return via xDouble for high precision;
+     * the base chart pipeline reads x.toFloat() transparently.
      */
-    constructor(x: Double, y: Double, icon: Drawable?) : super(x = x, y = y, icon = icon)
+    override var x: Float
+        get() = xDouble.toFloat()
+        set(value) {
+            xDouble = value.toDouble()
+        }
 
     /**
-     * An Entry represents one single entry in the chart.
-     *
-     * @param x the x value
-     * @param y the y value (the actual value of the entry)
-     * @param icon icon image
-     * @param data Spot for additional data this Entry represents.
+     * Override y to store/return via yDouble for high precision;
+     * the base chart pipeline reads y.toFloat() transparently.
      */
-    constructor(x: Double, y: Double, icon: Drawable?, data: Any?) : super(x = x, y = y, icon = icon, data = data)
+    override var y: Float
+        get() = yDouble.toFloat()
+        set(value) {
+            yDouble = value.toDouble()
+        }
 
-    /**
-     * returns an exact copy of the entry
-     */
-    open fun copy(): EntryDouble {
-        val e = EntryDouble(
-            x = x,
-            y = y,
-            data = data
-        )
-        return e
+    constructor() : super()
+
+    constructor(x: Double, y: Double) : super() {
+        this.xDouble = x
+        this.yDouble = y
     }
 
-    /**
-     * Compares value, xIndex and data of the entries. Returns true if entries
-     * are equal in those points, false if not. Does not check by hash-code like
-     * it's done by the "equals" method.
-     */
-    fun equalTo(entryDouble: EntryDouble?): Boolean {
-        if (entryDouble == null)
-            return false
+    constructor(x: Double, y: Double, data: Any?) : super() {
+        this.xDouble = x
+        this.yDouble = y
+        this.data = data
+    }
 
-        if (entryDouble.data !== this.data)
-            return false
+    constructor(x: Double, y: Double, icon: Drawable?) : super() {
+        this.xDouble = x
+        this.yDouble = y
+        this.icon = icon
+    }
 
-        if (abs((entryDouble.x - this.x)) > Utils.DOUBLE_EPSILON)
-            return false
+    constructor(x: Double, y: Double, icon: Drawable?, data: Any?) : super() {
+        this.xDouble = x
+        this.yDouble = y
+        this.icon = icon
+        this.data = data
+    }
 
-        if (abs((entryDouble.y - this.y)) > Utils.DOUBLE_EPSILON)
-            return false
+    open fun copyDouble(): EntryDouble = EntryDouble(xDouble, yDouble, data)
 
+    fun equalTo(other: EntryDouble?): Boolean {
+        if (other == null) return false
+        if (other.data !== this.data) return false
+        if (abs(other.xDouble - this.xDouble) > Utils.DOUBLE_EPSILON) return false
+        if (abs(other.yDouble - this.yDouble) > Utils.DOUBLE_EPSILON) return false
         return true
     }
 
-    /**
-     * returns a string representation of the entry containing x-index and value
-     */
     override fun toString(): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            "${this.javaClass.typeName.substringAfterLast(".")} x=$x y=$y"
+            "${this.javaClass.typeName.substringAfterLast(".")} xDouble=$xDouble yDouble=$yDouble"
         } else {
-            "EntryDouble x=$x y=$y"
-        }
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeDouble(this.x)
-        dest.writeDouble(this.y)
-        if (data != null) {
-            if (data is Parcelable) {
-                dest.writeInt(1)
-                dest.writeParcelable(data as Parcelable?, flags)
-            } else {
-                throw ParcelFormatException("Cannot parcel an EntryDouble with non-parcelable data")
-            }
-        } else {
-            dest.writeInt(0)
-        }
-    }
-
-    protected constructor(`in`: Parcel) {
-        this.x = `in`.readDouble()
-        this.yBase = `in`.readDouble()
-        if (`in`.readInt() == 1) {
-            this.data = if (Build.VERSION.SDK_INT >= 33) {
-                `in`.readParcelable(Any::class.java.classLoader, Any::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                `in`.readParcelable(Any::class.java.classLoader)
-            }
-        }
-    }
-
-    companion object {
-        @JvmField
-        val CREATOR: Parcelable.Creator<EntryDouble> = object : Parcelable.Creator<EntryDouble> {
-            override fun createFromParcel(source: Parcel): EntryDouble {
-                return EntryDouble(source)
-            }
-
-            override fun newArray(size: Int): Array<EntryDouble?> {
-                return arrayOfNulls(size)
-            }
+            "EntryDouble xDouble=$xDouble yDouble=$yDouble"
         }
     }
 }

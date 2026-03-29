@@ -142,7 +142,7 @@ open class Transformer(protected var viewPortHandler: ViewPortHandler) {
      * y values transformed with all matrices for the LINECHART.
      */
     fun generateTransformedValuesLine(
-        data: ILineDataSet,
+        data: ILineDataSet<*>,
         phaseX: Float, phaseY: Float,
         min: Int, max: Int
     ): FloatArray {

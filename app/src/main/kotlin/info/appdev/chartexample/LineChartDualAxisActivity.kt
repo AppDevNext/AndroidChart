@@ -130,14 +130,14 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
             values3.add(EntryFloat(i.toFloat(), `val`))
         }
 
-        val set1: LineDataSet
-        val set2: LineDataSet
-        val set3: LineDataSet
+        val set1: LineDataSet<EntryFloat>
+        val set2: LineDataSet<EntryFloat>
+        val set3: LineDataSet<EntryFloat>
 
         if (binding.chart1.lineData.dataSetCount > 0) {
-            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
-            set2 = binding.chart1.lineData.getDataSetByIndex(1) as LineDataSet
-            set3 = binding.chart1.lineData.getDataSetByIndex(2) as LineDataSet
+            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet<EntryFloat>
+            set2 = binding.chart1.lineData.getDataSetByIndex(1) as LineDataSet<EntryFloat>
+            set3 = binding.chart1.lineData.getDataSetByIndex(2) as LineDataSet<EntryFloat>
             set1.entries = values1
             set2.entries = values2
             set3.entries = values3

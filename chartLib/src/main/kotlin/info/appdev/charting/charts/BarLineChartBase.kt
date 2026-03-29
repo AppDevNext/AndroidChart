@@ -16,6 +16,7 @@ import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.data.BarLineScatterCandleBubbleData
+import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.ChartHighlighter
 import info.appdev.charting.interfaces.dataprovider.base.BarLineScatterCandleBubbleDataProvider

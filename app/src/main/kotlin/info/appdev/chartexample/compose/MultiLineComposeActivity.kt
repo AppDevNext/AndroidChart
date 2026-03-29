@@ -326,7 +326,7 @@ class MultiLineComposeActivity : DemoBaseCompose() {
         showCircles: Boolean,
         lineMode: LineDataSet.Mode
     ): LineData {
-        val dataSets = ArrayList<LineDataSet>()
+        val dataSets = ArrayList<LineDataSet<EntryFloat>>()
 
         for (datasetNumber in 0..2) {
             val values = ArrayList<EntryFloat>()
@@ -359,6 +359,7 @@ class MultiLineComposeActivity : DemoBaseCompose() {
         // Make the first DataSet dashed
         dataSets[0].enableDashedLine(10f, 10f, 0f)
 
-        return LineData(ArrayList(dataSets.map { it as info.appdev.charting.interfaces.datasets.ILineDataSet }))
+        @Suppress("UNCHECKED_CAST")
+        return LineData(ArrayList(dataSets.map { it as info.appdev.charting.interfaces.datasets.ILineDataSet<EntryFloat> }))
     }
 }

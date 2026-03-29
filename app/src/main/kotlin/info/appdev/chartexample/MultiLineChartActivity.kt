@@ -84,7 +84,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         binding.tvXMax.text = binding.seekBarX.progress.toString()
         binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        val dataSets = ArrayList<ILineDataSet>()
+        val dataSets = ArrayList<ILineDataSet<EntryFloat>>()
 
         for (datasetNumber in 0..2) {
             val values = ArrayList<EntryFloat>()
@@ -111,7 +111,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         }
 
         // make the first DataSet dashed
-        (dataSets[0] as LineDataSet).enableDashedLine(10f, 10f, 0f)
+        (dataSets[0] as LineDataSet<*>).enableDashedLine(10f, 10f, 0f)
 
         val data = LineData(dataSets)
         binding.chart1.data = data

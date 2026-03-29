@@ -91,10 +91,10 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             values.add(EntryFloat(i.toFloat(), `val`))
         }
 
-        val set1: LineDataSet
+        val set1: LineDataSet<EntryFloat>
 
         if (binding.chart1.lineData.dataSetCount > 0) {
-            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
+            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet<EntryFloat>
             set1.entries = values
             binding.chart1.lineData.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
@@ -115,7 +115,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             set1.fillAlpha = 100
             set1.isHorizontalHighlightIndicator = false
             set1.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet<*>?, dataProvider: LineDataProvider): Float {
                     return binding.chart1.axisLeft.axisMinimum
                 }
             }

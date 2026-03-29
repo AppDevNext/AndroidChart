@@ -116,7 +116,7 @@ class ListViewMultiChartActivity : DemoBase() {
         d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0])
         d2.isDrawValues = false
 
-        val sets = ArrayList<ILineDataSet>()
+        val sets = ArrayList<ILineDataSet<EntryFloat>>()
         sets.add(d1)
         sets.add(d2)
 

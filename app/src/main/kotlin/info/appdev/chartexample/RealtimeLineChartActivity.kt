@@ -92,7 +92,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
             data.addDataSet(set)
         }
 
-        val cycleValue = (set.entryCount % 100.0).toInt()
+        val cycleValue = (set!!.entryCount % 100.0).toInt()
         data.addEntry(EntryFloat(set.entryCount.toFloat(), (sampleValues[cycleValue]!!.toFloat() * 40) + 30f), 0)
         data.notifyDataChanged()
 
@@ -112,8 +112,8 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         // AxisDependency.LEFT);
     }
 
-    private fun createSet(): LineDataSet {
-        val set = LineDataSet(label = "Dynamic Data")
+    private fun createSet(): LineDataSet<EntryFloat> {
+        val set = LineDataSet<EntryFloat>(label = "Dynamic Data")
         set.axisDependency = AxisDependency.LEFT
         set.color = ColorTemplate.holoBlue
         set.setCircleColor(Color.WHITE)

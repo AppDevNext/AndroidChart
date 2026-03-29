@@ -269,7 +269,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         } else {
             set11.fillColor = Color.BLACK
         }
-        val dataSets = ArrayList<ILineDataSet>()
+        val dataSets = ArrayList<ILineDataSet<EntryFloat>>()
         dataSets.add(set11) // add the datasets
 
         // create a data object with the datasets

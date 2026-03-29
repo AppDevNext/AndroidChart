@@ -62,7 +62,7 @@ class GradientActivity : DemoBase() {
 
             fillFormatter = object : IFillFormatter {
                 override fun getFillLinePosition(
-                    dataSet: ILineDataSet?,
+                    dataSet: ILineDataSet<*>?,
                     dataProvider: LineDataProvider
                 ): Float = binding.chart1.axisLeft.axisMinimum
             }

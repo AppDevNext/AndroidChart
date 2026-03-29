@@ -111,7 +111,7 @@ abstract class SimpleFragment : Fragment() {
     }
 
     protected fun generateLineData(): LineData {
-        val sets = ArrayList<ILineDataSet>()
+        val sets = ArrayList<ILineDataSet<EntryFloat>>()
         val ds1 = LineDataSet(requireContext().assets.loadEntriesFromAssets("sine.txt"), "Sine function")
         val ds2 = LineDataSet(requireContext().assets.loadEntriesFromAssets("cosine.txt"), "Cosine function")
 
@@ -135,7 +135,7 @@ abstract class SimpleFragment : Fragment() {
 
     protected val complexity: LineData
         get() {
-            val sets = ArrayList<ILineDataSet>()
+            val sets = ArrayList<ILineDataSet<EntryFloat>>()
 
             val ds1 = LineDataSet(requireContext().assets.loadEntriesFromAssets("n.txt"), "O(n)")
             val ds2 = LineDataSet(requireContext().assets.loadEntriesFromAssets("nlogn.txt"), "O(nlogn)")

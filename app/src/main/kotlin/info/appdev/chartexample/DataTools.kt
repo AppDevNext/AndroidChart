@@ -226,7 +226,7 @@ class DataTools {
             // set the filled area
             lineDataSet01.isDrawFilled = true
             lineDataSet01.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet<*>?, dataProvider: LineDataProvider): Float {
                     return lineChart.axisLeft.axisMinimum
                 }
             }
@@ -239,7 +239,7 @@ class DataTools {
             } else {
                 lineDataSet01.fillColor = Color.BLACK
             }
-            val dataSets = ArrayList<ILineDataSet>()
+            val dataSets = ArrayList<ILineDataSet<EntryFloat>>()
             dataSets.add(lineDataSet01) // add the data sets
 
             // create a data object with the data sets
