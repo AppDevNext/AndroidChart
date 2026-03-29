@@ -122,12 +122,12 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
     ): MutableList<Highlight> {
         val highlights = ArrayList<Highlight>()
 
-        var entries = set.getEntriesForXValue(xVal)
+        var entries = set.getEntriesForXValue(xVal)?.map { it as EntryFloat }?.toMutableList()
         if (entries != null && entries.isEmpty()) {
             // Try to find closest x-value and take all entries for that x-value
-            val closest: EntryFloat? = set.getEntryForXValue(xVal, Float.NaN, rounding)
+            val closest: EntryFloat? = set.getEntryForXValue(xVal, Float.NaN, rounding) as? EntryFloat
             if (closest != null) {
-                entries = set.getEntriesForXValue(closest.x)
+                entries = set.getEntriesForXValue(closest.x)?.map { it as EntryFloat }?.toMutableList()
             }
         }
 

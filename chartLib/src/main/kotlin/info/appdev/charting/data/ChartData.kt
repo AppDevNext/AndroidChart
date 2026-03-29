@@ -52,7 +52,7 @@ abstract class ChartData<T : IDataSet<out EntryFloat>> : Serializable {
         protected set
 
     constructor() {
-        this.dataSets = ArrayList<T>()
+        this.dataSets = ArrayList()
     }
 
     constructor(vararg dataSets: T) {
@@ -446,7 +446,7 @@ abstract class ChartData<T : IDataSet<out EntryFloat>> : Serializable {
         }
 
         val dataSet: IDataSet<*> = dataSets[dataSetIndex]
-        val entryFloat: EntryFloat = dataSet.getEntryForXValue(xValue, Float.NaN) ?: return false
+        val entryFloat: EntryFloat = dataSet.getEntryForXValue(xValue, Float.NaN) as? EntryFloat ?: return false
 
         return removeEntry(entryFloat, dataSetIndex)
     }
