@@ -31,8 +31,8 @@ open class PieDataSet(yVals: MutableList<PieEntry>, label: String) : DataSet<Pie
 
     override fun copy(): DataSet<PieEntry> {
         val entries: MutableList<PieEntry> = mutableListOf()
-        for (i in mEntries.indices) {
-            entries.add(mEntries[i].copy())
+        for (i in entriesInternal.indices) {
+            entries.add(entriesInternal[i].copy())
         }
         val copied = PieDataSet(entries, label)
         return copied

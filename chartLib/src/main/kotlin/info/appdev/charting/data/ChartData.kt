@@ -197,7 +197,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
 
     /**
      * Retrieve the index of a DataSet with a specific label from the ChartData.
-     * Search can be case sensitive or not. IMPORTANT: This method does
+     * Search can be case-sensitive or not. IMPORTANT: This method does
      * calculations at runtime, do not over-use in performance critical
      * situations.
      *
@@ -252,8 +252,8 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     }
 
     /**
-     * Returns the DataSet object with the given label. Search can be case
-     * sensitive or not. IMPORTANT: This method does calculations at runtime.
+     * Returns the DataSet object with the given label. Search can be case-sensitive or not.
+     * IMPORTANT: This method does calculations at runtime.
      * Use with care in performance critical situations.
      */
     open fun getDataSetByLabel(label: String, ignoreCase: Boolean): T? {

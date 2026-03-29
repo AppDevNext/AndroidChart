@@ -105,7 +105,7 @@ interface IDataSet<T : Entry> {
 
     /**
      * Returns the position of the provided entry in the DataSets Entry array.
-     * Returns -1 if doesn't exist.
+     * Returns -1 if it doesn't exist.
      */
     fun getEntryIndex(entry: T): Int
 

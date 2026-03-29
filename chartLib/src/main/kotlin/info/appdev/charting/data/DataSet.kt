@@ -11,7 +11,7 @@ import kotlin.math.abs
  * LineChart, or the values of a specific group of bars in the BarChart).
  */
 abstract class DataSet<T : Entry>(
-    protected var mEntries: MutableList<T>,
+    protected var entriesInternal: MutableList<T>,
     label: String = ""
 ) : BaseDataSet<T>(label), Serializable {
     /**
@@ -53,11 +53,11 @@ abstract class DataSet<T : Entry>(
         this.xMax = -Float.MAX_VALUE
         this.xMin = Float.MAX_VALUE
 
-        if (mEntries.isEmpty()) {
+        if (entriesInternal.isEmpty()) {
             return
         }
 
-        for (e in mEntries) {
+        for (e in entriesInternal) {
             calcMinMax(e)
         }
     }
@@ -66,7 +66,7 @@ abstract class DataSet<T : Entry>(
         this.yMax = -Float.MAX_VALUE
         this.yMin = Float.MAX_VALUE
 
-        if (mEntries.isEmpty()) {
+        if (entriesInternal.isEmpty()) {
             return
         }
 
@@ -80,7 +80,7 @@ abstract class DataSet<T : Entry>(
         for (i in indexFrom..indexTo) {
             // only recalculate y
 
-            calcMinMaxY(mEntries[i])
+            calcMinMaxY(entriesInternal[i])
         }
     }
 
@@ -113,15 +113,15 @@ abstract class DataSet<T : Entry>(
     }
 
     override val entryCount: Int
-        get() = mEntries.size
+        get() = entriesInternal.size
 
     /**
      * Returns the array of entries that this DataSet represents.
      */
     var entries: MutableList<T>
-        get() = mEntries
+        get() = entriesInternal
         set(entries) {
-            mEntries = entries
+            entriesInternal = entries
             notifyDataChanged()
         }
 
@@ -137,8 +137,8 @@ abstract class DataSet<T : Entry>(
     override fun toString(): String {
         val buffer = StringBuilder()
         buffer.append(toSimpleString())
-        for (i in mEntries.indices) {
-            buffer.append(mEntries[i].toString()).append(" ")
+        for (i in entriesInternal.indices) {
+            buffer.append(entriesInternal[i].toString()).append(" ")
         }
         return buffer.toString()
     }
@@ -146,21 +146,21 @@ abstract class DataSet<T : Entry>(
     /**
      * Returns a simple string representation of the DataSet with the type and the number of Entries.
      */
-    fun toSimpleString() = "DataSet, label: $label, entries: ${mEntries.size}"
+    fun toSimpleString() = "DataSet, label: $label, entries: ${entriesInternal.size}"
 
     override fun addEntryOrdered(entry: T) {
         calcMinMax(entry)
 
-        if (!mEntries.isEmpty() && mEntries[mEntries.size - 1].x > entry.x) {
+        if (!entriesInternal.isEmpty() && entriesInternal[entriesInternal.size - 1].x > entry.x) {
             val closestIndex = getEntryIndex(entry.x, entry.y, Rounding.UP)
-            mEntries.add(closestIndex, entry)
+            entriesInternal.add(closestIndex, entry)
         } else {
-            mEntries.add(entry)
+            entriesInternal.add(entry)
         }
     }
 
     override fun clear() {
-        mEntries.clear()
+        entriesInternal.clear()
         notifyDataChanged()
     }
 
@@ -171,7 +171,7 @@ abstract class DataSet<T : Entry>(
     }
 
     override fun removeEntry(entry: T): Boolean {
-        val removed = mEntries.remove(entry)
+        val removed = entriesInternal.remove(entry)
 
         if (removed) {
             calcMinMax()
@@ -180,14 +180,14 @@ abstract class DataSet<T : Entry>(
     }
 
     override fun getEntryIndex(entry: T): Int {
-        return mEntries.indexOf(entry)
+        return entriesInternal.indexOf(entry)
     }
 
 
     override fun getEntryForXValue(xValue: Float, closestToY: Float, rounding: Rounding?): T? {
         val index = getEntryIndex(xValue, closestToY, rounding)
         if (index > -1) {
-            return mEntries[index]
+            return entriesInternal[index]
         }
         return null
     }
@@ -200,28 +200,28 @@ abstract class DataSet<T : Entry>(
         if (index < 0) {
             Timber.e("index $index is < 0 for getEntryForIndex")
             return null
-        } else if (index >= mEntries.size) {
-            Timber.e("index $index / ${mEntries.size} is out of range for getEntryForIndex")
+        } else if (index >= entriesInternal.size) {
+            Timber.e("index $index / ${entriesInternal.size} is out of range for getEntryForIndex")
             return null
         }
-        return mEntries[index]
+        return entriesInternal[index]
     }
 
     override fun getEntryIndex(xValue: Float, closestToY: Float, rounding: Rounding?): Int {
-        if (mEntries.isEmpty()) {
+        if (entriesInternal.isEmpty()) {
             return -1
         }
 
         var low = 0
-        var high = mEntries.size - 1
+        var high = entriesInternal.size - 1
         var closest = high
 
         while (low < high) {
             val m = low + (high - low) / 2
 
-            val currentEntry: Entry = mEntries[m]
+            val currentEntry: Entry = entriesInternal[m]
 
-            val nextEntry: Entry = mEntries[m + 1]
+            val nextEntry: Entry = entriesInternal[m + 1]
 
             val d1 = currentEntry.x - xValue
             val d2 = nextEntry.x - xValue
@@ -230,7 +230,7 @@ abstract class DataSet<T : Entry>(
 
             if (ad2 < ad1) {
                 // [m + 1] is closer to xValue
-                // Search in an higher place
+                // Search in a higher place
                 low = m + 1
             } else if (ad1 < ad2) {
                 // [m] is closer to xValue
@@ -243,7 +243,7 @@ abstract class DataSet<T : Entry>(
                     // Search in a lower place
                     high = m
                 } else if (d1 < 0.0) {
-                    // Search in an higher place
+                    // Search in a higher place
                     low = m + 1
                 }
             }
@@ -251,11 +251,11 @@ abstract class DataSet<T : Entry>(
             closest = high
         }
 
-        val closestEntry: Entry = mEntries[closest]
+        val closestEntry: Entry = entriesInternal[closest]
         val closestXValue = closestEntry.x
         if (rounding == Rounding.UP) {
             // If rounding up, and found x-value is lower than specified x, and we can go upper...
-            if (closestXValue < xValue && closest < mEntries.size - 1) {
+            if (closestXValue < xValue && closest < entriesInternal.size - 1) {
                 ++closest
             }
         } else if (rounding == Rounding.DOWN) {
@@ -267,7 +267,7 @@ abstract class DataSet<T : Entry>(
 
         // Search by closest to y-value
         if (!closestToY.isNaN()) {
-            while (closest > 0 && mEntries[closest - 1].x == closestXValue) {
+            while (closest > 0 && entriesInternal[closest - 1].x == closestXValue) {
                 closest -= 1
             }
 
@@ -276,11 +276,11 @@ abstract class DataSet<T : Entry>(
 
             while (true) {
                 closest += 1
-                if (closest >= mEntries.size) {
+                if (closest >= entriesInternal.size) {
                     break
                 }
 
-                val value: T = mEntries[closest]
+                val value: T = entriesInternal[closest]
 
                 if (value.x != closestXValue) {
                     break
@@ -301,23 +301,23 @@ abstract class DataSet<T : Entry>(
         val entries: MutableList<T> = mutableListOf()
 
         var low = 0
-        var high = mEntries.size - 1
+        var high = entriesInternal.size - 1
 
         while (low <= high) {
             var m = (high + low) / 2
-            var entry = mEntries[m]
+            var entry = entriesInternal[m]
 
             // if we have a match
             if (xValue == entry.x) {
-                while (m > 0 && mEntries[m - 1].x == xValue) {
+                while (m > 0 && entriesInternal[m - 1].x == xValue) {
                     m--
                 }
 
-                high = mEntries.size
+                high = entriesInternal.size
 
                 // loop over all "equal" entries
                 while (m < high) {
-                    entry = mEntries[m]
+                    entry = entriesInternal[m]
                     if (entry.x == xValue) {
                         entries.add(entry)
                     } else {
