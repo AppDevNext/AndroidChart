@@ -60,8 +60,8 @@ open class RadarDataSet(yVals: MutableList<RadarEntry>, label: String = "") : Li
 
     override fun copy(): DataSet<RadarEntry> {
         val entries: MutableList<RadarEntry> = mutableListOf()
-        for (i in mEntries.indices) {
-            entries.add(mEntries[i].copy())
+        for (i in entriesInternal.indices) {
+            entries.add(entriesInternal[i].copy())
         }
         val copied = RadarDataSet(entries, label)
         copy(copied)

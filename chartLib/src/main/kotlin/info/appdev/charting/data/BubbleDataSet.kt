@@ -21,8 +21,8 @@ open class BubbleDataSet(yVals: MutableList<BubbleEntry>, label: String) : BarLi
 
     override fun copy(): DataSet<BubbleEntry> {
         val entries: MutableList<BubbleEntry> = ArrayList()
-        for (i in mEntries.indices) {
-            entries.add(mEntries[i].copy())
+        for (i in entriesInternal.indices) {
+            entries.add(entriesInternal[i].copy())
         }
         val copied = BubbleDataSet(entries, label)
         copy(copied)

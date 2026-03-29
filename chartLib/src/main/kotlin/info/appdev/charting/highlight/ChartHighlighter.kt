@@ -158,7 +158,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
      * y-axis.
      *
      * @param closestValues        contains two Highlight objects per DataSet closest to the selected x-position (determined by
-     * rounding up an down)
+     * rounding up a down)
      * @param axis                 the closest axis
      */
     fun getClosestHighlightByPixel(

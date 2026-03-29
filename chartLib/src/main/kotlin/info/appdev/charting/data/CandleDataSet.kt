@@ -71,8 +71,8 @@ open class CandleDataSet(yVals: MutableList<CandleEntry>, label: String = "") : 
 
     override fun copy(): DataSet<CandleEntry> {
         val entries: MutableList<CandleEntry> = mutableListOf()
-        for (i in mEntries.indices) {
-            entries.add(mEntries[i].copy())
+        for (i in entriesInternal.indices) {
+            entries.add(entriesInternal[i].copy())
         }
 
         val copied = CandleDataSet(entries, label)

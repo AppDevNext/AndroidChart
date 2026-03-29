@@ -75,8 +75,8 @@ open class LineDataSet(yVals: MutableList<Entry> = mutableListOf(), label: Strin
 
     override fun copy(): DataSet<Entry> {
         val entries: MutableList<Entry> = mutableListOf()
-        for (i in mEntries.indices) {
-            entries.add(mEntries[i].copy())
+        for (i in entriesInternal.indices) {
+            entries.add(entriesInternal[i].copy())
         }
         val copied = LineDataSet(entries, label)
         copy(copied)

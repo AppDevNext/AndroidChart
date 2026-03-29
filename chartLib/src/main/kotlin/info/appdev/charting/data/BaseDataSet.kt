@@ -16,7 +16,7 @@ import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.convertDpToPixel
 
 /**
- * This is the base dataset of all DataSets. It's purpose is to implement critical methods
+ * This is the base dataset of all DataSets. Its purpose is to implement critical methods
  * provided by the IDataSet interface.
  */
 abstract class BaseDataSet<T : Entry>() : IDataSet<T> {

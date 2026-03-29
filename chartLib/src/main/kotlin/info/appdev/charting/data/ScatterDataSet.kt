@@ -40,8 +40,8 @@ open class ScatterDataSet(yVals: MutableList<Entry>, label: String = "") : LineS
 
     override fun copy(): DataSet<Entry> {
         val entries: MutableList<Entry> = mutableListOf()
-        for (i in mEntries.indices) {
-            entries.add(mEntries[i].copy())
+        for (i in entriesInternal.indices) {
+            entries.add(entriesInternal[i].copy())
         }
         val copied = ScatterDataSet(entries, label)
         copy(copied)
