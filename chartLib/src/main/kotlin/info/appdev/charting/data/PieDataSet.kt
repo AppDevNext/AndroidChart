@@ -4,7 +4,7 @@ import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.IPieDataSet
 import info.appdev.charting.utils.convertDpToPixel
 
-open class PieDataSet(yVals: MutableList<PieEntry>, label: String) : DataSet<PieEntry>(yVals, label), IPieDataSet {
+open class PieDataSet(yVals: MutableList<PieEntryFloat>, label: String) : DataSet<PieEntryFloat>(yVals, label), IPieDataSet {
     /**
      * the space in pixels between the chart-slices, default 0f
      */
@@ -29,8 +29,8 @@ open class PieDataSet(yVals: MutableList<PieEntry>, label: String) : DataSet<Pie
     @ColorInt
     private var mHighlightColor: Int? = null
 
-    override fun copy(): DataSet<PieEntry> {
-        val entries: MutableList<PieEntry> = mutableListOf()
+    override fun copy(): DataSet<PieEntryFloat> {
+        val entries: MutableList<PieEntryFloat> = mutableListOf()
         for (i in entriesInternal.indices) {
             entries.add(entriesInternal[i].copy())
         }
@@ -42,7 +42,7 @@ open class PieDataSet(yVals: MutableList<PieEntry>, label: String) : DataSet<Pie
         super.copy((pieDataSet as BaseDataSet<*>?)!!)
     }
 
-    override fun calcMinMax(entry: PieEntry) {
+    override fun calcMinMax(entry: PieEntryFloat) {
         calcMinMaxY(entry)
     }
 

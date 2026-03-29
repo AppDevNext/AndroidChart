@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.Align
 import info.appdev.charting.animation.ChartAnimator
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.base.IBaseProvider
@@ -98,14 +98,14 @@ abstract class DataRenderer(
      * @param canvas            canvas
      * @param formatter    formatter for custom value-formatting
      * @param value        the value to be drawn
-     * @param entry        the entry the value belongs to
+     * @param entryFloat        the entry the value belongs to
      * @param dataSetIndex the index of the DataSet the drawn Entry belongs to
      * @param x            position
      * @param y            position
      */
-    fun drawValue(canvas: Canvas, formatter: IValueFormatter, value: Float, entry: Entry?, dataSetIndex: Int, x: Float, y: Float, color: Int) {
+    fun drawValue(canvas: Canvas, formatter: IValueFormatter, value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, x: Float, y: Float, color: Int) {
         paintValues.color = color
-        canvas.drawText(formatter.getFormattedValue(value, entry, dataSetIndex, viewPortHandler)!!, x, y, paintValues)
+        canvas.drawText(formatter.getFormattedValue(value, entryFloat, dataSetIndex, viewPortHandler)!!, x, y, paintValues)
     }
 
     /**

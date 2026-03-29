@@ -19,7 +19,7 @@ import info.appdev.charting.charts.BarChart
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.ColorTemplate
 
@@ -110,11 +110,11 @@ class ListViewBarChartActivity : DemoBase() {
      */
     private fun generateData(cnt: Int): BarData {
         val count = 12
-        val entries = ArrayList<BarEntry>()
+        val entries = ArrayList<BarEntryFloat>()
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {
-            entries.add(BarEntry(i.toFloat(), (sampleValues[i]!!.toFloat() * 70) + 30))
+            entries.add(BarEntryFloat(i.toFloat(), (sampleValues[i]!!.toFloat() * 70) + 30))
         }
 
         val d = BarDataSet(entries, "New DataSet $cnt")

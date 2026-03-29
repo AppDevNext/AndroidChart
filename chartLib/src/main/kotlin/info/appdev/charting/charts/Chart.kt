@@ -23,7 +23,7 @@ import info.appdev.charting.components.IMarker
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.data.ChartData
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.formatter.DefaultValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.highlight.Highlight
@@ -49,7 +49,7 @@ import kotlin.math.abs
 import kotlin.math.max
 
 @Suppress("unused")
-abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseProvider<T> {
+abstract class Chart<T : ChartData<out IDataSet<out EntryFloat>>> : ViewGroup, IBaseProvider<T> {
     /**
      * Returns true if log-output is enabled for the chart, fals if not.
      */
@@ -527,7 +527,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
      */
     fun highlightValue(high: Highlight?, callListener: Boolean) {
         var high = high
-        var entry: Entry? = null
+        var entryFloat: EntryFloat? = null
 
         if (high == null) {
             this.highlighted = null
@@ -536,8 +536,8 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
                 Timber.i("Highlighted: $high")
             }
 
-            entry = mData!!.getEntryForHighlight(high)
-            if (entry == null) {
+            entryFloat = mData!!.getEntryForHighlight(high)
+            if (entryFloat == null) {
                 this.highlighted = null
                 high = null
             } else {
@@ -554,7 +554,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
                 listener.onNothingSelected()
             } else {
                 // notify the listener
-                listener.onValueSelected(entry!!, high!!)
+                listener.onValueSelected(entryFloat!!, high!!)
             }
         }
         // redraw the chart
@@ -623,7 +623,7 @@ abstract class Chart<T : ChartData<out IDataSet<out Entry>>> : ViewGroup, IBaseP
 
             // Cast to non-star-projected type to allow calling getEntryIndex
             @Suppress("UNCHECKED_CAST")
-            val set = dataset as IDataSet<Entry>
+            val set = dataset as IDataSet<EntryFloat>
             val entryIndex = set.getEntryIndex(entry)
 
             if (entryIndex > set.entryCount * mAnimator.phaseX) {

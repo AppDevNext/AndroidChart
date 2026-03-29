@@ -15,7 +15,7 @@ import info.appdev.chartexample.databinding.ActivityRealtimeLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.YAxis.AxisDependency
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
@@ -93,7 +93,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         }
 
         val cycleValue = (set.entryCount % 100.0).toInt()
-        data.addEntry(Entry(set.entryCount.toFloat(), (sampleValues[cycleValue]!!.toFloat() * 40) + 30f), 0)
+        data.addEntry(EntryFloat(set.entryCount.toFloat(), (sampleValues[cycleValue]!!.toFloat() * 40) + 30f), 0)
         data.notifyDataChanged()
 
         // let the chart know it's data has changed
@@ -194,8 +194,8 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
         saveToGallery(binding.chart1, "RealtimeLineChartActivity")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i(entry.toString())
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Timber.i(entryFloat.toString())
     }
 
     override fun onNothingSelected() = Unit

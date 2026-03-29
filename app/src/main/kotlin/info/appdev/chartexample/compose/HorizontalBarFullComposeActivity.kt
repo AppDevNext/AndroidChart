@@ -43,7 +43,7 @@ import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.compose.HorizontalBarChart
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BarEntryFloat
 import timber.log.Timber
 
 class HorizontalBarFullComposeActivity : DemoBaseCompose() {
@@ -325,7 +325,7 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
     private fun createBarData(count: Int, range: Float, showIcons: Boolean, barBordersEnabled: Boolean, showValues: Boolean): BarData {
         val barWidth = 9f
         val spaceForBar = 10f
-        val values = ArrayList<BarEntry>()
+        val values = ArrayList<BarEntryFloat>()
         val sampleValues = getValues(100)
 
         for (i in 0..<count) {
@@ -334,7 +334,7 @@ class HorizontalBarFullComposeActivity : DemoBaseCompose() {
                 ResourcesCompat.getDrawable(resources, R.drawable.star, null)
             } else null
 
-            val barEntry = BarEntry(i * spaceForBar, value, icon)
+            val barEntry = BarEntryFloat(i * spaceForBar, value, icon)
             Timber.d("x=${barEntry.x} y=${barEntry.y}")
             values.add(barEntry)
         }

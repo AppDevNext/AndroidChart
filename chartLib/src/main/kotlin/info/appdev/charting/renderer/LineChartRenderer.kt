@@ -7,7 +7,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import info.appdev.charting.animation.ChartAnimator
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
@@ -175,7 +175,7 @@ open class LineChartRenderer(
             // And in the `lastIndex`, add +1
             val firstIndex = xBounds.min + 1
 
-            var prevPrev: Entry?
+            var prevPrev: EntryFloat?
             var prev = dataSet.getEntryForIndex(max((firstIndex - 2).toDouble(), 0.0).toInt())
             var cur = dataSet.getEntryForIndex(max((firstIndex - 1).toDouble(), 0.0).toInt())
             var next = cur
@@ -286,24 +286,24 @@ open class LineChartRenderer(
             val max = xBounds.min + xBounds.range
 
             for (j in xBounds.min..<max) {
-                var entry: Entry = dataSet.getEntryForIndex(j) ?: continue
+                var entryFloat: EntryFloat = dataSet.getEntryForIndex(j) ?: continue
 
-                lineBuffer[0] = entry.x
-                lineBuffer[1] = entry.y * phaseY
+                lineBuffer[0] = entryFloat.x
+                lineBuffer[1] = entryFloat.y * phaseY
 
                 if (j < xBounds.max) {
-                    entry = dataSet.getEntryForIndex(j + 1)!!
+                    entryFloat = dataSet.getEntryForIndex(j + 1)!!
 
                     if (dataSet.isDrawSteppedEnabled) {
-                        lineBuffer[2] = entry.x
+                        lineBuffer[2] = entryFloat.x
                         lineBuffer[3] = lineBuffer[1]
                         lineBuffer[4] = lineBuffer[2]
                         lineBuffer[5] = lineBuffer[3]
-                        lineBuffer[6] = entry.x
-                        lineBuffer[7] = entry.y * phaseY
+                        lineBuffer[6] = entryFloat.x
+                        lineBuffer[7] = entryFloat.y * phaseY
                     } else {
-                        lineBuffer[2] = entry.x
-                        lineBuffer[3] = entry.y * phaseY
+                        lineBuffer[2] = entryFloat.x
+                        lineBuffer[3] = entryFloat.y * phaseY
                     }
                 } else {
                     lineBuffer[2] = lineBuffer[0]
@@ -346,8 +346,8 @@ open class LineChartRenderer(
                     (max(((entryCount) * pointsPerEntryPair).toDouble(), pointsPerEntryPair.toDouble()) * 4).toInt()
                 )
 
-            var e1: Entry?
-            var e2: Entry?
+            var e1: EntryFloat?
+            var e2: EntryFloat?
 
             e1 = dataSet.getEntryForIndex(xBounds.min)
 
@@ -448,25 +448,25 @@ open class LineChartRenderer(
             outputPath.lineTo(entry.x, entry.y * phaseY)
 
             // create a new path
-            var currentEntry: Entry? = null
+            var currentEntryFloat: EntryFloat? = null
             var previousEntry = entry
             for (x in startIndex + 1..endIndex) {
-                currentEntry = dataSet.getEntryForIndex(x)
+                currentEntryFloat = dataSet.getEntryForIndex(x)
 
-                if (currentEntry != null) {
+                if (currentEntryFloat != null) {
                     if (isDrawSteppedEnabled) {
-                        outputPath.lineTo(currentEntry.x, previousEntry.y * phaseY)
+                        outputPath.lineTo(currentEntryFloat.x, previousEntry.y * phaseY)
                     }
 
-                    outputPath.lineTo(currentEntry.x, currentEntry.y * phaseY)
+                    outputPath.lineTo(currentEntryFloat.x, currentEntryFloat.y * phaseY)
 
-                    previousEntry = currentEntry
+                    previousEntry = currentEntryFloat
                 }
             }
 
             // close up
-            if (currentEntry != null) {
-                outputPath.lineTo(currentEntry.x, fillMin)
+            if (currentEntryFloat != null) {
+                outputPath.lineTo(currentEntryFloat.x, fillMin)
             }
         }
         outputPath.close()

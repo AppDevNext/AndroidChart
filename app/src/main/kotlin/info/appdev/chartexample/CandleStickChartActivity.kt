@@ -20,7 +20,7 @@ import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.data.CandleData
 import info.appdev.charting.data.CandleDataSet
-import info.appdev.charting.data.CandleEntry
+import info.appdev.charting.data.CandleEntryFloat
 
 class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
 
@@ -74,7 +74,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
 
         binding.chart1.resetTracking()
 
-        val values = ArrayList<CandleEntry>()
+        val values = ArrayList<CandleEntryFloat>()
         val sampleValues = getValues(100)
 
         for (i in 0..<progress) {
@@ -90,7 +90,7 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
             val even = i % 2 == 0
 
             values.add(
-                CandleEntry(
+                CandleEntryFloat(
                     i.toFloat(), `val` + high,
                     `val` - low,
                     if (even) `val` + open else `val` - open,

@@ -11,7 +11,7 @@ import androidx.core.net.toUri
 import info.appdev.chartexample.DataTools.Companion.getMuchValues
 import info.appdev.chartexample.databinding.ActivityPerformanceLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 
@@ -53,12 +53,12 @@ class PerformanceLineChart : DemoBase(), OnSeekBarChangeListener {
     }
 
     private fun setData(count: Int, range: Float) {
-        val values = ArrayList<Entry>()
+        val values = ArrayList<EntryFloat>()
         val sampleValues = getMuchValues(count)
 
         for (i in 0..<count) {
             val `val` = (sampleValues[i]!!.toFloat() * (range + 1)) + 3
-            values.add(Entry(i * 0.001f, `val`))
+            values.add(EntryFloat(i * 0.001f, `val`))
         }
 
         // create a dataset and give it a type

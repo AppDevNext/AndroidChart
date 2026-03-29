@@ -19,13 +19,13 @@ import info.appdev.chartexample.listviewitems.PieChartItem
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.data.PieData
 import info.appdev.charting.data.PieDataSet
-import info.appdev.charting.data.PieEntry
+import info.appdev.charting.data.PieEntryFloat
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.utils.ColorTemplate
 
@@ -88,12 +88,12 @@ class ListViewMultiChartActivity : DemoBase() {
      * @return Line data
      */
     private fun generateDataLine(cnt: Int): LineData {
-        val values1 = ArrayList<Entry>()
+        val values1 = ArrayList<EntryFloat>()
         val count = 12
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {
-            values1.add(Entry(i.toFloat(), ((sampleValues[i]!!.toFloat() * 65).toInt() + 40).toFloat()))
+            values1.add(EntryFloat(i.toFloat(), ((sampleValues[i]!!.toFloat() * 65).toInt() + 40).toFloat()))
         }
 
         val d1 = LineDataSet(values1, "New DataSet $cnt, (1)")
@@ -102,10 +102,10 @@ class ListViewMultiChartActivity : DemoBase() {
         d1.highLightColor = Color.rgb(244, 117, 117)
         d1.isDrawValues = false
 
-        val values2 = ArrayList<Entry>()
+        val values2 = ArrayList<EntryFloat>()
 
         for (i in 0..<count) {
-            values2.add(Entry(i.toFloat(), values1[i].y - 30))
+            values2.add(EntryFloat(i.toFloat(), values1[i].y - 30))
         }
 
         val d2 = LineDataSet(values2, "New DataSet $cnt, (2)")
@@ -130,11 +130,11 @@ class ListViewMultiChartActivity : DemoBase() {
      */
     private fun generateDataBar(cnt: Int): BarData {
         val count = 12
-        val entries = ArrayList<BarEntry>()
+        val entries = ArrayList<BarEntryFloat>()
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {
-            entries.add(BarEntry(i.toFloat(), ((sampleValues[i]!!.toFloat() * 70).toInt() + 30).toFloat()))
+            entries.add(BarEntryFloat(i.toFloat(), ((sampleValues[i]!!.toFloat() * 70).toInt() + 30).toFloat()))
         }
 
         val d = BarDataSet(entries, "New DataSet $cnt")
@@ -153,11 +153,11 @@ class ListViewMultiChartActivity : DemoBase() {
      */
     private fun generateDataPie(): PieData {
         val cnt = 4
-        val entries = ArrayList<PieEntry>()
+        val entries = ArrayList<PieEntryFloat>()
         val sampleValues = getValues(cnt)
 
         for (i in 0..<cnt) {
-            entries.add(PieEntry((sampleValues[i]!!.toFloat() * 70) + 30, "Quarter " + (i + 1)))
+            entries.add(PieEntryFloat((sampleValues[i]!!.toFloat() * 70) + 30, "Quarter " + (i + 1)))
         }
 
         val d = PieDataSet(entries, "")

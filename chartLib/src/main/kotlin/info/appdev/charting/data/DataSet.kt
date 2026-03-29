@@ -10,7 +10,7 @@ import kotlin.math.abs
  * groups of values inside the Chart (e.g. the values for a specific line in the
  * LineChart, or the values of a specific group of bars in the BarChart).
  */
-abstract class DataSet<T : Entry>(
+abstract class DataSet<T : EntryFloat>(
     protected var entriesInternal: MutableList<T>,
     label: String = ""
 ) : BaseDataSet<T>(label), Serializable {
@@ -219,12 +219,12 @@ abstract class DataSet<T : Entry>(
         while (low < high) {
             val m = low + (high - low) / 2
 
-            val currentEntry: Entry = entriesInternal[m]
+            val currentEntryFloat: EntryFloat = entriesInternal[m]
 
-            val nextEntry: Entry = entriesInternal[m + 1]
+            val nextEntryFloat: EntryFloat = entriesInternal[m + 1]
 
-            val d1 = currentEntry.x - xValue
-            val d2 = nextEntry.x - xValue
+            val d1 = currentEntryFloat.x - xValue
+            val d2 = nextEntryFloat.x - xValue
             val ad1 = abs(d1)
             val ad2 = abs(d2)
 
@@ -251,8 +251,8 @@ abstract class DataSet<T : Entry>(
             closest = high
         }
 
-        val closestEntry: Entry = entriesInternal[closest]
-        val closestXValue = closestEntry.x
+        val closestEntryFloat: EntryFloat = entriesInternal[closest]
+        val closestXValue = closestEntryFloat.x
         if (rounding == Rounding.UP) {
             // If rounding up, and found x-value is lower than specified x, and we can go upper...
             if (closestXValue < xValue && closest < entriesInternal.size - 1) {
@@ -271,7 +271,7 @@ abstract class DataSet<T : Entry>(
                 closest -= 1
             }
 
-            var closestYValue = closestEntry.y
+            var closestYValue = closestEntryFloat.y
             var closestYIndex = closest
 
             while (true) {

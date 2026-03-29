@@ -21,8 +21,8 @@ import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -91,7 +91,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
         binding.tvXMax.text = binding.seekBarX.progress.toString()
         binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        val values = ArrayList<BarEntry>()
+        val values = ArrayList<BarEntryFloat>()
         val sampleValues = getValues(100 + 2)
 
         for (i in 0..<binding.seekBarX.progress) {
@@ -100,7 +100,7 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             val val2 = (sampleValues[i + 1]!!.toFloat() * mul) + mul / 3
             val val3 = (sampleValues[i + 2]!!.toFloat() * mul) + mul / 3
             values.add(
-                BarEntry(
+                BarEntryFloat(
                     i.toFloat(),
                     floatArrayOf(val1, val2, val3),
                     ResourcesCompat.getDrawable(resources, R.drawable.star, null)
@@ -219,8 +219,8 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
 
     override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        val barEntry = entry as BarEntry
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        val barEntry = entryFloat as BarEntryFloat
 
         if (barEntry.yVals != null)
             Timber.i("Value: ${barEntry.yVals!![highlight.stackIndex]}")

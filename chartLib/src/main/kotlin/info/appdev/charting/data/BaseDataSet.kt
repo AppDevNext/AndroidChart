@@ -19,7 +19,7 @@ import info.appdev.charting.utils.convertDpToPixel
  * This is the base dataset of all DataSets. Its purpose is to implement critical methods
  * provided by the IDataSet interface.
  */
-abstract class BaseDataSet<T : Entry>() : IDataSet<T> {
+abstract class BaseDataSet<T : EntryFloat>() : IDataSet<T> {
     /**
      * List representing all colors that are used for this DataSet
      */

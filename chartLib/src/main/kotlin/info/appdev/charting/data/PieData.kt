@@ -58,7 +58,7 @@ class PieData : ChartData<IPieDataSet> {
             null
     }
 
-    override fun getEntryForHighlight(highlight: Highlight): Entry? {
+    override fun getEntryForHighlight(highlight: Highlight): EntryFloat? {
         return this.dataSet.getEntryForIndex(highlight.x.toInt())
     }
 

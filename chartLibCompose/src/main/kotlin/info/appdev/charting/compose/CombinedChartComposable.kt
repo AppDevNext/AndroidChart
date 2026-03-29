@@ -14,7 +14,7 @@ import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.CombinedData
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
 
@@ -26,7 +26,7 @@ fun CombinedChart(
     data: CombinedData?,
     modifier: Modifier = Modifier,
     state: CombinedChartState = rememberCombinedChartState(),
-    onValueSelected: ((Entry?, Highlight?) -> Unit)? = null,
+    onValueSelected: ((EntryFloat?, Highlight?) -> Unit)? = null,
     description: String? = null,
     legend: ((Legend) -> Unit)? = null,
     xAxisConfig: ((XAxis) -> Unit)? = null,
@@ -108,7 +108,7 @@ fun CombinedChart(
 
             if (onValueSelected != null) {
                 combinedChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-                    override fun onValueSelected(entry: Entry, highlight: Highlight) = onValueSelected(entry, highlight)
+                    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) = onValueSelected(entryFloat, highlight)
                     override fun onNothingSelected() = onValueSelected(null, null)
                 })
             }

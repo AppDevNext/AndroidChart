@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable
  * chart implementation: Copyright 2015 Pierre-Marc Airoldi Licensed under Apache License 2.0
  */
 @SuppressLint("ParcelCreator")
-class BubbleEntry : Entry {
+class BubbleEntryFloat : EntryFloat {
     /**
      * Returns the size of this entry (the size of the bubble).
      */
@@ -49,7 +49,7 @@ class BubbleEntry : Entry {
         this.size = size
     }
 
-    override fun copy(): BubbleEntry {
-        return BubbleEntry(x, y, this.size, data)
+    override fun copy(): BubbleEntryFloat {
+        return BubbleEntryFloat(x, y, this.size, data)
     }
 }

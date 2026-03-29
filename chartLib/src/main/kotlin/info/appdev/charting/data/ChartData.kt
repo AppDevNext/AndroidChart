@@ -12,7 +12,7 @@ import java.io.Serializable
  * Class that holds all relevant data that represents the chart. That involves at least one (or more) DataSets, and an array of x-values.
  */
 @Suppress("unused")
-abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
+abstract class ChartData<T : IDataSet<out EntryFloat>> : Serializable {
     /**
      * maximum y-value in the value array across all axes
      */
@@ -243,7 +243,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Get the Entry for a corresponding highlight object
      * @return the entry that is highlighted
      */
-    open fun getEntryForHighlight(highlight: Highlight): Entry? {
+    open fun getEntryForHighlight(highlight: Highlight): EntryFloat? {
         return if (highlight.dataSetIndex >= dataSets.size) {
             null
         } else {
@@ -326,17 +326,17 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Entries are added to the end of the list.
      */
     @Suppress("UNCHECKED_CAST")
-    fun addEntry(entry: Entry, dataSetIndex: Int) {
+    fun addEntry(entryFloat: EntryFloat, dataSetIndex: Int) {
         if (dataSets.size > dataSetIndex && dataSetIndex >= 0) {
             val set: T = dataSets[dataSetIndex]
             // add the entry to the dataset
             // We need to cast here because T is covariant (out) but addEntry needs to consume T
-            val dataSet = set as IDataSet<Entry>
-            if (!dataSet.addEntry(entry)) {
+            val dataSet = set as IDataSet<EntryFloat>
+            if (!dataSet.addEntry(entryFloat)) {
                 return
             }
 
-            calcMinMax(entry, set.axisDependency)
+            calcMinMax(entryFloat, set.axisDependency)
         } else {
             Timber.e("Cannot add Entry because dataSetIndex too high or too low.")
         }
@@ -345,7 +345,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
     /**
      * Adjusts the current minimum and maximum values based on the provided Entry object.
      */
-    protected fun calcMinMax(e: Entry, axis: AxisDependency?) {
+    protected fun calcMinMax(e: EntryFloat, axis: AxisDependency?) {
         if (this.yMax < e.y) {
             this.yMax = e.y
         }
@@ -416,7 +416,7 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
      * Removes the given Entry object from the DataSet at the specified index.
      */
     @Suppress("UNCHECKED_CAST")
-    open fun removeEntry(entry: Entry, dataSetIndex: Int): Boolean {
+    open fun removeEntry(entryFloat: EntryFloat, dataSetIndex: Int): Boolean {
         // entry null, out of bounds
         if (dataSetIndex >= dataSets.size) {
             return false
@@ -425,8 +425,8 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         val set: T = dataSets[dataSetIndex]
 
         // remove the entry from the dataset
-        val dataSet = set as IDataSet<Entry>
-        val removed: Boolean = dataSet.removeEntry(entry)
+        val dataSet = set as IDataSet<EntryFloat>
+        val removed: Boolean = dataSet.removeEntry(entryFloat)
 
         if (removed) {
             notifyDataChanged()
@@ -446,15 +446,15 @@ abstract class ChartData<T : IDataSet<out Entry>> : Serializable {
         }
 
         val dataSet: IDataSet<*> = dataSets[dataSetIndex]
-        val entry: Entry = dataSet.getEntryForXValue(xValue, Float.NaN) ?: return false
+        val entryFloat: EntryFloat = dataSet.getEntryForXValue(xValue, Float.NaN) ?: return false
 
-        return removeEntry(entry, dataSetIndex)
+        return removeEntry(entryFloat, dataSetIndex)
     }
 
     /**
      * Returns the DataSet that contains the provided Entry, or null, if no DataSet contains this Entry.
      */
-    fun getDataSetForEntry(e: Entry): T? {
+    fun getDataSetForEntry(e: EntryFloat): T? {
         for (i in dataSets.indices) {
             val set = dataSets[i]
 

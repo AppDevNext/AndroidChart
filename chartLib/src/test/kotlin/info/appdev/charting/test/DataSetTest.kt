@@ -1,7 +1,7 @@
 package info.appdev.charting.test
 
 import info.appdev.charting.data.DataSet
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.ScatterDataSet
 import org.junit.Assert
 import org.junit.Test
@@ -9,10 +9,10 @@ import org.junit.Test
 class DataSetTest {
     @Test
     fun testCalcMinMax() {
-        val entries: MutableList<Entry> = mutableListOf()
-        entries.add(Entry(10f, 10f))
-        entries.add(Entry(15f, 2f))
-        entries.add(Entry(21f, 5f))
+        val entries: MutableList<EntryFloat> = mutableListOf()
+        entries.add(EntryFloat(10f, 10f))
+        entries.add(EntryFloat(15f, 2f))
+        entries.add(EntryFloat(21f, 5f))
 
         val set = ScatterDataSet(entries, "")
 
@@ -24,7 +24,7 @@ class DataSetTest {
 
         Assert.assertEquals(3, set.entryCount)
 
-        set.addEntry(Entry(25f, 1f))
+        set.addEntry(EntryFloat(25f, 1f))
 
         Assert.assertEquals(10f, set.xMin, 0.01f)
         Assert.assertEquals(25f, set.xMax, 0.01f)
@@ -45,16 +45,16 @@ class DataSetTest {
 
     @Test
     fun testAddRemoveEntry() {
-        val entries: MutableList<Entry> = mutableListOf()
-        entries.add(Entry(10f, 10f))
-        entries.add(Entry(15f, 2f))
-        entries.add(Entry(21f, 5f))
+        val entries: MutableList<EntryFloat> = mutableListOf()
+        entries.add(EntryFloat(10f, 10f))
+        entries.add(EntryFloat(15f, 2f))
+        entries.add(EntryFloat(21f, 5f))
 
         val set = ScatterDataSet(entries, "")
 
         Assert.assertEquals(3, set.entryCount)
 
-        set.addEntryOrdered(Entry(5f, 1f))
+        set.addEntryOrdered(EntryFloat(5f, 1f))
 
         Assert.assertEquals(4, set.entryCount)
 
@@ -67,7 +67,7 @@ class DataSetTest {
         Assert.assertEquals(5f, set.getEntryForIndex(0)!!.x, 0.01f)
         Assert.assertEquals(1f, set.getEntryForIndex(0)!!.y, 0.01f)
 
-        set.addEntryOrdered(Entry(20f, 50f))
+        set.addEntryOrdered(EntryFloat(20f, 50f))
 
         Assert.assertEquals(5, set.entryCount)
 
@@ -91,7 +91,7 @@ class DataSetTest {
         Assert.assertEquals(10f, set.getEntryForIndex(0)!!.x, 0.01f)
         Assert.assertEquals(10f, set.getEntryForIndex(0)!!.y, 0.01f)
 
-        set.addEntryOrdered(Entry(15f, 3f))
+        set.addEntryOrdered(EntryFloat(15f, 3f))
 
         Assert.assertEquals(4, set.entryCount)
 
@@ -129,10 +129,10 @@ class DataSetTest {
 
     @Test
     fun testGetEntryForXValue() {
-        val entries: MutableList<Entry> = mutableListOf()
-        entries.add(Entry(10f, 10f))
-        entries.add(Entry(15f, 5f))
-        entries.add(Entry(21f, 5f))
+        val entries: MutableList<EntryFloat> = mutableListOf()
+        entries.add(EntryFloat(10f, 10f))
+        entries.add(EntryFloat(15f, 5f))
+        entries.add(EntryFloat(21f, 5f))
 
         val set = ScatterDataSet(entries, "")
 
@@ -169,19 +169,19 @@ class DataSetTest {
     fun testGetEntryForXValueWithDuplicates() {
         // sorted list of values (by x position)
 
-        val values: MutableList<Entry> = ArrayList()
-        values.add(Entry(0f, 10f))
-        values.add(Entry(1f, 20f))
-        values.add(Entry(2f, 30f))
-        values.add(Entry(3f, 40f))
-        values.add(Entry(3f, 50f)) // duplicate
-        values.add(Entry(4f, 60f))
-        values.add(Entry(4f, 70f)) // duplicate
-        values.add(Entry(5f, 80f))
-        values.add(Entry(6f, 90f))
-        values.add(Entry(7f, 100f))
-        values.add(Entry(8f, 110f))
-        values.add(Entry(8f, 120f)) // duplicate
+        val values: MutableList<EntryFloat> = ArrayList()
+        values.add(EntryFloat(0f, 10f))
+        values.add(EntryFloat(1f, 20f))
+        values.add(EntryFloat(2f, 30f))
+        values.add(EntryFloat(3f, 40f))
+        values.add(EntryFloat(3f, 50f)) // duplicate
+        values.add(EntryFloat(4f, 60f))
+        values.add(EntryFloat(4f, 70f)) // duplicate
+        values.add(EntryFloat(5f, 80f))
+        values.add(EntryFloat(6f, 90f))
+        values.add(EntryFloat(7f, 100f))
+        values.add(EntryFloat(8f, 110f))
+        values.add(EntryFloat(8f, 120f)) // duplicate
 
         val set = ScatterDataSet(values, "")
 

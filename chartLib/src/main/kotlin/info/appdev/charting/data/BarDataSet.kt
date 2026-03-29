@@ -5,7 +5,7 @@ import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.Fill
 
-open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScatterCandleBubbleDataSet<BarEntry>(yVals, label), IBarDataSet {
+open class BarDataSet(yVals: MutableList<BarEntryFloat>, label: String) : BarLineScatterCandleBubbleDataSet<BarEntryFloat>(yVals, label), IBarDataSet {
     /**
      * the maximum number of bars that are stacked upon each other, this value
      * is calculated from the Entries that are added to the DataSet
@@ -50,8 +50,8 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
         calcEntryCountIncludingStacks(yVals)
     }
 
-    override fun copy(): DataSet<BarEntry>? {
-        val entries: MutableList<BarEntry> = mutableListOf()
+    override fun copy(): DataSet<BarEntryFloat>? {
+        val entries: MutableList<BarEntryFloat> = mutableListOf()
         for (i in entriesInternal.indices) {
             entries.add(entriesInternal[i].copy())
         }
@@ -101,7 +101,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
      * Calculates the total number of entries this DataSet represents, including
      * stacks. All values belonging to a stack are calculated separately.
      */
-    private fun calcEntryCountIncludingStacks(yVals: MutableList<BarEntry>) {
+    private fun calcEntryCountIncludingStacks(yVals: MutableList<BarEntryFloat>) {
         this.entryCountStacks = 0
 
         for (i in yVals.indices) {
@@ -115,7 +115,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
     /**
      * calculates the maximum stackSize that occurs in the Entries array of this DataSet
      */
-    private fun calcStackSize(yVals: MutableList<BarEntry>) {
+    private fun calcStackSize(yVals: MutableList<BarEntryFloat>) {
         for (i in yVals.indices) {
             val vals = yVals[i].yVals
 
@@ -123,7 +123,7 @@ open class BarDataSet(yVals: MutableList<BarEntry>, label: String) : BarLineScat
         }
     }
 
-    override fun calcMinMax(entry: BarEntry) {
+    override fun calcMinMax(entry: BarEntryFloat) {
         if (!entry.y.isNaN()) {
             if (entry.yVals == null) {
                 if (entry.y < yMin) yMin = entry.y

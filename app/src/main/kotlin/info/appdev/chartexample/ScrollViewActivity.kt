@@ -11,7 +11,7 @@ import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.utils.ColorTemplate
 
 class ScrollViewActivity : DemoBase() {
@@ -46,11 +46,11 @@ class ScrollViewActivity : DemoBase() {
     @Suppress("SameParameterValue")
     private fun setData(count: Int) {
         val sampleValues = getValues(count)
-        val values = ArrayList<BarEntry>()
+        val values = ArrayList<BarEntryFloat>()
 
         for (i in 0..<count) {
             val `val` = (sampleValues[i]!!.toFloat() * count) + 15
-            values.add(BarEntry(i.toFloat(), `val`.toInt().toFloat()))
+            values.add(BarEntryFloat(i.toFloat(), `val`.toInt().toFloat()))
         }
 
         val set = BarDataSet(values, "Data Set")

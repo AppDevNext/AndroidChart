@@ -20,7 +20,7 @@ import info.appdev.charting.animation.Easing
 import info.appdev.charting.components.Legend
 import info.appdev.charting.data.PieData
 import info.appdev.charting.data.PieDataSet
-import info.appdev.charting.data.PieEntry
+import info.appdev.charting.data.PieEntryFloat
 import info.appdev.charting.formatter.PercentFormatter
 import info.appdev.charting.utils.ColorTemplate
 
@@ -83,11 +83,11 @@ class HalfPieChartActivity : DemoBase() {
 
     private fun setData(range: Float) {
         val count = 4
-        val values = ArrayList<PieEntry>()
+        val values = ArrayList<PieEntryFloat>()
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {
-            values.add(PieEntry((sampleValues[i]!!.toFloat() * range) + range / 5, parties[i % parties.size]))
+            values.add(PieEntryFloat((sampleValues[i]!!.toFloat() * range) + range / 5, parties[i % parties.size]))
         }
 
         val dataSet = PieDataSet(values, "Election Results")

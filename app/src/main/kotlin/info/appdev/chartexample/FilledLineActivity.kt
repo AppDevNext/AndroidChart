@@ -10,7 +10,7 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.YAxis
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IFillFormatter
@@ -69,19 +69,19 @@ class FilledLineActivity : DemoBase() {
 
     private fun setData(@Suppress("SameParameterValue") range: Float) {
         val count = 100
-        val valuesArray1 = ArrayList<Entry>()
+        val valuesArray1 = ArrayList<EntryFloat>()
         val sampleValues = getValues(count + 2)
 
         for (i in 0..<count) {
             val valueY = (sampleValues[i]!!.toFloat() * range) + 50
-            valuesArray1.add(Entry(i.toFloat(), valueY))
+            valuesArray1.add(EntryFloat(i.toFloat(), valueY))
         }
 
-        val valuesArray2 = ArrayList<Entry>()
+        val valuesArray2 = ArrayList<EntryFloat>()
 
         for (i in 0..<count) {
             val valueY = (sampleValues[i + 1]!!.toFloat() * range) + 450
-            valuesArray2.add(Entry(i.toFloat(), valueY))
+            valuesArray2.add(EntryFloat(i.toFloat(), valueY))
         }
 
         val set1: LineDataSet

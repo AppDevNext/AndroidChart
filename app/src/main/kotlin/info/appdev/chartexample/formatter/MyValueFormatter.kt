@@ -1,6 +1,6 @@
 package info.appdev.chartexample.formatter
 
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.utils.ViewPortHandler
 import java.text.DecimalFormat
@@ -8,7 +8,7 @@ import java.text.DecimalFormat
 class MyValueFormatter : IValueFormatter {
     private val decimalFormat = DecimalFormat("###,###,###,##0.0")
 
-    override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
+    override fun getFormattedValue(value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
         return decimalFormat.format(value.toDouble()) + " $"
     }
 }

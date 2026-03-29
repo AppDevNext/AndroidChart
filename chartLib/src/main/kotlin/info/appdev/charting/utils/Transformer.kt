@@ -3,7 +3,7 @@ package info.appdev.charting.utils
 import android.graphics.Matrix
 import android.graphics.Path
 import android.graphics.RectF
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 import info.appdev.charting.interfaces.datasets.ICandleDataSet
 import info.appdev.charting.interfaces.datasets.ILineDataSet
@@ -118,7 +118,7 @@ open class Transformer(protected var viewPortHandler: ViewPortHandler) {
 
         var j = 0
         while (j < count) {
-            val e: Entry? = data.getEntryForIndex(j / 2 + from)
+            val e: EntryFloat? = data.getEntryForIndex(j / 2 + from)
 
             if (e != null) {
                 valuePoints[j] = e.x

@@ -1,9 +1,9 @@
 package info.appdev.charting.interfaces.datasets
 
-import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.utils.Fill
 
-interface IBarDataSet : IBarLineScatterCandleBubbleDataSet<BarEntry> {
+interface IBarDataSet : IBarLineScatterCandleBubbleDataSet<BarEntryFloat> {
     var fills: MutableList<Fill>
 
     fun getFill(index: Int): Fill?

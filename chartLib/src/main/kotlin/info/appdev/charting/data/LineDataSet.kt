@@ -12,7 +12,7 @@ import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.convertDpToPixel
 import timber.log.Timber
 
-open class LineDataSet(yVals: MutableList<Entry> = mutableListOf(), label: String = "") : LineRadarDataSet<Entry>(yVals, label), ILineDataSet {
+open class LineDataSet(yVals: MutableList<EntryFloat> = mutableListOf(), label: String = "") : LineRadarDataSet<EntryFloat>(yVals, label), ILineDataSet {
     /**
      * Drawing mode for this line dataset
      */
@@ -73,8 +73,8 @@ open class LineDataSet(yVals: MutableList<Entry> = mutableListOf(), label: Strin
         circleColors.add(Color.rgb(140, 234, 255))
     }
 
-    override fun copy(): DataSet<Entry> {
-        val entries: MutableList<Entry> = mutableListOf()
+    override fun copy(): DataSet<EntryFloat> {
+        val entries: MutableList<EntryFloat> = mutableListOf()
         for (i in entriesInternal.indices) {
             entries.add(entriesInternal[i].copy())
         }

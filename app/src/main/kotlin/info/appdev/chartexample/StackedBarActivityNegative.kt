@@ -18,8 +18,8 @@ import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.highlight.Highlight
@@ -87,19 +87,19 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         }
 
         // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
-        val values = ArrayList<BarEntry>()
-        values.add(BarEntry(5f, floatArrayOf(-10f, 10f)))
-        values.add(BarEntry(15f, floatArrayOf(-12f, 13f)))
-        values.add(BarEntry(25f, floatArrayOf(-15f, 15f)))
-        values.add(BarEntry(35f, floatArrayOf(-17f, 17f)))
-        values.add(BarEntry(45f, floatArrayOf(-19f, 20f)))
-        values.add(BarEntry(45f, floatArrayOf(-19f, 20f), ResourcesCompat.getDrawable(resources, R.drawable.star, null)))
-        values.add(BarEntry(55f, floatArrayOf(-19f, 19f)))
-        values.add(BarEntry(65f, floatArrayOf(-16f, 16f)))
-        values.add(BarEntry(75f, floatArrayOf(-13f, 14f)))
-        values.add(BarEntry(85f, floatArrayOf(-10f, 11f)))
-        values.add(BarEntry(95f, floatArrayOf(-5f, 6f)))
-        values.add(BarEntry(105f, floatArrayOf(-1f, 2f)))
+        val values = ArrayList<BarEntryFloat>()
+        values.add(BarEntryFloat(5f, floatArrayOf(-10f, 10f)))
+        values.add(BarEntryFloat(15f, floatArrayOf(-12f, 13f)))
+        values.add(BarEntryFloat(25f, floatArrayOf(-15f, 15f)))
+        values.add(BarEntryFloat(35f, floatArrayOf(-17f, 17f)))
+        values.add(BarEntryFloat(45f, floatArrayOf(-19f, 20f)))
+        values.add(BarEntryFloat(45f, floatArrayOf(-19f, 20f), ResourcesCompat.getDrawable(resources, R.drawable.star, null)))
+        values.add(BarEntryFloat(55f, floatArrayOf(-19f, 19f)))
+        values.add(BarEntryFloat(65f, floatArrayOf(-16f, 16f)))
+        values.add(BarEntryFloat(75f, floatArrayOf(-13f, 14f)))
+        values.add(BarEntryFloat(85f, floatArrayOf(-10f, 11f)))
+        values.add(BarEntryFloat(95f, floatArrayOf(-5f, 6f)))
+        values.add(BarEntryFloat(105f, floatArrayOf(-1f, 2f)))
 
         val set = BarDataSet(values, "Age Distribution")
         set.isDrawIcons = false
@@ -194,8 +194,8 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         saveToGallery(binding.chart1, "StackedBarActivityNegative")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        val barEntry = entry as BarEntry
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        val barEntry = entryFloat as BarEntryFloat
         Timber.i("Value: ${abs(barEntry.yVals!![highlight.stackIndex])}")
     }
 
@@ -205,7 +205,7 @@ class StackedBarActivityNegative : DemoBase(), OnChartValueSelectedListener {
         private val decimalFormat: DecimalFormat = DecimalFormat("###")
 
         // data
-        override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
+        override fun getFormattedValue(value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
             return decimalFormat.format(abs(value).toDouble()) + "m"
         }
 

@@ -19,8 +19,8 @@ import info.appdev.charting.components.AxisBase
 import info.appdev.charting.components.Legend
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.formatter.LargeValueFormatter
 import info.appdev.charting.highlight.Highlight
@@ -110,19 +110,19 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
         binding.tvXMax.text = String.format(Locale.ENGLISH, "%d-%d", startYear, endYear)
         binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        val values1 = ArrayList<BarEntry>()
-        val values2 = ArrayList<BarEntry>()
-        val values3 = ArrayList<BarEntry>()
-        val values4 = ArrayList<BarEntry>()
+        val values1 = ArrayList<BarEntryFloat>()
+        val values2 = ArrayList<BarEntryFloat>()
+        val values3 = ArrayList<BarEntryFloat>()
+        val values4 = ArrayList<BarEntryFloat>()
 
         val randomMultiplier = binding.seekBarY.progress * 100000f
         val sampleValues = getValues(100 + 2)
 
         for (i in startYear..<endYear) {
-            values1.add(BarEntry(i.toFloat(), (sampleValues[i - startYear]!!.toFloat() * randomMultiplier)))
-            values2.add(BarEntry(i.toFloat(), (sampleValues[i - startYear + 1]!!.toFloat() * randomMultiplier)))
-            values3.add(BarEntry(i.toFloat(), (sampleValues[i - startYear + 2]!!.toFloat() * randomMultiplier)))
-            values4.add(BarEntry(i.toFloat(), (sampleValues[i - startYear]!!.toFloat() * randomMultiplier)))
+            values1.add(BarEntryFloat(i.toFloat(), (sampleValues[i - startYear]!!.toFloat() * randomMultiplier)))
+            values2.add(BarEntryFloat(i.toFloat(), (sampleValues[i - startYear + 1]!!.toFloat() * randomMultiplier)))
+            values3.add(BarEntryFloat(i.toFloat(), (sampleValues[i - startYear + 2]!!.toFloat() * randomMultiplier)))
+            values4.add(BarEntryFloat(i.toFloat(), (sampleValues[i - startYear]!!.toFloat() * randomMultiplier)))
         }
 
         val set1: BarDataSet
@@ -247,8 +247,8 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
 
     override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i("Selected: $entry, dataSet: ${highlight.dataSetIndex}")
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Timber.i("Selected: $entryFloat, dataSet: ${highlight.dataSetIndex}")
     }
 
     override fun onNothingSelected() = Unit

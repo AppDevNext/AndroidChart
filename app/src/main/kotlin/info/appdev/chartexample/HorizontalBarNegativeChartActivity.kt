@@ -19,8 +19,8 @@ import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -97,13 +97,13 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
     private fun setData(count: Int, range: Float) {
         val barWidth = 9f
         val spaceForBar = 10f
-        val values = ArrayList<BarEntry>()
+        val values = ArrayList<BarEntryFloat>()
         val sampleValues = getValues(count + 2)
 
         for (i in 0..<count) {
             val valueY = sampleValues[i]!!.toFloat() * range - range / 2
             values.add(
-                BarEntry(
+                BarEntryFloat(
                     i * spaceForBar, valueY,
                     ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
@@ -229,12 +229,12 @@ class HorizontalBarNegativeChartActivity : DemoBase(), OnSeekBarChangeListener, 
 
     private val mOnValueSelectedRectF = RectF()
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
         val bounds = mOnValueSelectedRectF
-        binding.chart1.getBarBounds(entry as BarEntry, bounds)
+        binding.chart1.getBarBounds(entryFloat as BarEntryFloat, bounds)
 
         val position = binding.chart1.getPosition(
-            entry, binding.chart1.barData!!.getDataSetByIndex(highlight.dataSetIndex)?.axisDependency
+            entryFloat, binding.chart1.barData!!.getDataSetByIndex(highlight.dataSetIndex)?.axisDependency
         )
 
         Timber.i("bounds $bounds")

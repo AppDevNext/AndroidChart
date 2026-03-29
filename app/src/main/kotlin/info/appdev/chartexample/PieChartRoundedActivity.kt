@@ -22,10 +22,10 @@ import info.appdev.chartexample.databinding.ActivityPiechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.animation.Easing
 import info.appdev.charting.components.Legend
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.PieData
 import info.appdev.charting.data.PieDataSet
-import info.appdev.charting.data.PieEntry
+import info.appdev.charting.data.PieEntryFloat
 import info.appdev.charting.formatter.PercentFormatter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -100,14 +100,14 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
     }
 
     private fun setData(count: Int, range: Float) {
-        val entries = ArrayList<PieEntry>()
+        val entries = ArrayList<PieEntryFloat>()
         val sampleValues = getValues(100)
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (i in 0..<count) {
             entries.add(
-                PieEntry(
+                PieEntryFloat(
                     (sampleValues[i]!!.toFloat() * range) + range / 5,
                     parties[i % parties.size],
                     ResourcesCompat.getDrawable(resources, R.drawable.star, null)
@@ -275,8 +275,8 @@ class PieChartRoundedActivity : DemoBase(), OnSeekBarChangeListener, OnChartValu
         return s
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i("Value: ${entry.y}, xIndex: ${entry.x}, DataSet index: ${highlight.dataSetIndex}")
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Timber.i("Value: ${entryFloat.y}, xIndex: ${entryFloat.x}, DataSet index: ${highlight.dataSetIndex}")
     }
 
     override fun onNothingSelected() = Unit

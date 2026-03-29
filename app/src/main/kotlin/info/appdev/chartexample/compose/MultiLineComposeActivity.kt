@@ -38,7 +38,7 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.notimportant.DemoBaseCompose
 import info.appdev.charting.components.Legend
 import info.appdev.charting.compose.LineChart
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.utils.ColorTemplate
@@ -329,7 +329,7 @@ class MultiLineComposeActivity : DemoBaseCompose() {
         val dataSets = ArrayList<LineDataSet>()
 
         for (datasetNumber in 0..2) {
-            val values = ArrayList<Entry>()
+            val values = ArrayList<EntryFloat>()
             val sampleValues = when (datasetNumber) {
                 1 -> getValues(100).reversedArray()
                 2 -> generateSineWaves(3, 30).toTypedArray()
@@ -338,7 +338,7 @@ class MultiLineComposeActivity : DemoBaseCompose() {
 
             for (i in 0..<progress) {
                 val valuesY = (sampleValues[i]!!.toFloat() * range) + 3
-                values.add(Entry(i.toFloat(), valuesY))
+                values.add(EntryFloat(i.toFloat(), valuesY))
             }
 
             val lineDataSet = LineDataSet(values, "DataSet $datasetNumber")

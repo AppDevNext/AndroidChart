@@ -8,8 +8,8 @@ import info.appdev.charting.components.Legend.LegendOrientation
 import info.appdev.charting.components.Legend.LegendVerticalAlignment
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis.AxisDependency
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.highlight.HorizontalBarHighlighter
 import info.appdev.charting.renderer.HorizontalBarChartRenderer
@@ -206,7 +206,7 @@ open class HorizontalBarChart : BarChart {
         return floatArrayOf(high.drawY, high.drawX)
     }
 
-    override fun getBarBounds(barEntry: BarEntry, outputRect: RectF) {
+    override fun getBarBounds(barEntry: BarEntryFloat, outputRect: RectF) {
         mData?.let { data ->
             val set = data.getDataSetForEntry(barEntry)
 
@@ -231,7 +231,7 @@ open class HorizontalBarChart : BarChart {
     /**
      * Returns a recyclable PointF instance.
      */
-    override fun getPosition(e: Entry?, axis: AxisDependency?): PointF? {
+    override fun getPosition(e: EntryFloat?, axis: AxisDependency?): PointF? {
         if (e == null) {
             return null
         }

@@ -9,7 +9,7 @@ import kotlin.math.abs
  * Entry class for the BarChart. (especially stacked bars)
  */
 @SuppressLint("ParcelCreator")
-open class BarEntry : Entry {
+open class BarEntryFloat : EntryFloat {
     /**
      * Returns the stacked values this BarEntry represents, or null, if only a single value is represented (then, use
      * getY()).
@@ -123,8 +123,8 @@ open class BarEntry : Entry {
     /**
      * Returns an exact copy of the BarEntry.
      */
-    override fun copy(): BarEntry {
-        val copied = BarEntry(x, y, data)
+    override fun copy(): BarEntryFloat {
+        val copied = BarEntryFloat(x, y, data)
         copied.setVals(this.yVals)
         return copied
     }

@@ -17,7 +17,7 @@ import info.appdev.charting.components.Description
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IFillFormatter
@@ -97,24 +97,24 @@ class TimeLineActivity : DemoBase() {
         val sampleEntries = if (sinus)
             generateSineWaves(3, 30).mapIndexed { index, data ->
                 val valueY = (data.toFloat() * range) + 50
-                Entry(timeOffset + index.toFloat() * 1000, valueY)
+                EntryFloat(timeOffset + index.toFloat() * 1000, valueY)
             }
         else {
-            var previousEntry: Entry? = null
+            var previousEntryFloat: EntryFloat? = null
             getSawtoothValues(14).mapIndexed { index, data ->
                 val valueY = data.toFloat() * 20
-                val entry = previousEntry?.let {
+                val entryFloat = previousEntryFloat?.let {
                     // nay third value is 0, so we add here more than 1 second, otherwise we have a one-second entry
                     if (index % 3 == 0) {
-                        Entry(it.x + 3000, valueY)
+                        EntryFloat(it.x + 3000, valueY)
                     } else
-                        Entry(it.x + 1000, valueY)
+                        EntryFloat(it.x + 1000, valueY)
                 } ?: run {
-                    Entry(timeOffset + index.toFloat() * 1000, valueY)
+                    EntryFloat(timeOffset + index.toFloat() * 1000, valueY)
                 }
-                previousEntry = entry
+                previousEntryFloat = entryFloat
                 // Now you can use 'prev' which holds the previous Entry
-                entry
+                entryFloat
             }
         }
 
@@ -209,9 +209,9 @@ class TimeLineActivity : DemoBase() {
         val first = this[0]
         val second = this[1] // needed to get time diff
         val last = this[size - 1]
-        val timeDiff = (second as Entry).x - (first as Entry).x
+        val timeDiff = (second as EntryFloat).x - (first as EntryFloat).x
         removeAt(0)
-        first.x = (last as Entry).x + timeDiff
+        first.x = (last as EntryFloat).x + timeDiff
         add(first)
     }
 

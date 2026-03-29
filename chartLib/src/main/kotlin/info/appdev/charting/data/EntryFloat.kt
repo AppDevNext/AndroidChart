@@ -13,7 +13,7 @@ import kotlin.math.abs
  * Class representing one entry in the chart. Might contain multiple values.
  * Might only contain a single value depending on the used constructor.
  */
-open class Entry : BaseEntry<Float>, Parcelable, Serializable {
+open class EntryFloat : BaseEntry<Float>, Parcelable, Serializable {
 
     private var _x: Float = 0f
     open var x: Float
@@ -25,7 +25,7 @@ open class Entry : BaseEntry<Float>, Parcelable, Serializable {
     constructor()
 
     /**
-     * A Entry represents one single entry in the chart.
+     * A EntryFloat represents one single entry in the chart.
      *
      * @param x the x value
      * @param y the y value (the actual value of the entry)
@@ -35,7 +35,7 @@ open class Entry : BaseEntry<Float>, Parcelable, Serializable {
     }
 
     /**
-     * A Entry represents one single entry in the chart.
+     * A EntryFloat represents one single entry in the chart.
      *
      * @param x    the x value
      * @param y    the y value (the actual value of the entry)
@@ -46,7 +46,7 @@ open class Entry : BaseEntry<Float>, Parcelable, Serializable {
     }
 
     /**
-     * A Entry represents one single entry in the chart.
+     * A EntryFloat represents one single entry in the chart.
      *
      * @param x the x value
      * @param y the y value (the actual value of the entry)
@@ -57,12 +57,12 @@ open class Entry : BaseEntry<Float>, Parcelable, Serializable {
     }
 
     /**
-     * A Entry represents one single entry in the chart.
+     * A EntryFloat represents one single entry in the chart.
      *
      * @param x the x value
      * @param y the y value (the actual value of the entry)
      * @param icon icon image
-     * @param data Spot for additional data this Entry represents.
+     * @param data Spot for additional data this EntryFloat represents.
      */
     constructor(x: Float, y: Float, icon: Drawable?, data: Any?) : super(y, icon, data) {
         this._x = x
@@ -71,8 +71,8 @@ open class Entry : BaseEntry<Float>, Parcelable, Serializable {
     /**
      * returns an exact copy of the entry
      */
-    open fun copy(): Entry {
-        val e = Entry(x, y, data)
+    open fun copy(): EntryFloat {
+        val e = EntryFloat(x, y, data)
         return e
     }
 
@@ -81,7 +81,7 @@ open class Entry : BaseEntry<Float>, Parcelable, Serializable {
      * are equal in those points, false if not. Does not check by hash-code like
      * it's done by the "equals" method.
      */
-    fun equalTo(e: Entry?): Boolean {
+    fun equalTo(e: EntryFloat?): Boolean {
         if (e == null)
             return false
 
@@ -104,7 +104,7 @@ open class Entry : BaseEntry<Float>, Parcelable, Serializable {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             "${this.javaClass.typeName.substringAfterLast(".")} x=$x y=$y"
         } else {
-            "Entry x=$x y=$y"
+            "EntryFloat x=$x y=$y"
         }
     }
 
@@ -120,7 +120,7 @@ open class Entry : BaseEntry<Float>, Parcelable, Serializable {
                 dest.writeInt(1)
                 dest.writeParcelable(data as Parcelable?, flags)
             } else {
-                throw ParcelFormatException("Cannot parcel an Entry with non-parcelable data")
+                throw ParcelFormatException("Cannot parcel an EntryFloat with non-parcelable data")
             }
         } else {
             dest.writeInt(0)
@@ -131,7 +131,7 @@ open class Entry : BaseEntry<Float>, Parcelable, Serializable {
         this._x = `in`.readFloat()
         this.yBase = `in`.readFloat()
         if (`in`.readInt() == 1) {
-            this.data = if (android.os.Build.VERSION.SDK_INT >= 33) {
+            this.data = if (Build.VERSION.SDK_INT >= 33) {
                 `in`.readParcelable(Any::class.java.classLoader, Any::class.java)
             } else {
                 @Suppress("DEPRECATION")
@@ -142,12 +142,12 @@ open class Entry : BaseEntry<Float>, Parcelable, Serializable {
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<Entry> = object : Parcelable.Creator<Entry> {
-            override fun createFromParcel(source: Parcel): Entry {
-                return Entry(source)
+        val CREATOR: Parcelable.Creator<EntryFloat> = object : Parcelable.Creator<EntryFloat> {
+            override fun createFromParcel(source: Parcel): EntryFloat {
+                return EntryFloat(source)
             }
 
-            override fun newArray(size: Int): Array<Entry?> {
+            override fun newArray(size: Int): Array<EntryFloat?> {
                 return arrayOfNulls(size)
             }
         }

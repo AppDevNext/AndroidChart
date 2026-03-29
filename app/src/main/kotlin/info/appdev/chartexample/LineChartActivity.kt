@@ -20,7 +20,7 @@ import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.LimitLine
 import info.appdev.charting.components.LimitLine.LimitLabelPosition
 import info.appdev.charting.components.LimitRange
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -256,8 +256,8 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
     override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
     override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i(entry.toString())
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Timber.i(entryFloat.toString())
         Timber.i("LOW HIGH low:${binding.chart1.lowestVisibleX}, high:${binding.chart1.highestVisibleX}")
         Timber.i("MIN MAX xMin:${binding.chart1.xChartMin}, xMax:${binding.chart1.xChartMax}, yMin:${binding.chart1.yChartMin}, yMax:${binding.chart1.yChartMax}")
     }

@@ -1,7 +1,7 @@
 package info.appdev.charting.highlight
 
 import info.appdev.charting.charts.RadarChart
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.changePosition
 import kotlin.math.abs
@@ -47,16 +47,16 @@ open class RadarHighlighter(chart: RadarChart) : PieRadarHighlighter<RadarChart>
             for (i in 0..<data.dataSetCount) {
                 val dataSet = data.getDataSetByIndex(i)
 
-                val entry: Entry? = dataSet?.getEntryForIndex(index)
+                val entryFloat: EntryFloat? = dataSet?.getEntryForIndex(index)
 
-                val y = (entry!!.y - chartPieRadar.yChartMin)
+                val y = (entryFloat!!.y - chartPieRadar.yChartMin)
 
                 chartPieRadar.centerOffsets.changePosition(
                     y * factor * phaseY,
                     sliceAngle * index * phaseX + chartPieRadar.rotationAngle, pOut
                 )
 
-                highlightBuffer.add(Highlight(index.toFloat(), entry.y, pOut.x, pOut.y, i, dataSet.axisDependency))
+                highlightBuffer.add(Highlight(index.toFloat(), entryFloat.y, pOut.x, pOut.y, i, dataSet.axisDependency))
             }
         }
         return highlightBuffer

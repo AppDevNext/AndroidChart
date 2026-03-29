@@ -18,7 +18,7 @@ import info.appdev.charting.charts.LineChart
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.YAxis.AxisDependency
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
@@ -108,26 +108,26 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
     }
 
     private fun setData(count: Int, range: Float) {
-        val values1 = ArrayList<Entry>()
+        val values1 = ArrayList<EntryFloat>()
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {
             val `val` = (sampleValues[i]!!.toFloat() * (range / 2f)) + 50
-            values1.add(Entry(i.toFloat(), `val`))
+            values1.add(EntryFloat(i.toFloat(), `val`))
         }
 
-        val values2 = ArrayList<Entry>()
+        val values2 = ArrayList<EntryFloat>()
 
         for (i in 0..<count) {
             val `val` = (sampleValues[i]!!.toFloat() * range) + 450
-            values2.add(Entry(i.toFloat(), `val`))
+            values2.add(EntryFloat(i.toFloat(), `val`))
         }
 
-        val values3 = ArrayList<Entry>()
+        val values3 = ArrayList<EntryFloat>()
 
         for (i in 0..<count) {
             val `val` = (sampleValues[i]!!.toFloat() * range) + 500
-            values3.add(Entry(i.toFloat(), `val`))
+            values3.add(EntryFloat(i.toFloat(), `val`))
         }
 
         val set1: LineDataSet
@@ -315,11 +315,11 @@ class LineChartDualAxisActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         saveToGallery(binding.chart1, "LineChartActivity2")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i(entry.toString())
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Timber.i(entryFloat.toString())
 
         binding.chart1.lineData.getDataSetByIndex(highlight.dataSetIndex)?.let {
-            binding.chart1.centerViewToAnimated(entry.x, entry.y, it.axisDependency, 500)
+            binding.chart1.centerViewToAnimated(entryFloat.x, entryFloat.y, it.axisDependency, 500)
             //chart.zoomAndCenterAnimated(2.5f, 2.5f, e.getX(), e.getY(), chart.getData().getDataSetByIndex(dataSetIndex)
             // .getAxisDependency(), 1000);
             //chart.zoomAndCenterAnimated(1.8f, 1.8f, e.getX(), e.getY(), chart.getData().getDataSetByIndex(dataSetIndex)

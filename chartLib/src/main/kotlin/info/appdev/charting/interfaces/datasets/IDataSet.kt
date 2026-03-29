@@ -5,11 +5,11 @@ import android.graphics.Typeface
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.DataSet
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.utils.PointF
 
-interface IDataSet<T : Entry> {
+interface IDataSet<T : EntryFloat> {
     /**
      * returns the minimum y-value this DataSet holds
      */

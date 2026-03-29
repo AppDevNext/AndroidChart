@@ -5,7 +5,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.BarData
-import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.highlight.BarHighlighter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.BarDataProvider
@@ -146,7 +146,7 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
      * Returns the bounding box of the specified Entry in the specified DataSet. Returns null if the Entry could not be
      * found in the charts data.  Performance-intensive code should use void getBarBounds(BarEntry, RectF) instead.
      */
-    fun getBarBounds(barEntry: BarEntry): RectF {
+    fun getBarBounds(barEntry: BarEntryFloat): RectF {
         val bounds = RectF()
         getBarBounds(barEntry, bounds)
 
@@ -157,7 +157,7 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
      * The passed outputRect will be assigned the values of the bounding box of the specified Entry in the specified DataSet.
      * The rect will be assigned Float.MIN_VALUE in all locations if the Entry could not be found in the charts data.
      */
-    open fun getBarBounds(barEntry: BarEntry, outputRect: RectF) {
+    open fun getBarBounds(barEntry: BarEntryFloat, outputRect: RectF) {
         mData?.let { barData ->
             val set = barData.getDataSetForEntry(barEntry)
 

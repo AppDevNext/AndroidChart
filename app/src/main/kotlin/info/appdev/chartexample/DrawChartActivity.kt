@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import info.appdev.chartexample.databinding.ActivityDrawChartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.data.DataSet
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
@@ -57,7 +57,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
     }
 
     private fun initWithDummyData() {
-        val values = ArrayList<Entry>()
+        val values = ArrayList<EntryFloat>()
 
         // create a dataset and give it a type (0)
         val set1 = LineDataSet(values, "DataSet")
@@ -116,15 +116,15 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         saveToGallery(binding.chart1, "DrawChartActivity")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i(("Value: ${entry.y}, xIndex: ${entry.x}, DataSet index:${highlight.dataSetIndex}"))
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Timber.i(("Value: ${entryFloat.y}, xIndex: ${entryFloat.x}, DataSet index:${highlight.dataSetIndex}"))
     }
 
     override fun onNothingSelected() = Unit
 
     /** callback for each new entry drawn with the finger  */
-    override fun onEntryAdded(entry: Entry) {
-        Timber.i(entry.toString())
+    override fun onEntryAdded(entryFloat: EntryFloat) {
+        Timber.i(entryFloat.toString())
     }
 
     /** callback when a DataSet has been drawn (when lifting the finger)  */
@@ -135,7 +135,7 @@ class DrawChartActivity : DemoBase(), OnChartValueSelectedListener, OnDrawListen
         binding.chart1.data?.let { binding.chart1.legendRenderer?.computeLegend(it) }
     }
 
-    override fun onEntryMoved(entry: Entry) {
-        Timber.i("Point moved $entry")
+    override fun onEntryMoved(entryFloat: EntryFloat) {
+        Timber.i("Point moved $entryFloat")
     }
 }

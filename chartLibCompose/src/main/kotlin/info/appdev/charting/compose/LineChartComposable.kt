@@ -13,7 +13,7 @@ import info.appdev.charting.charts.LineChart
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.components.YAxis
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -54,7 +54,7 @@ fun LineChart(
     data: LineData?,
     modifier: Modifier = Modifier,
     state: LineChartState = rememberLineChartState(),
-    onValueSelected: ((Entry?, Highlight?) -> Unit)? = null,
+    onValueSelected: ((EntryFloat?, Highlight?) -> Unit)? = null,
     description: String? = null,
     legend: ((Legend) -> Unit)? = null,
     xAxisConfig: ((XAxis) -> Unit)? = null,
@@ -145,8 +145,8 @@ fun LineChart(
             // Selection listener
             if (onValueSelected != null) {
                 lineChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-                    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-                        onValueSelected(entry, highlight)
+                    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+                        onValueSelected(entryFloat, highlight)
                     }
 
                     override fun onNothingSelected() {

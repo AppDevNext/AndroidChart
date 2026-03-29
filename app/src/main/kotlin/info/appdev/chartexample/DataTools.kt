@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.graphics.DashPathEffect
 import androidx.core.content.ContextCompat
 import info.appdev.charting.charts.LineChart
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IFillFormatter
@@ -164,15 +164,15 @@ class DataTools {
 
         fun setData(context: Context, lineChart: LineChart, count: Int = VAL_COUNT, range: Float = VAL_RANGE) {
             Timber.d("count=$count range=$range")
-            val values = ArrayList<Entry>()
+            val values = ArrayList<EntryFloat>()
             if (count == VAL_COUNT) {
                 VAL_FIX.forEachIndexed { index, d ->
-                    values.add(Entry(index.toFloat(), d.toFloat(), ContextCompat.getDrawable(context, R.drawable.star)))
+                    values.add(EntryFloat(index.toFloat(), d.toFloat(), ContextCompat.getDrawable(context, R.drawable.star)))
                 }
             } else {
                 for (i in 0 until count) {
                     val value = (Math.random() * range).toFloat() - 30
-                    values.add(Entry(i.toFloat(), value, ContextCompat.getDrawable(context, R.drawable.star)))
+                    values.add(EntryFloat(i.toFloat(), value, ContextCompat.getDrawable(context, R.drawable.star)))
                 }
             }
             lineChart.data?.let {
@@ -190,7 +190,7 @@ class DataTools {
         }
 
         private fun createDataset(
-            values: ArrayList<Entry>,
+            values: ArrayList<EntryFloat>,
             lineChart: LineChart,
             context: Context
         ) {
