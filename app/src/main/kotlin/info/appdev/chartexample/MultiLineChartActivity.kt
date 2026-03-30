@@ -104,7 +104,10 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
             lineDataSet.circleRadius = 4f
 
             val color = colors[datasetNumber]
-            lineDataSet.color = color
+            if (datasetNumber == 2) {
+                lineDataSet.setColor(color, 255 *.3f.toInt())
+            } else
+                lineDataSet.color = color
             lineDataSet.setCircleColor(color)
             Timber.d("DataSet $datasetNumber color=${color.toHexString()}")
             dataSets.add(lineDataSet)
