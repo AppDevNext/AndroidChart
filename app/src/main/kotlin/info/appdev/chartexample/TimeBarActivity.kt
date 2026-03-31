@@ -101,17 +101,17 @@ class TimeBarActivity : DemoBase(), OnSeekBarChangeListener {
 
     private fun setData(count: Int) {
         val barWidth = 9f
-        val spaceForBar = 10.0
-        val values = ArrayList<BarEntryDouble>()
+        val spaceForBar = 10.0f
+        val values = ArrayList<BarEntryFloat>()
         val sampleValues = getValues(100).map { (it!! * 100).toInt() }
 
-        var previousTimeOffset = 0.0 //TIME_OFFSET.toDouble()
+        var previousTimeOffset = 0f //TIME_OFFSET.toFloat()
         for (i in 0..<count) {
             Timber.d("add ${sampleValues[i]}s to $previousTimeOffset")
             val yValue = sampleValues[i] + previousTimeOffset
-            val value = BarEntryDouble(
+            val value = BarEntryFloat(
                 x = i * spaceForBar,
-                vals = doubleArrayOf(previousTimeOffset, yValue),
+                vals = floatArrayOf(previousTimeOffset, yValue),
                 icon = ResourcesCompat.getDrawable(resources, R.drawable.star, null)
             )
             values.add(value)
