@@ -2,10 +2,17 @@ package info.appdev.charting.data
 
 import android.graphics.drawable.Drawable
 
-abstract class BaseEntry {
+abstract class BaseEntry<T> where T : Number, T : Comparable<T> {
 
-    protected var yBase: Float = 0f
-    open var y: Float
+    protected lateinit var xBase: T
+    open var x: T
+        get() = xBase
+        set(value) {
+            xBase = value
+        }
+
+    protected lateinit var yBase: T
+    open var y: T
         get() = yBase
         set(value) {
             yBase = value
@@ -17,19 +24,37 @@ abstract class BaseEntry {
 
     constructor()
 
-    constructor(y: Float) {
+    constructor(y: T) {
         this.yBase = y
     }
 
-    constructor(y: Float, data: Any?) : this(y) {
+    constructor(x: T, y: T) {
+        this.xBase = x
+        this.yBase = y
+    }
+
+    constructor(y: T, data: Any?) : this(y) {
         this.data = data
     }
 
-    constructor(y: Float, icon: Drawable?) : this(y) {
+    constructor(y: T, icon: Drawable?) : this(y) {
         this.icon = icon
     }
 
-    constructor(y: Float, icon: Drawable?, data: Any?) : this(y) {
+    constructor(y: T, icon: Drawable?, data: Any?) : this(y = y) {
+        this.icon = icon
+        this.data = data
+    }
+
+    constructor(x: T, y: T, data: Any?) : this(x = x, y = y) {
+        this.data = data
+    }
+
+    constructor(x: T, y: T, icon: Drawable?) : this(x = x, y = y) {
+        this.icon = icon
+    }
+
+    constructor(x: T, y: T, icon: Drawable?, data: Any?) : this(x = x, y = y) {
         this.icon = icon
         this.data = data
     }

@@ -1,7 +1,7 @@
 package info.appdev.charting.components
 
 import android.graphics.Canvas
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.utils.PointF
 
@@ -27,12 +27,12 @@ interface IMarker {
     /**
      * This method enables a specified custom IMarker to update it's content every time the IMarker is redrawn.
      *
-     * @param entry         The Entry the IMarker belongs to. This can also be any subclass of Entry, like BarEntry or
+     * @param entryFloat         The Entry the IMarker belongs to. This can also be any subclass of Entry, like BarEntry or
      * CandleEntry, simply cast it at runtime.
      * @param highlight The highlight object contains information about the highlighted value such as it's dataset-index, the
      * selected range or stack-index (only stacked bar entries).
      */
-    fun refreshContent(entry: Entry, highlight: Highlight)
+    fun refreshContent(entryFloat: EntryFloat, highlight: Highlight)
 
     /**
      * Draws the IMarker on the given position on the screen with the given Canvas object.

@@ -16,7 +16,7 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.Legend
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
@@ -84,10 +84,10 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         binding.tvXMax.text = binding.seekBarX.progress.toString()
         binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        val dataSets = ArrayList<ILineDataSet>()
+        val dataSets = ArrayList<ILineDataSet<EntryFloat>>()
 
         for (datasetNumber in 0..2) {
-            val values = ArrayList<Entry>()
+            val values = ArrayList<EntryFloat>()
             val sampleValues = when (datasetNumber) {
                 1 -> getValues(100).reversedArray()
                 2 -> generateSineWaves(3, 30).toTypedArray()
@@ -96,7 +96,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
 
             for (i in 0..<progress) {
                 val valuesY = (sampleValues[i]!!.toFloat() * binding.seekBarY.progress) + 3
-                values.add(Entry(i.toFloat(), valuesY))
+                values.add(EntryFloat(i.toFloat(), valuesY))
             }
 
             val lineDataSet = LineDataSet(values, "DataSet $datasetNumber")
@@ -111,7 +111,7 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         }
 
         // make the first DataSet dashed
-        (dataSets[0] as LineDataSet).enableDashedLine(10f, 10f, 0f)
+        (dataSets[0] as LineDataSet<*>).enableDashedLine(10f, 10f, 0f)
 
         val data = LineData(dataSets)
         binding.chart1.data = data
@@ -268,8 +268,8 @@ class MultiLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartGestu
         Timber.i("dX: $dX, dY: $dY")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i("Value: ${entry.y}, xIndex: ${entry.x}, DataSet index: ${highlight.dataSetIndex}")
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Timber.i("Value: ${entryFloat.y}, xIndex: ${entryFloat.x}, DataSet index: ${highlight.dataSetIndex}")
     }
 
     override fun onNothingSelected() = Unit

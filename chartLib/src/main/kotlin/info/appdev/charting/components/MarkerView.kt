@@ -5,7 +5,7 @@ import android.graphics.Canvas
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import info.appdev.charting.charts.Chart
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.utils.PointF
 import java.lang.ref.WeakReference
@@ -74,7 +74,7 @@ open class MarkerView(context: Context?, layoutResource: Int) : RelativeLayout(c
         return mOffset2
     }
 
-    override fun refreshContent(entry: Entry, highlight: Highlight) {
+    override fun refreshContent(entryFloat: EntryFloat, highlight: Highlight) {
         measure(
             MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
             MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)

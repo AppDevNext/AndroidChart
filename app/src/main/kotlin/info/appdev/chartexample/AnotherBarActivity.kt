@@ -16,7 +16,7 @@ import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.ColorTemplate
 
@@ -62,13 +62,13 @@ class AnotherBarActivity : DemoBase(), OnSeekBarChangeListener {
         binding.tvXMax.text = binding.seekBarX.progress.toString()
         binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        val values = ArrayList<BarEntry>()
+        val values = ArrayList<BarEntryFloat>()
         val sampleValues = getValues(100)
 
         for (i in 0..<binding.seekBarX.progress) {
             val multi = (binding.seekBarY.progress + 1).toFloat()
             val `val` = (sampleValues[i]!!.toFloat() * multi) + multi / 3
-            values.add(BarEntry(i.toFloat(), `val`))
+            values.add(BarEntryFloat(i.toFloat(), `val`))
         }
 
         val set1: BarDataSet

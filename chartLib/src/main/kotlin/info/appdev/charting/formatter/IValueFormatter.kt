@@ -1,6 +1,6 @@
 package info.appdev.charting.formatter
 
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.utils.ViewPortHandler
 
 /**
@@ -16,10 +16,10 @@ interface IValueFormatter {
      * and memory allocations inside this method.
      *
      * @param value           the value to be formatted
-     * @param entry           the entry the value belongs to - in e.g. BarChart, this is of class BarEntry
+     * @param entryFloat           the entry the value belongs to - in e.g. BarChart, this is of class BarEntry
      * @param dataSetIndex    the index of the DataSet the entry in focus belongs to
      * @param viewPortHandler provides information about the current chart state (scale, translation, ...)
      * @return the formatted label ready for being drawn
      */
-    fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String?
+    fun getFormattedValue(value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String?
 }

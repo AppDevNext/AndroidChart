@@ -11,7 +11,7 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityColoredLinesBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.charts.LineChart
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 
@@ -98,12 +98,12 @@ class LineChartActivityColored : DemoBase() {
     @Suppress("SameParameterValue")
     private fun getData(range: Float): LineData {
         val count = 36
-        val values = ArrayList<Entry>()
+        val values = ArrayList<EntryFloat>()
         val sampleValues = getValues(count)
 
         for (i in 0..<count) {
             val `val` = (sampleValues[i]!!.toFloat() * range) + 3
-            values.add(Entry(i.toFloat(), `val`))
+            values.add(EntryFloat(i.toFloat(), `val`))
         }
 
         // create a dataset and give it a type

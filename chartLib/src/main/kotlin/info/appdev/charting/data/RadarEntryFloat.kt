@@ -3,7 +3,7 @@ package info.appdev.charting.data
 import android.annotation.SuppressLint
 
 @SuppressLint("ParcelCreator")
-class RadarEntry : Entry {
+class RadarEntryFloat : EntryFloat {
     constructor(value: Float) : super(0f, value)
 
     constructor(value: Float, data: Any?) : super(0f, value, data)
@@ -14,8 +14,8 @@ class RadarEntry : Entry {
     val value: Float
         get() = y
 
-    override fun copy(): RadarEntry {
-        return RadarEntry(y, data)
+    override fun copy(): RadarEntryFloat {
+        return RadarEntryFloat(y, data)
     }
 
     @get:Deprecated("")

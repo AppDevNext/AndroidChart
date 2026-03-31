@@ -7,6 +7,7 @@ import android.view.VelocityTracker
 import android.view.ViewConfiguration
 import info.appdev.charting.formatter.DefaultValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
+import java.lang.Float.intBitsToFloat
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
@@ -23,6 +24,7 @@ object Utils {
     const val FDEG2RAD: Float = (Math.PI.toFloat() / 180f)
 
     val FLOAT_EPSILON: Float = java.lang.Float.intBitsToFloat(1)
+    val DOUBLE_EPSILON: Double = java.lang.Double.longBitsToDouble(1L)
 
     /**
      * initialize method, called inside the Chart.init() method.

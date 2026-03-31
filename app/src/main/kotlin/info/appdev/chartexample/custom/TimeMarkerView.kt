@@ -5,7 +5,7 @@ import android.content.Context
 import android.widget.TextView
 import info.appdev.chartexample.R
 import info.appdev.charting.components.MarkerView
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.utils.PointF
@@ -19,10 +19,10 @@ class TimeMarkerView(context: Context?, layoutResource: Int, val format: String 
     private val tvContent: TextView = findViewById(R.id.tvContent)
 
     @SuppressLint("SetTextI18n")
-    override fun refreshContent(entry: Entry, highlight: Highlight) {
+    override fun refreshContent(entryFloat: EntryFloat, highlight: Highlight) {
         @Suppress("UNCHECKED_CAST")
-        val dataset = this.chartView?.data?.dataSets[0] as? IDataSet<Entry>
-        val myIndex = dataset?.getEntryIndex(entry)
+        val dataset = this.chartView?.data?.dataSets[0] as? IDataSet<EntryFloat>
+        val myIndex = dataset?.getEntryIndex(entryFloat)
         val nextEntry = myIndex?.let {
             if (it < dataset.entryCount - 1)
                 dataset.getEntryForIndex(myIndex + 1)
@@ -30,9 +30,9 @@ class TimeMarkerView(context: Context?, layoutResource: Int, val format: String 
                 null
         } ?: run { null }
 
-        val duration = if (nextEntry != null) " - duration:${(nextEntry.x - entry.x)}" else ""
-        tvContent.text = "${simpleDateFormat.format(entry.x)}$duration"
-        super.refreshContent(entry, highlight)
+        val duration = if (nextEntry != null) " - duration:${(nextEntry.x - entryFloat.x)}" else ""
+        tvContent.text = "${simpleDateFormat.format(entryFloat.x)}$duration"
+        super.refreshContent(entryFloat, highlight)
     }
 
     override var offset: PointF = PointF()

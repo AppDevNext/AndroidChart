@@ -12,7 +12,7 @@ import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.convertDpToPixel
 import timber.log.Timber
 
-open class LineDataSet(yVals: MutableList<Entry> = mutableListOf(), label: String = "") : LineRadarDataSet<Entry>(yVals, label), ILineDataSet {
+open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableListOf(), label: String = "") : LineRadarDataSet<T>(yVals, label), ILineDataSet<T> {
     /**
      * Drawing mode for this line dataset
      */
@@ -73,17 +73,18 @@ open class LineDataSet(yVals: MutableList<Entry> = mutableListOf(), label: Strin
         circleColors.add(Color.rgb(140, 234, 255))
     }
 
-    override fun copy(): DataSet<Entry> {
-        val entries: MutableList<Entry> = mutableListOf()
+    @Suppress("UNCHECKED_CAST")
+    override fun copy(): DataSet<T>? {
+        val entries: MutableList<EntryFloat> = mutableListOf()
         for (i in entriesInternal.indices) {
-            entries.add(entriesInternal[i].copy())
+            entries.add((entriesInternal[i] as EntryFloat).copy())
         }
-        val copied = LineDataSet(entries, label)
+        val copied = LineDataSet<EntryFloat>(entries, label)
         copy(copied)
-        return copied
+        return copied as DataSet<T>
     }
 
-    protected fun copy(lineDataSet: LineDataSet) {
+    protected fun copy(lineDataSet: LineDataSet<*>) {
         super.copy((lineDataSet as BaseDataSet<*>?)!!)
         lineDataSet.circleColors = this.circleColors
         lineDataSet.mCircleHoleColor = mCircleHoleColor

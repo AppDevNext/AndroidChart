@@ -11,7 +11,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import info.appdev.charting.animation.Easing
 import info.appdev.charting.charts.PieChart
 import info.appdev.charting.components.Legend
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.PieData
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -47,7 +47,7 @@ fun PieChart(
     data: PieData?,
     modifier: Modifier = Modifier,
     state: PieChartState = rememberPieChartState(),
-    onValueSelected: ((Entry?, Highlight?) -> Unit)? = null,
+    onValueSelected: ((EntryFloat?, Highlight?) -> Unit)? = null,
     description: String? = null,
     legend: ((Legend) -> Unit)? = null,
     backgroundColor: androidx.compose.ui.graphics.Color = androidx.compose.ui.graphics.Color.White,
@@ -124,8 +124,8 @@ fun PieChart(
             // Selection listener
             if (onValueSelected != null) {
                 pieChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-                    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-                        onValueSelected(entry, highlight)
+                    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+                        onValueSelected(entryFloat, highlight)
                     }
 
                     override fun onNothingSelected() {

@@ -17,7 +17,8 @@ import info.appdev.charting.components.Description
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryDouble
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IFillFormatter
@@ -96,38 +97,43 @@ class TimeLineActivity : DemoBase() {
 
         val sampleEntries = if (sinus)
             generateSineWaves(3, 30).mapIndexed { index, data ->
-                val valueY = (data.toFloat() * range) + 50
-                Entry(timeOffset + index.toFloat() * 1000, valueY)
+                val valueY = (data * range) + 50
+                EntryDouble(timeOffset + index * 1000.0, valueY)
             }
         else {
-            var previousEntry: Entry? = null
+            var previousEntryDouble: EntryDouble? = null
             getSawtoothValues(14).mapIndexed { index, data ->
-                val valueY = data.toFloat() * 20
-                val entry = previousEntry?.let {
+                val valueY = data * 20
+                val entryFloat = previousEntryDouble?.let {
                     // nay third value is 0, so we add here more than 1 second, otherwise we have a one-second entry
                     if (index % 3 == 0) {
-                        Entry(it.x + 3000, valueY)
+                        EntryDouble(it.xDouble + 3000.0, valueY)
                     } else
-                        Entry(it.x + 1000, valueY)
+                        EntryDouble(it.xDouble + 1000.0, valueY)
                 } ?: run {
-                    Entry(timeOffset + index.toFloat() * 1000, valueY)
+                    EntryDouble(timeOffset + index.toFloat() * 1000.0, valueY)
                 }
-                previousEntry = entry
+                previousEntryDouble = entryFloat
                 // Now you can use 'prev' which holds the previous Entry
-                entry
+                entryFloat
             }
         }
 
         val simpleDateFormat = SimpleDateFormat("HH:mm:ss.sss", Locale.getDefault())
         sampleEntries.forEach { entry ->
-            val entryText = "Entry: x=${simpleDateFormat.format(entry.x)} x=${entry.x}, y=${entry.y}"
+            val entryText = "Entry: x=${simpleDateFormat.format(entry.xDouble.toLong())} xDouble=${entry.xDouble}, y=${entry.y}"
             Timber.d(entryText)
         }
 
-        val set1: LineDataSet
+        val set1: LineDataSet<EntryDouble>
 
+        /*The @Suppress("UNCHECKED_CAST") cast is safe here because:
+        * JVM erases generics at runtime — both are just MutableList on the heap
+        * LineDataSet only reads entries from the list as EntryFloat, and EntryDouble IS a EntryFloat
+        * Nothing writes a plain EntryFloat back into the list through LineDataSet*/
         if (binding.chart1.lineData.dataSetCount > 0) {
-            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
+            @Suppress("UNCHECKED_CAST")
+            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet<EntryDouble>
             set1.entries = sampleEntries.toMutableList()
             if (sinus)
                 set1.lineMode = LineDataSet.Mode.LINEAR
@@ -153,15 +159,17 @@ class TimeLineActivity : DemoBase() {
             set1.highLightColor = Color.rgb(244, 117, 117)
             set1.isDrawCircleHoleEnabled = false
             set1.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet<*>?, dataProvider: LineDataProvider): Float {
                     // change the return value here to better understand the effect
                     // return 0;
                     return binding.chart1.axisLeft.axisMinimum
                 }
             }
 
-            val dataSets = ArrayList<ILineDataSet>()
-            dataSets.add(set1) // add the data sets
+            @Suppress("UNCHECKED_CAST")
+            val dataSets = ArrayList<ILineDataSet<EntryFloat>>()
+            @Suppress("UNCHECKED_CAST")
+            dataSets.add(set1 as ILineDataSet<EntryFloat>) // add the data sets
 
             // create a data object with the data sets
             val data = LineData(dataSets)
@@ -209,9 +217,9 @@ class TimeLineActivity : DemoBase() {
         val first = this[0]
         val second = this[1] // needed to get time diff
         val last = this[size - 1]
-        val timeDiff = (second as Entry).x - (first as Entry).x
+        val timeDiff = (second as EntryDouble).xDouble - (first as EntryDouble).xDouble
         removeAt(0)
-        first.x = (last as Entry).x + timeDiff
+        (first as EntryDouble).xDouble = (last as EntryDouble).xDouble + timeDiff
         add(first)
     }
 

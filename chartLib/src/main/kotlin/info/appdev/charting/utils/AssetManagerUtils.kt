@@ -1,8 +1,8 @@
 package info.appdev.charting.utils
 
 import android.content.res.AssetManager
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.IOException
@@ -18,8 +18,8 @@ import java.nio.charset.StandardCharsets
  *
  * @param path the name of the file in the assets folder (+ path if needed)
  */
-fun AssetManager.loadEntriesFromAssets(path: String): MutableList<Entry> {
-    val entries: MutableList<Entry> = ArrayList()
+fun AssetManager.loadEntriesFromAssets(path: String): MutableList<EntryFloat> {
+    val entries: MutableList<EntryFloat> = ArrayList()
 
     try {
         BufferedReader(
@@ -31,7 +31,7 @@ fun AssetManager.loadEntriesFromAssets(path: String): MutableList<Entry> {
                 val split: Array<String?> = line.split("#".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
                 if (split.size <= 2) {
-                    entries.add(Entry(split[1]!!.toFloat(), split[0]!!.toFloat()))
+                    entries.add(EntryFloat(split[1]!!.toFloat(), split[0]!!.toFloat()))
                 } else {
                     val vals = FloatArray(split.size - 1)
 
@@ -39,7 +39,7 @@ fun AssetManager.loadEntriesFromAssets(path: String): MutableList<Entry> {
                         vals[i] = split[i]!!.toFloat()
                     }
 
-                    entries.add(BarEntry(split[split.size - 1]!!.toInt().toFloat(), vals))
+                    entries.add(BarEntryFloat(split[split.size - 1]!!.toInt().toFloat(), vals))
                 }
                 line = reader.readLine()
             }
@@ -51,15 +51,15 @@ fun AssetManager.loadEntriesFromAssets(path: String): MutableList<Entry> {
     return entries
 }
 
-fun AssetManager.loadBarEntriesFromAssets(path: String): MutableList<BarEntry> {
-    val entries: MutableList<BarEntry> = ArrayList()
+fun AssetManager.loadBarEntriesFromAssets(path: String): MutableList<BarEntryFloat> {
+    val entries: MutableList<BarEntryFloat> = ArrayList()
 
     try {
         BufferedReader(InputStreamReader(this.open(path), StandardCharsets.UTF_8)).use { reader ->
             var line = reader.readLine()
             while (line != null) {
                 val split: Array<String?> = line.split("#".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                entries.add(BarEntry(split[1]!!.toFloat(), split[0]!!.toFloat()))
+                entries.add(BarEntryFloat(split[1]!!.toFloat(), split[0]!!.toFloat()))
                 line = reader.readLine()
             }
         }

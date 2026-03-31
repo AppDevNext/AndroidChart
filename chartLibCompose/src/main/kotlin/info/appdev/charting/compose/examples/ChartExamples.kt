@@ -33,16 +33,16 @@ import info.appdev.charting.compose.ScatterChart
 import info.appdev.charting.compose.rememberLineChartState
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.data.PieData
 import info.appdev.charting.data.PieDataSet
-import info.appdev.charting.data.PieEntry
+import info.appdev.charting.data.PieEntryFloat
 import info.appdev.charting.data.RadarData
 import info.appdev.charting.data.RadarDataSet
-import info.appdev.charting.data.RadarEntry
+import info.appdev.charting.data.RadarEntryFloat
 import info.appdev.charting.data.ScatterData
 import info.appdev.charting.data.ScatterDataSet
 
@@ -77,7 +77,7 @@ fun LineChartExample() {
             Spacer(modifier = Modifier.height(8.dp))
 
             val entries = remember {
-                (0..10).map { Entry(it.toFloat(), (10..50).random().toFloat()) }
+                (0..10).map { EntryFloat(it.toFloat(), (10..50).random().toFloat()) }
             }
 
             val dataSet = remember(entries) {
@@ -144,7 +144,7 @@ fun BarChartExample() {
             Spacer(modifier = Modifier.height(8.dp))
 
             val entries = remember {
-                (0..5).map { BarEntry(it.toFloat(), (20..80).random().toFloat()) }
+                (0..5).map { BarEntryFloat(it.toFloat(), (20..80).random().toFloat()) }
             }
 
             val dataSet = remember(entries) {
@@ -188,11 +188,11 @@ fun PieChartExample() {
 
             val entries = remember {
                 listOf(
-                    PieEntry(30f, "Product A"),
-                    PieEntry(25f, "Product B"),
-                    PieEntry(20f, "Product C"),
-                    PieEntry(15f, "Product D"),
-                    PieEntry(10f, "Product E")
+                    PieEntryFloat(30f, "Product A"),
+                    PieEntryFloat(25f, "Product B"),
+                    PieEntryFloat(20f, "Product C"),
+                    PieEntryFloat(15f, "Product D"),
+                    PieEntryFloat(10f, "Product E")
                 )
             }
 
@@ -247,7 +247,7 @@ fun ScatterChartExample() {
 
             val entries = remember {
                 (0..20).map {
-                    Entry(it.toFloat(), (10..50).random().toFloat())
+                    EntryFloat(it.toFloat(), (10..50).random().toFloat())
                 }
             }
 
@@ -286,11 +286,11 @@ fun RadarChartExample() {
 
             val entries = remember {
                 listOf(
-                    RadarEntry(8f, "Speed"),
-                    RadarEntry(7f, "Strength"),
-                    RadarEntry(6f, "Defense"),
-                    RadarEntry(9f, "Agility"),
-                    RadarEntry(7f, "Intelligence")
+                    RadarEntryFloat(8f, "Speed"),
+                    RadarEntryFloat(7f, "Strength"),
+                    RadarEntryFloat(6f, "Defense"),
+                    RadarEntryFloat(9f, "Agility"),
+                    RadarEntryFloat(7f, "Intelligence")
                 )
             }
 
@@ -367,7 +367,7 @@ fun DynamicChartExample() {
         Button(
             onClick = {
                 val entries = (0 until dataPoints).map {
-                    Entry(it.toFloat(), (10..50).random().toFloat())
+                    EntryFloat(it.toFloat(), (10..50).random().toFloat())
                 }
                 val dataSet = LineDataSet(entries.toMutableList(), "Random Data")
                 state.data = LineData(dataSet)

@@ -10,7 +10,7 @@ import kotlin.math.abs
  * groups of values inside the Chart (e.g. the values for a specific line in the
  * LineChart, or the values of a specific group of bars in the BarChart).
  */
-abstract class DataSet<T : Entry>(
+abstract class DataSet<T : BaseEntry<Float>>(
     protected var entriesInternal: MutableList<T>,
     label: String = ""
 ) : BaseDataSet<T>(label), Serializable {
@@ -219,31 +219,22 @@ abstract class DataSet<T : Entry>(
         while (low < high) {
             val m = low + (high - low) / 2
 
-            val currentEntry: Entry = entriesInternal[m]
+            val current = entriesInternal[m]
+            val next = entriesInternal[m + 1]
 
-            val nextEntry: Entry = entriesInternal[m + 1]
-
-            val d1 = currentEntry.x - xValue
-            val d2 = nextEntry.x - xValue
+            val d1 = current.x - xValue
+            val d2 = next.x - xValue
             val ad1 = abs(d1)
             val ad2 = abs(d2)
 
             if (ad2 < ad1) {
-                // [m + 1] is closer to xValue
-                // Search in a higher place
                 low = m + 1
             } else if (ad1 < ad2) {
-                // [m] is closer to xValue
-                // Search in a lower place
                 high = m
             } else {
-                // We have multiple sequential x-value with same distance
-
                 if (d1 >= 0.0) {
-                    // Search in a lower place
                     high = m
                 } else if (d1 < 0.0) {
-                    // Search in a higher place
                     low = m + 1
                 }
             }
@@ -251,21 +242,18 @@ abstract class DataSet<T : Entry>(
             closest = high
         }
 
-        val closestEntry: Entry = entriesInternal[closest]
+        val closestEntry = entriesInternal[closest]
         val closestXValue = closestEntry.x
         if (rounding == Rounding.UP) {
-            // If rounding up, and found x-value is lower than specified x, and we can go upper...
             if (closestXValue < xValue && closest < entriesInternal.size - 1) {
                 ++closest
             }
         } else if (rounding == Rounding.DOWN) {
-            // If rounding down, and found x-value is upper than specified x, and we can go lower...
             if (closestXValue > xValue && closest > 0) {
                 --closest
             }
         }
 
-        // Search by closest to y-value
         if (!closestToY.isNaN()) {
             while (closest > 0 && entriesInternal[closest - 1].x == closestXValue) {
                 closest -= 1
@@ -276,15 +264,10 @@ abstract class DataSet<T : Entry>(
 
             while (true) {
                 closest += 1
-                if (closest >= entriesInternal.size) {
-                    break
-                }
+                if (closest >= entriesInternal.size) break
 
                 val value: T = entriesInternal[closest]
-
-                if (value.x != closestXValue) {
-                    break
-                }
+                if (value.x != closestXValue) break
 
                 if (abs(value.y - closestToY) <= abs(closestYValue - closestToY)) {
                     closestYValue = closestToY

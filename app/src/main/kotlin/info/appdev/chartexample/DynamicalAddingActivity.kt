@@ -14,7 +14,7 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.databinding.ActivityLinechartNoseekbarBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.YAxis.AxisDependency
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
@@ -66,7 +66,7 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
 
             val value = (sampleValues[cycleValue]!!.toFloat() * 50) + 50f * (lastDataSetIndex + 1)
 
-            data.addEntry(Entry(lastSet.entryCount.toFloat(), value), lastDataSetIndex)
+            data.addEntry(EntryFloat(lastSet.entryCount.toFloat(), value), lastDataSetIndex)
             data.notifyDataChanged()
 
             // let the chart know it's data has changed
@@ -109,12 +109,12 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
             val count = (data.dataSetCount + 1)
             val amount = data.getDataSetByIndex(0)?.entryCount ?: 0
 
-            val values = ArrayList<Entry>()
+            val values = ArrayList<EntryFloat>()
 
             for (i in 0..<amount) {
                 val cycleValue = (i % 100.0).toInt()
 
-                values.add(Entry(i.toFloat(), (sampleValues[cycleValue]!!.toFloat() * 50f) + 50f * count))
+                values.add(EntryFloat(i.toFloat(), (sampleValues[cycleValue]!!.toFloat() * 50f) + 50f * count))
             }
 
             val set = LineDataSet(values, "DataSet $count")
@@ -147,8 +147,8 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         }
     }
 
-    private fun createSet(): LineDataSet {
-        val set = LineDataSet(label = "DataSet 1")
+    private fun createSet(): LineDataSet<EntryFloat> {
+        val set = LineDataSet<EntryFloat>(label = "DataSet 1")
         set.lineWidth = 2.5f
         set.circleRadius = 4.5f
         set.color = Color.rgb(240, 99, 99)
@@ -160,8 +160,8 @@ class DynamicalAddingActivity : DemoBase(), OnChartValueSelectedListener {
         return set
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Toast.makeText(this, entry.toString(), Toast.LENGTH_SHORT).show()
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Toast.makeText(this, entryFloat.toString(), Toast.LENGTH_SHORT).show()
     }
 
     override fun onNothingSelected() {}

@@ -14,7 +14,7 @@ class RadarData : ChartData<IRadarDataSet> {
 
     constructor(dataSets: MutableList<IRadarDataSet>) : super(dataSets)
 
-    override fun getEntryForHighlight(highlight: Highlight): Entry? {
+    override fun getEntryForHighlight(highlight: Highlight): EntryFloat? {
         return getDataSetByIndex(highlight.dataSetIndex)!!.getEntryForIndex(highlight.x.toInt())
     }
 }

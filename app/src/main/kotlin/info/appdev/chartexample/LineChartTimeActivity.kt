@@ -18,7 +18,7 @@ import info.appdev.charting.components.AxisBase
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.components.YAxis.AxisDependency
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IAxisValueFormatter
@@ -105,7 +105,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
 
         val now: Long = 0 //470044; //TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis());
 
-        val values = ArrayList<Entry>()
+        val values = ArrayList<EntryFloat>()
 
         // count = hours
         val to = (now + count).toFloat()
@@ -118,7 +118,7 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
                 (valuesData[x.roundToInt()])!!.toFloat() * 50 + 50
             else (Math.random() * 50 + 50).toFloat() // manually triggered
 
-            values.add(Entry(x, y)) // add one entry per hour
+            values.add(EntryFloat(x, y)) // add one entry per hour
             x++
         }
 

@@ -12,8 +12,8 @@ import info.appdev.charting.components.AxisBase
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.utils.ViewPortHandler
@@ -87,7 +87,7 @@ class BarChartPositiveNegative : DemoBase() {
     }
 
     private fun setData(dataList: MutableList<Data>) {
-        val values = ArrayList<BarEntry>()
+        val values = ArrayList<BarEntryFloat>()
         val colors: MutableList<Int> = ArrayList()
 
         val green = Color.rgb(110, 190, 102)
@@ -95,7 +95,7 @@ class BarChartPositiveNegative : DemoBase() {
 
         for (i in dataList.indices) {
             val d = dataList[i]
-            val entry = BarEntry(d.xValue, d.yValue)
+            val entry = BarEntryFloat(d.xValue, d.yValue)
             values.add(entry)
 
             // specific colors
@@ -136,7 +136,7 @@ class BarChartPositiveNegative : DemoBase() {
     private class ValueFormatter : IValueFormatter {
         private val mFormat: DecimalFormat = DecimalFormat("######.0")
 
-        override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
+        override fun getFormattedValue(value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
             return mFormat.format(value.toDouble())
         }
     }

@@ -19,7 +19,7 @@ import info.appdev.charting.components.Legend
 import info.appdev.charting.components.MarkerView
 import info.appdev.charting.data.RadarData
 import info.appdev.charting.data.RadarDataSet
-import info.appdev.charting.data.RadarEntry
+import info.appdev.charting.data.RadarEntryFloat
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.interfaces.datasets.IRadarDataSet
 
@@ -91,17 +91,17 @@ class RadarChartActivity : DemoBase() {
         val cnt = 5
         val sampleValues = getValues(cnt + 1)
 
-        val entries1 = ArrayList<RadarEntry>()
-        val entries2 = ArrayList<RadarEntry>()
+        val entries1 = ArrayList<RadarEntryFloat>()
+        val entries2 = ArrayList<RadarEntryFloat>()
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (i in 0..<cnt) {
             val val1 = (sampleValues[i]!!.toFloat() * mul) + min
-            entries1.add(RadarEntry(val1))
+            entries1.add(RadarEntryFloat(val1))
 
             val val2 = (sampleValues[i + 1]!!.toFloat() * mul) + min
-            entries2.add(RadarEntry(val2))
+            entries2.add(RadarEntryFloat(val2))
         }
 
         val set1 = RadarDataSet(entries1, "Last Week")

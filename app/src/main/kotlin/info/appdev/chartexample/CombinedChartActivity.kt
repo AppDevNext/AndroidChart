@@ -16,15 +16,15 @@ import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.data.BubbleData
 import info.appdev.charting.data.BubbleDataSet
-import info.appdev.charting.data.BubbleEntry
+import info.appdev.charting.data.BubbleEntryFloat
 import info.appdev.charting.data.CandleData
 import info.appdev.charting.data.CandleDataSet
-import info.appdev.charting.data.CandleEntry
+import info.appdev.charting.data.CandleEntryFloat
 import info.appdev.charting.data.CombinedData
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.data.ScatterData
@@ -100,9 +100,9 @@ class CombinedChartActivity : DemoBase() {
     private fun generateLineData(): LineData {
         val d = LineData()
 
-        val entries = ArrayList<Entry>()
+        val entries = ArrayList<EntryFloat>()
 
-        for (index in 0..<sampleCount) entries.add(Entry(index + 0.5f, values[index]!!.toFloat() * 15 + 5))
+        for (index in 0..<sampleCount) entries.add(EntryFloat(index + 0.5f, values[index]!!.toFloat() * 15 + 5))
 
         val set = LineDataSet(entries, "Line DataSet")
         set.color = Color.rgb(240, 238, 70)
@@ -122,14 +122,14 @@ class CombinedChartActivity : DemoBase() {
     }
 
     private fun generateBarData(): BarData {
-        val entries1 = ArrayList<BarEntry>()
-        val entries2 = ArrayList<BarEntry>()
+        val entries1 = ArrayList<BarEntryFloat>()
+        val entries2 = ArrayList<BarEntryFloat>()
 
         for (index in 0..<sampleCount) {
-            entries1.add(BarEntry(0f, values[index]!!.toFloat() * 25 + 25))
+            entries1.add(BarEntryFloat(0f, values[index]!!.toFloat() * 25 + 25))
 
             // stacked
-            entries2.add(BarEntry(0f, floatArrayOf(values[index]!!.toFloat() * 13 + 12, values[index]!!.toFloat() * 13 + 12)))
+            entries2.add(BarEntryFloat(0f, floatArrayOf(values[index]!!.toFloat() * 13 + 12, values[index]!!.toFloat() * 13 + 12)))
         }
 
         val set1 = BarDataSet(entries1, "Bar 1")
@@ -162,11 +162,11 @@ class CombinedChartActivity : DemoBase() {
     private fun generateScatterData(): ScatterData {
         val d = ScatterData()
 
-        val entries = ArrayList<Entry>()
+        val entries = ArrayList<EntryFloat>()
 
         var index = 0f
         while (index < sampleCount) {
-            entries.add(Entry(index + 0.25f, values[(index * 2).roundToInt()]!!.toFloat() * 10 + 55))
+            entries.add(EntryFloat(index + 0.25f, values[(index * 2).roundToInt()]!!.toFloat() * 10 + 55))
             index += 0.5f
         }
 
@@ -183,11 +183,11 @@ class CombinedChartActivity : DemoBase() {
     private fun generateCandleData(): CandleData {
         val d = CandleData()
 
-        val entries = ArrayList<CandleEntry>()
+        val entries = ArrayList<CandleEntryFloat>()
 
         var index = 0
         while (index < sampleCount) {
-            entries.add(CandleEntry(index + 1f, 90f, 70f, 85f, 75f))
+            entries.add(CandleEntryFloat(index + 1f, 90f, 70f, 85f, 75f))
             index += 2
         }
 
@@ -205,12 +205,12 @@ class CombinedChartActivity : DemoBase() {
     private fun generateBubbleData(): BubbleData {
         val bd = BubbleData()
 
-        val entries = ArrayList<BubbleEntry>()
+        val entries = ArrayList<BubbleEntryFloat>()
 
         for (index in 0..<sampleCount) {
             val y = values[index]!!.toFloat() * 10 + 105
             val size = values[index]!!.toFloat() * 100 + 105
-            entries.add(BubbleEntry(index + 0.5f, y, size))
+            entries.add(BubbleEntryFloat(index + 0.5f, y, size))
         }
 
         val set = BubbleDataSet(entries, "Bubble DataSet")

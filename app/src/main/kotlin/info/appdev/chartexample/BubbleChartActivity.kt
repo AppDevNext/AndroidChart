@@ -19,8 +19,8 @@ import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.data.BubbleData
 import info.appdev.charting.data.BubbleDataSet
-import info.appdev.charting.data.BubbleEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BubbleEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -82,14 +82,14 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         binding.tvXMax.text = count.toString()
         binding.tvYMax.text = range.toString()
 
-        val values1 = ArrayList<BubbleEntry>()
-        val values2 = ArrayList<BubbleEntry>()
-        val values3 = ArrayList<BubbleEntry>()
+        val values1 = ArrayList<BubbleEntryFloat>()
+        val values2 = ArrayList<BubbleEntryFloat>()
+        val values3 = ArrayList<BubbleEntryFloat>()
         val sampleValues = getValues(100)
 
         for (i in 0..<count) {
             values1.add(
-                BubbleEntry(
+                BubbleEntryFloat(
                     i.toFloat(),
                     (sampleValues[i + 1]!! * range).toFloat(),
                     (sampleValues[i]!!.toFloat() * range),
@@ -97,14 +97,14 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
                 )
             )
             values2.add(
-                BubbleEntry(
+                BubbleEntryFloat(
                     i.toFloat(),
                     (sampleValues[i + 2]!! * range).toFloat(),
                     (sampleValues[i + 1]!!.toFloat() * range),
                     ResourcesCompat.getDrawable(resources, R.drawable.star, null)
                 )
             )
-            values3.add(BubbleEntry(i.toFloat(), (sampleValues[i]!! * range).toFloat(), (sampleValues[i + 2]!!.toFloat() * range)))
+            values3.add(BubbleEntryFloat(i.toFloat(), (sampleValues[i]!! * range).toFloat(), (sampleValues[i + 2]!!.toFloat() * range)))
         }
 
         // create a dataset and give it a type
@@ -211,8 +211,8 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
         saveToGallery(binding.chart1, "BubbleChartActivity")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i("Value: ${entry.y}, xIndex: ${entry.x}, DataSet index: ${highlight.dataSetIndex}")
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Timber.i("Value: ${entryFloat.y}, xIndex: ${entryFloat.x}, DataSet index: ${highlight.dataSetIndex}")
     }
 
     override fun onNothingSelected() = Unit

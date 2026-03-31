@@ -16,7 +16,7 @@ import info.appdev.chartexample.databinding.ActivityScatterchartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.charts.ScatterChart
 import info.appdev.charting.components.Legend
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.ScatterData
 import info.appdev.charting.data.ScatterDataSet
 import info.appdev.charting.highlight.Highlight
@@ -77,24 +77,24 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         binding.tvXMax.text = binding.seekBarX.progress.toString()
         binding.tvYMax.text = binding.seekBarY.progress.toString()
 
-        val values1 = ArrayList<Entry>()
-        val values2 = ArrayList<Entry>()
-        val values3 = ArrayList<Entry>()
+        val values1 = ArrayList<EntryFloat>()
+        val values2 = ArrayList<EntryFloat>()
+        val values3 = ArrayList<EntryFloat>()
         val sampleValues = getValues(100 + 2)
 
         for (i in 0..<binding.seekBarX.progress) {
             val `val` = (sampleValues[i]!!.toFloat() * binding.seekBarY.progress) + 3
-            values1.add(Entry(i.toFloat(), `val`))
+            values1.add(EntryFloat(i.toFloat(), `val`))
         }
 
         for (i in 0..<binding.seekBarX.progress) {
             val `val` = (sampleValues[i + 1]!!.toFloat() * binding.seekBarY.progress) + 3
-            values2.add(Entry(i + 0.33f, `val`))
+            values2.add(EntryFloat(i + 0.33f, `val`))
         }
 
         for (i in 0..<binding.seekBarX.progress) {
             val `val` = (sampleValues[i + 2]!!.toFloat() * binding.seekBarY.progress) + 3
-            values3.add(Entry(i + 0.66f, `val`))
+            values3.add(EntryFloat(i + 0.66f, `val`))
         }
 
         // create a dataset and give it a type
@@ -191,8 +191,8 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
         saveToGallery(binding.chart1, "ScatterChartActivity")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i("Value: ${entry.y}, xIndex: ${entry.x}, DataSet index: ${highlight.dataSetIndex}")
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Timber.i("Value: ${entryFloat.y}, xIndex: ${entryFloat.x}, DataSet index: ${highlight.dataSetIndex}")
     }
 
     override fun onNothingSelected() {}

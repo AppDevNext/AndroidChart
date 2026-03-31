@@ -1,7 +1,7 @@
 package info.appdev.charting.formatter
 
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.utils.ViewPortHandler
 import java.text.DecimalFormat
 
@@ -29,9 +29,9 @@ open class StackedValueFormatter(private val drawWholeStack: Boolean, private va
         this.decimalFormat = DecimalFormat("###,###,###,##0$b")
     }
 
-    override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
-        if (!drawWholeStack && entry is BarEntry) {
-            val barEntry = entry
+    override fun getFormattedValue(value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
+        if (!drawWholeStack && entryFloat is BarEntryFloat) {
+            val barEntry = entryFloat
             val vals = barEntry.yVals
 
             if (vals != null) {

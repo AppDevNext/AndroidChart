@@ -5,7 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import info.appdev.charting.charts.Chart
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.utils.FSize
 import info.appdev.charting.utils.PointF
@@ -94,7 +94,7 @@ class MarkerImage(private var mContext: Context, drawableResourceId: Int) : IMar
         return mOffset2
     }
 
-    override fun refreshContent(entry: Entry, highlight: Highlight) = Unit
+    override fun refreshContent(entryFloat: EntryFloat, highlight: Highlight) = Unit
 
     override fun draw(canvas: Canvas, posX: Float, posY: Float) {
         if (drawable == null)

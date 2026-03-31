@@ -6,7 +6,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import info.appdev.chartexample.databinding.ActivityGradientBinding
 import info.appdev.chartexample.notimportant.DemoBase
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IFillFormatter
@@ -41,11 +41,11 @@ class GradientActivity : DemoBase() {
         // Linear function
         // y = k * x
         // -----------------------------
-        val entries = kotlin.collections.ArrayList<Entry>(200)
+        val entries = kotlin.collections.ArrayList<EntryFloat>(200)
         val k = 2.5f
 
         for (i in 0 until 200) {
-            entries.add(Entry(i.toFloat(), i * k))
+            entries.add(EntryFloat(i.toFloat(), i * k))
         }
 
         val dataSet = LineDataSet(entries, "Linear").apply {
@@ -62,7 +62,7 @@ class GradientActivity : DemoBase() {
 
             fillFormatter = object : IFillFormatter {
                 override fun getFillLinePosition(
-                    dataSet: ILineDataSet?,
+                    dataSet: ILineDataSet<*>?,
                     dataProvider: LineDataProvider
                 ): Float = binding.chart1.axisLeft.axisMinimum
             }

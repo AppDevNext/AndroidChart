@@ -8,7 +8,7 @@ import info.appdev.charting.interfaces.datasets.ILineDataSet
  */
 open class DefaultFillFormatter : IFillFormatter {
 
-    override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+    override fun getFillLinePosition(dataSet: ILineDataSet<*>?, dataProvider: LineDataProvider): Float {
         val fillMin: Float
         val chartMaxY = dataProvider.yChartMax
         val chartMinY = dataProvider.yChartMin

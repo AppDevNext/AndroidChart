@@ -2,7 +2,7 @@ package info.appdev.charting.test
 
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BarEntryFloat
 import org.junit.Assert
 import org.junit.Test
 
@@ -12,12 +12,12 @@ class BarDataTest {
         val groupSpace = 5f
         val barSpace = 1f
 
-        val values1: MutableList<BarEntry> = ArrayList()
-        val values2: MutableList<BarEntry> = ArrayList()
+        val values1: MutableList<BarEntryFloat> = ArrayList()
+        val values2: MutableList<BarEntryFloat> = ArrayList()
 
         for (i in 0..4) {
-            values1.add(BarEntry(i.toFloat(), 50f))
-            values2.add(BarEntry(i.toFloat(), 60f))
+            values1.add(BarEntryFloat(i.toFloat(), 50f))
+            values2.add(BarEntryFloat(i.toFloat(), 60f))
         }
 
         val barDataSet1 = BarDataSet(values1, "Set1")

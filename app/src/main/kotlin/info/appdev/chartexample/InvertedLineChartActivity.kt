@@ -15,7 +15,7 @@ import info.appdev.chartexample.custom.MyMarkerView
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.Legend.LegendForm
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
@@ -92,13 +92,13 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
     }
 
     private fun setData(count: Int, range: Float) {
-        val entries = ArrayList<Entry>()
+        val entries = ArrayList<EntryFloat>()
         val sampleValues = getValues(count + 2)
 
         for (i in 0..<count) {
             val xVal = sampleValues[i]!!.toFloat() * range
             val yVal = sampleValues[i + 1]!!.toFloat() * range
-            entries.add(Entry(xVal, yVal))
+            entries.add(EntryFloat(xVal, yVal))
         }
 
         // sort by x-value
@@ -206,8 +206,8 @@ class InvertedLineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartVa
         saveToGallery(binding.chart1, "InvertedLineChartActivity")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i("Value: ${entry.y}, xIndex: ${entry.x}, DataSet index: ${highlight.dataSetIndex}")
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Timber.i("Value: ${entryFloat.y}, xIndex: ${entryFloat.x}, DataSet index: ${highlight.dataSetIndex}")
     }
 
     override fun onNothingSelected() = Unit

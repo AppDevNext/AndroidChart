@@ -3,13 +3,13 @@ package info.appdev.charting.data
 import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 import info.appdev.charting.utils.convertDpToPixel
 
-open class BubbleDataSet(yVals: MutableList<BubbleEntry>, label: String) : BarLineScatterCandleBubbleDataSet<BubbleEntry>(yVals, label), IBubbleDataSet {
+open class BubbleDataSet(yVals: MutableList<BubbleEntryFloat>, label: String) : BarLineScatterCandleBubbleDataSet<BubbleEntryFloat>(yVals, label), IBubbleDataSet {
     protected var mMaxSize: Float = 0f
     protected var mNormalizeSize: Boolean = true
 
     private var mHighlightCircleWidth = 2.5f
 
-    override fun calcMinMax(entry: BubbleEntry) {
+    override fun calcMinMax(entry: BubbleEntryFloat) {
         super.calcMinMax(entry)
 
         val size = entry.size
@@ -19,8 +19,8 @@ open class BubbleDataSet(yVals: MutableList<BubbleEntry>, label: String) : BarLi
         }
     }
 
-    override fun copy(): DataSet<BubbleEntry> {
-        val entries: MutableList<BubbleEntry> = ArrayList()
+    override fun copy(): DataSet<BubbleEntryFloat> {
+        val entries: MutableList<BubbleEntryFloat> = ArrayList()
         for (i in entriesInternal.indices) {
             entries.add(entriesInternal[i].copy())
         }

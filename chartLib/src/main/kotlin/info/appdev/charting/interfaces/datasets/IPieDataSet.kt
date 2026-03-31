@@ -1,9 +1,9 @@
 package info.appdev.charting.interfaces.datasets
 
 import info.appdev.charting.data.PieDataSet.ValuePosition
-import info.appdev.charting.data.PieEntry
+import info.appdev.charting.data.PieEntryFloat
 
-interface IPieDataSet : IDataSet<PieEntry> {
+interface IPieDataSet : IDataSet<PieEntryFloat> {
     /**
      * Returns the space that is set to be between the PieChart-slices of this DataSet, in pixels.
      */

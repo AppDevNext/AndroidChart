@@ -9,7 +9,7 @@ import android.view.animation.AnimationUtils
 import info.appdev.charting.charts.BarLineChartBase
 import info.appdev.charting.charts.HorizontalBarChart
 import info.appdev.charting.data.BarLineScatterCandleBubbleData
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
 import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.utils.PointF
@@ -25,11 +25,11 @@ import kotlin.math.sqrt
  */
 @Suppress("MemberVisibilityCanBePrivate")
 class BarLineChartTouchListener(
-    chart: BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out Entry>>>,
+    chart: BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out EntryFloat>>>,
     touchMatrix: Matrix,
     dragTriggerDistance: Float
 ) :
-    ChartTouchListener<BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out Entry>>>>(chart) {
+    ChartTouchListener<BarLineChartBase<out BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<out EntryFloat>>>>(chart) {
     /**
      * the original touch-matrix from the chart
      */

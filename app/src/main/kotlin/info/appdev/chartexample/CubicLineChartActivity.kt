@@ -16,7 +16,7 @@ import info.appdev.chartexample.DataTools.Companion.getMuchValues
 import info.appdev.chartexample.databinding.ActivityLinechartBinding
 import info.appdev.chartexample.notimportant.DemoBase
 import info.appdev.charting.components.YAxis
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.formatter.IFillFormatter
@@ -83,18 +83,18 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
     }
 
     private fun setData(count: Int, range: Float) {
-        val values = ArrayList<Entry>()
+        val values = ArrayList<EntryFloat>()
         val sampleValues = getMuchValues(count)
 
         for (i in 0 until count) {
             val `val` = (sampleValues[i]!!.toFloat() * (range + 1)) + 20
-            values.add(Entry(i.toFloat(), `val`))
+            values.add(EntryFloat(i.toFloat(), `val`))
         }
 
-        val set1: LineDataSet
+        val set1: LineDataSet<EntryFloat>
 
         if (binding.chart1.lineData.dataSetCount > 0) {
-            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet
+            set1 = binding.chart1.lineData.getDataSetByIndex(0) as LineDataSet<EntryFloat>
             set1.entries = values
             binding.chart1.lineData.notifyDataChanged()
             binding.chart1.notifyDataSetChanged()
@@ -115,7 +115,7 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             set1.fillAlpha = 100
             set1.isHorizontalHighlightIndicator = false
             set1.fillFormatter = object : IFillFormatter {
-                override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+                override fun getFillLinePosition(dataSet: ILineDataSet<*>?, dataProvider: LineDataProvider): Float {
                     return binding.chart1.axisLeft.axisMinimum
                 }
             }

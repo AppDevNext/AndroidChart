@@ -6,7 +6,7 @@ import info.appdev.charting.interfaces.datasets.ILineDataSet
 
 @Suppress("unused")
 class MyFillFormatter(private val fillPos: Float) : IFillFormatter {
-    override fun getFillLinePosition(dataSet: ILineDataSet?, dataProvider: LineDataProvider): Float {
+    override fun getFillLinePosition(dataSet: ILineDataSet<*>?, dataProvider: LineDataProvider): Float {
         // your logic could be here
         return fillPos
     }

@@ -17,12 +17,12 @@ import info.appdev.charting.components.Legend
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
+import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.utils.loadBarEntriesFromAssets
 
 class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
 
-    private lateinit var dataSinus: MutableList<BarEntry>
+    private lateinit var dataSinus: MutableList<BarEntryFloat>
 
     private lateinit var binding: ActivityBarchartSinusBinding
 
@@ -87,7 +87,7 @@ class BarChartActivitySinus : DemoBase(), OnSeekBarChangeListener {
     }
 
     private fun setData(count: Int) {
-        val entries = ArrayList<BarEntry>()
+        val entries = ArrayList<BarEntryFloat>()
 
         for (i in 0..<count) {
             entries.add(dataSinus[i])

@@ -25,8 +25,8 @@ import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.components.YAxis.YAxisLabelPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.formatter.IAxisValueFormatter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
@@ -122,7 +122,7 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
     private fun setData(count: Int, range: Float) {
         val start = 1f
 
-        val values = ArrayList<BarEntry>()
+        val values = ArrayList<BarEntryFloat>()
         val sampleValues = getValues(100)
 
         var i = start.toInt()
@@ -130,9 +130,9 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
             val `val` = (sampleValues[i]!!.toFloat() * (range + 1))
 
             if (`val` * 100 < 25) {
-                values.add(BarEntry(i.toFloat(), `val`, ResourcesCompat.getDrawable(resources, R.drawable.star, null)))
+                values.add(BarEntryFloat(i.toFloat(), `val`, ResourcesCompat.getDrawable(resources, R.drawable.star, null)))
             } else {
-                values.add(BarEntry(i.toFloat(), `val`))
+                values.add(BarEntryFloat(i.toFloat(), `val`))
             }
             i++
         }
@@ -281,10 +281,10 @@ class BarChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelect
 
     private val onValueSelectedRectF = RectF()
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
         val bounds = onValueSelectedRectF
-        binding.chart1.getBarBounds(entry as BarEntry, bounds)
-        val position = binding.chart1.getPosition(entry, AxisDependency.LEFT)
+        binding.chart1.getBarBounds(entryFloat as BarEntryFloat, bounds)
+        val position = binding.chart1.getPosition(entryFloat, AxisDependency.LEFT)
 
         Timber.i("bounds $bounds")
         Timber.i("position = $position")

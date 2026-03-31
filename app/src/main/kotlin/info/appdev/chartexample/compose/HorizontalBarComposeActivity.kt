@@ -44,8 +44,8 @@ import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -268,14 +268,14 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
 
     private fun setupChart(chart: HorizontalBarChart) {
         chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-            override fun onValueSelected(entry: Entry, highlight: Highlight) {
+            override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
                 val bounds = RectF()
-                chart.getBarBounds(entry as BarEntry, bounds)
+                chart.getBarBounds(entryFloat as BarEntryFloat, bounds)
 
                 val data = chart.barData
                 if (data != null) {
                     val position = chart.getPosition(
-                        entry, data.getDataSetByIndex(highlight.dataSetIndex)?.axisDependency
+                        entryFloat, data.getDataSetByIndex(highlight.dataSetIndex)?.axisDependency
                     )
 
                     Timber.tag("bounds $bounds")
@@ -335,12 +335,12 @@ class HorizontalBarComposeActivity : DemoBaseCompose() {
 
         val barWidth = 9f
         val spaceForBar = 10f
-        val values = ArrayList<BarEntry>()
+        val values = ArrayList<BarEntryFloat>()
         val sampleValues = getValues(100)
 
         for (i in 0..<count) {
             val value = sampleValues[i]!!.toFloat() * range
-            val barEntry = BarEntry(
+            val barEntry = BarEntryFloat(
                 i * spaceForBar, value,
                 ResourcesCompat.getDrawable(resources, R.drawable.star, null)
             )

@@ -11,13 +11,13 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.charting.charts.ScatterChart.ScatterShape
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
-import info.appdev.charting.data.BarEntry
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.data.PieData
 import info.appdev.charting.data.PieDataSet
-import info.appdev.charting.data.PieEntry
+import info.appdev.charting.data.PieEntryFloat
 import info.appdev.charting.data.ScatterData
 import info.appdev.charting.data.ScatterDataSet
 import info.appdev.charting.interfaces.datasets.IBarDataSet
@@ -41,10 +41,10 @@ abstract class SimpleFragment : Fragment() {
         val sets = ArrayList<IBarDataSet>()
 
         for (i in 0..<dataSets) {
-            val entries = ArrayList<BarEntry>()
+            val entries = ArrayList<BarEntryFloat>()
 
             for (j in 0..<count) {
-                entries.add(BarEntry(j.toFloat(), (values[j]!!.toFloat() * range) + range / 4))
+                entries.add(BarEntryFloat(j.toFloat(), (values[j]!!.toFloat() * range) + range / 4))
             }
 
             val ds = BarDataSet(entries, getLabel(i))
@@ -66,10 +66,10 @@ abstract class SimpleFragment : Fragment() {
         val shapes = ScatterShape.allDefaultShapes
 
         for (i in 0..<dataSets) {
-            val entries = ArrayList<Entry>()
+            val entries = ArrayList<EntryFloat>()
 
             for (j in 0..<count) {
-                entries.add(Entry(j.toFloat(), (values[j]!!.toFloat() * range) + range / 4))
+                entries.add(EntryFloat(j.toFloat(), (values[j]!!.toFloat() * range) + range / 4))
             }
 
             val ds = ScatterDataSet(entries, getLabel(i))
@@ -92,10 +92,10 @@ abstract class SimpleFragment : Fragment() {
     protected fun generatePieData(): PieData {
         val count = 4
         val values = getValues(count)
-        val entries1 = ArrayList<PieEntry>()
+        val entries1 = ArrayList<PieEntryFloat>()
 
         for (i in 0..<count) {
-            entries1.add(PieEntry(((values[i]!!.toFloat() * 60) + 40), "Quarter " + (i + 1)))
+            entries1.add(PieEntryFloat(((values[i]!!.toFloat() * 60) + 40), "Quarter " + (i + 1)))
         }
 
         val ds1 = PieDataSet(entries1, "Quarterly Revenues 2015")
@@ -111,7 +111,7 @@ abstract class SimpleFragment : Fragment() {
     }
 
     protected fun generateLineData(): LineData {
-        val sets = ArrayList<ILineDataSet>()
+        val sets = ArrayList<ILineDataSet<EntryFloat>>()
         val ds1 = LineDataSet(requireContext().assets.loadEntriesFromAssets("sine.txt"), "Sine function")
         val ds2 = LineDataSet(requireContext().assets.loadEntriesFromAssets("cosine.txt"), "Cosine function")
 
@@ -135,7 +135,7 @@ abstract class SimpleFragment : Fragment() {
 
     protected val complexity: LineData
         get() {
-            val sets = ArrayList<ILineDataSet>()
+            val sets = ArrayList<ILineDataSet<EntryFloat>>()
 
             val ds1 = LineDataSet(requireContext().assets.loadEntriesFromAssets("n.txt"), "O(n)")
             val ds2 = LineDataSet(requireContext().assets.loadEntriesFromAssets("nlogn.txt"), "O(nlogn)")

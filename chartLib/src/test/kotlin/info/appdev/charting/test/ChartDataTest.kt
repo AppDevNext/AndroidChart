@@ -1,7 +1,7 @@
 package info.appdev.charting.test
 
 import info.appdev.charting.components.YAxis
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.data.ScatterData
@@ -12,17 +12,17 @@ import org.junit.Test
 class ChartDataTest {
     @Test
     fun testDynamicChartData() {
-        val entries1: MutableList<Entry> = ArrayList()
-        entries1.add(Entry(10f, 10f))
-        entries1.add(Entry(15f, -2f))
-        entries1.add(Entry(21f, 50f))
+        val entries1: MutableList<EntryFloat> = ArrayList()
+        entries1.add(EntryFloat(10f, 10f))
+        entries1.add(EntryFloat(15f, -2f))
+        entries1.add(EntryFloat(21f, 50f))
 
         val set1 = ScatterDataSet(entries1, "")
 
-        val entries2: MutableList<Entry> = ArrayList()
-        entries2.add(Entry(-1f, 10f))
-        entries2.add(Entry(10f, 2f))
-        entries2.add(Entry(20f, 5f))
+        val entries2: MutableList<EntryFloat> = ArrayList()
+        entries2.add(EntryFloat(-1f, 10f))
+        entries2.add(EntryFloat(10f, 2f))
+        entries2.add(EntryFloat(20f, 5f))
 
         val set2 = ScatterDataSet(entries2, "")
 
@@ -42,7 +42,7 @@ class ChartDataTest {
         Assert.assertEquals(3, data.maxEntryCountSet?.entryCount)
 
         // now add and remove values
-        data.addEntry(Entry(-10f, -10f), 0)
+        data.addEntry(EntryFloat(-10f, -10f), 0)
 
         Assert.assertEquals(set1, data.maxEntryCountSet)
         Assert.assertEquals(4, data.maxEntryCountSet?.entryCount)
@@ -56,8 +56,8 @@ class ChartDataTest {
         Assert.assertEquals(-10f, data.yMin, 0.01f)
         Assert.assertEquals(50f, data.yMax, 0.01f)
 
-        data.addEntry(Entry(-100f, 100f), 0)
-        data.addEntry(Entry(0f, -100f), 0)
+        data.addEntry(EntryFloat(-100f, 100f), 0)
+        data.addEntry(EntryFloat(0f, -100f), 0)
 
         Assert.assertEquals(-100f, data.getYMin(YAxis.AxisDependency.LEFT), 0.01f)
         Assert.assertEquals(100f, data.getYMax(YAxis.AxisDependency.LEFT), 0.01f)
@@ -66,9 +66,9 @@ class ChartDataTest {
         Assert.assertEquals(-100f, data.getYMin(YAxis.AxisDependency.RIGHT), 0.01f)
         Assert.assertEquals(100f, data.getYMax(YAxis.AxisDependency.RIGHT), 0.01f)
 
-        val entries3: MutableList<Entry> = ArrayList()
-        entries3.add(Entry(0f, 200f))
-        entries3.add(Entry(0f, -50f))
+        val entries3: MutableList<EntryFloat> = ArrayList()
+        entries3.add(EntryFloat(0f, 200f))
+        entries3.add(EntryFloat(0f, -50f))
 
         val set3 = ScatterDataSet(entries3, "")
         set3.axisDependency = YAxis.AxisDependency.RIGHT
@@ -96,9 +96,9 @@ class ChartDataTest {
 
         Assert.assertEquals(0, lineData.dataSetCount)
 
-        val lineEntries1: MutableList<Entry> = ArrayList()
-        lineEntries1.add(Entry(10f, 90f))
-        lineEntries1.add(Entry(1000f, 1000f))
+        val lineEntries1: MutableList<EntryFloat> = ArrayList()
+        lineEntries1.add(EntryFloat(10f, 90f))
+        lineEntries1.add(EntryFloat(1000f, 1000f))
 
         val lineSet1 = LineDataSet(lineEntries1, "")
 
@@ -120,11 +120,11 @@ class ChartDataTest {
         Assert.assertEquals(90f, lineData.getYMin(YAxis.AxisDependency.RIGHT), 0.01f)
         Assert.assertEquals(1000f, lineData.getYMax(YAxis.AxisDependency.RIGHT), 0.01f)
 
-        val lineEntries2: MutableList<Entry> = ArrayList()
-        lineEntries2.add(Entry(-1000f, 2000f))
-        lineEntries2.add(Entry(2000f, -3000f))
+        val lineEntries2: MutableList<EntryFloat> = ArrayList()
+        lineEntries2.add(EntryFloat(-1000f, 2000f))
+        lineEntries2.add(EntryFloat(2000f, -3000f))
 
-        val e = Entry(-1000f, 2500f)
+        val e = EntryFloat(-1000f, 2500f)
         lineEntries2.add(e)
 
         val lineSet2 = LineDataSet(lineEntries2, "")

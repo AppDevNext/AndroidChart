@@ -1,6 +1,6 @@
 package info.appdev.charting.formatter
 
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.utils.ViewPortHandler
 import java.text.DecimalFormat
 
@@ -42,7 +42,7 @@ open class DefaultValueFormatter(digits: Int) : IValueFormatter {
         decimalFormat = DecimalFormat("###,###,###,##0$b")
     }
 
-    override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String? {
+    override fun getFormattedValue(value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String? {
 
         // put more logic here ...
         // avoid memory allocations here (for performance reasons)

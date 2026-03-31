@@ -6,7 +6,7 @@ import android.graphics.Typeface
 import android.widget.TextView
 import info.appdev.chartexample.R
 import info.appdev.charting.components.MarkerView
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.utils.PointF
 import java.text.DecimalFormat
@@ -25,10 +25,10 @@ class RadarMarkerView(context: Context, layoutResource: Int) : MarkerView(contex
 
     // runs every time the MarkerView is redrawn, can be used to update the
     // content (user-interface)
-    override fun refreshContent(entry: Entry, highlight: Highlight) {
-        tvContent.text = String.format("%s %%", format.format(entry.y.toDouble()))
+    override fun refreshContent(entryFloat: EntryFloat, highlight: Highlight) {
+        tvContent.text = String.format("%s %%", format.format(entryFloat.y.toDouble()))
 
-        super.refreshContent(entry, highlight)
+        super.refreshContent(entryFloat, highlight)
     }
 
     override var offset: PointF = PointF()

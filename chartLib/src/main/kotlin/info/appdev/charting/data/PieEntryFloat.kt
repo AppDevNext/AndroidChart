@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import timber.log.Timber
 
 @SuppressLint("ParcelCreator")
-class PieEntry : Entry {
+class PieEntryFloat : EntryFloat {
     var label: String? = null
 
     constructor(value: Float) : super(0f, value)
@@ -50,7 +50,7 @@ class PieEntry : Entry {
             Timber.i("Pie entries do not have x values")
         }
 
-    override fun copy(): PieEntry {
-        return PieEntry(y, label, data)
+    override fun copy(): PieEntryFloat {
+        return PieEntryFloat(y, label, data)
     }
 }

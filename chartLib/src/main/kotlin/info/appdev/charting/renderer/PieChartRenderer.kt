@@ -554,7 +554,7 @@ open class PieChartRenderer(
                                     canvas = this,
                                     formatter = formatter,
                                     value = value,
-                                    entry = entry,
+                                    entryFloat = entry,
                                     dataSetIndex = 0,
                                     x = x,
                                     y = y,

@@ -9,7 +9,7 @@ import info.appdev.charting.utils.convertDpToPixel
 /**
  * DataSet for the CandleStickChart.
  */
-open class CandleDataSet(yVals: MutableList<CandleEntry>, label: String = "") : LineScatterCandleRadarDataSet<CandleEntry>(yVals, label), ICandleDataSet {
+open class CandleDataSet(yVals: MutableList<CandleEntryFloat>, label: String = "") : LineScatterCandleRadarDataSet<CandleEntryFloat>(yVals, label), ICandleDataSet {
     /**
      * the width of the shadow of the candle
      */
@@ -69,8 +69,8 @@ open class CandleDataSet(yVals: MutableList<CandleEntry>, label: String = "") : 
     @ColorInt
     protected var mShadowColor: Int = ColorTemplate.COLOR_SKIP
 
-    override fun copy(): DataSet<CandleEntry> {
-        val entries: MutableList<CandleEntry> = mutableListOf()
+    override fun copy(): DataSet<CandleEntryFloat> {
+        val entries: MutableList<CandleEntryFloat> = mutableListOf()
         for (i in entriesInternal.indices) {
             entries.add(entriesInternal[i].copy())
         }
@@ -95,7 +95,7 @@ open class CandleDataSet(yVals: MutableList<CandleEntry>, label: String = "") : 
         candleDataSet.mShadowColor = mShadowColor
     }
 
-    override fun calcMinMax(entry: CandleEntry) {
+    override fun calcMinMax(entry: CandleEntryFloat) {
         entry.let {
             if (entry.low < yMin) yMin = entry.low
 
@@ -104,7 +104,7 @@ open class CandleDataSet(yVals: MutableList<CandleEntry>, label: String = "") : 
         calcMinMaxX(entry)
     }
 
-    override fun calcMinMaxY(entry: CandleEntry) {
+    override fun calcMinMaxY(entry: CandleEntryFloat) {
         entry.let {
             if (entry.high < yMin) yMin = entry.high
 

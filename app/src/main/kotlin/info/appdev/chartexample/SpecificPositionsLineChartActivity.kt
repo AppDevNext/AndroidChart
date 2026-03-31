@@ -20,7 +20,7 @@ import info.appdev.charting.animation.Easing
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.components.LimitLine
 import info.appdev.charting.components.LimitLine.LimitLabelPosition
-import info.appdev.charting.data.Entry
+import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
@@ -226,11 +226,11 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
     }
 
     private fun setData(count: Int, range: Float) {
-        val values = ArrayList<Entry>()
+        val values = ArrayList<EntryFloat>()
         val sampleValues = getValues(100)
         for (i in 0 until count) {
             val `val` = (sampleValues[i]!!.toFloat() * range) + 3
-            values.add(Entry(i.toFloat(), `val`))
+            values.add(EntryFloat(i.toFloat(), `val`))
         }
         binding.chart1.data?.let {
             if (it.dataSetCount > 0) {
@@ -245,7 +245,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         }
     }
 
-    private fun createDataset(values: ArrayList<Entry>) {
+    private fun createDataset(values: ArrayList<EntryFloat>) {
         // create a dataset and give it a type
         val set11 = LineDataSet(values, "DataSet 1")
 
@@ -269,7 +269,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         } else {
             set11.fillColor = Color.BLACK
         }
-        val dataSets = ArrayList<ILineDataSet>()
+        val dataSets = ArrayList<ILineDataSet<EntryFloat>>()
         dataSets.add(set11) // add the datasets
 
         // create a data object with the datasets
@@ -316,8 +316,8 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         Timber.i("dX: $dX, dY: $dY")
     }
 
-    override fun onValueSelected(entry: Entry, highlight: Highlight) {
-        Timber.i(entry.toString())
+    override fun onValueSelected(entryFloat: EntryFloat, highlight: Highlight) {
+        Timber.i(entryFloat.toString())
         Timber.i("LOWHIGH low: ${binding.chart1.lowestVisibleX}, high: ${binding.chart1.highestVisibleX}")
         Timber.i("MIN MAX xmin: ${binding.chart1.xChartMin}, xmax: ${binding.chart1.xChartMax}, ymin: ${binding.chart1.yChartMin}, ymax: ${binding.chart1.yChartMax}")
     }
