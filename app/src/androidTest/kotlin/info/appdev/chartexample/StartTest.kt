@@ -42,6 +42,7 @@ import org.junit.Test
 import org.junit.rules.TestName
 import org.junit.runner.RunWith
 import timber.log.Timber
+import kotlin.jvm.java
 
 
 @RunWith(AndroidJUnit4::class)
@@ -296,6 +297,7 @@ class StartTest {
             contentItem.clazz == HorizontalBarFullComposeActivity::class.java ||
             contentItem.clazz == MultiLineComposeActivity::class.java ||
             contentItem.clazz == GradientActivity::class.java ||
+            contentItem.clazz == TimeBarActivity::class.java ||
 //            contentItem.clazz == TimeIntervalChartActivity::class.java ||
             contentItem.clazz == TimeLineActivity::class.java
         ) {
