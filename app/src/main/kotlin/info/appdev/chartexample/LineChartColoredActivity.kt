@@ -15,7 +15,7 @@ import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
 
-class LineChartActivityColored : DemoBase() {
+class LineChartColoredActivity : DemoBase() {
     private val charts = mutableListOf<LineChart>()
 
     private lateinit var binding: ActivityColoredLinesBinding

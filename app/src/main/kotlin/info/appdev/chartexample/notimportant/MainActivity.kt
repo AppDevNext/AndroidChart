@@ -57,7 +57,7 @@ import info.appdev.chartexample.HalfPieChartActivity
 import info.appdev.chartexample.HorizontalBarChartActivity
 import info.appdev.chartexample.InvertedLineChartActivity
 import info.appdev.chartexample.LineChartActivity
-import info.appdev.chartexample.LineChartActivityColored
+import info.appdev.chartexample.LineChartColoredActivity
 import info.appdev.chartexample.LineChartDualAxisActivity
 import info.appdev.chartexample.LineChartTimeActivity
 import info.appdev.chartexample.ListViewBarChartActivity
@@ -165,7 +165,7 @@ class MainActivity : ComponentActivity() {
             add(ContentItem("Dual Axis", "Line chart with dual y-axes.", LineChartDualAxisActivity::class.java))
             add(ContentItem("Inverted Axis", "Inverted y-axis.", InvertedLineChartActivity::class.java))
             add(ContentItem("Cubic", "Line chart with a cubic line shape.", CubicLineChartActivity::class.java))
-            add(ContentItem("Colorful", "Colorful line chart.", LineChartActivityColored::class.java))
+            add(ContentItem("Colorful", "Colorful line chart.", LineChartColoredActivity::class.java))
             add(ContentItem("Performance", "Render 30.000 data points smoothly.", PerformanceLineChart::class.java))
             add(ContentItem("Filled", "Colored area between two lines.", FilledLineActivity::class.java))
 
