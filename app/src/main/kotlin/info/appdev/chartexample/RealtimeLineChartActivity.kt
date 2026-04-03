@@ -92,7 +92,7 @@ class RealtimeLineChartActivity : DemoBase(), OnChartValueSelectedListener {
             data.addDataSet(set)
         }
 
-        val cycleValue = (set!!.entryCount % 100.0).toInt()
+        val cycleValue = (set.entryCount % 100.0).toInt()
         data.addEntry(EntryFloat(set.entryCount.toFloat(), (sampleValues[cycleValue]!!.toFloat() * 40) + 30f), 0)
         data.notifyDataChanged()
 
