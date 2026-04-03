@@ -46,7 +46,7 @@
         <activity android:name="info.appdev.chartexample.CandleStickChartActivity" />
         <activity android:name="info.appdev.chartexample.CubicLineChartActivity" />
         <activity android:name="info.appdev.chartexample.RadarChartActivity" />
-        <activity android:name="info.appdev.chartexample.LineChartActivityColored" />
+        <activity android:name="info.appdev.chartexample.LineChartColoredActivity" />
         <activity android:name="info.appdev.chartexample.DynamicalAddingActivity" />
         <activity android:name="info.appdev.chartexample.RealtimeLineChartActivity" />
         <activity android:name="info.appdev.chartexample.CombinedChartActivity" />
