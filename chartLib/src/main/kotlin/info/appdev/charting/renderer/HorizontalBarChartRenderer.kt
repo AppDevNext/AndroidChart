@@ -140,24 +140,30 @@ open class HorizontalBarChartRenderer(
             if (isCustomFill) {
                 dataSet.getFill(pos)?.fillRect(
                     canvas, paintRender,
+                    left = buffer.buffer[j],
+                    top = buffer.buffer[j + 1],
+                    right = buffer.buffer[j + 2],
+                    bottom = buffer.buffer[j + 3],
+                    gradientDirection = if (isInverted) Fill.Direction.LEFT else Fill.Direction.RIGHT,
+                    mRoundedBarRadius = 0f
+                )
+            } else {
+                canvas.drawRect(
                     buffer.buffer[j],
                     buffer.buffer[j + 1],
                     buffer.buffer[j + 2],
                     buffer.buffer[j + 3],
-                    if (isInverted) Fill.Direction.LEFT else Fill.Direction.RIGHT,
-                    0f
-                )
-            } else {
-                canvas.drawRect(
-                    buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                    buffer.buffer[j + 3], paintRender
+                    paintRender
                 )
             }
 
             if (drawBorder) {
                 canvas.drawRect(
-                    buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                    buffer.buffer[j + 3], barBorderPaint
+                    buffer.buffer[j],
+                    buffer.buffer[j + 1],
+                    buffer.buffer[j + 2],
+                    buffer.buffer[j + 3],
+                    barBorderPaint
                 )
             }
             j += 4
