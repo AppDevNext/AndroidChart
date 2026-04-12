@@ -5,7 +5,6 @@ import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.utils.ViewPortHandler
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Locale
 
