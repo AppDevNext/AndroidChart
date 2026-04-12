@@ -76,10 +76,10 @@ class TimeBarActivity : DemoBase(), OnSeekBarChangeListener {
         binding.chart1.axisRight.apply {
             typeface = tfLight
             isDrawAxisLine = true
-            axisMaxLabels = 5
+            axisMaxLabels = 4
             isDrawGridLines = false
             axisMinimum = 0f // this replaces setStartAtZero(true)
-            valueFormatter = UnixTimeRelative2NowAxisValueFormatter("HH:mm:ss")
+            valueFormatter = UnixTimeRelative2NowAxisValueFormatter("mm:ss")
         }
 
         binding.chart1.setFitBars(true)
