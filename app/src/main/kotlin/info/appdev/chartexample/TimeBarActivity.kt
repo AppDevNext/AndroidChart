@@ -79,7 +79,7 @@ class TimeBarActivity : DemoBase(), OnSeekBarChangeListener {
             axisMaxLabels = 4
             isDrawGridLines = false
             axisMinimum = 0f // this replaces setStartAtZero(true)
-            valueFormatter = UnixTimeRelative2NowAxisValueFormatter("mm:ss")
+            valueFormatter = UnixTimeRelative2NowAxisValueFormatter("mm:ss", 1776000000 * 1000L)
         }
 
         binding.chart1.setFitBars(true)
@@ -105,7 +105,7 @@ class TimeBarActivity : DemoBase(), OnSeekBarChangeListener {
         val values = ArrayList<BarEntryDouble>()
         val sampleValues = getValues(100).map { (it!! * 100).toInt() }
 
-        var previousTimeOffset: Double = 0.0 //TIME_OFFSET.toDouble()
+        var previousTimeOffset = 0.0 //TIME_OFFSET.toDouble()
         for (i in 0..<count) {
             Timber.d("add ${sampleValues[i]}s to $previousTimeOffset")
             val yValue = sampleValues[i] + previousTimeOffset
