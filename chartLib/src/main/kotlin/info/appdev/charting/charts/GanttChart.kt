@@ -43,10 +43,10 @@ class GanttChart : View {
             isAntiAlias = true
         }
         hatchPaint = Paint().apply {
-            color = 0x7DFFFFFF   // more transparent (0x7D ≈ 66 % opacity vs previous 0x55 ≈ 33 %)
-            strokeWidth = 20f     // thicker lines (was 2f)
+            color = 0xAAFFFFFF.toInt()  // ~67 % opaque white – clearly visible over any bar colour
             isAntiAlias = true
             style = Paint.Style.STROKE
+            // strokeWidth is set dynamically in drawTasks to stay proportional to bar height
         }
         gridPaint = Paint().apply {
             color = -0x333334
@@ -189,9 +189,16 @@ class GanttChart : View {
             canvas.drawRect(rect, taskPaint!!)
 
             if (task.hatched) {
+                // Scale both stroke width and spacing to the bar height so the
+                // pattern is always clearly visible regardless of how many tasks
+                // are shown.  Rule: spacing must be > strokeWidth or lines overlap.
+                //   strokeWidth  ≈ 20 % of bar height
+                //   hatchSpacing ≈ 40 % of bar height  (2× the stroke → clear gap)
+                hatchPaint!!.strokeWidth = taskHeight * 0.20f
+                val hatchSpacing = taskHeight * 0.40f
+
                 // Hatch lines (45° diagonal, bottom-left → top-right)
                 canvas.withClip(rect) {
-                    val hatchSpacing = 10f
                     var hx = startX - taskHeight
                     while (hx < endX + taskHeight) {
                         drawLine(hx, taskY + taskHeight, hx + taskHeight, taskY, hatchPaint!!)
