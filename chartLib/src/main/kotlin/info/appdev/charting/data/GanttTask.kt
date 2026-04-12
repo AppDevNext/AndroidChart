@@ -9,7 +9,7 @@ package info.appdev.charting.data
  * @param duration How long the task lasts
  * @param color Display color (Android color int)
  */
-class GanttTask(val name: String?, val startTime: Float, val duration: Float, val color: Int) {
+class GanttTask(val name: String?, val startTime: Float, val duration: Float, val color: Int, val hatched: Boolean = false) {
     val endTime: Float
         get() = startTime + duration
 }

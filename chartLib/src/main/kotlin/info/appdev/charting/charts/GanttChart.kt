@@ -8,10 +8,12 @@ import android.util.AttributeSet
 import android.view.View
 import info.appdev.charting.data.GanttChartData
 import java.util.Locale
+import androidx.core.graphics.withClip
 
 class GanttChart : View {
     private var data: GanttChartData? = null
     private var taskPaint: Paint? = null
+    private var hatchPaint: Paint? = null
     private var gridPaint: Paint? = null
     private var textPaint: Paint? = null
 
@@ -39,6 +41,12 @@ class GanttChart : View {
     private fun init() {
         taskPaint = Paint().apply {
             isAntiAlias = true
+        }
+        hatchPaint = Paint().apply {
+            color = 0x7DFFFFFF   // more transparent (0x7D ≈ 66 % opacity vs previous 0x55 ≈ 33 %)
+            strokeWidth = 20f     // thicker lines (was 2f)
+            isAntiAlias = true
+            style = Paint.Style.STROKE
         }
         gridPaint = Paint().apply {
             color = -0x333334
@@ -179,6 +187,18 @@ class GanttChart : View {
             val rect = RectF(startX, taskY, endX, taskY + taskHeight)
             taskPaint!!.color = task.color
             canvas.drawRect(rect, taskPaint!!)
+
+            if (task.hatched) {
+                // Hatch lines (45° diagonal, bottom-left → top-right)
+                canvas.withClip(rect) {
+                    val hatchSpacing = 10f
+                    var hx = startX - taskHeight
+                    while (hx < endX + taskHeight) {
+                        drawLine(hx, taskY + taskHeight, hx + taskHeight, taskY, hatchPaint!!)
+                        hx += hatchSpacing
+                    }
+                }
+            }
             canvas.drawRect(rect, borderPaint)
         }
     }
