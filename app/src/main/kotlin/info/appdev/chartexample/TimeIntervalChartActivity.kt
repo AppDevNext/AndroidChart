@@ -31,7 +31,8 @@ class TimeIntervalChartActivity : DemoBase(), OnChartValueSelectedListener {
         ganttData.addTask(GanttTask("Dev", 40f, 100f, Color.rgb(66, 165, 245))) // Blue: 40-140
         ganttData.addTask(GanttTask("Testing", 120f, 40f, Color.rgb(76, 175, 80), hatched = true)) // Green: 120-160
         ganttData.addTask(GanttTask("Launch", 150f, 20f, Color.rgb(255, 193, 7))) // Yellow: 150-170
-
+        ganttData.minTime = 10f
+        ganttData.maxTime = 200f
         // Set data and render
         binding.chart1.setData(ganttData)
     }

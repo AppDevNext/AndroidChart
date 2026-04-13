@@ -8,6 +8,9 @@ import kotlin.math.min
  * Manages a list of tasks and provides convenient access methods.
  */
 class GanttChartData {
+    private var mMaxTime = 0f
+    private var mMinTime = 0f
+
     /**
      * Get all tasks.
      * 
@@ -22,6 +25,27 @@ class GanttChartData {
      */
     fun addTask(task: GanttTask?) {
         tasks.add(task!!)
+        mMinTime = calcMinTime()
+        mMaxTime = calcMaxTime()
+    }
+
+    private fun calcMaxTime(): Float {
+        if (tasks.isEmpty())
+            return 100f
+        var max = 0f
+        for (task in tasks) {
+            max = max(max, task.endTime)
+        }
+        return max
+    }
+
+    private fun calcMinTime(): Float {
+        if (tasks.isEmpty()) return 0f
+        var min = Float.MAX_VALUE
+        for (task in tasks) {
+            min = min(min, task.startTime)
+        }
+        return min
     }
 
     /**
@@ -31,6 +55,8 @@ class GanttChartData {
      */
     fun addTasks(taskList: MutableList<GanttTask>) {
         tasks.addAll(taskList)
+        mMinTime = calcMinTime()
+        mMaxTime = calcMaxTime()
     }
 
     /**
@@ -56,14 +82,10 @@ class GanttChartData {
      *
      * @return Minimum start time
      */
-    val minTime: Float
-        get() {
-            if (tasks.isEmpty()) return 0f
-            var min = Float.MAX_VALUE
-            for (task in tasks) {
-                min = min(min, task.startTime)
-            }
-            return min
+    var minTime: Float
+        get() = mMinTime
+        set(value) {
+            mMinTime = value
         }
 
     /**
@@ -71,14 +93,10 @@ class GanttChartData {
      *
      * @return Maximum end time
      */
-    val maxTime: Float
-        get() {
-            if (tasks.isEmpty()) return 100f
-            var max = 0f
-            for (task in tasks) {
-                max = max(max, task.endTime)
-            }
-            return max
+    var maxTime: Float
+        get() = mMaxTime
+        set(value) {
+            mMaxTime = value
         }
 
     /**
@@ -86,5 +104,7 @@ class GanttChartData {
      */
     fun clearTasks() {
         tasks.clear()
+        mMinTime = calcMinTime()
+        mMaxTime = calcMaxTime()
     }
 }
