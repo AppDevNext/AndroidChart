@@ -46,6 +46,13 @@ android {
     testOptions {
         animationsDisabled = true
     }
+    packaging {
+        jniLibs {
+            // androidx.graphics:graphics-path ships a .so that llvm-strip cannot process;
+            // keep it as-is to silence "Unable to strip" warnings.
+            keepDebugSymbols += "**/libandroidx.graphics.path.so"
+        }
+    }
 }
 
 dependencies {
