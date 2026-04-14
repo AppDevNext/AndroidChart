@@ -1,5 +1,6 @@
 package info.appdev.charting.renderer
 
+import android.annotation.SuppressLint
 import info.appdev.charting.animation.ChartAnimator
 import info.appdev.charting.data.DataSet
 import info.appdev.charting.data.BaseEntry
@@ -22,7 +23,7 @@ abstract class BarLineScatterCandleBubbleRenderer(
     /**
      * Returns true if the DataSet values should be drawn, false if not.
      */
-    protected fun shouldDrawValues(set: IDataSet<*>): Boolean {
+    protected fun shouldDrawValues(@SuppressLint("RawTypeDataSet") set: IDataSet<*>): Boolean {
         return set.isVisible && (set.isDrawValues || set.isDrawIcons)
     }
 

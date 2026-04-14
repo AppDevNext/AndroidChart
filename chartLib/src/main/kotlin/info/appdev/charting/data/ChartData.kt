@@ -1,5 +1,6 @@
 package info.appdev.charting.data
 
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.formatter.IValueFormatter
@@ -440,6 +441,7 @@ abstract class ChartData<T : IDataSet<out EntryFloat>> : Serializable {
      * specified index. Returns true if an Entry was removed, false if no Entry
      * was found that meets the specified requirements.
      */
+    @SuppressLint("RawTypeDataSet")
     open fun removeEntry(xValue: Float, dataSetIndex: Int): Boolean {
         if (dataSetIndex >= dataSets.size) {
             return false

@@ -1,5 +1,6 @@
 package info.appdev.charting.utils
 
+import android.annotation.SuppressLint
 import android.graphics.Matrix
 import android.graphics.Path
 import android.graphics.RectF
@@ -142,7 +143,7 @@ open class Transformer(protected var viewPortHandler: ViewPortHandler) {
      * y values transformed with all matrices for the LINECHART.
      */
     fun generateTransformedValuesLine(
-        data: ILineDataSet<*>,
+        @SuppressLint("RawTypeDataSet") data: ILineDataSet<*>,
         phaseX: Float, phaseY: Float,
         min: Int, max: Int
     ): FloatArray {

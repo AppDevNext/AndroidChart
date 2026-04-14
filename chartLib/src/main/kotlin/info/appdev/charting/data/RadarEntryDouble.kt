@@ -8,6 +8,7 @@ import android.annotation.SuppressLint
  * Use [valueDouble] for full-precision access.
  * Radar entries have no meaningful x-axis value.
  */
+@Suppress("DEPRECATION")
 @SuppressLint("ParcelCreator")
 open class RadarEntryDouble : RadarEntryFloat {
 
@@ -19,7 +20,6 @@ open class RadarEntryDouble : RadarEntryFloat {
 
     @get:Deprecated("")
     @set:Deprecated("")
-    @Suppress("DEPRECATION")
     override var x: Float
         get() = super.x
         set(x) { super.x = x }
@@ -35,5 +35,4 @@ open class RadarEntryDouble : RadarEntryFloat {
 
     override fun toString(): String = "RadarEntryDouble valueDouble=$valueDouble"
 }
-
 

@@ -1,5 +1,6 @@
 package info.appdev.charting.renderer
 
+import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -70,7 +71,7 @@ abstract class DataRenderer(
      * Applies the required styling (provided by the DataSet) to the value-paint
      * object.
      */
-    protected fun applyValueTextStyle(set: IDataSet<*>) {
+    protected fun applyValueTextStyle(@SuppressLint("RawTypeDataSet") set: IDataSet<*>) {
         paintValues.typeface = set.valueTypeface
         paintValues.textSize = set.valueTextSize
     }
