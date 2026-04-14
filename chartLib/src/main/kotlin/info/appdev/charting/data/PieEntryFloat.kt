@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import timber.log.Timber
 
 @SuppressLint("ParcelCreator")
-class PieEntryFloat : EntryFloat {
+open class PieEntryFloat : EntryFloat {
     var label: String? = null
 
     constructor(value: Float) : super(0f, value)

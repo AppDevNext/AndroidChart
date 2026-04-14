@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable
  * chart implementation: Copyright 2015 Pierre-Marc Airoldi Licensed under Apache License 2.0
  */
 @SuppressLint("ParcelCreator")
-class BubbleEntryFloat : EntryFloat {
+open class BubbleEntryFloat : EntryFloat {
     /**
      * Returns the size of this entry (the size of the bubble).
      */
