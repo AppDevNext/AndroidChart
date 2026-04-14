@@ -50,7 +50,8 @@ android {
 }
 
 dependencies {
-    lintChecks(project(":lint"))
+    lintChecks(project(":lint"))                                      // applies locally
+    lintPublish(project(path = ":lint", configuration = "lintJar"))  // embeds in published AAR
 
     implementation("androidx.annotation:annotation:1.10.0")
     implementation("androidx.core:core:1.18.0")

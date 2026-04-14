@@ -16,8 +16,8 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
-// Lint API version tracks AGP: AGP 9.1.0 → Lint 32.1.0
-val lintVersion = "32.1.0"
+// Lint API version tracks AGP: AGP 9.1.1 → Lint 32.1.1
+val lintVersion = "32.1.1"
 
 dependencies {
     compileOnly("com.android.tools.lint:lint-api:$lintVersion")
@@ -35,3 +35,12 @@ tasks.jar {
     }
 }
 
+// Expose a single-artifact configuration so library modules can use lintPublish.
+// lintPublish requires exactly one JAR — the default project() dependency
+// resolves to multiple artifacts and causes "Found more than one jar" errors.
+configurations {
+    create("lintJar")
+}
+artifacts {
+    add("lintJar", tasks.named("jar"))
+}
