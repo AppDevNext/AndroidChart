@@ -50,6 +50,8 @@ android {
 }
 
 dependencies {
+    lintChecks(project(":lint"))
+
     implementation("androidx.annotation:annotation:1.10.0")
     implementation("androidx.core:core:1.18.0")
     implementation("androidx.activity:activity-ktx:1.13.0")
