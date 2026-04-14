@@ -8,7 +8,8 @@ import com.android.tools.lint.detector.api.Issue
 class LintRegistry : IssueRegistry() {
 
     override val issues: List<Issue> = listOf(
-        EntryUsageDetector.ISSUE
+        EntryUsageDetector.ISSUE,
+        RawTypeDataSetDetector.ISSUE
     )
 
     /** Must match the Lint API version used at compile time. */
