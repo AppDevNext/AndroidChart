@@ -16,7 +16,10 @@ import kotlin.math.abs
  * Class representing one entry in the chart. Might contain multiple values.
  * Might only contain a single value depending on the used constructor.
  */
-@Deprecated("The replacement is EntryFloat, or use EntryDouble for higher precision. Entry is retained for backward compatibility but will be removed in a future version.")
+@Deprecated(
+    message = "The replacement is EntryFloat, or use EntryDouble for higher precision. Entry is retained for backward compatibility but will be removed in a future version.",
+    replaceWith = ReplaceWith("EntryFloat", "info.appdev.charting.data.EntryFloat")
+)
 class Entry : EntryFloat {
 
     constructor()

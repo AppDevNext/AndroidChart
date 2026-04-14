@@ -2,7 +2,10 @@ package info.appdev.charting.data
 
 import android.graphics.drawable.Drawable
 
-@Deprecated("The replacement is CandleEntryFloat, or use CandleEntryDouble for higher precision. CandleEntry is retained for backward compatibility but will be removed in a future version.")
+@Deprecated(
+    message = "The replacement is CandleEntryFloat, or use CandleEntryDouble for higher precision. CandleEntry is retained for backward compatibility but will be removed in a future version.",
+    replaceWith = ReplaceWith("CandleEntryFloat", "info.appdev.charting.data.CandleEntryFloat")
+)
 class CandleEntry : CandleEntryFloat {
 
     /**

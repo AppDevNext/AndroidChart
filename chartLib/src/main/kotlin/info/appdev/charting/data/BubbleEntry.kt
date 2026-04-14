@@ -3,7 +3,10 @@ package info.appdev.charting.data
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 
-@Deprecated("The replacement is BubbleEntryFloat, or use BubbleEntryDouble for higher precision. BubbleEntry is retained for backward compatibility but will be removed in a future version.")
+@Deprecated(
+    message = "The replacement is BubbleEntryFloat, or use BubbleEntryDouble for higher precision. BubbleEntry is retained for backward compatibility but will be removed in a future version.",
+    replaceWith = ReplaceWith("BubbleEntryFloat", "info.appdev.charting.data.BubbleEntryFloat")
+)
 class BubbleEntry : BubbleEntryFloat {
 
     /**

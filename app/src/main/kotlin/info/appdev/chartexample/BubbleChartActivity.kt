@@ -19,6 +19,7 @@ import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.data.BubbleData
 import info.appdev.charting.data.BubbleDataSet
+import info.appdev.charting.data.BubbleEntry
 import info.appdev.charting.data.BubbleEntryFloat
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight

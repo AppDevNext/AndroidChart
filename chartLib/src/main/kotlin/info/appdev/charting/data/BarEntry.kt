@@ -3,7 +3,10 @@ package info.appdev.charting.data
 import android.graphics.drawable.Drawable
 
 
-@Deprecated("The replacement is BarEntryFloat, or use BarEntryDouble for higher precision. BarEntry is retained for backward compatibility but will be removed in a future version.")
+@Deprecated(
+    message = "The replacement is BarEntryFloat, or use BarEntryDouble for higher precision. BarEntry is retained for backward compatibility but will be removed in a future version.",
+    replaceWith = ReplaceWith("BarEntryFloat", "info.appdev.charting.data.BarEntryFloat")
+)
 open class BarEntry : BarEntryFloat {
 
     /**
