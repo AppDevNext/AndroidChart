@@ -56,7 +56,7 @@ class EntryUsageDetector : Detector(), SourceCodeScanner {
             """,
             category         = Category.CORRECTNESS,
             priority         = 6,
-            severity         = Severity.WARNING,
+            severity         = Severity.ERROR,
             implementation   = Implementation(
                 EntryUsageDetector::class.java,
                 Scope.JAVA_FILE_SCOPE
