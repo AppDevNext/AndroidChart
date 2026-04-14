@@ -1,5 +1,6 @@
 package info.appdev.charting.renderer
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Bitmap.createBitmap
 import android.graphics.Canvas
@@ -8,7 +9,6 @@ import android.graphics.Paint
 import android.graphics.Path
 import info.appdev.charting.animation.ChartAnimator
 import info.appdev.charting.data.BaseEntry
-import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
@@ -25,6 +25,7 @@ import java.lang.ref.WeakReference
 import kotlin.math.max
 import kotlin.math.min
 
+@SuppressLint("RawTypeDataSet")
 open class LineChartRenderer(
     var dataProvider: LineDataProvider,
     animator: ChartAnimator,

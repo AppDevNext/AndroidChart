@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Lint suppressions for the sample/demo app module.
+    These issues are intentionally suppressed here because this module
+    demonstrates legacy API usage. The rules still apply to library consumers.
+-->
+<lint>
+    <!-- Demo app intentionally uses LineDataSet without explicit type args for brevity. -->
+    <issue id="RawTypeDataSet" severity="ignore" />
+</lint>
+

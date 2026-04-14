@@ -1,5 +1,6 @@
 package info.appdev.charting.highlight
 
+import android.annotation.SuppressLint
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.data.ChartData
 import info.appdev.charting.data.DataSet
@@ -115,7 +116,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
      */
     @Suppress("SameParameterValue")
     protected open fun buildHighlights(
-        set: IDataSet<*>,
+        @SuppressLint("RawTypeDataSet") set: IDataSet<*>,
         dataSetIndex: Int,
         xVal: Float,
         rounding: DataSet.Rounding?

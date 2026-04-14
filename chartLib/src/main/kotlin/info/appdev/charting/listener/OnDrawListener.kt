@@ -1,5 +1,6 @@
 package info.appdev.charting.listener
 
+import android.annotation.SuppressLint
 import info.appdev.charting.data.DataSet
 import info.appdev.charting.data.EntryFloat
 
@@ -25,5 +26,5 @@ interface OnDrawListener {
      *
      * @param dataSet the last drawn DataSet
      */
-    fun onDrawFinished(dataSet: DataSet<*>)
+    fun onDrawFinished(@SuppressLint("RawTypeDataSet") dataSet: DataSet<*>)
 }

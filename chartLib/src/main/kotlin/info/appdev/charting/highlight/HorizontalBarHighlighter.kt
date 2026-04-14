@@ -1,5 +1,6 @@
 package info.appdev.charting.highlight
 
+import android.annotation.SuppressLint
 import info.appdev.charting.data.DataSet
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.interfaces.dataprovider.BarDataProvider
@@ -32,7 +33,7 @@ class HorizontalBarHighlighter(dataProvider: BarDataProvider) : BarHighlighter(d
         return null
     }
 
-    override fun buildHighlights(set: IDataSet<*>, dataSetIndex: Int, xVal: Float, rounding: DataSet.Rounding?): MutableList<Highlight> {
+    override fun buildHighlights(@SuppressLint("RawTypeDataSet") set: IDataSet<*>, dataSetIndex: Int, xVal: Float, rounding: DataSet.Rounding?): MutableList<Highlight> {
         val highlights = ArrayList<Highlight>()
 
         var entries = set.getEntriesForXValue(xVal)?.map { it as EntryFloat }?.toMutableList()

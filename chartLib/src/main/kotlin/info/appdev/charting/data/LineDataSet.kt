@@ -1,5 +1,6 @@
 package info.appdev.charting.data
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.DashPathEffect
@@ -84,7 +85,7 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
         return copied as DataSet<T>
     }
 
-    protected fun copy(lineDataSet: LineDataSet<*>) {
+    protected fun copy(@SuppressLint("RawTypeDataSet") lineDataSet: LineDataSet<*>) {
         super.copy((lineDataSet as BaseDataSet<*>?)!!)
         lineDataSet.circleColors = this.circleColors
         lineDataSet.mCircleHoleColor = mCircleHoleColor

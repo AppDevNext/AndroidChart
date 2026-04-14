@@ -1,5 +1,6 @@
 package info.appdev.charting.data
 
+import android.annotation.SuppressLint
 import timber.log.Timber
 import java.io.Serializable
 import kotlin.math.abs
@@ -130,7 +131,7 @@ abstract class DataSet<T : BaseEntry<Float>>(
      */
     abstract fun copy(): DataSet<T>?
 
-    protected fun copy(dataSet: DataSet<*>) {
+    protected fun copy(@SuppressLint("RawTypeDataSet") dataSet: DataSet<*>) {
         super.copy(dataSet)
     }
 

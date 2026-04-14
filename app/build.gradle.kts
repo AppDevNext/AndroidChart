@@ -46,6 +46,9 @@ android {
     testOptions {
         animationsDisabled = true
     }
+    lint {
+        lintConfig = file("lint.xml")
+    }
     packaging {
         jniLibs {
             // androidx.graphics:graphics-path ships a .so that llvm-strip cannot process;
