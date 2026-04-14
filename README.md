@@ -8,10 +8,17 @@ It comes with library view based `chartLib` and composeable `chartLibCompose`
 ### Packagename changed ! 🛑 
 
 During the full Kotlin conversion, 
-* 🛑 package name changed to `info.appdev.charting`
-* 🛑 `MPPointF` in renamed to `PointF`
-* 🛑 `MPPointD` in renamed to `PointD`
-* 🛑 methods like `setSomethingEnabled(true)` are now properties like `isSomething = true`
+* 4.0 🛑 package name changed to `info.appdev.charting`
+* 4.0 🛑 `MPPointF` in renamed to `PointF`
+* 4.0 🛑 `MPPointD` in renamed to `PointD`
+* 4.1 🛑 methods like `setSomethingEnabled(true)` are now properties like `isSomething = true`
+* 5.0 🛑 Remove legacy package name
+* 5.1 🛑 `Entry` is now an `EntryFloat`, btw, there is now a `EntryDouble` as well
+* 5.1 🛑 `BarEntry` is now an `BarEntryFloat`, btw, there is now a `BarEntryDouble` as well
+* 5.1 🛑 `BubbleEntry` is now an `BubbleEntryFloat`
+* 5.1 🛑 `PieEntry` is now an `PieEntryFloat`
+* 5.1 🛑 `RadarEntry` is now an `RadarEntryFloat`
+* 5.1 🛑 `CandleEntry` is now an `CandleEntryFloat`
 
 ### Project status: maintenance mode
 Issues are ignored, but pull requests are not. If you need to get something done, submit a PR!
