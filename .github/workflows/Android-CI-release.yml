@@ -58,6 +58,8 @@ jobs:
           name: ${{steps.tagger.outputs.tag}}
           generate_release_notes: true
           body: ${{steps.github_release.outputs.changelog}}
-          files: chartLib/build/outputs/aar/chartLib-release.aar
+          files: |
+            chartLib/build/outputs/aar/chartLib-release.aar
+            chartLibCompose/build/outputs/aar/chartLibCompose-release.aar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
