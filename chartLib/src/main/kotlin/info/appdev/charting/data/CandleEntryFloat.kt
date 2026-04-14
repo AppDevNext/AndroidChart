@@ -8,7 +8,7 @@ import kotlin.math.abs
  * Subclass of Entry that holds all values for one entry in a CandleStickChart.
  */
 @SuppressLint("ParcelCreator")
-class CandleEntryFloat : EntryFloat {
+open class CandleEntryFloat : EntryFloat {
     /**
      * Returns the upper shadows highest value.
      */
