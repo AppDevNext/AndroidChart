@@ -5,12 +5,12 @@ import info.appdev.charting.formatter.IAxisValueFormatter
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class UnixTimeRelative2NowAxisValueFormatter(val format: String = "yyyy-MM-dd'T'HH:mm:ss'Z'") : IAxisValueFormatter {
+class UnixTimeRelative2NowAxisValueFormatter(val format: String = "yyyy-MM-dd'T'HH:mm:ss'Z'", val relativeTime : Long = System.currentTimeMillis()) : IAxisValueFormatter {
 
     val simpleDateFormat = SimpleDateFormat(format, Locale.getDefault())
 
     override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-        val relative2Now = System.currentTimeMillis() + (value.toLong() * 1000)
+        val relative2Now = relativeTime + (value.toLong() * 1000)
         return simpleDateFormat.format(relative2Now)
     }
 
