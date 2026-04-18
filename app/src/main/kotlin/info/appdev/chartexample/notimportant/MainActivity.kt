@@ -217,10 +217,13 @@ class MainActivity : ComponentActivity() {
             add(ComposeItem("HorizontalFullCompose", "Render bar chart horizontally full compose.", HorizontalBarFullComposeActivity::class.java).toDemoBase())
             add(ComposeItem("MultiLineCompose", "Show multiple data sets in compose.", MultiLineComposeActivity::class.java).toDemoBase())
 
+            add(ContentItem("Timeinterval"))
+            add(ContentItem("Timeinterval", "Grantt chart", TimeIntervalChartActivity::class.java))
+            add(ContentItem("Timeinterval compose", "Grantt chart", TimeIntervalChartActivity::class.java))
+
             add(ContentItem("Demonstrate and fix issues"))
             add(ContentItem("Gradient", "Show a gradient edge case", GradientActivity::class.java))
             add(ContentItem("Timeline", "Show a time line with Unix timestamp", TimeLineActivity::class.java))
-            add(ContentItem("Timeinterval", "Grantt chart", TimeIntervalChartActivity::class.java))
         }
     }
 }
