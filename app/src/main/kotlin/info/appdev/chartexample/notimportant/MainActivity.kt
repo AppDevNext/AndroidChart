@@ -80,6 +80,7 @@ import info.appdev.chartexample.TimeLineActivity
 import info.appdev.chartexample.compose.HorizontalBarComposeActivity
 import info.appdev.chartexample.compose.HorizontalBarFullComposeActivity
 import info.appdev.chartexample.compose.MultiLineComposeActivity
+import info.appdev.chartexample.compose.TimeIntervalComposeActivity
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.initUtils
@@ -217,10 +218,13 @@ class MainActivity : ComponentActivity() {
             add(ComposeItem("HorizontalFullCompose", "Render bar chart horizontally full compose.", HorizontalBarFullComposeActivity::class.java).toDemoBase())
             add(ComposeItem("MultiLineCompose", "Show multiple data sets in compose.", MultiLineComposeActivity::class.java).toDemoBase())
 
+            add(ContentItem("Timeinterval"))
+            add(ContentItem("Timeinterval", "Grantt chart", TimeIntervalChartActivity::class.java))
+            add(ComposeItem("Timeinterval compose", "Grantt chart compose", TimeIntervalComposeActivity::class.java).toDemoBase())
+
             add(ContentItem("Demonstrate and fix issues"))
             add(ContentItem("Gradient", "Show a gradient edge case", GradientActivity::class.java))
             add(ContentItem("Timeline", "Show a time line with Unix timestamp", TimeLineActivity::class.java))
-            add(ContentItem("Timeinterval", "Grantt chart", TimeIntervalChartActivity::class.java))
         }
     }
 }

@@ -61,6 +61,7 @@
         <activity android:name="info.appdev.chartexample.SpecificPositionsLineChartActivity" />
         <activity android:name="info.appdev.chartexample.TimeLineActivity" />
         <activity android:name="info.appdev.chartexample.TimeIntervalChartActivity" />
+        <activity android:name="info.appdev.chartexample.compose.TimeIntervalComposeActivity" />
     </application>
 
 </manifest>

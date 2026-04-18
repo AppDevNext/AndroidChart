@@ -28,6 +28,7 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import info.appdev.chartexample.compose.HorizontalBarComposeActivity
 import info.appdev.chartexample.compose.HorizontalBarFullComposeActivity
 import info.appdev.chartexample.compose.MultiLineComposeActivity
+import info.appdev.chartexample.compose.TimeIntervalComposeActivity
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
 import info.appdev.chartexample.notimportant.ContentItem
 import info.appdev.chartexample.notimportant.DemoBase
@@ -42,6 +43,7 @@ import org.junit.Test
 import org.junit.rules.TestName
 import org.junit.runner.RunWith
 import timber.log.Timber
+import kotlin.jvm.java
 
 
 @RunWith(AndroidJUnit4::class)
@@ -294,6 +296,7 @@ class StartTest {
             contentItem.clazz == LineChartTimeActivity::class.java ||
             contentItem.clazz == HorizontalBarComposeActivity::class.java ||
             contentItem.clazz == HorizontalBarFullComposeActivity::class.java ||
+            contentItem.clazz == TimeIntervalComposeActivity::class.java ||
             contentItem.clazz == MultiLineComposeActivity::class.java ||
             contentItem.clazz == GradientActivity::class.java ||
 //            contentItem.clazz == TimeIntervalChartActivity::class.java ||
