@@ -2,4 +2,5 @@ jdk:
  - openjdk17
 install:
  - ./gradlew :chartLib:build :chartLib:publishToMavenLocal -x :chartLib:test
+ - ./gradlew :chartLibCompose:build :chartLibCompose:publishToMavenLocal -x :chartLibCompose:test
  - find . -name "*.aar"
