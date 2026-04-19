@@ -13,7 +13,7 @@ android {
     namespace = "info.appdev.charting.compose"
     defaultConfig {
         minSdk = 23
-        compileSdk = 36
+        compileSdk = 35
 
         // VERSION_NAME no longer available as of 4.1
         // https://issuetracker.google.com/issues/158695880
@@ -53,8 +53,8 @@ android {
 
 dependencies {
     implementation("androidx.annotation:annotation:1.10.0")
-    implementation("androidx.core:core:1.18.0")
-    implementation("androidx.activity:activity-ktx:1.13.0")
+    implementation("androidx.core:core:1.16.0")
+    implementation("androidx.activity:activity-ktx:1.10.1")
     implementation("com.github.AppDevNext.Logcat:LogcatCoreLib:3.4")
     api(project(":chartLib"))
 
