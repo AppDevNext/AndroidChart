@@ -25,13 +25,15 @@ Issues are ignored, but pull requests are not. If you need to get something done
 
 ### Gradle Setup with jitpack.io
 
-```gradle
+```gradle.kts
 repositories {
-    maven { url 'https://jitpack.io' }
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
-    implementation "com.github.AppDevNext:AndroidChart:$latestVersion"
+    implementation("com.github.AppDevNext.AndroidChart:chartLib:VERSION")
+    // or for compose
+    implementation("com.github.AppDevNext.AndroidChart:chartLibCompose:VERSION")
 }
 ```
 

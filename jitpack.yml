@@ -1,6 +1,5 @@
 jdk:
  - openjdk17
 install:
- - ./gradlew :chartLib:publishToMavenLocal -Pgroup=com.github.AppDevNext.AndroidChart -x :chartLib:test
- - ./gradlew :chartLibCompose:publishToMavenLocal -Pgroup=com.github.AppDevNext.AndroidChart -x :chartLibCompose:test
+ - ./gradlew :chartLib:publishToMavenLocal :chartLibCompose:publishToMavenLocal -Pgroup=com.github.AppDevNext.AndroidChart -PRELEASE_SIGNING_ENABLED=false -x test
  - find . -name "*.aar"
