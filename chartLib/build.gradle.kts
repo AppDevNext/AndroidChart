@@ -67,11 +67,16 @@ tasks.register<Jar>("androidSourcesJar") {
     from(android.sourceSets["main"].java.srcDirs)
 }
 
-group = "info.mxtracks"
+group = project.findProperty("group")?.toString() ?: "info.AppDevNext"
 var versionVersion = getVersionText()
 println("Build version $versionVersion")
 
 mavenPublishing {
+    coordinates(
+        groupId = project.findProperty("group")?.toString() ?: "info.AppDevNext",
+        artifactId = "chartLib",
+        version = "$versionVersion"
+    )
     pom {
         name = "Android Chart"
         description =

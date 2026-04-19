@@ -77,13 +77,18 @@ tasks.register<Jar>("androidSourcesJar") {
     from(android.sourceSets["main"].java.srcDirs)
 }
 
-group = "info.mxtracks"
+group = project.findProperty("group")?.toString() ?: "info.AppDevNext"
 var versionVersion = getVersionText()
 println("Build version $versionVersion")
 
 mavenPublishing {
+    coordinates(
+        groupId = project.findProperty("group")?.toString() ?: "info.AppDevNext",
+        artifactId = "chartLibCompose",
+        version = "$versionVersion"
+    )
     pom {
-        name = "Android Chart"
+        name = "Android Chart compose"
         description =
             "A powerful Android chart view/graph view library, supporting line- bar- pie- radar- bubble- and candlestick charts as well as scaling, dragging and animations"
         inceptionYear = "2022"
