@@ -67,7 +67,7 @@ tasks.register<Jar>("androidSourcesJar") {
     from(android.sourceSets["main"].java.srcDirs)
 }
 
-group = "info.mxtracks"
+group = project.findProperty("group")?.toString() ?: "info.AppDevNext"
 var versionVersion = getVersionText()
 println("Build version $versionVersion")
 
