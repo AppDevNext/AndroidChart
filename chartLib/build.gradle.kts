@@ -12,7 +12,7 @@ android {
     namespace = "info.appdev.charting"
     defaultConfig {
         minSdk = 23
-        compileSdk = 36
+        compileSdk = 35
 
         // VERSION_NAME no longer available as of 4.1
         // https://issuetracker.google.com/issues/158695880
@@ -54,8 +54,8 @@ dependencies {
     lintPublish(project(path = ":lint", configuration = "lintJar"))  // embeds in published AAR
 
     implementation("androidx.annotation:annotation:1.10.0")
-    implementation("androidx.core:core:1.18.0")
-    implementation("androidx.activity:activity-ktx:1.13.0")
+    implementation("androidx.core:core:1.16.0")
+    implementation("androidx.activity:activity-ktx:1.10.1")
     implementation("com.github.AppDevNext.Logcat:LogcatCoreLib:3.4")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.23.0")
