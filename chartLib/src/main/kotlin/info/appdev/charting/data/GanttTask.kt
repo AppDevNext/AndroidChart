@@ -12,4 +12,7 @@ package info.appdev.charting.data
 class GanttTask(val name: String?, val startTime: Float, val duration: Float, val color: Int, val hatched: Boolean = false) {
     val endTime: Float
         get() = startTime + duration
+
+    override fun toString(): String =
+        "GanttTask(name=$name, startTime=$startTime, duration=$duration, endTime=$endTime, hatched=$hatched, color=$color)"
 }
