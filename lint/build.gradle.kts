@@ -17,7 +17,7 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 // Lint API version tracks AGP: AGP 9.1.1 → Lint 32.1.1
-val lintVersion = "32.1.1"
+val lintVersion = "32.2.0"
 
 dependencies {
     compileOnly("com.android.tools.lint:lint-api:$lintVersion")
