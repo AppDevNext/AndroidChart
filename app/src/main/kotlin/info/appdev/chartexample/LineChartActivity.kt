@@ -136,6 +136,7 @@ class LineChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSelec
 
         // get the legend (only possible after setting data)
         binding.chart1.legend.form = LegendForm.LINE
+        binding.chart1.legend.isEnabled = false
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
