@@ -31,6 +31,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.time.Duration.Companion.milliseconds
 
 class TimeLineActivity : DemoBase() {
     private var menuItemsMove: MenuItem? = null
@@ -236,7 +237,7 @@ class TimeLineActivity : DemoBase() {
                     }
                     Timber.d("X min=${binding.chart1.xAxis.axisMinimum}, max=${binding.chart1.xAxis.axisMaximum}")
                 }
-                delay(100)
+                delay(100.milliseconds)
             }
         }
     }
@@ -254,7 +255,7 @@ class TimeLineActivity : DemoBase() {
                         binding.chart1.invalidate()
                     }
                 }
-                delay(100)
+                delay(100.milliseconds)
             }
         }
     }
