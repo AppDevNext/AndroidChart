@@ -1,9 +1,10 @@
-import info.git.versionHelper.getVersionText
+//import info.git.versionHelper.getVersionText
 import org.gradle.kotlin.dsl.implementation
 import java.net.URI
 
 plugins {
     id("com.android.library")
+    id("org.jetbrains.kotlin.android")
     id("maven-publish")
     id("org.jetbrains.kotlin.plugin.compose") version "2.4.0"
     id("com.vanniktech.maven.publish") version "0.36.0"
@@ -17,7 +18,7 @@ android {
 
         // VERSION_NAME no longer available as of 4.1
         // https://issuetracker.google.com/issues/158695880
-        buildConfigField("String", "VERSION_NAME", "\"${getVersionText()}\"")
+        buildConfigField("String", "VERSION_NAME", "\"1.0.0\"")
 
         consumerProguardFiles.add(File("proguard-lib.pro"))
     }
@@ -34,11 +35,6 @@ android {
         buildConfig = true
         compose = true
     }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
-        }
-    }
     testOptions {
         unitTests.isReturnDefaultValues = true // this prevents "not mocked" error
     }
@@ -48,6 +44,12 @@ android {
             // keep it as-is to silence "Unable to strip" warnings.
             keepDebugSymbols += "**/libandroidx.graphics.path.so"
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
 }
 
@@ -78,7 +80,7 @@ tasks.register<Jar>("androidSourcesJar") {
 }
 
 group = project.findProperty("group")?.toString() ?: "info.AppDevNext"
-var versionVersion = getVersionText()
+var versionVersion = "1.0.0"
 println("Build version $versionVersion")
 
 mavenPublishing {

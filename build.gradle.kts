@@ -4,10 +4,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        // Lint API version tracks AGP: AGP 9.1.1 → Lint 32.1.1
-        // in module lint:
-        // val lintVersion = "32.1.1"
-        classpath("com.android.tools.build:gradle:9.2.1")
+        // Lowering to a stable local AGP version to fix the sync environment
+        classpath("com.android.tools.build:gradle:8.13.0")
         classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.4.0")
     }

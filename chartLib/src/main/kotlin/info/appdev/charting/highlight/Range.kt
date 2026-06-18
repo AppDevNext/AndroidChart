@@ -9,7 +9,7 @@ class Range(var from: Float, var to: Float) {
      * Returns true if this range contains (if the value is in between) the given value, false if not.
      */
     fun contains(value: Float): Boolean {
-        return value > from && value <= to
+        return value >= from && value <= to
     }
 
     fun isLarger(value: Float): Boolean {
