@@ -1215,8 +1215,14 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         return viewPortHandler.hasNoDragOffset()
     }
 
-    val rendererXAxis: XAxisRenderer
+    /**
+     * Custom axis renderer for the x-axis and overwrites the existing one.
+     */
+    var rendererXAxis: XAxisRenderer
         get() = xAxisRenderer
+        set(rendererXAxis) {
+            xAxisRenderer = rendererXAxis
+        }
 
     /**
      * Custom axis renderer for the left axis and overwrites the existing one.
