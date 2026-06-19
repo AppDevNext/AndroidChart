@@ -57,13 +57,15 @@ open class BarChartRenderer(
         val barData = dataProvider.barData
         barBuffers = mutableListOf()
 
-        barData?.dataSets?.forEach {
-            barBuffers.add(
-                BarBuffer(
-                    it.entryCount * 4 * (if (it.isStacked) it.stackSize else 1),
-                    barData.dataSetCount, it.isStacked
+        barData?.dataSets?.let { dataSets ->
+            for (dataSet in dataSets) {
+                barBuffers.add(
+                    BarBuffer(
+                        dataSet.entryCount * 4 * (if (dataSet.isStacked) dataSet.stackSize else 1),
+                        barData.dataSetCount, dataSet.isStacked
+                    )
                 )
-            )
+            }
         }
     }
 
