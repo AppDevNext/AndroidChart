@@ -28,9 +28,11 @@ open class CandleStickChartRenderer(
     override fun drawData(canvas: Canvas) {
         val candleData = dataProvider.candleData
 
-        candleData?.dataSets?.forEach { set ->
-            if (set.isVisible)
-                drawDataSet(canvas, set)
+        candleData?.dataSets?.let { dataSets ->
+            for (set in dataSets) {
+                if (set.isVisible)
+                    drawDataSet(canvas, set)
+            }
         }
     }
 
