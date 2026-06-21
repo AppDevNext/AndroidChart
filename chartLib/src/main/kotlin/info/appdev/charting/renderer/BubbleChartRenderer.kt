@@ -30,9 +30,11 @@ open class BubbleChartRenderer(
     override fun drawData(canvas: Canvas) {
         val bubbleData = dataProvider.bubbleData
 
-        bubbleData?.dataSets?.forEach { set ->
-            if (set.isVisible)
-                drawDataSet(canvas, set)
+        bubbleData?.dataSets?.let { dataSets ->
+            for (set in dataSets) {
+                if (set.isVisible)
+                    drawDataSet(canvas, set)
+            }
         }
     }
 
