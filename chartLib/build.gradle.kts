@@ -5,7 +5,7 @@ import java.net.URI
 plugins {
     id("com.android.library")
     id("maven-publish")
-    id("com.vanniktech.maven.publish") version "0.36.0"
+    id("com.vanniktech.maven.publish") version "0.37.0"
 }
 
 android {
