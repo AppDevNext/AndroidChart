@@ -141,8 +141,10 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.scatterData?.dataSets?.forEach { set ->
-                    set.isDrawValues = !set.isDrawValues
+                binding.chart1.scatterData?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        set.isDrawValues = !set.isDrawValues
+                    }
                 }
                 binding.chart1.invalidate()
             }

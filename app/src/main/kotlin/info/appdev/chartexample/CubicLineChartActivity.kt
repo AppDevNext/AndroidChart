@@ -145,8 +145,10 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.lineData.dataSets.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                binding.chart1.lineData.dataSets.let { dataSets ->
+                    for (it in dataSets) {
+                        it.isDrawValues = !it.isDrawValues
+                    }
                 }
                 binding.chart1.invalidate()
             }
@@ -159,50 +161,60 @@ class CubicLineChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.lineData.dataSets.forEach {
-                    val set = it as LineDataSet
-                    set.isDrawFilled = !set.isDrawFilled
+                binding.chart1.lineData.dataSets.let { dataSets ->
+                    for (it in dataSets) {
+                        val set = it as LineDataSet
+                        set.isDrawFilled = !set.isDrawFilled
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                binding.chart1.lineData.dataSets.forEach {
-                    val set = it as LineDataSet
-                    set.isDrawCircles = !set.isDrawCircles
+                binding.chart1.lineData.dataSets.let { dataSets ->
+                    for (it in dataSets) {
+                        val set = it as LineDataSet
+                        set.isDrawCircles = !set.isDrawCircles
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                binding.chart1.lineData.dataSets.forEach {
-                    val set = it as LineDataSet
-                    set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
-                        LineDataSet.Mode.LINEAR
-                    else
-                        LineDataSet.Mode.CUBIC_BEZIER
+                binding.chart1.lineData.dataSets.let { dataSets ->
+                    for (it in dataSets) {
+                        val set = it as LineDataSet
+                        set.lineMode = if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
+                            LineDataSet.Mode.LINEAR
+                        else
+                            LineDataSet.Mode.CUBIC_BEZIER
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleStepped -> {
-                binding.chart1.lineData.dataSets.forEach {
-                    val set = it as LineDataSet
-                    set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED)
-                        LineDataSet.Mode.LINEAR
-                    else
-                        LineDataSet.Mode.STEPPED
+                binding.chart1.lineData.dataSets.let { dataSets ->
+                    for (it in dataSets) {
+                        val set = it as LineDataSet
+                        set.lineMode = if (set.lineMode == LineDataSet.Mode.STEPPED)
+                            LineDataSet.Mode.LINEAR
+                        else
+                            LineDataSet.Mode.STEPPED
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHorizontalCubic -> {
-                binding.chart1.lineData.dataSets.forEach {
-                    val set = it as LineDataSet
-                    set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER)
-                        LineDataSet.Mode.LINEAR
-                    else
-                        LineDataSet.Mode.HORIZONTAL_BEZIER
+                binding.chart1.lineData.dataSets.let { dataSets ->
+                    for (it in dataSets) {
+                        val set = it as LineDataSet
+                        set.lineMode = if (set.lineMode == LineDataSet.Mode.HORIZONTAL_BEZIER)
+                            LineDataSet.Mode.LINEAR
+                        else
+                            LineDataSet.Mode.HORIZONTAL_BEZIER
+                    }
                 }
                 binding.chart1.invalidate()
             }

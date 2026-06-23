@@ -135,15 +135,19 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.candleData?.dataSets?.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                binding.chart1.candleData?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        set.isDrawValues = !set.isDrawValues
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                binding.chart1.candleData?.dataSets?.forEach { set ->
-                    set.isDrawIcons = !set.isDrawIcons
+                binding.chart1.candleData?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        set.isDrawIcons = !set.isDrawIcons
+                    }
                 }
                 binding.chart1.invalidate()
             }
@@ -166,8 +170,10 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleMakeShadowSameColorAsCandle -> {
-                binding.chart1.candleData?.dataSets?.forEach { set ->
-                    (set as CandleDataSet).shadowColorSameAsCandle = !set.shadowColorSameAsCandle
+                binding.chart1.candleData?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        (set as CandleDataSet).shadowColorSameAsCandle = !set.shadowColorSameAsCandle
+                    }
                 }
 
                 binding.chart1.invalidate()
