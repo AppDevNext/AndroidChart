@@ -159,8 +159,10 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.lineData.dataSets.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                binding.chart1.lineData.dataSets.let { dataSets ->
+                    for (it in dataSets) {
+                        it.isDrawValues = !it.isDrawValues
+                    }
                 }
                 binding.chart1.invalidate()
             }
@@ -173,35 +175,43 @@ class LineChartTimeActivity : DemoBase(), OnSeekBarChangeListener {
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawFilled = !set.isDrawFilled
+                binding.chart1.data?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        set.isDrawFilled = !set.isDrawFilled
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCircles -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawCircles = !set.isDrawCircles
+                binding.chart1.data?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        set.isDrawCircles = !set.isDrawCircles
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleCubic -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
-                    if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
-                        set.lineMode = LineDataSet.Mode.LINEAR
-                    else
-                        set.lineMode = LineDataSet.Mode.CUBIC_BEZIER
+                binding.chart1.data?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        if (set.lineMode == LineDataSet.Mode.CUBIC_BEZIER)
+                            set.lineMode = LineDataSet.Mode.LINEAR
+                        else
+                            set.lineMode = LineDataSet.Mode.CUBIC_BEZIER
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleStepped -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
-                    if (set.lineMode == LineDataSet.Mode.STEPPED)
-                        set.lineMode = LineDataSet.Mode.LINEAR
-                    else
-                        set.lineMode = LineDataSet.Mode.STEPPED
+                binding.chart1.data?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        if (set.lineMode == LineDataSet.Mode.STEPPED)
+                            set.lineMode = LineDataSet.Mode.LINEAR
+                        else
+                            set.lineMode = LineDataSet.Mode.STEPPED
+                    }
                 }
                 binding.chart1.invalidate()
             }

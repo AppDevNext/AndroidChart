@@ -151,15 +151,19 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.barData?.dataSets?.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                binding.chart1.barData?.dataSets?.let { dataSets ->
+                    for (it in dataSets) {
+                        it.isDrawValues = !it.isDrawValues
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                binding.chart1.barData?.dataSets?.forEach { set ->
-                    set.isDrawIcons = !set.isDrawIcons
+                binding.chart1.barData?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        set.isDrawIcons = !set.isDrawIcons
+                    }
                 }
                 binding.chart1.invalidate()
             }
@@ -182,8 +186,11 @@ class StackedBarActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSele
             }
 
             R.id.actionToggleBarBorders -> {
-                binding.chart1.barData?.dataSets?.map { it as BarDataSet }?.forEach { set ->
-                    set.barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
+                binding.chart1.barData?.dataSets?.let { dataSets ->
+                    for (iSet in dataSets) {
+                        val set = iSet as BarDataSet
+                        set.barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
+                    }
                 }
                 binding.chart1.invalidate()
             }

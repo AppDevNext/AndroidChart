@@ -155,15 +155,19 @@ class BubbleChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSel
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.bubbleData?.dataSets?.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                binding.chart1.bubbleData?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        set.isDrawValues = !set.isDrawValues
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleIcons -> {
-                binding.chart1.bubbleData?.dataSets?.forEach { set ->
-                    set.isDrawIcons = !set.isDrawIcons
+                binding.chart1.bubbleData?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        set.isDrawIcons = !set.isDrawIcons
+                    }
                 }
                 binding.chart1.invalidate()
             }

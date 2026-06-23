@@ -239,17 +239,21 @@ class CombinedChartActivity : DemoBase() {
             }
 
             R.id.actionToggleLineValues -> {
-                binding.chart1.lineData?.dataSets?.forEach {
-                    if (it is LineDataSet)
-                        it.isDrawValues = !it.isDrawValues
+                binding.chart1.lineData?.dataSets?.let { dataSets ->
+                    for (it in dataSets) {
+                        if (it is LineDataSet)
+                            it.isDrawValues = !it.isDrawValues
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleBarValues -> {
-                binding.chart1.barData?.dataSets?.forEach {
-                    if (it is BarDataSet)
-                        it.isDrawValues = !it.isDrawValues
+                binding.chart1.barData?.dataSets?.let { dataSets ->
+                    for (it in dataSets) {
+                        if (it is BarDataSet)
+                            it.isDrawValues = !it.isDrawValues
+                    }
                 }
                 binding.chart1.invalidate()
             }

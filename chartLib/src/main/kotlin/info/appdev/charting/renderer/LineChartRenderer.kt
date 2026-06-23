@@ -80,9 +80,11 @@ open class LineChartRenderer(
         drawBitmapLocal.eraseColor(Color.TRANSPARENT)
 
         dataProvider.lineData?.let { lineData ->
-            lineData.dataSets.forEach { set ->
-                if (set.isVisible)
-                    drawDataSet(canvas, set)
+            lineData.dataSets.let { dataSets ->
+                for (set in dataSets) {
+                    if (set.isVisible)
+                        drawDataSet(canvas, set)
+                }
             }
         }
         canvas.drawBitmap(drawBitmapLocal, 0f, 0f, null)

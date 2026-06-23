@@ -157,8 +157,10 @@ class RadarChartActivity : DemoBase() {
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.data?.dataSets?.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                binding.chart1.data?.dataSets?.let { dataSets ->
+                    for (it in dataSets) {
+                        it.isDrawValues = !it.isDrawValues
+                    }
                 }
                 binding.chart1.invalidate()
             }
@@ -176,15 +178,19 @@ class RadarChartActivity : DemoBase() {
             }
 
             R.id.actionToggleFilled -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawFilled = !set.isDrawFilled
+                binding.chart1.data?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        set.isDrawFilled = !set.isDrawFilled
+                    }
                 }
                 binding.chart1.invalidate()
             }
 
             R.id.actionToggleHighlightCircle -> {
-                binding.chart1.data?.dataSets?.forEach { set ->
-                    set.isDrawHighlightCircle = !set.isDrawHighlightCircle
+                binding.chart1.data?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        set.isDrawHighlightCircle = !set.isDrawHighlightCircle
+                    }
                 }
                 binding.chart1.invalidate()
             }

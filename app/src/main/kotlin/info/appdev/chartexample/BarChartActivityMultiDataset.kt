@@ -186,8 +186,10 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             }
 
             R.id.actionToggleValues -> {
-                binding.chart1.barData?.dataSets?.forEach {
-                    it.isDrawValues = !it.isDrawValues
+                binding.chart1.barData?.dataSets?.let { dataSets ->
+                    for (set in dataSets) {
+                        set.isDrawValues = !set.isDrawValues
+                    }
                 }
                 binding.chart1.invalidate()
             }
@@ -203,8 +205,11 @@ class BarChartActivityMultiDataset : DemoBase(), OnSeekBarChangeListener, OnChar
             }
 
             R.id.actionToggleBarBorders -> {
-                binding.chart1.barData?.dataSets?.map { it as BarDataSet }?.forEach { set ->
-                    set.barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
+                binding.chart1.barData?.dataSets?.let { dataSets ->
+                    for (iSet in dataSets) {
+                        val set = iSet as BarDataSet
+                        set.barBorderWidth = if (set.barBorderWidth == 1f) 0f else 1f
+                    }
                 }
                 binding.chart1.invalidate()
             }
