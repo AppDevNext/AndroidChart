@@ -446,7 +446,7 @@ class Legend() : ComponentBase() {
                     if (label != null) {
                         calculatedLabelSizes.add(labelPaint.calcTextSize(label))
                         requiredWidth += if (drawingForm) formToTextSpace + formSize else 0f
-                        requiredWidth += calculatedLabelSizes[i].width
+                        requiredWidth += calculatedLabelSizes.last().width
                     } else {
                         calculatedLabelSizes.add(FSize.getInstance(0f, 0f))
                         requiredWidth += if (drawingForm) formSize else 0f
