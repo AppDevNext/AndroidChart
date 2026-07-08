@@ -27,7 +27,7 @@ class Legend() : ComponentBase() {
         NONE,
 
         /**
-         * Do not draw the a form, but leave space for it
+         * Do not draw the form, but leave space for it
          */
         EMPTY,
 
@@ -71,14 +71,14 @@ class Legend() : ComponentBase() {
     /**
      * The legend entries array
      */
-    var entries: Array<LegendEntry> = arrayOf<LegendEntry>()
+    var entries: Array<LegendEntry> = arrayOf()
         private set
 
     /**
      * Entries that will be appended to the end of the auto calculated entries after calculating the legend.
      * (if the legend has already been calculated, you will need to call notifyDataSetChanged() to let the changes take effect)
      */
-    var extraEntries: Array<LegendEntry> = arrayOf<LegendEntry>()
+    var extraEntries: Array<LegendEntry> = arrayOf()
         private set
 
     /**
@@ -218,8 +218,8 @@ class Legend() : ComponentBase() {
         var max = 0f
 
         for (entry in this.entries) {
-            val label = entry.label
-            if (label == null) continue
+            if (entry == null) continue
+            val label = entry.label ?: continue
 
             val length = p.calcTextHeight(label).toFloat()
 
