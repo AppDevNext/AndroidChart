@@ -326,9 +326,9 @@ class Legend() : ComponentBase() {
      */
     var isWordWrapEnabled: Boolean = false
 
-    val calculatedLabelSizes: MutableList<FSize> = ArrayList(16)
-    val calculatedLabelBreakPoints: MutableList<Boolean> = ArrayList(16)
-    val calculatedLineSizes: MutableList<FSize> = ArrayList(16)
+    val calculatedLabelSizes: MutableList<FSize> = mutableListOf()
+    val calculatedLabelBreakPoints: MutableList<Boolean> = mutableListOf()
+    val calculatedLineSizes: MutableList<FSize> = mutableListOf()
 
     init {
         this.mTextSize = 10f.convertDpToPixel()
@@ -382,7 +382,6 @@ class Legend() : ComponentBase() {
                     // grouped forms have null labels
                     if (label != null) {
                         // make a step to the left
-
                         if (drawingForm && !wasStacked) width += formToTextSpace
                         else if (wasStacked) {
                             maxWidth = max(maxWidth, width)
@@ -436,8 +435,7 @@ class Legend() : ComponentBase() {
                     calculatedLabelBreakPoints.add(false)
 
                     if (stackedStartIndex == -1) {
-                        // we are not stacking, so required width is for this label
-                        // only
+                        // we are not stacking, so required width is for this label only
                         requiredWidth = 0f
                     } else {
                         // add the spacing appropriate for stacked labels/forms
@@ -478,12 +476,10 @@ class Legend() : ComponentBase() {
                             maxLineWidth = max(maxLineWidth, currentLineWidth)
 
                             // Start a new line
-                            calculatedLabelBreakPoints.set(
-                                if (stackedStartIndex > -1)
-                                    stackedStartIndex
-                                else
-                                    i, true
-                            )
+                            calculatedLabelBreakPoints[if (stackedStartIndex > -1)
+                                stackedStartIndex
+                            else
+                                i] = true
                             currentLineWidth = requiredWidth
                         }
 
