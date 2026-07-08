@@ -79,6 +79,7 @@ object SaveUtils {
         }
 
         val mimeType: String?
+        @Suppress("DEPRECATION")
         when (format) {
             CompressFormat.PNG -> {
                 mimeType = "image/png"

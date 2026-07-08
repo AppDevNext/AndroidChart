@@ -95,7 +95,7 @@ open class PieChartRenderer(
 
         if (drawBitmap == null || (drawBitmap.width != width) || (drawBitmap.height != height)) {
             if (width > 0 && height > 0) {
-                drawBitmap = createBitmap(width, height, Bitmap.Config.ARGB_4444)
+                drawBitmap = createBitmap(width, height, Bitmap.Config.ARGB_8888)
                 mDrawBitmap = WeakReference(drawBitmap)
                 bitmapCanvas = Canvas(drawBitmap)
             } else return
