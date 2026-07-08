@@ -341,7 +341,7 @@ class Legend() : ComponentBase() {
      * and height of a single entry, as well as the total width and height of
      * the Legend.
      */
-    fun calculateDimensions(labelpaint: Paint, viewPortHandler: ViewPortHandler) {
+    fun calculateDimensions(labelPaint: Paint, viewPortHandler: ViewPortHandler) {
         val defaultFormSize = formSize.convertDpToPixel()
         val stackSpace = stackSpace.convertDpToPixel()
         val formToTextSpace = formToTextSpace.convertDpToPixel()
@@ -351,15 +351,15 @@ class Legend() : ComponentBase() {
         val entries = this.entries
         val entryCount = entries.size
 
-        mTextWidthMax = getMaximumEntryWidth(labelpaint)
-        mTextHeightMax = getMaximumEntryHeight(labelpaint)
+        mTextWidthMax = getMaximumEntryWidth(labelPaint)
+        mTextHeightMax = getMaximumEntryHeight(labelPaint)
 
         when (this.orientation) {
             LegendOrientation.VERTICAL -> {
                 var maxWidth = 0f
                 var maxHeight = 0f
                 var width = 0f
-                val labelLineHeight = labelpaint.getLineHeight()
+                val labelLineHeight = labelPaint.getLineHeight()
                 var wasStacked = false
 
                 var i = 0
@@ -391,7 +391,7 @@ class Legend() : ComponentBase() {
                             wasStacked = false
                         }
 
-                        width += labelpaint.calcTextWidth(label).toFloat()
+                        width += labelPaint.calcTextWidth(label).toFloat()
 
                         maxHeight += labelLineHeight + yEntrySpace
                     } else {
@@ -409,8 +409,8 @@ class Legend() : ComponentBase() {
             }
 
             LegendOrientation.HORIZONTAL -> {
-                val labelLineHeight = labelpaint.getLineHeight()
-                val labelLineSpacing = labelpaint.getLineSpacing() + yEntrySpace
+                val labelLineHeight = labelPaint.getLineHeight()
+                val labelLineSpacing = labelPaint.getLineSpacing() + yEntrySpace
                 val contentWidth = viewPortHandler.contentWidth() * this.maxSizePercent
 
                 // Start calculating layout
@@ -425,13 +425,13 @@ class Legend() : ComponentBase() {
 
                 var i = 0
                 while (i < entryCount) {
-                    val e = entries[i]
-                    val drawingForm = e.form != LegendForm.NONE
-                    val formSize = if (e.formSize.isNaN())
+                    val legendEntry = entries[i]
+                    val drawingForm = legendEntry.form != LegendForm.NONE
+                    val formSize = if (legendEntry.formSize.isNaN())
                         defaultFormSize
                     else
-                        e.formSize.convertDpToPixel()
-                    val label = e.label
+                        legendEntry.formSize.convertDpToPixel()
+                    val label = legendEntry.label
 
                     calculatedLabelBreakPoints.add(false)
 
@@ -446,9 +446,9 @@ class Legend() : ComponentBase() {
 
                     // grouped forms have null labels
                     if (label != null) {
-                        calculatedLabelSizes.add(labelpaint.calcTextSize(label))
+                        calculatedLabelSizes.add(labelPaint.calcTextSize(label))
                         requiredWidth += if (drawingForm) formToTextSpace + formSize else 0f
-                        requiredWidth += calculatedLabelSizes.get(i).width
+                        requiredWidth += calculatedLabelSizes[i].width
                     } else {
                         calculatedLabelSizes.add(FSize.getInstance(0f, 0f))
                         requiredWidth += if (drawingForm) formSize else 0f

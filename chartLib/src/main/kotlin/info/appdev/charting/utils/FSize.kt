@@ -3,8 +3,8 @@ package info.appdev.charting.utils
 import info.appdev.charting.utils.ObjectPool.Poolable
 
 /**
- * Class for describing width and height dimensions in some arbitrary
- * unit. Replacement for the android.Util.SizeF which is available only on API >= 21.
+ * Class for describing width and height dimensions in some arbitrary unit.
+ * Replacement for the android.Util.SizeF which is available only on API >= 21.
  */
 open class FSize : Poolable<FSize> {
     // TODO : Encapsulate width & height
