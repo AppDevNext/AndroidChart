@@ -720,8 +720,7 @@ open class LineChartRenderer(
             val circleHoleRadius = set.circleHoleRadius
 
             for (i in 0..<colorCount) {
-                val conf = Bitmap.Config.ARGB_4444
-                val circleBitmap = createBitmap((circleRadius * 2.1).toInt(), (circleRadius * 2.1).toInt(), conf)
+                val circleBitmap = createBitmap((circleRadius * 2.1).toInt(), (circleRadius * 2.1).toInt(), Bitmap.Config.ARGB_8888)
 
                 val canvas = Canvas(circleBitmap)
                 circleBitmaps!![i] = circleBitmap
