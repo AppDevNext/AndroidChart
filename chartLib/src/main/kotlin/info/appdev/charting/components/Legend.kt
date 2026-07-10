@@ -451,9 +451,10 @@ class Legend() : ComponentBase() {
 
                     // grouped forms have null labels
                     if (label != null) {
-                        calculatedLabelSizes.add(labelPaint.calcTextSize(label))
+                        val fSize = labelPaint.calcTextSize(label)
+                        calculatedLabelSizes.add(fSize)
                         requiredWidth += if (drawingForm) formToTextSpace + formSize else 0f
-                        requiredWidth += calculatedLabelSizes.last().width
+                        requiredWidth += fSize.width
                     } else {
                         calculatedLabelSizes.add(FSize.getInstance(0f, 0f))
                         requiredWidth += if (drawingForm) formSize else 0f
