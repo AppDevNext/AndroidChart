@@ -366,7 +366,9 @@ class Legend() : ComponentBase() {
                 var i = 0
                 while (i < entryCount) {
                     val e = entries[i]
-                    if (e == null) { i++; continue }
+                    if (e == null) {
+                        i++; continue
+                    }
                     val drawingForm = e.form != LegendForm.NONE
                     val formSize = if (e.formSize.isNaN())
                         defaultFormSize
@@ -427,7 +429,9 @@ class Legend() : ComponentBase() {
                 var i = 0
                 while (i < entryCount) {
                     val legendEntry = entries[i]
-                    if (legendEntry == null) { i++; continue }
+                    if (legendEntry == null) {
+                        i++; continue
+                    }
                     val drawingForm = legendEntry.form != LegendForm.NONE
                     val formSize = if (legendEntry.formSize.isNaN())
                         defaultFormSize
