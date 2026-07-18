@@ -19,6 +19,8 @@ android {
         buildConfigField("String", "VERSION_NAME", "\"${getVersionText()}\"")
 
         consumerProguardFiles.add(File("proguard-lib.pro"))
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -60,6 +62,13 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.23.0")
     testImplementation("org.mockito:mockito-inline:5.2.0")
+
+    // Instrumented tests run on a device so that android.graphics.Matrix / RectF do real
+    // math - the local JVM unit tests stub them out (unitTests.isReturnDefaultValues), which
+    // is fine for pure-data tests but cannot exercise the viewport transform.
+    androidTestImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.test:runner:1.7.0")
 }
 
 tasks.register<Jar>("androidSourcesJar") {
