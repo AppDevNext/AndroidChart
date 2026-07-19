@@ -1,9 +1,10 @@
-import info.git.versionHelper.getGitCommitCount
-import info.git.versionHelper.getVersionText
+//import info.git.versionHelper.getGitCommitCount
+//import info.git.versionHelper.getVersionText
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
+    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose") version "2.4.0"
 }
 
@@ -14,8 +15,8 @@ android {
         minSdk = 23
         compileSdk = 35
         targetSdk = 35
-        versionCode = getGitCommitCount()
-        versionName = getVersionText()
+        versionCode = 1
+        versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments.putAll(
             mapOf(
@@ -26,11 +27,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
-        }
     }
     buildFeatures {
         viewBinding = true
@@ -55,6 +51,12 @@ android {
             // keep it as-is to silence "Unable to strip" warnings.
             keepDebugSymbols += "**/libandroidx.graphics.path.so"
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
