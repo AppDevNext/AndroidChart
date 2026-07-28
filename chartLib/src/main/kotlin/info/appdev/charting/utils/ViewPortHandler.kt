@@ -105,9 +105,50 @@ open class ViewPortHandler {
     fun hasChartDimens(): Boolean = chartHeight > 0 && chartWidth > 0
 
     fun restrainViewPort(offsetLeft: Float, offsetTop: Float, offsetRight: Float, offsetBottom: Float, logging: Boolean = false) {
+        val previousWidth = contentRect.width()
+        val previousHeight = contentRect.height()
+
         contentRect[offsetLeft, offsetTop, chartWidth - offsetRight] = (chartHeight - offsetBottom)
+
+        preserveViewPortOnResize(previousWidth, previousHeight)
+
         if (logging)
             Timber.i(contentRect.toString())
+    }
+
+    /**
+     * Keeps the visible data range fixed when the content rect is resized.
+     *
+     * The pan is held in [matrixTouch] as a *pixel* translation, while the value-to-pixel
+     * scale is derived from the content rect. Resizing the rect therefore makes the same
+     * pixel translation denote a different value, sliding the visible range.
+     *
+     * This bites hardest after a zoom gesture: BarLineChartTouchListener defers
+     * chart.calculateOffsets() to ACTION_UP, so a y-zoom that widens the y-axis labels
+     * resizes the content rect only once the gesture ends. The chart then jumps sideways by
+     * roughly (x-range * change-in-width / content width) - on a chart whose x-axis spans a
+     * long range, a few pixels of label growth is a very visible jump.
+     *
+     * Scaling the translation by the same ratio as the rect keeps the visible range where the
+     * user left it. The visible extent itself is unaffected: it is (axis range / touch scale),
+     * which does not depend on the content width.
+     */
+    private fun preserveViewPortOnResize(previousWidth: Float, previousHeight: Float) {
+        // Nothing to preserve before the first layout, or when the rect did not change size.
+        if (previousWidth <= 0f || previousHeight <= 0f) return
+
+        val width = contentRect.width()
+        val height = contentRect.height()
+
+        if (width == previousWidth && height == previousHeight) return
+        if (width <= 0f || height <= 0f) return
+
+        matrixTouch.getValues(matrixBuffer)
+        matrixBuffer[Matrix.MTRANS_X] *= width / previousWidth
+        matrixBuffer[Matrix.MTRANS_Y] *= height / previousHeight
+        matrixTouch.setValues(matrixBuffer)
+
+        limitTransAndScale(matrixTouch, contentRect)
     }
 
     fun offsetLeft(): Float = contentRect.left
