@@ -12,8 +12,9 @@ import kotlin.math.abs
 import kotlin.math.hypot
 
 open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(protected var provider: T) : IHighlighter {
+
     /**
-     * buffer for storing previously highlighted values
+     * Buffer for storing previously highlighted values.
      */
     protected var highlightBuffer: MutableList<Highlight> = ArrayList()
 
@@ -27,12 +28,9 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
     }
 
     /**
-     * Returns a recyclable PointD instance.
-     * Returns the corresponding xPos for a given touch-position in pixels.
+     * Returns a recyclable PointD instance matching the corresponding xPos for a given touch-position in pixels.
      */
     protected fun getValsForTouch(x: Float, y: Float): PointD {
-        // take any transformer to determine the x-axis value
-
         return provider.getTransformer(AxisDependency.LEFT)!!.getValuesByTouchPoint(x, y)
     }
 
@@ -42,7 +40,7 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
     protected fun getHighlightForX(xVal: Float, x: Float, y: Float): Highlight? {
         val closestValues = getHighlightsAtXValue(xVal, x, y)
 
-        if (closestValues!!.isEmpty()) {
+        if (closestValues.isNullOrEmpty()) {
             return null
         }
 
@@ -51,12 +49,15 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
 
         val axis = if (leftAxisMinDist < rightAxisMinDist) AxisDependency.LEFT else AxisDependency.RIGHT
 
-        return getClosestHighlightByPixel(closestValues, x, y, axis, provider.maxHighlightDistance)
+        // Match original architecture by passing the custom display metric density scaling directly
+        val density = (provider as? android.view.View)?.context?.resources?.displayMetrics?.density ?: 1f
+        val maxSelectionDistance = 40f * density
+
+        return getClosestHighlightByPixel(closestValues, x, y, axis, maxSelectionDistance)
     }
 
     /**
-     * Returns the minimum distance from a touch value (in pixels) to the
-     * closest value (in pixels) that is displayed in the chart.
+     * Returns the minimum distance from a touch value (in pixels) to the closest visible chart value.
      */
     protected fun getMinimumDistance(closestValues: MutableList<Highlight>, pos: Float, axis: AxisDependency?): Float {
         var distance = Float.MAX_VALUE
@@ -81,32 +82,22 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
 
     /**
      * Returns a list of Highlight objects representing the entries closest to the given xVal.
-     * The returned list contains two objects per DataSet (closest rounding up, closest rounding down).
-     *
-     * @param xVal the transformed x-value of the x-touch position
-     * @param x    touch position
-     * @param y    touch position
      */
     override fun getHighlightsAtXValue(xVal: Float, x: Float, y: Float): MutableList<Highlight>? {
         highlightBuffer.clear()
 
-        data?.let { myData ->
-            var i = 0
-            val dataSetCount = myData.dataSetCount
-            while (i < dataSetCount) {
-                val dataSet = myData.getDataSetByIndex(i)
+        val myData = provider.data ?: return highlightBuffer
+        var i = 0
+        val dataSetCount = myData.dataSetCount
+        while (i < dataSetCount) {
+            val dataSet = myData.getDataSetByIndex(i)
 
-                // don't include DataSets that cannot be highlighted
-                dataSet?.let {
-                    if (!it.isHighlight) {
-                        i++
-                        continue
-                    }
+            dataSet?.let {
+                if (it.isHighlight) {
                     highlightBuffer.addAll(buildHighlights(it, i, xVal, DataSet.Rounding.CLOSEST))
                 }
-
-                i++
             }
+            i++
         }
         return highlightBuffer
     }
@@ -122,52 +113,46 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
         rounding: DataSet.Rounding?
     ): MutableList<Highlight> {
         val highlights = ArrayList<Highlight>()
-
         var entries = set.getEntriesForXValue(xVal)?.map { it as EntryFloat }?.toMutableList()
+
         if (entries != null && entries.isEmpty()) {
-            // Try to find closest x-value and take all entries for that x-value
-            val closest: EntryFloat? = set.getEntryForXValue(xVal, Float.NaN, rounding) as? EntryFloat
+            val closest = set.getEntryForXValue(xVal, Float.NaN, rounding) as? EntryFloat
             if (closest != null) {
                 entries = set.getEntriesForXValue(closest.x)?.map { it as EntryFloat }?.toMutableList()
             }
         }
 
-        if (entries != null && entries.isEmpty())
-            return highlights
+        if (entries == null || entries.isEmpty()) return highlights
 
-        if (entries != null)
-            for (e in entries) {
-                val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(e.x, e.y)
-
-                highlights.add(
-                    Highlight(
-                        x = e.x,
-                        y = e.y,
-                        xPx = pixels.x.toFloat(),
-                        yPx = pixels.y.toFloat(),
-                        dataSetIndex = dataSetIndex,
-                        axis = set.axisDependency
-                    )
+        for (e in entries) {
+            val pixels = provider.getTransformer(set.axisDependency)!!.getPixelForValues(e.x, e.y)
+            highlights.add(
+                Highlight(
+                    x = e.x,
+                    y = e.y,
+                    xPx = pixels.x.toFloat(),
+                    yPx = pixels.y.toFloat(),
+                    dataSetIndex = dataSetIndex,
+                    axis = set.axisDependency
                 )
-            }
+            )
+        }
 
         return highlights
     }
 
     /**
-     * Returns the Highlight of the DataSet that contains the closest value on the
-     * y-axis.
-     *
-     * @param closestValues        contains two Highlight objects per DataSet closest to the selected x-position (determined by
-     * rounding up a down)
-     * @param axis                 the closest axis
+     * Selects the closest highlight point based on precise geometric collision bounding checks.
      */
     fun getClosestHighlightByPixel(
         closestValues: MutableList<Highlight>, x: Float, y: Float,
         axis: AxisDependency?, minSelectionDistance: Float
     ): Highlight? {
         var closest: Highlight? = null
-        var distance = minSelectionDistance
+        var shortestDistance = Float.MAX_VALUE
+
+        // Reflection package verification matching your specific Bubble engine implementation strategy
+        val isBubble = provider.javaClass.name.contains("BubbleDataProvider", ignoreCase = true)
 
         for (i in closestValues.indices) {
             val high = closestValues[i]
@@ -175,9 +160,53 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
             if (axis == null || high.axis == axis) {
                 val cDistance = getDistance(x, y, high.xPx, high.yPx)
 
-                if (cDistance < distance) {
-                    closest = high
-                    distance = cDistance
+                if (isBubble) {
+                    val dataSet = provider.data?.getDataSetByIndex(high.dataSetIndex) as? info.appdev.charting.interfaces.datasets.IBubbleDataSet
+                    if (dataSet == null) continue
+
+                    val entry = dataSet.getEntryForXValue(high.x, Float.NaN, DataSet.Rounding.CLOSEST)
+                    val bubbleClass = try { Class.forName("info.appdev.charting.data.BubbleEntry") } catch (e: Exception) { null }
+
+                    if (entry != null && bubbleClass?.isInstance(entry) == true) {
+                        val density = (provider as? android.view.View)?.context?.resources?.displayMetrics?.density ?: 1f
+
+                        // 1. SAFE ZOOM SCALE TRACKING VIA BASE CHART VIEW
+                        var currentZoomScale = 1.0f
+                        try {
+                            val viewPortHandlerMethod = provider.javaClass.getMethod("getViewPortHandler")
+                            val viewPortHandler = viewPortHandlerMethod.invoke(provider)
+                            val getScaleXMethod = viewPortHandler?.javaClass?.getMethod("getScaleX")
+                            currentZoomScale = (getScaleXMethod?.invoke(viewPortHandler) as? Float) ?: 1.0f
+                        } catch (e: Exception) {
+                            // Secondary safety fallback if wrapped inside specific view contexts
+                        }
+
+                        // Calculate raw size radius safely dynamically
+                        val getSizeMethod = entry.javaClass.getMethod("getSize")
+                        val rawSize = (getSizeMethod.invoke(entry) as? Float) ?: 0f
+                        val baseRadius = rawSize / 2f
+                        var physicalBubbleRadius = baseRadius * density * currentZoomScale
+
+                        // 2. THE TINY-BUBBLE ACCESSIBILITY BOOST (15dp touch floor target tracking)
+                        val minimumTouchFloor = 15f * density
+                        if (physicalBubbleRadius < minimumTouchFloor) {
+                            physicalBubbleRadius = minimumTouchFloor
+                        }
+
+                        // 3. SELECTION RESOLUTION
+                        if (cDistance <= physicalBubbleRadius) {
+                            if (cDistance < shortestDistance) {
+                                shortestDistance = cDistance
+                                closest = high
+                            }
+                        }
+                    }
+                } else {
+                    // Standard target mapping for Line/Scatter plots
+                    if (cDistance < minSelectionDistance && cDistance < shortestDistance) {
+                        shortestDistance = cDistance
+                        closest = high
+                    }
                 }
             }
         }
@@ -186,14 +215,9 @@ open class ChartHighlighter<T : BarLineScatterCandleBubbleDataProvider<*>>(prote
     }
 
     /**
-     * Calculates the distance between the two given points.
+     * Calculates the distance between two distinct points on the viewport canvas grid.
      */
     protected open fun getDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
-        //return Math.abs(y1 - y2);
-        //return Math.abs(x1 - x2);
         return hypot((x1 - x2).toDouble(), (y1 - y2).toDouble()).toFloat()
     }
-
-    protected open val data: ChartData<*>?
-        get() = provider.data
 }

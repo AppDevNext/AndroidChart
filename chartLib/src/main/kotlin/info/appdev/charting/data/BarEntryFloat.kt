@@ -198,20 +198,21 @@ open class BarEntryFloat : EntryFloat {
         if (values == null || values.isEmpty())
             return
 
-        this.ranges = arrayOf()
+        this.ranges = Array(values.size) { Range(0f, 0f) }
 
         var negRemain = -this.negativeSum
         var posRemain = 0f
 
-        for (i in ranges.indices) {
+        for (i in values.indices) {
             val value = values[i]
 
             if (value < 0) {
                 this.ranges[i] = Range(negRemain, negRemain - value)
                 negRemain -= value
             } else {
-                this.ranges[i] = Range(posRemain, posRemain + value)
-                posRemain += value
+                val nextPos = posRemain + value
+                this.ranges[i] = Range(posRemain, nextPos)
+                posRemain = nextPos
             }
         }
     }
