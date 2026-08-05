@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
@@ -35,6 +36,7 @@ import info.appdev.charting.listener.OnChartValueSelectedListener
  * @param usePercentValuesEnabled Whether to use percentage values
  * @param drawRoundedSlicesEnabled Whether to draw rounded slices
  * @param holeRadius Radius of the center hole (0-100)
+ * @param holeColor Color of the center hole
  * @param transparentCircleRadius Radius of the transparent circle (0-100)
  * @param centerText Text to display in the center
  * @param rotationAngle Starting rotation angle in degrees
@@ -50,7 +52,7 @@ fun PieChart(
     onValueSelected: ((EntryFloat?, Highlight?) -> Unit)? = null,
     description: String? = null,
     legend: ((Legend) -> Unit)? = null,
-    backgroundColor: androidx.compose.ui.graphics.Color = androidx.compose.ui.graphics.Color.White,
+    backgroundColor: Color = Color.White,
     touchEnabled: Boolean = true,
     rotationEnabled: Boolean = true,
     highlightPerTapEnabled: Boolean = true,
@@ -60,6 +62,7 @@ fun PieChart(
     usePercentValuesEnabled: Boolean = false,
     drawRoundedSlicesEnabled: Boolean = false,
     holeRadius: Float = 50f,
+    holeColor: Color = Color.White,
     transparentCircleRadius: Float = 55f,
     centerText: CharSequence = "",
     rotationAngle: Float = 270f,
@@ -107,6 +110,7 @@ fun PieChart(
             pieChart.centerText = centerText
             pieChart.rotationAngle = rotationAngle
             pieChart.minAngleForSlices = minAngleForSlices
+            pieChart.setHoleColor(holeColor.toArgb())
 
             // Description
             pieChart.description.let { desc ->

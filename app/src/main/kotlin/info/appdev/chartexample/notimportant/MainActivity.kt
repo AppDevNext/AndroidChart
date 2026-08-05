@@ -80,6 +80,7 @@ import info.appdev.chartexample.TimeLineActivity
 import info.appdev.chartexample.compose.HorizontalBarComposeActivity
 import info.appdev.chartexample.compose.HorizontalBarFullComposeActivity
 import info.appdev.chartexample.compose.MultiLineComposeActivity
+import info.appdev.chartexample.compose.PieChartComposeActivity
 import info.appdev.chartexample.compose.TimeIntervalComposeActivity
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
 import info.appdev.charting.utils.Utils
@@ -217,6 +218,7 @@ class MainActivity : ComponentActivity() {
             add(ComposeItem("HorizontalCompose", "Render bar chart horizontally compose", HorizontalBarComposeActivity::class.java).toDemoBase())
             add(ComposeItem("HorizontalFullCompose", "Render bar chart horizontally full compose.", HorizontalBarFullComposeActivity::class.java).toDemoBase())
             add(ComposeItem("MultiLineCompose", "Show multiple data sets in compose.", MultiLineComposeActivity::class.java).toDemoBase())
+            add(ComposeItem("PieChartCompose", "Render a pie chart in compose, incl. hole color.", PieChartComposeActivity::class.java).toDemoBase())
 
             add(ContentItem("Timeinterval"))
             add(ContentItem("Timeinterval", "Grantt chart", TimeIntervalChartActivity::class.java))
