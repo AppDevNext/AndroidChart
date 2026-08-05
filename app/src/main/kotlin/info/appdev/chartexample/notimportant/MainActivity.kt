@@ -218,7 +218,6 @@ class MainActivity : ComponentActivity() {
             add(ComposeItem("HorizontalCompose", "Render bar chart horizontally compose", HorizontalBarComposeActivity::class.java).toDemoBase())
             add(ComposeItem("HorizontalFullCompose", "Render bar chart horizontally full compose.", HorizontalBarFullComposeActivity::class.java).toDemoBase())
             add(ComposeItem("MultiLineCompose", "Show multiple data sets in compose.", MultiLineComposeActivity::class.java).toDemoBase())
-            add(ComposeItem("PieChartCompose", "Render a pie chart in compose, incl. hole color.", PieChartComposeActivity::class.java).toDemoBase())
 
             add(ContentItem("Timeinterval"))
             add(ContentItem("Timeinterval", "Grantt chart", TimeIntervalChartActivity::class.java))
@@ -227,6 +226,7 @@ class MainActivity : ComponentActivity() {
             add(ContentItem("Demonstrate and fix issues"))
             add(ContentItem("Gradient", "Show a gradient edge case", GradientActivity::class.java))
             add(ContentItem("Timeline", "Show a time line with Unix timestamp", TimeLineActivity::class.java))
+            add(ComposeItem("PieChartCompose", "Render a pie chart in compose, incl. hole color.", PieChartComposeActivity::class.java).toDemoBase())
         }
     }
 }
