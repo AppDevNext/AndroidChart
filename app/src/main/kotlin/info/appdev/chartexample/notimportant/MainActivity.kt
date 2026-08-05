@@ -80,6 +80,7 @@ import info.appdev.chartexample.TimeLineActivity
 import info.appdev.chartexample.compose.HorizontalBarComposeActivity
 import info.appdev.chartexample.compose.HorizontalBarFullComposeActivity
 import info.appdev.chartexample.compose.MultiLineComposeActivity
+import info.appdev.chartexample.compose.PieChartComposeActivity
 import info.appdev.chartexample.compose.TimeIntervalComposeActivity
 import info.appdev.chartexample.fragments.ViewPagerSimpleChartDemo
 import info.appdev.charting.utils.Utils
@@ -225,6 +226,7 @@ class MainActivity : ComponentActivity() {
             add(ContentItem("Demonstrate and fix issues"))
             add(ContentItem("Gradient", "Show a gradient edge case", GradientActivity::class.java))
             add(ContentItem("Timeline", "Show a time line with Unix timestamp", TimeLineActivity::class.java))
+            add(ComposeItem("PieChartCompose", "Render a pie chart in compose, incl. hole color.", PieChartComposeActivity::class.java).toDemoBase())
         }
     }
 }

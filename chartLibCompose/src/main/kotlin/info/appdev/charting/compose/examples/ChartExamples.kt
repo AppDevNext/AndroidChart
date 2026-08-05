@@ -224,6 +224,7 @@ fun PieChartExample() {
                 transparentCircleRadius = 45f,
                 centerText = "Market Share",
                 rotationEnabled = true,
+                holeColor = Color.Transparent,
                 usePercentValuesEnabled = true,
                 drawEntryLabelsEnabled = true,
                 animationDuration = 1500,
