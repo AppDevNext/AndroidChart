@@ -103,7 +103,6 @@ dependencies {
     val roborazziVersion = "1.70.0"
     testImplementation("io.github.takahirom.roborazzi:roborazzi:$roborazziVersion")
     testImplementation("io.github.takahirom.roborazzi:roborazzi-compose:$roborazziVersion")
-    testImplementation("io.github.takahirom.roborazzi:roborazzi-junit-rule:$roborazziVersion")
     testImplementation("org.robolectric:robolectric:4.16.1")
     testImplementation("androidx.test.ext:junit:1.3.0")
     testImplementation("androidx.test.espresso:espresso-core:3.7.0")

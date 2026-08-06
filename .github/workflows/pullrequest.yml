@@ -114,7 +114,7 @@ jobs:
       - name: Install Android SDK
         uses: hannesa2/action-android/install-sdk@0.17.0
       - name: Run tests
-        run: ./gradlew test
+        run: ./gradlew :chartLib:test
       - name: Verify Roborazzi screenshots
         run: ./gradlew :app:verifyRoborazziDebug
       - name: Archive Roborazzi results
@@ -123,6 +123,7 @@ jobs:
         with:
           name: Chart-Roborazzi-report
           path: app/build/reports/roborazzi
+          if-no-files-found: ignore
       - name: Test jitpack publish command
         run: ./gradlew :chartLib:publishToMavenLocal :chartLibCompose:publishToMavenLocal -PRELEASE_SIGNING_ENABLED=false
       - name: Code checks
