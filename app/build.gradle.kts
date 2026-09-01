@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose") version "2.4.10"
+    id("io.github.takahirom.roborazzi") version "1.70.0"
 }
 
 android {
@@ -45,6 +46,9 @@ android {
     // https://stackoverflow.com/a/67635863/1079990
     testOptions {
         animationsDisabled = true
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
     lint {
         lintConfig = file("lint.xml")
@@ -56,6 +60,10 @@ android {
             keepDebugSymbols += "**/libandroidx.graphics.path.so"
         }
     }
+}
+
+roborazzi {
+    outputDir.set(project.file("src/test/snapshots"))
 }
 
 dependencies {
@@ -91,4 +99,12 @@ dependencies {
     androidTestUtil("androidx.test.services:test-services:1.6.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.7.0")
+
+    val roborazziVersion = "1.70.0"
+    testImplementation("io.github.takahirom.roborazzi:roborazzi:$roborazziVersion")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-compose:$roborazziVersion")
+    testImplementation("org.robolectric:robolectric:4.16.1")
+    testImplementation("androidx.test.ext:junit:1.3.0")
+    testImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    testImplementation("androidx.compose.ui:ui-test-junit4")
 }
