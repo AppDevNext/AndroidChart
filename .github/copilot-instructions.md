@@ -19,7 +19,7 @@ Package name: `info.appdev.charting`
 ## Tech stack
 
 - **Language**: 100% Kotlin — no Java source files
-- **Android**: minSdk 23, compileSdk 35
+- **Android**: minSdk 23, compileSdk 36
 - **JVM target**: 17
 - **Kotlin**: 2.4.0
 - **Build**: Gradle with Kotlin DSL (`.gradle.kts` files only)
