@@ -1,8 +1,6 @@
 package info.appdev.charting.data
 
-import android.annotation.SuppressLint
 
-@SuppressLint("ParcelCreator")
 open class RadarEntryFloat : EntryFloat {
     constructor(value: Float) : super(0f, value)
 

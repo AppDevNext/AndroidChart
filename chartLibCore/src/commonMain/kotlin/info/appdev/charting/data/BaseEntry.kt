@@ -1,6 +1,6 @@
 package info.appdev.charting.data
 
-import android.graphics.drawable.Drawable
+import info.appdev.charting.utils.ChartIcon
 
 abstract class BaseEntry<T> where T : Number, T : Comparable<T> {
 
@@ -20,7 +20,7 @@ abstract class BaseEntry<T> where T : Number, T : Comparable<T> {
 
     var data: Any? = null
 
-    var icon: Drawable? = null
+    var icon: ChartIcon? = null
 
     constructor()
 
@@ -37,11 +37,11 @@ abstract class BaseEntry<T> where T : Number, T : Comparable<T> {
         this.data = data
     }
 
-    constructor(y: T, icon: Drawable?) : this(y) {
+    constructor(y: T, icon: ChartIcon?) : this(y) {
         this.icon = icon
     }
 
-    constructor(y: T, icon: Drawable?, data: Any?) : this(y = y) {
+    constructor(y: T, icon: ChartIcon?, data: Any?) : this(y = y) {
         this.icon = icon
         this.data = data
     }
@@ -50,11 +50,11 @@ abstract class BaseEntry<T> where T : Number, T : Comparable<T> {
         this.data = data
     }
 
-    constructor(x: T, y: T, icon: Drawable?) : this(x = x, y = y) {
+    constructor(x: T, y: T, icon: ChartIcon?) : this(x = x, y = y) {
         this.icon = icon
     }
 
-    constructor(x: T, y: T, icon: Drawable?, data: Any?) : this(x = x, y = y) {
+    constructor(x: T, y: T, icon: ChartIcon?, data: Any?) : this(x = x, y = y) {
         this.icon = icon
         this.data = data
     }

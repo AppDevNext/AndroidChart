@@ -1,7 +1,6 @@
 package info.appdev.charting.data
 
-import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
+import info.appdev.charting.utils.ChartIcon
 import kotlin.math.abs
 
 /**
@@ -9,7 +8,6 @@ import kotlin.math.abs
  * so it works seamlessly in the existing candlestick chart rendering pipeline.
  * Use [xDouble], [highDouble], [lowDouble], [openDouble], [closeDouble] for full-precision access.
  */
-@SuppressLint("ParcelCreator")
 open class CandleEntryDouble : CandleEntryFloat {
 
     var xDouble: Double = 0.0
@@ -39,7 +37,7 @@ open class CandleEntryDouble : CandleEntryFloat {
     }
 
     constructor(
-        x: Double, shadowH: Double, shadowL: Double, open: Double, close: Double, icon: Drawable?
+        x: Double, shadowH: Double, shadowL: Double, open: Double, close: Double, icon: ChartIcon?
     ) : super(x.toFloat(), shadowH.toFloat(), shadowL.toFloat(), open.toFloat(), close.toFloat(), icon) {
         xDouble = x; highDouble = shadowH; lowDouble = shadowL; openDouble = open; closeDouble = close
         this.high = shadowH.toFloat(); this.low = shadowL.toFloat()
@@ -47,7 +45,7 @@ open class CandleEntryDouble : CandleEntryFloat {
     }
 
     constructor(
-        x: Double, shadowH: Double, shadowL: Double, open: Double, close: Double, icon: Drawable?, data: Any?
+        x: Double, shadowH: Double, shadowL: Double, open: Double, close: Double, icon: ChartIcon?, data: Any?
     ) : super(x.toFloat(), shadowH.toFloat(), shadowL.toFloat(), open.toFloat(), close.toFloat(), icon, data) {
         xDouble = x; highDouble = shadowH; lowDouble = shadowL; openDouble = open; closeDouble = close
         this.high = shadowH.toFloat(); this.low = shadowL.toFloat()

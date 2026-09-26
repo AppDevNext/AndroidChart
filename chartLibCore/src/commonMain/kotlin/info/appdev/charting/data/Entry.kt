@@ -1,16 +1,6 @@
 package info.appdev.charting.data
 
-import android.R.attr.data
-import android.R.attr.x
-import android.R.attr.y
-import android.graphics.drawable.Drawable
-import android.os.Build
-import android.os.Parcel
-import android.os.ParcelFormatException
-import android.os.Parcelable
-import info.appdev.charting.utils.Utils
-import java.io.Serializable
-import kotlin.math.abs
+import info.appdev.charting.utils.ChartIcon
 
 /**
  * Class representing one entry in the chart. Might contain multiple values.
@@ -48,7 +38,7 @@ class Entry : EntryFloat {
      * @param y the y value (the actual value of the entry)
      * @param icon icon image
      */
-    constructor(x: Float, y: Float, icon: Drawable?) : super(x = x, y = y, icon = icon)
+    constructor(x: Float, y: Float, icon: ChartIcon?) : super(x = x, y = y, icon = icon)
 
     /**
      * An EntryFloat represents one single entry in the chart.
@@ -58,6 +48,6 @@ class Entry : EntryFloat {
      * @param icon icon image
      * @param data Spot for additional data this EntryFloat represents.
      */
-    constructor(x: Float, y: Float, icon: Drawable?, data: Any?) : super(x = x, y = y, icon = icon, data = data)
+    constructor(x: Float, y: Float, icon: ChartIcon?, data: Any?) : super(x = x, y = y, icon = icon, data = data)
 
 }

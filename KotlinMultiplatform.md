@@ -96,8 +96,55 @@ lint                 Existing custom lint rules (unchanged)
         unavailable in `commonMain`). Revisit with `kotlinx-atomicfu` or a
         platform-specific `expect`/`actual` lock if thread-safety across pool
         instances becomes a real requirement on non-JVM targets.
-- [ ] **Step A.2 — Design common replacement abstractions.** (see below)
-- [ ] **Step A.3 — Migrate the data model (`data/`, `interfaces/`).**
+- [x] **Step A.2 (partial) + first half of A.3 — `ChartIcon` abstraction + full
+      Entry family migration.**
+      - Added `expect abstract class ChartIcon` in `chartLibCore` commonMain, with
+        `actual typealias ChartIcon = android.graphics.drawable.Drawable` on Android
+        (zero source/behavior change for Android consumers — `entry.icon` is still
+        literally a `Drawable`) and empty placeholder `actual abstract class ChartIcon`
+        on iOS/desktop until Compose Multiplatform icon rendering (e.g. `Painter`) is
+        designed. Required adding `-Xexpect-actual-classes` to `chartLibCore`'s
+        `compilerOptions.freeCompilerArgs` (expect/actual classes are still Beta).
+      - Moved the entire `data/` entry hierarchy into `chartLibCore` commonMain,
+        unchanged in package/API shape:
+        `BaseEntry`, `EntryFloat`, `EntryDouble`, the deprecated `Entry` bridge class,
+        and all `Bar/Pie/Radar/Bubble/Candle` `*Entry`/`*EntryFloat`/`*EntryDouble`
+        variants (19 files total).
+      - Replaced `android.graphics.drawable.Drawable?` fields/params with `ChartIcon?`
+        throughout (transparent on Android via the typealias).
+      - Removed `android.annotation.SuppressLint`/`@TargetApi` (build-tool-only,
+        meaningless outside Android — safe to drop).
+      - **Breaking change (flagged, not silently made):** `EntryFloat` (and therefore
+        `Entry`) no longer implements `android.os.Parcelable` or `java.io.Serializable`
+        — both are JVM/Android-only types with no multiplatform equivalent. A repo-wide
+        search found **no internal usage** of `EntryFloat.CREATOR`, `is Parcelable`,
+        or entry serialization, so this is believed safe, but it **is** a public API
+        removal for any external consumer relying on putting entries into a `Bundle`/
+        `Intent` via `Parcelable`/`Serializable`. If needed later, this can be restored
+        Android-only via the `expect class` + additional-supertypes-on-`actual` pattern
+        (an `actual` declaration is allowed to implement extra platform-specific
+        interfaces beyond what `expect` declares).
+      - Replaced the JVM-only `Build.VERSION.SDK_INT` branch in `toString()`
+        implementations with `this::class.simpleName` (works identically on all
+        Kotlin targets).
+      - Replaced `Utils.FLOAT_EPSILON`/`Utils.DOUBLE_EPSILON` (which pulled in the
+        still-Android-only `Utils` object) with local common constants
+        `ENTRY_FLOAT_EPSILON`/`ENTRY_DOUBLE_EPSILON` in `EntryFloat.kt`, built with the
+        common-Kotlin-stdlib `Float.fromBits(1)`/`Double.fromBits(1L)`.
+      - Removed two `timber.log.Timber.i(...)` informational log calls from
+        `PieEntryFloat`'s deprecated `x` accessor (Timber is Android-only; logging
+        facade design deferred — see the `timber.log.Timber` row in the abstractions
+        table below).
+      - `PieEntryDouble.kt` was moved as-is (it was already an empty file pre-existing
+        in `chartLib` — a gap in the deprecated-class migration table unrelated to
+        this KMP effort; left untouched, out of scope here).
+      - Verified: `chartLibCore` builds clean on Android/iOS×3/desktop-JVM;
+        `chartLib:compileDebugKotlin` succeeds **with zero source changes needed** in
+        `chartLib` itself (proof the package-preserving move is fully transparent to
+        existing consumers); full `./gradlew test :chartLibCore:allTests` and
+        `chartLibCompose:assembleDebug`/`app:assembleDebug` all pass.
+- [ ] **Step A.3 (remainder) — Migrate `BaseDataSet`/`DataSet`/`ChartData` and
+      `interfaces/` (`IDataSet` family, `dataprovider` family).**
 - [ ] **Step A.4 — Migrate formatters (`formatter/`) and remaining highlighters
       (`highlight/`).**
 - [ ] **Step A.5 — Migrate `components/` (axes, legend, limit lines).**

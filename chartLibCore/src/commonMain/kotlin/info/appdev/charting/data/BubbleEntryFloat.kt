@@ -1,13 +1,16 @@
 package info.appdev.charting.data
 
-import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
+import info.appdev.charting.utils.ChartIcon
 
-@Deprecated(
-    message = "The replacement is BubbleEntryFloat, or use BubbleEntryDouble for higher precision. BubbleEntry is retained for backward compatibility but will be removed in a future version.",
-    replaceWith = ReplaceWith("BubbleEntryFloat", "info.appdev.charting.data.BubbleEntryFloat")
-)
-class BubbleEntry : BubbleEntryFloat {
+/**
+ * Subclass of Entry that holds a value for one entry in a BubbleChart. Bubble
+ * chart implementation: Copyright 2015 Pierre-Marc Airoldi Licensed under Apache License 2.0
+ */
+open class BubbleEntryFloat : EntryFloat {
+    /**
+     * Returns the size of this entry (the size of the bubble).
+     */
+    var size: Float
 
     /**
      * Constructor.
@@ -16,7 +19,7 @@ class BubbleEntry : BubbleEntryFloat {
      * @param y The value on the y-axis.
      * @param size The size of the bubble.
      */
-    constructor(x: Float, y: Float, size: Float) : super(x, y, size) {
+    constructor(x: Float, y: Float, size: Float) : super(x, y) {
         this.size = size
     }
 
@@ -28,7 +31,7 @@ class BubbleEntry : BubbleEntryFloat {
      * @param size The size of the bubble.
      * @param data Spot for additional data this Entry represents.
      */
-    constructor(x: Float, y: Float, size: Float, data: Any?) : super(x, y, size, data) {
+    constructor(x: Float, y: Float, size: Float, data: Any?) : super(x, y, data) {
         this.size = size
     }
 
@@ -40,7 +43,11 @@ class BubbleEntry : BubbleEntryFloat {
      * @param size The size of the bubble.
      * @param icon Icon image
      */
-    constructor(x: Float, y: Float, size: Float, icon: Drawable?) : super(x, y, size, icon) {
+    constructor(x: Float, y: Float, size: Float, icon: ChartIcon?) : super(x, y, icon) {
         this.size = size
+    }
+
+    override fun copy(): BubbleEntryFloat {
+        return BubbleEntryFloat(x, y, this.size, data)
     }
 }

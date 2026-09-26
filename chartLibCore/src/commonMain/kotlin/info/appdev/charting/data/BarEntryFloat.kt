@@ -1,14 +1,12 @@
 package info.appdev.charting.data
 
-import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
+import info.appdev.charting.utils.ChartIcon
 import info.appdev.charting.highlight.Range
 import kotlin.math.abs
 
 /**
  * Entry class for the BarChart. (especially stacked bars)
  */
-@SuppressLint("ParcelCreator")
 open class BarEntryFloat : EntryFloat {
     /**
      * Returns the stacked values this BarEntry represents, or null, if only a single value is represented (then, use
@@ -56,7 +54,7 @@ open class BarEntryFloat : EntryFloat {
      * @param y
      * @param icon - icon image
      */
-    constructor(x: Float, y: Float, icon: Drawable?) : super(x, y, icon)
+    constructor(x: Float, y: Float, icon: ChartIcon?) : super(x, y, icon)
 
     /**
      * Constructor for normal bars (not stacked).
@@ -66,7 +64,7 @@ open class BarEntryFloat : EntryFloat {
      * @param icon - icon image
      * @param data - Spot for additional data this Entry represents.
      */
-    constructor(x: Float, y: Float, icon: Drawable?, data: Any?) : super(x, y, icon, data)
+    constructor(x: Float, y: Float, icon: ChartIcon?, data: Any?) : super(x, y, icon, data)
 
     /**
      * Constructor for stacked bar entries. One data object for whole stack
@@ -100,7 +98,7 @@ open class BarEntryFloat : EntryFloat {
      * @param vals - the stack values, use at least 2
      * @param icon - icon image
      */
-    constructor(x: Float, vals: FloatArray?, icon: Drawable?) : super(x, calcSum(vals), icon) {
+    constructor(x: Float, vals: FloatArray?, icon: ChartIcon?) : super(x, calcSum(vals), icon) {
         this.yVals = vals
         calcPosNegSum()
         calcRanges()
@@ -114,7 +112,7 @@ open class BarEntryFloat : EntryFloat {
      * @param icon - icon image
      * @param data - Spot for additional data this Entry represents.
      */
-    constructor(x: Float, vals: FloatArray?, icon: Drawable?, data: Any?) : super(x, calcSum(vals), icon, data) {
+    constructor(x: Float, vals: FloatArray?, icon: ChartIcon?, data: Any?) : super(x, calcSum(vals), icon, data) {
         this.yVals = vals
         calcPosNegSum()
         calcRanges()

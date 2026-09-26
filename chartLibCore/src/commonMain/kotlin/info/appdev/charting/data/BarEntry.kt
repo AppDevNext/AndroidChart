@@ -1,6 +1,6 @@
 package info.appdev.charting.data
 
-import android.graphics.drawable.Drawable
+import info.appdev.charting.utils.ChartIcon
 
 
 @Deprecated(
@@ -30,7 +30,7 @@ open class BarEntry : BarEntryFloat {
      * @param y
      * @param icon - icon image
      */
-    constructor(x: Float, y: Float, icon: Drawable?) : super(x, y, icon)
+    constructor(x: Float, y: Float, icon: ChartIcon?) : super(x, y, icon)
 
     /**
      * Constructor for normal bars (not stacked).
@@ -40,6 +40,6 @@ open class BarEntry : BarEntryFloat {
      * @param icon - icon image
      * @param data - Spot for additional data this Entry represents.
      */
-    constructor(x: Float, y: Float, icon: Drawable?, data: Any?) : super(x, y, icon, data)
+    constructor(x: Float, y: Float, icon: ChartIcon?, data: Any?) : super(x, y, icon, data)
 
 }
