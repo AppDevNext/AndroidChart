@@ -1,17 +1,14 @@
 package info.appdev.charting.data
 
-import android.graphics.drawable.Drawable
-import android.os.Build
-import java.io.Serializable
+import info.appdev.charting.utils.ChartIcon
 import kotlin.math.abs
-import info.appdev.charting.utils.Utils
 
 /**
  * High-precision entry that stores x and y as Double, but extends EntryFloat
  * so it works seamlessly in the existing chart rendering pipeline.
  * Use [xDouble] and [yDouble] to access the full-precision values.
  */
-open class EntryDouble : EntryFloat, Serializable {
+open class EntryDouble : EntryFloat {
 
     var xDouble: Double = 0.0
     var yDouble: Double = 0.0
@@ -49,13 +46,13 @@ open class EntryDouble : EntryFloat, Serializable {
         this.data = data
     }
 
-    constructor(x: Double, y: Double, icon: Drawable?) : super() {
+    constructor(x: Double, y: Double, icon: ChartIcon?) : super() {
         this.xDouble = x
         this.yDouble = y
         this.icon = icon
     }
 
-    constructor(x: Double, y: Double, icon: Drawable?, data: Any?) : super() {
+    constructor(x: Double, y: Double, icon: ChartIcon?, data: Any?) : super() {
         this.xDouble = x
         this.yDouble = y
         this.icon = icon
@@ -67,16 +64,12 @@ open class EntryDouble : EntryFloat, Serializable {
     fun equalTo(other: EntryDouble?): Boolean {
         if (other == null) return false
         if (other.data !== this.data) return false
-        if (abs(other.xDouble - this.xDouble) > Utils.DOUBLE_EPSILON) return false
-        if (abs(other.yDouble - this.yDouble) > Utils.DOUBLE_EPSILON) return false
+        if (abs(other.xDouble - this.xDouble) > ENTRY_DOUBLE_EPSILON) return false
+        if (abs(other.yDouble - this.yDouble) > ENTRY_DOUBLE_EPSILON) return false
         return true
     }
 
     override fun toString(): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            "${this.javaClass.typeName.substringAfterLast(".")} xDouble=$xDouble yDouble=$yDouble"
-        } else {
-            "EntryDouble xDouble=$xDouble yDouble=$yDouble"
-        }
+        return "${this::class.simpleName} xDouble=$xDouble yDouble=$yDouble"
     }
 }

@@ -1,10 +1,7 @@
 package info.appdev.charting.data
 
-import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
-import timber.log.Timber
+import info.appdev.charting.utils.ChartIcon
 
-@SuppressLint("ParcelCreator")
 open class PieEntryFloat : EntryFloat {
     var label: String? = null
 
@@ -12,9 +9,9 @@ open class PieEntryFloat : EntryFloat {
 
     constructor(value: Float, data: Any?) : super(0f, value, data)
 
-    constructor(value: Float, icon: Drawable?) : super(0f, value, icon)
+    constructor(value: Float, icon: ChartIcon?) : super(0f, value, icon)
 
-    constructor(value: Float, icon: Drawable?, data: Any?) : super(0f, value, icon, data)
+    constructor(value: Float, icon: ChartIcon?, data: Any?) : super(0f, value, icon, data)
 
     constructor(value: Float, label: String?) : super(0f, value) {
         this.label = label
@@ -24,11 +21,11 @@ open class PieEntryFloat : EntryFloat {
         this.label = label
     }
 
-    constructor(value: Float, label: String?, icon: Drawable?) : super(0f, value, icon) {
+    constructor(value: Float, label: String?, icon: ChartIcon?) : super(0f, value, icon) {
         this.label = label
     }
 
-    constructor(value: Float, label: String?, icon: Drawable?, data: Any?) : super(0f, value, icon, data) {
+    constructor(value: Float, label: String?, icon: ChartIcon?, data: Any?) : super(0f, value, icon, data) {
         this.label = label
     }
 
@@ -41,13 +38,9 @@ open class PieEntryFloat : EntryFloat {
     @get:Deprecated("")
     @set:Deprecated("")
     override var x: Float
-        get() {
-            Timber.i("Pie entries do not have x values")
-            return super.x
-        }
+        get() = super.x
         set(x) {
             super.x = x
-            Timber.i("Pie entries do not have x values")
         }
 
     override fun copy(): PieEntryFloat {

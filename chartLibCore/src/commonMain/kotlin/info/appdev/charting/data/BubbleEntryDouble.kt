@@ -1,7 +1,6 @@
 package info.appdev.charting.data
 
-import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
+import info.appdev.charting.utils.ChartIcon
 import kotlin.math.abs
 
 /**
@@ -9,7 +8,6 @@ import kotlin.math.abs
  * so it works seamlessly in the existing bubble chart rendering pipeline.
  * Use [xDouble], [yDouble] and [sizeDouble] for full-precision access.
  */
-@SuppressLint("ParcelCreator")
 open class BubbleEntryDouble : BubbleEntryFloat {
 
     var xDouble: Double = 0.0
@@ -34,7 +32,7 @@ open class BubbleEntryDouble : BubbleEntryFloat {
         this.size = size.toFloat()
     }
 
-    constructor(x: Double, y: Double, size: Double, icon: Drawable?) : super(x.toFloat(), y.toFloat(), size.toFloat(), icon) {
+    constructor(x: Double, y: Double, size: Double, icon: ChartIcon?) : super(x.toFloat(), y.toFloat(), size.toFloat(), icon) {
         xDouble = x; yDouble = y; sizeDouble = size
         this.size = size.toFloat()
     }

@@ -1,6 +1,5 @@
 package info.appdev.charting.data
 
-import android.annotation.SuppressLint
 
 /**
  * High-precision radar entry that stores the value as Double, extending [RadarEntryFloat]
@@ -9,7 +8,6 @@ import android.annotation.SuppressLint
  * Radar entries have no meaningful x-axis value.
  */
 @Suppress("DEPRECATION")
-@SuppressLint("ParcelCreator")
 open class RadarEntryDouble : RadarEntryFloat {
 
     var valueDouble: Double = 0.0

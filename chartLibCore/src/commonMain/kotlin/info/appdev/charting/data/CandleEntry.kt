@@ -1,33 +1,12 @@
 package info.appdev.charting.data
 
-import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
-import kotlin.math.abs
+import info.appdev.charting.utils.ChartIcon
 
-/**
- * Subclass of Entry that holds all values for one entry in a CandleStickChart.
- */
-@SuppressLint("ParcelCreator")
-open class CandleEntryFloat : EntryFloat {
-    /**
-     * Returns the upper shadows highest value.
-     */
-    var high: Float
-
-    /**
-     * Returns the lower shadows lowest value.
-     */
-    var low: Float
-
-    /**
-     * Returns the bodies close value.
-     */
-    var close: Float
-
-    /**
-     * Returns the bodies open value.
-     */
-    var open: Float
+@Deprecated(
+    message = "The replacement is CandleEntryFloat, or use CandleEntryDouble for higher precision. CandleEntry is retained for backward compatibility but will be removed in a future version.",
+    replaceWith = ReplaceWith("CandleEntryFloat", "info.appdev.charting.data.CandleEntryFloat")
+)
+class CandleEntry : CandleEntryFloat {
 
     /**
      * Constructor.
@@ -38,7 +17,7 @@ open class CandleEntryFloat : EntryFloat {
      * @param open The open value
      * @param close The close value
      */
-    constructor(x: Float, shadowH: Float, shadowL: Float, open: Float, close: Float) : super(x, (shadowH + shadowL) / 2f) {
+    constructor(x: Float, shadowH: Float, shadowL: Float, open: Float, close: Float) : super(x, shadowH, shadowL, open, close) {
         this.high = shadowH
         this.low = shadowL
         this.open = open
@@ -56,7 +35,7 @@ open class CandleEntryFloat : EntryFloat {
     constructor(
         x: Float, shadowH: Float, shadowL: Float, open: Float, close: Float,
         data: Any?
-    ) : super(x, (shadowH + shadowL) / 2f, data) {
+    ) : super(x, shadowH, shadowL, open, close) {
         this.high = shadowH
         this.low = shadowL
         this.open = open
@@ -73,8 +52,8 @@ open class CandleEntryFloat : EntryFloat {
      */
     constructor(
         x: Float, shadowH: Float, shadowL: Float, open: Float, close: Float,
-        icon: Drawable?
-    ) : super(x, (shadowH + shadowL) / 2f, icon) {
+        icon: ChartIcon?
+    ) : super(x, shadowH, shadowL, open, close) {
         this.high = shadowH
         this.low = shadowL
         this.open = open
@@ -92,36 +71,12 @@ open class CandleEntryFloat : EntryFloat {
      */
     constructor(
         x: Float, shadowH: Float, shadowL: Float, open: Float, close: Float,
-        icon: Drawable?, data: Any?
-    ) : super(x, (shadowH + shadowL) / 2f, icon, data) {
+        icon: ChartIcon?, data: Any?
+    ) : super(x, shadowH, shadowL, open, close) {
         this.high = shadowH
         this.low = shadowL
         this.open = open
         this.close = close
     }
 
-    /**
-     * Returns the overall range (difference) between shadow-high and shadow-low.
-     */
-    val shadowRange: Float
-        get() = abs(this.high - this.low)
-
-    /**
-     * Returns the body size (difference between open and close).
-     */
-    val bodyRange: Float
-        get() = abs(this.open - this.close)
-
-    /**
-     * Returns the center value of the candle. (Middle value between high and low)
-     */
-    override var y: Float
-        get() = super.y
-        set(value) {
-            super.y = value
-        }
-
-    override fun copy(): CandleEntryFloat {
-        return CandleEntryFloat(x, this.high, this.low, this.open, this.close, data)
-    }
 }

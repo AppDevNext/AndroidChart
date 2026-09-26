@@ -1,6 +1,6 @@
 package info.appdev.charting.data
 
-import android.graphics.drawable.Drawable
+import info.appdev.charting.utils.ChartIcon
 import info.appdev.charting.highlight.RangeDouble
 import kotlin.math.abs
 
@@ -47,11 +47,11 @@ open class BarEntryDouble : BarEntryFloat {
         xDouble = x; yDouble = y
     }
 
-    constructor(x: Double, y: Double, icon: Drawable?) : super(x.toFloat(), y.toFloat(), icon) {
+    constructor(x: Double, y: Double, icon: ChartIcon?) : super(x.toFloat(), y.toFloat(), icon) {
         xDouble = x; yDouble = y
     }
 
-    constructor(x: Double, y: Double, icon: Drawable?, data: Any?) : super(x.toFloat(), y.toFloat(), icon, data) {
+    constructor(x: Double, y: Double, icon: ChartIcon?, data: Any?) : super(x.toFloat(), y.toFloat(), icon, data) {
         xDouble = x; yDouble = y
     }
 
@@ -73,7 +73,7 @@ open class BarEntryDouble : BarEntryFloat {
         calcDoubleRanges()
     }
 
-    constructor(x: Double, vals: DoubleArray?, icon: Drawable?) : super(x.toFloat(), calcDoubleSum(vals).toFloat(), icon) {
+    constructor(x: Double, vals: DoubleArray?, icon: ChartIcon?) : super(x.toFloat(), calcDoubleSum(vals).toFloat(), icon) {
         xDouble = x
         yDouble = calcDoubleSum(vals)
         yValsDouble = vals
