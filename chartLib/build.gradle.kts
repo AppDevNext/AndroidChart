@@ -55,6 +55,7 @@ dependencies {
     lintChecks(project(":lint"))                                      // applies locally
     lintPublish(project(path = ":lint", configuration = "lintJar"))  // embeds in published AAR
 
+    api(project(":chartLibCore"))
     implementation("androidx.annotation:annotation:1.10.0")
     implementation("androidx.core:core:1.16.0")
     implementation("androidx.activity:activity-ktx:1.10.1")

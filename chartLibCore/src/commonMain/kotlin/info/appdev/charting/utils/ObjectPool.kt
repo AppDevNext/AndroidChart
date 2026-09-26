@@ -66,7 +66,6 @@ class ObjectPool<T : Poolable<T>> private constructor(withCapacity: Int, poolObj
      *
      * @return An instance of Poolable object T
      */
-    @Synchronized
     fun get(): T {
         if (objects.isEmpty() && this.replenishPercentage > 0.0f) {
             this.refillPool()
@@ -84,7 +83,6 @@ class ObjectPool<T : Poolable<T>> private constructor(withCapacity: Int, poolObj
      *
      * @param object An object of type T to recycle
      */
-    @Synchronized
     fun recycle(`object`: T?) {
         if (`object` == null)
             return
@@ -108,7 +106,6 @@ class ObjectPool<T : Poolable<T>> private constructor(withCapacity: Int, poolObj
      *
      * @param objects A list of objects of type T to recycle
      */
-    @Synchronized
     fun recycle(objects: List<T>) {
         val objectsListSize = objects.size
 
@@ -171,7 +168,6 @@ class ObjectPool<T : Poolable<T>> private constructor(withCapacity: Int, poolObj
          * @param object An instance of the object that the pool should recycle.
          * @return
          */
-        @Synchronized
         fun <T : Poolable<T>> create(withCapacity: Int, `object`: T): ObjectPool<T> {
             val result: ObjectPool<T> = ObjectPool(withCapacity, `object`)
             result.poolId = ids
