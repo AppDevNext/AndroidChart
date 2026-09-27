@@ -1,8 +1,7 @@
 package info.appdev.charting.data
 
-import android.graphics.Color
-import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.IBarDataSet
+import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.Fill
 
 open class BarDataSet(yVals: MutableList<BarEntryFloat>, label: String) : BarLineScatterCandleBubbleDataSet<BarEntryFloat>(yVals, label), IBarDataSet {
@@ -15,13 +14,11 @@ open class BarDataSet(yVals: MutableList<BarEntryFloat>, label: String) : BarLin
     /**
      * the color used for drawing the bar shadows
      */
-    @ColorInt
-    private var mBarShadowColor = Color.rgb(215, 215, 215)
+    private var mBarShadowColor = ColorTemplate.argb(215, 215, 215)
 
     private var mBarBorderWidth = 0.0f
 
-    @ColorInt
-    private var mBarBorderColor = Color.BLACK
+    private var mBarBorderColor = ColorTemplate.BLACK
 
     /**
      * the alpha value used to draw the highlight indicator bar
@@ -44,7 +41,7 @@ open class BarDataSet(yVals: MutableList<BarEntryFloat>, label: String) : BarLin
         protected set
 
     init {
-        highLightColor = Color.rgb(0, 0, 0)
+        highLightColor = ColorTemplate.BLACK
 
         calcStackSize(yVals)
         calcEntryCountIncludingStacks(yVals)
@@ -87,7 +84,7 @@ open class BarDataSet(yVals: MutableList<BarEntryFloat>, label: String) : BarLin
     /**
      * Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
      */
-    fun setGradientColor(@ColorInt startColor: Int, @ColorInt endColor: Int) {
+    fun setGradientColor(startColor: Int, endColor: Int) {
         gradients.clear()
         gradients.add(Fill(startColor, endColor))
     }
@@ -150,8 +147,7 @@ open class BarDataSet(yVals: MutableList<BarEntryFloat>, label: String) : BarLin
 
     /**
      * Sets the color used for drawing the bar-shadows. The bar shadows is a
-     * surface behind the bar that indicates the maximum value. Don't for get to
-     * use getResources().getColor(...) to set this. Or Color.rgb(...).
+     * surface behind the bar that indicates the maximum value.
      */
     override var barShadowColor: Int
         get() = mBarShadowColor

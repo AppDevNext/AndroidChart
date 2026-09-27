@@ -822,6 +822,66 @@ lint                 Existing custom lint rules (unchanged)
         of these would be reasonable next slices before resuming the Step A.7
         renderer port for Bar/Line/Scatter charts (Candle/Radar/Bubble/Pie
         renderers are unblocked already on the data-model side).
+- [x] **Step A.3 (continuation, part 3) — split the `Fill` class, migrate
+      `BarDataSet`.** Tackles the first of the three blockers flagged above.
+      `Fill` (`utils/Fill.kt`) mixed a small amount of portable state
+      (`type`/`color`/`alpha`/`gradientColors`/`gradientPositions`/the derived
+      `finalColor`) with Canvas/Paint/Drawable/LinearGradient-based drawing
+      logic (`fillRect(...)`/`fillPath(...)`) and a `Drawable` payload for
+      `Type.DRAWABLE` — none of which have a portable KMP equivalent.
+      - **`chartLibCore/utils/Fill.kt`** now holds only the portable state:
+        `Type`/`Direction` enums, `type`, `color`, `alpha`,
+        `gradientColors`/`gradientPositions`, the `startColor,endColor`
+        gradient constructor, and `setGradientColors(...)`. The previously
+        `private var mFinalColor` is exposed as a new public read-only
+        `val finalColor: Int?` property (was only accessible internally to
+        `fillRect`/`fillPath` before) so the Android-only drawing extensions
+        can read it. `@ColorInt` dropped (non-functional at runtime, same as
+        prior slices).
+      - **New `chartLib/utils/FillAndroid.kt`** holds everything
+        Android-only: `fun Fill.fillRect(...)`/`fun Fill.fillPath(...)` as
+        extension functions (ported verbatim from the old member functions,
+        just reading `finalColor` instead of the private `mFinalColor`), plus
+        `var Fill.drawable: Drawable?` as a `WeakHashMap<Fill, Drawable?>`-backed
+        extension property for the `Type.DRAWABLE` payload — same side-channel
+        pattern as `ILineRadarDataSet.fillDrawable` from continuation part 2.
+        (Note: `Type.DRAWABLE`/`drawable` were already dead code with no
+        public setter anywhere in the codebase before this slice; the
+        side-channel exists for API completeness/future use, not because
+        anything currently exercises it.)
+      - Two call sites (`BarChartRenderer.kt`, `HorizontalBarChartRenderer.kt`,
+        both calling `dataSet.getFill(pos)?.fillRect(...)`) needed only an
+        added `import info.appdev.charting.utils.fillRect` — no call-site
+        syntax changes, since Kotlin resolves member-call syntax
+        (`fill.fillRect(...)`) identically whether `fillRect` is a member or
+        an extension function.
+      - **Moved to `chartLibCore` commonMain**: `data/BarDataSet.kt`,
+        `interfaces/datasets/IBarDataSet.kt` — `IBarDataSet` needed no changes
+        (it was already portable, referencing only `Fill`/`BarEntryFloat`);
+        `BarDataSet` had `android.graphics.Color.rgb(...)`/`Color.BLACK`
+        replaced with `ColorTemplate.argb(...)`/`ColorTemplate.BLACK` (the
+        latter a pre-existing common constant) and `@ColorInt` dropped.
+        `BarDataSet` is now a fully portable leaf class — first of the three
+        remaining Android-only `DataSet` leaves to move.
+      - **`LineDataSet`/`ScatterDataSet` remain Android-only** — `LineDataSet`
+        still needs `IFillFormatter`/`LineDataProvider` decoupling and
+        `Context`/`ContextCompat`-based drawable-resource fill loading;
+        `ScatterDataSet` still needs the `IShapeRenderer` family split.
+      - No behavior changes disclosed for this slice — `finalColor` was
+        already computed identically before (just via a private property),
+        and the dead `Type.DRAWABLE` path behaves the same (returns early
+        when no drawable is set, same as before when `drawable` was `null`).
+      - Verified: `chartLibCore:compileKotlinDesktop`,
+        `chartLib:compileDebugKotlin`, full `chartLibCore:allTests`,
+        `chartLibCompose:assembleDebug`, `app:assembleDebug`, full
+        `./gradlew test`, and `chartLibComposeMultiplatform:build` (all
+        targets) all pass.
+      - **Not yet done**: `IFillFormatter`/`LineDataProvider` decoupling and
+        `IShapeRenderer`/`ScatterDataSet` splitting remain as candidate next
+        slices to fully unblock `LineDataSet`/`ScatterDataSet`; resuming the
+        Step A.7 renderer port itself (e.g. a Bar/Candle/Radar/Bubble/Pie data
+        renderer proof-of-concept) is also now viable given the expanded set
+        of portable `DataSet` leaves.
 - [ ] **Step A.8 — Gesture handling** with `pointerInput`/`detectTransformGestures`
       replacing `ChartTouchListener`/`MotionEvent`.
 - [ ] **Step A.9 — `demoKmp` Compose Multiplatform demo app**

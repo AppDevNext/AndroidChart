@@ -10,6 +10,7 @@ import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.BarDataProvider
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.Fill
+import info.appdev.charting.utils.fillRect
 import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.ViewPortHandler
