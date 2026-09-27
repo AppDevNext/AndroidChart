@@ -20,37 +20,12 @@ import kotlin.math.min
  * The legend object is NOT available before setting data to the chart.
  */
 class Legend() : ComponentBase() {
-    enum class LegendForm {
-        /**
-         * Avoid drawing a form
-         */
-        NONE,
-
-        /**
-         * Do not draw the form, but leave space for it
-         */
-        EMPTY,
-
-        /**
-         * Use default (default dataset's form to the legend's form)
-         */
-        DEFAULT,
-
-        /**
-         * Draw a square
-         */
-        SQUARE,
-
-        /**
-         * Draw a circle
-         */
-        CIRCLE,
-
-        /**
-         * Draw a horizontal line
-         */
-        LINE
-    }
+    /**
+     * Kept as a nested type alias (rather than a nested enum) so that the actual enum can live
+     * in the platform-independent `chartLibCore` module while `Legend.LegendForm` keeps
+     * working unchanged for existing callers.
+     */
+    typealias LegendForm = info.appdev.charting.components.LegendForm
 
     enum class LegendHorizontalAlignment {
         LEFT, CENTER, RIGHT

@@ -1,9 +1,9 @@
 package info.appdev.charting.data
 
-import android.graphics.Paint
 import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.ICandleDataSet
 import info.appdev.charting.utils.ColorTemplate
+import info.appdev.charting.utils.PaintStyle
 import info.appdev.charting.utils.convertDpToPixel
 
 /**
@@ -37,13 +37,13 @@ open class CandleDataSet(yVals: MutableList<CandleEntryFloat>, label: String = "
      * paint style when open < close
      * increasing candlesticks are traditionally hollow
      */
-    protected var mIncreasingPaintStyle: Paint.Style? = Paint.Style.STROKE
+    protected var mIncreasingPaintStyle: PaintStyle? = PaintStyle.STROKE
 
     /**
      * paint style when open > close
      * decreasing candlesticks are traditionally filled
      */
-    protected var mDecreasingPaintStyle: Paint.Style? = Paint.Style.FILL
+    protected var mDecreasingPaintStyle: PaintStyle? = PaintStyle.FILL
 
     /**
      * color for open == close
@@ -172,7 +172,7 @@ open class CandleDataSet(yVals: MutableList<CandleEntryFloat>, label: String = "
              */
             mDecreasingColor = value
         }
-    override var increasingPaintStyle: Paint.Style?
+    override var increasingPaintStyle: PaintStyle?
         get() = mIncreasingPaintStyle
         set(value) {
             /**
@@ -180,7 +180,7 @@ open class CandleDataSet(yVals: MutableList<CandleEntryFloat>, label: String = "
              */
             mIncreasingPaintStyle = value
         }
-    override var decreasingPaintStyle: Paint.Style?
+    override var decreasingPaintStyle: PaintStyle?
         get() = mDecreasingPaintStyle
         set(value) {
             /**

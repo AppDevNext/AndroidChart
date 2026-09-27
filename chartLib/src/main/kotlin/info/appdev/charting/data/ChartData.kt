@@ -1,7 +1,7 @@
 package info.appdev.charting.data
 
 import android.annotation.SuppressLint
-import android.graphics.Typeface
+import info.appdev.charting.utils.ChartTypeface
 import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.highlight.Highlight
@@ -560,7 +560,7 @@ abstract class ChartData<T : IDataSet<out EntryFloat>> : Serializable {
     /**
      * Sets the Typeface for all value-labels for all DataSets this data object contains.
      */
-    fun setValueTypeface(tf: Typeface?) {
+    fun setValueTypeface(tf: ChartTypeface?) {
         for (set in this.dataSets) {
             set.valueTypeface = tf
         }

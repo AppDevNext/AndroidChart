@@ -1,6 +1,6 @@
 package info.appdev.charting.interfaces.datasets
 
-import android.graphics.Paint
+import info.appdev.charting.utils.PaintStyle
 import info.appdev.charting.data.CandleEntryFloat
 
 interface ICandleDataSet : ILineScatterCandleRadarDataSet<CandleEntryFloat> {
@@ -44,12 +44,12 @@ interface ICandleDataSet : ILineScatterCandleRadarDataSet<CandleEntryFloat> {
     /**
      * Returns paint style when open < close
      */
-    val increasingPaintStyle: Paint.Style?
+    val increasingPaintStyle: PaintStyle?
 
     /**
      * Returns paint style when open > close
      */
-    val decreasingPaintStyle: Paint.Style?
+    val decreasingPaintStyle: PaintStyle?
 
     /**
      * Is the shadow color same as the candle color?

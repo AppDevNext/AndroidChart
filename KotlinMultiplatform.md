@@ -143,8 +143,104 @@ lint                 Existing custom lint rules (unchanged)
         `chartLib` itself (proof the package-preserving move is fully transparent to
         existing consumers); full `./gradlew test :chartLibCore:allTests` and
         `chartLibCompose:assembleDebug`/`app:assembleDebug` all pass.
-- [ ] **Step A.3 (remainder) — Migrate `BaseDataSet`/`DataSet`/`ChartData` and
-      `interfaces/` (`IDataSet` family, `dataprovider` family).**
+- [ ] **Step A.3 (remainder, partial) — DataSet-family groundwork: common
+      enums/abstractions landed; full `IDataSet`/`BaseDataSet`/`DataSet`/`ChartData`
+      move is BLOCKED, see below.**
+      - **Landed in `chartLibCore` (new, reusable common types):**
+        - `components/AxisDependency.kt` (top-level enum: `LEFT`, `RIGHT`) —
+          extracted from `YAxis`'s nested enum. `YAxis` keeps a nested
+          `typealias AxisDependency = info.appdev.charting.components.AxisDependency`
+          so `YAxis.AxisDependency.LEFT` and all existing imports/call sites keep
+          working unchanged (nested type aliases are a real, if lesser-known,
+          Kotlin feature — see kotlinlang.org's type-alias docs).
+        - `components/LegendForm.kt` (top-level enum: `NONE`, `EMPTY`, `DEFAULT`,
+          `SQUARE`, `CIRCLE`, `LINE`) — same nested-typealias treatment applied to
+          `Legend.LegendForm`.
+        - `utils/PaintStyle.kt` (top-level enum: `FILL`, `STROKE`, `FILL_AND_STROKE`)
+          — platform-independent replacement for `android.graphics.Paint.Style`,
+          used by `ICandleDataSet`/`CandleDataSet`. A new Android-only converter
+          `PaintStyle?.toAndroidPaintStyle()` (in `chartLib`'s
+          `utils/PaintStyleAndroid.kt`) bridges it back to `Paint.Style` at the two
+          `CandleStickChartRenderer` draw call sites; the demo app's
+          `CandleStickChartActivity` was updated to set `PaintStyle.FILL`/`STROKE`
+          instead of `Paint.Style.FILL`/`STROKE`.
+        - `utils/ChartTypeface.kt` (+ android/iOS/desktop actuals) — same
+          `expect`/`actual` pattern as `ChartIcon`. `expect open class ChartTypeface`
+          (must be `open`, not `abstract`, to match `android.graphics.Typeface`'s
+          modality) with `actual typealias ChartTypeface = android.graphics.Typeface`
+          on Android (zero-cost) and placeholder `actual open class ChartTypeface` on
+          iOS/desktop. Applied to `IDataSet.valueTypeface`, `BaseDataSet.mValueTypeface`,
+          and `ChartData.setValueTypeface(tf: ChartTypeface?)` — these three files
+          **stay in `chartLib`** for now (see blocker below) but their public API
+          surface is now common-type-ready.
+        - `utils/DashEffect.kt` — a common `class DashEffect(intervals: FloatArray,
+          phase: Float)` (manual `equals`/`hashCode` via `contentEquals`, since
+          Kotlin data classes don't do array content-equality automatically) designed
+          to eventually replace `android.graphics.DashPathEffect` in `IDataSet`/
+          `BaseDataSet`/`ILineDataSet`/etc. **Not yet wired up** — the DashPathEffect
+          usages in `BaseDataSet.formLineDashEffect`, `LineDataSet.dashPathEffect`,
+          and `LineScatterCandleRadarDataSet.dashPathEffectHighlight` are consumed
+          directly as `android.graphics.DashPathEffect` at several renderer call
+          sites (`LegendRenderer`, `LineChartRenderer`, `CandleStickChartRenderer`,
+          etc.); swapping the property types requires updating every one of those
+          render call sites with an Android-side conversion helper (mirroring what
+          was just done for `PaintStyle`). Left as a distinct, separately-scoped
+          follow-up sub-slice ("A.3c") rather than folding it into an already-large
+          change.
+        - `utils/DisplayMetrics.kt` — a common `var chartDensity: Float = 1f` +
+          `Float.convertDpToPixel()` extension, replacing the old Android-only
+          `Float.convertDpToPixel()` in `chartLib`'s `NumberUtils.kt` (which read a
+          nullable `android.util.DisplayMetrics` global and logged a Timber warning
+          if uninitialized). `chartLib`'s `Context.initUtils()` now sets
+          `chartDensity = this.resources.displayMetrics.density` directly. This is a
+          **minor documented behavior change**: the old "Utils NOT INITIALIZED"
+          Timber warning is gone — `chartDensity` simply defaults to `1f` (no
+          scaling) until a platform sets it, rather than warning and passing the
+          value through unscaled.
+        - `utils/PointF.kt` moved from `chartLib` to `chartLibCore` commonMain,
+          dropping `android.os.Parcelable`/`Parcel` support (same rationale/breaking-
+          change disclosure as `EntryFloat` in the previous slice — no internal usage
+          of `PointF.CREATOR` found repo-wide) and replacing the JVM-only
+          `Math.toRadians(...)` call in `changePosition(...)` with a manual
+          `degrees * PI / 180.0` conversion using `kotlin.math.PI`.
+        - `ColorTemplate.argb(r, g, b)` made `public` (was `private`) and two new
+          public constants `ColorTemplate.WHITE`/`ColorTemplate.BLACK` added, as
+          reusable platform-independent replacements for
+          `android.graphics.Color.rgb(...)`/`Color.WHITE`/`Color.BLACK` — not yet
+          applied inside `LineDataSet`/`RadarDataSet`/`BarLineScatterCandleBubbleDataSet`
+          (deferred along with the rest of those classes, see blocker below).
+      - **Key blocker discovered (documents a correction to the migration order in
+        "Migration order rationale" below):** `IDataSet.valueFormatter` is typed
+        `IValueFormatter`, and `IValueFormatter.getFormattedValue(...)` takes a
+        `ViewPortHandler?` parameter; `ILineDataSet.fillFormatter` is typed
+        `IFillFormatter`, whose `getFillLinePosition(...)` takes a
+        `LineDataProvider` (a chart-view-facing `interfaces/dataprovider` type).
+        `ViewPortHandler` is a 595-line `Matrix`/`RectF`/`View`-coupled geometry
+        engine (planned Step A.6), and `LineDataProvider` is transitively coupled to
+        the whole View-based rendering pipeline (planned to move alongside/after
+        Compose Multiplatform rendering work, not before). Because `IDataSet` and
+        `ILineDataSet` reference these types directly in their member signatures,
+        **`IDataSet`/`BaseDataSet`/`DataSet`/`ChartData` and every concrete
+        `*DataSet` subclass cannot be moved to `chartLibCore` until Step A.6
+        (`ViewPortHandler` abstraction) lands**, and a common formatter/dataprovider
+        story is designed. This revises the previously-assumed ordering (A.3 fully
+        before A.4/A.6) — **A.6 must now at least partially precede full A.3
+        completion.** `interfaces/dataprovider/*` was also confirmed to stay
+        Android-only in general (it exposes `RectF`, `Transformer`, and other
+        View-pipeline types) rather than move to `chartLibCore`.
+      - Also confirmed `interfaces/datasets/IBarDataSet` (depends on `utils/Fill.kt`,
+        a `Shader`/`LinearGradient`/`Drawable`-heavy gradient-fill abstraction) and
+        `IScatterDataSet` (depends on `renderer/scatter/IShapeRenderer`, which takes
+        `Canvas`/`Paint` directly) have their own separate Android-only blockers
+        beyond the `IValueFormatter`/`IFillFormatter` one — `BarDataSet` and
+        `ScatterDataSet` will need dedicated `Fill`/`IShapeRenderer` abstraction
+        work even after Step A.6 unblocks the rest of the family.
+      - Verified: `chartLibCore` builds/tests green on Android/iOS×3/desktop-JVM;
+        `chartLib:compileDebugKotlin`, full `./gradlew test`,
+        `chartLibCompose:assembleDebug`, and `app:assembleDebug` all pass with the
+        `YAxis`/`Legend`/`CandleDataSet`/`ICandleDataSet`/`IDataSet`/`BaseDataSet`/
+        `ChartData`/`CandleStickChartRenderer`/`CandleStickChartActivity` changes
+        described above.
 - [ ] **Step A.4 — Migrate formatters (`formatter/`) and remaining highlighters
       (`highlight/`).**
 - [ ] **Step A.5 — Migrate `components/` (axes, legend, limit lines).**
@@ -221,6 +317,25 @@ at least one of them:
    `CanvasUtils`, `SaveUtils`, `PaintUtils`, `AssetManagerUtils`, `ContextUtils`
    stay Android-only (`androidMain`) — they are fundamentally platform IO/graphics
    concerns, not shared chart logic.
+
+> **Correction found while executing step 1 (see the Status changelog above):**
+> `interfaces/datasets/IDataSet.valueFormatter` is typed `IValueFormatter`, whose
+> `getFormattedValue(...)` takes a `ViewPortHandler?`, and
+> `ILineDataSet.fillFormatter` is typed `IFillFormatter`, whose
+> `getFillLinePosition(...)` takes a `LineDataProvider` (`interfaces/dataprovider`).
+> This means step 1 (`data/`+`interfaces/`) **cannot fully complete before** step 5
+> (`ViewPortHandler`/`Transformer`) at least partially lands, and before a
+> common-friendly design exists for `interfaces/dataprovider` (which today exposes
+> `RectF`/`Transformer` and is tightly coupled to the concrete `View`-based chart
+> classes). The enums/typedefs that *don't* transitively depend on these
+> (`AxisDependency`, `LegendForm`, `PaintStyle`, `ChartTypeface`, `DashEffect`,
+> `PointF`, `chartDensity`/`convertDpToPixel`) were still landed in `chartLibCore`
+> as groundwork, and applied to their Android-only call sites in `chartLib` where
+> that was safe to do without moving the whole class. `IBarDataSet`/`BarDataSet`
+> (via `utils/Fill.kt`) and `IScatterDataSet`/`ScatterDataSet` (via
+> `renderer/scatter/IShapeRenderer`) have their own independent blockers on top of
+> this and will need dedicated abstraction work regardless of when steps 1/5
+> otherwise complete.
 
 ## Step A.7+ — Compose Multiplatform renderer
 

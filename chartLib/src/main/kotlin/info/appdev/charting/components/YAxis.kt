@@ -18,6 +18,13 @@ import kotlin.math.min
  */
 open class YAxis : AxisBase {
     /**
+     * Kept as a nested type alias (rather than a nested enum) so that the actual enum can live
+     * in the platform-independent `chartLibCore` module while `YAxis.AxisDependency` keeps
+     * working unchanged for existing callers.
+     */
+    typealias AxisDependency = info.appdev.charting.components.AxisDependency
+
+    /**
      * indicates if the bottom y-label entry is drawn or not
      */
     val isDrawBottomYLabelEntryEnabled: Boolean = true
@@ -95,13 +102,6 @@ open class YAxis : AxisBase {
      * default: Float.POSITIVE_INFINITY (no maximum specified)
      */
     var maxWidth: Float = Float.POSITIVE_INFINITY
-
-    /**
-     * Enum that specifies the axis a DataSet should be plotted against, either LEFT or RIGHT.
-     */
-    enum class AxisDependency {
-        LEFT, RIGHT
-    }
 
     constructor() : super() {
         this.axisDependency = AxisDependency.LEFT

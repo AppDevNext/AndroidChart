@@ -1,7 +1,7 @@
 package info.appdev.charting.interfaces.datasets
 
 import android.graphics.DashPathEffect
-import android.graphics.Typeface
+import info.appdev.charting.utils.ChartTypeface
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.DataSet
@@ -238,7 +238,7 @@ interface IDataSet<T : BaseEntry<Float>> {
     /**
      * Sets a Typeface for the value-labels of this DataSet.
      */
-    var valueTypeface: Typeface?
+    var valueTypeface: ChartTypeface?
 
     /**
      * Sets the text-size of the value-labels of this DataSet in dp.

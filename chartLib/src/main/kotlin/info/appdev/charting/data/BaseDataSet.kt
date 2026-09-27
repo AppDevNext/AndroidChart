@@ -3,7 +3,7 @@ package info.appdev.charting.data
 import android.content.Context
 import android.graphics.Color
 import android.graphics.DashPathEffect
-import android.graphics.Typeface
+import info.appdev.charting.utils.ChartTypeface
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import info.appdev.charting.components.Legend.LegendForm
@@ -56,7 +56,7 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
     /**
      * the typeface used for the value text
      */
-    protected var mValueTypeface: Typeface? = null
+    protected var mValueTypeface: ChartTypeface? = null
 
     private var mForm = LegendForm.DEFAULT
     private var mFormSize = Float.NaN
@@ -280,7 +280,7 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
         return mValueColors[value % mValueColors.size]
     }
 
-    override var valueTypeface: Typeface?
+    override var valueTypeface: ChartTypeface?
         get() = mValueTypeface
         set(value) {
             mValueTypeface = value

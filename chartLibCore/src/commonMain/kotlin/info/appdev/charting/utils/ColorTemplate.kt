@@ -99,10 +99,20 @@ object ColorTemplate {
     }
 
     /**
+     * Fully opaque white, platform-independent replacement for android.graphics.Color.WHITE.
+     */
+    val WHITE: Int = argb(255, 255, 255)
+
+    /**
+     * Fully opaque black, platform-independent replacement for android.graphics.Color.BLACK.
+     */
+    val BLACK: Int = argb(0, 0, 0)
+
+    /**
      * Builds a fully opaque ARGB color int from the given red/green/blue components (0-255),
      * platform-independent replacement for android.graphics.Color.rgb(r, g, b).
      */
-    private fun argb(red: Int, green: Int, blue: Int): Int {
+    fun argb(red: Int, green: Int, blue: Int): Int {
         return (0xFF shl 24) or ((red and 0xFF) shl 16) or ((green and 0xFF) shl 8) or (blue and 0xFF)
     }
 }
