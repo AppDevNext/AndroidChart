@@ -1,6 +1,5 @@
 package info.appdev.charting.interfaces.datasets
 
-import android.graphics.drawable.Drawable
 import info.appdev.charting.data.BaseEntry
 
 interface ILineRadarDataSet<T : BaseEntry<Float>> : ILineScatterCandleRadarDataSet<T> {
@@ -8,11 +7,6 @@ interface ILineRadarDataSet<T : BaseEntry<Float>> : ILineScatterCandleRadarDataS
      * Returns the color that is used for filling the line surface area.
      */
     val fillColor: Int
-
-    /**
-     * Returns the drawable used for filling the area below the line.
-     */
-    val fillDrawable: Drawable?
 
     /**
      * Returns the alpha value that is used for filling the line surface,

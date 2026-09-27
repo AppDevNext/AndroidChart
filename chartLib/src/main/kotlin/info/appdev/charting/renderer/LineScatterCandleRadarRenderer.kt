@@ -6,6 +6,7 @@ import android.graphics.Path
 import info.appdev.charting.animation.ChartAnimator
 import info.appdev.charting.interfaces.datasets.ILineScatterCandleRadarDataSet
 import info.appdev.charting.utils.ViewPortHandler
+import info.appdev.charting.utils.toAndroidDashPathEffect
 
 abstract class LineScatterCandleRadarRenderer(
     animator: ChartAnimator,
@@ -31,7 +32,7 @@ abstract class LineScatterCandleRadarRenderer(
         paintHighlight.strokeWidth = set.highlightLineWidth
 
         // draw highlighted lines (if enabled)
-        paintHighlight.pathEffect = set.dashPathEffectHighlight
+        paintHighlight.pathEffect = set.dashPathEffectHighlight?.toAndroidDashPathEffect()
 
         // draw vertical highlight lines
         if (set.isVerticalHighlightIndicator) {

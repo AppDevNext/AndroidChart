@@ -1,8 +1,7 @@
 package info.appdev.charting.data
 
-import android.graphics.Color
-import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
+import info.appdev.charting.utils.ColorTemplate
 
 /**
  * Baseclass of all DataSets for Bar-, Line-, Scatter- and CandleStickChart.
@@ -12,8 +11,7 @@ abstract class BarLineScatterCandleBubbleDataSet<T : BaseEntry<Float>>(yVals: Mu
     /**
      * Sets the color that is used for drawing the highlight indicators.
      */
-    @ColorInt
-    override var highLightColor: Int = Color.rgb(255, 187, 115)
+    override var highLightColor: Int = ColorTemplate.argb(255, 187, 115)
 
     protected fun copy(barLineScatterCandleBubbleDataSet: BarLineScatterCandleBubbleDataSet<*>) {
         super.copy((barLineScatterCandleBubbleDataSet as BaseDataSet<*>?)!!)

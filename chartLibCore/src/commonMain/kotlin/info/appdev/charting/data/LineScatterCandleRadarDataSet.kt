@@ -1,7 +1,7 @@
 package info.appdev.charting.data
 
-import android.graphics.DashPathEffect
 import info.appdev.charting.interfaces.datasets.ILineScatterCandleRadarDataSet
+import info.appdev.charting.utils.DashEffect
 import info.appdev.charting.utils.convertDpToPixel
 
 abstract class LineScatterCandleRadarDataSet<T : BaseEntry<Float>>(yVals: MutableList<T>, label: String) : BarLineScatterCandleBubbleDataSet<T>(yVals, label),
@@ -12,8 +12,8 @@ abstract class LineScatterCandleRadarDataSet<T : BaseEntry<Float>>(yVals: Mutabl
     /** the width of the highlight indicator lines  */
     protected var mHighlightLineWidth: Float
 
-    /** the path effect for dashed highlight-lines  */
-    override var dashPathEffectHighlight: DashPathEffect? = null
+    /** the dash effect for dashed highlight-lines  */
+    override var dashPathEffectHighlight: DashEffect? = null
         protected set
 
     init {
@@ -58,7 +58,7 @@ abstract class LineScatterCandleRadarDataSet<T : BaseEntry<Float>>(yVals: Mutabl
      * @param phase offset, in degrees (normally, use 0)
      */
     fun enableDashedHighlightLine(lineLength: Float, spaceLength: Float, phase: Float) {
-        this.dashPathEffectHighlight = DashPathEffect(
+        this.dashPathEffectHighlight = DashEffect(
             floatArrayOf(lineLength, spaceLength),
             phase
         )

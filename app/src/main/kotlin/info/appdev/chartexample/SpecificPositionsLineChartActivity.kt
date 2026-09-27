@@ -23,6 +23,7 @@ import info.appdev.charting.components.LimitLine.LimitLabelPosition
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
+import info.appdev.charting.data.fillDrawable
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.listener.ChartTouchListener.ChartGesture

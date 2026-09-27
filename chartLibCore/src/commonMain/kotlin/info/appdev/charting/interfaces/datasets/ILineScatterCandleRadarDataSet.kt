@@ -1,7 +1,7 @@
 package info.appdev.charting.interfaces.datasets
 
-import android.graphics.DashPathEffect
 import info.appdev.charting.data.BaseEntry
+import info.appdev.charting.utils.DashEffect
 
 interface ILineScatterCandleRadarDataSet<T : BaseEntry<Float>> : IBarLineScatterCandleBubbleDataSet<T> {
     /**
@@ -20,7 +20,7 @@ interface ILineScatterCandleRadarDataSet<T : BaseEntry<Float>> : IBarLineScatter
     val highlightLineWidth: Float
 
     /**
-     * Returns the DashPathEffect that is used for highlighting.
+     * Returns the dash effect that is used for highlighting.
      */
-    val dashPathEffectHighlight: DashPathEffect?
+    val dashPathEffectHighlight: DashEffect?
 }

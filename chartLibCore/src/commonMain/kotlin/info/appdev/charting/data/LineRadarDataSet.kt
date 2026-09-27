@@ -1,29 +1,25 @@
 package info.appdev.charting.data
 
-import android.graphics.Color
-import android.graphics.drawable.Drawable
-import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.ILineRadarDataSet
+import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.convertDpToPixel
 
 /**
  * Base dataset for line and radar DataSets.
+ *
+ * Note: the Android-only `fillDrawable` property (drawable-based line/area fill, as opposed
+ * to a solid [fillColor]) lives outside this common class, as an extension property in
+ * `chartLib`'s `LineRadarDataSetAndroid.kt` (`android.graphics.drawable.Drawable` has no
+ * portable equivalent). As a result, setting [fillColor] here no longer implicitly clears a
+ * previously set `fillDrawable`, and [copy] no longer propagates `fillDrawable` to the copy;
+ * callers relying on either behavior should set `fillDrawable` explicitly.
  */
 abstract class LineRadarDataSet<T : BaseEntry<Float>>(yVals: MutableList<T>, label: String) : LineScatterCandleRadarDataSet<T>(yVals, label), ILineRadarDataSet<T> {
     // TODO: Move to using `Fill` class
     /**
      * the color that is used for filling the line surface
      */
-    @ColorInt
-    private var mFillColor = Color.rgb(140, 234, 255)
-
-    /**
-     * Sets the drawable to be used to fill the area below the line.
-     */
-    /**
-     * the drawable to be used for filling the line surface
-     */
-    override var fillDrawable: Drawable? = null
+    private var mFillColor = ColorTemplate.argb(140, 234, 255)
 
     /**
      * sets the alpha value (transparency) that is used for filling the line
@@ -48,11 +44,9 @@ abstract class LineRadarDataSet<T : BaseEntry<Float>>(yVals: MutableList<T>, lab
         get() = mFillColor
         /**
          * Sets the color that is used for filling the area below the line.
-         * Resets an eventually set "fillDrawable".
          */
         set(color) {
             mFillColor = color
-            this.fillDrawable = null
         }
 
     override var lineWidth: Float
@@ -73,7 +67,6 @@ abstract class LineRadarDataSet<T : BaseEntry<Float>>(yVals: MutableList<T>, lab
         lineRadarDataSet.isDrawFilled = this.isDrawFilled
         lineRadarDataSet.fillAlpha = this.fillAlpha
         lineRadarDataSet.mFillColor = mFillColor
-        lineRadarDataSet.fillDrawable = this.fillDrawable
         lineRadarDataSet.mLineWidth = mLineWidth
     }
 }

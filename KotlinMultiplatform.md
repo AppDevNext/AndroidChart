@@ -736,6 +736,92 @@ lint                 Existing custom lint rules (unchanged)
         rendering, etc.), most of which *do* need the concrete `DataSet`
         classes ported to `chartLibCore` first (a prerequisite not yet
         started) before they can be tackled the same way.
+- [x] **Step A.3 (continuation, part 2) — concrete `DataSet` family (Bar/Line/
+      Scatter/Candle/Bubble/Radar/Pie) prerequisite for Step A.7's renderer
+      port.** The Step A.7 grid-line slice above surfaced that most of the
+      remaining ~30 renderer files need concrete chart-type `DataSet` classes
+      (`LineDataSet`/`BarDataSet`/etc.), which hadn't moved to `chartLibCore`
+      yet even though the abstract `DataSet`/`BaseDataSet`/`IDataSet` base
+      already had (Step A.3 completion). This slice migrates every concrete
+      `DataSet` class that has *no* remaining Android-only blocker, and
+      leaves the ones that genuinely do (documented below) as Android-only
+      leaves extending the now-common parent classes — same pattern as
+      `IMarker`/highlighters in Steps A.4/A.5.
+      - **Moved to `chartLibCore` commonMain** (same package/class names):
+        `data/BarLineScatterCandleBubbleDataSet.kt`,
+        `data/LineScatterCandleRadarDataSet.kt`, `data/LineRadarDataSet.kt`,
+        `data/BubbleDataSet.kt`, `data/CandleDataSet.kt`, `data/PieDataSet.kt`,
+        `data/RadarDataSet.kt`, and their interfaces
+        `interfaces/datasets/IBarLineScatterCandleBubbleDataSet.kt`,
+        `ILineScatterCandleRadarDataSet.kt`, `ILineRadarDataSet.kt`,
+        `IBubbleDataSet.kt`, `ICandleDataSet.kt`, `IPieDataSet.kt`,
+        `IRadarDataSet.kt`. `BubbleDataSet`/`PieDataSet`/`CandleDataSet`/
+        `RadarDataSet` are now fully portable leaf classes; the abstract
+        parents unblock any future common data renderer for those chart
+        types.
+      - Trivial Android cleanup applied throughout: `@ColorInt` annotations
+        dropped (non-functional at runtime); `android.graphics.Color.rgb(...)`/
+        `Color.WHITE` literals replaced with the existing common
+        `ColorTemplate.argb(r, g, b)` helper (already used elsewhere in
+        `chartLibCore`); the `convertDpToPixel()` calls in these files already
+        resolved to the common `Float.convertDpToPixel()` extension
+        established in Step A.5 (backed by the global `chartDensity`
+        set via `Context.initUtils()`), so no changes were needed there.
+      - `ILineScatterCandleRadarDataSet.dashPathEffectHighlight`/
+        `LineScatterCandleRadarDataSet.enableDashedHighlightLine(...)`:
+        `android.graphics.DashPathEffect` replaced with the common `DashEffect`
+        type (Step A.5's `DashEffect`/`toAndroidDashPathEffect()` pattern,
+        reused as-is). One render call site updated,
+        `LineScatterCandleRadarRenderer.drawHighlightLines(...)`
+        (`paintHighlight.pathEffect = set.dashPathEffectHighlight` →
+        `...?.toAndroidDashPathEffect()`).
+      - **`fillDrawable` (on `ILineRadarDataSet`/`LineRadarDataSet`) removed
+        from common code entirely** and replaced with a new Android-only
+        side-channel: `chartLib/data/LineRadarDataSetAndroid.kt` defines
+        `var ILineRadarDataSet<*>.fillDrawable: Drawable?` as an extension
+        property backed by a `WeakHashMap<ILineRadarDataSet<*>, Drawable?>`
+        keyed by dataset identity. `android.graphics.drawable.Drawable` has no
+        portable equivalent (unlike `DashPathEffect`/`Paint.Style`, which
+        already had common replacements), so — matching the established
+        extension-property pattern from Step A.3's `BaseDataSet.setColors` —
+        this keeps `dataSet.fillDrawable = ...`/`dataSet.fillDrawable`
+        call-site syntax completely unchanged for both `LineDataSet` (still
+        Android-only, stays in `chartLib`) and `RadarDataSet` (now common),
+        at the cost of adding an explicit
+        `import info.appdev.charting.data.fillDrawable` at each call site
+        (`LineChartRenderer.kt`, `RadarChartRenderer.kt`, and three `app`
+        example activities that set a custom fill drawable).
+      - **Two small disclosed behavior changes**, documented in
+        `LineRadarDataSet`'s class doc, both around the removed `fillDrawable`
+        stored property: setting `fillColor` no longer implicitly clears a
+        previously set `fillDrawable` (previously an automatic side effect of
+        the old stored-property setter), and `.copy()` no longer propagates
+        `fillDrawable` to the copy. Callers relying on either behavior should
+        set `fillDrawable` explicitly afterward — same category of
+        already-disclosed minor breaking change as `PercentFormatter`'s
+        constructor change in Step A.5.
+      - **Left as Android-only leaves** (extending the now-common abstract
+        parents, same as `IMarker`/highlighters in Steps A.4/A.5): `BarDataSet`
+        (needs the heavily Canvas/Paint/Drawable/LinearGradient-coupled `Fill`
+        class, which itself would need the same common-type-plus-Android-
+        renderer split as `DashEffect`/`PaintStyle` — out of scope for this
+        slice), `LineDataSet` (needs `Fill`, `Context`/`ContextCompat`-based
+        drawable-resource fill loading, and `IFillFormatter`, which in turn
+        depends on the permanently-Android-only `LineDataProvider` from Step
+        A.4), and `ScatterDataSet`/`IScatterDataSet` (needs the
+        Canvas/Paint-coupled `IShapeRenderer` family in
+        `renderer/scatter/`).
+      - Verified: `chartLibCore:compileKotlinDesktop` (chartLibCore's own
+        compile), full `chartLibCore:allTests`, `chartLib:compileDebugKotlin`,
+        full `./gradlew test`, `chartLibCompose:assembleDebug`,
+        `app:assembleDebug`, and `chartLibComposeMultiplatform:build` (all
+        targets, since it depends on `chartLibCore`) all pass.
+      - **Not yet done**: `Fill` splitting (common data + Android drawing
+        extension) to unblock `BarDataSet`/`LineDataSet`; `IFillFormatter`/
+        `LineDataProvider` decoupling; `IShapeRenderer`/`ScatterDataSet`. Any
+        of these would be reasonable next slices before resuming the Step A.7
+        renderer port for Bar/Line/Scatter charts (Candle/Radar/Bubble/Pie
+        renderers are unblocked already on the data-model side).
 - [ ] **Step A.8 — Gesture handling** with `pointerInput`/`detectTransformGestures`
       replacing `ChartTouchListener`/`MotionEvent`.
 - [ ] **Step A.9 — `demoKmp` Compose Multiplatform demo app**

@@ -1,7 +1,5 @@
 package info.appdev.charting.data
 
-import android.graphics.Color
-import androidx.annotation.ColorInt
 import info.appdev.charting.interfaces.datasets.IRadarDataSet
 import info.appdev.charting.utils.ColorTemplate
 
@@ -9,12 +7,10 @@ open class RadarDataSet(yVals: MutableList<RadarEntryFloat>, label: String = "")
     /** flag indicating whether highlight circle should be drawn or not */
     protected var mIsDrawHighlightCircle: Boolean = false
 
-    @ColorInt
-    protected var mHighlightCircleFillColor: Int = Color.WHITE
+    protected var mHighlightCircleFillColor: Int = ColorTemplate.argb(255, 255, 255)
 
     /** The stroke color for highlight circle.
      * If Utils.COLOR_NONE, the color of the dataset is taken. */
-    @ColorInt
     protected var mHighlightCircleStrokeColor: Int = ColorTemplate.COLOR_NONE
 
     protected var mHighlightCircleStrokeAlpha: Int = (0.3 * 255).toInt()
