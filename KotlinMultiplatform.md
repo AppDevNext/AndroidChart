@@ -263,8 +263,43 @@ lint                 Existing custom lint rules (unchanged)
         `YAxis`/`Legend`/`CandleDataSet`/`ICandleDataSet`/`IDataSet`/`BaseDataSet`/
         `ChartData`/`CandleStickChartRenderer`/`CandleStickChartActivity` changes
         described above.
-- [ ] **Step A.4 — Migrate formatters (`formatter/`) and remaining highlighters
-      (`highlight/`).**
+- [ ] **Step A.4 (partial) — `Highlight`/`IHighlighter` moved; the rest of
+      `formatter/` and `highlight/` is BLOCKED by the same Step A.6 dependency
+      found while investigating Step A.3.**
+      - **Landed:** `highlight/Highlight.kt` and `highlight/IHighlighter.kt` moved
+        to `chartLibCore` commonMain. `Highlight` dropped `java.io.Serializable`
+        (same disclosed-breaking-change rationale as `EntryFloat`/`PointF` — no
+        internal usage of Highlight serialization found repo-wide) and now imports
+        the top-level common `info.appdev.charting.components.AxisDependency`
+        instead of the nested `YAxis.AxisDependency` type alias (which itself still
+        resolves to the exact same type — this is purely so `Highlight` doesn't
+        need to reference the Android-only `YAxis` class to get at the enum).
+        `IHighlighter` needed no changes at all (it only referenced `Highlight`).
+      - **Everything else in `formatter/` is blocked:** every one of the 10 files in
+        `formatter/` (`IValueFormatter`, `DefaultValueFormatter`,
+        `IAxisValueFormatter`, `DefaultAxisValueFormatter`, `IndexAxisValueFormatter`,
+        `LargeValueFormatter`, `PercentFormatter`, `StackedValueFormatter`,
+        `IFillFormatter`, `DefaultFillFormatter`, `ColorFormatter`) imports at least
+        one of: `utils/ViewPortHandler` (Step A.6, not yet done),
+        `components/AxisBase` (Step A.5, not yet done),
+        `interfaces/datasets/IDataSet`/`ILineDataSet` (blocked per the Step A.3
+        finding), or `interfaces/dataprovider/LineDataProvider` (Android-only, tied
+        to the View rendering pipeline). None can move yet.
+      - **Everything else in `highlight/` is blocked** for the same reason:
+        `ChartHighlighter`, `BarHighlighter`, `HorizontalBarHighlighter`,
+        `CombinedHighlighter` all import `interfaces/datasets/IDataSet` and/or
+        `interfaces/dataprovider/*`; `PieHighlighter`/`RadarHighlighter`/
+        `PieRadarHighlighter` additionally import concrete `charts/PieChart`,
+        `charts/RadarChart`, `charts/PieRadarChartBase` `View` subclasses directly.
+      - **Conclusion:** Step A.4 cannot meaningfully proceed further until Step A.6
+        (`ViewPortHandler`/`Transformer` common abstraction) and enough of Step A.5
+        (`AxisBase` at minimum) land, exactly as flagged in the Step A.3 changelog
+        entry above. Recommend doing **Step A.6 next**, since it's the single
+        blocker unblocking the largest amount of remaining work (rest of A.3, all
+        of A.4, most of A.5).
+      - Verified: `chartLibCore` build/tests, `chartLib:compileDebugKotlin` (zero
+        source changes needed), full `./gradlew test`,
+        `chartLibCompose:assembleDebug`, `app:assembleDebug` all pass.
 - [ ] **Step A.5 — Migrate `components/` (axes, legend, limit lines).**
 - [ ] **Step A.6 — Migrate `utils/` geometry & viewport math
       (`ViewPortHandler`, `Transformer`, `PointF`).**

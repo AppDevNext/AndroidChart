@@ -1,12 +1,11 @@
 package info.appdev.charting.highlight
 
-import info.appdev.charting.components.YAxis.AxisDependency
-import java.io.Serializable
+import info.appdev.charting.components.AxisDependency
 
 /**
  * Contains information needed to determine the highlighted value.
  */
-class Highlight : Serializable {
+class Highlight {
     /**
      * the x-value of the highlighted value
      */
