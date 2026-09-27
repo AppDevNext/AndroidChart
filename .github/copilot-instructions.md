@@ -74,7 +74,7 @@ The `lint` module enforces two rules — do not work around them:
 - **Unit tests**: JUnit 4 + Mockito, located in `chartLib/src/test/kotlin/`
   - Run with: `./gradlew :chartLib:test`
 - **Instrumentation tests**: Espresso, located in `app/src/androidTest/kotlin/`
-  - Run with: `./gradlew cAT` (requires emulator, API 28)
+  - Run with: `./gradlew connectedAndroidTest` (requires emulator, API 28)
 - CI runs instrumentation tests on an API 28 x86_64 emulator via GitHub Actions
 
 ## Publishing
