@@ -14,6 +14,8 @@ import info.appdev.charting.components.Legend.LegendVerticalAlignment
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis
 import info.appdev.charting.components.YAxis.AxisDependency
+import info.appdev.charting.components.getRequiredHeightSpace
+import info.appdev.charting.components.getRequiredWidthSpace
 import info.appdev.charting.data.BarLineScatterCandleBubbleData
 import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.EntryFloat

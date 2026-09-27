@@ -109,6 +109,11 @@ object ColorTemplate {
     val BLACK: Int = argb(0, 0, 0)
 
     /**
+     * Fully opaque gray, platform-independent replacement for android.graphics.Color.GRAY.
+     */
+    val GRAY: Int = argb(128, 128, 128)
+
+    /**
      * Builds a fully opaque ARGB color int from the given red/green/blue components (0-255),
      * platform-independent replacement for android.graphics.Color.rgb(r, g, b).
      */

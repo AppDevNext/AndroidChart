@@ -1,8 +1,7 @@
 package info.appdev.charting.components
 
-import android.graphics.Color
-import android.graphics.Typeface
-import androidx.annotation.ColorInt
+import info.appdev.charting.utils.ChartTypeface
+import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.convertDpToPixel
 
 /**
@@ -28,7 +27,7 @@ abstract class ComponentBase {
     /**
      * the typeface used for the labels
      */
-    var typeface: Typeface? = null
+    var typeface: ChartTypeface? = null
 
     /**
      * the text size of the labels
@@ -38,8 +37,7 @@ abstract class ComponentBase {
     /**
      * the text color to use for the labels
      */
-    @ColorInt
-    open var textColor: Int = Color.BLACK
+    open var textColor: Int = ColorTemplate.BLACK
 
     /**
      * Returns the used offset on the x-axis for drawing the axis or legend

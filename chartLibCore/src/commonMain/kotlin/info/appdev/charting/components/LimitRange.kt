@@ -1,10 +1,9 @@
 package info.appdev.charting.components
 
-import android.graphics.Color
-import android.graphics.DashPathEffect
-import android.graphics.Paint
-import androidx.annotation.ColorInt
 import info.appdev.charting.components.LimitLine.LimitLabelPosition
+import info.appdev.charting.utils.ColorTemplate
+import info.appdev.charting.utils.DashEffect
+import info.appdev.charting.utils.PaintStyle
 import info.appdev.charting.utils.convertDpToPixel
 
 /**
@@ -41,20 +40,18 @@ class LimitRange : ComponentBase {
     /**
      * the color of the limit line
      */
-    @ColorInt
-    var lineColor: Int = Color.rgb(237, 91, 91)
+    var lineColor: Int = ColorTemplate.argb(237, 91, 91)
 
     /**
      * the color of the Range
      */
-    @ColorInt
-    var rangeColor: Int = Color.rgb(128, 128, 128)
+    var rangeColor: Int = ColorTemplate.argb(128, 128, 128)
 
     /**
      * Sets the color of the value-text that is drawn next to the LimitLine.
      * Default: Paint.Style.FILL_AND_STROKE
      */
-    var textStyle: Paint.Style? = Paint.Style.FILL
+    var textStyle: PaintStyle? = PaintStyle.FILL
 
     /**
      * Sets the label that is drawn next to the limit line. Provide "" if no
@@ -65,7 +62,7 @@ class LimitRange : ComponentBase {
     /**
      * the path effect of this LimitLine that makes dashed lines possible
      */
-    var dashPathEffect: DashPathEffect? = null
+    var dashPathEffect: DashEffect? = null
         private set
 
     /**
@@ -122,7 +119,7 @@ class LimitRange : ComponentBase {
      * @param phase       offset, in degrees (normally, use 0)
      */
     fun enableDashedLine(lineLength: Float, spaceLength: Float, phase: Float) {
-        this.dashPathEffect = DashPathEffect(
+        this.dashPathEffect = DashEffect(
             floatArrayOf(
                 lineLength, spaceLength
             ), phase

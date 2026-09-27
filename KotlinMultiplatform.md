@@ -486,7 +486,107 @@ lint                 Existing custom lint rules (unchanged)
         `IValueFormatter`/`IFillFormatter` no longer need an Android-only
         `ViewPortHandler`/`LineDataProvider`), most of Step A.4 (`formatter/`
         package, most of `highlight/`), and Step A.5 groundwork.
-- [ ] **Step A.5 — Migrate `components/` (axes, legend, limit lines).**
+- [x] **Step A.5 (axes + limit lines) — `components/`
+      (`ComponentBase`/`AxisBase`/`XAxis`/`YAxis`/`LimitLine`/`LimitRange`) +
+      the `AxisBase`-coupled formatter cluster
+      (`IAxisValueFormatter`/`DefaultAxisValueFormatter`/`IndexAxisValueFormatter`/
+      `LargeValueFormatter`/`PercentFormatter`) fully migrated to `chartLibCore`
+      commonMain. `Legend`/`LegendEntry`/`Description`/`IMarker`/`MarkerImage`/
+      `MarkerView` remain in `chartLib` for a follow-up slice.**
+      - **Circular-dependency slice:** `AxisBase.valueFormatter` references
+        `DefaultAxisValueFormatter` directly, and `IAxisValueFormatter`/
+        `DefaultAxisValueFormatter` both take an `axis: AxisBase?` parameter —
+        so `AxisBase` + `IAxisValueFormatter` + `DefaultAxisValueFormatter` had to
+        move together as one atomic unit (can't be split across separate commits).
+      - `ComponentBase.kt`: `Typeface?` → common `ChartTypeface?` (same
+        zero-cost-typealias pattern as `IDataSet.valueTypeface` from Step A.3,
+        so every existing `paintX.typeface = someComponent.typeface` call site at
+        chartLib render boundaries stays source-compatible unchanged);
+        `Color.BLACK` → `ColorTemplate.BLACK`; dropped `@ColorInt`.
+      - `AxisBase.kt`: `Color.GRAY` → `ColorTemplate.GRAY` (new constant added to
+        `chartLibCore/utils/ColorTemplate.kt`, `argb(128, 128, 128)`);
+        `axisLineDashPathEffect`/`gridDashPathEffect` switched from
+        `android.graphics.DashPathEffect?` to common `DashEffect?` (same pattern as
+        Step A.3's `IDataSet.formLineDashEffect`); `Timber.e(...)` → `println(...)`
+        in `addLimitLine`/`addLimitRange`; dropped `@ColorInt`. The one
+        `Paint`-dependent method, `getLongestLabel(p: Paint?)`, was extracted out of
+        the class body into a new Android-only extension function in
+        `chartLib/components/AxisBaseAndroid.kt` (`fun AxisBase.getLongestLabel(p:
+        Paint?): String`) since `Paint.measureText` has no multiplatform
+        equivalent; the no-arg `longestLabel` property (pure string-length
+        comparison, no `Paint`) stayed as a member on the common class.
+      - `YAxis.kt`: `Color.GRAY` → `ColorTemplate.GRAY`; dropped `@ColorInt`. The
+        two `Paint`-dependent methods, `getRequiredWidthSpace(p: Paint)`/
+        `getRequiredHeightSpace(p: Paint)`, were extracted the same way into a new
+        `chartLib/components/YAxisAndroid.kt` (calling the also-Android-only
+        `PaintUtils.kt` `calcTextWidth`/`calcTextHeight` extensions and the new
+        `AxisBase.getLongestLabel(p)` extension). `XAxis.kt` needed zero changes
+        (already fully portable — only used the already-common
+        `convertDpToPixel`).
+      - `LimitLine.kt`/`LimitRange.kt`: `Color.rgb(...)` →
+        `ColorTemplate.argb(...)`; `Paint.Style?` → the already-existing common
+        `PaintStyle?` enum (from the earlier `ICandleDataSet`/`CandleDataSet`
+        slice); `DashPathEffect?` → common `DashEffect?`; dropped `@ColorInt`.
+      - Renderer call-site updates for the `DashEffect`→`DashPathEffect` and
+        `PaintStyle`→`Paint.Style` conversions (via the existing
+        `toAndroidDashPathEffect()`/`toAndroidPaintStyle()` converters):
+        `XAxisRenderer.kt`, `YAxisRenderer.kt`,
+        `XAxisRendererHorizontalBarChart.kt`, `YAxisRendererHorizontalBarChart.kt`,
+        `YAxisRendererRadarChart.kt` — all at their
+        `paintGrid.pathEffect =`/`paintAxisLine.pathEffect =`/
+        `limitLinePaint.pathEffect =`/`limitRangePaint.pathEffect =`/
+        `limitLinePaint.style =`/`limitRangePaint.style =` call sites. Also added
+        the new `getRequiredWidthSpace`/`getRequiredHeightSpace` extension-function
+        imports at their two call sites, `BarLineChartBase.kt` and
+        `HorizontalBarChart.kt`.
+      - **Formatter cluster** (now unblocked once `AxisBase` is common):
+        - `IAxisValueFormatter.kt`/`IndexAxisValueFormatter.kt`: moved unchanged
+          (no Android coupling).
+        - `DefaultAxisValueFormatter.kt`: dropped the `java.text.DecimalFormat`
+          field, rewritten using the existing shared
+          `chartLibCore/utils/DecimalFormatting.kt` helper
+          `formatGroupedDecimal(value, digits)` (same helper already used by
+          `DefaultValueFormatter`/`StackedValueFormatter` in Step A.3).
+        - `PercentFormatter.kt`: same `formatGroupedDecimal(value, 1)` rewrite;
+          the unused `PercentFormatter(format: DecimalFormat)` constructor overload
+          (zero callers repo-wide, confirmed via grep) was replaced with
+          `PercentFormatter(decimalDigits: Int)` — a disclosed breaking change,
+          consistent with this migration's established pattern of trading
+          Java-only APIs (`Serializable`, `Parcelable`, now `DecimalFormat`) for
+          KMP-portable equivalents.
+        - `LargeValueFormatter.kt`: the most involved rewrite — replaced
+          `DecimalFormat("###E00")`-based engineering-notation formatting with a
+          manual Kotlin algorithm: compute `floor(log10(|value|))` (self-corrected
+          for floating-point imprecision by checking neighbouring powers of ten),
+          floor-divide by 3 and re-multiply to get the engineering exponent
+          (nearest multiple of 3 ≤ the true exponent), compute the mantissa,
+          determine how many fractional digits are still needed to reach exactly
+          3 significant digits total, round with carry-over handling (mantissa
+          rounding up to ≥1000 bumps the exponent bracket and recomputes), then
+          format and strip trailing zeros/the decimal point. Validated against a
+          real JDK `DecimalFormat("###E00")` (`/tmp/DFTest.java`) to empirically
+          confirm the exact rounding/formatting behavior before writing the
+          Kotlin port. **Caught and fixed one bug during verification:** the
+          initial port forgot to re-multiply the floor-divided exponent by 3
+          (`floorDiv3(exponent)` instead of `floorDiv3(exponent) * 3`), which
+          surfaced immediately as a test failure (`1100f` → `"110"` instead of
+          `"1.1k"`) and was fixed before landing.
+      - **Test migration:** `chartLib/src/test/.../LargeValueFormatterTest.kt`
+        (JUnit4, ~25 assertions) moved to
+        `chartLibCore/src/commonTest/.../LargeValueFormatterTest.kt` and ported to
+        `kotlin.test` (`Test`/`assertEquals`) — now runs on every `chartLibCore`
+        target (Android host, desktop JVM, iOS simulator) instead of only the
+        Android JVM unit-test target. All ~25 assertions pass unchanged after the
+        rewrite (this was the regression check for the manual engineering-notation
+        algorithm).
+      - Verified: `chartLibCore:allTests` green (Android host + desktop JVM + iOS
+        simulator, including the ported `LargeValueFormatterTest`),
+        `chartLib:compileDebugKotlin`, full `./gradlew test`,
+        `chartLibCompose:assembleDebug`, `app:assembleDebug` all pass.
+      - **Now unblocked:** Step A.4's dataprovider-independent formatter cluster
+        (`IAxisValueFormatter` family) is fully migrated as part of this slice;
+        the `Legend`/`LegendEntry` components (Step A.5 continuation, not yet
+        started) can now build on the common `ComponentBase`.
 
 - [ ] **Step A.7 — New `chartLibComposeMultiplatform` module**: Compose
       Multiplatform renderers built on `chartLibCore` using `DrawScope`.

@@ -1,10 +1,6 @@
 package info.appdev.charting.components
 
-import android.graphics.Color
-import android.graphics.Paint
-import androidx.annotation.ColorInt
-import info.appdev.charting.utils.calcTextHeight
-import info.appdev.charting.utils.calcTextWidth
+import info.appdev.charting.utils.ColorTemplate
 import info.appdev.charting.utils.convertDpToPixel
 import kotlin.math.abs
 import kotlin.math.max
@@ -50,8 +46,7 @@ open class YAxis : AxisBase {
     /**
      * Color of the zero line
      */
-    @ColorInt
-    var zeroLineColor: Int = Color.GRAY
+    var zeroLineColor: Int = ColorTemplate.GRAY
 
     /**
      * Width of the zero line in pixels
@@ -131,37 +126,6 @@ open class YAxis : AxisBase {
         set(width) {
             this.mZeroLineWidth = width.convertDpToPixel()
         }
-
-    /**
-     * This is for normal (not horizontal) charts horizontal spacing.
-     */
-    fun getRequiredWidthSpace(p: Paint): Float {
-        p.textSize = mTextSize
-
-        val label = getLongestLabel(p)
-        var width = p.calcTextWidth(label).toFloat() + xOffset * 2f
-
-        var minWidth = this.minWidth
-        var maxWidth = this.maxWidth
-
-        if (minWidth > 0f) minWidth = minWidth.convertDpToPixel()
-
-        if (maxWidth > 0f && maxWidth != Float.POSITIVE_INFINITY) maxWidth = maxWidth.convertDpToPixel()
-
-        width = max(minWidth, min(width, if (maxWidth > 0.0) maxWidth else width))
-
-        return width
-    }
-
-    /**
-     * This is for HorizontalBarChart vertical spacing.
-     */
-    fun getRequiredHeightSpace(p: Paint): Float {
-        p.textSize = mTextSize
-
-        val label = getLongestLabel(p)
-        return p.calcTextHeight(label).toFloat() + yOffset * 2f
-    }
 
     /**
      * Returns true if this axis needs horizontal offset, false if no offset is needed.

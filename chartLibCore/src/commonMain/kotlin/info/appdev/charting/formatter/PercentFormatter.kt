@@ -3,35 +3,34 @@ package info.appdev.charting.formatter
 import info.appdev.charting.components.AxisBase
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.utils.ViewPortHandler
-import java.text.DecimalFormat
+import info.appdev.charting.utils.formatGroupedDecimal
 
 /**
  * This IValueFormatter is just for convenience and simply puts a "%" sign after each value. (Recommended for PieChart)
  */
 open class PercentFormatter : IValueFormatter, IAxisValueFormatter {
-    protected var decimalFormat: DecimalFormat
+    /**
+     * The number of decimal digits used when formatting the percentage value.
+     */
+    protected var decimalDigits: Int = 1
 
-    constructor() {
-        decimalFormat = DecimalFormat("###,###,##0.0")
-    }
+    constructor()
 
     /**
-     * Allow a custom decimal format
+     * Allow a custom number of decimal digits.
      */
-    constructor(format: DecimalFormat) {
-        decimalFormat = format
+    constructor(decimalDigits: Int) {
+        this.decimalDigits = decimalDigits
     }
 
     // IValueFormatter
     override fun getFormattedValue(value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String? {
-        return decimalFormat.format(value.toDouble()) + " %"
+        return formatGroupedDecimal(value.toDouble(), decimalDigits) + " %"
     }
 
     // IAxisValueFormatter
     override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-        return decimalFormat.format(value.toDouble()) + " %"
+        return formatGroupedDecimal(value.toDouble(), decimalDigits) + " %"
     }
-
-    val decimalDigits: Int
-        get() = 1
 }
+

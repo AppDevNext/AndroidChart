@@ -8,6 +8,7 @@ import info.appdev.charting.components.Legend.LegendOrientation
 import info.appdev.charting.components.Legend.LegendVerticalAlignment
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis.AxisDependency
+import info.appdev.charting.components.getRequiredHeightSpace
 import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight

@@ -1,13 +1,10 @@
 package info.appdev.charting.components
 
-import android.graphics.Color
-import android.graphics.DashPathEffect
-import android.graphics.Paint
-import androidx.annotation.ColorInt
 import info.appdev.charting.formatter.DefaultAxisValueFormatter
 import info.appdev.charting.formatter.IAxisValueFormatter
+import info.appdev.charting.utils.ColorTemplate
+import info.appdev.charting.utils.DashEffect
 import info.appdev.charting.utils.convertDpToPixel
-import timber.log.Timber
 import kotlin.math.abs
 
 /**
@@ -23,16 +20,14 @@ abstract class AxisBase : ComponentBase() {
      * The color of the grid lines for this axis (the horizontal lines
      * coming from each label).
      */
-    @ColorInt
-    var gridColor = Color.GRAY
+    var gridColor = ColorTemplate.GRAY
 
     private var mGridLineWidth = 1f
 
     /**
      * Returns the color of the axis line (line alongside the axis).
      */
-    @ColorInt
-    var axisLineColor = Color.GRAY
+    var axisLineColor = ColorTemplate.GRAY
 
     private var mAxisLineWidth = 1f
 
@@ -105,13 +100,13 @@ abstract class AxisBase : ComponentBase() {
     /**
      * the path effect of the axis line that makes dashed lines possible
      */
-    var axisLineDashPathEffect: DashPathEffect? = null
+    var axisLineDashPathEffect: DashEffect? = null
         private set
 
     /**
      * the path effect of the grid lines that makes dashed lines possible
      */
-    var gridDashPathEffect: DashPathEffect? = null
+    var gridDashPathEffect: DashEffect? = null
         private set
 
     /**
@@ -297,7 +292,7 @@ abstract class AxisBase : ComponentBase() {
         limitLines.add(limitLine)
 
         if (limitLines.size > 6) {
-            Timber.e("Warning! You have more than 6 LimitLines on your axis, do you really want that?")
+            println("Warning! You have more than 6 LimitLines on your axis, do you really want that?")
         }
     }
 
@@ -308,7 +303,7 @@ abstract class AxisBase : ComponentBase() {
         limitRanges.add(l)
 
         if (limitRanges.size > 6) {
-            Timber.e("Warning! You have more than 6 LimitLines on your axis, do you really want that?")
+            println("Warning! You have more than 6 LimitLines on your axis, do you really want that?")
         }
     }
 
@@ -357,31 +352,6 @@ abstract class AxisBase : ComponentBase() {
             return longest!!
         }
 
-    /**
-     * Returns the longest formatted label (in terms of px), this axis
-     * contains.
-     * If paint is null, then returns the longest formatted label (in terms of characters), this axis contains.
-     */
-    fun getLongestLabel(p: Paint?): String {
-        if (p == null) {
-            return this.longestLabel
-        }
-        var longest: String? = ""
-        val max = 0f
-
-        for (i in entries.indices) {
-            val text = getFormattedLabel(i)
-            if (text != null) {
-                val width = p.measureText(text)
-                if (max < width) {
-                    longest = text
-                }
-            }
-        }
-
-        return longest!!
-    }
-
     fun getFormattedLabel(index: Int): String? {
         return if (index < 0 || index >= entries.size)
             ""
@@ -421,7 +391,7 @@ abstract class AxisBase : ComponentBase() {
      * @param phase       offset, in degrees (normally, use 0)
      */
     fun enableGridDashedLine(lineLength: Float, spaceLength: Float, phase: Float) {
-        this.gridDashPathEffect = DashPathEffect(
+        this.gridDashPathEffect = DashEffect(
             floatArrayOf(
                 lineLength, spaceLength
             ), phase
@@ -435,7 +405,7 @@ abstract class AxisBase : ComponentBase() {
      *
      * @param effect the DashPathEffect
      */
-    fun setGridDashedLine(effect: DashPathEffect?) {
+    fun setGridDashedLine(effect: DashEffect?) {
         this.gridDashPathEffect = effect
     }
 
@@ -462,7 +432,7 @@ abstract class AxisBase : ComponentBase() {
      * @param phase       offset, in degrees (normally, use 0)
      */
     fun enableAxisLineDashedLine(lineLength: Float, spaceLength: Float, phase: Float) {
-        this.axisLineDashPathEffect = DashPathEffect(floatArrayOf(lineLength, spaceLength), phase)
+        this.axisLineDashPathEffect = DashEffect(floatArrayOf(lineLength, spaceLength), phase)
     }
 
     /**
@@ -472,7 +442,7 @@ abstract class AxisBase : ComponentBase() {
      *
      * @param effect the DashPathEffect
      */
-    fun setAxisLineDashedLine(effect: DashPathEffect?) {
+    fun setAxisLineDashedLine(effect: DashEffect?) {
         this.axisLineDashPathEffect = effect
     }
 
