@@ -882,6 +882,72 @@ lint                 Existing custom lint rules (unchanged)
         Step A.7 renderer port itself (e.g. a Bar/Candle/Radar/Bubble/Pie data
         renderer proof-of-concept) is also now viable given the expanded set
         of portable `DataSet` leaves.
+- [x] **Step A.3 (continuation, part 4) — decouple `IFillFormatter`, migrate
+      `LineDataSet`.** Tackles the second blocker flagged above. `LineDataSet`
+      had three remaining Android couplings: `android.graphics.DashPathEffect`,
+      the `IFillFormatter?` stored property (whose interface method takes a
+      `LineDataProvider`, permanently Android-only per Step A.4), and a
+      `Context`/`ContextCompat`-based `setCircleColors(colors, context)`
+      overload.
+      - `DashPathEffect` → common `DashEffect` (Step A.5's type, already reused
+        in continuation part 2): `dashPathEffect` property, private backing
+        field, and `enableDashedLine(...)`'s construction all now use
+        `DashEffect(floatArrayOf(lineLength, spaceLength), phase)`. One
+        renderer call site updated, `LineChartRenderer.drawCubicFill`-adjacent
+        line-paint setup (`paintRender.pathEffect = dataSet.dashPathEffect` →
+        `...?.toAndroidDashPathEffect()`, reusing the existing conversion
+        extension).
+      - **`fillFormatter` (on `ILineDataSet`/`LineDataSet`) removed from
+        common code entirely**, same side-channel pattern as `fillDrawable`
+        from continuation part 2: new
+        `chartLib/data/LineDataSetAndroid.kt` defines
+        `var ILineDataSet<*>.fillFormatter: IFillFormatter?` backed by a
+        `WeakHashMap<ILineDataSet<*>, IFillFormatter>`, with the getter
+        lazily materializing a `DefaultFillFormatter()` default (matching the
+        old stored-property's non-null default) and the setter mapping
+        `null` back to a fresh `DefaultFillFormatter()` (matching the old
+        setter's behavior). Six call sites updated with an added
+        `import info.appdev.charting.data.fillFormatter`:
+        `LineChartRenderer.kt` (2 reads) and five `app` example activities
+        that set a custom `fillFormatter`.
+      - **`setCircleColors(colors: IntArray, context: Context)`** (the
+        `ContextCompat.getColor(...)`-resolving overload) moved to the same
+        `LineDataSetAndroid.kt` as a generic extension function
+        (`fun <T : BaseEntry<Float>> LineDataSet<T>.setCircleColors(...)`);
+        call-site syntax is unchanged (no existing call sites in this repo
+        use this overload, but the public API shape is preserved for
+        external consumers).
+      - Trivial cleanup: `@ColorInt` dropped; `Color.WHITE`/
+        `Color.rgb(140, 234, 255)` → `ColorTemplate.WHITE`/
+        `ColorTemplate.argb(140, 234, 255)`; two `Timber.e(...)` validation
+        warnings (circle/circle-hole radius) → `println(...)`, matching the
+        `println`-for-warnings pattern already used elsewhere in
+        `chartLibCore` (`AxisBase`, `ViewPortHandler`, `DataSet`,
+        `ChartData`); the `@SuppressLint("RawTypeDataSet")` annotation on the
+        internal `copy(lineDataSet: LineDataSet<*>)` helper was dropped
+        (Android-only annotation type, and the custom `RawTypeDataSet` lint
+        check only runs against the `chartLib` module, not `chartLibCore`).
+      - **Moved to `chartLibCore` commonMain**: `data/LineDataSet.kt`,
+        `interfaces/datasets/ILineDataSet.kt`. `LineDataSet` is now a fully
+        portable leaf class (generic over `BaseEntry<Float>`, same as before).
+      - **Disclosed behavior change**: `.copy()` no longer propagates a
+        custom `fillFormatter` to the copy (previously copied via the old
+        `copy(LineDataSet)` helper's `mFillFormatter` assignment) — same
+        category as the `fillDrawable` copy-non-propagation disclosed in
+        continuation part 2. Documented in `LineDataSet`'s class doc.
+      - **`ScatterDataSet`/`IScatterDataSet` still Android-only** — needs the
+        `IShapeRenderer` family split (`renderer/scatter/*`, Canvas/Paint-
+        coupled) plus extracting the `ScatterShape` enum (currently nested
+        inside the Android-only `ScatterChart`) to a portable location.
+      - Verified: `chartLibCore:compileKotlinDesktop`,
+        `chartLib:compileDebugKotlin`, full `chartLibCore:allTests`,
+        `chartLibCompose:assembleDebug`, `app:assembleDebug`, full
+        `./gradlew test`, and `chartLibComposeMultiplatform:build` (all
+        targets) all pass.
+      - **Not yet done**: `IShapeRenderer`/`ScatterDataSet` splitting (the
+        last remaining Android-only `DataSet` leaf); resuming the Step A.7
+        renderer port itself is now viable for every chart type except
+        Scatter.
 - [ ] **Step A.8 — Gesture handling** with `pointerInput`/`detectTransformGestures`
       replacing `ChartTouchListener`/`MotionEvent`.
 - [ ] **Step A.9 — `demoKmp` Compose Multiplatform demo app**

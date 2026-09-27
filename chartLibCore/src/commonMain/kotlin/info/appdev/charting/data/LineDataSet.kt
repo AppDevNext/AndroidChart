@@ -1,18 +1,24 @@
 package info.appdev.charting.data
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Color
-import android.graphics.DashPathEffect
-import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
-import info.appdev.charting.formatter.DefaultFillFormatter
-import info.appdev.charting.formatter.IFillFormatter
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.utils.ColorTemplate
+import info.appdev.charting.utils.DashEffect
 import info.appdev.charting.utils.convertDpToPixel
-import timber.log.Timber
 
+/**
+ * LineDataSet describes a line-chart-able DataSet.
+ *
+ * Two Android-only members were removed in favor of side-channels defined in
+ * `chartLib` (see `LineDataSetAndroid.kt`), since neither has a portable KMP
+ * equivalent:
+ * - `fillFormatter` (an [info.appdev.charting.formatter.IFillFormatter]) is now
+ *   an extension property. As a result, `.copy()` no longer propagates a
+ *   custom `fillFormatter` to the copy (it did before, along with the other
+ *   fields in the old `copy(LineDataSet)` helper).
+ * - `setCircleColors(colors: IntArray, context: Context)`, the
+ *   `ContextCompat.getColor(...)`-resolving overload, is now an extension
+ *   function taking a `LineDataSet<*>` receiver.
+ */
 open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableListOf(), label: String = "") : LineRadarDataSet<T>(yVals, label), ILineDataSet<T> {
     /**
      * Drawing mode for this line dataset
@@ -26,14 +32,12 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
      * are already prepared (by calling getResources().getColor(...)) before
      * adding them to the DataSet.
      */
-    @ColorInt
     var circleColors: MutableList<Int> = mutableListOf()
 
     /**
      * the color of the inner circles
      */
-    @ColorInt
-    private var mCircleHoleColor = Color.WHITE
+    private var mCircleHoleColor = ColorTemplate.WHITE
 
     /**
      * the radius of the circle-shaped value indicators
@@ -53,12 +57,7 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
     /**
      * the path effect of this DataSet that makes dashed lines possible
      */
-    private var mDashPathEffect: DashPathEffect? = null
-
-    /**
-     * formatter for customizing the position of the fill-line
-     */
-    private var mFillFormatter: IFillFormatter? = DefaultFillFormatter()
+    private var mDashPathEffect: DashEffect? = null
 
     /**
      * if true, drawing circles is enabled
@@ -71,7 +70,7 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
         // default colors
         // mColors.add(Color.rgb(192, 255, 140));
         // mColors.add(Color.rgb(255, 247, 140));
-        circleColors.add(Color.rgb(140, 234, 255))
+        circleColors.add(ColorTemplate.argb(140, 234, 255))
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -85,7 +84,7 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
         return copied as DataSet<T>
     }
 
-    protected fun copy(@SuppressLint("RawTypeDataSet") lineDataSet: LineDataSet<*>) {
+    protected fun copy(lineDataSet: LineDataSet<*>) {
         super.copy((lineDataSet as BaseDataSet<*>?)!!)
         lineDataSet.circleColors = this.circleColors
         lineDataSet.mCircleHoleColor = mCircleHoleColor
@@ -95,7 +94,6 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
         lineDataSet.mDashPathEffect = mDashPathEffect
         lineDataSet.mDrawCircleHole = mDrawCircleHole
         lineDataSet.mDrawCircles = mDrawCircleHole
-        lineDataSet.mFillFormatter = mFillFormatter
         lineDataSet.mLineDataSetMode = mLineDataSetMode
     }
 
@@ -109,7 +107,7 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
      * @param phase       offset, in degrees (normally, use 0)
      */
     fun enableDashedLine(lineLength: Float, spaceLength: Float, phase: Float) {
-        mDashPathEffect = DashPathEffect(
+        mDashPathEffect = DashEffect(
             floatArrayOf(
                 lineLength, spaceLength
             ), phase
@@ -156,7 +154,7 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
             if (value >= 1f) {
                 mCircleRadius = value.convertDpToPixel()
             } else {
-                Timber.e("Circle radius cannot be < 1")
+                println("Circle radius cannot be < 1")
             }
         }
 
@@ -170,7 +168,7 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
             if (value >= 0.5f) {
                 mCircleHoleRadius = value.convertDpToPixel()
             } else {
-                Timber.e("Circle radius cannot be < 0.5")
+                println("Circle radius cannot be < 0.5")
             }
         }
 
@@ -196,7 +194,7 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
         set(value) {
             mDrawCircleHole = value
         }
-    override var dashPathEffect: DashPathEffect?
+    override var dashPathEffect: DashEffect?
         get() = mDashPathEffect
         set(value) {
             mDashPathEffect = value
@@ -212,16 +210,6 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
         }
 
     /**
-     * Sets a custom IFillFormatter to the chart that handles the position of the
-     * filled-line for each DataSet. Set this to null to use the default logic.
-     */
-    override var fillFormatter: IFillFormatter?
-        get() = mFillFormatter
-        set(value) {
-            mFillFormatter = value ?: DefaultFillFormatter()
-        }
-
-    /**
      * Sets the colors that should be used for the circles of this DataSet.
      * Colors are reused as soon as the number of Entries the DataSet represents
      * is higher than the size of the colors array. Make sure that the colors
@@ -230,25 +218,6 @@ open class LineDataSet<T : BaseEntry<Float>>(yVals: MutableList<T> = mutableList
      */
     fun setCircleColors(vararg colors: Int) {
         this.circleColors = ColorTemplate.createColors(colors)
-    }
-
-    /**
-     * ets the colors that should be used for the circles of this DataSet.
-     * Colors are reused as soon as the number of Entries the DataSet represents
-     * is higher than the size of the colors array. You can use
-     * "new String[] { R.color.red, R.color.green, ... }" to provide colors for
-     * this method. Internally, the colors are resolved using
-     * getResources().getColor(...)
-     */
-    fun setCircleColors(@ColorInt colors: IntArray, context: Context) {
-        val clrs = this.circleColors
-        clrs.clear()
-
-        for (color in colors) {
-            clrs.add(ContextCompat.getColor(context, color))
-        }
-
-        this.circleColors = clrs
     }
 
     /**

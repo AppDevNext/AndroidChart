@@ -1,9 +1,8 @@
 package info.appdev.charting.interfaces.datasets
 
-import android.graphics.DashPathEffect
 import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.LineDataSet
-import info.appdev.charting.formatter.IFillFormatter
+import info.appdev.charting.utils.DashEffect
 
 interface ILineDataSet<T : BaseEntry<Float>> : ILineRadarDataSet<T> {
     /**
@@ -58,18 +57,13 @@ interface ILineDataSet<T : BaseEntry<Float>> : ILineRadarDataSet<T> {
     var isDrawCircleHoleEnabled: Boolean
 
     /**
-     * Returns the DashPathEffect that is used for drawing the lines.
+     * Returns the DashEffect that is used for drawing the lines.
      */
-    var dashPathEffect: DashPathEffect?
+    var dashPathEffect: DashEffect?
 
     /**
      * Returns true if the dashed-line effect is enabled, false if not.
-     * If the DashPathEffect object is null, also return false here.
+     * If the DashEffect object is null, also return false here.
      */
     var isDashedLineEnabled: Boolean
-
-    /**
-     * Returns the IFillFormatter that is set for this DataSet.
-     */
-    var fillFormatter: IFillFormatter?
 }

@@ -11,6 +11,7 @@ import info.appdev.charting.animation.ChartAnimator
 import info.appdev.charting.data.BaseEntry
 import info.appdev.charting.data.LineDataSet
 import info.appdev.charting.data.fillDrawable
+import info.appdev.charting.data.fillFormatter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.IBarLineScatterCandleBubbleDataSet
@@ -22,6 +23,7 @@ import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
 import info.appdev.charting.utils.drawImage
+import info.appdev.charting.utils.toAndroidDashPathEffect
 import java.lang.ref.WeakReference
 import kotlin.math.max
 import kotlin.math.min
@@ -96,7 +98,7 @@ open class LineChartRenderer(
             return
 
         paintRender.strokeWidth = dataSet.lineWidth
-        paintRender.pathEffect = dataSet.dashPathEffect
+        paintRender.pathEffect = dataSet.dashPathEffect?.toAndroidDashPathEffect()
 
         when (dataSet.lineMode) {
             LineDataSet.Mode.LINEAR, LineDataSet.Mode.STEPPED -> drawLinear(canvas, dataSet)
