@@ -585,8 +585,57 @@ lint                 Existing custom lint rules (unchanged)
         `chartLibCompose:assembleDebug`, `app:assembleDebug` all pass.
       - **Now unblocked:** Step A.4's dataprovider-independent formatter cluster
         (`IAxisValueFormatter` family) is fully migrated as part of this slice;
-        the `Legend`/`LegendEntry` components (Step A.5 continuation, not yet
-        started) can now build on the common `ComponentBase`.
+        the `Legend`/`LegendEntry` components (Step A.5 continuation) are now
+        migrated too, see below.
+
+- [x] **Step A.5 (continuation) — `Legend`/`LegendEntry`/`Description` fully
+      migrated to `chartLibCore` commonMain; `IMarker`/`MarkerImage`/`MarkerView`
+      confirmed permanently Android-only (Canvas/Context/Drawable/RelativeLayout
+      coupling with no separable portable core) and left in `chartLib`.**
+      - `LegendEntry.kt`: trivial move, only dropped `@ColorInt`.
+      - `Legend.kt`: dropped `@ColorInt` (n/a — none present besides the
+        already-common enums); the bulk of the class (alignment/orientation
+        enums, spacing properties, `entries`/`extraEntries`, `setCustom`/
+        `setExtra`/`resetCustom`) needed no changes at all. Three methods were
+        `Paint`-dependent and were extracted into a new Android-only extension
+        file, `chartLib/components/LegendAndroid.kt`:
+        `Legend.getMaximumEntryWidth(p: Paint)`, `Legend.getMaximumEntryHeight(p:
+        Paint)`, and — the largest and most involved extraction in this
+        migration so far — `Legend.calculateDimensions(labelPaint: Paint,
+        viewPortHandler: ViewPortHandler)` (the ~110-line horizontal/vertical
+        legend-layout algorithm). Unlike the smaller single/double-line
+        extractions in Step A.3/A.5 (`getLongestLabel`, `getRequiredWidthSpace`),
+        this shows the extension-function pattern scales to large,
+        multi-branch business logic as long as every field/property it touches
+        is `public` on the common class — required switching the two internal
+        offset reads at the end of `calculateDimensions` from the `protected`
+        `mXOffset`/`mYOffset` fields to the existing public `xOffset`/`yOffset`
+        accessors on `ComponentBase` (extension functions cannot see `protected`
+        members from outside the class hierarchy, same constraint documented in
+        Step A.3's `BaseDataSetAndroid.kt`).
+      - `Description.kt`: `textAlign: android.graphics.Paint.Align?` replaced
+        with a new common `chartLibCore/utils/TextAlign.kt` enum
+        (`LEFT`/`CENTER`/`RIGHT`) plus a new `chartLib/utils/TextAlignAndroid.kt`
+        converter (`TextAlign?.toAndroidAlign(default)`), following the same
+        common-enum-plus-Android-converter pattern already established for
+        `PaintStyle`/`DashEffect`. Only one render call site needed updating,
+        `Chart.kt`'s `drawDescription()` (`mDescPaint.textAlign =
+        description.textAlign.toAndroidAlign()`); grepped for other
+        `description.textAlign`/`Description(...)` usages repo-wide and found
+        none that set a custom alignment (only the no-op default).
+      - `LegendRenderer.kt` updated to import the new
+        `info.appdev.charting.components.calculateDimensions` extension
+        function at its one call site (member-call syntax unchanged, resolves
+        identically as an extension call).
+      - Verified: `chartLibCore:allTests` green, `chartLib:compileDebugKotlin`,
+        full `./gradlew test`, `chartLibCompose:assembleDebug`,
+        `app:assembleDebug` all pass.
+      - **Step A.5 is now considered fully complete**: all of `components/`
+        that has a genuinely portable core (axes, limit lines, legend,
+        description) lives in `chartLibCore`; the remainder
+        (`IMarker`/`MarkerImage`/`MarkerView`) is permanently Android-only by
+        design, matching the same category of decision already made for
+        `highlight/`'s dataprovider-coupled classes in Step A.4.
 
 - [ ] **Step A.7 — New `chartLibComposeMultiplatform` module**: Compose
       Multiplatform renderers built on `chartLibCore` using `DrawScope`.

@@ -1,7 +1,7 @@
 package info.appdev.charting.components
 
-import android.graphics.Paint.Align
 import info.appdev.charting.utils.PointF
+import info.appdev.charting.utils.TextAlign
 import info.appdev.charting.utils.convertDpToPixel
 
 class Description : ComponentBase() {
@@ -26,7 +26,7 @@ class Description : ComponentBase() {
     /**
      * the alignment of the description text
      */
-    var textAlign: Align? = Align.RIGHT
+    var textAlign: TextAlign? = TextAlign.RIGHT
 
     init {
         // default size

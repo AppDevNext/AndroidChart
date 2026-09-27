@@ -39,6 +39,7 @@ import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.PointF.Companion.getInstance
 import info.appdev.charting.utils.SaveUtils.saveToGallery
 import info.appdev.charting.utils.SaveUtils.saveToPath
+import info.appdev.charting.utils.toAndroidAlign
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
@@ -357,7 +358,7 @@ abstract class Chart<T : ChartData<out IDataSet<out EntryFloat>>> : ViewGroup, I
             mDescPaint.typeface = description.typeface
             mDescPaint.textSize = description.textSize
             mDescPaint.color = description.textColor
-            mDescPaint.textAlign = description.textAlign
+            mDescPaint.textAlign = description.textAlign.toAndroidAlign()
 
             val x: Float
             val y: Float

@@ -12,6 +12,7 @@ import info.appdev.charting.components.Legend.LegendHorizontalAlignment
 import info.appdev.charting.components.Legend.LegendOrientation
 import info.appdev.charting.components.Legend.LegendVerticalAlignment
 import info.appdev.charting.components.LegendEntry
+import info.appdev.charting.components.calculateDimensions
 import info.appdev.charting.data.ChartData
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.interfaces.datasets.ICandleDataSet
