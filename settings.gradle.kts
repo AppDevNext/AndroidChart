@@ -1,5 +1,6 @@
 include("chartLib")
 include("chartLibCore")
 include("chartLibCompose")
+include("chartLibComposeMultiplatform")
 include("app")
 include("lint")

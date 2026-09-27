@@ -639,6 +639,60 @@ lint                 Existing custom lint rules (unchanged)
 
 - [ ] **Step A.7 — New `chartLibComposeMultiplatform` module**: Compose
       Multiplatform renderers built on `chartLibCore` using `DrawScope`.
+      Given the plan doc already flags this as "the single largest remaining
+      chunk of work (~32 renderer files)", it is being sub-sliced:
+    - [x] **Step A.7 (module scaffold)**: created the new
+          `chartLibComposeMultiplatform` module and verified the whole Gradle/
+          Kotlin/Compose Multiplatform toolchain resolves and builds across
+          every target *before* investing in any renderer port.
+      - `chartLibComposeMultiplatform/build.gradle.kts` closely mirrors
+        `chartLibCore/build.gradle.kts` (`com.android.kotlin.multiplatform.library`
+        + `org.jetbrains.kotlin.multiplatform`), adding two more plugins:
+        `org.jetbrains.compose` (the Compose Multiplatform Gradle plugin, which
+        supplies the `compose.runtime`/`compose.foundation`/`compose.ui`
+        dependency aliases) and `org.jetbrains.kotlin.plugin.compose` (the
+        Compose compiler, version-pinned to the project's Kotlin `2.4.10`, same
+        as `chartLibCompose`). `commonMain` depends on `chartLibCore` (`api`)
+        plus `compose.runtime`/`compose.foundation`/`compose.ui`.
+      - No Gradle version catalog (`libs.versions.toml`) exists in this repo;
+        plugin/dependency versions are declared inline per-module, so the new
+        Compose Multiplatform plugin version is pinned directly in this
+        module's `build.gradle.kts`.
+      - **Compose Multiplatform plugin version required raising this module's
+        `compileSdk` to 37** (kept at `36` everywhere else in the repo):
+        Compose Multiplatform `1.12.1`'s Android artifacts
+        (`androidx.compose.ui:ui-android`, `foundation-android`,
+        `runtime-saveable-android`, etc.) declare an AAR metadata minimum of
+        API 37, which fails `checkAndroidMainAarMetadata` at `compileSdk=36`.
+        An older plugin version (`1.8.2`) avoids the compileSdk bump but is
+        incompatible with AGP 9.2.1's newer
+        `KotlinMultiplatformAndroidComponentsExtension` API
+        (`NoSuchMethodError` on `onVariant`) — confirmed by testing both.
+        `compileSdk = 37` is therefore scoped to only this one module for now;
+        the rest of the repo (`chartLib`, `chartLibCore`, `chartLibCompose`,
+        `app`) intentionally stays on `36` until there's a reason to bump
+        everything at once.
+      - **Dropped `iosX64` for this module only** (unlike `chartLibCore`,
+        which still targets it): Compose Multiplatform `1.12.x` no longer
+        publishes `compose.ui`/`compose.foundation`/`compose.runtime`
+        artifacts for the Intel iOS simulator target, so `iosX64` dependency
+        resolution fails outright. Only `iosArm64()`/`iosSimulatorArm64()` are
+        configured, matching upstream Compose Multiplatform's own supported
+        iOS target set.
+      - Added a placeholder `chartLibComposeMultiplatform/.../Placeholder.kt`
+        (a single documented constant) purely to validate the module compiles
+        end-to-end on every target — no real renderer code yet.
+      - `settings.gradle.kts` updated with
+        `include(":chartLibComposeMultiplatform")`.
+      - Verified: `:chartLibComposeMultiplatform:build` succeeds (Android AAR,
+        desktop jar, and both iOS arm64 klibs/frameworks all compile/link),
+        plus the full existing chain (`chartLibCore:allTests`,
+        `chartLib:compileDebugKotlin`, full `./gradlew test`,
+        `chartLibCompose:assembleDebug`, `app:assembleDebug`) still green.
+      - **Not yet done** (remaining sub-slices of Step A.7): the actual
+        `DrawScope` port of the ~32 renderer files, and deciding/implementing
+        a slice order for them (proof-of-concept with one simple renderer
+        first, per the plan, before the rest).
 - [ ] **Step A.8 — Gesture handling** with `pointerInput`/`detectTransformGestures`
       replacing `ChartTouchListener`/`MotionEvent`.
 - [ ] **Step A.9 — `demoKmp` Compose Multiplatform demo app**
