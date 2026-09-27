@@ -948,6 +948,64 @@ lint                 Existing custom lint rules (unchanged)
         last remaining Android-only `DataSet` leaf); resuming the Step A.7
         renderer port itself is now viable for every chart type except
         Scatter.
+- [x] **Step A.3 (continuation, part 5) — split `IShapeRenderer`, migrate
+      `ScatterDataSet`.** Tackles the last of the three blockers flagged
+      above, completing the concrete `DataSet` family migration: every chart
+      type's `DataSet` is now portable.
+      - **`ScatterShape` extracted out of the Android-only `ScatterChart`
+        class** into a new top-level, fully portable
+        `chartLibCore/charts/ScatterShape.kt` (same package,
+        `info.appdev.charting.charts`, so `chartLib`'s `ScatterChart.kt`
+        needed no import change — just deletion of the nested `enum class
+        ScatterShape { ... }` block). This is a source-breaking change for
+        callers: `ScatterChart.ScatterShape.SQUARE` → `ScatterShape.SQUARE`
+        (5 call sites updated: `ScatterDataSetAndroid.kt`,
+        `ScatterChartActivity.kt`, `SimpleFragment.kt`,
+        `ChartExamples.kt`, `ChartState.kt`).
+      - **`shapeRenderer` (on `IScatterDataSet`/`ScatterDataSet`) removed
+        from common code entirely**, same side-channel pattern as
+        `fillDrawable`/`fillFormatter`: new
+        `chartLib/data/ScatterDataSetAndroid.kt` defines
+        `var IScatterDataSet.shapeRenderer: IShapeRenderer?` backed by a
+        `WeakHashMap<IScatterDataSet, IShapeRenderer?>`. Unlike
+        `fillFormatter`'s "null means reset to default" semantics,
+        `shapeRenderer` can be legitimately `null` (`ScatterChartRenderer`
+        treats a `null` renderer as "skip drawing"), so the getter uses
+        `containsKey` rather than `getOrPut` to distinguish "never set"
+        (lazily materializes the default `SquareShapeRenderer()`) from
+        "explicitly set to null" — `getOrPut` cannot tell those apart when
+        the map's value type is itself nullable.
+      - **`setScatterShape(shape)`** moved to the same file as an extension
+        function on `ScatterDataSet`; **`getRendererForShape(shape)`** moved
+        from `ScatterDataSet`'s companion object to a top-level function in
+        `chartLib` (source-breaking: `ScatterDataSet.getRendererForShape(...)`
+        → `getRendererForShape(...)`, unused elsewhere in this repo).
+      - The `renderer/scatter/*` shape-drawing classes themselves
+        (`IShapeRenderer` + 7 concrete renderers) stay exactly where they
+        are, unchanged — they're Canvas/Paint-coupled drawing logic, same
+        permanently-Android-only category as the `Renderer`/`DataRenderer`
+        hierarchy from Step A.4, not something to "split".
+      - **Moved to `chartLibCore` commonMain**: `data/ScatterDataSet.kt`,
+        `interfaces/datasets/IScatterDataSet.kt`. `ScatterDataSet` is now a
+        fully portable leaf class — the last of the seven concrete `DataSet`
+        classes (Bar/Line/Scatter/Candle/Bubble/Radar/Pie) to move. **The
+        concrete `DataSet` family migration that started as a Step A.7
+        prerequisite is now complete.**
+      - **Disclosed behavior change**: `.copy()` no longer propagates a
+        custom `shapeRenderer` to the copy — same category as the
+        `fillDrawable`/`fillFormatter` copy-non-propagation disclosed in
+        continuation parts 2 and 4. Documented in `ScatterDataSet`'s class
+        doc.
+      - Verified: `chartLibCore:compileKotlinDesktop`,
+        `chartLib:compileDebugKotlin`, full `chartLibCore:allTests`,
+        `chartLibCompose:assembleDebug`, `app:assembleDebug`, full
+        `./gradlew test`, and `chartLibComposeMultiplatform:build` (all
+        targets) all pass.
+      - **Next up**: resuming the Step A.7 Compose Multiplatform renderer
+        port itself is now viable for every chart type's data model
+        (Bar/Line/Scatter/Candle/Bubble/Radar/Pie all have portable
+        `DataSet`s); alternatively Step A.8 (gesture handling), A.9
+        (`demoKmp`), A.10 (CI), or A.11 (Publishing).
 - [ ] **Step A.8 — Gesture handling** with `pointerInput`/`detectTransformGestures`
       replacing `ChartTouchListener`/`MotionEvent`.
 - [ ] **Step A.9 — `demoKmp` Compose Multiplatform demo app**

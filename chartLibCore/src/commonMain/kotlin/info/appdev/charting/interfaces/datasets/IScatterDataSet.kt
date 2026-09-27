@@ -1,7 +1,6 @@
 package info.appdev.charting.interfaces.datasets
 
 import info.appdev.charting.data.EntryFloat
-import info.appdev.charting.renderer.scatter.IShapeRenderer
 
 interface IScatterDataSet : ILineScatterCandleRadarDataSet<EntryFloat> {
     /**
@@ -18,9 +17,4 @@ interface IScatterDataSet : ILineScatterCandleRadarDataSet<EntryFloat> {
      * the color for the hole in the shape
      */
     val scatterShapeHoleColor: Int
-
-    /**
-     * the IShapeRenderer responsible for rendering this DataSet.
-     */
-    val shapeRenderer: IShapeRenderer?
 }

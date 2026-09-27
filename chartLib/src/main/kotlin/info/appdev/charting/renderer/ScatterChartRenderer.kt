@@ -2,6 +2,7 @@ package info.appdev.charting.renderer
 
 import android.graphics.Canvas
 import info.appdev.charting.animation.ChartAnimator
+import info.appdev.charting.data.shapeRenderer
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.ScatterDataProvider
 import info.appdev.charting.interfaces.datasets.IScatterDataSet

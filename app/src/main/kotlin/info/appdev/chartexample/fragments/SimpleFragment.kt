@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import info.appdev.chartexample.DataTools.Companion.getValues
-import info.appdev.charting.charts.ScatterChart.ScatterShape
+import info.appdev.charting.charts.ScatterShape
 import info.appdev.charting.data.BarData
 import info.appdev.charting.data.BarDataSet
 import info.appdev.charting.data.BarEntryFloat
@@ -20,6 +20,7 @@ import info.appdev.charting.data.PieDataSet
 import info.appdev.charting.data.PieEntryFloat
 import info.appdev.charting.data.ScatterData
 import info.appdev.charting.data.ScatterDataSet
+import info.appdev.charting.data.setScatterShape
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.interfaces.datasets.IScatterDataSet
