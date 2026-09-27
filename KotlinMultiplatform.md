@@ -693,6 +693,49 @@ lint                 Existing custom lint rules (unchanged)
         `DrawScope` port of the ~32 renderer files, and deciding/implementing
         a slice order for them (proof-of-concept with one simple renderer
         first, per the plan, before the rest).
+    - [x] **Step A.7 (grid line proof-of-concept)**: ported the vertical/
+          horizontal axis grid line drawing (`XAxisRenderer.renderGridLines`/
+          `drawGridLine` and `YAxisRenderer.renderGridLines`/`linePath`/
+          `transformedPositions`) to Compose's `DrawScope`, as the first real
+          renderer slice, chosen because it needs no concrete chart-type
+          `DataSet` (`LineDataSet`/`BarDataSet`/etc. are still Android-coupled
+          and haven't moved to `chartLibCore` yet — only the axis/viewport/
+          transform types from Step A.5/A.6 are needed), making it fully
+          self-contained.
+      - New file `chartLibComposeMultiplatform/.../renderer/AxisGridRenderer.kt`
+        with `DrawScope.drawXAxisGridLines(xAxis, viewPortHandler, transformer)`
+        and `DrawScope.drawYAxisGridLines(yAxis, viewPortHandler, transformer)`,
+        operating purely on `chartLibCore` types (`XAxis`/`YAxis`,
+        `ViewPortHandler`, `TransformerCore`) — no dependency on chartLib's
+        `Renderer`/`DataRenderer`/`AxisRenderer` Android base-class hierarchy,
+        confirming the intended Step A.8 direction: Compose renderers are
+        fresh idiomatic functions operating on the portable model, not a
+        line-for-line port of the View-based OOP renderer classes.
+      - The axis-value-to-pixel math (`xAxisGridPixelPositions`/
+        `yAxisGridPixelPositions`) is deliberately factored out as plain
+        functions returning a `FloatArray`, separate from the actual
+        `drawLine`/`clipRect` calls, specifically so it can be unit-tested
+        without a Compose UI test harness.
+      - New test `chartLibComposeMultiplatform/commonTest/.../
+        AxisGridRendererTest.kt`: sets up a `ViewPortHandler`/`TransformerCore`
+        for a 100x100 content rect mapping axis values `[0, 10]`, and asserts
+        axis value `0`/`10` map to the expected content-rect edges (left/right
+        for X, bottom/top for Y, confirming the Y-pixel-axis inversion).
+      - Removed the earlier scaffold placeholder file now that real renderer
+        code exists in the module.
+      - Verified: this is the **first slice where `chartLibComposeMultiplatform`
+        tests actually ran and passed on three targets** —
+        `testAndroidHostTest`, `desktopTest`, and (this session's sandbox
+        happened to have a usable iOS toolchain) `iosSimulatorArm64Test` — all
+        2/2 tests green on each. Full existing chain
+        (`chartLibCore:allTests`, `chartLib:compileDebugKotlin`,
+        `./gradlew test`, `chartLibCompose:assembleDebug`,
+        `app:assembleDebug`) also still green.
+      - **Not yet done**: the remaining ~30 renderer files (data renderers for
+        each chart type, legend renderer, limit line renderer, marker
+        rendering, etc.), most of which *do* need the concrete `DataSet`
+        classes ported to `chartLibCore` first (a prerequisite not yet
+        started) before they can be tackled the same way.
 - [ ] **Step A.8 — Gesture handling** with `pointerInput`/`detectTransformGestures`
       replacing `ChartTouchListener`/`MotionEvent`.
 - [ ] **Step A.9 — `demoKmp` Compose Multiplatform demo app**
