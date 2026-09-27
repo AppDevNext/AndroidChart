@@ -1048,8 +1048,42 @@ lint                 Existing custom lint rules (unchanged)
         files for every other chart type (Line/Scatter/Candle/Bubble/Radar/
         Pie data renderers, legend renderer, limit lines, markers, combined
         chart compositing).
-- [ ] **Step A.8 — Gesture handling** with `pointerInput`/`detectTransformGestures`
-      replacing `ChartTouchListener`/`MotionEvent`.
+- [x] **Step A.8 — Gesture handling proof-of-concept** with
+      `pointerInput`/`detectTransformGestures` replacing `ChartTouchListener`/`MotionEvent`.
+      Turned out to need very little new common code: `ViewPortHandler`'s
+      `zoom`/`translate`/`refresh`/`limitTransAndScale` matrix math (bounds-clamped pan/zoom)
+      already lived in `chartLibCore` from earlier steps, so this slice only needed to combine
+      Compose's per-frame pan+zoom+centroid gesture callback into a single matrix update.
+      - New `chartLibComposeMultiplatform/commonMain/.../gesture/GestureHandling.kt`:
+        `chartGestureMatrix(viewPortHandler, pan, zoom, centroid, scaleXEnabled, scaleYEnabled,
+        dragXEnabled, dragYEnabled)` copies the current `matrixTouch`, applies
+        `postTranslate(pan)` then `postScale(zoom, zoom, centroid)` (mirrors `chartLib`'s
+        `BarLineChartTouchListener.performDrag`/`performZoom` combined into one step, since
+        Compose reports incremental deltas per frame rather than cumulative-since-gesture-start
+        deltas like `MotionEvent`); `Modifier.chartTransformGestures(viewPortHandler, ...,
+        onGesture)` wires `detectTransformGestures` to it and calls
+        `ViewPortHandler.refresh(matrix, onGesture, true)` (which also applies the existing
+        `limitTransAndScale` bounds clamping).
+      - **Deliberately out of scope for this proof-of-concept** (same scoping choice as the
+        earlier axis/data renderer slices): rotation gestures, independent X/Y-only zoom modes
+        (`X_ZOOM`/`Y_ZOOM`), highlight-on-drag, double-tap zoom, fling/deceleration, and
+        `OnChartGestureListener` callbacks — `chartLib`'s `BarLineChartTouchListener` handles
+        all of these but they're not needed to prove the Compose gesture wiring works.
+      - New test `chartLibComposeMultiplatform/commonTest/.../GestureHandlingTest.kt`: verifies
+        `chartGestureMatrix`'s pure matrix math directly (pan-only, zoom-about-centroid-only,
+        and disabled-axis cases), reading back `MTRANS_X`/`MTRANS_Y`/`MSCALE_X`/`MSCALE_Y` via
+        `Matrix.getValues` — no `ViewPortHandler.refresh`/clamping involved, since the clamp
+        bounds depend on chart state in ways that would make the pure-math assertions less
+        direct (same "test the pure function before the stateful wiring" approach as the
+        renderer tests).
+      - Verified: `chartLibComposeMultiplatform:testAndroidHostTest`/`desktopTest` first (new
+        tests green: 3/3 on each), then the full chain —
+        `chartLibComposeMultiplatform:build` (all targets, including `iosSimulatorArm64Test`),
+        `chartLibCore:allTests`, `chartLib:compileDebugKotlin`, `chartLibCompose:assembleDebug`,
+        `app:assembleDebug`, full `./gradlew test` — all pass.
+      - **Not yet done**: wiring `chartTransformGestures` into an actual composable chart
+        (there is no interactive Compose Multiplatform chart screen yet, since Step A.9's
+        `demoKmp` app doesn't exist), and the out-of-scope gesture features listed above.
 - [ ] **Step A.9 — `demoKmp` Compose Multiplatform demo app**
       (Android, iOS, Desktop, optionally Wasm/JS).
 - [ ] **Step A.10 — CI.** Extend GitHub Actions to build iOS/desktop/wasm targets
