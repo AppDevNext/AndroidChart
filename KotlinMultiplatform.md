@@ -143,6 +143,28 @@ lint                 Existing custom lint rules (unchanged)
         `chartLib` itself (proof the package-preserving move is fully transparent to
         existing consumers); full `./gradlew test :chartLibCore:allTests` and
         `chartLibCompose:assembleDebug`/`app:assembleDebug` all pass.
+- [x] **CI fix — `chartLibCore` KMP module breaks the Linux "Check" CI job.**
+      The `com.android.kotlin.multiplatform.library` plugin doesn't enable JVM-based
+      unit tests for the `android` target by default, and Gradle errors out (rather
+      than just warning) when it hits *disabled* Kotlin/Native targets — like the
+      iOS targets on a non-macOS CI runner — unless explicitly told those are okay
+      to skip. Fixed both:
+      - Added `withHostTest {}` to `chartLibCore/build.gradle.kts`'s `android { }`
+        block, which enables a `testAndroidHostTest` task that runs `commonTest`
+        (currently just `ObjectPoolTest`) on the JVM, no emulator/device needed —
+        this is what makes `chartLibCore`'s tests actually participate in `./gradlew
+        test` at all.
+      - Added `kotlin.native.ignoreDisabledTargets=true` to the root
+        `gradle.properties`, so Gradle treats disabled iOS Kotlin/Native targets
+        (unbuildable on Linux CI runners, which lack Xcode) as a no-op instead of a
+        hard failure. iOS targets still build/test normally on macOS (verified
+        locally on this machine, which has Xcode).
+      - Verified locally: `./gradlew test`, `:chartLibCore:build`,
+        `:chartLibCore:allTests`, `:chartLibCore:testAndroidHostTest`,
+        `:chartLibCompose:assembleDebug`, `:app:assembleDebug` all still pass on
+        macOS with Xcode present (all iOS/android/desktop targets still compile and
+        test normally; nothing is being silently skipped here — the flag only
+        matters on hosts that can't build iOS at all).
 - [ ] **Step A.3 (remainder, partial) — DataSet-family groundwork: common
       enums/abstractions landed; full `IDataSet`/`BaseDataSet`/`DataSet`/`ChartData`
       move is BLOCKED, see below.**
