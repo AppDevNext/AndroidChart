@@ -22,6 +22,7 @@ import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.calcTextSize
 import info.appdev.charting.utils.calcTextWidth
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
 import info.appdev.charting.utils.drawXAxisValue
 import kotlin.math.roundToInt
 
@@ -285,7 +286,7 @@ open class XAxisRenderer(
 
     open val gridClippingRect: RectF?
         get() {
-            mGridClippingRect.set(viewPortHandler.contentRect)
+            viewPortHandler.contentRect.copyInto(mGridClippingRect)
             mGridClippingRect.inset(-axis.gridLineWidth, 0f)
             return mGridClippingRect
         }
@@ -357,7 +358,7 @@ open class XAxisRenderer(
         limitLines.forEach { limitLine ->
             if (limitLine.isEnabled) {
                 canvas.withSave {
-                    mLimitLineClippingRect.set(viewPortHandler.contentRect)
+                    viewPortHandler.contentRect.copyInto(mLimitLineClippingRect)
                     mLimitLineClippingRect.inset(-limitLine.lineWidth, 0f)
                     canvas.clipRect(mLimitLineClippingRect)
 

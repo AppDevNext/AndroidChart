@@ -44,6 +44,7 @@ import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
 import info.appdev.charting.utils.getDecimals
 import info.appdev.charting.utils.initUtils
+import info.appdev.charting.utils.toAndroidRectF
 import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.max
@@ -924,7 +925,7 @@ abstract class Chart<T : ChartData<out IDataSet<out EntryFloat>>> : ViewGroup, I
      * (into which the actual values are drawn).
      */
     override val contentRect: RectF
-        get() = viewPortHandler.contentRect
+        get() = viewPortHandler.contentRect.toAndroidRectF()
 
     /**
      * disables intercept touch events

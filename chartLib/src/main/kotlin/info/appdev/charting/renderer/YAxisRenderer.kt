@@ -16,6 +16,7 @@ import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
 
 open class YAxisRenderer(
     viewPortHandler: ViewPortHandler,
@@ -172,7 +173,7 @@ open class YAxisRenderer(
 
     open val gridClippingRect: RectF?
         get() {
-            mGridClippingRect.set(viewPortHandler.contentRect)
+            viewPortHandler.contentRect.copyInto(mGridClippingRect)
             mGridClippingRect.inset(0f, -axis.gridLineWidth)
             return mGridClippingRect
         }
@@ -229,7 +230,7 @@ open class YAxisRenderer(
      */
     protected open fun drawZeroLine(canvas: Canvas) {
         canvas.withSave {
-            zeroLineClippingRect.set(viewPortHandler.contentRect)
+            viewPortHandler.contentRect.copyInto(zeroLineClippingRect)
             zeroLineClippingRect.inset(0f, -yAxis.zeroLineWidth)
             canvas.clipRect(zeroLineClippingRect)
 
@@ -284,7 +285,7 @@ open class YAxisRenderer(
                     continue
 
                 canvas.withSave {
-                    limitLineClippingRect.set(viewPortHandler.contentRect)
+                    viewPortHandler.contentRect.copyInto(limitLineClippingRect)
                     limitLineClippingRect.inset(0f, -limitLine.lineWidth)
                     canvas.clipRect(limitLineClippingRect)
 
@@ -385,7 +386,7 @@ open class YAxisRenderer(
                     continue
 
                 canvas.withSave {
-                    limitLineClippingRect.set(viewPortHandler.contentRect)
+                    viewPortHandler.contentRect.copyInto(limitLineClippingRect)
                     limitLineClippingRect.inset(0f, -limitRange.lineWidth)
                     canvas.clipRect(limitLineClippingRect)
 

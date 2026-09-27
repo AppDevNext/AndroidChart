@@ -15,7 +15,9 @@ import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
 import info.appdev.charting.utils.drawImage
+import info.appdev.charting.utils.toCommonRectF
 import kotlin.math.ceil
 import kotlin.math.min
 
@@ -133,7 +135,9 @@ open class BarChartRenderer(
                         barShadowRectBuffer.left = x - barWidthHalf
                         barShadowRectBuffer.right = x + barWidthHalf
 
-                        trans!!.rectValueToPixel(barShadowRectBuffer)
+                        val commonShadowRect = barShadowRectBuffer.toCommonRectF()
+                        trans!!.rectValueToPixel(commonShadowRect)
+                        commonShadowRect.copyInto(barShadowRectBuffer)
                     }
                     if (!viewPortHandler.isInBoundsLeft(barShadowRectBuffer.right)) {
                         i++
@@ -245,7 +249,9 @@ open class BarChartRenderer(
 
         barRect[left, y1, right] = y2
 
-        trans.rectToPixelPhase(barRect, animator.phaseY)
+        val commonBarRect = barRect.toCommonRectF()
+        trans.rectToPixelPhase(commonBarRect, animator.phaseY)
+        commonBarRect.copyInto(barRect)
     }
 
     override fun drawValues(canvas: Canvas) {

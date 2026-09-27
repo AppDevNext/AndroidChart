@@ -300,9 +300,96 @@ lint                 Existing custom lint rules (unchanged)
       - Verified: `chartLibCore` build/tests, `chartLib:compileDebugKotlin` (zero
         source changes needed), full `./gradlew test`,
         `chartLibCompose:assembleDebug`, `app:assembleDebug` all pass.
+- [x] **Step A.6 — Migrate `utils/` geometry & viewport math
+      (`Matrix`/`RectF` value types, `ViewPortHandler`, `Transformer`).**
+      - **Common `Matrix`/`RectF` foundation** (landed first, verified in isolation):
+        `chartLibCore/utils/Matrix.kt` — a full custom 3×3 affine/perspective matrix
+        implementation, row-major and index-compatible with `android.graphics.Matrix`
+        (`MSCALE_X=0` … `MPERSP_2=8`), with `reset`, `set`, `getValues`/`setValues`,
+        `setTranslate`/`setScale` (with pivot), `postTranslate`/`postScale` (with
+        pivot), `postConcat`, `mapPoints`, `mapRect`, and `invert` (cofactor/adjugate,
+        returns `false` below a `1e-12f` determinant threshold instead of throwing).
+        `chartLibCore/utils/RectF.kt` — a common rectangle type with `width`/`height`/
+        `centerX`/`centerY`, `set(...)` overloads (including an `operator fun set`
+        supporting the `rect[l,t,r] = b` indexed-assignment idiom `ViewPortHandler`
+        relies on), and custom `equals`/`hashCode`/`toString`. 11 unit tests in
+        `MatrixTest.kt` cover identity/reset, translate/scale (origin and pivot),
+        composition order, `getValues`/`setValues` round-trips, `invert` correctness,
+        and `mapRect` bounding-box computation — all pass on JVM (Android host),
+        desktop, and iOS simulator.
+      - **`ViewPortHandler` moved to `chartLibCore` commonMain**, rebuilt on the
+        common `Matrix`/`RectF` instead of `android.graphics.Matrix`/`RectF`. Its
+        only two Android touches were removed: the `android.view.View?` parameter on
+        `refresh(...)`/`centerViewPort(...)` became a platform-agnostic
+        `invalidate: (() -> Unit)?` callback lambda, and the single `Timber.i(...)`
+        debug log became a plain `println(...)` (this is a rarely-hit path gated
+        behind a `logging: Boolean = false` default, not worth a full logging
+        facade for one call site).
+      - **`Transformer` split into a common base + Android subclass**, since its
+        `generateTransformedValues{Line,Bubble,Candle,Scatter}` methods take
+        `ILineDataSet`/`IBubbleDataSet`/`ICandleDataSet`/`IScatterDataSet` params
+        (still Android-only, blocked per the Step A.3 finding) and its
+        `pathValueToPixel`/`pathValuesToPixel` methods use `android.graphics.Path`
+        (no multiplatform equivalent yet):
+        - `chartLibCore/utils/TransformerCore.kt` (new, common, open class) — holds
+          every matrix/rect operation that doesn't depend on the dataset family or
+          `Path`: `prepareMatrixValuePx`, `prepareMatrixOffset` (open, overridden by
+          `TransformerHorizontalBarChart`), `pointValuesToPixel`, `rectValueToPixel`
+          (+ phase/horizontal variants), `pixelsToValue`, `getValuesByTouchPoint`,
+          `getPixelForValues`, `valueToPixelMatrix`/`pixelToValueMatrix`. The
+          `FloatArray?`/`RectF?` nullable parameter types from the original
+          Android-`Matrix`-flavored signatures were tightened to non-null (the
+          common `Matrix.mapPoints`/`mapRect` API is non-null, and a repo-wide
+          check confirmed no caller ever passes `null` here).
+        - `chartLib/utils/Transformer.kt` (rewritten) — now `open class Transformer
+          : TransformerCore(viewPortHandler)`, keeping only the
+          `generateTransformedValues*` and `pathValueToPixel`/`pathValuesToPixel`
+          methods. The two `Path` methods convert the common `Matrix` to
+          `android.graphics.Matrix` via a new `toAndroidMatrix()` extension before
+          calling `Path.transform(...)`, since `Path` itself can't move.
+        - `TransformerHorizontalBarChart` needed no changes — its override of
+          `prepareMatrixOffset` only touches matrices/`ViewPortHandler` accessors,
+          all already common.
+      - **New Android-side conversion helpers** (`chartLib/utils/MatrixAndroid.kt`,
+        `RectFAndroid.kt`) bridge the common `Matrix`/`RectF` back to
+        `android.graphics.Matrix`/`RectF` at the handful of places that must still
+        call native Canvas/Path APIs directly: `toAndroidMatrix()`/`toCommonMatrix()`,
+        `toAndroidRectF()`/`toCommonRectF()`, and `copyInto(target)` overloads in
+        both directions (for buffer-style rects that get mutated in place, e.g.
+        `mGridClippingRect`, `mBarShadowRectBuffer`, `barRect`).
+      - **~20 files updated at the Canvas-drawing boundary** to route through these
+        converters — the actual blast radius anticipated in the Step A.6 planning
+        note: `Chart.kt` (public `contentRect: RectF` property now converts once at
+        the getter), `BarChart.kt`/`HorizontalBarChart.kt` (`getBarBounds` converts
+        the caller-supplied `outputRect` round-trip), `BarLineChartBase.kt` (all
+        `canvas.clipRect`/`c.drawRect(contentRect, ...)` calls, all `viewPortHandler
+        .refresh(...)`/`.centerViewPort(...)` calls swapped from `this`/`View` to
+        `{ invalidate() }`), `BarLineChartTouchListener.kt` (switched its `Matrix`
+        import to the common type; `refresh(...)` calls now wrap `chart` in
+        `{ chart.invalidate() }`), the 4 zoom/pan `jobs/*.kt` files (same `View` →
+        lambda swap, common `Matrix` import), and 8 renderer files
+        (`XAxisRenderer(HorizontalBarChart)`, `YAxisRenderer(HorizontalBarChart)`,
+        `BarChartRenderer`, `HorizontalBarChartRenderer`,
+        `Rounded(Horizontal)BarChartRenderer`) whose clipping-rect buffers now
+        `copyInto`/`toCommonRectF()` at the `viewPortHandler.contentRect`/
+        `rectValueToPixel(...)` boundary instead of relying on same-type `.set(...)`.
+      - **Not touched / explicitly out of scope for this slice:** `RadarChart.kt`,
+        `PieRadarChartBase.kt` read `viewPortHandler.contentRect.width()`/`.height()`/
+        `.left` etc. only — already source-compatible with the common `RectF`, no
+        changes needed. `CombinedChart.kt`'s `contentRect` overrides delegate to the
+        (already-converting) `Chart.contentRect` property, also untouched.
+      - Verified: `chartLibCore` builds/tests green (Android host, desktop-JVM,
+        iOS simulator — `Matrix`/`RectF`/`ViewPortHandler`/`TransformerCore` all
+        compile with zero platform-specific code), `chartLib:compileDebugKotlin`,
+        full `./gradlew test`, `chartLibCompose:assembleDebug`, and
+        `app:assembleDebug` all pass.
+      - **Now unblocked:** the rest of Step A.3 (`IDataSet`/`BaseDataSet`/
+        `DataSet`/`ChartData`/concrete `*DataSet` subclasses, since
+        `IValueFormatter`/`IFillFormatter` no longer need an Android-only
+        `ViewPortHandler`/`LineDataProvider`), most of Step A.4 (`formatter/`
+        package, most of `highlight/`), and Step A.5 groundwork.
 - [ ] **Step A.5 — Migrate `components/` (axes, legend, limit lines).**
-- [ ] **Step A.6 — Migrate `utils/` geometry & viewport math
-      (`ViewPortHandler`, `Transformer`, `PointF`).**
+
 - [ ] **Step A.7 — New `chartLibComposeMultiplatform` module**: Compose
       Multiplatform renderers built on `chartLibCore` using `DrawScope`.
 - [ ] **Step A.8 — Gesture handling** with `pointerInput`/`detectTransformGestures`

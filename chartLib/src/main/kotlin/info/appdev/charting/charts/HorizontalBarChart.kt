@@ -20,6 +20,8 @@ import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.PointF.Companion.getInstance
 import info.appdev.charting.utils.TransformerHorizontalBarChart
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
+import info.appdev.charting.utils.toCommonRectF
 import timber.log.Timber
 import kotlin.math.max
 import kotlin.math.min
@@ -222,7 +224,9 @@ open class HorizontalBarChart : BarChart {
 
             outputRect.set(left, top, right, bottom)
 
-            getTransformer(set!!.axisDependency).rectValueToPixel(outputRect)
+            val commonRect = outputRect.toCommonRectF()
+            getTransformer(set!!.axisDependency).rectValueToPixel(commonRect)
+            commonRect.copyInto(outputRect)
         }
     }
 

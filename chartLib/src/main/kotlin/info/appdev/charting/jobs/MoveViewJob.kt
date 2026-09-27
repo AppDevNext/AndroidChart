@@ -12,7 +12,7 @@ open class MoveViewJob(viewPortHandler: ViewPortHandler, xValue: Float, yValue: 
         pts[1] = yValue
 
         mTrans?.pointValuesToPixel(pts)
-        mViewPortHandler.centerViewPort(pts, view)
+        mViewPortHandler.centerViewPort(pts) { view?.invalidate() }
 
         recycleInstance(this)
     }

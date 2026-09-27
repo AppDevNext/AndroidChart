@@ -18,6 +18,7 @@ import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.calcTextSize
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
 import kotlin.math.roundToInt
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -162,7 +163,7 @@ open class XAxisRendererHorizontalBarChart(
 
     override val gridClippingRect: RectF
         get() {
-            mGridClippingRect.set(viewPortHandler.contentRect)
+            viewPortHandler.contentRect.copyInto(mGridClippingRect)
             mGridClippingRect.inset(0f, -axis.gridLineWidth)
             return mGridClippingRect
         }
@@ -226,7 +227,7 @@ open class XAxisRendererHorizontalBarChart(
             if (!limitLine.isEnabled) continue
 
             canvas.withSave {
-                mLimitLineClippingRect.set(viewPortHandler.contentRect)
+                viewPortHandler.contentRect.copyInto(mLimitLineClippingRect)
                 mLimitLineClippingRect.inset(0f, -limitLine.lineWidth)
                 canvas.clipRect(mLimitLineClippingRect)
 

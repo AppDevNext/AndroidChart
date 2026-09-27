@@ -1,9 +1,5 @@
 package info.appdev.charting.utils
 
-import android.graphics.Matrix
-import android.graphics.RectF
-import android.view.View
-import timber.log.Timber
 import kotlin.math.max
 import kotlin.math.min
 
@@ -112,8 +108,9 @@ open class ViewPortHandler {
 
         preserveViewPortOnResize(previousWidth, previousHeight)
 
-        if (logging)
-            Timber.i(contentRect.toString())
+        if (logging) {
+            println(contentRect.toString())
+        }
     }
 
     /**
@@ -348,8 +345,9 @@ open class ViewPortHandler {
      * setScaleMinima(...) method.
      *
      * @param transformedPts the position to center view viewport to
+     * @param invalidate optional callback invoked when the host view should be redrawn
      */
-    fun centerViewPort(transformedPts: FloatArray, view: View?) {
+    fun centerViewPort(transformedPts: FloatArray, invalidate: (() -> Unit)? = null) {
         val save = mCenterViewPortMatrixBuffer
         save.reset()
         save.set(matrixTouch)
@@ -359,7 +357,7 @@ open class ViewPortHandler {
 
         save.postTranslate(-x, -y)
 
-        refresh(save, view, true)
+        refresh(save, invalidate, true)
     }
 
     /**
@@ -369,15 +367,18 @@ open class ViewPortHandler {
 
     /**
      * call this method to refresh the graph with a given matrix
+     *
+     * @param invalidate optional callback invoked when the host view should be redrawn
      */
-    fun refresh(newMatrix: Matrix, view: View?, invalidate: Boolean): Matrix {
+    fun refresh(newMatrix: Matrix, invalidate: (() -> Unit)?, doInvalidate: Boolean): Matrix {
         matrixTouch.set(newMatrix)
 
         // make sure scale and translation are within their bounds
         limitTransAndScale(matrixTouch, contentRect)
 
-        if (invalidate)
-            view?.invalidate()
+        if (doInvalidate) {
+            invalidate?.invoke()
+        }
 
         newMatrix.set(matrixTouch)
         return newMatrix

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
@@ -37,6 +36,8 @@ import info.appdev.charting.utils.PointF.Companion.getInstance
 import info.appdev.charting.utils.PointF.Companion.recycleInstance
 import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.toAndroidRectF
+import info.appdev.charting.utils.Matrix
 import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.max
@@ -242,7 +243,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         // Y-axis labels could have changed in size affecting the offsets
         if (this.isAutoScaleMinMax) {
             calculateOffsets()
-            viewPortHandler.refresh(viewPortHandler.matrixTouch, this, false)
+            viewPortHandler.refresh(viewPortHandler.matrixTouch, { invalidate() }, false)
         }
 
         xAxisRenderer.renderAxisLine(canvas)
@@ -277,7 +278,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
         if (this.isClipDataToContentEnabled) {
             // make sure the data cannot be drawn outside the content-rect
-            canvas.clipRect(viewPortHandler.contentRect)
+            canvas.clipRect(viewPortHandler.contentRect.toAndroidRectF())
         }
 
         dataRenderer!!.drawData(canvas)
@@ -322,7 +323,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
         if (this.isClipValuesToContentEnabled) {
             clipRestoreCount = canvas.save()
-            canvas.clipRect(viewPortHandler.contentRect)
+            canvas.clipRect(viewPortHandler.contentRect.toAndroidRectF())
 
             dataRenderer?.drawValues(canvas)
 
@@ -541,11 +542,11 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         if (mDrawGridBackground) {
             // draw the grid background
 
-            c.drawRect(viewPortHandler.contentRect, mGridBackgroundPaint!!)
+            c.drawRect(viewPortHandler.contentRect.toAndroidRectF(), mGridBackgroundPaint!!)
         }
 
         if (this.isDrawBordersEnabled) {
-            c.drawRect(viewPortHandler.contentRect, mBorderPaint!!)
+            c.drawRect(viewPortHandler.contentRect.toAndroidRectF(), mBorderPaint!!)
         }
     }
 
@@ -596,7 +597,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         val center = viewPortHandler.contentCenter
 
         viewPortHandler.zoomIn(center.x, -center.y, mZoomMatrixBuffer)
-        viewPortHandler.refresh(mZoomMatrixBuffer, this, false)
+        viewPortHandler.refresh(mZoomMatrixBuffer, { invalidate() }, false)
 
         recycleInstance(center)
 
@@ -614,7 +615,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
         val center = viewPortHandler.contentCenter
 
         viewPortHandler.zoomOut(center.x, -center.y, mZoomMatrixBuffer)
-        viewPortHandler.refresh(mZoomMatrixBuffer, this, false)
+        viewPortHandler.refresh(mZoomMatrixBuffer, { invalidate() }, false)
 
         recycleInstance(center)
 
@@ -630,7 +631,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
      */
     fun resetZoom() {
         viewPortHandler.resetZoom(mZoomMatrixBuffer)
-        viewPortHandler.refresh(mZoomMatrixBuffer, this, false)
+        viewPortHandler.refresh(mZoomMatrixBuffer, { invalidate() }, false)
 
         // Range might have changed, which means that Y-axis labels
         // could have changed in size, affecting Y-axis size.
@@ -648,7 +649,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
      */
     fun zoom(scaleX: Float, scaleY: Float, x: Float, y: Float) {
         viewPortHandler.zoom(scaleX, scaleY, x, -y, mZoomMatrixBuffer)
-        viewPortHandler.refresh(mZoomMatrixBuffer, this, false)
+        viewPortHandler.refresh(mZoomMatrixBuffer, { invalidate() }, false)
 
         // Range might have changed, which means that Y-axis labels
         // could have changed in size, affecting Y-axis size.
@@ -676,7 +677,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
 
         val save = mZoomMatrixBuffer
         viewPortHandler.zoom(scaleX, scaleY, center.x, -center.y, save)
-        viewPortHandler.refresh(save, this, false)
+        viewPortHandler.refresh(save, { invalidate() }, false)
     }
 
     /**
@@ -715,7 +716,7 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
     fun fitScreen() {
         val save = mFitScreenMatrixBuffer
         viewPortHandler.fitScreen(save)
-        viewPortHandler.refresh(save, this, false)
+        viewPortHandler.refresh(save, { invalidate() }, false)
 
         calculateOffsets()
         postInvalidate()
@@ -1301,9 +1302,9 @@ abstract class BarLineChartBase<T : BarLineScatterCandleBubbleData<IBarLineScatt
             //Restoring old position of chart.
 
             getTransformer(AxisDependency.LEFT).pointValuesToPixel(mOnSizeChangedBuffer)
-            viewPortHandler.centerViewPort(mOnSizeChangedBuffer, this)
+            viewPortHandler.centerViewPort(mOnSizeChangedBuffer) { invalidate() }
         } else {
-            viewPortHandler.refresh(viewPortHandler.matrixTouch, this, true)
+            viewPortHandler.refresh(viewPortHandler.matrixTouch, { invalidate() }, true)
         }
     }
 

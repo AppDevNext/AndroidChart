@@ -16,7 +16,9 @@ import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.calcTextWidth
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
 import info.appdev.charting.utils.drawImage
+import info.appdev.charting.utils.toCommonRectF
 import kotlin.math.ceil
 import kotlin.math.min
 
@@ -78,7 +80,9 @@ open class HorizontalBarChartRenderer(
                         mBarShadowRectBuffer.top = x - barWidthHalf
                         mBarShadowRectBuffer.bottom = x + barWidthHalf
 
-                        trans!!.rectValueToPixel(mBarShadowRectBuffer)
+                        val commonShadowRect = mBarShadowRectBuffer.toCommonRectF()
+                        trans!!.rectValueToPixel(commonShadowRect)
+                        commonShadowRect.copyInto(mBarShadowRectBuffer)
 
                         if (!viewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
                             i++
@@ -455,7 +459,9 @@ open class HorizontalBarChartRenderer(
 
         barRect[y1, top, y2] = bottom
 
-        trans.rectToPixelPhaseHorizontal(barRect, animator.phaseY)
+        val commonBarRect = barRect.toCommonRectF()
+        trans.rectToPixelPhaseHorizontal(commonBarRect, animator.phaseY)
+        commonBarRect.copyInto(barRect)
     }
 
     override fun setHighlightDrawPos(high: Highlight, bar: RectF) {
