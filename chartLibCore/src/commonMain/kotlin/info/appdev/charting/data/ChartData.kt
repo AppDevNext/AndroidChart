@@ -1,19 +1,16 @@
 package info.appdev.charting.data
 
-import android.annotation.SuppressLint
-import info.appdev.charting.utils.ChartTypeface
-import info.appdev.charting.components.YAxis.AxisDependency
+import info.appdev.charting.components.AxisDependency
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IDataSet
-import timber.log.Timber
-import java.io.Serializable
+import info.appdev.charting.utils.ChartTypeface
 
 /**
  * Class that holds all relevant data that represents the chart. That involves at least one (or more) DataSets, and an array of x-values.
  */
 @Suppress("unused")
-abstract class ChartData<T : IDataSet<out EntryFloat>> : Serializable {
+abstract class ChartData<T : IDataSet<out EntryFloat>> {
     /**
      * maximum y-value in the value array across all axes
      */
@@ -339,7 +336,7 @@ abstract class ChartData<T : IDataSet<out EntryFloat>> : Serializable {
 
             calcMinMax(entryFloat, set.axisDependency)
         } else {
-            Timber.e("Cannot add Entry because dataSetIndex too high or too low.")
+            println("Cannot add Entry because dataSetIndex too high or too low.")
         }
     }
 
@@ -441,7 +438,6 @@ abstract class ChartData<T : IDataSet<out EntryFloat>> : Serializable {
      * specified index. Returns true if an Entry was removed, false if no Entry
      * was found that meets the specified requirements.
      */
-    @SuppressLint("RawTypeDataSet")
     open fun removeEntry(xValue: Float, dataSetIndex: Int): Boolean {
         if (dataSetIndex >= dataSets.size) {
             return false

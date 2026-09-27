@@ -1,6 +1,6 @@
 package info.appdev.charting.components
 
-import android.graphics.DashPathEffect
+import info.appdev.charting.utils.DashEffect
 import androidx.annotation.ColorInt
 import info.appdev.charting.components.Legend.LegendForm
 import info.appdev.charting.utils.ColorTemplate
@@ -23,7 +23,7 @@ class LegendEntry {
         form: LegendForm,
         formSize: Float,
         formLineWidth: Float,
-        formLineDashEffect: DashPathEffect?,
+        formLineDashEffect: DashEffect?,
         @ColorInt formColor: Int
     ) {
         this.label = label
@@ -68,7 +68,7 @@ class LegendEntry {
      *
      * Set to null to use the legend's default
      */
-    var formLineDashEffect: DashPathEffect? = null
+    var formLineDashEffect: DashEffect? = null
 
     /**
      * The color for drawing the form

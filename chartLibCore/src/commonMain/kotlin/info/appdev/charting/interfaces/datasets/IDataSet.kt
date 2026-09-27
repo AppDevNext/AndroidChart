@@ -1,12 +1,12 @@
 package info.appdev.charting.interfaces.datasets
 
-import android.graphics.DashPathEffect
-import info.appdev.charting.utils.ChartTypeface
-import info.appdev.charting.components.Legend
-import info.appdev.charting.components.YAxis
-import info.appdev.charting.data.DataSet
+import info.appdev.charting.components.AxisDependency
+import info.appdev.charting.components.LegendForm
 import info.appdev.charting.data.BaseEntry
+import info.appdev.charting.data.DataSet
 import info.appdev.charting.formatter.IValueFormatter
+import info.appdev.charting.utils.ChartTypeface
+import info.appdev.charting.utils.DashEffect
 import info.appdev.charting.utils.PointF
 
 interface IDataSet<T : BaseEntry<Float>> {
@@ -186,7 +186,7 @@ interface IDataSet<T : BaseEntry<Float>> {
     /**
      * Set the y-axis this DataSet should be plotted against (either LEFT or RIGHT). Default: LEFT
      */
-    var axisDependency: YAxis.AxisDependency
+    var axisDependency: AxisDependency
 
     /**
      * returns all the colors that are set for this DataSet
@@ -250,7 +250,7 @@ interface IDataSet<T : BaseEntry<Float>> {
      *
      * Return `DEFAULT` to use the default legend form.
      */
-    val form: Legend.LegendForm
+    val form: LegendForm
 
     /**
      * The form size to draw for this dataset in the legend.
@@ -271,7 +271,7 @@ interface IDataSet<T : BaseEntry<Float>> {
      *
      * Return `null` to use the default legend form line dash effect.
      */
-    val formLineDashEffect: DashPathEffect?
+    val formLineDashEffect: DashEffect?
 
     /**
      * Returns true if y-value drawing is enabled, false if not

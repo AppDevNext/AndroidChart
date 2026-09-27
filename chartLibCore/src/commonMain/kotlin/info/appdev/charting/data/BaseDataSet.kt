@@ -1,18 +1,14 @@
 package info.appdev.charting.data
 
-import android.content.Context
-import android.graphics.Color
-import android.graphics.DashPathEffect
-import info.appdev.charting.utils.ChartTypeface
-import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
-import info.appdev.charting.components.Legend.LegendForm
-import info.appdev.charting.components.YAxis.AxisDependency
+import info.appdev.charting.components.AxisDependency
+import info.appdev.charting.components.LegendForm
+import info.appdev.charting.formatter.DefaultValueFormatter
 import info.appdev.charting.formatter.IValueFormatter
 import info.appdev.charting.interfaces.datasets.IDataSet
+import info.appdev.charting.utils.ChartTypeface
 import info.appdev.charting.utils.ColorTemplate
+import info.appdev.charting.utils.DashEffect
 import info.appdev.charting.utils.PointF
-import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.convertDpToPixel
 
 /**
@@ -23,13 +19,11 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
     /**
      * List representing all colors that are used for this DataSet
      */
-    @ColorInt
     protected var mColors: MutableList<Int>
 
     /**
      * List representing all colors that are used for drawing the actual values for this DataSet
      */
-    @ColorInt
     protected var mValueColors: MutableList<Int>
 
     /**
@@ -50,7 +44,6 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
     /**
      * custom formatter that is used instead of the auto-formatter if set
      */
-    @Transient
     protected var mValueFormatter: IValueFormatter? = null
 
     /**
@@ -61,7 +54,7 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
     private var mForm = LegendForm.DEFAULT
     private var mFormSize = Float.NaN
     private var mFormLineWidth = Float.NaN
-    private var mFormLineDashEffect: DashPathEffect? = null
+    private var mFormLineDashEffect: DashEffect? = null
     private var mIsVisible = true
     private var mIsDrawValues = true
     private var mIsDrawIcons = true
@@ -96,8 +89,8 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
         mValueColors = ArrayList()
 
         // default color
-        mColors.add(Color.rgb(140, 234, 255))
-        mValueColors.add(Color.BLACK)
+        mColors.add(ColorTemplate.argb(140, 234, 255))
+        mValueColors.add(ColorTemplate.BLACK)
     }
 
     constructor(label: String) : this() {
@@ -117,7 +110,7 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
      */
     fun setColor(color: Int, alpha: Int) {
         mColors.clear()
-        mColors.add(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)))
+        mColors.add(ColorTemplate.argb(alpha, ColorTemplate.red(color), ColorTemplate.green(color), ColorTemplate.blue(color)))
     }
 
     override var color: Int
@@ -134,7 +127,7 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
         return mColors[index % mColors.size]
     }
 
-    override var formLineDashEffect: DashPathEffect?
+    override var formLineDashEffect: DashEffect?
         get() = mFormLineDashEffect
         set(value) {
             mFormLineDashEffect = value
@@ -197,14 +190,11 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
      * "new int[] { R.color.red, R.color.green, ... }" to provide colors for
      * this method. Internally, the colors are resolved using
      * ContextCompat.getColor(context,...)
+     *
+     * Note: this is provided as an Android-only extension function, see
+     * `BaseDataSetAndroid.kt`, since it needs an Android `Context` to resolve
+     * color resources.
      */
-    fun setColors(colors: IntArray, context: Context) {
-        mColors.clear()
-
-        for (color in colors) {
-            mColors.add(ContextCompat.getColor(context, color))
-        }
-    }
 
     /**
      * Adds a new color to the colors array of the DataSet.
@@ -219,7 +209,7 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
     fun setColors(colors: IntArray, alpha: Int) {
         resetColors()
         for (color in colors) {
-            addColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)))
+            addColor(ColorTemplate.argb(alpha, ColorTemplate.red(color), ColorTemplate.green(color), ColorTemplate.blue(color)))
         }
     }
 
@@ -249,7 +239,7 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
 
     override var valueFormatter: IValueFormatter
         get() = if (needsFormatter())
-            Utils.defaultValueFormatter
+            defaultValueFormatter
         else
             mValueFormatter!!
         set(value) {
@@ -366,5 +356,13 @@ abstract class BaseDataSet<T : BaseEntry<Float>>() : IDataSet<T> {
         baseDataSet.mValueFormatter = mValueFormatter
         baseDataSet.mValueTextSize = mValueTextSize
         baseDataSet.mVisible = mVisible
+    }
+
+    companion object {
+        /**
+         * The default value formatter used when no custom formatter is set,
+         * platform-independent replacement for the former `Utils.defaultValueFormatter`.
+         */
+        private val defaultValueFormatter: IValueFormatter by lazy { DefaultValueFormatter(1) }
     }
 }

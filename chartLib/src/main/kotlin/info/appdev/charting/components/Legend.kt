@@ -1,8 +1,8 @@
 package info.appdev.charting.components
 
-import android.graphics.DashPathEffect
 import android.graphics.Paint
 import info.appdev.charting.utils.ColorTemplate
+import info.appdev.charting.utils.DashEffect
 import info.appdev.charting.utils.FSize
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
@@ -107,7 +107,7 @@ class Legend() : ComponentBase() {
     /**
      * Line dash path effect used for shapes that consist of lines.
      */
-    var formLineDashEffect: DashPathEffect? = null
+    var formLineDashEffect: DashEffect? = null
 
     /**
      * the space between the legend entries on a horizontal axis, default 6f

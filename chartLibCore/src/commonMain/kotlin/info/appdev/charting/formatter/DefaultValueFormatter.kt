@@ -2,18 +2,15 @@ package info.appdev.charting.formatter
 
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.utils.ViewPortHandler
-import java.text.DecimalFormat
+import info.appdev.charting.utils.formatGroupedDecimal
 
 /**
- * Default formatter used for formatting values inside the chart. Uses a DecimalFormat with
- * pre-calculated number of digits (depending on max and min value).
+ * Default formatter used for formatting values inside the chart. Formats values with a
+ * pre-calculated number of decimal digits and groups the integer part with thousands
+ * separators, platform-independent replacement for the former `java.text.DecimalFormat`-based
+ * implementation (e.g. pattern "###,###,###,##0.00").
  */
 open class DefaultValueFormatter(digits: Int) : IValueFormatter {
-    /**
-     * DecimalFormat for formatting
-     */
-    protected var decimalFormat: DecimalFormat? = null
-
     /**
      * Returns the number of decimal digits this formatter uses.
      */
@@ -34,18 +31,11 @@ open class DefaultValueFormatter(digits: Int) : IValueFormatter {
      */
     fun setup(digits: Int) {
         decimalDigits = digits
-        val b = StringBuffer()
-        for (i in 0 until digits) {
-            if (i == 0) b.append(".")
-            b.append("0")
-        }
-        decimalFormat = DecimalFormat("###,###,###,##0$b")
     }
 
-    override fun getFormattedValue(value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String? {
-
+    override fun getFormattedValue(value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
         // put more logic here ...
         // avoid memory allocations here (for performance reasons)
-        return decimalFormat!!.format(value.toDouble())
+        return formatGroupedDecimal(value.toDouble(), decimalDigits)
     }
 }

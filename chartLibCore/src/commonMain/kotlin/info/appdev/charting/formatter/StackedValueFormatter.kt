@@ -3,7 +3,7 @@ package info.appdev.charting.formatter
 import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.utils.ViewPortHandler
-import java.text.DecimalFormat
+import info.appdev.charting.utils.formatGroupedDecimal
 
 /**
  * A formatter specifically for stacked BarChart that allows to specify whether the all stack values
@@ -16,18 +16,7 @@ import java.text.DecimalFormat
  * @param appendix       a string that should be appended behind the value
  * @param decimals       the number of decimal digits to use
  */
-open class StackedValueFormatter(private val drawWholeStack: Boolean, private val appendix: String, decimals: Int) : IValueFormatter {
-    private val decimalFormat: DecimalFormat
-
-    init {
-        val b = StringBuffer()
-        for (i in 0 until decimals) {
-            if (i == 0) b.append(".")
-            b.append("0")
-        }
-
-        this.decimalFormat = DecimalFormat("###,###,###,##0$b")
-    }
+open class StackedValueFormatter(private val drawWholeStack: Boolean, private val appendix: String, private val decimals: Int) : IValueFormatter {
 
     override fun getFormattedValue(value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
         if (!drawWholeStack && entryFloat is BarEntryFloat) {
@@ -40,7 +29,7 @@ open class StackedValueFormatter(private val drawWholeStack: Boolean, private va
                 return if (vals[vals.size - 1] == value) {
                     // return the "sum" across all stack values
 
-                    decimalFormat.format(barEntry.y.toDouble()) + appendix
+                    formatGroupedDecimal(barEntry.y.toDouble(), decimals) + appendix
                 } else {
                     "" // return empty
                 }
@@ -48,6 +37,6 @@ open class StackedValueFormatter(private val drawWholeStack: Boolean, private va
         }
 
         // return the "proposed" value
-        return decimalFormat.format(value.toDouble()) + appendix
+        return formatGroupedDecimal(value.toDouble(), decimals) + appendix
     }
 }

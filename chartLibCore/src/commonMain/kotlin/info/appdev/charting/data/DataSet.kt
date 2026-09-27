@@ -1,8 +1,5 @@
 package info.appdev.charting.data
 
-import android.annotation.SuppressLint
-import timber.log.Timber
-import java.io.Serializable
 import kotlin.math.abs
 
 /**
@@ -14,7 +11,7 @@ import kotlin.math.abs
 abstract class DataSet<T : BaseEntry<Float>>(
     protected var entriesInternal: MutableList<T>,
     label: String = ""
-) : BaseDataSet<T>(label), Serializable {
+) : BaseDataSet<T>(label) {
     /**
      * maximum y-value in the value array
      */
@@ -131,7 +128,7 @@ abstract class DataSet<T : BaseEntry<Float>>(
      */
     abstract fun copy(): DataSet<T>?
 
-    protected fun copy(@SuppressLint("RawTypeDataSet") dataSet: DataSet<*>) {
+    protected fun copy(dataSet: DataSet<*>) {
         super.copy(dataSet)
     }
 
@@ -199,10 +196,10 @@ abstract class DataSet<T : BaseEntry<Float>>(
 
     override fun getEntryForIndex(index: Int): T? {
         if (index < 0) {
-            Timber.e("index $index is < 0 for getEntryForIndex")
+            println("index $index is < 0 for getEntryForIndex")
             return null
         } else if (index >= entriesInternal.size) {
-            Timber.e("index $index / ${entriesInternal.size} is out of range for getEntryForIndex")
+            println("index $index / ${entriesInternal.size} is out of range for getEntryForIndex")
             return null
         }
         return entriesInternal[index]

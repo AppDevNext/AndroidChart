@@ -115,4 +115,36 @@ object ColorTemplate {
     fun argb(red: Int, green: Int, blue: Int): Int {
         return (0xFF shl 24) or ((red and 0xFF) shl 16) or ((green and 0xFF) shl 8) or (blue and 0xFF)
     }
+
+    /**
+     * Builds an ARGB color int from the given alpha/red/green/blue components (0-255),
+     * platform-independent replacement for android.graphics.Color.argb(a, r, g, b).
+     */
+    fun argb(alpha: Int, red: Int, green: Int, blue: Int): Int {
+        return ((alpha and 0xFF) shl 24) or ((red and 0xFF) shl 16) or ((green and 0xFF) shl 8) or (blue and 0xFF)
+    }
+
+    /**
+     * Extracts the alpha component (0-255) of the given ARGB color int,
+     * platform-independent replacement for android.graphics.Color.alpha(color).
+     */
+    fun alpha(color: Int): Int = (color shr 24) and 0xFF
+
+    /**
+     * Extracts the red component (0-255) of the given ARGB color int,
+     * platform-independent replacement for android.graphics.Color.red(color).
+     */
+    fun red(color: Int): Int = (color shr 16) and 0xFF
+
+    /**
+     * Extracts the green component (0-255) of the given ARGB color int,
+     * platform-independent replacement for android.graphics.Color.green(color).
+     */
+    fun green(color: Int): Int = (color shr 8) and 0xFF
+
+    /**
+     * Extracts the blue component (0-255) of the given ARGB color int,
+     * platform-independent replacement for android.graphics.Color.blue(color).
+     */
+    fun blue(color: Int): Int = color and 0xFF
 }

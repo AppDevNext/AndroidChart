@@ -165,7 +165,7 @@ lint                 Existing custom lint rules (unchanged)
         macOS with Xcode present (all iOS/android/desktop targets still compile and
         test normally; nothing is being silently skipped here — the flag only
         matters on hosts that can't build iOS at all).
-- [ ] **Step A.3 (remainder, partial) — DataSet-family groundwork: common
+- [x] **Step A.3 (remainder, partial) — DataSet-family groundwork: common
       enums/abstractions landed; full `IDataSet`/`BaseDataSet`/`DataSet`/`ChartData`
       move is BLOCKED, see below.**
       - **Landed in `chartLibCore` (new, reusable common types):**
@@ -263,6 +263,104 @@ lint                 Existing custom lint rules (unchanged)
         `YAxis`/`Legend`/`CandleDataSet`/`ICandleDataSet`/`IDataSet`/`BaseDataSet`/
         `ChartData`/`CandleStickChartRenderer`/`CandleStickChartActivity` changes
         described above.
+- [x] **Step A.3 (completion) — `IDataSet`/`BaseDataSet`/`DataSet`/`ChartData`
+      fully migrated to `chartLibCore` commonMain, unblocked by Step A.6.**
+      - **Moved to `chartLibCore` commonMain** (same package/class names, so
+        zero import churn for any downstream consumer):
+        `interfaces/datasets/IDataSet.kt`, `data/BaseDataSet.kt`, `data/DataSet.kt`
+        (including its nested `enum class Rounding { UP, DOWN, CLOSEST }`, which
+        simply moved with the file — no separate top-level extraction needed since
+        the whole class relocated), `data/ChartData.kt`.
+      - **`DashEffect` finally wired up**: `IDataSet.formLineDashEffect`,
+        `BaseDataSet.mFormLineDashEffect`/`formLineDashEffect`,
+        `components/Legend.formLineDashEffect`, and
+        `components/LegendEntry.formLineDashEffect` all switched from
+        `android.graphics.DashPathEffect?` to the common `utils/DashEffect.kt`
+        (landed unwired in the previous slice). `Legend`/`LegendEntry` themselves
+        **stay in `chartLib`** (still blocked by `android.graphics.Paint` usage
+        elsewhere in `Legend`), so a new Android-only
+        `chartLib/utils/DashEffectAndroid.kt` (`DashEffect.toAndroidDashPathEffect()`)
+        converts at the one real Canvas boundary,
+        `LegendRenderer.kt`'s `formPaint.pathEffect = ...` assignment. Two demo-app
+        call sites (`DataTools.kt`, `SpecificPositionsLineChartActivity.kt`) that
+        constructed `DashPathEffect(...)` for `formLineDashEffect` were updated to
+        construct `DashEffect(...)` instead — a small source-level (not behavioral)
+        breaking change for any external code doing the same.
+      - **`IDataSet.kt`'s nested-typealias imports replaced**: now imports the
+        top-level common `components/AxisDependency`/`components/LegendForm`
+        directly instead of importing `components/YAxis`/`components/Legend` just
+        to reach their nested type aliases (same pattern used for `Highlight` in
+        Step A.4).
+      - **`BaseDataSet.kt` Android-coupling removed**:
+        - `@ColorInt`/`@Transient` annotations dropped (lint/serialization hints
+          with no multiplatform equivalent; `@Transient` was already meaningless
+          once `Serializable` was dropped from `DataSet`).
+        - `android.graphics.Color.rgb/argb/red/green/blue(...)` calls replaced with
+          new platform-independent equivalents added to `chartLibCore`'s
+          `utils/ColorTemplate.kt`: `argb(alpha, r, g, b)` (4-arg overload, the
+          existing 3-arg `argb(r, g, b)` stayed for the fully-opaque case),
+          `alpha(color)`, `red(color)`, `green(color)`, `blue(color)`.
+        - The one `Context`-taking overload, `setColors(colors: IntArray, context:
+          Context)` (resolves Android color resources via `ContextCompat`), was
+          extracted out of the class body into a new Android-only extension
+          function in `chartLib/data/BaseDataSetAndroid.kt`, implemented purely in
+          terms of `BaseDataSet`'s existing public `resetColors()`/`addColor(...)`
+          API (no `protected` member access needed). Call-site syntax
+          (`dataSet.setColors(colors, context)`) is unchanged since Kotlin extension
+          functions resolve identically to member functions at call sites; a
+          repo-wide grep found zero existing callers of this overload.
+        - `Utils.defaultValueFormatter` (an Android-only `object Utils` singleton
+          that can't be referenced from commonMain, since dependencies only flow
+          `chartLibCore` → `chartLib`, never the reverse) replaced with a private
+          `companion object { private val defaultValueFormatter: IValueFormatter by
+          lazy { DefaultValueFormatter(1) } }` directly on `BaseDataSet`.
+      - **`DataSet.kt`/`ChartData.kt` cleanup**: dropped `@SuppressLint(...)`
+        (meaningless outside `chartLib`, which is the only module with the custom
+        `:lint` checks applied via `lintChecks(project(":lint"))`), dropped
+        `java.io.Serializable` (same disclosed-breaking-change rationale as
+        `EntryFloat`/`PointF`/`Highlight` — no internal usage of `DataSet`/
+        `ChartData` serialization found repo-wide), and replaced the two
+        `Timber.e(...)` calls with `println(...)` (same rare-error-log rationale as
+        `ViewPortHandler`'s `Timber.i(...)` → `println(...)` in Step A.6).
+      - **Formatter cluster partly unblocked and moved as a natural follow-on**,
+        since `IDataSet.valueFormatter: IValueFormatter` now lives in
+        `chartLibCore`: `formatter/IValueFormatter.kt` (no changes needed) and
+        `formatter/DefaultValueFormatter.kt`/`formatter/StackedValueFormatter.kt`
+        (both previously used `java.text.DecimalFormat`, which has no multiplatform
+        equivalent — rewritten in terms of a new shared common helper,
+        `utils/DecimalFormatting.kt`'s `formatGroupedDecimal(value, digits)`,
+        implementing the same rounding + thousands-grouping behavior as the
+        `"###,###,###,##0.00"`-style `DecimalFormat` patterns using only
+        `kotlin.math`). `formatter/ColorFormatter.kt` also moved (only depended on
+        `EntryFloat`/`IDataSet`, both already common). Added
+        `chartLibCore/commonTest/formatter/DefaultValueFormatterTest.kt` (5 new
+        unit tests covering zero/nonzero decimal digits, thousands grouping,
+        negative values, and negative-zero rounding) since this rewrite had no
+        prior test coverage.
+      - **Still blocked / explicitly out of scope for this slice:**
+        `IAxisValueFormatter`, `DefaultAxisValueFormatter`,
+        `IndexAxisValueFormatter`, `LargeValueFormatter`, `PercentFormatter`
+        (blocked by `components/AxisBase`, Step A.5); `IFillFormatter`,
+        `DefaultFillFormatter` (blocked by `interfaces/dataprovider/LineDataProvider`
+        and `ILineDataSet`); every concrete `*DataSet` subclass
+        (`LineDataSet`, `BarDataSet`, `ScatterDataSet`, etc. — most still use
+        `android.graphics.Color`/`Paint`/`Shader` extensively, and `IBarDataSet`/
+        `IScatterDataSet` have their own separate `Fill`/`IShapeRenderer` blockers
+        noted in the prior Step A.3 entry); `LineDataSet.dashPathEffect`/
+        `LineScatterCandleRadarDataSet.dashPathEffectHighlight` (a *different*
+        dash-effect property from `formLineDashEffect`, tied to `ILineDataSet`,
+        left as `android.graphics.DashPathEffect` since `ILineDataSet` itself isn't
+        moving yet).
+      - Verified: `:chartLibCore:build` (Android host + desktop-JVM + iOS×3
+        simulator/device targets all compile and pass tests, including the 5 new
+        `DefaultValueFormatterTest` cases), `chartLib:compileDebugKotlin`
+        (zero warnings/errors beyond pre-existing unrelated ones), full
+        `./gradlew test`, `chartLibCompose:assembleDebug`, and `app:assembleDebug`
+        all pass.
+      - **Now unblocked:** highlighter classes in Step A.4 that depend on
+        `IDataSet` (though most still also depend on `interfaces/dataprovider/*`,
+        so remain blocked for that separate reason); `AxisBase`/Step A.5 can now
+        freely reference `IDataSet`-family types if needed.
 - [ ] **Step A.4 (partial) — `Highlight`/`IHighlighter` moved; the rest of
       `formatter/` and `highlight/` is BLOCKED by the same Step A.6 dependency
       found while investigating Step A.3.**
