@@ -1006,6 +1006,48 @@ lint                 Existing custom lint rules (unchanged)
         (Bar/Line/Scatter/Candle/Bubble/Radar/Pie all have portable
         `DataSet`s); alternatively Step A.8 (gesture handling), A.9
         (`demoKmp`), A.10 (CI), or A.11 (Publishing).
+- [x] **Step A.7 (continuation) — first data renderer: non-stacked
+      `IBarDataSet` proof-of-concept.** Resumes the Compose Multiplatform
+      renderer port now that the concrete `DataSet` family is portable, using
+      the same "pure pixel-math function + thin `DrawScope` extension"
+      pattern established by the grid-line renderer, applied to a chart
+      *data* renderer for the first time.
+      - New `chartLibComposeMultiplatform/commonMain/.../renderer/
+        BarChartRenderer.kt`: `barPixelRects(dataSet, barWidth, transformer)`
+        computes one `[left, top, right, bottom]` value-space rect per
+        non-stacked entry (mirroring the non-stacked branch of `chartLib`'s
+        `buffer.BarBuffer.feed`) and maps it to pixel space via
+        `TransformerCore.pointValuesToPixel` (reusing the point-pair transform
+        already used by the grid-line renderer, since a rect's two corners
+        are just two (x, y) points); `DrawScope.drawBarChartDataSet(...)`
+        draws each rect with `drawRect`, cycling through the dataset's colors
+        via `getColorByIndex(index)` the same way
+        `BarChartRenderer.drawDataSet` does.
+      - **Deliberately out of scope for this slice** (same scoping choice as
+        the grid-line proof-of-concept): stacked bars, animation phases
+        (`phaseX`/`phaseY`), inverted axis, bar borders/shadows, rounded
+        bars, and the `BarData`/`ChartData` container classes (still
+        Android-only in `chartLib`) — this renderer operates directly on a
+        single `IBarDataSet` plus a caller-supplied `barWidth`, matching how
+        `buffer.BarBuffer` itself is parameterized, without requiring
+        `BarData` to be ported first.
+      - New test `chartLibComposeMultiplatform/commonTest/.../
+        BarChartRendererTest.kt`: same 100x100 content-rect setup as
+        `AxisGridRendererTest`; asserts a positive-value entry's rect maps to
+        the expected content-rect pixel positions, and that a negative-value
+        entry's rect keeps pixel-space `top < bottom` (i.e. the Y-axis
+        inversion is handled correctly regardless of value sign) — both
+        without a Compose UI test harness.
+      - Verified: `chartLibComposeMultiplatform:testAndroidHostTest`/
+        `desktopTest` first (new tests green: 2/2 on each), then the full
+        chain — `chartLibComposeMultiplatform:build` (all targets, including
+        `iosSimulatorArm64Test`), `chartLibCore:allTests`,
+        `chartLib:compileDebugKotlin`, `chartLibCompose:assembleDebug`,
+        `app:assembleDebug`, full `./gradlew test` — all pass.
+      - **Not yet done**: stacked/grouped bars and the remaining ~29 renderer
+        files for every other chart type (Line/Scatter/Candle/Bubble/Radar/
+        Pie data renderers, legend renderer, limit lines, markers, combined
+        chart compositing).
 - [ ] **Step A.8 — Gesture handling** with `pointerInput`/`detectTransformGestures`
       replacing `ChartTouchListener`/`MotionEvent`.
 - [ ] **Step A.9 — `demoKmp` Compose Multiplatform demo app**
