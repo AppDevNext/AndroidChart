@@ -1164,9 +1164,62 @@ lint                 Existing custom lint rules (unchanged)
         one exists); a real screenshot-diff job for `demoKmp` (the existing Android
         Espresso-based screenshot comparison in the `buildTest` job doesn't apply to a Compose
         Desktop/iOS window).
-- [ ] **Step A.11 — Publishing.** Extend `com.vanniktech.maven.publish` KMP
-      publication support with per-target artifact coordinates for `chartLibCore`
-      and `chartLibComposeMultiplatform`.
+- [x] **Step A.11 — Publishing.** Added `com.vanniktech.maven.publish` to
+      `chartLibCore` and `chartLibComposeMultiplatform`, mirroring the existing
+      `chartLib`/`chartLibCompose` `mavenPublishing { coordinates(...); pom {}; repositories {
+      GitHubPackages } }` pattern. No `configure(KotlinMultiplatform(...))` call was needed —
+      per vanniktech's docs, `com.android.kotlin.multiplatform.library` projects (which both
+      modules already use) are auto-detected and configured with sensible defaults (sources
+      jars per source set, empty javadoc jars per target, Maven Central + GitHub Packages +
+      MavenLocal publications for every target: `android`, `desktop`, `iosArm64`,
+      `iosSimulatorArm64`, plus `iosX64` for `chartLibCore` only, and a root `kotlinMultiplatform`
+      metadata publication).
+      - Hit and fixed two Gradle/plugin interaction bugs discovered while wiring this up (both
+        pre-existing footguns of this repo's setup, not new problems in the vanniktech plugin
+        itself):
+        1. **Root `gradle.properties`' `POM_ARTIFACT_ID=chart` raced with our own
+           `coordinates(artifactId = ...)` call for KMP projects.** The plugin's simple
+           `com.vanniktech.maven.publish` entry point auto-applies `pomFromGradleProperties()`
+           at plugin-apply time, which (for KMP projects) *asynchronously* renames every
+           per-target publication's artifactId from `"$projectName-$target"` to
+           `"$POM_ARTIFACT_ID-$target"` in an `afterEvaluate` block. Our own `coordinates(...)`
+           call in each module's `mavenPublishing {}` block queues a *second* `afterEvaluate`
+           rename, which failed with `"The plugin can't handle the publication ... artifactId
+           chart-android"` because by the time it ran, the artifactId no longer matched the
+           expected `"$projectName-"` prefix (the first rename had already consumed it). Fixed
+           by adding a per-module `gradle.properties` (`chartLibCore/gradle.properties`,
+           `chartLibComposeMultiplatform/gradle.properties`) overriding `POM_ARTIFACT_ID` to the
+           correct per-module value, so both renames agree and the second is a no-op.
+        2. **Applying `id("com.vanniktech.maven.publish") version "0.37.0"` independently in
+           4 sibling subprojects' `plugins {}` blocks** (previously only 2:
+           `chartLib`/`chartLibCompose`) made Gradle load the plugin under different
+           classloader instances for at least one pair of projects, breaking the plugin's
+           shared Maven Central deployment `BuildService` (`"Cannot set the value of task
+           ':chartLibComposeMultiplatform:prepareMavenCentralPublishing' property
+           'buildService' ... loaded with InstrumentingVisitableURLClassLoader..."`). Fixed by
+           declaring `id("com.vanniktech.maven.publish") version "0.37.0" apply false` once in
+           the root `build.gradle.kts`'s new `plugins {}` block, and dropping the version from
+           all four subprojects' own `id("com.vanniktech.maven.publish")` declarations, so every
+           module resolves the exact same plugin classloader.
+      - `demoKmp`/`demoKmpAndroid` (demo apps, not libraries) intentionally do **not** get any
+        publishing plugin — nothing in the plan calls for publishing them, matching the existing
+        `app` module's precedent.
+      - Verified: `./gradlew :chartLib:publishToMavenLocal :chartLibCompose:publishToMavenLocal
+        :chartLibCore:publishToMavenLocal :chartLibComposeMultiplatform:publishToMavenLocal
+        -PRELEASE_SIGNING_ENABLED=false` succeeds for all four modules and produces the expected
+        per-target artifacts (poms, `.module` Gradle metadata, sources/javadoc jars, `.aar` for
+        `-android`, `.klib` for the iOS targets, `.jar` for `-desktop` and the root multiplatform
+        metadata publication) under the local Maven repo, with artifact IDs matching the existing
+        `chartLib`/`chartLibCompose` naming convention (e.g. `chartLibCore`, `chartLibCore-
+        android`, `chartLibCore-iosarm64`, `chartLibComposeMultiplatform-desktop`, ...). Also
+        re-ran the full existing verification chain (`chartLibCore:allTests`,
+        `chartLibComposeMultiplatform:allTests`, `chartLib:compileDebugKotlin`,
+        `chartLibCompose:assembleDebug`, `app:assembleDebug`, `demoKmp:build`,
+        `demoKmpAndroid:assembleDebug`, full `./gradlew test`) — all pass, no regressions.
+      - **Not yet done**: no CI step actually runs `publishToMavenLocal` for the two new modules
+        (the existing `Check` job does this for `chartLib`/`chartLibCompose` only); this could be
+        added to either the `Check` job or the new `KotlinMultiplatform` job as a lightweight
+        follow-up smoke test, but wasn't required by the plan text and is deferred.
 
 ## Step A.2 — Common replacement abstractions needed before further migration
 
@@ -1302,12 +1355,51 @@ create `chartLibComposeMultiplatform`:
 
 ## Step A.11 — Publishing
 
-- Extend `mavenPublishing { }` blocks in `chartLibCore` and
-  `chartLibComposeMultiplatform` for KMP publications (each target publishes its
-  own artifact suffix, e.g. `chartLibCore-android`, `chartLibCore-iosarm64`,
-  `chartLibCore-iossimulatorarm64`, `chartLibCore-iosx64`,
-  `chartLibCore-desktop`, plus a `chartLibCore` metadata/common artifact).
-- Update `jitpack.yml` / README to document new KMP coordinates once published.
+- Added `id("com.vanniktech.maven.publish")` (declared with a version once, as
+  `apply false`, in the root `build.gradle.kts`'s new `plugins {}` block — see
+  below for why) plus a `mavenPublishing { coordinates(...); pom {}; repositories
+  { GitHubPackages } }` block to `chartLibCore/build.gradle.kts` and
+  `chartLibComposeMultiplatform/build.gradle.kts`, mirroring the existing
+  `chartLib`/`chartLibCompose` pattern exactly. No `configure(KotlinMultiplatform
+  (...))` call needed — the plugin auto-detects `com.android.kotlin.multiplatform
+  .library` projects and configures per-target publications automatically.
+- Resulting publications per module: a root `kotlinMultiplatform` metadata
+  publication (artifact ID = the module name, e.g. `chartLibCore`), plus one
+  per target: `chartLibCore-android`, `chartLibCore-desktop`,
+  `chartLibCore-iosarm64`, `chartLibCore-iossimulatorarm64`,
+  `chartLibCore-iosx64` (`chartLibComposeMultiplatform` has the same set minus
+  `-iosx64`, since Compose Multiplatform 1.12.x doesn't publish iOS-Intel-
+  simulator artifacts — see Step A.7's iOS target note). Each publishes sources
+  + (empty) javadoc jars, plus `.aar`/`.klib`/`.jar` as appropriate for the
+  target.
+- Two Gradle/plugin interaction bugs fixed along the way:
+  - Root `gradle.properties`' `POM_ARTIFACT_ID=chart` conflicted with per-module
+    `coordinates(artifactId = ...)` calls for KMP projects specifically (the
+    plugin's automatic `pomFromGradleProperties()` and our explicit
+    `coordinates()` call both rename every per-target publication's artifactId
+    in `afterEvaluate`, and for KMP projects the rename logic requires the
+    *current* artifactId to still start with `"$projectName-"`, which broke
+    once the first (automatic) rename ran first). Fixed with a per-module
+    `chartLibCore/gradle.properties` / `chartLibComposeMultiplatform/gradle.
+    properties` overriding `POM_ARTIFACT_ID` to the correct value, so both
+    renames agree.
+  - Applying `id("com.vanniktech.maven.publish") version "0.37.0"` independently
+    in 4 sibling subprojects' `plugins {}` blocks (previously only 2) made
+    Gradle load the plugin under different classloaders for some project pairs,
+    breaking its shared Maven Central `BuildService`. Fixed by declaring the
+    versioned plugin once (`apply false`) in the root `build.gradle.kts` and
+    referencing it without a version in all four subprojects.
+- `demoKmp`/`demoKmpAndroid` are demo apps and intentionally have no publishing
+  plugin, matching the existing `app` module's precedent.
+- Verified via `./gradlew :chartLib:publishToMavenLocal :chartLibCompose:
+  publishToMavenLocal :chartLibCore:publishToMavenLocal :chartLibComposeMultiplatform:
+  publishToMavenLocal -PRELEASE_SIGNING_ENABLED=false` (all four succeed,
+  artifacts inspected under the local Maven repo) plus the full existing
+  verification chain.
+- Not yet done: no CI step runs `publishToMavenLocal` for the two new modules
+  yet (only `chartLib`/`chartLibCompose` currently get that smoke test in the
+  `Check` job); updating `jitpack.yml` / README to document the new KMP
+  coordinates once this branch is actually released.
 
 ## Notes / open questions for maintainers
 
