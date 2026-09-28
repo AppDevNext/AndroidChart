@@ -1084,8 +1084,50 @@ lint                 Existing custom lint rules (unchanged)
       - **Not yet done**: wiring `chartTransformGestures` into an actual composable chart
         (there is no interactive Compose Multiplatform chart screen yet, since Step A.9's
         `demoKmp` app doesn't exist), and the out-of-scope gesture features listed above.
-- [ ] **Step A.9 — `demoKmp` Compose Multiplatform demo app**
-      (Android, iOS, Desktop, optionally Wasm/JS).
+- [x] **Step A.9 — `demoKmp` Compose Multiplatform demo app** (Android, iOS, Desktop).
+      Ties together every Compose Multiplatform proof-of-concept from Steps A.7/A.8 into one
+      actually-runnable `@Composable` shown on all three platforms: axis grid lines
+      (`drawXAxisGridLines`/`drawYAxisGridLines`), a bar chart data renderer
+      (`drawBarChartDataSet`), and pan/pinch-zoom gestures (`chartTransformGestures`) — all from
+      `chartLibComposeMultiplatform`, none from the Android-only `chartLib`/`chartLibCompose`.
+      - **Two Gradle modules instead of one**, discovered while implementing this slice: AGP
+        9's new KMP DSL forbids combining `com.android.application` with
+        `org.jetbrains.kotlin.multiplatform`'s `androidTarget()` in the same project (a hard
+        error, not just a warning), so the plan's original single-module sketch needed
+        splitting:
+        - **`demoKmp`** (new, `com.android.kotlin.multiplatform.library` — same shape as
+          `chartLibComposeMultiplatform`): `commonMain/DemoKmpApp.kt` holds the shared
+          `@Composable` (a `BarDataSet` of 5 entries, rendered via the Step A.7 grid-line +
+          bar-chart renderers inside a `Canvas`, with `Modifier.chartTransformGestures(...)`
+          from Step A.8 attached for interactivity); `desktopMain/Main.kt` (`fun main() =
+          application { Window(...) { DemoKmpApp() } }`, also exposed as `:demoKmp:run`);
+          `iosMain/MainViewController.kt` (`ComposeUIViewController { DemoKmpApp() }`, for a
+          future thin Xcode wrapper to embed — see "not yet done" below).
+        - **`demoKmpAndroid`** (new, plain `com.android.application`, *not* multiplatform):
+          just `MainActivity`/`AndroidManifest.xml`/`applicationId`/launcher-activity
+          boilerplate, depending on `project(":demoKmp")` for `DemoKmpApp()` and the shared
+          renderer/gesture code.
+      - Both modules registered in `settings.gradle.kts`
+        (`include(":demoKmp")`/`include(":demoKmpAndroid")`).
+      - `demoKmp`'s `compileSdk` had to be `37` (not `36`, matching
+        `chartLibComposeMultiplatform`): Compose Multiplatform 1.12.1's Android artifacts
+        require it; `demoKmpAndroid` needed the same bump plus its own distinct
+        `namespace` (`info.appdev.charting.demokmp.androidapp`, vs. `demoKmp`'s
+        `info.appdev.charting.demokmp`) since AGP's manifest merger rejects two modules in the
+        same dependency graph sharing one namespace.
+      - Verified: `:demoKmpAndroid:assembleDebug` (Android APK), `:demoKmp:compileKotlinDesktop`
+        and a manual `:demoKmp:run` smoke-test (desktop app launches without exceptions),
+        `:demoKmp:compileKotlinIosSimulatorArm64`, and the full `:demoKmp:build` (all targets,
+        including linking both debug and release `iosArm64`/`iosSimulatorArm64` frameworks) all
+        pass. Full existing chain (`chartLibComposeMultiplatform:build`, `chartLibCore:allTests`,
+        `chartLib:compileDebugKotlin`, `chartLibCompose:assembleDebug`, `app:assembleDebug`,
+        `./gradlew test`) also still green.
+      - **Not yet done**: an actual Xcode wrapper project (`.xcodeproj`) embedding
+        `MainViewController()` on a real iOS device/simulator screen (only the Gradle-buildable
+        `iosArm64`/`iosSimulatorArm64` framework artifact exists so far); a `wasmJsMain` target;
+        richer demo content (multiple chart types/screens, matching `chartLibCompose`'s
+        `examples/ChartExamples.kt` breadth) — intentionally deferred until more renderers exist
+        per Step A.7's remaining ~29-file scope.
 - [ ] **Step A.10 — CI.** Extend GitHub Actions to build iOS/desktop/wasm targets
       (today only an Android emulator runs instrumentation tests).
 - [ ] **Step A.11 — Publishing.** Extend `com.vanniktech.maven.publish` KMP
@@ -1194,12 +1236,19 @@ create `chartLibComposeMultiplatform`:
 
 ## Step A.9 — `demoKmp` app
 
-- New Compose Multiplatform application module with `commonMain` (shared UI +
-  chart usage examples mirroring `chartLibCompose`'s `examples/ChartExamples.kt`),
-  `androidMain` (activity entry point), `iosMain` (SwiftUI/Compose entry point via
-  `MainViewController`), `desktopMain` (`main()` launching a `ComposeWindow`), and
-  optionally `wasmJsMain`.
-- Register in `settings.gradle.kts` as `include(":demoKmp")`.
+- Two Gradle modules (split forced by AGP 9's new KMP DSL, which forbids
+  `com.android.application` + `androidTarget()` in the same project):
+  - `demoKmp` (`com.android.kotlin.multiplatform.library`, same shape as
+    `chartLibComposeMultiplatform`): `commonMain` (shared `DemoKmpApp()` composable
+    using the Step A.7/A.8 renderers/gestures), `desktopMain` (`main()` launching a
+    `ComposeWindow`, also runnable via `:demoKmp:run`), `iosMain`
+    (`MainViewController()` via `ComposeUIViewController`).
+  - `demoKmpAndroid` (plain `com.android.application`): `MainActivity` +
+    `AndroidManifest.xml` + `applicationId`, depending on `project(":demoKmp")`.
+- Registered in `settings.gradle.kts` as `include(":demoKmp")` and
+  `include(":demoKmpAndroid")`.
+- Not yet done: an actual Xcode wrapper project embedding `MainViewController()`,
+  a `wasmJsMain` target, and richer demo content (multiple chart types/screens).
 
 ## Step A.10 — CI
 
