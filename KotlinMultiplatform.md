@@ -1128,8 +1128,42 @@ lint                 Existing custom lint rules (unchanged)
         richer demo content (multiple chart types/screens, matching `chartLibCompose`'s
         `examples/ChartExamples.kt` breadth) — intentionally deferred until more renderers exist
         per Step A.7's remaining ~29-file scope.
-- [ ] **Step A.10 — CI.** Extend GitHub Actions to build iOS/desktop/wasm targets
-      (today only an Android emulator runs instrumentation tests).
+- [x] **Step A.10 — CI.** Extended `.github/workflows/pullrequest.yml` with a new
+      `KotlinMultiplatform` job on a `macos-latest` runner (Xcode/iOS simulators are only
+      available there, unlike the existing Ubuntu-based `Check` job).
+      - **Why a new job was needed**: the existing `Check` job already runs `./gradlew test`
+        and `./gradlew check` on `ubuntu-latest`, which *does* touch `chartLibCore`/
+        `chartLibComposeMultiplatform`, but their iOS simulator test tasks
+        (`iosSimulatorArm64Test`, etc.) are silently skipped there via the
+        `kotlin.native.ignoreDisabledTargets=true` `gradle.properties` flag added earlier to
+        keep the Ubuntu build from hard-failing on unsupported native targets (see the CI-fix
+        session before Step A.4). That means the iOS test coverage added throughout Steps
+        A.3–A.9 had **never actually executed in CI** until this job.
+      - New `KotlinMultiplatform` job steps: checkout, JDK 17, Android SDK install (still needed
+        — `chartLibCore`/`chartLibComposeMultiplatform`/`demoKmp` all have an `android` target
+        too), then `./gradlew :chartLibCore:allTests :chartLibComposeMultiplatform:allTests`
+        (now genuinely running the Android host, Desktop, *and* iOS simulator test suites on a
+        capable runner), `./gradlew :demoKmp:build :demoKmpAndroid:assembleDebug` (builds every
+        `demoKmp` target, including linking the iOS frameworks, plus the separate Android app
+        module), and a desktop smoke-test step that launches `:demoKmp:run` in the background,
+        waits 25s, and asserts the process is *still running* (i.e. the Compose Desktop window
+        launched without an early crash) before killing it — a lightweight substitute for a
+        full screenshot job, deferred as explicitly optional in the plan ("if feasible").
+      - Test reports (`chartLibCore`/`chartLibComposeMultiplatform` `build/reports/tests`)
+        archived as a build artifact (`if-no-files-found: warn`, matching the existing Lint
+        report archive step's leniency), for inspecting individual test results if the job
+        fails.
+      - Verified locally (this sandbox has Xcode installed): `./gradlew :chartLibCore:allTests
+        :chartLibComposeMultiplatform:allTests` passes; the `:demoKmp:run`-then-check-still-alive
+        shell logic was manually confirmed to correctly detect a successfully-launched long-lived
+        process (the `run` task keeps the daemon/process alive as expected). The workflow YAML
+        itself was validated with `python3 -c "import yaml; yaml.safe_load(...)"` for syntax
+        correctness (GitHub's own runners couldn't be exercised directly from this environment).
+      - **Not yet done**: an actual Wasm/JS target (neither `chartLibCore` nor
+        `chartLibComposeMultiplatform`/`demoKmp` target `wasmJs` yet — no CI job needed until
+        one exists); a real screenshot-diff job for `demoKmp` (the existing Android
+        Espresso-based screenshot comparison in the `buildTest` job doesn't apply to a Compose
+        Desktop/iOS window).
 - [ ] **Step A.11 — Publishing.** Extend `com.vanniktech.maven.publish` KMP
       publication support with per-target artifact coordinates for `chartLibCore`
       and `chartLibComposeMultiplatform`.
@@ -1252,10 +1286,19 @@ create `chartLibComposeMultiplatform`:
 
 ## Step A.10 — CI
 
-- Extend `.github/workflows` to run `./gradlew :chartLibCore:allTests` and
-  `:chartLibComposeMultiplatform:allTests` on macOS runners (required for iOS
-  targets) in addition to the existing Android emulator instrumentation job.
-- Add a desktop smoke-test / screenshot job for `demoKmp` if feasible.
+- New `KotlinMultiplatform` job in `.github/workflows/pullrequest.yml`, on
+  `macos-latest` (required for iOS simulator targets): installs JDK 17 + Android
+  SDK, then runs `./gradlew :chartLibCore:allTests :chartLibComposeMultiplatform:allTests`
+  (Android host + Desktop + iOS simulator tests — previously never actually
+  executed in CI, since the Ubuntu `Check` job skips disabled iOS native targets
+  via `kotlin.native.ignoreDisabledTargets=true`), then
+  `./gradlew :demoKmp:build :demoKmpAndroid:assembleDebug`, then a desktop
+  smoke-test step (launches `:demoKmp:run` in the background, waits 25s, asserts
+  the process is still alive, then kills it).
+- Test reports archived as a build artifact for failure diagnosis.
+- Not yet done: a `wasmJs` target (none of the KMP modules target it yet) and a
+  real screenshot-diff job for `demoKmp` (Compose Desktop/iOS, unlike the
+  existing Android Espresso-based screenshot comparison).
 
 ## Step A.11 — Publishing
 
