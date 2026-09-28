@@ -10,6 +10,8 @@ import info.appdev.charting.highlight.BarHighlighter
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.dataprovider.BarDataProvider
 import info.appdev.charting.renderer.BarChartRenderer
+import info.appdev.charting.utils.copyInto
+import info.appdev.charting.utils.toCommonRectF
 import timber.log.Timber
 import java.util.Locale
 
@@ -178,7 +180,9 @@ open class BarChart : BarLineChartBase<BarData>, BarDataProvider {
 
             outputRect.set(left, top, right, bottom)
 
-            getTransformer(set.axisDependency).rectValueToPixel(outputRect)
+            val commonRect = outputRect.toCommonRectF()
+            getTransformer(set.axisDependency).rectValueToPixel(commonRect)
+            commonRect.copyInto(outputRect)
         }
     }
 

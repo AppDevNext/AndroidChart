@@ -2,10 +2,8 @@ package info.appdev.charting.utils
 
 import android.content.Context
 import android.os.Build
-import android.util.DisplayMetrics
 import android.view.ViewConfiguration
 
-var metrics: DisplayMetrics? = null
 var minimumFlingVelocity = 0
 var maximumFlingVelocity = 0
 
@@ -14,7 +12,7 @@ fun Context.initUtils() {
     minimumFlingVelocity = viewConfiguration.scaledMinimumFlingVelocity
     maximumFlingVelocity = viewConfiguration.scaledMaximumFlingVelocity
 
-    metrics = this.resources.displayMetrics
+    chartDensity = this.resources.displayMetrics.density
 }
 
 fun getSDKInt() = Build.VERSION.SDK_INT

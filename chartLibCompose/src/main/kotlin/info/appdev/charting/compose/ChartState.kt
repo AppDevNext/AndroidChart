@@ -7,7 +7,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.setValue
 import info.appdev.charting.charts.CombinedChart
-import info.appdev.charting.charts.ScatterChart
+import info.appdev.charting.charts.ScatterShape
 import info.appdev.charting.data.*
 import info.appdev.charting.highlight.Highlight
 
@@ -164,7 +164,7 @@ class RadarChartState : ChartState<RadarData>() {
  */
 @Stable
 class ScatterChartState : ChartState<ScatterData>() {
-    var scaleType by mutableStateOf(ScatterChart.ScatterShape.CIRCLE)
+    var scaleType by mutableStateOf(ScatterShape.CIRCLE)
 }
 
 /**

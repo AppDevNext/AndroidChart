@@ -14,6 +14,7 @@ import kotlin.math.floor
 import kotlin.math.log10
 import kotlin.math.nextUp
 import kotlin.math.pow
+import info.appdev.charting.utils.toAndroidDashPathEffect
 
 class YAxisRendererRadarChart(
     viewPortHandler: ViewPortHandler,
@@ -190,7 +191,7 @@ class YAxisRendererRadarChart(
             if (!limitLine.isEnabled) continue
 
             limitLinePaint.color = limitLine.lineColor
-            limitLinePaint.pathEffect = limitLine.dashPathEffect
+            limitLinePaint.pathEffect = limitLine.dashPathEffect?.toAndroidDashPathEffect()
             limitLinePaint.strokeWidth = limitLine.lineWidth
 
             val r = (limitLine.limit - chart.yChartMin) * factor

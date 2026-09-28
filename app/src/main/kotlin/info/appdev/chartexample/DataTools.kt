@@ -2,12 +2,14 @@ package info.appdev.chartexample
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.DashPathEffect
+import info.appdev.charting.utils.DashEffect
 import androidx.core.content.ContextCompat
 import info.appdev.charting.charts.LineChart
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
+import info.appdev.charting.data.fillDrawable
+import info.appdev.charting.data.fillFormatter
 import info.appdev.charting.formatter.IFillFormatter
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.ILineDataSet
@@ -214,7 +216,7 @@ class DataTools {
 
             // customize legend entry
             lineDataSet01.formLineWidth = 1f
-            lineDataSet01.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+            lineDataSet01.formLineDashEffect = DashEffect(floatArrayOf(10f, 5f), 0f)
             lineDataSet01.formSize = 15f
 
             // text size of values

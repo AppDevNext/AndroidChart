@@ -9,6 +9,8 @@ import info.appdev.charting.interfaces.dataprovider.BarDataProvider
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
+import info.appdev.charting.utils.toCommonRectF
 import kotlin.math.min
 
 class RoundedHorizontalBarChartRenderer(
@@ -48,7 +50,9 @@ class RoundedHorizontalBarChartRenderer(
                         mBarShadowRectBuffer.top = x - barWidthHalf
                         mBarShadowRectBuffer.bottom = x + barWidthHalf
                     }
-                    trans!!.rectValueToPixel(mBarShadowRectBuffer)
+                    val commonShadowRect = mBarShadowRectBuffer.toCommonRectF()
+                    trans!!.rectValueToPixel(commonShadowRect)
+                    commonShadowRect.copyInto(mBarShadowRectBuffer)
                     if (!viewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom)) {
                         i++
                         continue

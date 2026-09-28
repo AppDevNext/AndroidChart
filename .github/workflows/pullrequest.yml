@@ -125,3 +125,49 @@ jobs:
         with:
           name: Chart-Lint-report
           path: ./**/build/reports/lint-results*.html
+  KotlinMultiplatform:
+    name: Kotlin Multiplatform (iOS/Desktop)
+    # iOS simulator targets (chartLibCore/chartLibComposeMultiplatform) require a macOS runner
+    # with Xcode; on the ubuntu "Check" job these tasks are silently skipped
+    # (kotlin.native.ignoreDisabledTargets=true), so this job is the only place they actually run.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: true
+      - name: Install JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: "temurin"
+          java-version: 17
+      - name: Install Android SDK
+        uses: hannesa2/action-android/install-sdk@0.17.0
+      - name: Run chartLibCore/chartLibComposeMultiplatform tests (Android host, Desktop, iOS simulator)
+        run: ./gradlew :chartLibCore:allTests :chartLibComposeMultiplatform:allTests
+      - name: Build demoKmp (all targets) and demoKmpAndroid
+        run: ./gradlew :demoKmp:build :demoKmpAndroid:assembleDebug
+      - name: Desktop smoke-test (demoKmp:run starts without crashing)
+        run: |
+          ./gradlew :demoKmp:run --console=plain &
+          run_pid=$!
+          sleep 25
+          if kill -0 "$run_pid" 2>/dev/null; then
+            echo "demoKmp:run is still running after 25s -> desktop app launched successfully"
+            kill "$run_pid"
+            wait "$run_pid" 2>/dev/null || true
+          else
+            wait "$run_pid"
+            exit_code=$?
+            echo "demoKmp:run exited early with code $exit_code"
+            exit 1
+          fi
+      - name: Archive Kotlin Multiplatform test reports
+        uses: actions/upload-artifact@v7
+        if: ${{ always() }}
+        with:
+          name: Chart-KotlinMultiplatform-test-report
+          path: |
+            chartLibCore/build/reports/tests
+            chartLibComposeMultiplatform/build/reports/tests
+          if-no-files-found: warn

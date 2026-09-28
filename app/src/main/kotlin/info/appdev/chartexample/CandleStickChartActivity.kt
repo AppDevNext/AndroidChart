@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -21,6 +20,7 @@ import info.appdev.charting.components.YAxis.AxisDependency
 import info.appdev.charting.data.CandleData
 import info.appdev.charting.data.CandleDataSet
 import info.appdev.charting.data.CandleEntryFloat
+import info.appdev.charting.utils.PaintStyle
 
 class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
 
@@ -108,9 +108,9 @@ class CandleStickChartActivity : DemoBase(), OnSeekBarChangeListener {
         set1.shadowColor = Color.DKGRAY
         set1.shadowWidth = 0.7f
         set1.decreasingColor = Color.BLUE
-        set1.decreasingPaintStyle = Paint.Style.FILL
+        set1.decreasingPaintStyle = PaintStyle.FILL
         set1.increasingColor = Color.rgb(122, 242, 84)
-        set1.increasingPaintStyle = Paint.Style.STROKE
+        set1.increasingPaintStyle = PaintStyle.STROKE
         set1.neutralColor = Color.BLUE
 
         //set1.setHighlightLineWidth(1f);

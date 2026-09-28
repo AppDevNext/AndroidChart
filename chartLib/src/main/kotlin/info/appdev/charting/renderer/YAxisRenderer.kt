@@ -16,6 +16,9 @@ import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
+import info.appdev.charting.utils.toAndroidDashPathEffect
+import info.appdev.charting.utils.toAndroidPaintStyle
 
 open class YAxisRenderer(
     viewPortHandler: ViewPortHandler,
@@ -147,7 +150,7 @@ open class YAxisRenderer(
 
                 paintGrid.color = yAxis.gridColor
                 paintGrid.strokeWidth = yAxis.gridLineWidth
-                paintGrid.pathEffect = yAxis.gridDashPathEffect
+                paintGrid.pathEffect = yAxis.gridDashPathEffect?.toAndroidDashPathEffect()
 
                 val gridLinePath = renderGridLinesPath
                 gridLinePath.reset()
@@ -172,7 +175,7 @@ open class YAxisRenderer(
 
     open val gridClippingRect: RectF?
         get() {
-            mGridClippingRect.set(viewPortHandler.contentRect)
+            viewPortHandler.contentRect.copyInto(mGridClippingRect)
             mGridClippingRect.inset(0f, -axis.gridLineWidth)
             return mGridClippingRect
         }
@@ -229,7 +232,7 @@ open class YAxisRenderer(
      */
     protected open fun drawZeroLine(canvas: Canvas) {
         canvas.withSave {
-            zeroLineClippingRect.set(viewPortHandler.contentRect)
+            viewPortHandler.contentRect.copyInto(zeroLineClippingRect)
             zeroLineClippingRect.inset(0f, -yAxis.zeroLineWidth)
             canvas.clipRect(zeroLineClippingRect)
 
@@ -284,14 +287,14 @@ open class YAxisRenderer(
                     continue
 
                 canvas.withSave {
-                    limitLineClippingRect.set(viewPortHandler.contentRect)
+                    viewPortHandler.contentRect.copyInto(limitLineClippingRect)
                     limitLineClippingRect.inset(0f, -limitLine.lineWidth)
                     canvas.clipRect(limitLineClippingRect)
 
                     limitLinePaint.style = Paint.Style.STROKE
                     limitLinePaint.color = limitLine.lineColor
                     limitLinePaint.strokeWidth = limitLine.lineWidth
-                    limitLinePaint.pathEffect = limitLine.dashPathEffect
+                    limitLinePaint.pathEffect = limitLine.dashPathEffect?.toAndroidDashPathEffect()
 
                     pts[1] = limitLine.limit
 
@@ -308,7 +311,7 @@ open class YAxisRenderer(
 
                     // if drawing the limit-value label is enabled
                     if (label != null && label != "") {
-                        limitLinePaint.style = limitLine.textStyle
+                        limitLinePaint.style = limitLine.textStyle.toAndroidPaintStyle()
                         limitLinePaint.pathEffect = null
                         limitLinePaint.color = limitLine.textColor
                         limitLinePaint.typeface = limitLine.typeface
@@ -385,14 +388,14 @@ open class YAxisRenderer(
                     continue
 
                 canvas.withSave {
-                    limitLineClippingRect.set(viewPortHandler.contentRect)
+                    viewPortHandler.contentRect.copyInto(limitLineClippingRect)
                     limitLineClippingRect.inset(0f, -limitRange.lineWidth)
                     canvas.clipRect(limitLineClippingRect)
 
                     limitRangePaint.style = Paint.Style.STROKE
                     limitRangePaint.color = limitRange.lineColor
                     limitRangePaint.strokeWidth = limitRange.lineWidth
-                    limitRangePaint.pathEffect = limitRange.dashPathEffect
+                    limitRangePaint.pathEffect = limitRange.dashPathEffect?.toAndroidDashPathEffect()
 
                     limitRangePaintFill.style = Paint.Style.FILL
                     limitRangePaintFill.color = limitRange.rangeColor
@@ -430,7 +433,7 @@ open class YAxisRenderer(
 
                     // if drawing the limit-value label is enabled
                     if (label != null && label != "") {
-                        limitRangePaint.style = limitRange.textStyle
+                        limitRangePaint.style = limitRange.textStyle.toAndroidPaintStyle()
                         limitRangePaint.pathEffect = null
                         limitRangePaint.color = limitRange.textColor
                         limitRangePaint.typeface = limitRange.typeface

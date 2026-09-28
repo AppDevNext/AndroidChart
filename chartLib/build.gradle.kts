@@ -5,7 +5,7 @@ import java.net.URI
 plugins {
     id("com.android.library")
     id("maven-publish")
-    id("com.vanniktech.maven.publish") version "0.37.0"
+    id("com.vanniktech.maven.publish")
 }
 
 android {
@@ -55,6 +55,7 @@ dependencies {
     lintChecks(project(":lint"))                                      // applies locally
     lintPublish(project(path = ":lint", configuration = "lintJar"))  // embeds in published AAR
 
+    api(project(":chartLibCore"))
     implementation("androidx.annotation:annotation:1.10.0")
     implementation("androidx.core:core:1.16.0")
     implementation("androidx.activity:activity-ktx:1.10.1")

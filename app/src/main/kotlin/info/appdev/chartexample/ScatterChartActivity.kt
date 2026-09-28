@@ -14,11 +14,13 @@ import info.appdev.chartexample.DataTools.Companion.getValues
 import info.appdev.chartexample.custom.CustomScatterShapeRenderer
 import info.appdev.chartexample.databinding.ActivityScatterchartBinding
 import info.appdev.chartexample.notimportant.DemoBase
-import info.appdev.charting.charts.ScatterChart
+import info.appdev.charting.charts.ScatterShape
 import info.appdev.charting.components.Legend
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.ScatterData
 import info.appdev.charting.data.ScatterDataSet
+import info.appdev.charting.data.setScatterShape
+import info.appdev.charting.data.shapeRenderer
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.IScatterDataSet
 import info.appdev.charting.listener.OnChartValueSelectedListener
@@ -99,10 +101,10 @@ class ScatterChartActivity : DemoBase(), OnSeekBarChangeListener, OnChartValueSe
 
         // create a dataset and give it a type
         val set1 = ScatterDataSet(values1, "DS 1")
-        set1.setScatterShape(ScatterChart.ScatterShape.SQUARE)
+        set1.setScatterShape(ScatterShape.SQUARE)
         set1.color = ColorTemplate.COLORFUL_COLORS[0]
         val set2 = ScatterDataSet(values2, "DS 2")
-        set2.setScatterShape(ScatterChart.ScatterShape.CIRCLE)
+        set2.setScatterShape(ScatterShape.CIRCLE)
         set2.scatterShapeHoleColor = ColorTemplate.COLORFUL_COLORS[3]
         set2.scatterShapeHoleRadius = 3f
         set2.color = ColorTemplate.COLORFUL_COLORS[1]

@@ -1,0 +1,42 @@
+package info.appdev.charting.formatter
+
+import info.appdev.charting.data.BarEntryFloat
+import info.appdev.charting.data.EntryFloat
+import info.appdev.charting.utils.ViewPortHandler
+import info.appdev.charting.utils.formatGroupedDecimal
+
+/**
+ * A formatter specifically for stacked BarChart that allows to specify whether the all stack values
+ * or just the top value should be drawn.
+ */
+/**
+ * Constructor.
+ *
+ * @param drawWholeStack if true, all stack values of the stacked bar entry are drawn, else only top
+ * @param appendix       a string that should be appended behind the value
+ * @param decimals       the number of decimal digits to use
+ */
+open class StackedValueFormatter(private val drawWholeStack: Boolean, private val appendix: String, private val decimals: Int) : IValueFormatter {
+
+    override fun getFormattedValue(value: Float, entryFloat: EntryFloat?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
+        if (!drawWholeStack && entryFloat is BarEntryFloat) {
+            val barEntry = entryFloat
+            val vals = barEntry.yVals
+
+            if (vals != null) {
+                // find out if we are on top of the stack
+
+                return if (vals[vals.size - 1] == value) {
+                    // return the "sum" across all stack values
+
+                    formatGroupedDecimal(barEntry.y.toDouble(), decimals) + appendix
+                } else {
+                    "" // return empty
+                }
+            }
+        }
+
+        // return the "proposed" value
+        return formatGroupedDecimal(value.toDouble(), decimals) + appendix
+    }
+}

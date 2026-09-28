@@ -2,7 +2,7 @@ package info.appdev.chartexample
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.DashPathEffect
+import info.appdev.charting.utils.DashEffect
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Menu
@@ -23,6 +23,7 @@ import info.appdev.charting.components.LimitLine.LimitLabelPosition
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
+import info.appdev.charting.data.fillDrawable
 import info.appdev.charting.highlight.Highlight
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.listener.ChartTouchListener.ChartGesture
@@ -272,7 +273,7 @@ class SpecificPositionsLineChartActivity : DemoBase(), OnSeekBarChangeListener, 
         set11.valueTextSize = 9f
         set11.isDrawFilled = true
         set11.formLineWidth = 1f
-        set11.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+        set11.formLineDashEffect = DashEffect(floatArrayOf(10f, 5f), 0f)
         set11.formSize = 15f
         if (getSDKInt() >= 18) {
             // fill drawable only supported on api level 18 and above

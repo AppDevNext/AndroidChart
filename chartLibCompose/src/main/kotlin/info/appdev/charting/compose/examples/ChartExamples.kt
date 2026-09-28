@@ -22,7 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import info.appdev.charting.charts.ScatterChart
+import info.appdev.charting.charts.ScatterShape
 import info.appdev.charting.components.Legend
 import info.appdev.charting.components.XAxis
 import info.appdev.charting.compose.BarChart
@@ -45,6 +45,7 @@ import info.appdev.charting.data.RadarDataSet
 import info.appdev.charting.data.RadarEntryFloat
 import info.appdev.charting.data.ScatterData
 import info.appdev.charting.data.ScatterDataSet
+import info.appdev.charting.data.setScatterShape
 
 /**
  * Example composable demonstrating all chart types in Compose.
@@ -255,7 +256,7 @@ fun ScatterChartExample() {
             val dataSet = remember(entries) {
                 ScatterDataSet(entries.toMutableList(), "Data Points").apply {
                     color = android.graphics.Color.rgb(255, 87, 34)
-                    setScatterShape(ScatterChart.ScatterShape.CIRCLE)
+                    setScatterShape(ScatterShape.CIRCLE)
                     scatterShapeSize = 12f
                     isDrawValues = false
                 }

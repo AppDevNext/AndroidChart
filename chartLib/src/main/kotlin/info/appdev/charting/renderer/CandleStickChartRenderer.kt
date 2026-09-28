@@ -11,6 +11,7 @@ import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.convertDpToPixel
 import info.appdev.charting.utils.drawImage
+import info.appdev.charting.utils.toAndroidPaintStyle
 
 open class CandleStickChartRenderer(
     var dataProvider: CandleDataProvider,
@@ -117,7 +118,7 @@ open class CandleStickChartRenderer(
                         paintRender.color = dataSet.decreasingColor
                     }
 
-                    paintRender.style = dataSet.decreasingPaintStyle
+                    paintRender.style = dataSet.decreasingPaintStyle.toAndroidPaintStyle()
 
                     canvas.drawRect(
                         bodyBuffers[0], bodyBuffers[3],
@@ -131,7 +132,7 @@ open class CandleStickChartRenderer(
                         paintRender.color = dataSet.increasingColor
                     }
 
-                    paintRender.style = dataSet.increasingPaintStyle
+                    paintRender.style = dataSet.increasingPaintStyle.toAndroidPaintStyle()
 
                     canvas.drawRect(
                         bodyBuffers[0], bodyBuffers[1],

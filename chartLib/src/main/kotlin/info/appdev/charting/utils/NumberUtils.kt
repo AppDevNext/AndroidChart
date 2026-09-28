@@ -1,6 +1,5 @@
 package info.appdev.charting.utils
 
-import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.log10
 import kotlin.math.pow
@@ -34,23 +33,6 @@ fun Double.roundToNextSignificant(): Float {
     val magnitude = 10.0.pow(pw.toDouble()).toFloat()
     val shifted = (this * magnitude).roundToInt()
     return shifted / magnitude
-}
-
-/**
- * This method converts dp unit to equivalent pixels, depending on device
- * density. NEEDS UTILS TO BE INITIALIZED BEFORE USAGE.
- *
- * dp A value in dp (density independent pixels) unit. Which we need
- * to convert into pixels
- * @return A float value to represent px equivalent to dp depending on
- * device density
- */
-fun Float.convertDpToPixel(): Float {
-    if (metrics == null) {
-        Timber.e("Utils NOT INITIALIZED. You need to call Utils.init(...) at least once before calling Utils.convertDpToPixel(...). Otherwise conversion does not take place.")
-        return this
-    } else
-        return this * metrics!!.density
 }
 
 fun Float.formatNumber(digitCount: Int, separateThousands: Boolean, separateChar: Char = '.'): String {

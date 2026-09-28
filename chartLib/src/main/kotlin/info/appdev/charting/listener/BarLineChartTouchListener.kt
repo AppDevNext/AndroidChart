@@ -1,7 +1,6 @@
 package info.appdev.charting.listener
 
 import android.annotation.SuppressLint
-import android.graphics.Matrix
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.View
@@ -15,6 +14,7 @@ import info.appdev.charting.interfaces.datasets.IDataSet
 import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.Utils
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.Matrix
 import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.sqrt
@@ -259,7 +259,7 @@ class BarLineChartTouchListener(
         }
 
         // perform the transformation, update the chart
-        matrix = chart.viewPortHandler.refresh(matrix, chart, true)
+        matrix = chart.viewPortHandler.refresh(matrix, { chart.invalidate() }, true)
 
         return true // indicate event was handled
     }
@@ -582,7 +582,7 @@ class BarLineChartTouchListener(
         performDrag(event, dragDistanceX, dragDistanceY)
 
         event.recycle()
-        matrix = chart.viewPortHandler.refresh(matrix, chart, false)
+        matrix = chart.viewPortHandler.refresh(matrix, { chart.invalidate() }, false)
 
         decelerationLastTime = currentTime
 

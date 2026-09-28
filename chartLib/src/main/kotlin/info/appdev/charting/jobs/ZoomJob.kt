@@ -1,6 +1,6 @@
 package info.appdev.charting.jobs
 
-import android.graphics.Matrix
+import info.appdev.charting.utils.Matrix
 import android.view.View
 import info.appdev.charting.charts.BarLineChartBase
 import info.appdev.charting.components.YAxis.AxisDependency
@@ -17,7 +17,7 @@ open class ZoomJob(
     override fun run() {
         val save = mRunMatrixBuffer
         mViewPortHandler.zoom(scaleX, scaleY, save)
-        mViewPortHandler.refresh(save, view, false)
+        mViewPortHandler.refresh(save, { view?.invalidate() }, false)
 
         (view as? BarLineChartBase<*>)?.let { view ->
             val yValsInView = view.getAxis(axisDependency).axisRange / mViewPortHandler.scaleY
@@ -29,7 +29,7 @@ open class ZoomJob(
             mTrans?.pointValuesToPixel(pts)
 
             mViewPortHandler.translate(pts, save)
-            mViewPortHandler.refresh(save, view, false)
+            mViewPortHandler.refresh(save, { view.invalidate() }, false)
 
             view.calculateOffsets()
             view.postInvalidate()

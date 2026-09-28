@@ -1,72 +1,22 @@
 package info.appdev.charting.utils
 
 import android.annotation.SuppressLint
-import android.graphics.Matrix
 import android.graphics.Path
-import android.graphics.RectF
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.interfaces.datasets.IBubbleDataSet
 import info.appdev.charting.interfaces.datasets.ICandleDataSet
 import info.appdev.charting.interfaces.datasets.ILineDataSet
 import info.appdev.charting.interfaces.datasets.IScatterDataSet
-import info.appdev.charting.utils.PointD.Companion.getInstance
 
 /**
  * Transformer class that contains all matrices and is responsible for
  * transforming values into pixels on the screen and backwards.
+ *
+ * The platform-agnostic matrix/rect logic lives in the common [TransformerCore] base class
+ * (`chartLibCore`). This subclass adds the pieces that still depend on Android-only types
+ * (`android.graphics.Path`) or on the dataset family (not yet available in `commonMain`).
  */
-open class Transformer(protected var viewPortHandler: ViewPortHandler) {
-    /**
-     * matrix to map the values to the screen pixels
-     */
-    var valueMatrix: Matrix = Matrix()
-        protected set
-
-    /**
-     * matrix for handling the different offsets of the chart
-     */
-    var offsetMatrix: Matrix = Matrix()
-        protected set
-
-    /**
-     * Prepares the matrix that transforms values to pixels. Calculates the
-     * scale factors from the charts size and offsets.
-     */
-    fun prepareMatrixValuePx(xChartMin: Float, deltaX: Float, deltaY: Float, yChartMin: Float) {
-        var scaleX = viewPortHandler.contentWidth() / deltaX
-        var scaleY = viewPortHandler.contentHeight() / deltaY
-
-        if (scaleX.isInfinite()) {
-            scaleX = 0f
-        }
-        if (scaleY.isInfinite()) {
-            scaleY = 0f
-        }
-
-        // setup all matrices
-        valueMatrix.reset()
-        valueMatrix.postTranslate(-xChartMin, -yChartMin)
-        valueMatrix.postScale(scaleX, -scaleY)
-    }
-
-    /**
-     * Prepares the matrix that contains all offsets.
-     */
-    open fun prepareMatrixOffset(inverted: Boolean) {
-        offsetMatrix.reset()
-
-        // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
-        if (!inverted) offsetMatrix.postTranslate(
-            viewPortHandler.offsetLeft(),
-            viewPortHandler.chartHeight - viewPortHandler.offsetBottom()
-        )
-        else {
-            offsetMatrix
-                .setTranslate(viewPortHandler.offsetLeft(), -viewPortHandler.offsetTop())
-            offsetMatrix.postScale(1.0f, -1.0f)
-        }
-    }
-
+open class Transformer(viewPortHandler: ViewPortHandler) : TransformerCore(viewPortHandler) {
     protected var valuePointsForGenerateTransformedValuesScatter: FloatArray = FloatArray(1)
 
     /**
@@ -215,9 +165,9 @@ open class Transformer(protected var viewPortHandler: ViewPortHandler) {
      * to value-touch-offset
      */
     fun pathValueToPixel(path: Path) {
-        path.transform(this.valueMatrix)
-        path.transform(viewPortHandler.matrixTouch)
-        path.transform(this.offsetMatrix)
+        path.transform(this.valueMatrix.toAndroidMatrix())
+        path.transform(viewPortHandler.matrixTouch.toAndroidMatrix())
+        path.transform(this.offsetMatrix.toAndroidMatrix())
     }
 
     /**
@@ -225,166 +175,7 @@ open class Transformer(protected var viewPortHandler: ViewPortHandler) {
      */
     fun pathValuesToPixel(paths: MutableList<Path?>) {
         for (i in paths.indices) {
-            pathValueToPixel(paths.get(i)!!)
+            pathValueToPixel(paths[i]!!)
         }
     }
-
-    /**
-     * Transform an array of points with all matrices. VERY IMPORTANT: Keep
-     * matrix order "value-touch-offset" when transforming.
-     */
-    fun pointValuesToPixel(pts: FloatArray?) {
-        valueMatrix.mapPoints(pts)
-        viewPortHandler.matrixTouch.mapPoints(pts)
-        offsetMatrix.mapPoints(pts)
-    }
-
-    /**
-     * Transform a rectangle with all matrices.
-     */
-    fun rectValueToPixel(r: RectF?) {
-        valueMatrix.mapRect(r)
-        viewPortHandler.matrixTouch.mapRect(r)
-        offsetMatrix.mapRect(r)
-    }
-
-    /**
-     * Transform a rectangle with all matrices with potential animation phases.
-     */
-    fun rectToPixelPhase(r: RectF, phaseY: Float) {
-        // multiply the height of the rect with the phase
-
-        r.top *= phaseY
-        r.bottom *= phaseY
-
-        valueMatrix.mapRect(r)
-        viewPortHandler.matrixTouch.mapRect(r)
-        offsetMatrix.mapRect(r)
-    }
-
-    fun rectToPixelPhaseHorizontal(r: RectF, phaseY: Float) {
-        // multiply the height of the rect with the phase
-
-        r.left *= phaseY
-        r.right *= phaseY
-
-        valueMatrix.mapRect(r)
-        viewPortHandler.matrixTouch.mapRect(r)
-        offsetMatrix.mapRect(r)
-    }
-
-    /**
-     * Transform a rectangle with all matrices with potential animation phases.
-     */
-    fun rectValueToPixelHorizontal(r: RectF?) {
-        valueMatrix.mapRect(r)
-        viewPortHandler.matrixTouch.mapRect(r)
-        offsetMatrix.mapRect(r)
-    }
-
-    /**
-     * Transform a rectangle with all matrices with potential animation phases.
-     */
-    fun rectValueToPixelHorizontal(r: RectF, phaseY: Float) {
-        // multiply the height of the rect with the phase
-
-        r.left *= phaseY
-        r.right *= phaseY
-
-        valueMatrix.mapRect(r)
-        viewPortHandler.matrixTouch.mapRect(r)
-        offsetMatrix.mapRect(r)
-    }
-
-    /**
-     * transforms multiple rects with all matrices
-     */
-    fun rectValuesToPixel(rects: MutableList<RectF?>) {
-        val m = this.valueToPixelMatrix
-
-        for (i in rects.indices) m.mapRect(rects.get(i))
-    }
-
-    protected var mPixelToValueMatrixBuffer: Matrix = Matrix()
-
-    /**
-     * Transforms the given array of touch positions (pixels) (x, y, x, y, ...)
-     * into values on the chart.
-     */
-    fun pixelsToValue(pixels: FloatArray?) {
-        val tmp = mPixelToValueMatrixBuffer
-        tmp.reset()
-
-        // invert all matrixes to convert back to the original value
-        offsetMatrix.invert(tmp)
-        tmp.mapPoints(pixels)
-
-        viewPortHandler.matrixTouch.invert(tmp)
-        tmp.mapPoints(pixels)
-
-        valueMatrix.invert(tmp)
-        tmp.mapPoints(pixels)
-    }
-
-    /**
-     * buffer for performance
-     */
-    var ptsBuffer: FloatArray = FloatArray(2)
-
-    /**
-     * Returns a recyclable PointD instance.
-     * returns the x and y values in the chart at the given touch point
-     * (encapsulated in a PointD). This method transforms pixel coordinates to
-     * coordinates / values in the chart. This is the opposite method to
-     * getPixelForValues(...).
-     */
-    fun getValuesByTouchPoint(x: Float, y: Float): PointD {
-        val result = getInstance(0.0, 0.0)
-        getValuesByTouchPoint(x, y, result)
-        return result
-    }
-
-    fun getValuesByTouchPoint(x: Float, y: Float, outputPoint: PointD) {
-        ptsBuffer[0] = x
-        ptsBuffer[1] = y
-
-        pixelsToValue(ptsBuffer)
-
-        outputPoint.x = ptsBuffer[0].toDouble()
-        outputPoint.y = ptsBuffer[1].toDouble()
-    }
-
-    /**
-     * Returns a recyclable PointD instance.
-     * Returns the x and y coordinates (pixels) for a given x and y value in the chart.
-     */
-    fun getPixelForValues(x: Float, y: Float): PointD {
-        ptsBuffer[0] = x
-        ptsBuffer[1] = y
-
-        pointValuesToPixel(ptsBuffer)
-
-        val xPx = ptsBuffer[0].toDouble()
-        val yPx = ptsBuffer[1].toDouble()
-
-        return getInstance(xPx, yPx)
-    }
-
-    private val mMBuffer1 = Matrix()
-
-    val valueToPixelMatrix: Matrix
-        get() {
-            mMBuffer1.set(this.valueMatrix)
-            mMBuffer1.postConcat(viewPortHandler.matrixTouch)
-            mMBuffer1.postConcat(this.offsetMatrix)
-            return mMBuffer1
-        }
-
-    private val mMBuffer2 = Matrix()
-
-    val pixelToValueMatrix: Matrix
-        get() {
-            this.valueToPixelMatrix.invert(mMBuffer2)
-            return mMBuffer2
-        }
 }

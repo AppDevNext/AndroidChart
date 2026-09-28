@@ -22,6 +22,9 @@ import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.calcTextSize
 import info.appdev.charting.utils.calcTextWidth
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
+import info.appdev.charting.utils.toAndroidDashPathEffect
+import info.appdev.charting.utils.toAndroidPaintStyle
 import info.appdev.charting.utils.drawXAxisValue
 import kotlin.math.roundToInt
 
@@ -33,7 +36,7 @@ open class XAxisRenderer(
     protected fun setupGridPaint() {
         paintGrid.color = xAxis.gridColor
         paintGrid.strokeWidth = xAxis.gridLineWidth
-        paintGrid.pathEffect = xAxis.gridDashPathEffect
+        paintGrid.pathEffect = xAxis.gridDashPathEffect?.toAndroidDashPathEffect()
     }
 
     override fun computeAxis(min: Float, max: Float, inverted: Boolean) {
@@ -143,7 +146,7 @@ open class XAxisRenderer(
 
         paintAxisLine.color = xAxis.axisLineColor
         paintAxisLine.strokeWidth = xAxis.axisLineWidth
-        paintAxisLine.pathEffect = xAxis.axisLineDashPathEffect
+        paintAxisLine.pathEffect = xAxis.axisLineDashPathEffect?.toAndroidDashPathEffect()
 
         if (xAxis.position == XAxisPosition.TOP || xAxis.position == XAxisPosition.TOP_INSIDE || xAxis.position == XAxisPosition.BOTH_SIDED) {
             canvas.drawLine(
@@ -285,7 +288,7 @@ open class XAxisRenderer(
 
     open val gridClippingRect: RectF?
         get() {
-            mGridClippingRect.set(viewPortHandler.contentRect)
+            viewPortHandler.contentRect.copyInto(mGridClippingRect)
             mGridClippingRect.inset(-axis.gridLineWidth, 0f)
             return mGridClippingRect
         }
@@ -334,7 +337,7 @@ open class XAxisRenderer(
         limitLinePaint.style = Paint.Style.STROKE
         limitLinePaint.color = limitLine.lineColor
         limitLinePaint.strokeWidth = limitLine.lineWidth
-        limitLinePaint.pathEffect = limitLine.dashPathEffect
+        limitLinePaint.pathEffect = limitLine.dashPathEffect?.toAndroidDashPathEffect()
 
         canvas.drawPath(mLimitLinePath, limitLinePaint)
     }
@@ -357,7 +360,7 @@ open class XAxisRenderer(
         limitLines.forEach { limitLine ->
             if (limitLine.isEnabled) {
                 canvas.withSave {
-                    mLimitLineClippingRect.set(viewPortHandler.contentRect)
+                    viewPortHandler.contentRect.copyInto(mLimitLineClippingRect)
                     mLimitLineClippingRect.inset(-limitLine.lineWidth, 0f)
                     canvas.clipRect(mLimitLineClippingRect)
 
@@ -377,7 +380,7 @@ open class XAxisRenderer(
         // if drawing the limit-value label is enabled
         limitLine.label?.let { label ->
             if (label.isNotEmpty() && limitLine.isEnabled) {
-                limitLinePaint.style = limitLine.textStyle
+                limitLinePaint.style = limitLine.textStyle.toAndroidPaintStyle()
                 limitLinePaint.pathEffect = null
                 limitLinePaint.color = limitLine.textColor
                 limitLinePaint.strokeWidth = 0.5f

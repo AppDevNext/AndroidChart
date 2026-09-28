@@ -12,6 +12,7 @@ import info.appdev.charting.components.Legend.LegendHorizontalAlignment
 import info.appdev.charting.components.Legend.LegendOrientation
 import info.appdev.charting.components.Legend.LegendVerticalAlignment
 import info.appdev.charting.components.LegendEntry
+import info.appdev.charting.components.calculateDimensions
 import info.appdev.charting.data.ChartData
 import info.appdev.charting.interfaces.datasets.IBarDataSet
 import info.appdev.charting.interfaces.datasets.ICandleDataSet
@@ -23,6 +24,7 @@ import info.appdev.charting.utils.calcTextWidth
 import info.appdev.charting.utils.convertDpToPixel
 import info.appdev.charting.utils.getLineHeight
 import info.appdev.charting.utils.getLineSpacing
+import info.appdev.charting.utils.toAndroidDashPathEffect
 import java.util.Collections
 import kotlin.math.min
 
@@ -486,7 +488,7 @@ open class LegendRenderer(
                         entry.formLineDashEffect
                     formPaint.style = Paint.Style.STROKE
                     formPaint.strokeWidth = formLineWidth
-                    formPaint.pathEffect = formLineDashEffect
+                    formPaint.pathEffect = formLineDashEffect?.toAndroidDashPathEffect()
 
                     mLineFormPath.reset()
                     mLineFormPath.moveTo(x, y)

@@ -15,6 +15,9 @@ import info.appdev.charting.utils.Transformer
 import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
+import info.appdev.charting.utils.toAndroidDashPathEffect
+import info.appdev.charting.utils.toAndroidPaintStyle
 
 @Suppress("MemberVisibilityCanBePrivate")
 open class YAxisRendererHorizontalBarChart(
@@ -174,7 +177,7 @@ open class YAxisRendererHorizontalBarChart(
 
     override val gridClippingRect: RectF
         get() {
-            mGridClippingRect.set(viewPortHandler.contentRect)
+            viewPortHandler.contentRect.copyInto(mGridClippingRect)
             mGridClippingRect.inset(-axis.gridLineWidth, 0f)
             return mGridClippingRect
         }
@@ -188,7 +191,7 @@ open class YAxisRendererHorizontalBarChart(
 
     override fun drawZeroLine(canvas: Canvas) {
         canvas.withSave {
-            zeroLineClippingRect.set(viewPortHandler.contentRect)
+            viewPortHandler.contentRect.copyInto(zeroLineClippingRect)
             zeroLineClippingRect.inset(-yAxis.zeroLineWidth, 0f)
             canvas.clipRect(limitLineClippingRect)
 
@@ -243,7 +246,7 @@ open class YAxisRendererHorizontalBarChart(
             if (!limitLine.isEnabled) continue
 
             canvas.withSave {
-                limitLineClippingRect.set(viewPortHandler.contentRect)
+                viewPortHandler.contentRect.copyInto(limitLineClippingRect)
                 limitLineClippingRect.inset(-limitLine.lineWidth, 0f)
                 canvas.clipRect(limitLineClippingRect)
 
@@ -260,7 +263,7 @@ open class YAxisRendererHorizontalBarChart(
 
                 limitLinePaint.style = Paint.Style.STROKE
                 limitLinePaint.color = limitLine.lineColor
-                limitLinePaint.pathEffect = limitLine.dashPathEffect
+                limitLinePaint.pathEffect = limitLine.dashPathEffect?.toAndroidDashPathEffect()
                 limitLinePaint.strokeWidth = limitLine.lineWidth
 
                 canvas.drawPath(limitLinePath, limitLinePaint)
@@ -270,7 +273,7 @@ open class YAxisRendererHorizontalBarChart(
 
                 // if drawing the limit-value label is enabled
                 if (label != null && label != "") {
-                    limitLinePaint.style = limitLine.textStyle
+                    limitLinePaint.style = limitLine.textStyle.toAndroidPaintStyle()
                     limitLinePaint.pathEffect = null
                     limitLinePaint.color = limitLine.textColor
                     limitLinePaint.typeface = limitLine.typeface

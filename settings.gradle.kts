@@ -1,4 +1,8 @@
 include("chartLib")
+include("chartLibCore")
 include("chartLibCompose")
+include("chartLibComposeMultiplatform")
+include("demoKmp")
+include("demoKmpAndroid")
 include("app")
 include("lint")

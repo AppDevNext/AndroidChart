@@ -3,7 +3,7 @@ package info.appdev.charting.jobs
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.graphics.Matrix
+import info.appdev.charting.utils.Matrix
 import android.view.View
 import info.appdev.charting.charts.BarLineChartBase
 import info.appdev.charting.components.YAxis
@@ -46,7 +46,7 @@ open class AnimatedZoomJob @SuppressLint("NewApi") constructor(
 
         val save = mOnAnimationUpdateMatrixBuffer
         mViewPortHandler.setZoom(scaleX, scaleY, save)
-        mViewPortHandler.refresh(save, view, false)
+        mViewPortHandler.refresh(save, { view?.invalidate() }, false)
 
         val valsInView = yAxis.axisRange / mViewPortHandler.scaleY
         val xsInView = xAxisRange / mViewPortHandler.scaleX
@@ -57,7 +57,7 @@ open class AnimatedZoomJob @SuppressLint("NewApi") constructor(
         mTrans?.pointValuesToPixel(pts)
 
         mViewPortHandler.translate(pts, save)
-        mViewPortHandler.refresh(save, view, true)
+        mViewPortHandler.refresh(save, { view?.invalidate() }, true)
     }
 
     override fun onAnimationEnd(animation: Animator) {

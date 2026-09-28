@@ -6,7 +6,7 @@ plugins {
     id("com.android.library")
     id("maven-publish")
     id("org.jetbrains.kotlin.plugin.compose") version "2.4.10"
-    id("com.vanniktech.maven.publish") version "0.37.0"
+    id("com.vanniktech.maven.publish")
 }
 
 android {

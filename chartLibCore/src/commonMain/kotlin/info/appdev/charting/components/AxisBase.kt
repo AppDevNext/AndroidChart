@@ -1,0 +1,551 @@
+package info.appdev.charting.components
+
+import info.appdev.charting.formatter.DefaultAxisValueFormatter
+import info.appdev.charting.formatter.IAxisValueFormatter
+import info.appdev.charting.utils.ColorTemplate
+import info.appdev.charting.utils.DashEffect
+import info.appdev.charting.utils.convertDpToPixel
+import kotlin.math.abs
+
+/**
+ * Base-class of all axes (previously called labels).
+ */
+abstract class AxisBase : ComponentBase() {
+    /**
+     * custom formatter that is used instead of the auto-formatter if set
+     */
+    protected var axisValueFormatter: IAxisValueFormatter? = null
+
+    /**
+     * The color of the grid lines for this axis (the horizontal lines
+     * coming from each label).
+     */
+    var gridColor = ColorTemplate.GRAY
+
+    private var mGridLineWidth = 1f
+
+    /**
+     * Returns the color of the axis line (line alongside the axis).
+     */
+    var axisLineColor = ColorTemplate.GRAY
+
+    private var mAxisLineWidth = 1f
+
+    /**
+     * the actual array of entries
+     */
+    var entries: FloatArray = floatArrayOf()
+
+    /**
+     * axis label entries only used for centered labels
+     */
+    var centeredEntries: FloatArray = floatArrayOf()
+
+    /**
+     * the number of entries the legend contains
+     */
+    var entryCount = 0
+
+    /**
+     * the number of decimal digits to use
+     */
+    var decimals = 0
+
+    /**
+     * the number of label entries the axis should have, default 6
+     */
+    private var mLabelCount = 6
+
+    /**
+     * the minimum interval between axis values
+     */
+    protected var mGranularity = 1.0f
+
+    /**
+     * When true, axis labels are controlled by the `granularity` property.
+     * When false, axis values could possibly be repeated.
+     * This could happen if two adjacent axis values are rounded to same value.
+     * If using granularity this could be avoided by having fewer axis values visible.
+     */
+    var isGranularity = false
+
+    /**
+     * if true, the set number of y-labels will be forced
+     */
+    var isForceLabels = false
+        protected set
+
+    /**
+     * flag indicating if the grid lines for this axis should be drawn
+     */
+    var isDrawGridLines = true
+
+    /**
+     * flag that indicates if the line alongside the axis is drawn or not
+     */
+    var isDrawAxisLine = true
+
+    /**
+     * flag that indicates of the labels of this axis should be drawn or not
+     */
+    var isDrawLabelsEnabled = true
+        protected set
+
+    /**
+     * Centers the axis labels instead of drawing them at their original position.
+     * This is useful especially for grouped BarChart.
+     */
+    var centerAxisLabels: Boolean = false
+
+    /**
+     * the path effect of the axis line that makes dashed lines possible
+     */
+    var axisLineDashPathEffect: DashEffect? = null
+        private set
+
+    /**
+     * the path effect of the grid lines that makes dashed lines possible
+     */
+    var gridDashPathEffect: DashEffect? = null
+        private set
+
+    /**
+     * limit lines that can be set for the axis
+     */
+    var limitLines: MutableList<LimitLine>
+        protected set
+
+    /**
+     * array of limit ranges that can be set for the axis
+     */
+    var limitRanges: MutableList<LimitRange>
+        protected set
+
+    /**
+     * flag indicating the limit lines layer depth
+     * If this is set to true, the LimitLines are drawn behind the actual data,
+     */
+    var isDrawLimitLinesBehindData: Boolean = false
+
+    /**
+     * flag indicating the grid lines layer depth
+     */
+    var isDrawGridLinesBehindDataEnabled: Boolean = true
+        protected set
+
+    /**
+     * Extra spacing for `axisMinimum` to be added to automatically calculated `axisMinimum`
+     */
+    var spaceMin: Float = 0f
+
+    /**
+     * Extra spacing for `axisMaximum` to be added to automatically calculated `axisMaximum`
+     */
+    var spaceMax: Float = 0f
+
+    /**
+     * flag indicating that the axis-min value has been customized
+     */
+    var isAxisMinCustom: Boolean = false
+        protected set
+
+    /**
+     * flag indicating that the axis-max value has been customized
+     */
+    var isAxisMaxCustom: Boolean = false
+        protected set
+
+    /**
+     * don't touch this direclty, use setter
+     */
+    var mAxisMaximum: Float = 0f
+
+    /**
+     * don't touch this directly, use setter
+     */
+    var mAxisMinimum: Float = 0f
+
+    /**
+     * the total range of values this axis covers
+     */
+    var axisRange: Float = 0f
+
+    private var mAxisMinLabels = 2
+    private var mAxisMaxLabels = 25
+
+    /**
+     * The minumum number of labels on the axis
+     */
+    var axisMinLabels: Int
+        get() = mAxisMinLabels
+        set(value) {
+            if (value > 0)
+                mAxisMinLabels = value
+        }
+
+    /**
+     * The maximum number of labels on the axis
+     */
+    var axisMaxLabels: Int
+        get() = mAxisMaxLabels
+        set(value) {
+            if (value > 0)
+                mAxisMaxLabels = value
+        }
+
+    /**
+     * if true, then labels and lines are displayed using specificPositions instead of computed ones
+     */
+    var isShowSpecificPositions: Boolean = false
+
+    /**
+     * specify to which values labels and lines must be displayed. has no effect if not used showSpecificPositions set to true
+     */
+    var specificPositions: FloatArray = floatArrayOf()
+
+    init {
+        this.mTextSize = 10f.convertDpToPixel()
+        this.mXOffset = 5f.convertDpToPixel()
+        this.mYOffset = 5f.convertDpToPixel()
+        this.limitLines = ArrayList<LimitLine>()
+        this.limitRanges = ArrayList<LimitRange>()
+    }
+
+    val isCenterAxisLabelsEnabled: Boolean
+        get() = centerAxisLabels && entryCount > 0
+
+    /**
+     * The width of the border surrounding the chart in dp.
+     */
+    var axisLineWidth: Float
+        get() = mAxisLineWidth
+        set(width) {
+            mAxisLineWidth = width.convertDpToPixel()
+        }
+
+    /**
+     * The width of the grid lines that are drawn away from each axis label.
+     */
+    var gridLineWidth: Float
+        get() = mGridLineWidth
+        set(width) {
+            mGridLineWidth = width.convertDpToPixel()
+        }
+
+    /**
+     * Set this to true to enable drawing the labels of this axis (this will not
+     * affect drawing the grid lines or axis lines).
+     */
+    fun setDrawLabels(enabled: Boolean) {
+        this.isDrawLabelsEnabled = enabled
+    }
+
+    /**
+     * sets the number of label entries for the y-axis max = 25, min = 2, default: 6, be aware
+     * that this number is not
+     * fixed (if force == false) and can only be approximated.
+     *
+     * @param count the number of y-axis labels that should be displayed
+     * @param force if enabled, the set label count will be forced, meaning that the exact
+     * specified count of labels will
+     * be drawn and evenly distributed alongside the axis - this might cause labels
+     * to have uneven values
+     */
+    fun setLabelCount(count: Int, force: Boolean) {
+        this.labelCount = count
+        this.isForceLabels = force
+    }
+
+    /**
+     * The number of label entries for the y-axis max = 25, min = 2, default: 6, be aware
+     * that this number is not fixed.
+     */
+    var labelCount: Int
+        get() = mLabelCount
+        set(value) {
+            var count = value
+            if (count > this.axisMaxLabels)
+                count = this.axisMaxLabels
+            if (count < this.axisMinLabels)
+                count = this.axisMinLabels
+
+            mLabelCount = count
+            this.isForceLabels = false
+        }
+
+    /**
+     * Set a minimum interval for the axis when zooming in. The axis is not allowed to go below
+     * that limit. This can be used to avoid label duplicating when zooming in.
+     */
+    var granularity: Float
+        get() = mGranularity
+        set(granularity) {
+            mGranularity = granularity
+            // set this to true if it was disabled, as it makes no sense to call this method with granularity disabled
+            this.isGranularity = true
+        }
+
+    /**
+     * Adds a new LimitLine to this axis.
+     */
+    fun addLimitLine(limitLine: LimitLine) {
+        limitLines.add(limitLine)
+
+        if (limitLines.size > 6) {
+            println("Warning! You have more than 6 LimitLines on your axis, do you really want that?")
+        }
+    }
+
+    /**
+     * Adds a new LimitLine to this axis.
+     */
+    fun addLimitRange(l: LimitRange) {
+        limitRanges.add(l)
+
+        if (limitRanges.size > 6) {
+            println("Warning! You have more than 6 LimitLines on your axis, do you really want that?")
+        }
+    }
+
+    /**
+     * Removes the specified LimitLine from the axis.
+     */
+    fun removeLimitLine(limitLine: LimitLine) {
+        limitLines.remove(limitLine)
+    }
+
+    /**
+     * Removes all LimitLines from the axis.
+     */
+    fun removeAllLimitLines() {
+        limitLines.clear()
+    }
+
+    /**
+     * Removes the specified LimitRange from the axis.
+     */
+    fun removeLimitRange(limitRange: LimitRange) {
+        limitRanges.remove(limitRange)
+    }
+
+    /**
+     * Removes all LimitLines from the axis.
+     */
+    fun removeAllLimitRanges() {
+        limitRanges.clear()
+    }
+
+    /**
+     * Returns the longest formatted label (in terms of characters), this axis contains.
+     */
+    val longestLabel: String
+        get() {
+            var longest: String? = ""
+
+            for (i in entries.indices) {
+                val text = getFormattedLabel(i)
+
+                if (text != null && longest!!.length < text.length)
+                    longest = text
+            }
+
+            return longest!!
+        }
+
+    fun getFormattedLabel(index: Int): String? {
+        return if (index < 0 || index >= entries.size)
+            ""
+        else
+            this.valueFormatter!!.getFormattedValue(entries[index], this)
+    }
+
+    /**
+     * The formatter to be used for formatting the axis labels. If no formatter is set, the chart will
+     * automatically determine a reasonable formatting (concerning decimals) for all the values
+     * that are drawn inside the chart. U
+     * se chart.getDefaultValueFormatter() to use the formatter calculated by the chart.
+     */
+    var valueFormatter: IAxisValueFormatter?
+        get() {
+            if (axisValueFormatter == null ||
+                (axisValueFormatter is DefaultAxisValueFormatter && (axisValueFormatter as DefaultAxisValueFormatter).decimalDigits != decimals)
+            )
+                axisValueFormatter = DefaultAxisValueFormatter(decimals)
+
+            return axisValueFormatter
+        }
+        set(f) {
+            if (f == null)
+                axisValueFormatter = DefaultAxisValueFormatter(decimals)
+            else
+                axisValueFormatter = f
+        }
+
+    /**
+     * Enables the grid line to be drawn in dashed mode, e.g. like this
+     * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
+     * Keep in mind that hardware acceleration boosts performance.
+     *
+     * @param lineLength  the length of the line pieces
+     * @param spaceLength the length of space in between the pieces
+     * @param phase       offset, in degrees (normally, use 0)
+     */
+    fun enableGridDashedLine(lineLength: Float, spaceLength: Float, phase: Float) {
+        this.gridDashPathEffect = DashEffect(
+            floatArrayOf(
+                lineLength, spaceLength
+            ), phase
+        )
+    }
+
+    /**
+     * Enables the grid line to be drawn in dashed mode, e.g. like this
+     * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
+     * Keep in mind that hardware acceleration boosts performance.
+     *
+     * @param effect the DashPathEffect
+     */
+    fun setGridDashedLine(effect: DashEffect?) {
+        this.gridDashPathEffect = effect
+    }
+
+    /**
+     * Disables the grid line to be drawn in dashed mode.
+     */
+    fun disableGridDashedLine() {
+        this.gridDashPathEffect = null
+    }
+
+    /**
+     * Returns true if the grid dashed-line effect is enabled, false if not.
+     */
+    val isGridDashedLineEnabled: Boolean
+        get() = this.gridDashPathEffect != null
+
+    /**
+     * Enables the axis line to be drawn in dashed mode, e.g. like this
+     * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
+     * Keep in mind that hardware acceleration boosts performance.
+     *
+     * @param lineLength  the length of the line pieces
+     * @param spaceLength the length of space in between the pieces
+     * @param phase       offset, in degrees (normally, use 0)
+     */
+    fun enableAxisLineDashedLine(lineLength: Float, spaceLength: Float, phase: Float) {
+        this.axisLineDashPathEffect = DashEffect(floatArrayOf(lineLength, spaceLength), phase)
+    }
+
+    /**
+     * Enables the axis line to be drawn in dashed mode, e.g. like this
+     * "- - - - - -". THIS ONLY WORKS IF HARDWARE-ACCELERATION IS TURNED OFF.
+     * Keep in mind that hardware acceleration boosts performance.
+     *
+     * @param effect the DashPathEffect
+     */
+    fun setAxisLineDashedLine(effect: DashEffect?) {
+        this.axisLineDashPathEffect = effect
+    }
+
+    /**
+     * Disables the axis line to be drawn in dashed mode.
+     */
+    fun disableAxisLineDashedLine() {
+        this.axisLineDashPathEffect = null
+    }
+
+    /**
+     * Returns true if the axis dashed-line effect is enabled
+     */
+    val isAxisLineDashedLineEnabled: Boolean
+        get() = this.axisLineDashPathEffect != null
+
+    /**
+     * Set a custom maximum value for this axis. If set, this value will not be calculated
+     * automatically depending on the provided data. Use resetAxisMaxValue() to undo this.
+     */
+    var axisMaximum: Float
+        get() = mAxisMaximum
+        set(max) {
+            this.isAxisMaxCustom = true
+            mAxisMaximum = max
+            this.axisRange = abs(max - mAxisMinimum)
+        }
+
+    /**
+     * Set a custom minimum value for this axis. If set, this value will not be calculated
+     * automatically depending on the provided data. Use resetAxisMinValue() to undo this. Do not forget to call
+     * setStartAtZero(false) if you use this method. Otherwise, the axis-minimum value will still be forced to 0.
+     */
+    var axisMinimum: Float
+        get() = mAxisMinimum
+        set(min) {
+            this.isAxisMinCustom = true
+            mAxisMinimum = min
+            this.axisRange = abs(mAxisMaximum - min)
+        }
+
+    /**
+     * By calling this method, any custom maximum value that has been previously set is reseted,
+     * and the calculation is done automatically.
+     */
+    fun resetAxisMaximum() {
+        this.isAxisMaxCustom = false
+    }
+
+    /**
+     * By calling this method, any custom minimum value that has been previously set is reseted,
+     * and the calculation is done automatically.
+     */
+    fun resetAxisMinimum() {
+        this.isAxisMinCustom = false
+    }
+
+    @Deprecated("Use setAxisMinimum(...) instead.")
+    fun setAxisMinValue(min: Float) {
+        this.axisMinimum = min
+    }
+
+    @Deprecated("Use setAxisMaximum(...) instead.")
+    fun setAxisMaxValue(max: Float) {
+        this.axisMaximum = max
+    }
+
+    /**
+     * Calculates the minimum / maximum  and range values of the axis with the given
+     * minimum and maximum values from the chart data.
+     *
+     * @param dataMin the min value according to chart data
+     * @param dataMax the max value according to chart data
+     */
+    open fun calculate(dataMin: Float, dataMax: Float) {
+        // if custom, use value as is, else use data value
+
+        var min = if (this.isAxisMinCustom) mAxisMinimum else (dataMin - this.spaceMin)
+        var max = if (this.isAxisMaxCustom) mAxisMaximum else (dataMax + this.spaceMax)
+
+        // temporary range (before calculations)
+        val range = abs(max - min)
+
+        // in case all values are equal
+        if (range == 0f) {
+            max += 1f
+            min -= 1f
+        }
+
+        this.mAxisMinimum = min
+        this.mAxisMaximum = max
+
+        // actual range
+        this.axisRange = abs(max - min)
+    }
+
+    /**
+     * Sets the text color to use for the labels. Make sure to use
+     * getResources().getColor(...) when using a color from the resources.
+     */
+    override var textColor: Int
+        get() = super.textColor
+        set(value) {
+            super.textColor = value
+        }
+}

@@ -23,7 +23,7 @@ class AnimatedMoveViewJob(
         pts[1] = yOrigin + (yValue - yOrigin) * phase
 
         mTrans?.pointValuesToPixel(pts)
-        mViewPortHandler.centerViewPort(pts, view)
+        mViewPortHandler.centerViewPort(pts) { view?.invalidate() }
     }
 
     override fun recycleSelf() {

@@ -19,6 +19,7 @@ import info.appdev.charting.components.YAxis
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.data.LineData
 import info.appdev.charting.data.LineDataSet
+import info.appdev.charting.data.fillFormatter
 import info.appdev.charting.formatter.IFillFormatter
 import info.appdev.charting.interfaces.dataprovider.LineDataProvider
 import info.appdev.charting.interfaces.datasets.ILineDataSet

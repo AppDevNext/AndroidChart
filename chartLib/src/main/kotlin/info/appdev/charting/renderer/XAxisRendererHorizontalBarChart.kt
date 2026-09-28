@@ -18,6 +18,9 @@ import info.appdev.charting.utils.ViewPortHandler
 import info.appdev.charting.utils.calcTextHeight
 import info.appdev.charting.utils.calcTextSize
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
+import info.appdev.charting.utils.toAndroidDashPathEffect
+import info.appdev.charting.utils.toAndroidPaintStyle
 import kotlin.math.roundToInt
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -162,7 +165,7 @@ open class XAxisRendererHorizontalBarChart(
 
     override val gridClippingRect: RectF
         get() {
-            mGridClippingRect.set(viewPortHandler.contentRect)
+            viewPortHandler.contentRect.copyInto(mGridClippingRect)
             mGridClippingRect.inset(0f, -axis.gridLineWidth)
             return mGridClippingRect
         }
@@ -226,14 +229,14 @@ open class XAxisRendererHorizontalBarChart(
             if (!limitLine.isEnabled) continue
 
             canvas.withSave {
-                mLimitLineClippingRect.set(viewPortHandler.contentRect)
+                viewPortHandler.contentRect.copyInto(mLimitLineClippingRect)
                 mLimitLineClippingRect.inset(0f, -limitLine.lineWidth)
                 canvas.clipRect(mLimitLineClippingRect)
 
                 limitLinePaint.style = Paint.Style.STROKE
                 limitLinePaint.color = limitLine.lineColor
                 limitLinePaint.strokeWidth = limitLine.lineWidth
-                limitLinePaint.pathEffect = limitLine.dashPathEffect
+                limitLinePaint.pathEffect = limitLine.dashPathEffect?.toAndroidDashPathEffect()
 
                 pts[1] = limitLine.limit
 
@@ -250,7 +253,7 @@ open class XAxisRendererHorizontalBarChart(
 
                 // if drawing the limit-value label is enabled
                 if (label != null && label != "") {
-                    limitLinePaint.style = limitLine.textStyle
+                    limitLinePaint.style = limitLine.textStyle.toAndroidPaintStyle()
                     limitLinePaint.pathEffect = null
                     limitLinePaint.color = limitLine.textColor
                     limitLinePaint.strokeWidth = 0.5f

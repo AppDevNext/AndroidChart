@@ -8,6 +8,7 @@ import info.appdev.charting.components.Legend.LegendOrientation
 import info.appdev.charting.components.Legend.LegendVerticalAlignment
 import info.appdev.charting.components.XAxis.XAxisPosition
 import info.appdev.charting.components.YAxis.AxisDependency
+import info.appdev.charting.components.getRequiredHeightSpace
 import info.appdev.charting.data.BarEntryFloat
 import info.appdev.charting.data.EntryFloat
 import info.appdev.charting.highlight.Highlight
@@ -20,6 +21,8 @@ import info.appdev.charting.utils.PointF
 import info.appdev.charting.utils.PointF.Companion.getInstance
 import info.appdev.charting.utils.TransformerHorizontalBarChart
 import info.appdev.charting.utils.convertDpToPixel
+import info.appdev.charting.utils.copyInto
+import info.appdev.charting.utils.toCommonRectF
 import timber.log.Timber
 import kotlin.math.max
 import kotlin.math.min
@@ -222,7 +225,9 @@ open class HorizontalBarChart : BarChart {
 
             outputRect.set(left, top, right, bottom)
 
-            getTransformer(set!!.axisDependency).rectValueToPixel(outputRect)
+            val commonRect = outputRect.toCommonRectF()
+            getTransformer(set!!.axisDependency).rectValueToPixel(commonRect)
+            commonRect.copyInto(outputRect)
         }
     }
 
