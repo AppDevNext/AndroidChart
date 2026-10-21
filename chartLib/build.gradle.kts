@@ -60,7 +60,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.10.1")
     implementation("com.github.AppDevNext.Logcat:LogcatCoreLib:3.4")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.mockito:mockito-core:5.23.0")
+    testImplementation("org.mockito:mockito-core:5.24.0")
     testImplementation("org.mockito:mockito-inline:5.2.0")
 
     // Instrumented tests run on a device so that android.graphics.Matrix / RectF do real
