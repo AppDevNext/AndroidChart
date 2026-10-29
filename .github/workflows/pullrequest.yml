@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-22.04 ]
+        os: [ ubuntu-26.04 ]
         api: [ 28 ]
         tag: [ default ]
         abi: [ x86_64 ]
@@ -99,7 +99,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
+        os: [ ubuntu-26.04 ]
         java_version: [ 17 ]
     steps:
       - uses: actions/checkout@v7
