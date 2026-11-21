@@ -19,13 +19,6 @@ jobs:
         with:
           distribution: "temurin"
           java-version: 17
-      - name: Get the version
-        id: tagger
-        uses: jimschubert/query-tag-action@v2
-        with:
-          skip-unshallow: 'true'
-          abbrev: false
-          commit-ish: HEAD
       - name: Install Android SDK
         uses: hannesa2/action-android/install-sdk@0.18.1
       - name: Build project
@@ -54,8 +47,8 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: ${{steps.tagger.outputs.tag}}
-          name: ${{steps.tagger.outputs.tag}}
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           generate_release_notes: true
           body: ${{steps.github_release.outputs.changelog}}
           files: |
