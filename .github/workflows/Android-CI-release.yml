@@ -19,13 +19,17 @@ jobs:
         with:
           distribution: "temurin"
           java-version: 17
-      - name: Get the version
-        id: tagger
-        uses: jimschubert/query-tag-action@v2
-        with:
-          skip-unshallow: 'true'
-          abbrev: false
-          commit-ish: HEAD
+      - name: Check pre-release
+        run: |
+          echo "tag=${{ github.ref_name }}"
+          if [[ ${{ github.ref_name }} == *alpha* || ${{ github.ref_name }} == *beta* ]]
+          then
+             prerelease=true
+          else
+             prerelease=false
+          fi
+          echo "PRE_RELEASE=$prerelease" >> $GITHUB_ENV
+          echo "prerelease=$prerelease"
       - name: Install Android SDK
         uses: hannesa2/action-android/install-sdk@0.18.1
       - name: Build project
@@ -54,9 +58,10 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: ${{steps.tagger.outputs.tag}}
-          name: ${{steps.tagger.outputs.tag}}
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           generate_release_notes: true
+          prerelease: ${{ env.PRE_RELEASE }}
           body: ${{steps.github_release.outputs.changelog}}
           files: |
             chartLib/build/outputs/aar/chartLib-release.aar
