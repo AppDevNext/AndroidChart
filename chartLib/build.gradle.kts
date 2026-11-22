@@ -12,7 +12,7 @@ android {
     namespace = "info.appdev.charting"
     defaultConfig {
         minSdk = 23
-        compileSdk = 36
+        compileSdk = 37
 
         // VERSION_NAME no longer available as of 4.1
         // https://issuetracker.google.com/issues/158695880
